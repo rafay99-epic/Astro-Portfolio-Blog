@@ -2,7 +2,7 @@
     {
         "title": "Simple Thread",
         "description": "Simple Thread is a simple communication application developed using flutter and Firebase.",
-        "imageUrl": "/src/assets/images/Projects/SimpleThread.png",
+        "imageUrl": "/SimpleThread.png",
         "technologies": [
             "Flutter",
             "Firebase",
@@ -19,7 +19,7 @@
     {
         "title": "Dienstleisto",
         "description": "Dienstleisto is a Flutter-based job-finding app designed to simplify your job search. With intuitive features and a user-friendly interface, find your next opportunity hassle-free.",
-        "imageUrl": "/src/assets/images/Projects/DienstleistoIntroScreen.png",
+        "imageUrl": "/DienstleistoIntroScreen.png",
         "technologies": [
             "Flutter",
             "Firebase",
@@ -36,7 +36,7 @@
     {
         "title": "Check Pont",
         "description": "Check Point: Your sleek, Flutter-powered companion for seamless task management. Effortlessly create, organize, and conquer your to-do list with intuitive ease. Simplify your productivity and achieve more with Check Point.",
-        "imageUrl": "/src/assets/images/Projects/CoverPageCheckPoint.png",
+        "imageUrl": "/CoverPageCheckPoint.png",
         "technologies": [
             "Flutter",
             "Firebase",
@@ -52,7 +52,7 @@
     {
         "title": "Chess Master",
         "description": "Dive into the strategic world of chess with this Flutter-powered game. Challenge friends 👥, master the art of checkmate! Your mobile chess arena awaits. ♞🌟",
-        "imageUrl": "/src/assets/images/Projects/chessimage_chroped.png",
+        "imageUrl": "/chessimage_chroped.png",
         "technologies": [
             "Flutter",
             "Firebase",
@@ -68,7 +68,7 @@
     {
         "title": "Future Insight Flutter Application",
         "description": "Explore insightful content effortlessly with the 'Clean UI Future Insight' Android App. Designed in Flutter for a seamless and immersive experience.",
-        "imageUrl": "/src/assets/images/Projects/Thumbnail.png",
+        "imageUrl": "/Thumbnail.png",
         "technologies": [
             "Flutter",
             "Firebase",
@@ -86,7 +86,7 @@
     {
         "title": "Future Insight Website",
         "description": "Explore cutting-edge insights on the 'Future Insight' Blog. Crafted with Node.js, Hugo, and deployed on Netlify for a seamless experience.",
-        "imageUrl": "/src/assets/images/Projects/future-insight.png",
+        "imageUrl": "/future-insight.png",
         "technologies": [
             "Hugo",
             "NodeJs",
@@ -104,7 +104,7 @@
     {
         "title": "Shafiq Law Chamber",
         "description": "Explore Shafiq Law Chamber's expertise on our seamlessly crafted website. Powered by Hugo and Node.js, it ensures a professional and user-friendly online presence.",
-        "imageUrl": "/src/assets/images/Projects/shafiqLawChamber.png",
+        "imageUrl": "/shafiqLawChamber.png",
         "technologies": [
             "Hugo",
             "NodeJs",
@@ -122,7 +122,7 @@
     {
         "title": "Smart Parking Assistant",
         "description": "Explore Parking Assistant: a reservation solution with ML recognition. Powered by Node.js, Python, and JavaScript, it streamlines operations for efficient parking management.",
-        "imageUrl": "/src/assets/images/Projects/ParkingAssistant.png",
+        "imageUrl": "/ParkingAssistant.png",
         "technologies": [
             "HTML",
             "Netlify",
