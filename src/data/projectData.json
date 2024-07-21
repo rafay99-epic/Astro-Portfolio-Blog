@@ -1,0 +1,141 @@
+[
+    {
+        "title": "Simple Thread",
+        "description": "Simple Thread is a simple communication application developed using flutter and Firebase.",
+        "imageUrl": "/src/assets/images/Projects/SimpleThread.png",
+        "technologies": [
+            "Flutter",
+            "Firebase",
+            "Dart",
+            "VS-code",
+            "Git",
+            "GitHub",
+            "Postman",
+            "Test Magic"
+        ],
+        "githubLink": "https://github.com/rafay99-epic/Dienstleistro",
+        "deployedLink": ""
+    },
+    {
+        "title": "Dienstleisto",
+        "description": "Dienstleisto is a Flutter-based job-finding app designed to simplify your job search. With intuitive features and a user-friendly interface, find your next opportunity hassle-free.",
+        "imageUrl": "/src/assets/images/Projects/DienstleistoIntroScreen.png",
+        "technologies": [
+            "Flutter",
+            "Firebase",
+            "Dart",
+            "VS-code",
+            "Git",
+            "GitHub",
+            "Postman",
+            "Test Magic"
+        ],
+        "githubLink": "https://github.com/rafay99-epic/Dienstleistro",
+        "deployedLink": ""
+    },
+    {
+        "title": "Check Pont",
+        "description": "Check Point: Your sleek, Flutter-powered companion for seamless task management. Effortlessly create, organize, and conquer your to-do list with intuitive ease. Simplify your productivity and achieve more with Check Point.",
+        "imageUrl": "/src/assets/images/Projects/CoverPageCheckPoint.png",
+        "technologies": [
+            "Flutter",
+            "Firebase",
+            "Dart",
+            "VS-code",
+            "Local Storage Support",
+            "Postman",
+            "Test Magic"
+        ],
+        "githubLink": "https://github.com/rafay99-epic/CheckPoint",
+        "deployedLink": ""
+    },
+    {
+        "title": "Chess Master",
+        "description": "Dive into the strategic world of chess with this Flutter-powered game. Challenge friends 👥, master the art of checkmate! Your mobile chess arena awaits. ♞🌟",
+        "imageUrl": "/src/assets/images/Projects/chessimage_chroped.png",
+        "technologies": [
+            "Flutter",
+            "Firebase",
+            "Dart",
+            "Postman",
+            "Test Magic",
+            "Git",
+            "GitHub"
+        ],
+        "githubLink": "https://github.com/rafay99-epic/ChessMaster",
+        "deployedLink": ""
+    },
+    {
+        "title": "Future Insight Flutter Application",
+        "description": "Explore insightful content effortlessly with the 'Clean UI Future Insight' Android App. Designed in Flutter for a seamless and immersive experience.",
+        "imageUrl": "/src/assets/images/Projects/Thumbnail.png",
+        "technologies": [
+            "Flutter",
+            "Firebase",
+            "Dart",
+            "VS-code",
+            "Google Play Store",
+            "Git",
+            "GitHub",
+            "Postman",
+            "Test Magic"
+        ],
+        "githubLink": "https://github.com/FutureInsightTech/InsightfulFlutterApp",
+        "deployedLink": ""
+    },
+    {
+        "title": "Future Insight Website",
+        "description": "Explore cutting-edge insights on the 'Future Insight' Blog. Crafted with Node.js, Hugo, and deployed on Netlify for a seamless experience.",
+        "imageUrl": "/src/assets/images/Projects/future-insight.png",
+        "technologies": [
+            "Hugo",
+            "NodeJs",
+            "Markdown",
+            "VS-code",
+            "Git",
+            "TinaCMS",
+            "Netlify",
+            "Playwrite",
+            "SEO Optimization"
+        ],
+        "githubLink": "https://github.com/FutureInsightTech/FutureIsnight-Site",
+        "deployedLink": ""
+    },
+    {
+        "title": "Shafiq Law Chamber",
+        "description": "Explore Shafiq Law Chamber's expertise on our seamlessly crafted website. Powered by Hugo and Node.js, it ensures a professional and user-friendly online presence.",
+        "imageUrl": "/src/assets/images/Projects/shafiqLawChamber.png",
+        "technologies": [
+            "Hugo",
+            "NodeJs",
+            "Markdown",
+            "VS-code",
+            "Git",
+            "TinaCMS",
+            "Netlify",
+            "Playwrite",
+            "SEO Optimization"
+        ],
+        "githubLink": "https://github.com/FutureInsightTech/Shafiq-Law-Chamber",
+        "deployedLink": "https://shafiqlawchamber.com/"
+    },
+    {
+        "title": "Smart Parking Assistant",
+        "description": "Explore Parking Assistant: a reservation solution with ML recognition. Powered by Node.js, Python, and JavaScript, it streamlines operations for efficient parking management.",
+        "imageUrl": "/src/assets/images/Projects/ParkingAssistant.png",
+        "technologies": [
+            "HTML",
+            "Netlify",
+            "CSS",
+            "Python",
+            "JavaScript",
+            "Arudino",
+            "NodeJs",
+            "VS-code",
+            "Netlify",
+            "Playwrite"
+        ],
+        "githubLink": "https://github.com/FutureInsightTech/Parking-Assistant",
+        "deployedLink": ""
+    }
+]

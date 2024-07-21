@@ -1,0 +1,53 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import ProjectCard from "../components/projectCard.astro";
+import projects from "../data/projectData.json";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+      .project-card {
+        flex: 0 1 calc(25% - 20px);
+        border-radius: 15px;
+        border: 1px solid #ccc;
+        background-color: #f0f0f0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+    <main>
+      <h1>Some Things I've build</h1>
+      <div class="cards-container">
+        {
+          // Iterate over the projects array from the JSON data
+          projects.map((project) => (
+            <ProjectCard
+              title={project.title}
+              description={project.description}
+              imageUrl={project.imageUrl}
+              technologies={project.technologies}
+              githubLink={project.githubLink}
+              deployedLink={project.deployedLink}
+            />
+          ))
+        }
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,77 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      .contact-form {
+        margin: auto;
+      }
+
+      .contact-form h2 {
+        color: var(--text-light);
+      }
+
+      .contact-form label {
+        margin-top: 10px;
+        display: block;
+        color: var(--text-light);
+      }
+
+      .contact-form input,
+      .contact-form textarea {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        background: var(--black);
+        color: var(--text-light);
+        border: 2px solid #ffffff;
+        box-shadow: 1px solid var(--gray);
+      }
+
+      .contact-form button {
+        background: var(--accent);
+        color: var(--text-light);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .contact-form button:hover {
+        background: var(--accent-dark);
+        border: 2px solid #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h2>Contact Me</h2>
+      <div class="contact-form">
+        <form action="/submit-form" method="POST">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" required></textarea>
+
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

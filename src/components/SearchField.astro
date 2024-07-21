@@ -1,0 +1,19 @@
+---
+import Search from "astro-pagefind/components/Search";
+import "../styles/global.css";
+---
+
+<div id="search"></div>
+<script>
+  window.addEventListener("DOMContentLoaded", (event) => {
+    // @ts-ignore
+    new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      debounceTimeoutMs: 500,
+      resetStyles: false,
+      showEmptyFilters: false,
+      showImages: true,
+    });
+  });
+</script>

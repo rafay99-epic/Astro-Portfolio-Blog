@@ -1,0 +1,25 @@
+---
+const today = new Date();
+import SocialLinks from "./SocialMedia.astro";
+import "../styles/footer/footer.css";
+---
+
+<footer>
+  <SocialLinks />
+
+  <div class="astrobuild">
+    <a href="https://astro.build">
+      <img
+        src="https://astro.badg.es/v2/built-with-astro/small.svg"
+        alt="Built with Astro"
+        width="192"
+        height="32"
+      />
+    </a>
+  </div>
+
+  <div class="footer-copyright">
+    &copy; {today.getFullYear()} Abdul Rafay
+  </div>
+</footer>
+<style></style>
