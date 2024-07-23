@@ -1,0 +1,32 @@
+---
+import ExperienceCards from "../components/ExperienceCard.astro";
+import jobData from "../data/jobData.json";
+---
+
+<style>
+  .experience-container {
+    padding: 20px;
+  }
+
+  .experience-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+</style>
+<div class="experience-container">
+  <h2 style="text-align: center;">Job Experience</h2>
+  <div class="experience-cards">
+    {
+      jobData.map((job) => (
+        <ExperienceCards
+          company={job.companyName}
+          position={job.position}
+          employementDate={job.employmentTime}
+          roles={job.roles}
+          technologies={job.toolsUsed}
+        />
+      ))
+    }
+  </div>
+</div>
