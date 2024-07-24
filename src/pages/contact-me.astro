@@ -58,7 +58,16 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
     <main>
       <h2>Contact Me</h2>
       <div class="contact-form">
-        <form action="/submit-form" method="POST">
+        <form
+          id="contactForm"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+        >
+          <input
+            type="hidden"
+            name="access_key"
+            value="c0613ed5-2935-40a1-8d33-b32fd9eea403"
+          />
           <label for="name">Name</label>
           <input type="text" id="name" name="name" required />
 
@@ -68,10 +77,30 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
           <label for="message">Message</label>
           <textarea id="message" name="message" rows="4" required></textarea>
 
+          <input
+            type="checkbox"
+            name="botcheck"
+            class="hidden"
+            style="display: none;"
+          />
+
           <button type="submit">Send Message</button>
         </form>
       </div>
     </main>
+
     <Footer />
+    <!-- <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.querySelector("form");
+        if (form) {
+          form.addEventListener("submit", (event) => {
+            event.preventDefault(); // Prevent the default form submission behavior
+            form.reset();
+            alert("Message sent successfully!");
+          });
+        }
+      });
+    </script> -->
   </body>
 </html>
