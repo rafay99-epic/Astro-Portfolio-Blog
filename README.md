@@ -55,7 +55,7 @@ To run this project locally, follow these steps:
 
    ```bash
    git clone https://github.com/rafay99-epic/Personal-Blog.git
-   cd Personal-Blog
+   cd Astro-Portfolio-Blog
    ```
 
 2. **Install dependencies**:
@@ -67,7 +67,7 @@ To run this project locally, follow these steps:
 3. **Start the development server**:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 4. **Build for production**:
