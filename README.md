@@ -74,6 +74,7 @@ To run this project locally, follow these steps:
    ```bash
    npm run build
    ```
+   - Build your production site to `./dist/`
 
 ## 🌟 Contributing
 
