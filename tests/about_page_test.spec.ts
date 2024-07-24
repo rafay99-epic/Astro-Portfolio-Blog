@@ -5,7 +5,7 @@ test.describe("About Page", () => {
     page,
   }) => {
     // Navigate to the about page
-    await page.goto("http://localhost:4322/about");
+    await page.goto("./about");
 
     // Check if the main title is present
     const mainTitle = await page.locator(".animated-text");

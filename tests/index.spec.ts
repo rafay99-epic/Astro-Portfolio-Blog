@@ -5,7 +5,7 @@ test.describe("Home Page", () => {
     page,
   }) => {
     // Navigate to the home page
-    await page.goto("http://localhost:4322/");
+    await page.goto("./");
     const animatedText = await page.locator(".animated-text");
     await expect(animatedText).toHaveCount(3);
 
