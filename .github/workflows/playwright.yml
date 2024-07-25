@@ -4,6 +4,9 @@ on:
     workflows: ["Build Website"]
     types:
       - completed
+  push:
+    branches: [Development]
+
 jobs:
   test:
     timeout-minutes: 60
