@@ -4,8 +4,6 @@ on:
     workflows: ["Build Website"]
     types:
       - completed
-  push:
-    branches: [Development]
 
 jobs:
   test:
