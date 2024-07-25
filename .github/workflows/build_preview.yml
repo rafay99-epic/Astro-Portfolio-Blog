@@ -1,9 +1,5 @@
 name: Build Website
 on:
-  workflow_run:
-    workflows: ["Build Website"]
-    types:
-      - completed
   push:
     branches:
       - Development

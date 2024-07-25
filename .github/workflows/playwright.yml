@@ -1,5 +1,9 @@
 name: Playwright Tests
 on:
+  workflow_run:
+    workflows: ["Build Website"]
+    types:
+      - completed
   push:
     branches: [Development]
   pull_request:
