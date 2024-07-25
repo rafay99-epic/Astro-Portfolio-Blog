@@ -19,8 +19,8 @@ jobs:
         run: npx playwright install --with-deps
       - name: Start server
         run: npm run dev &
-      - name: Wait for server to be ready
-        run: npx wait-on http://127.0.0.1:4322
+      # - name: Wait for server to be ready
+      #   run: npx wait-on http://127.0.0.1:4322
       - name: Run Playwright tests
         run: npx playwright test
       - uses: actions/upload-artifact@v4
