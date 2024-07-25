@@ -19,8 +19,7 @@
     "lottie-web": "^5.12.2",
     "pagefind": "^1.1.0",
     "prettier": "^3.3.3",
-    "prettier-plugin-astro": "^0.14.1",
-    "wait-on": "^7.2.0"
+    "prettier-plugin-astro": "^0.14.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.45.3",
