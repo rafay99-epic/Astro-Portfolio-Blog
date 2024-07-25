@@ -71,29 +71,80 @@ To run this project locally, follow these steps:
    ```
 
 4. **Build for production**:
+
    ```bash
    npm run build
    ```
+
    - Build your production site to `./dist/`
+
+Sure! Here's an alternative UI design for your "Deployed Website" section with a cleaner layout and improved readability:
+
+## 🌐 Deployed Website
+
+The website is deployed on Netlify and is available at the following URLs:
+
+### 🌐 Main Production Branch
+
+**Website**: [rafay99.com](https://rafay99.com)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ed58cf6f-0885-444e-b15f-2774752cd285/deploy-status)](https://app.netlify.com/sites/abdulrafay99/deploys)
+
+### 🔧 Development Branch
+
+**Website**: [rafayblog.netlify.app](https://rafayblog.netlify.app)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/cf8a85e2-6e51-429f-b828-dc69bd2397ba/deploy-status)](https://app.netlify.com/sites/rafayblog/deploys)
+
+### How to Access
+
+- **Production Website**: Visit [rafay99.com](https://rafay99.com) for the live, production version of the website.
+- **Development Website**: Visit [rafayblog.netlify.app](https://rafayblog.netlify.app) to view the latest development changes before they go live.
+
+### Additional Information
+
+- **Production**: The main production branch hosts the live version of the website. Any changes merged here are automatically deployed.
+
+- **Development**: The development branch is used for staging changes. You can preview upcoming updates before they are pushed to production.
 
 ## 🌟 Contributing
 
-I welcome contributions to improve this project! If you have any ideas, feel free to open an issue or submit a pull request.
+Contributions to improve this project are welcome! If you have any ideas or suggestions, feel free to open an issue or submit a pull request.
 
-1. **Fork the repository**
-2. **Create a new branch**
+To contribute:
+
+1. **Fork the repository**:
+
+   - Click the "Fork" button at the top right of this repository page.
+
+2. **Switch to the development branch**:
+
+   ```bash
+   git checkout Development
+   ```
+
+3. **Create a new branch from the development branch**:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
-3. **Make your changes and commit them**
+
+4. **Make your changes and commit them**:
+
    ```bash
-   git commit -m "Add some feature"
+   git commit -m "Add your feature description"
    ```
-4. **Push to the branch**
+
+5. **Push to your branch**:
+
    ```bash
    git push origin feature/your-feature-name
    ```
-5. **Open a pull request**
+
+6. **Open a pull request**:
+   - Make the pull request to the **Development** branch. Any pull requests to the **main** branch will be rejected.
+
+Thank you for your contributions!
 
 ## 📝 License
 
@@ -101,4 +152,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 📞 Contact
 
-If you have any questions or want to get in touch, feel free to reach out via the contact form on the website or connect with me on [LinkedIn](https://www.linkedin.com/in/abdul-rafay1999/) or email me at 99marafay@gmail.com.
+If you have any questions or want to get in touch, feel free to reach out via the contact form on the website or connect with me on [LinkedIn](https://www.linkedin.com/in/abdul-rafay1999/) or email me at [99marafay@gmail.com](mailto:99marafay@gmail.com).
