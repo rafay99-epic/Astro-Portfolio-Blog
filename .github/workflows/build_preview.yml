@@ -1,4 +1,4 @@
-name: Production Web Build
+name: Test Web Build
 on:
   push:
     branches:

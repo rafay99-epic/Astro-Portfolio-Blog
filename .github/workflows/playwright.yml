@@ -4,6 +4,10 @@ on:
     branches: [Development]
   pull_request:
     branches: [Development]
+  workflow_run:
+    workflows: ["Test Web Build"]
+    types:
+      - completed
 jobs:
   test:
     timeout-minutes: 60
