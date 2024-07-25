@@ -1,0 +1,33 @@
+name: Build Website
+on:
+  push:
+    branches:
+      - Development
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    name: Build and Push
+    steps:
+      - name: git-checkout
+        uses: actions/checkout@v4
+
+      - name: Setup NodeJs
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Push
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: build-testing
+          FOLDER: dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "Build: ({sha}) {msg}"
