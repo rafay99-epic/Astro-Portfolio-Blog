@@ -1,0 +1,54 @@
+---
+title: "My Love & Hate Relationship with Copilot"
+description: "Explores the nuanced relationship with GitHub copilot, discussing both its benefits and drawbacks."
+pubDate: "July 25 2024"
+heroImage: "/Love&HateGithub.png"
+---
+
+In this world, there are always two sides of a coin: one is good, and one might be bad. You can also say the pros and cons of some things, and for that, it's coding AI tools. I have a love and hate relationship with GitHub Copilot.
+
+For those unfamiliar with Copilot, here’s a quick introduction: Copilot is a tool that attempts to understand your problem and then searches GitHub for matching solutions and suggests them to you. For many, this tool is something they love as they can create the solution faster, as they can just wait for a suggestion to be recommended and apply it as fast they can and then move on with their life.
+
+## The Hook
+
+The story begins not so long ago. When it was released, I was like, okay, it’s going to be like code completion or something, but I was not sure about the whole chat feature and much more, and then I used it. At that time, I was learning Flutter and I already had a website. My domain was Machine Learning, but I was trying to switch from Machine Learning to Application Development. Moreover, I want to be a Software Engineer. I started using Copilot as a free trial, and in the beginning, I loved it. I wanted to create a Flutter application with a web view so that I can have a mobile and web both at the same time, but I learned a lot from this. Starting out with Flutter and having a teacher on your side was awesome.
+
+## The Permanent Switch
+
+Then the free trial came to an end, and then I started to build a lot of applications without using Copilot, but at that time, it felt like something was missing. And then after some time, I just bought Copilot. I started using it again in daily life as well, in every project. And sure, I was enjoying it. Just facing any issue or error, just ask Copilot, and you have a solution. I was making sure the coding that I was writing was good and readable, plus, I understood the code that I wrote.
+
+## Problem
+
+But you see, everything is not sunshine and rainbows, and something might look good, but it’s not. One day, my Copilot was not working, and I was panicking, finding out what is happening and checking my connection, and then it hit me. I have lost my ability to do any task without an AI tool.
+
+At that time, I would say, yes, I was using it too much. And as much as I love it, it’s not good for me. And that’s where the title comes into play, the Perfect Love and Hate relationship with GitHub Copilot.
+
+## Removes the engineer from Software Engineering
+
+One of the problems with Copilot is that it diminishes the ability to solve real-life problems. In place of analyzing problems and finding a good solution, we just pass the problem to the AI, which is not correct and right. With time, this will change your mindset and remove your ability to think outside the box, and that is not for a Software Engineer.
+
+For example, you are working on a project, and your first instinct is to pass this error or problem to Copilot, and that's what I did for a while. Instead of searching the web and finding the solution, when answers are given to you easily, you will never remember how to solve this problem. And in the near future, if you come across those same issues, then your reply is AI as well. Now you have learned nothing.
+
+This is just one problem. There is another problem when you give an error to Copilot. Then there might be a chance that the solution might be very simple, but Copilot will provide a complex solution. Here is a live issue: for my Flutter Project, I want to detect two different languages. One was HTML and the other was Markdown. Copilot wanted to use regex, which is alright, but the issue with this approach is that regex will cause a lot of performance issues, and you are in this loop. This code is working and this code is not working. You are stuck in a loop in which you are losing time and resources.
+
+## Stop Learning
+
+As software engineers, continuous learning is essential. We often learn by problem-solving, addressing issues, and devising solutions. However, over-reliance on AI in our development process can hinder this learning. We may apply code without fully understanding it, which can be detrimental in the long run. Just because you used an AI to solve a bug doesn’t mean you should rely on it every time a similar issue arises.
+
+This can be a significant issue, especially for new developers. It’s crucial that we’re able to “feel” the code we’re working on. Programming is not just about understanding code; it’s about connecting the pieces in the larger puzzle to build a solution, and it takes time to understand this, and it’s really important in the beginning of the career and also why learning programming takes time.
+
+## More efficient
+
+All this talk about makes me think about a question, and that is, with these tools, are we more productive, or have we become more lazy?
+
+The answer to this question is very simple. I don’t believe that we necessarily become more effective by using AI. Often, we might find ourselves stuck in a loop, waiting for new suggestions repeatedly. In such situations, we could likely solve the problem faster, and perhaps even better, by using our own brains instead.
+
+We often associate efficient programming with the ability to produce large amounts of code quickly. However, this isn’t necessarily true. A single line of code can sometimes be more efficient and easier to work with than ten lines of code.
+
+AI is effective at generating boilerplate but often falls short in providing quality solutions.
+
+## The End
+
+I’ve critiqued Copilot for a while, but it’s worth mentioning that it’s not necessarily bad to use it, provided you choose the appropriate time. I still use Copilot, but only when I’m working on simpler tasks that it can easily handle, like generating boilerplate code. However, I only enable it occasionally. I’ve noticed that it’s crucial not to rely heavily on such tools, as doing so can lead to negative habits, like waiting for a suggestion and hitting enter repeatedly to find a solution.
+
+AI can pose a significant challenge for new developers. It’s tempting to let AI dictate the path to a solution, rather than using it as one of many potential paths. This often leads to developers accepting the code returned by AI without truly understanding it. However, understanding the code is essential for new developers.

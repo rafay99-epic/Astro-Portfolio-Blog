@@ -29,11 +29,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         box-shadow: var(--box-shadow);
       }
       .prose {
-        width: 720px;
+        width: 1200px;
         max-width: calc(100% - 2em);
         margin: auto;
         padding: 1em;
         color: rgb(var(--gray-dark));
+        text-align: justify;
       }
       .title {
         margin-bottom: 1em;
@@ -50,6 +51,21 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       }
       .last-updated-on {
         font-style: italic;
+      }
+      .author {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1em;
+      }
+      .author img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        margin-right: 1em;
+      }
+      #authorname {
+        color: var(--text-light);
       }
     </style>
   </head>
@@ -78,9 +94,31 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
               }
             </div>
             <h1>{title}</h1>
+            <div class="author">
+              <img src="/author.jpg" alt="Abdul Rafay" />
+              <span id="authorname">Abdul Rafay</span>
+            </div>
             <hr />
           </div>
           <slot />
+          <div>
+            <h2>Comments</h2>
+            <script
+              src="https://giscus.app/client.js"
+              data-repo="rafay99-epic/Astro-Portfolio-Blog"
+              data-repo-id="R_kgDOMZI1RA"
+              data-category="General"
+              data-category-id="DIC_kwDOMZI1RM4ChJFA"
+              data-mapping="url"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="dark"
+              data-lang="en"
+              crossorigin="anonymous"
+              async></script>
+          </div>
         </div>
       </article>
     </main>

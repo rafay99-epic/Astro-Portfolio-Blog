@@ -24,7 +24,7 @@ Welcome to my personal blog and portfolio website project! This website showcase
 
 Here's a brief overview of the project structure:
 
-```
+```bash
 ├── public/
 │   ├── favicon.ico
 │   ├── images/

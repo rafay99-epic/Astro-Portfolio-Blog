@@ -118,6 +118,13 @@ p {
 	color: var(--text-light);
 }
 
+
+ul,
+ol {
+	color: var(--text-light);
+}
+
+
 .prose p {
 	margin-bottom: 2em;
 	color: var(--text-light);
