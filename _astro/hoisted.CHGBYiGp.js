@@ -1,1 +1,0 @@
-import"./hoisted.Oozc_hRb.js";window.addEventListener("DOMContentLoaded",e=>{new PagefindUI({element:"#search",showSubResults:!0,debounceTimeoutMs:500,resetStyles:!1,showEmptyFilters:!1,showImages:!1})});
