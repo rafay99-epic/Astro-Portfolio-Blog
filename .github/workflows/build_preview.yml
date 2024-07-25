@@ -9,9 +9,6 @@ jobs:
 
     name: Build and Push
     steps:
-      - name: Update & Upgrade System
-        run: sudo apt-get update -y && sudo apt-get upgrade -y
-
       - name: git-checkout
         uses: actions/checkout@v2
 
