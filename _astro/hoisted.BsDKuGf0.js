@@ -1,0 +1,1 @@
+import"./hoisted.Oozc_hRb.js";document.addEventListener("DOMContentLoaded",t=>{setTimeout(()=>{const e=document.querySelector(".animated-text");e&&e.style.setProperty("--cursor-visibility","none")},0)});
