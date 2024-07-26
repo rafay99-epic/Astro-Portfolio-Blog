@@ -1,13 +1,21 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
+import { Image } from "astro:assets";
+import authorCartoon from "../assets/favicon.png";
 ---
 
 <header>
   <nav>
     <h2>
-      <a href="/"
-        ><img src="/favicon.png" alt="Logo" width="90" height="90" /></a
-      >
+      <a href="/">
+        <Image
+          src={authorCartoon}
+          alt="author Avator"
+          format="avif"
+          width={90}
+          height={90}
+        />
+      </a>
     </h2>
     <div class="internal-links">
       <HeaderLink href="/">Home</HeaderLink>

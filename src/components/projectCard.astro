@@ -2,11 +2,18 @@
 // Import necessary scripts or styles here
 const { title, description, imageUrl, technologies, githubLink, deployedLink } =
   Astro.props;
+  import { Image } from "astro:assets";
 ---
 
 <div class="project-card">
   <div class="image-container">
-    <img src={imageUrl} alt={title} />
+    <Image
+    src={imageUrl || ""}
+    alt={title}
+    format="avif"
+   height={500}
+   width={500}
+  />
   </div>
   <div class="content">
     <h3>{title}</h3>
@@ -30,7 +37,7 @@ const { title, description, imageUrl, technologies, githubLink, deployedLink } =
         {
           deployedLink && (
             <a href={deployedLink} target="_blank" aria-label="Deployed Location">
-              <i class="fas fa-external-link-alt"></i> <!-- Font Awesome external link icon -->
+              <i class="fas fa-external-link-alt"></i>
             </a>
           )
         }

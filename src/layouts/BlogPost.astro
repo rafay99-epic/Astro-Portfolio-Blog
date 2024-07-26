@@ -4,6 +4,8 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
+import { Image } from "astro:assets";
+import authorImage from "../assets/author.jpg";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -75,9 +77,20 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     <main data-pagefind-body>
       <article>
         <div class="hero-image">
-          {
+          <!-- {
             heroImage && (
               <img width={1020} height={510} src={heroImage} alt="" />
+            )
+          } -->
+          {
+            heroImage && (
+              <Image
+                src={heroImage || ""}
+                alt="hero Image Blog"
+                format="avif"
+                width={1020}
+                height={510}
+              />
             )
           }
         </div>
@@ -95,7 +108,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
             </div>
             <h1>{title}</h1>
             <div class="author">
-              <img src="/author.jpg" alt="Abdul Rafay" />
+              <Image src={authorImage} alt="author Avator" format="avif" />
               <span id="authorname">Abdul Rafay</span>
             </div>
             <hr />
