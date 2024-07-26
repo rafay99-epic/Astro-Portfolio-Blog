@@ -89,12 +89,13 @@ const posts = (await getCollection("blog")).sort(
   <body>
     <Header />
     <main>
-      <h1>My Thoughts</h1>
+      <h1>Articles</h1>
       <SearchField />
       <br />
       <section>
         <ul>
-          {
+          <!-- orginal Code for Rendering Blog Posts -->
+          <!-- {
             posts.map((post) => (
               <li>
                 <a href={`/blog/${post.slug}/`}>
@@ -111,6 +112,32 @@ const posts = (await getCollection("blog")).sort(
                 </a>
               </li>
             ))
+          } -->
+          <!-- End of the original code -->
+          <!-- New Code for display new Blog post on th Top  -->
+          {
+            posts
+              .sort(
+                (a, b) =>
+                  new Date(b.data.pubDate).valueOf() -
+                  new Date(a.data.pubDate).valueOf()
+              )
+              .map((post) => (
+                <li>
+                  <a href={`/blog/${post.slug}/`}>
+                    <img
+                      width={720}
+                      height={360}
+                      src={post.data.heroImage}
+                      alt=""
+                    />
+                    <h4 class="title">{post.data.title}</h4>
+                    <p class="date">
+                      <FormattedDate date={post.data.pubDate} />
+                    </p>
+                  </a>
+                </li>
+              ))
           }
         </ul>
       </section>

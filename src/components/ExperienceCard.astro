@@ -43,6 +43,33 @@ const { company, position, employementDate, roles, technologies } = Astro.props;
     font-size: 0.9em;
     color: var(--gray-dark);
   }
+
+  .roles-list,
+  .tech-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tech-item {
+    background-color: rgba(var(--gray-light), 1);
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition:
+      background-color 0.3s,
+      transform 0.3s;
+    cursor: pointer;
+  }
+
+  .tech-item:hover {
+    background-color: rgba(var(--gray), 1);
+    transform: scale(1.05);
+  }
 </style>
 
 <div class="card">
@@ -50,14 +77,14 @@ const { company, position, employementDate, roles, technologies } = Astro.props;
   <div class="card-subheader">{employementDate}</div>
   <div class="card-content">
     <p><strong>Roles:</strong></p>
-    <ul>
+    <ul class="roles-list">
       {roles.map((role) => <li>{role}</li>)}
     </ul>
   </div>
   <div class="card-content">
     <p><strong>Technologies Used:</strong></p>
-    <ul>
-      {technologies.map((tech) => <li>{tech}</li>)}
+    <ul class="tech-list">
+      {technologies.map((tech) => <span class="tech-item">{tech}</span>)}
     </ul>
   </div>
   <div class="card-footer">Employment Date: {employementDate}</div>
