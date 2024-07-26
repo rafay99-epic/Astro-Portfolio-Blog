@@ -5,6 +5,8 @@ import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import "../styles/home/home-page.css";
 import JobExperience from "../components/JobExperience.astro";
+import { Image } from "astro:assets";
+import authorImage from "../assets/author.jpg";
 ---
 
 <!doctype html>
@@ -35,7 +37,8 @@ import JobExperience from "../components/JobExperience.astro";
             class="lottie-animation-container"
             style="width: 70%; height: 70%;"
           >
-            <img src="/author.jpg" alt="rafay" />
+            <Image src={authorImage} alt="author Avator" format="avif" />
+            <!-- <img src="/author.jpg" alt="rafay" /> -->
           </div>
         </div>
         <div class="right-container">
