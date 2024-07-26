@@ -157,6 +157,7 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
+
 "flutter-mobile-web-desktop-experience.md": {
 	id: "flutter-mobile-web-desktop-experience.md";
   slug: "flutter-mobile-web-desktop-experience";
@@ -164,6 +165,7 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
+
 };
 
 	};
