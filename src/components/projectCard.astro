@@ -1,12 +1,14 @@
 ---
 const { title, description, imageUrl, technologies, githubLink, deployedLink } =
   Astro.props;
+
 import { Image } from "astro:assets";
 ---
 
 <div class="project-card">
   <div class="image-container">
     <Image
+
       src={imageUrl || ""}
       alt={title}
       format="avif"
