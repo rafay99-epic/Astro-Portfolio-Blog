@@ -125,13 +125,6 @@ const posts = (await getCollection("blog")).sort(
               .map((post) => (
                 <li>
                   <a href={`/blog/${post.slug}/`}>
-                    {/* <img
-                      width={720}
-                      height={360}
-                      src={post.data.heroImage}
-                      alt=""
-                    /> */}
-
                     <Image
                       src={post.data.heroImage || ""}
                       alt="author Avator"
