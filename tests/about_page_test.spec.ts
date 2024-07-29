@@ -14,10 +14,20 @@ test.describe("About Me Page", () => {
     await expect(mainContent).toBeVisible();
   });
 
+  //Works on the non build website
+  // test("should display the author image", async ({ page }) => {
+  //   const authorImage = page.locator('img[alt="author image"]');
+  //   await expect(authorImage).toBeVisible();
+  //   await expect(authorImage).toHaveAttribute("src", /author\.jpg/);
+  // });
+
   test("should display the author image", async ({ page }) => {
     const authorImage = page.locator('img[alt="author image"]');
     await expect(authorImage).toBeVisible();
-    await expect(authorImage).toHaveAttribute("src", /author\.jpg/);
+    await expect(authorImage).toHaveAttribute(
+      "src",
+      /\/_astro\/author\.[a-zA-Z0-9_-]+\.(jpg|jpeg|png|avif)/
+    );
   });
 
   test("should display the animated text", async ({ page }) => {
