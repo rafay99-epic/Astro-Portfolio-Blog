@@ -11,19 +11,7 @@ import "../styles/home/home-page.css";
 <html lang="en">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    <script>
-      document.addEventListener("DOMContentLoaded", (event) => {
-        setTimeout(() => {
-          const animatedText = document.querySelector(
-            ".animated-text"
-          ) as HTMLElement;
-          if (animatedText) {
-            animatedText.style.setProperty("--cursor-visibility", "none");
-          }
-        }, 0);
-      });
-    </script></head
-  >
+  </head>
 </html>
 <body>
   <Header />
@@ -31,11 +19,6 @@ import "../styles/home/home-page.css";
     <div class="side-by-side-containers">
       <div class="left-container">
         <div class="animated-text-container">
-          <!-- <h1 class="animated-text">Hi There!</h1>
-          <h2 class="animated-text">I'm Abdul Rafay</h2>
-          <p class="animated-text">
-            Software Engineer | Full Stack & Flutter Developer
-          </p> -->
           <h1 class="animated-text fade-slide-in">Hi There!</h1>
           <h2 class="animated-text fade-slide-in">I'm Abdul Rafay</h2>
           <p class="animated-text fade-slide-in description">

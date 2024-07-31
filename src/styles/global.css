@@ -55,6 +55,7 @@ body {
 }
 
 main {
+	scroll-behavior: smooth;
 	width: auto;
 	max-width: 90%;
 	margin: 3em auto;
