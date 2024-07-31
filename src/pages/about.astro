@@ -1,12 +1,12 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import "../styles/home/home-page.css";
 import JobExperience from "../components/JobExperience.astro";
 import { Image } from "astro:assets";
 import authorImage from "../assets/author.jpg";
+import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>
@@ -15,18 +15,7 @@ import authorImage from "../assets/author.jpg";
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     <style></style>
   </head>
-  <script>
-    document.addEventListener("DOMContentLoaded", (event) => {
-      setTimeout(() => {
-        const animatedText = document.querySelector(
-          ".animated-text"
-        ) as HTMLElement;
-        if (animatedText) {
-          animatedText.style.setProperty("--cursor-visibility", "none");
-        }
-      }, 0);
-    });
-  </script>
+
   <body>
     <Header />
     <main>
@@ -46,19 +35,28 @@ import authorImage from "../assets/author.jpg";
             <div class="animated-text-container">
               <h2 class="animated-text">So, who am I?</h2>
             </div>
-            <p style="font-size: 1.2rem; text-align: justify;">
+            <p
+              style="font-size: 1.2rem; text-align: justify; font-weight: normal;"
+              class="animated-text fade-slide-in description"
+            >
               I'm a Full Stack Flutter Developer with a year's experience,
               transitioning from Machine Learning to crafting intuitive web
               experiences. Currently freelancing on platforms like Upwork, I
               deliver solutions that exceed client expectations
             </p>
-            <p style="font-size: 1.2rem; text-align: justify;">
+            <p
+              style="font-size: 1.2rem; text-align: justify; font-weight: normal;"
+              class="animated-text fade-slide-in description"
+            >
               Beyond code, I find joy in life's simple pleasures – sipping
               coffee, engaging in video game battles, and embracing the
               challenge of new experiences. This holistic approach recharges my
               creativity and enriches my problem-solving perspective
             </p>
-            <p style="font-size: 1.2rem; text-align: justify;">
+            <p
+              style="font-size: 1.2rem; text-align: justify; font-weight: normal;"
+              class="animated-text fade-slide-in description"
+            >
               In my free time, I'm passionate about continuous learning.
               Thriving on the tech industry's dynamic challenges, I expand my
               skill set, always seeking growth. Let's collaborate and create
