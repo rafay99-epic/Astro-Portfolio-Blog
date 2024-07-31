@@ -31,19 +31,26 @@ import "../styles/home/home-page.css";
     <div class="side-by-side-containers">
       <div class="left-container">
         <div class="animated-text-container">
-          <h1 class="animated-text">Hi There!</h1>
+          <!-- <h1 class="animated-text">Hi There!</h1>
           <h2 class="animated-text">I'm Abdul Rafay</h2>
-          <p class="animated-text description">
+          <p class="animated-text">
+            Software Engineer | Full Stack & Flutter Developer
+          </p> -->
+          <h1 class="animated-text fade-slide-in">Hi There!</h1>
+          <h2 class="animated-text fade-slide-in">I'm Abdul Rafay</h2>
+          <p class="animated-text fade-slide-in description">
             Software Engineer | Full Stack & Flutter Developer
           </p>
-          <SocialLinks />
+          <div class="animated-text fade-slide-in social-links-container">
+            <SocialLinks />
+            <button class="animated-text fade-slide-in connect-button"
+              >Connect with Me</button
+            >
+          </div>
         </div>
       </div>
       <div class="right-container">
-        <div
-          class="lottie-animation-container"
-          style="width: 70%; height: 70%;"
-        >
+        <div class="lottie-animation-container">
           <LottieAnimation
             src="/animation/rafay_animation.json"
             autoplay="visible"
