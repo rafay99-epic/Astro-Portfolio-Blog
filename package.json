@@ -1,7 +1,7 @@
 {
   "name": "rafayblog",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -16,7 +16,6 @@
     "astro": "^4.12.0",
     "astro-integration-lottie": "^0.3.0",
     "astro-pagefind": "^1.5.0",
-    "lottie-web": "^5.12.2",
     "pagefind": "^1.1.0",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1"
