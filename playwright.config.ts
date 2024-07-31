@@ -26,7 +26,8 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: "https://rafayblog.netlify.app",
-    // baseURL: "http://localhost:4322",
+    // baseURL: "http://localhost:4321",
+    // baseURL: "http://localhost:4322"
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
@@ -50,10 +51,10 @@ export default defineConfig({
     },
 
     /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
+    {
+      name: "Mobile Chrome",
+      use: { ...devices["Pixel 8"] },
+    },
     // {
     //   name: 'Mobile Safari',
     //   use: { ...devices['iPhone 12'] },
