@@ -27,3 +27,6 @@ pnpm-debug.log*
 /blob-report/
 /playwright/.cache/
 .astro/types.d.ts
+
+node_modules
+.env
