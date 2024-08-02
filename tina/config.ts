@@ -1,7 +1,7 @@
 import { defineConfig } from "tinacms";
 
 // Your hosting provider likely exposes this as an environment variable
-const branch = "Development";
+const branch = "main";
 
 export default defineConfig({
   branch,
