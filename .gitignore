@@ -30,3 +30,4 @@ pnpm-debug.log*
 
 node_modules
 .env
+node_modules

@@ -26,6 +26,6 @@
   "devDependencies": {
     "@playwright/test": "^1.45.3",
     "@tinacms/cli": "^1.5.52",
-    "@types/node": "^20.14.14"
+    "@types/node": "^22.1.0"
   }
 }

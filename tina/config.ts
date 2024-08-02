@@ -7,9 +7,9 @@ export default defineConfig({
   branch,
 
   // Get this from tina.io
-  clientId: "f9e7e817-a733-46ea-a550-60f79d2efdf9",
+  clientId: "ca928060-14c1-452c-938e-9a1e7feaae19",
   // Get this from tina.io
-  token: "1e908eb7807456f91629902ceaf07c03f8fc849f",
+  token: "8824be588169be37ca1b34e4e50b4ed5715f6040",
 
   build: {
     outputFolder: "admin",
@@ -17,11 +17,10 @@ export default defineConfig({
   },
   media: {
     tina: {
-      mediaRoot: "images",
+      mediaRoot: "",
       publicFolder: "public",
     },
   },
-  // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
     collections: [
       {
@@ -66,7 +65,7 @@ export default defineConfig({
   },
   search: {
     tina: {
-      indexerToken: "99e542c32b225bbb79db114de3134b528fa6325a",
+      indexerToken: "4d255fd2c6b48ce0fb6de0ca4f700b90f04033fc",
       stopwordLanguages: ["eng"],
     },
     indexBatchSize: 100,
