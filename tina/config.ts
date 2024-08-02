@@ -13,19 +13,13 @@ export default defineConfig({
 
   build: {
     outputFolder: "admin",
-    publicFolder: "f9e7e817-a733-46ea-a550-60f79d2efdf9",
-    // outputFolder: "admin",
-    // publicFolder: "public",
+    publicFolder: "public",
   },
   media: {
     tina: {
-      mediaRoot: "",
-      publicFolder: "f9e7e817-a733-46ea-a550-60f79d2efdf9",
+      mediaRoot: "images",
+      publicFolder: "public",
     },
-    // tina: {
-    //   mediaRoot: "images",
-    //   publicFolder: "public",
-    // },
   },
   // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
