@@ -1,7 +1,0 @@
-fragment PostParts on Post {
-  title
-  description
-  pubDate
-  heroImage
-  body
-}
