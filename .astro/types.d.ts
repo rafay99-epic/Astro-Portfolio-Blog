@@ -136,6 +136,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
+"API-Explained.md": {
+	id: "API-Explained.md";
+  slug: "api-explained";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
 "ManageGit.md": {
 	id: "ManageGit.md";
   slug: "managegit";

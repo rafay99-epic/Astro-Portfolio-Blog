@@ -1,20 +1,21 @@
+// tina/config.ts
 import { defineConfig } from "tinacms";
-
-const branch = "main";
-
-export default defineConfig({
+var branch = "main";
+var config_default = defineConfig({
   branch,
+  // Get this from tina.io
   clientId: "ca928060-14c1-452c-938e-9a1e7feaae19",
+  // Get this from tina.io
   token: "8824be588169be37ca1b34e4e50b4ed5715f6040",
   build: {
     outputFolder: "admin",
-    publicFolder: "public",
+    publicFolder: "public"
   },
   media: {
     tina: {
       mediaRoot: "",
-      publicFolder: "public",
-    },
+      publicFolder: "public"
+    }
   },
   schema: {
     collections: [
@@ -28,42 +29,45 @@ export default defineConfig({
             name: "title",
             label: "title",
             isTitle: true,
-            required: true,
+            required: true
           },
           {
             type: "string",
             name: "description",
             label: "description",
-            required: true,
+            required: true
           },
           {
             type: "datetime",
             name: "pubDate",
             label: "publishedDate",
-            required: true,
+            required: true
           },
           {
             type: "image",
             name: "heroImage",
             label: "heroImage",
-            required: true,
+            required: true
           },
           {
             type: "rich-text",
             name: "body",
             label: "Body",
-            isBody: true,
-          },
-        ],
-      },
-    ],
+            isBody: true
+          }
+        ]
+      }
+    ]
   },
   search: {
     tina: {
       indexerToken: "4d255fd2c6b48ce0fb6de0ca4f700b90f04033fc",
-      stopwordLanguages: ["eng"],
+      stopwordLanguages: ["eng"]
     },
     indexBatchSize: 100,
-    maxSearchIndexFieldLength: 100,
-  },
+    maxSearchIndexFieldLength: 100
+  }
 });
+export {
+  config_default as default
+};
