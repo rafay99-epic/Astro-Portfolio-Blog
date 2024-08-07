@@ -231,7 +231,6 @@ export type Mutation = {
   updateDocument: DocumentNode;
   deleteDocument: DocumentNode;
   createDocument: DocumentNode;
-  createFolder: DocumentNode;
   updatePost: Post;
   createPost: Post;
 };
@@ -264,12 +263,6 @@ export type MutationCreateDocumentArgs = {
 };
 
 
-export type MutationCreateFolderArgs = {
-  collection?: InputMaybe<Scalars['String']['input']>;
-  relativePath: Scalars['String']['input'];
-};
-
-
 export type MutationUpdatePostArgs = {
   relativePath: Scalars['String']['input'];
   params: PostMutation;
@@ -298,14 +291,14 @@ export type PostMutation = {
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
-export type PostPartsFragment = { __typename: 'Post', title: string, description: string, pubDate: string, heroImage: string, body?: any | null };
+export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, heroImage: string, body?: any | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post: { __typename: 'Post', id: string, title: string, description: string, pubDate: string, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type PostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type PostConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -317,11 +310,10 @@ export type PostConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename: 'Post', id: string, title: string, description: string, pubDate: string, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
-  __typename
   title
   description
   pubDate
@@ -387,11 +379,11 @@ export const PostConnectionDocument = gql`
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
-      post(variables: PostQueryVariables, options?: C): Promise<{data: PostQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostQueryVariables, query: string}> {
-        return requester<{data: PostQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostQueryVariables, query: string}, PostQueryVariables>(PostDocument, variables, options);
+      post(variables: PostQueryVariables, options?: C): Promise<{data: PostQuery, variables: PostQueryVariables, query: string}> {
+        return requester<{data: PostQuery, variables: PostQueryVariables, query: string}, PostQueryVariables>(PostDocument, variables, options);
       },
-    postConnection(variables?: PostConnectionQueryVariables, options?: C): Promise<{data: PostConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostConnectionQueryVariables, query: string}> {
-        return requester<{data: PostConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostConnectionQueryVariables, query: string}, PostConnectionQueryVariables>(PostConnectionDocument, variables, options);
+    postConnection(variables?: PostConnectionQueryVariables, options?: C): Promise<{data: PostConnectionQuery, variables: PostConnectionQueryVariables, query: string}> {
+        return requester<{data: PostConnectionQuery, variables: PostConnectionQueryVariables, query: string}, PostConnectionQueryVariables>(PostConnectionDocument, variables, options);
       }
     };
   }
@@ -400,57 +392,35 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
 // TinaSDK generated code
 import { createClient, TinaClient } from "tinacms/dist/client";
 
-const generateRequester = (
-  client: TinaClient,
-) => {
+const generateRequester = (client: TinaClient) => {
   const requester: (
     doc: any,
     vars?: any,
-    options?: {
-      branch?: string,
-      /**
-       * Aside from `method` and `body`, all fetch options are passed
-       * through to underlying fetch request
-       */
-      fetchOptions?: Omit<Parameters<typeof fetch>[1], 'body' | 'method'>,
-    },
+    options?: any,
     client
-  ) => Promise<any> = async (doc, vars, options) => {
-    let url = client.apiUrl
-    if (options?.branch) {
-      const index = client.apiUrl.lastIndexOf('/')
-      url = client.apiUrl.substring(0, index + 1) + options.branch
-    }
+  ) => Promise<any> = async (doc, vars, _options) => {
     const data = await client.request({
       query: doc,
       variables: vars,
-      url,
-    }, options)
+    });
 
-    return { data: data?.data, errors: data?.errors, query: doc, variables: vars || {} }
-  }
+    return { data: data?.data, query: doc, variables: vars || {} };
+  };
 
-  return requester
-}
+  return requester;
+};
 
 /**
  * @experimental this class can be used but may change in the future
  **/
 export const ExperimentalGetTinaClient = () =>
   getSdk(
-    generateRequester(
-      createClient({
-        url: "https://content.tinajs.io/1.4/content/ca928060-14c1-452c-938e-9a1e7feaae19/github/main",
-        queries,
-      })
-    )
-  )
+    generateRequester(createClient({ url: "https://content.tinajs.io/1.4/content/ca928060-14c1-452c-938e-9a1e7feaae19/github/main", queries }))
+  );
 
-export const queries = (
-  client: TinaClient,
-) => {
-  const requester = generateRequester(client)
-  return getSdk(requester)
-}
+export const queries = (client: TinaClient) => {
+  const requester = generateRequester(client);
+  return getSdk(requester);
+};
 
   

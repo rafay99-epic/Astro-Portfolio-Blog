@@ -1,8 +1,8 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import lottie from "astro-integration-lottie";
 import pagefind from "astro-pagefind";
+import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,5 +10,12 @@ export default defineConfig({
   build: {
     format: "file",
   },
-  integrations: [mdx(), sitemap(), lottie(), pagefind()],
+  integrations: [
+    mdx(),
+    sitemap(),
+    pagefind(),
+    react({
+      include: ["**/react/*"],
+    }),
+  ],
 });
