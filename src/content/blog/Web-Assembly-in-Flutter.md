@@ -21,11 +21,11 @@ As discussed, WASM is a compilation target for Flutter Web. It is a binary instr
 
 Because WASM is not a renderer itself, your web app will use the default web renderer or the one you specify.
 
-PS: Now, the Flutter team has changed the --web-renderer=auto to canvaskit, which means if you don’t specify a web renderer, it will automatically use CanvasKit. Earlier, it used to default to the HTML renderer when the app ran in a mobile browser, and CanvasKit when it ran in a desktop browser. ([Issue Link](https://github.com/flutter/flutter/issues/149826))
+PS: Now, the Flutter team has changed the  `--web-renderer` is equal auto to `canvaskit`, which means if you don’t specify a web renderer, it will automatically use CanvasKit. Earlier, it used to default to the HTML renderer when the app ran in a mobile browser, and CanvasKit when it ran in a desktop browser. ([Issue Link](https://github.com/flutter/flutter/issues/149826))
 
 # How to Use WASM with Flutter?
 
-Now, the only question that remains is: how can we use WASM in Flutter? However, there is a problem as usual. Most Flutter packages do not support WASM, which is crucial for Flutter. If you are using dart.js or dart.html, these packages are not available for WASM in Flutter. It won’t compile your Dart code for WASM either. So, only code from Dart libraries will be compiled.
+Now, the only question that remains is: how can we use WASM in Flutter? However, there is a problem as usual. Most Flutter packages do not support WASM, which is crucial for Flutter. If you are using `dart.js` or `dart.html`, these packages are not available for WASM in Flutter. It won’t compile your Dart code for WASM either. So, only code from Dart libraries will be compiled.
 
 To use WASM with Flutter, you need to upgrade your Flutter SDK to version 3.22 or higher. As of now, the latest Flutter version is 3.24.2, and this version does support WASM for Flutter. Once you have the Flutter SDK, you can use it by building your project with this command:
 
@@ -41,7 +41,7 @@ Here are some pros and cons of using WASM in your project:
 
 When using WASM with Flutter, you may notice improvements, especially in performance:
 
-* Faster Execution: Parts of your app that are computationally intensive, such as complex calculations, animations, or data processing tasks, will run much faster due to WASM’s near-native execution speed.
+* Faster Execution: Parts of your app that are computationally intensive, such as complex calculations, animations, or data processing tasks, will run much faster due to WASM near-native execution speed.
 * Smooth Animations: With WASM, animations and transitions can become smoother, especially in graphics-intensive applications. You might also notice smoother scrolling.
 * Reduced Load Times: The initial load time for the web app might be faster because WASM modules are compact and optimized for efficient execution.
 
