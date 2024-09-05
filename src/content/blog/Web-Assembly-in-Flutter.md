@@ -29,7 +29,9 @@ Now, the only question that remains is: how can we use WASM in Flutter? However,
 
 To use WASM with Flutter, you need to upgrade your Flutter SDK to version 3.22 or higher. As of now, the latest Flutter version is 3.24.2, and this version does support WASM for Flutter. Once you have the Flutter SDK, you can use it by building your project with this command:
 
+```dart
 flutter build web --wasm
+```
 
 # Pros & Cons
 
