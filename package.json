@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "tinacms build && astro build && pagefind --site dist && cp -r dist/pagefind public",
+    "build": "tinacms build && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "test": "npx playwright test"
