@@ -7,6 +7,8 @@ import tailwind from "@astrojs/tailwind";
 
 import vercel from "@astrojs/vercel/serverless";
 
+import tailwind from "@astrojs/tailwind";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://rafay99.com",
@@ -14,6 +16,7 @@ export default defineConfig({
     format: "file",
   },
   output: "hybrid",
+  adapter: vercel({
   integrations: [
     mdx(),
     sitemap(),
