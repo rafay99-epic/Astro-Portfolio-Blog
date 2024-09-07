@@ -10,9 +10,23 @@ import tailwind from "@astrojs/tailwind";
 export default defineConfig({
   site: "https://rafay99.com",
   build: {
-    format: "file"
+    format: "file",
   },
-  integrations: [mdx(), sitemap(), pagefind(), react({
-    include: ["**/react/*"]
-  }), tailwind()]
+  output: "static",
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+    imageService: true,
+    maxDuration: 8,
+  }),
+  integrations: [
+    mdx(),
+    sitemap(),
+    pagefind(),
+    react({
+      include: ["**/react/*"],
+    }),
+    tailwind(),
+  ],
 });
