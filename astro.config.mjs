@@ -3,8 +3,9 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import pagefind from "astro-pagefind";
 import react from "@astrojs/react";
-
 import tailwind from "@astrojs/tailwind";
+
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,14 +13,7 @@ export default defineConfig({
   build: {
     format: "file",
   },
-  output: "static",
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-    imageService: true,
-    maxDuration: 8,
-  }),
+  output: "hybrid",
   integrations: [
     mdx(),
     sitemap(),
@@ -29,4 +23,5 @@ export default defineConfig({
     }),
     tailwind(),
   ],
+  adapter: vercel(),
 });
