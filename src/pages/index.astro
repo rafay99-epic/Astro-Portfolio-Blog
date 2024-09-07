@@ -6,6 +6,8 @@ import SocialLinks from "../components/SocialMedia.astro";
 import "../styles/home/home-page.css";
 
 import LottieReactCompoent from "../components/react/lottie.jsx";
+import animationData from "../assets/animation/rafay_animation.json";
+export const prerender = true;
 ---
 
 <!doctype html>
@@ -27,7 +29,9 @@ import LottieReactCompoent from "../components/react/lottie.jsx";
           </p>
           <div class="animated-text fade-slide-in social-links-container">
             <SocialLinks />
-            <button class="animated-text fade-slide-in connect-button"
+            <button
+              class="animated-text fade-slide-in connect-button"
+              onclick="window.location.href = '/contact-me';"
               >Connect with Me</button
             >
           </div>
@@ -35,7 +39,12 @@ import LottieReactCompoent from "../components/react/lottie.jsx";
       </div>
       <div class="right-container">
         <div class="lottie-animation-container">
-          <LottieReactCompoent client:only />
+          <LottieReactCompoent
+            client:only
+            animationData={animationData}
+            loop={true}
+            autoplay={true}
+          />
         </div>
       </div>
     </div>
