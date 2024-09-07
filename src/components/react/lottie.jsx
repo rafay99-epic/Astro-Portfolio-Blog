@@ -1,12 +1,16 @@
-import React from "react";
 import Lottie from "react-lottie";
-import animationData from "../../assets/animation/rafay_animation.json";
 
-const LottieAnimation = () => {
+const LottieAnimation = ({
+  animationData,
+  loop = true,
+  autoplay = true,
+  width = "100%",
+  height = "100%",
+}) => {
   const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
+    loop,
+    autoplay,
+    animationData,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
