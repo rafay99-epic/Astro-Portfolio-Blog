@@ -1,11 +1,11 @@
 name: Playwright Tests
+
 on:
-  workflow_run:
-    workflows: ["Build Website"]
-    types:
-      - completed
   push:
-    branches: [Development]
+    branches: [main]
+  pull_request:
+    branches:
+      - "**"
 
 jobs:
   test:
@@ -20,8 +20,6 @@ jobs:
         run: npm install
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Wait for 3 minutes
-        run: sleep 80
       - name: Run Playwright tests
         run: npx playwright test
       - uses: actions/upload-artifact@v4
