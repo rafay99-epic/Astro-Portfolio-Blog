@@ -4,19 +4,18 @@ import sitemap from "@astrojs/sitemap";
 import pagefind from "astro-pagefind";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-
 import vercel from "@astrojs/vercel/serverless";
-
-import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://rafay99.com",
+  output: "hybrid",
   build: {
     format: "file",
   },
-  output: "hybrid",
-  adapter: vercel({
+  security: {
+    checkOrigin: true,
+  },
   integrations: [
     mdx(),
     sitemap(),
