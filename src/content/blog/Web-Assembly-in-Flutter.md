@@ -1,6 +1,6 @@
 ---
 title: Web Assembly in Flutter
-description: 'Flutter for web: web assembly '
+description: "Flutter for web: web assembly "
 pubDate: 2024-09-05T19:00:00.000Z
 heroImage: /Web Assembly& Flutter(2).png
 ---
@@ -23,7 +23,7 @@ As discussed, WASM is a compilation target for Flutter Web. It is a binary instr
 
 Because WASM is not a renderer itself, your web app will use the default web renderer or the one you specify.
 
-PS: Now, the Flutter team has changed the  `--web-renderer` is equal auto to `canvaskit`, which means if you don’t specify a web renderer, it will automatically use CanvasKit. Earlier, it used to default to the HTML renderer when the app ran in a mobile browser, and CanvasKit when it ran in a desktop browser. ([Issue Link](https://github.com/flutter/flutter/issues/149826))
+PS: Now, the Flutter team has changed the `--web-renderer` is equal auto to `canvaskit`, which means if you don’t specify a web renderer, it will automatically use CanvasKit. Earlier, it used to default to the HTML renderer when the app ran in a mobile browser, and CanvasKit when it ran in a desktop browser. ([Issue Link](https://github.com/flutter/flutter/issues/149826))
 
 # How to Use WASM with Flutter?
 
@@ -35,7 +35,7 @@ To use WASM with Flutter, you need to upgrade your Flutter SDK to version 3.22 o
 flutter build web --wasm
 ```
 
-# Pros & Cons
+# Pros and Cons of Using WASM in Flutter
 
 Here are some pros and cons of using WASM in your project:
 
@@ -43,17 +43,17 @@ Here are some pros and cons of using WASM in your project:
 
 When using WASM with Flutter, you may notice improvements, especially in performance:
 
-* Faster Execution: Parts of your app that are computationally intensive, such as complex calculations, animations, or data processing tasks, will run much faster due to WASM near-native execution speed.
-* Smooth Animations: With WASM, animations and transitions can become smoother, especially in graphics-intensive applications. You might also notice smoother scrolling.
-* Reduced Load Times: The initial load time for the web app might be faster because WASM modules are compact and optimized for efficient execution.
+- Faster Execution: Parts of your app that are computationally intensive, such as complex calculations, animations, or data processing tasks, will run much faster due to WASM near-native execution speed.
+- Smooth Animations: With WASM, animations and transitions can become smoother, especially in graphics-intensive applications. You might also notice smoother scrolling.
+- Reduced Load Times: The initial load time for the web app might be faster because WASM modules are compact and optimized for efficient execution.
 
 ## Cons
 
 While WASM can help with performance and scrolling issues, there are still some general disadvantages:
 
-* WASM does not include a built-in garbage collector, which means languages that rely heavily on garbage collection (like JavaScript or Dart) need additional handling for memory management when compiled to WASM.
-* Not all packages are supported for WASM yet.
-* WASM modules can increase the overall memory footprint of the application, which may impact performance on devices with limited resources.
+- WASM does not include a built-in garbage collector, which means languages that rely heavily on garbage collection (like JavaScript or Dart) need additional handling for memory management when compiled to WASM.
+- Not all packages are supported for WASM yet.
+- WASM modules can increase the overall memory footprint of the application, which may impact performance on devices with limited resources.
 
 There are still several issues with Flutter + WASM.
 

@@ -94,7 +94,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
             )
           }
         </div>
-        <div class="prose">
+        <div
+          data-aos="fade-up"
+          data-aos-delay="300"
+          data-aos-anchor-placement="top-bottom"
+          class="prose"
+        >
           <div class="title">
             <div class="date">
               <FormattedDate date={pubDate} />
@@ -136,5 +141,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       </article>
     </main>
     <Footer />
-  </body>
+  </body><link
+    href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" onload="AOS.init()"
+  ></script>
 </html>
