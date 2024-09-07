@@ -8,6 +8,7 @@ import "../styles/home/home-page.css";
 import LottieReactCompoent from "../components/react/lottie.jsx";
 import animationData from "../assets/animation/rafay_animation.json";
 export const prerender = true;
+import SpeedInsights from "@vercel/speed-insights/astro";
 ---
 
 <!doctype html>
@@ -18,6 +19,7 @@ export const prerender = true;
 </html>
 <body>
   <Header />
+  <SpeedInsights />
   <main>
     <div class="side-by-side-containers">
       <div class="left-container">

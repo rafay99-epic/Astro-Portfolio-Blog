@@ -25,5 +25,7 @@ export default defineConfig({
     }),
     tailwind(),
   ],
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
 });
