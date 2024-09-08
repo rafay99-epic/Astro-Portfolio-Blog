@@ -1,4 +1,5 @@
-name: Playwright Tests on Pull Requests
+name: Playwright Tests
+
 on:
   push:
     branches: [main]
@@ -11,31 +12,16 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
       - uses: actions/checkout@v4
-
-      # Set up Node.js environment
       - uses: actions/setup-node@v4
         with:
           node-version: 21
-
-      # Install dependencies
       - name: Install dependencies
         run: npm install
-
-      # Build the project
-      - name: Build the project
-        run: npm run build
-
-      # Install Playwright browsers with dependencies
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-
-      # Run Playwright tests with additional options to prevent hanging and disable warnings
       - name: Run Playwright tests
-        run: node --no-warnings node_modules/.bin/playwright test --timeout=30000 --workers=2 --reporter=list
-
-      # Upload the Playwright test report as an artifact
+        run: npx playwright test
       - uses: actions/upload-artifact@v4
         if: always()
         with:
