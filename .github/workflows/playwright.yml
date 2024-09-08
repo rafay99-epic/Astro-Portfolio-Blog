@@ -12,16 +12,31 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository
       - uses: actions/checkout@v4
+
+      # Set up Node.js environment
       - uses: actions/setup-node@v4
         with:
           node-version: 21
+
+      # Install dependencies
       - name: Install dependencies
         run: npm install
+
+      # Build the project
+      - name: Build the project
+        run: npm run build
+
+      # Install Playwright browsers with dependencies
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
+      # Run Playwright tests on the built project
       - name: Run Playwright tests
         run: npx playwright test
+
+      # Upload the Playwright test report as an artifact
       - uses: actions/upload-artifact@v4
         if: always()
         with:
