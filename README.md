@@ -6,19 +6,31 @@ Welcome to my personal blog and portfolio website project! This website showcase
 
 ## 🚀 Features
 
-- **Modern Design**: Clean and responsive design that looks great on all devices.
-- **Blog Section**: Regular updates on my thoughts, projects, and industry insights.
-- **Portfolio Section**: Showcasing my best work, including projects, skills, and achievements.
-- **Contact Form**: Easy-to-use contact form powered by Web3Forms for hassle-free communication.
-- **Fast and Efficient**: Built with Astro, ensuring lightning-fast performance and great SEO.
+| Badge                                                               | Feature                    | Description                           |
+| ------------------------------------------------------------------- | -------------------------- | ------------------------------------- |
+| ![Responsive](https://img.shields.io/badge/Responsive-Design-blue)  | **Responsive Design**      | Works on all devices                  |
+| ![Blog](https://img.shields.io/badge/Dynamic-Blog-orange)           | **Dynamic Blog**           | Regular updates and industry insights |
+| ![Portfolio](https://img.shields.io/badge/Portfolio-Showcase-green) | **Portfolio Showcase**     | Highlights my top projects            |
+| ![Contact](https://img.shields.io/badge/Contact-Form-red)           | **Web3Forms Contact Form** | Easy communication                    |
+| ![Astro](https://img.shields.io/badge/Astro-Powered-purple)         | **Astro-Powered**          | Fast performance and SEO              |
+| ![SEO](https://img.shields.io/badge/SEO-Optimized-blue)             | **SEO Optimized**          | Enhanced visibility                   |
+| ![RSS](https://img.shields.io/badge/RSS-Feed-yellow)                | **RSS Feed & Sitemap**     | Keeps content updated and indexed     |
+| ![Vercel](https://img.shields.io/badge/Vercel-Deployed-black)       | **Vercel Deployed**        | Reliable hosting                      |
 
 ## 🛠️ Technologies Used
 
-- **Astro**: Static site generator that delivers high performance.
-- **HTML5 & CSS3**: Modern and semantic markup with custom styles.
-- **JavaScript**: Enhancing interactivity and user experience.
-- **Web3Forms**: Simple and effective form handling.
-- **GitHub Pages**: Hosting the website for free and reliable access.
+| Badge                                                                | Technology       | Purpose                              |
+| -------------------------------------------------------------------- | ---------------- | ------------------------------------ |
+| ![Astro](https://img.shields.io/badge/Used-Astro-blue)               | **Astro**        | Static site generator                |
+| ![HTML5](https://img.shields.io/badge/Used-HTML5-green)              | **HTML5 & CSS3** | Modern markup and styling            |
+| ![CSS3](https://img.shields.io/badge/Used-CSS3-blue)                 | **CSS3**         | Custom styling                       |
+| ![TypeScript](https://img.shields.io/badge/Used-TypeScript-orange)   | **TypeScript**   | Adds interactivity and improves UX   |
+| ![Web3Forms](https://img.shields.io/badge/Used-Web3Forms-red)        | **Web3Forms**    | Simplifies form handling             |
+| ![Tailwind CSS](https://img.shields.io/badge/Used-Tailwind_CSS-blue) | **Tailwind CSS** | Utility-first CSS framework          |
+| ![React](https://img.shields.io/badge/Used-React-green)              | **React**        | Handles animations and interactivity |
+| ![Pagefind](https://img.shields.io/badge/Used-Pagefind-yellow)       | **Pagefind**     | Powerful search for static websites  |
+| ![Vercel](https://img.shields.io/badge/Used-Vercel-black)            | **Vercel**       | Deployment and hosting               |
+| ![Playwright](https://img.shields.io/badge/Used-Playwright-blue)     | **Playwright**   | End-to-end testing                   |
 
 ## 📄 Project Structure
 
@@ -76,36 +88,37 @@ To run this project locally, follow these steps:
    npm run build
    ```
 
-   - Build your production site to `./dist/`
+   - Build your production site to `./vercel/output/static`.
 
-Sure! Here's an alternative UI design for your "Deployed Website" section with a cleaner layout and improved readability:
+5. **Preview the production build**:
+
+   ```bash
+   npm run preview
+   ```
+
+   - Preview the production build locally.
 
 ## 🌐 Deployed Website
 
-The website is deployed on Netlify and is available at the following URLs:
+The website is deployed on Vercel and is available at the following URLs:
 
 ### 🌐 Main Production Branch
 
-**Website**: [rafay99.com](https://rafay99.com)
+**Website**: [rafay99.com](https://www.rafay99.com)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/ed58cf6f-0885-444e-b15f-2774752cd285/deploy-status)](https://app.netlify.com/sites/abdulrafay99/deploys)
-
-### 🔧 Development Branch
-
-**Website**: [rafayblog.netlify.app](https://rafayblog.netlify.app)
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/cf8a85e2-6e51-429f-b828-dc69bd2397ba/deploy-status)](https://app.netlify.com/sites/rafayblog/deploys)
+**Development Website**: You can preview the feature branch for previewing changes before they go live and you can check them out when a pull request is made.
 
 ### How to Access
 
-- **Production Website**: Visit [rafay99.com](https://rafay99.com) for the live, production version of the website.
-- **Development Website**: Visit [rafayblog.netlify.app](https://rafayblog.netlify.app) to view the latest development changes before they go live.
+- **Production Website**: Visit [rafay99.com](https://www.rafay99.com) for the live, production version of the website.
+-
+- **Feature Website**: Access the feature branch for previewing changes before they go live and you can check them out when a pull request is made.
 
 ### Additional Information
 
 - **Production**: The main production branch hosts the live version of the website. Any changes merged here are automatically deployed.
 
-- **Development**: The development branch is used for staging changes. You can preview upcoming updates before they are pushed to production.
+- **Feature Branch**: The feature branch is used for staging changes. You can preview upcoming updates before they are pushed to production.
 
 ## 🌟 Contributing
 
@@ -117,32 +130,26 @@ To contribute:
 
    - Click the "Fork" button at the top right of this repository page.
 
-2. **Switch to the development branch**:
-
-   ```bash
-   git checkout Development
-   ```
-
-3. **Create a new branch from the development branch**:
+2. **Create a new branch**:
 
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-4. **Make your changes and commit them**:
+3. **Make your changes and commit them**:
 
    ```bash
    git commit -m "Add your feature description"
    ```
 
-5. **Push to your branch**:
+4. **Push to your branch**:
 
    ```bash
    git push origin feature/your-feature-name
    ```
 
-6. **Open a pull request**:
-   - Make the pull request to the **Development** branch. Any pull requests to the **main** branch will be rejected.
+5. **Open a pull request**:
+   - Make the pull request to the **testing** branch. Any pull requests to the **main** branch will be rejected.
 
 Thank you for your contributions!
 
@@ -152,4 +159,12 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 📞 Contact
 
-If you have any questions or want to get in touch, feel free to reach out via the contact form on the website or connect with me on [LinkedIn](https://www.linkedin.com/in/abdul-rafay1999/) or email me at [99marafay@gmail.com](mailto:99marafay@gmail.com).
+If you have any questions or want to get in touch, feel free to reach out via any of the following:
+
+<div align="center">
+
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:99marafay@gmail.com)
+[![Website](https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://rafay99.com/contact)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/abdul-rafay1999/)
+
+</div>
