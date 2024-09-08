@@ -1,5 +1,4 @@
-name: Playwright Tests
-
+name: Playwright Tests on Pull Requests
 on:
   push:
     branches: [main]
@@ -32,9 +31,9 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # Run Playwright tests on the built project
+      # Run Playwright tests with additional options to prevent hanging and disable warnings
       - name: Run Playwright tests
-        run: npx playwright test
+        run: node --no-warnings node_modules/.bin/playwright test --timeout=30000 --workers=2 --reporter=list
 
       # Upload the Playwright test report as an artifact
       - uses: actions/upload-artifact@v4
