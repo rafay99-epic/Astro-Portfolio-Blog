@@ -5,7 +5,7 @@ import authorCartoon from "../assets/favicon.png";
 ---
 
 <header>
-  <nav>
+  <div class="container mx-auto flex justify-between items-center py-4 px-6">
     <h2>
       <a href="/">
         <Image
@@ -17,21 +17,51 @@ import authorCartoon from "../assets/favicon.png";
         />
       </a>
     </h2>
-    <div class="internal-links">
+    <nav class="hidden md:flex space-x-6">
       <HeaderLink href="/">Home</HeaderLink>
       <HeaderLink href="/about">About</HeaderLink>
       <HeaderLink href="/projects">Projects</HeaderLink>
-      <HeaderLink href="/blog">Blog</HeaderLink>
+      <HeaderLink href="/blog">Articles</HeaderLink>
       <HeaderLink href="/contact-me">Contact Me</HeaderLink>
-    </div>
+    </nav>
+    <button
+      class="hamburger block md:hidden focus:outline-none"
+      onclick="toggleMenu()"
+    >
+      <div
+        class="hamburger-icon relative w-6 h-1 bg-gray-200 transform transition-all duration-300"
+      >
+      </div>
+      <div
+        class="hamburger-icon relative w-6 h-1 bg-gray-200 mt-1.5 transform transition-all duration-300"
+      >
+      </div>
+      <div
+        class="hamburger-icon relative w-6 h-1 bg-gray-200 mt-1.5 transform transition-all duration-300"
+      >
+      </div>
+    </button>
+  </div>
+  <!-- Mobile Menu -->
+  <nav
+    id="mobile-menu"
+    class="hidden flex-col items-center space-y-6 md:hidden mt-4"
+  >
+    <HeaderLink href="/">Home</HeaderLink>
+    <HeaderLink href="/about">About</HeaderLink>
+    <HeaderLink href="/projects">Projects</HeaderLink>
+    <HeaderLink href="/blog">Blog</HeaderLink>
+    <HeaderLink href="/contact-me">Contact Me</HeaderLink>
   </nav>
 </header>
+
 <style>
   header {
     margin: 0;
     padding: 0 1em;
     box-shadow: 0 2px 8px rgba(var(--black), 5%);
   }
+
   h2 {
     margin: 0;
     font-size: 1em;
@@ -41,28 +71,52 @@ import authorCartoon from "../assets/favicon.png";
   h2 a.active {
     text-decoration: none;
   }
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+
   nav a {
     padding: 1em 0.5em;
     color: var(--black);
     border-bottom: 4px solid transparent;
     text-decoration: none;
   }
+
   nav a.active {
     text-decoration: none;
     border-bottom-color: var(--accent);
   }
-  .social-links,
-  .social-links a {
-    display: flex;
+
+  .hamburger-icon {
+    transition:
+      transform 0.3s ease,
+      background-color 0.3s ease;
   }
-  @media (max-width: 720px) {
-    .social-links {
+
+  .hamburger.open .hamburger-icon:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger.open .hamburger-icon:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.open .hamburger-icon:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  @media (min-width: 768px) {
+    #mobile-menu {
       display: none;
     }
   }
 </style>
+
+<script lang="ts">
+  function toggleMenu() {
+    const menu = document.getElementById("mobile-menu");
+    const hamburger = document.querySelector(".hamburger");
+    if (menu && hamburger) {
+      menu.classList.toggle("hidden");
+      menu.classList.toggle("flex");
+      hamburger.classList.toggle("open");
+    }
+  }
+</script>
