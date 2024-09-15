@@ -69,6 +69,16 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       #authorname {
         color: var(--text-light);
       }
+
+      .ad-container {
+        margin: 2em 0;
+        text-align: center;
+      }
+      #ad-blocker-message {
+        display: none;
+        color: red;
+        font-weight: bold;
+      }
     </style>
   </head>
 
@@ -119,6 +129,21 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
             <hr />
           </div>
           <slot />
+          <div id="ad-container">
+            <h2>Advertisements</h2>
+            <script
+              async="async"
+              data-cfasync="false"
+              src="//pl24384595.cpmrevenuegate.com/75a9e4d4cdc61042594f971bcbc143dd/invoke.js"
+            ></script>
+            <div id="container-75a9e4d4cdc61042594f971bcbc143dd"></div>
+            <div id="ad-blocker-message">
+              It looks like you are using an ad blocker. Please disable it to
+              support our site.
+            </div>
+            <script src="/src/scripts/AdBlocker/addblocker.js"></script>
+          </div>
+
           <div>
             <h2>Comments</h2>
             <script
