@@ -1,11 +1,5 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "snaprescue.sh",
-            "use": "@vercel/static"
-        }
-    ],
     "routes": [
         {
             "src": "/snaprescue.sh",
