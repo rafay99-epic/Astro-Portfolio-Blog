@@ -3,7 +3,7 @@
     "routes": [
         {
             "src": "/snaprescue.sh",
-            "dest": "/snaprescue.sh"
+            "dest": "/scripts/snaprescue.sh"
         }
     ]
 }
