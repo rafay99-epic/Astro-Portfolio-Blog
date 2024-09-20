@@ -1,5 +1,5 @@
 ---
-title: 'SnapRescue: Protect & Rollback Your System'
+title: "SnapRescue: Protect & Rollback Your System"
 description: >-
   SnapRescue: Your system’s safety net! Snap, roll back, and relax with this
   easy-to-use script that keeps your snapshots in check.
@@ -99,7 +99,7 @@ bash -c "$(curl -fsSL <https://rafay99.com/snaprescue/install.sh>)"
 
 This command will automatically download and run the SnapRescue script, ensuring your system is set up with Snapper snapshots.
 
-***
+---
 
 By the end of this process, your system will be safeguarded by Snapper, allowing you to confidently make changes to your system knowing you can always roll back to a previous snapshot.
 
@@ -107,11 +107,13 @@ By the end of this process, your system will be safeguarded by Snapper, allowing
 
 If you'd like to try out SnapRescue yourself or contribute to its development, the full source code is available on GitHub. The repository includes detailed instructions for setting up and using SnapRescue with Snapper to protect your Linux system through automated snapshots and easy rollbacks.
 
-You can find the project here:
-
-[SnapRescue GitHub Repository](https://github.com/rafay99-epic/SnapRescue)
+You can find the project here: [SnapRescue GitHub Repository](https://github.com/rafay99-epic/SnapRescue).
 
 Feel free to explore, report issues, or contribute to the project. Your feedback and contributions are always welcome!
+
+## **Co-Developer**
+
+I'd like to extend my gratitude to [@sharjeelmazhar](https://github.com/sharjeelmazhar) for their invaluable contributions to the SnapRescue project. Their dedication and expertise have significantly enhanced the functionality and usability of the script.
 
 # **Conclusion**
 
