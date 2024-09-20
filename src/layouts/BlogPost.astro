@@ -16,60 +16,6 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   <head>
     <BaseHead title={title} description={description} />
     <style>
-      main {
-        width: calc(100% - 2em);
-        max-width: 100%;
-        margin: 0;
-      }
-      .hero-image {
-        width: 100%;
-      }
-      .hero-image img {
-        display: block;
-        margin: 0 auto;
-        border-radius: 12px;
-        box-shadow: var(--box-shadow);
-      }
-      .prose {
-        width: 1200px;
-        max-width: calc(100% - 2em);
-        margin: auto;
-        padding: 1em;
-        color: rgb(var(--gray-dark));
-        text-align: justify;
-      }
-      .title {
-        margin-bottom: 1em;
-        padding: 1em 0;
-        text-align: center;
-        line-height: 1;
-      }
-      .title h1 {
-        margin: 0 0 0.5em 0;
-      }
-      .date {
-        margin-bottom: 0.5em;
-        color: var(--text-light);
-      }
-      .last-updated-on {
-        font-style: italic;
-      }
-      .author {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 1em;
-      }
-      .author img {
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        margin-right: 1em;
-      }
-      #authorname {
-        color: var(--text-light);
-      }
-
       .ad-container {
         margin: 2em 0;
         text-align: center;
@@ -84,14 +30,9 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 
   <body>
     <Header />
-    <main data-pagefind-body>
+    <main data-pagefind-body class="w-full max-w-5xl mx-auto px-4 py-8">
       <article>
-        <div class="hero-image">
-          <!-- {
-            heroImage && (
-              <img width={1020} height={510} src={heroImage} alt="" />
-            )
-          } -->
+        <div class="w-full mb-4">
           {
             heroImage && (
               <Image
@@ -108,29 +49,34 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
           data-aos="fade-up"
           data-aos-delay="300"
           data-aos-anchor-placement="top-bottom"
-          class="prose"
+          class="prose mx-auto text-gray-800 text-justify"
         >
-          <div class="title">
-            <div class="date">
+          <div class="mb-8 text-center">
+            <div class="mb-2 text-white">
               <FormattedDate date={pubDate} />
               {
                 updatedDate && (
-                  <div class="last-updated-on">
+                  <div class="italic">
                     Last updated on <FormattedDate date={updatedDate} />
                   </div>
                 )
               }
             </div>
-            <h1>{title}</h1>
-            <div class="author">
-              <Image src={authorImage} alt="author Avator" format="avif" />
-              <span id="authorname">Abdul Rafay</span>
+            <h1 class="text-3xl font-bold mb-4">{title}</h1>
+            <div class="flex items-center justify-center mt-4">
+              <Image
+                src={authorImage}
+                alt="author Avatar"
+                format="avif"
+                class="w-12 h-12 rounded-full mr-2"
+              />
+              <span class="text-white" id="authorname">Abdul Rafay</span>
             </div>
-            <hr />
+            <hr class="mt-4" />
           </div>
           <slot />
-          <div id="ad-container">
-            <h2>Advertisements</h2>
+          <div class="my-8 text-center">
+            <h2 class="text-2xl font-semibold mb-4">Advertisements</h2>
             <script
               async="async"
               data-cfasync="false"
@@ -143,9 +89,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
             </div>
             <script src="/src/scripts/AdBlocker/addblocker.js"></script>
           </div>
-
           <div>
-            <h2>Comments</h2>
+            <h2 class="text-2xl font-semibold mb-4">Comments</h2>
             <script
               src="https://giscus.app/client.js"
               data-repo="rafay99-epic/Astro-Portfolio-Blog"
