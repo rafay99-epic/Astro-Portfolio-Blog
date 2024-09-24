@@ -8,7 +8,7 @@ import vercel from "@astrojs/vercel/static";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://rafay99.com",
+  site: "https://www.rafay99.com",
   output: "static",
   build: {
     format: "file",
