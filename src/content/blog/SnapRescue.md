@@ -94,7 +94,7 @@ read -p "Do you want to reboot now? (y/n): " choice
 To install and execute SnapRescue on your system, run the following command:
 
 ```bash
-bash -c "$(curl -fsSL <https://rafay99.com/snaprescue/install.sh>)"
+curl -fsSL https://rafay99.com/snaprescue.sh | sh
 ```
 
 This command will automatically download and run the SnapRescue script, ensuring your system is set up with Snapper snapshots.
