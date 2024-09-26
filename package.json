@@ -34,6 +34,7 @@
     "tinacms": "^1.5.17"
   },
   "devDependencies": {
+    "@gsap/react": "^2.1.1",
     "@playwright/test": "^1.45.3",
     "@tinacms/cli": "^1.5.26",
     "@types/node": "^22.1.0"
