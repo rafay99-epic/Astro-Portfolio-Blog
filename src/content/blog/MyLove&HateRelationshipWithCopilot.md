@@ -3,6 +3,7 @@ title: "My Love & Hate Relationship with Copilot"
 description: "Explores the nuanced relationship with GitHub copilot, discussing both its benefits and drawbacks."
 pubDate: "July 25 2024"
 heroImage: "/Love&HateGithub.png"
+draft: false
 ---
 
 In this world, there are always two sides of a coin: one is good, and one might be bad. You can also say the pros and cons of some things, and for that, it's coding AI tools. I have a love and hate relationship with GitHub Copilot.

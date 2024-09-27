@@ -1,8 +1,9 @@
 ---
-title: 'Exploring React: A Full-Stack Developer''s Perspective'
-description: 'My Journey on Learning React in a Project '
+title: "Exploring React: A Full-Stack Developer's Perspective"
+description: "My Journey on Learning React in a Project "
 pubDate: 2024-08-30T19:00:00.000Z
 heroImage: /Exploring React A Full-Stack Developer's Perspective (2).png
+draft: false
 ---
 
 If you don't know, I'm a full-stack developer who develops Android and web apps for different clients. I wanted to explore more skill sets, so I started learning React. Now, if you're unfamiliar with React, you must be living under a rock because it's the biggest and most popular web framework for developing frontend applications. With multiple backend support, you can create a good-looking UI using React with a great developer experience, and it's all done with JavaScript. What could go wrong, right!?
@@ -56,10 +57,10 @@ With everything explained and set up, let’s talk about React. You have to agre
 
 #### Pros:
 
-* Modular Component Code
-* React DOM
-* Load pages without reloading the entire site
-* Live Development Environment
+- Modular Component Code
+- React DOM
+- Load pages without reloading the entire site
+- Live Development Environment
 
 These are some of the things I love about React. It’s very much like Flutter—the reusable components can be called again and again when needed. The whole site doesn’t need to be reloaded when moving from one page to another. Running the local server with just one command makes things easier and errors easier to locate.
 
@@ -67,10 +68,10 @@ These are some of the things I love about React. It’s very much like Flutter�
 
 Here are all the cons I encountered while building this project:
 
-* React Hooks
-* Adding Support for `.env` File
-* Adding Firebase
-* React Queries
+- React Hooks
+- Adding Support for `.env` File
+- Adding Firebase
+- React Queries
 
 While building this project, I faced several challenges. Implementing React Hooks was difficult, particularly in managing state and side effects. Adding support for the `.env` file also presented issues, as configuring environment variables across different setups was tricky. Integrating Firebase was another challenge, from setting up authentication to managing the real-time database. Additionally, working with React Query brought its own complexities in data fetching, caching, and synchronization.
 
