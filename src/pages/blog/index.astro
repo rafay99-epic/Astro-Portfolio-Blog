@@ -94,11 +94,29 @@ const posts = (await getCollection("blog")).sort(
       <br />
       <section>
         <ul>
+          <!-- orginal Code for Rendering Blog Posts -->
+          <!-- {
+            posts.map((post) => (
+              <li>
+                <a href={`/blog/${post.slug}/`}>
+                  <img
+                    width={720}
+                    height={360}
+                    src={post.data.heroImage}
+                    alt=""
+                  />
+                  <h4 class="title">{post.data.title}</h4>
+                  <p class="date">
+                    <FormattedDate date={post.data.pubDate} />
+                  </p>
+                </a>
+              </li>
+            ))
+          } -->
+          <!-- End of the original code -->
+          <!-- New Code for display new Blog post on th Top  -->
           {
             posts
-              .filter((post) =>
-                import.meta.env.PROD ? !post.data.draft : true
-              )
               .sort(
                 (a, b) =>
                   new Date(b.data.pubDate).valueOf() -
