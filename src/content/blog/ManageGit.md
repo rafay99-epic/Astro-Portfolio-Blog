@@ -3,7 +3,6 @@ title: "Manage Git Commands"
 description: "Lear Git command."
 pubDate: "July 25 2024"
 heroImage: "/Mastering-Version-Control-with-Git-and-GitHub.png"
-draft: false
 ---
 
 As a Software Engineer, Managing your code is very important, From adding more features to remove bugs and at the same time, make sure the code the readable and other can contribute as well. With all this you need to keep track to your code changes. For that you need to learn how to use git and what is GitHub.
