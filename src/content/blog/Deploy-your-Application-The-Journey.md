@@ -1,11 +1,10 @@
 ---
-title: "Deploy Your Application: A Complete Journey"
+title: 'Deploy Your Application: A Complete Journey'
 description: >-
   Learn the step-by-step journey of deploying web apps, from server setup to
   seamless cloud scaling!
 pubDate: 2024-09-19T19:00:00.000Z
 heroImage: /The Journey of Deploying an Application.png
-draft: false
 ---
 
 For many web developers, deploying an application for the first time can seem like an intimidating step. There’s much more to the process than just writing code, and choosing the right deployment path can be overwhelming. In this guide, we'll walk through the journey of deploying a web application, starting with hosting on a Virtual Private Server (VPS) and moving toward simpler, more automated deployment options like Platform-as-a-Service (PaaS).
@@ -18,16 +17,16 @@ When starting out, hosting your web application on a **Virtual Private Server (V
 
 ### **Why VPS?**
 
-- Full control over server settings and configurations.
-- A great learning opportunity for web developers to get hands-on experience with servers.
+* Full control over server settings and configurations.
+* A great learning opportunity for web developers to get hands-on experience with servers.
 
 **Key Concepts to Learn:**
 
-- **SSH (Secure Shell)**: This allows you to remotely connect to your VPS and control it through the terminal. You'll use SSH to run commands, manage files, and install software.
-  - **Example**: SSH into your VPS to deploy your app or fix issues directly from your machine.
-- **Basic Terminal Commands**: Get familiar with terminal commands like `ls` (list directory), `cd` (change directory), and `cp` (copy files). This will help you navigate and manage the files on your server.
-- **Running Your App on a Server**: Once your web app is on the server, you'll need to install its dependencies (e.g., using `npm` for Node.js apps) and run the app using a process manager like `pm2`, which ensures the app stays online, even if your server restarts.
-  - **Example**: Using `pm2` to run a Node.js application continuously.
+* **SSH (Secure Shell)**: This allows you to remotely connect to your VPS and control it through the terminal. You'll use SSH to run commands, manage files, and install software.
+  * **Example**: SSH into your VPS to deploy your app or fix issues directly from your machine.
+* **Basic Terminal Commands**: Get familiar with terminal commands like `ls` (list directory), `cd` (change directory), and `cp` (copy files). This will help you navigate and manage the files on your server.
+* **Running Your App on a Server**: Once your web app is on the server, you'll need to install its dependencies (e.g., using `npm` for Node.js apps) and run the app using a process manager like `pm2`, which ensures the app stays online, even if your server restarts.
+  * **Example**: Using `pm2` to run a Node.js application continuously.
 
 Hosting on a VPS is a foundational skill, and although it requires manual setup, it gives you a solid understanding of what happens behind the scenes when you deploy an application.
 
@@ -37,10 +36,10 @@ After you’ve set up your VPS, it’s time to manage the dependencies your appl
 
 **Key Steps:**
 
-- **Installing Dependencies**: Whether your app uses JavaScript (`npm`, `yarn`), Python (`pip`), or another language, you need to install the necessary libraries or frameworks it depends on.
-  - **Example**: Running `npm install` to download the packages your Node.js app needs.
-- **Environment Variables**: Many web apps need configuration values like API keys or database URLs. Rather than hardcoding these into your app, you should use environment variables to keep sensitive data secure.
-  - **Example**: Setting up a `.env` file and using a library like `dotenv` to manage environment variables.
+* **Installing Dependencies**: Whether your app uses JavaScript (`npm`, `yarn`), Python (`pip`), or another language, you need to install the necessary libraries or frameworks it depends on.
+  * **Example**: Running `npm install` to download the packages your Node.js app needs.
+* **Environment Variables**: Many web apps need configuration values like API keys or database URLs. Rather than hardcoding these into your app, you should use environment variables to keep sensitive data secure.
+  * **Example**: Setting up a `.env` file and using a library like `dotenv` to manage environment variables.
 
 By learning how to manage dependencies and configurations, you'll be able to run your application smoothly in any environment.
 
@@ -50,10 +49,10 @@ As a web developer, ensuring that your users can securely access your applicatio
 
 **Key Tasks:**
 
-- **Reverse Proxy (Nginx)**: You can use a reverse proxy like Nginx to handle incoming web requests and forward them to your application server. Nginx also helps with things like serving static files or load balancing.
-  - **Example**: Configuring Nginx to forward traffic from port 80 (HTTP) or 443 (HTTPS) to your app running on another port.
-- **SSL/TLS Certificates**: You'll need an SSL certificate to enable HTTPS. Services like Let's Encrypt offer free SSL certificates and automated tools (like `certbot`) to keep them updated.
-  - **Example**: Using Let's Encrypt to generate an SSL certificate and enable HTTPS on your site.
+* **Reverse Proxy (Nginx)**: You can use a reverse proxy like Nginx to handle incoming web requests and forward them to your application server. Nginx also helps with things like serving static files or load balancing.
+  * **Example**: Configuring Nginx to forward traffic from port 80 (HTTP) or 443 (HTTPS) to your app running on another port.
+* **SSL/TLS Certificates**: You'll need an SSL certificate to enable HTTPS. Services like Let's Encrypt offer free SSL certificates and automated tools (like `certbot`) to keep them updated.
+  * **Example**: Using Let's Encrypt to generate an SSL certificate and enable HTTPS on your site.
 
 With HTTPS in place, your users will trust that their data is secure, and you’ll avoid browser warnings that could drive visitors away.
 
@@ -63,10 +62,10 @@ As your application grows, you might face performance challenges, especially if 
 
 **For Web Developers:**
 
-- **Horizontal Scaling**: If you need more power, you can add more servers (or instances of your app) to share the load. This is known as horizontal scaling. You can configure Nginx to distribute traffic between multiple servers.
-  - **Example**: Setting up Nginx to load balance traffic between two instances of your app.
-- **Database Scaling**: If your app uses a database, you may need to consider ways to make it handle more traffic. This could include using read replicas (additional database servers to handle more read requests) or caching frequently used data.
-  - **Example**: Adding a read replica for your PostgreSQL database to reduce the load on the primary database server.
+* **Horizontal Scaling**: If you need more power, you can add more servers (or instances of your app) to share the load. This is known as horizontal scaling. You can configure Nginx to distribute traffic between multiple servers.
+  * **Example**: Setting up Nginx to load balance traffic between two instances of your app.
+* **Database Scaling**: If your app uses a database, you may need to consider ways to make it handle more traffic. This could include using read replicas (additional database servers to handle more read requests) or caching frequently used data.
+  * **Example**: Adding a read replica for your PostgreSQL database to reduce the load on the primary database server.
 
 Even as a web developer, knowing how to scale your application can help you build sites that grow alongside your user base.
 
@@ -76,10 +75,10 @@ As your projects become more complex, setting up every server manually can becom
 
 **Why Web Developers Should Use Docker:**
 
-- **Consistency**: Docker ensures that your app will run the same way, regardless of where it’s deployed—on your local machine, on a VPS, or on a cloud platform.
-  - **Example**: Using Docker to create a container that includes your entire web app and its dependencies.
-- **Simplified Deployment**: Once you’ve set up Docker for your project, deploying it to another environment (like production) is as simple as running a few commands.
-  - **Example**: Running your web app in a Docker container on a VPS.
+* **Consistency**: Docker ensures that your app will run the same way, regardless of where it’s deployed—on your local machine, on a VPS, or on a cloud platform.
+  * **Example**: Using Docker to create a container that includes your entire web app and its dependencies.
+* **Simplified Deployment**: Once you’ve set up Docker for your project, deploying it to another environment (like production) is as simple as running a few commands.
+  * **Example**: Running your web app in a Docker container on a VPS.
 
 For web developers, Docker simplifies deployment, making it easier to maintain consistent environments and avoid issues like "it works on my machine."
 
@@ -89,10 +88,10 @@ For many web developers, managing a VPS can be a lot of work. This is where **Pl
 
 **Key Benefits for Web Developers:**
 
-- **Ease of Use**: With PaaS, you can deploy your app with just a few clicks or a single command. These platforms handle everything from scaling to security and even provide features like auto-deployment when you push code to GitHub.
-  - **Example**: Deploying a React app on Vercel with automatic scaling and HTTPS built-in.
-- **Focus on Code**: PaaS solutions handle all the server management for you, meaning you can spend more time writing code and less time worrying about infrastructure.
-  - **Example**: Using Heroku to quickly deploy a Node.js API without configuring a VPS or server.
+* **Ease of Use**: With PaaS, you can deploy your app with just a few clicks or a single command. These platforms handle everything from scaling to security and even provide features like auto-deployment when you push code to GitHub.
+  * **Example**: Deploying a React app on Vercel with automatic scaling and HTTPS built-in.
+* **Focus on Code**: PaaS solutions handle all the server management for you, meaning you can spend more time writing code and less time worrying about infrastructure.
+  * **Example**: Using Heroku to quickly deploy a Node.js API without configuring a VPS or server.
 
 For web developers, PaaS solutions offer an easier and faster way to get apps online, making them ideal for smaller projects or when you just want to focus on building features.
 

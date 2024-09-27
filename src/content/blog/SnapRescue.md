@@ -5,7 +5,6 @@ description: >-
   easy-to-use script that keeps your snapshots in check.
 pubDate: 2024-09-18T19:00:00.000Z
 heroImage: /SnapRescue Protect & Rollback Your System.png
-draft: false
 ---
 
 In Linux, system stability is crucial, and recovering from issues like misconfigurations or broken updates can be quite stressful. That's where **SnapRescue** comes in. SnapRescue is a user-friendly Bash script designed to streamline system backup and recovery using **Snapper** snapshots. This post will walk you through how it works, explain each part of the script, and show you how to get started with it.

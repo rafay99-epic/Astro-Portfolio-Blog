@@ -169,7 +169,6 @@ export type Post = Node & Document & {
   title: Scalars['String']['output'];
   description: Scalars['String']['output'];
   pubDate: Scalars['String']['output'];
-  draft: Scalars['Boolean']['output'];
   heroImage: Scalars['String']['output'];
   body?: Maybe<Scalars['JSON']['output']>;
   id: Scalars['ID']['output'];
@@ -192,11 +191,6 @@ export type DatetimeFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type BooleanFilter = {
-  eq?: InputMaybe<Scalars['Boolean']['input']>;
-  exists?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
 export type ImageFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
   eq?: InputMaybe<Scalars['String']['input']>;
@@ -214,7 +208,6 @@ export type PostFilter = {
   title?: InputMaybe<StringFilter>;
   description?: InputMaybe<StringFilter>;
   pubDate?: InputMaybe<DatetimeFilter>;
-  draft?: InputMaybe<BooleanFilter>;
   heroImage?: InputMaybe<ImageFilter>;
   body?: InputMaybe<RichTextFilter>;
 };
@@ -294,19 +287,18 @@ export type PostMutation = {
   title?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   pubDate?: InputMaybe<Scalars['String']['input']>;
-  draft?: InputMaybe<Scalars['Boolean']['input']>;
   heroImage?: InputMaybe<Scalars['String']['input']>;
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
-export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage: string, body?: any | null };
+export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, heroImage: string, body?: any | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, draft: boolean, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type PostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type PostConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -318,14 +310,13 @@ export type PostConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, draft: boolean, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
   title
   description
   pubDate
-  draft
   heroImage
   body
 }
@@ -424,7 +415,7 @@ const generateRequester = (client: TinaClient) => {
  **/
 export const ExperimentalGetTinaClient = () =>
   getSdk(
-    generateRequester(createClient({ url: "https://content.tinajs.io/1.4/content/ca928060-14c1-452c-938e-9a1e7feaae19/github/main", queries }))
+    generateRequester(createClient({ url: "http://localhost:4001/graphql", queries }))
   );
 
 export const queries = (client: TinaClient) => {
