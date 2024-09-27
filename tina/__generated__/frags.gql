@@ -2,6 +2,7 @@ fragment PostParts on Post {
   title
   description
   pubDate
+  draft
   heroImage
   body
 }
