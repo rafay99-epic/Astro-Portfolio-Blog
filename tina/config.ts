@@ -22,10 +22,6 @@ export default defineConfig({
         name: "post",
         label: "Posts",
         path: "/src/content/blog",
-        match: {
-          include: "**/*.{md,mdx}",
-        },
-        format: "md",
         fields: [
           {
             type: "string",
