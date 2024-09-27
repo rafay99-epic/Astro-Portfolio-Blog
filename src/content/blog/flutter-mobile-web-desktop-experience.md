@@ -3,7 +3,6 @@ title: " Flutter: A Full Stack Developer's Perspective"
 description: "The Reality of flutter for web and applications"
 pubDate: "July 26 2024"
 heroImage: "/flutter-state.png"
-draft: false
 ---
 
 Flutter is great. I love Flutter. As a full stack Flutter developer, I find it awesome and highly effective for developing Android and iOS applications. With its clean UI, simple code, and OOP structure, you can create amazing applications. Flutter also boasts a wide range of packages for different state management needs, making it a superior choice for building Android or iOS applications.
