@@ -3,9 +3,7 @@ import { defineConfig } from "tinacms";
 var branch = "main";
 var config_default = defineConfig({
   branch,
-  // Get this from tina.io
   clientId: "ca928060-14c1-452c-938e-9a1e7feaae19",
-  // Get this from tina.io
   token: "8824be588169be37ca1b34e4e50b4ed5715f6040",
   build: {
     outputFolder: "admin",
@@ -23,6 +21,9 @@ var config_default = defineConfig({
         name: "post",
         label: "Posts",
         path: "/src/content/blog",
+        match: {
+          include: "**/*.{md,mdx}"
+        },
         fields: [
           {
             type: "string",
@@ -41,6 +42,12 @@ var config_default = defineConfig({
             type: "datetime",
             name: "pubDate",
             label: "publishedDate",
+            required: true
+          },
+          {
+            type: "boolean",
+            name: "draft",
+            label: "draft",
             required: true
           },
           {
