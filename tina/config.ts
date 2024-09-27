@@ -22,6 +22,9 @@ export default defineConfig({
         name: "post",
         label: "Posts",
         path: "/src/content/blog",
+        match: {
+          include: "**/*.{md,mdx}",
+        },
         fields: [
           {
             type: "string",
@@ -40,6 +43,12 @@ export default defineConfig({
             type: "datetime",
             name: "pubDate",
             label: "publishedDate",
+            required: true,
+          },
+          {
+            type: "boolean",
+            name: "draft",
+            label: "draft",
             required: true,
           },
           {
