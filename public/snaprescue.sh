@@ -20,19 +20,19 @@ check() {
 
 # Fetch the latest release tarball URL
 getUrl() {
-    echo "https://github.com/rafay99-epic/SnapRescue/releases/latest/download/snaprescue.tar.gz"
+    echo "https://github.com/rafay99-epic/SnapRescue/releases/latest/download/snaprescue.tar.xz"
 }
 
-# Create a temporary file
+# Create a temporary directory
 temp_file=$(mktemp -d)
 check $? "Creating the temporary directory"
 
 # Download the latest release tarball
-curl -fsL "$(getUrl)" -o "$temp_file/snaprescue.tar.xz"
+curl -fsSL "$(getUrl)" -o "$temp_file/snaprescue.tar.xz" || { echo "Failed to download: $(getUrl)"; exit 1; }
 check $? "Downloading SnapRescue"
 
 # Extract the tarball
-tar -xzf "$temp_file/snaprescue.tar.xz" -C "$temp_file"
+tar -xf "$temp_file/snaprescue.tar.xz" -C "$temp_file"
 check $? "Extracting SnapRescue files"
 
 # Make the main script executable and run it
