@@ -57,21 +57,19 @@ if [ -f "$SCRIPT_NAME" ]; then
     echo "Found $SCRIPT_NAME. Running it..."
     chmod +x $SCRIPT_NAME || handle_error "Failed to make $SCRIPT_NAME executable."
 
-    # Run the script in an interactive shell
-    bash -i $SCRIPT_NAME || handle_error "Failed to run $SCRIPT_NAME."
+    # Run the script in a new interactive shell
+    echo "Starting interactive shell..."
+    /bin/bash -c "exec /bin/bash --init-file $SCRIPT_NAME"
 
     # After successful execution, do the cleanup
     echo "Script executed successfully."
 
     # Clean-up downloaded files and temporary directories
     echo "Cleaning up..."
-    rm -f "../$ASSET_NAME"  # Remove the tar.xz file
     cd ..  # Go back to the parent directory
+    rm -f "$ASSET_NAME"  # Remove the tar.xz file
     rm -rf "$DOWNLOAD_DIR"  # Remove the extraction directory
     echo "Clean-up completed."
-
-    # Exit from the interactive shell (return to the original shell)
-    exit
 else
     handle_error "No $SCRIPT_NAME found. Make sure the correct script is present in the archive."
 fi
