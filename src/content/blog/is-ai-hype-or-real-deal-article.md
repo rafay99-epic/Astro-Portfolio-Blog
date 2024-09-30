@@ -1,0 +1,63 @@
+---
+title: Is AI Just Hype or Something More?
+description: >-
+  This article explores the reality of AI, breaking down the hype surrounding it
+  and explaining key concepts like machine learning, large language models
+  (LLMs), and autocomplete. It discusses whether AI is truly revolutionary or
+  just an overhyped version of advanced autocomplete tools, and concludes with
+  thoughts on the current state of AI.
+pubDate: 2024-09-30T19:00:00.000Z
+draft: false
+heroImage: /Is AI Just Hype or Something More.png
+---
+
+# Is AI Just Hype or Something More?
+
+We’ve all heard the buzz—AI is here, and it’s everywhere. With headlines dominated by AI developments and the endless hype, it’s hard not to wonder: is AI just another overhyped trend like crypto, or is there something more substantial behind it? In this blog, I’ll break down how the term "AI" is often overused, explore what it really means, and provide a clearer picture of where we actually stand with current AI technology.
+
+## What is AI?
+
+In case you’re new to the conversation, let’s start with the basics. According to Google, AI is *"the simulation of human intelligence processes by machines, especially computer systems."*
+
+But what does that actually mean? To put it simply, AI stands for Artificial Intelligence, which refers to making machines think and perform tasks in a way that resembles human behavior. Humans experience emotions, make decisions, and process complex thoughts. AI, in theory, is about giving machines the ability to replicate these processes. But is that what we really have today?
+
+You might ask: if that’s AI, then what about ChatGPT and other AI bots? Are they not AI? Well, the answer is more complicated than it appears.
+
+To really understand what’s happening, we need to break down some important terms:
+
+1. Machine Learning
+2. LLM (Large Language Model)
+3. Autocomplete
+
+Let’s dive into each of these to uncover the truth about AI today and whether it’s really a scam.
+
+## What is Machine Learning?
+
+Simply put, **Machine Learning (ML)** is the process of teaching a machine to understand content without explicit instructions. Based on the data it’s trained on, the machine performs tasks related to that information. However, anything beyond the scope of its training can lead to problems, as the machine won’t know how to handle it.
+
+## What is an LLM (Large Language Model)?
+
+LLM stands for **Large Language Model**, and it’s the foundation of many so-called AI systems. Here’s how it works: data in text form is converted into numbers so that a computer can process it. The machine then trains on this data, learning patterns and developing an understanding of the text. From there, the system can respond to inputs, understanding the context of the language it has been trained on. This ability to process and generate human-like text is what makes LLMs so powerful.
+
+## What is Autocomplete?
+
+**Autocomplete** is a simpler concept that you’ve likely encountered before. As you type, an autocomplete system predicts what you’re trying to say, offering suggestions based on patterns it has learned from previous data. Sometimes it works, and sometimes it doesn’t, depending on the context and complexity of what you’re writing.
+
+## So, What Do These Have in Common?
+
+The common thread between these technologies—machine learning, large language models, and autocomplete—is that they all rely on processing vast amounts of data to make predictions or generate responses. In essence, what we call "AI" today is really just a more advanced form of autocomplete powered by massive datasets and LLMs.
+
+## Is AI a Scam?
+
+Now, let’s address the big question: is AI a scam? My answer is more nuanced than a simple yes or no. The current version of AI is not a scam, but the way it’s portrayed by the media and marketing has definitely inflated its true capabilities.
+
+Yes, these tools make our lives easier and more efficient, but they also have limitations. Current AI systems struggle with understanding complex problems, often give incorrect or incomplete answers, and can fail when faced with unfamiliar contexts.
+
+In short, what we have today isn’t "true" AI in the sense of machines fully replicating human thought and understanding. It’s more like a supercharged version of autocorrect. True AI, in my opinion, will only be achieved when machines can fully understand the context of a conversation and provide accurate, meaningful responses every time.
+
+## Conclusion
+
+So, is AI overhyped? In some ways, yes. While it’s a powerful tool, the current technology isn’t as advanced as the marketing might have you believe. AI today is essentially a highly sophisticated version of autocomplete, and while that’s impressive, it’s not yet the AI of our dreams.
+
+But what do you think? Share your thoughts in the comments below.
+Until next time, peace out, nerds! ❤️
