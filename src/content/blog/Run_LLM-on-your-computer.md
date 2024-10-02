@@ -33,13 +33,10 @@ To install them it's pretty easy, I will guide you guys, just follow the steps b
 
 ### Installing Docker on Windows
 
-1\. **Download Docker Desktop:**  Visit \[Docker's official site]\([https://docs.docker.com/desktop/install/windows-install/](https://docs.docker.com/desktop/install/windows-install/)).
-
-2\. **System Requirements:** Windows 11
-
-3\. **Install Docker Desktop**: Run the installer and follow the prompts.
-
-4\. **Configure Settings**: After installation, configure WSL 2 or Hyper-V.
+1. **Download Docker Desktop:**  Visit [Docker's official site](\[https://docs.docker.com/desktop/install/windows-install/]\(https://docs.docker.com/desktop/install/windows-install/\)).
+2. **System Requirements:** Windows 11
+3. **Install Docker Desktop**: Run the installer and follow the prompts.
+4. **Configure Settings**: After installation, configure WSL 2 or Hyper-V.
 
 5\. \*\*Verify Installation \*\*: Open PowerShell and run \`docker --version\`.
 
@@ -47,41 +44,32 @@ To install them it's pretty easy, I will guide you guys, just follow the steps b
 
 ### Installing Docker on Debian
 
-1\. \*\*Update and Install Dependencies\*\*:
+1. **Update and Install Dependencies**:
 
-\`\`\`bash
-
+```bash
 sudo apt-get update
-
 sudo apt-get install ca-certificates curl gnupg lsb-release
+```
 
-\`\`\`
+1. \*\*Add Docker GPG Key \*\*:
 
-2\. \*\*Add Docker GPG Key\*\*:
-
-\`\`\`bash
-
+```bash
 curl -fsSL [https://download.docker.com/linux/debian/gpg](https://download.docker.com/linux/debian/gpg) | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
 
-\`\`\`
+1. **Set Up Stable Repository**:
 
-3\. \*\*Set Up Stable Repository\*\*:
-
-\`\`\`bash
-
+```bash
 echo "deb \[arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] [https://download.docker.com/linux/debian](https://download.docker.com/linux/debian) $(lsb\_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
 
-\`\`\`
+1. **Install Docker**:
 
-4\. \*\*Install Docker\*\*:
-
-\`\`\`bash
-
+```bash
 sudo apt-get update
-
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
-\`\`\`
+```
 
 ***
 
