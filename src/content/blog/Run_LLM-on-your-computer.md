@@ -54,53 +54,57 @@ For Linux users, here’s how to install Docker on **Debian-based** and **Arch-b
 1. **Update and Install Dependencies**:
 
 ```bash
-    sudo apt-get update
-    sudo apt-get install ca-certificates curl gnupg lsb-release
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg lsb-release
 ```
 
 1. **Add Docker GPG Key**:
 
 ```bash
-    curl -fsSL <https://download.docker.com/linux/debian/gpg> | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+curl -fsSL <https://download.docker.com/linux/debian/gpg> | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 ```
 
 1. **Set Up the Stable Repository**:
 
-````bash
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] <https://download.docker.com/linux/debian> $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    ```
-    
-4. **Install Docker**:
- ```bash
-    sudo apt-get update
-    sudo apt-get install docker-ce docker-ce-cli containerd.io
-    ```
-    
+```bash
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] <https://download.docker.com/linux/debian> $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+1. **Install Docker**:
+
+```bash
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
 
 ### Installing Docker on Arch Linux
 
 1. **Update the Package Database**:
+
 ```bash
-    sudo pacman -Syu
-    ```
-    
-2. **Install Docker**:
+sudo pacman -Syu
+```
+
+1. **Install Docker**:
+
 ```bash
-    sudo pacman -S docker
-    ```
-    
-3. **Enable and Start Docker**:
- ```bash
-    sudo systemctl enable docker
-    sudo systemctl start docker
-    ```
-    
-4. **(Optional) Add User to Docker Group**:
+sudo pacman -S docker
+```
+
+1. **Enable and Start Docker**:
+
 ```bash
-    sudo usermod -aG docker $USER
-    ```
-    
----
+sudo systemctl enable docker
+sudo systemctl start docker
+```
+
+1. **(Optional) Add User to Docker Group**:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+***
 
 ### Installing Ollama
 
@@ -116,7 +120,7 @@ If you’re using an Nvidia GPU, Ollama can take full advantage of it for GPU ac
 
 ```bash
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
-````
+```
 
 ### Nvidia GPU Setup:
 
