@@ -127,12 +127,11 @@ docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 1. **Install Nvidia container toolkit**.
 2. **Run Ollama with GPU support**:
 
-````bash
-    docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
-    ```
-    
+```bash
+docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+```
 
----
+***
 
 ### Installing Web UI
 
@@ -142,7 +141,7 @@ To install, simply run:
 
 ```bash
 docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
-````
+```
 
 This will download the WebUI image and start it in Docker. Once the setup is complete, you can access the UI by navigating to `localhost:3000` in your browser.
 
