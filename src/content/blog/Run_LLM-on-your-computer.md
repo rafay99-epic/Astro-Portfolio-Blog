@@ -89,39 +89,47 @@ sudo pacman -Syu
 
 1. **Install Docker**:
 
-````bash
+```bash
 sudo pacman -S docker
 ```
-3. **Enable and Start Docker**:
+
+1. **Enable and Start Docker**:
+
 ```bash
 sudo systemctl enable docker
 sudo systemctl start docker
 ```
-4. **Add User to Docker Group (Optional)**:
+
+1. **Add User to Docker Group (Optional)**:
+
 ```bash
 sudo usermod -aG docker $USER
 ```
 
-## Ollma Installation: 
+## Ollma Installation:
+
 Follow these steps to make sure to install Ollam on linux
+
 ### On Windows
+
 To install ollma on windows is little tricky but it can be done. You can Install ollam using these process from there official [website](https://ollama.com/download/windows)
+
 ### On Linux
+
 Ollama can run with GPU acceleration inside Docker containers for Nvidia GPUs.
 To get started using the Docker image, please use the commands below.
 
 #### CPU only
+
 ```bash
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
-####Nvidia GPU
-- Install the Nvidia container toolkit.
-- Run Ollama inside a Docker container
-   ```bash
+
+#### Nvidia GPU
+
+* Install the Nvidia container toolkit.
+* Run Ollama inside a Docker container
+
+```bash
    docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
-   ```
-
-
-
-
-````
+```
