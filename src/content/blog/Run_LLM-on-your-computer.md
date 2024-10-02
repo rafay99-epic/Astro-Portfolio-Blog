@@ -74,13 +74,14 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 ### Installing Docker on Arch Linux
 
-1\. \*\*Update the Package Database\*\*:
+This is the Porcess of installing Docker on arch Linux
 
-\`\`\`bash
+1. **Update the Package Database**:
+   Updating your system make sure every package is up to date
 
+```bash
 sudo pacman -Syu
-
-\`\`\`
+```
 
 2\. \*\*Install Docker\*\*:
 
