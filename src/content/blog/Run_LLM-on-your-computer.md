@@ -184,3 +184,5 @@ These models are quite large and will require a decent amount of storage space a
 Running your own AI chatbot for free is not only possible but also relatively simple once you set up Docker, Ollama, and the WebUI. While the models can be large and resource-intensive, they give you a powerful alternative to paid services like ChatGPT without daily limits or costs. Plus, you have complete control over the system.
 
 Why pay for limited access when you can unlock the full power of AI for free? Follow these steps, and you'll be ready to explore the world of large language models without spending a penny!
+
+Until then, peace out, nerds. ❤️
