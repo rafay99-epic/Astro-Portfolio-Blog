@@ -15,9 +15,9 @@ Don't worry, I am here to give free tip so that you don't have to spend a single
 Before we begin, we need to make sure some these are set and these requirements are not rock solid they are Nice to have, if you have these it will make your experience much much better.
 
 1. Nvidia GPU
-   1. If you don't have Nvidia PU then don't worry, This process can also work on CPU as well.
+   * If you don't have Nvidia PU then don't worry, This process can also work on CPU as well.
 2. A Processor that have more core then 4, More the cores the better.
-   1. With the latest tech and computer you should have 6 cores.
+   * With the latest tech and computer you should have 6 cores.
 
 # Installing some Programs
 
@@ -42,7 +42,11 @@ To install them it's pretty easy, I will guide you guys, just follow the steps b
 
 ### Installing Docker on Linux
 
+To installed Docker you can follow these step that are under but make sure if face any issue then fdollow the guide on there office [website](https://docs.docker.com/desktop/install/linux/)
+
 ### Installing Docker on Debian
+
+These are the steps for installing Docker on Debian and debian based system.
 
 1. **Update and Install Dependencies**:
 
@@ -74,7 +78,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 ### Installing Docker on Arch Linux
 
-This is the Porcess of installing Docker on arch Linux
+These are the steps for installing Docker on Arch and Arch based system.
 
 1. **Update the Package Database**:
    Updating your system make sure every package is up to date.
