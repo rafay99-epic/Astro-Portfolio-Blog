@@ -85,7 +85,7 @@ To install them it's pretty easy, I will guide you guys, just follow the steps b
 
 ***
 
-\### Installing Docker on Arch Linux
+### Installing Docker on Arch Linux
 
 1\. \*\*Update the Package Database\*\*:
 
