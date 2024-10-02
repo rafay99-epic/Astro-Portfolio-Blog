@@ -1,135 +1,183 @@
 ---
-title: Run LLM on your computer for free
+title: 'DIY AI Chatbot: Free Local Setup'
 description: Detail notes on learning LLM on your computer
 pubDate: 2024-10-02T19:00:00.000Z
 draft: true
-heroImage: /LLM on your computer.png
+heroImage: /DIY AI Chatbot Free Local Setup.png
 ---
 
-With the rise of large language model it is uncommon that people spend from 20 dollar to 50 dollar for these AI chatbot and these chatbot have limits as well, for example chatGPT has a limit of a day and with the amount you are paying is not worth it, sure I can see the use of it, on mobile phone or on laptop but still not worth it.
+With the rise of large language models (LLMs), it's no surprise that many are paying between $20 to $50 for AI chatbot subscriptions. However, these services often come with limitations—like daily usage caps—and for the price, the value might not always feel justified. Sure, they have their use on mobile or desktop, but why pay when you can run these models for free on your own hardware?
 
-Don't worry, I am here to give free tip so that you don't have to spend a single dim and use these chatbot for free.
+Don’t worry! I’m here to provide you with a free solution so you won’t have to spend a single dime and can enjoy AI chatbot capabilities for free, right from your own machine.
 
-# Requirements
+### Requirements
 
-Before we begin, we need to make sure some these are set and these requirements are not rock solid they are Nice to have, if you have these it will make your experience much much better.
+Before we dive in, let’s cover some basic requirements. Don’t worry—these aren’t set in stone, but having them will significantly improve your experience.
 
-1. Nvidia GPU
-   * If you don't have Nvidia PU then don't worry, This process can also work on CPU as well.
-2. A Processor that have more core then 4, More the cores the better.
-   * With the latest tech and computer you should have 6 cores.
+1. **Nvidia GPU**
+   * If you don’t have an Nvidia GPU, no problem. This process can run on CPUs as well, although a GPU will speed things up.
+2. **A Processor with More Than 4 Cores**
+   * Ideally, you'll have a modern CPU with at least 6 cores for a smoother experience.
 
-# Installing some Programs
+### Installing Necessary Programs
 
-To run these LLM on your computer you need three programms.
+To get these LLMs running on your computer, you need three main programs:
 
 1. Docker
-2. ollma
-3. Ollma WebUI
+2. Ollama
+3. Ollama WebUI
 
-To install them it's pretty easy, I will guide you guys, just follow the steps bellow to install these Programs
+I'll guide you through the installation process step by step.
 
-## Docker Installing Process
+***
+
+### Installing Docker
 
 ### Installing Docker on Windows
 
-1. **Download Docker Desktop:**  Visit [Docker's official site](\[https://docs.docker.com/desktop/install/windows-install/]\(https://docs.docker.com/desktop/install/windows-install/\)).
-2. **System Requirements:** Windows 11
-3. **Install Docker Desktop**: Run the installer and follow the prompts.
-4. **Configure Settings**: After installation, configure WSL 2 or Hyper-V.
+1. **Download Docker Desktop**: Head over to [Docker’s official site](https://docs.docker.com/desktop/install/windows-install/) to download the installer.
+2. **System Requirements**: Windows 11 is required.
+3. **Install Docker Desktop**: Run the installer and follow the setup prompts.
+4. **Configure Settings**: After installation, configure either WSL 2 or Hyper-V as per your needs.
+5. **Verify Installation**: Open PowerShell and run:
 
-5\. \*\*Verify Installation \*\*: Open PowerShell and run \`docker --version\`.
+```bash
+docker --version
+```
 
 ### Installing Docker on Linux
 
-To installed Docker you can follow these step that are under but make sure if face any issue then fdollow the guide on there office [website](https://docs.docker.com/desktop/install/linux/)
+For Linux users, here’s how to install Docker on **Debian-based** and **Arch-based** systems.
 
 ### Installing Docker on Debian
-
-These are the steps for installing Docker on Debian and debian based system.
 
 1. **Update and Install Dependencies**:
 
 ```bash
-sudo apt-get update
-sudo apt-get install ca-certificates curl gnupg lsb-release
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl gnupg lsb-release
 ```
 
-1. \*\*Add Docker GPG Key \*\*:
+1. **Add Docker GPG Key**:
 
 ```bash
-curl -fsSL [https://download.docker.com/linux/debian/gpg](https://download.docker.com/linux/debian/gpg) | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    curl -fsSL <https://download.docker.com/linux/debian/gpg> | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 ```
 
-1. **Set Up Stable Repository**:
+1. **Set Up the Stable Repository**:
 
-```bash
-echo "deb \[arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] [https://download.docker.com/linux/debian](https://download.docker.com/linux/debian) $(lsb\_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
-1. **Install Docker**:
-
-```bash
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
-```
-
-***
+````bash
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] <https://download.docker.com/linux/debian> $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    ```
+    
+4. **Install Docker**:
+ ```bash
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io
+    ```
+    
 
 ### Installing Docker on Arch Linux
 
-These are the steps for installing Docker on Arch and Arch based system.
-
 1. **Update the Package Database**:
-   Updating your system make sure every package is up to date.
-
 ```bash
-sudo pacman -Syu
-```
-
-1. **Install Docker**:
-
+    sudo pacman -Syu
+    ```
+    
+2. **Install Docker**:
 ```bash
-sudo pacman -S docker
-```
-
-1. **Enable and Start Docker**:
-
+    sudo pacman -S docker
+    ```
+    
+3. **Enable and Start Docker**:
+ ```bash
+    sudo systemctl enable docker
+    sudo systemctl start docker
+    ```
+    
+4. **(Optional) Add User to Docker Group**:
 ```bash
-sudo systemctl enable docker
-sudo systemctl start docker
-```
+    sudo usermod -aG docker $USER
+    ```
+    
+---
 
-1. **Add User to Docker Group (Optional)**:
+### Installing Ollama
 
-```bash
-sudo usermod -aG docker $USER
-```
+### For Windows:
 
-## Ollma Installation:
+Installing Ollama on Windows is a bit trickier but completely doable. You can follow the instructions from their official [website](https://ollama.com/download/windows).
 
-Follow these steps to make sure to install Ollam on linux
+### For Linux:
 
-### On Windows
+If you’re using an Nvidia GPU, Ollama can take full advantage of it for GPU acceleration within Docker containers. Follow these steps to get it set up.
 
-To install ollma on windows is little tricky but it can be done. You can Install ollam using these process from there official [website](https://ollama.com/download/windows)
-
-### On Linux
-
-Ollama can run with GPU acceleration inside Docker containers for Nvidia GPUs.
-To get started using the Docker image, please use the commands below.
-
-#### CPU only
+### CPU-only Setup:
 
 ```bash
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
-```
+````
 
-#### Nvidia GPU
+### Nvidia GPU Setup:
 
-* Install the Nvidia container toolkit.
-* Run Ollama inside a Docker container
+1. **Install Nvidia container toolkit**.
+2. **Run Ollama with GPU support**:
+
+````bash
+    docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+    ```
+    
+
+---
+
+### Installing Web UI
+
+To get a user-friendly experience similar to ChatGPT, you can install a Web UI using the following project: [Open WebUI](https://github.com/open-webui/open-webui).
+
+To install, simply run:
 
 ```bash
-   docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+````
+
+This will download the WebUI image and start it in Docker. Once the setup is complete, you can access the UI by navigating to `localhost:3000` in your browser.
+
+***
+
+### Installing a Language Model
+
+Now, let’s install a language model available on Ollama. Visit their [model library](https://ollama.com/library) and choose the one you prefer. Once selected, run the following command:
+
+```bash
+ollama run <modelNameAndParameter>
 ```
+
+### Example:
+
+To install the Llama 3.2 model with 1B parameters, run:
+
+```bash
+ollama run llama3.2:1b
+```
+
+Remember, the more parameters a model has, the more capable it will be—but also more resource-intensive. Make sure your system can handle it.
+
+***
+
+### Checking the Setup
+
+Once everything is up and running, open your browser and go to `localhost:3000`. You'll see the WebUI, similar to ChatGPT’s interface, and you can start using your local models!
+
+***
+
+### Important Notes
+
+These models are quite large and will require a decent amount of storage space and a fast internet connection for downloading. Make sure your setup meets these needs to ensure the best experience.
+
+***
+
+### Conclusion
+
+Running your own AI chatbot for free is not only possible but also relatively simple once you set up Docker, Ollama, and the WebUI. While the models can be large and resource-intensive, they give you a powerful alternative to paid services like ChatGPT without daily limits or costs. Plus, you have complete control over the system.
+
+Why pay for limited access when you can unlock the full power of AI for free? Follow these steps, and you'll be ready to explore the world of large language models without spending a penny!
