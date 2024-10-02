@@ -103,7 +103,7 @@ sudo usermod -aG docker $USER
 ```
 
 ## Ollma Installation: 
-
+Follow these steps to make sure to install Ollam on linux
 ### On Windows
 To install ollma on windows is little tricky but it can be done. You can Install ollam using these process from there official [website](https://ollama.com/download/windows)
 ### On Linux
