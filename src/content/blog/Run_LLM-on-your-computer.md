@@ -1,6 +1,8 @@
 ---
 title: 'DIY AI Chatbot: Free Local Setup'
-description: Detail notes on learning LLM on your computer
+description: >-
+  Learn how to set up and run powerful AI chatbots on your PC for free, without
+  spending a dime.
 pubDate: 2024-10-02T19:00:00.000Z
 draft: true
 heroImage: /DIY AI Chatbot Free Local Setup.png
