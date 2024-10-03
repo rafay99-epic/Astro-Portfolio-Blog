@@ -9,6 +9,8 @@ description: >-
 pubDate: 2024-09-30T19:00:00.000Z
 draft: false
 heroImage: /Is AI Just Hype or Something More.png
+authorName: Abdul Rafay
+authorAvatar: /author.jpg
 ---
 
 # Is AI Just Hype or Something More?
@@ -17,7 +19,7 @@ We’ve all heard the buzz—AI is here, and it’s everywhere. With headlines d
 
 ## What is AI?
 
-In case you’re new to the conversation, let’s start with the basics. According to Google, AI is *"the simulation of human intelligence processes by machines, especially computer systems."*
+In case you’re new to the conversation, let’s start with the basics. According to Google, AI is _"the simulation of human intelligence processes by machines, especially computer systems."_
 
 But what does that actually mean? To put it simply, AI stands for Artificial Intelligence, which refers to making machines think and perform tasks in a way that resembles human behavior. Humans experience emotions, make decisions, and process complex thoughts. AI, in theory, is about giving machines the ability to replicate these processes. But is that what we really have today?
 

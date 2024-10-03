@@ -1,11 +1,13 @@
 ---
-title: 'DIY AI Chatbot: Free Local Setup'
+title: "DIY AI Chatbot: Free Local Setup"
 description: >-
   Learn how to set up and run powerful AI chatbots on your PC for free, without
   spending a dime.
 pubDate: 2024-10-02T19:00:00.000Z
 draft: true
 heroImage: /DIY AI Chatbot Free Local Setup.png
+authorName: Abdul Rafay
+authorAvatar: /author.jpg
 ---
 
 With the rise of large language models (LLMs), it's no surprise that many are paying between $20 to $50 for AI chatbot subscriptions. However, these services often come with limitations—like daily usage caps—and for the price, the value might not always feel justified. Sure, they have their use on mobile or desktop, but why pay when you can run these models for free on your own hardware?
@@ -17,9 +19,9 @@ Don’t worry! I’m here to provide you with a free solution so you won’t hav
 Before we dive in, let’s cover some basic requirements. Don’t worry—these aren’t set in stone, but having them will significantly improve your experience.
 
 1. **Nvidia GPU**
-   * If you don’t have an Nvidia GPU, no problem. This process can run on CPUs as well, although a GPU will speed things up.
+   - If you don’t have an Nvidia GPU, no problem. This process can run on CPUs as well, although a GPU will speed things up.
 2. **A Processor with More Than 4 Cores**
-   * Ideally, you'll have a modern CPU with at least 6 cores for a smoother experience.
+   - Ideally, you'll have a modern CPU with at least 6 cores for a smoother experience.
 
 ### Installing Necessary Programs
 
@@ -31,7 +33,7 @@ To get these LLMs running on your computer, you need three main programs:
 
 I'll guide you through the installation process step by step.
 
-***
+---
 
 ### Installing Docker
 
@@ -106,7 +108,7 @@ sudo systemctl start docker
 sudo usermod -aG docker $USER
 ```
 
-***
+---
 
 ### Installing Ollama
 
@@ -133,7 +135,7 @@ docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
 
-***
+---
 
 ### Installing Web UI
 
@@ -147,7 +149,7 @@ docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-
 
 This will download the WebUI image and start it in Docker. Once the setup is complete, you can access the UI by navigating to `localhost:3000` in your browser.
 
-***
+---
 
 ### Installing a Language Model
 
@@ -167,19 +169,19 @@ ollama run llama3.2:1b
 
 Remember, the more parameters a model has, the more capable it will be—but also more resource-intensive. Make sure your system can handle it.
 
-***
+---
 
 ### Checking the Setup
 
 Once everything is up and running, open your browser and go to `localhost:3000`. You'll see the WebUI, similar to ChatGPT’s interface, and you can start using your local models!
 
-***
+---
 
 ### Important Notes
 
 These models are quite large and will require a decent amount of storage space and a fast internet connection for downloading. Make sure your setup meets these needs to ensure the best experience.
 
-***
+---
 
 ### Conclusion
 
