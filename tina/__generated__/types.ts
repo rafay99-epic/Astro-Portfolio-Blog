@@ -164,14 +164,21 @@ export type CollectionDocumentsArgs = {
 
 export type DocumentNode = Post | Folder;
 
+export type PostAuthor = {
+  __typename?: 'PostAuthor';
+  name?: Maybe<Scalars['String']['output']>;
+  image?: Maybe<Scalars['String']['output']>;
+};
+
 export type Post = Node & Document & {
   __typename?: 'Post';
   title: Scalars['String']['output'];
   description: Scalars['String']['output'];
   pubDate: Scalars['String']['output'];
+  updatedDate?: Maybe<Scalars['String']['output']>;
+  heroImage?: Maybe<Scalars['String']['output']>;
   draft: Scalars['Boolean']['output'];
-  heroImage: Scalars['String']['output'];
-  body?: Maybe<Scalars['JSON']['output']>;
+  author?: Maybe<PostAuthor>;
   id: Scalars['ID']['output'];
   _sys: SystemInfo;
   _values: Scalars['JSON']['output'];
@@ -192,11 +199,6 @@ export type DatetimeFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type BooleanFilter = {
-  eq?: InputMaybe<Scalars['Boolean']['input']>;
-  exists?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
 export type ImageFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
   eq?: InputMaybe<Scalars['String']['input']>;
@@ -204,19 +206,24 @@ export type ImageFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type RichTextFilter = {
-  startsWith?: InputMaybe<Scalars['String']['input']>;
-  eq?: InputMaybe<Scalars['String']['input']>;
+export type BooleanFilter = {
+  eq?: InputMaybe<Scalars['Boolean']['input']>;
   exists?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type PostAuthorFilter = {
+  name?: InputMaybe<StringFilter>;
+  image?: InputMaybe<ImageFilter>;
 };
 
 export type PostFilter = {
   title?: InputMaybe<StringFilter>;
   description?: InputMaybe<StringFilter>;
   pubDate?: InputMaybe<DatetimeFilter>;
-  draft?: InputMaybe<BooleanFilter>;
+  updatedDate?: InputMaybe<DatetimeFilter>;
   heroImage?: InputMaybe<ImageFilter>;
-  body?: InputMaybe<RichTextFilter>;
+  draft?: InputMaybe<BooleanFilter>;
+  author?: InputMaybe<PostAuthorFilter>;
 };
 
 export type PostConnectionEdges = {
@@ -290,23 +297,29 @@ export type DocumentMutation = {
   post?: InputMaybe<PostMutation>;
 };
 
+export type PostAuthorMutation = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type PostMutation = {
   title?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   pubDate?: InputMaybe<Scalars['String']['input']>;
-  draft?: InputMaybe<Scalars['Boolean']['input']>;
+  updatedDate?: InputMaybe<Scalars['String']['input']>;
   heroImage?: InputMaybe<Scalars['String']['input']>;
-  body?: InputMaybe<Scalars['JSON']['input']>;
+  draft?: InputMaybe<Scalars['Boolean']['input']>;
+  author?: InputMaybe<PostAuthorMutation>;
 };
 
-export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage: string, body?: any | null };
+export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, updatedDate?: string | null, heroImage?: string | null, draft: boolean, author?: { __typename: 'PostAuthor', name?: string | null, image?: string | null } | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, draft: boolean, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type PostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, updatedDate?: string | null, heroImage?: string | null, draft: boolean, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, author?: { __typename: 'PostAuthor', name?: string | null, image?: string | null } | null } };
 
 export type PostConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -318,16 +331,21 @@ export type PostConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, draft: boolean, heroImage: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, updatedDate?: string | null, heroImage?: string | null, draft: boolean, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, author?: { __typename: 'PostAuthor', name?: string | null, image?: string | null } | null } | null } | null> | null } };
 
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
   title
   description
   pubDate
-  draft
+  updatedDate
   heroImage
-  body
+  draft
+  author {
+    __typename
+    name
+    image
+  }
 }
     `;
 export const PostDocument = gql`

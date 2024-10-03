@@ -151,8 +151,8 @@ const posts = (await getCollection("blog")).sort(
                     {index !== 0 && post.data.author && (
                       <div class="author-info">
                         <Image
-                          src={post.data.author.image || ""}
-                          alt={`${post.data.author.name} Avatar`}
+                          src={post.data.author.image || "/author.jpg"}
+                          alt={`${post.data.author.name || "Abdul Rafay"} `}
                           format="avif"
                           class="author-image"
                           width={64}

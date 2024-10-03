@@ -24,40 +24,58 @@ var config_default = defineConfig({
         fields: [
           {
             type: "string",
+            label: "Title",
             name: "title",
-            label: "title",
-            isTitle: true,
             required: true
           },
           {
             type: "string",
+            label: "Description",
             name: "description",
-            label: "description",
             required: true
           },
           {
             type: "datetime",
+            label: "Publish Date",
             name: "pubDate",
-            label: "publishedDate",
             required: true
           },
           {
-            type: "boolean",
-            name: "draft",
-            label: "draft",
-            required: true
+            type: "datetime",
+            label: "Updated Date",
+            name: "updatedDate",
+            required: false
           },
           {
             type: "image",
+            label: "Hero Image",
             name: "heroImage",
-            label: "heroImage",
+            required: false
+          },
+          {
+            type: "boolean",
+            label: "Draft",
+            name: "draft",
             required: true
           },
           {
-            type: "rich-text",
-            name: "body",
-            label: "Body",
-            isBody: true
+            type: "object",
+            label: "Author",
+            name: "author",
+            fields: [
+              {
+                type: "string",
+                label: "Name",
+                name: "name",
+                required: false
+              },
+              {
+                type: "image",
+                label: "Image",
+                name: "image",
+                required: false
+              }
+            ]
           }
         ]
       }

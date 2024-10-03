@@ -2,7 +2,12 @@ fragment PostParts on Post {
   title
   description
   pubDate
-  draft
+  updatedDate
   heroImage
-  body
+  draft
+  author {
+    __typename
+    name
+    image
+  }
 }

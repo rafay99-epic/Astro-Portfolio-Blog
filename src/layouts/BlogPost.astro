@@ -66,8 +66,8 @@ const { title, description, pubDate, updatedDate, heroImage, author } =
             <h1 class="text-3xl font-bold mb-4">{title}</h1>
             <div class="flex items-center mt-4 justify-center">
               <Image
-                src={author.image || "/path/to/default-avatar.jpg"}
-                alt={`${author.name} Avatar`}
+                src={author.image || "/author.jpg"}
+                alt={`${author.name || "Abdul Rafay"} `}
                 format="avif"
                 class="rounded-full mr-2 w-10 h-10"
                 width={50}
