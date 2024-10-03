@@ -69,6 +69,23 @@ const posts = (await getCollection("blog")).sort(
       ul a:hover img {
         box-shadow: var(--box-shadow);
       }
+      .author-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .author-image {
+        border-radius: 50%;
+        margin-right: 0.5rem;
+        width: 32px;
+        height: 32px;
+      }
+
+      .author-name {
+        font-size: 1rem;
+        color: var(--text-light);
+      }
       @media (max-width: 720px) {
         ul {
           gap: 0.5em;
@@ -83,6 +100,19 @@ const posts = (await getCollection("blog")).sort(
         ul li:first-child .title {
           font-size: 1.563em;
         }
+      }
+      .author-image {
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .featured-post .author-image {
+        width: 64px;
+        height: 64px;
+      }
+      .author-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
     </style>
   </head>
@@ -104,12 +134,12 @@ const posts = (await getCollection("blog")).sort(
                   new Date(b.data.pubDate).valueOf() -
                   new Date(a.data.pubDate).valueOf()
               )
-              .map((post) => (
-                <li>
+              .map((post, index) => (
+                <li class={index === 0 ? "featured-post" : ""}>
                   <a href={`/blog/${post.slug}/`}>
                     <Image
                       src={post.data.heroImage || ""}
-                      alt="author Avator"
+                      alt="Post Hero Image"
                       format="avif"
                       width={720}
                       height={360}
@@ -118,6 +148,19 @@ const posts = (await getCollection("blog")).sort(
                     <p class="date">
                       <FormattedDate date={post.data.pubDate} />
                     </p>
+                    {index !== 0 && post.data.author && (
+                      <div class="author-info">
+                        <Image
+                          src={post.data.author.image || ""}
+                          alt={`${post.data.author.name} Avatar`}
+                          format="avif"
+                          class="author-image"
+                          width={64}
+                          height={64}
+                        />
+                        <span class="author-name">{post.data.author.name}</span>
+                      </div>
+                    )}
                   </a>
                 </li>
               ))

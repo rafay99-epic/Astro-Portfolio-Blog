@@ -6,6 +6,11 @@ description: >-
 pubDate: 2024-09-19T19:00:00.000Z
 heroImage: /The Journey of Deploying an Application.png
 draft: false
+author:
+  name: "Abdul Rafay"
+  image: "/author.jpg"
+---
+
 ---
 
 For many web developers, deploying an application for the first time can seem like an intimidating step. There’s much more to the process than just writing code, and choosing the right deployment path can be overwhelming. In this guide, we'll walk through the journey of deploying a web application, starting with hosting on a Virtual Private Server (VPS) and moving toward simpler, more automated deployment options like Platform-as-a-Service (PaaS).
