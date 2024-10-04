@@ -1,11 +1,12 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
+import Header from "../components/AstroCompoent/header/Header.astro";
+import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import ProjectCard from "../components/projectCard.astro";
+import ProjectCard from "../components/AstroCompoent/JobAndExperience/projectCard.astro";
 import projects from "../data/projectData.json";
 export const prerender = true;
+import SpeedInsights from "@vercel/speed-insights/astro";
 ---
 
 <html lang="en">
@@ -15,6 +16,7 @@ export const prerender = true;
 
   <body>
     <Header />
+    <SpeedInsights />
     <main>
       <h1 class="text-6xl font-bold text-center mb-8">
         Some Things I've Built
