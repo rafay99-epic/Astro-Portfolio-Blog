@@ -26,20 +26,20 @@ export default defineConfig({
           {
             type: "string",
             name: "title",
-            label: "title",
+            label: "Article Title",
             isTitle: true,
             required: true,
           },
           {
             type: "string",
             name: "description",
-            label: "description",
+            label: "Article Description",
             required: true,
           },
           {
             type: "datetime",
             name: "pubDate",
-            label: "publishedDate",
+            label: "Publish Date",
             required: true,
           },
           {
@@ -51,7 +51,19 @@ export default defineConfig({
           {
             type: "image",
             name: "heroImage",
-            label: "heroImage",
+            label: "Thubnail Image",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "authorName",
+            label: "Author Name",
+            required: true,
+          },
+          {
+            type: "image",
+            name: "authorAvatar",
+            label: "Author Avatar",
             required: true,
           },
           {

@@ -4,5 +4,7 @@ fragment PostParts on Post {
   pubDate
   draft
   heroImage
+  authorName
+  authorAvatar
   body
 }

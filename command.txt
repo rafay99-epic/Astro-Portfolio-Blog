@@ -1,2 +1,0 @@
-
-&& pagefind --site .vercel/static && cp -r dist/pagefind public
