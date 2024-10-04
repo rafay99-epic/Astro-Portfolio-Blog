@@ -1,11 +1,11 @@
 ---
-import BaseHead from "../../components/BaseHead.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
+import BaseHead from "../../components/AstroCompoent/base/BaseHead.astro";
+import Header from "../../components/AstroCompoent/header/Header.astro";
+import Footer from "../../components/AstroCompoent/footer/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
-import SearchField from "../../components/SearchField.astro";
+import SearchField from "../../components/AstroCompoent/SearchField/SearchField.astro";
 import { Image } from "astro:assets";
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
@@ -83,6 +83,11 @@ const posts = (await getCollection("blog")).sort(
         ul li:first-child .title {
           font-size: 1.563em;
         }
+        .author {
+          font-size: 1rem;
+
+          margin-top: 0.5rem;
+        }
       }
     </style>
   </head>
@@ -118,6 +123,7 @@ const posts = (await getCollection("blog")).sort(
                     <p class="date">
                       <FormattedDate date={post.data.pubDate} />
                     </p>
+                    <p class="author date">By {post.data.authorName}</p>
                   </a>
                 </li>
               ))

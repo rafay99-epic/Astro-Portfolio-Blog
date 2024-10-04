@@ -1,15 +1,24 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
+import Header from "../components/AstroCompoent/header/Header.astro";
+import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import { Image } from "astro:assets";
-import authorImage from "../assets/author.jpg";
+import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton.tsx";
 
+const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  authorName,
+  authorAvatar,
+} = Astro.props;
 ---
 
 <html lang="en">
@@ -63,15 +72,31 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
               }
             </div>
             <h1 class="text-3xl font-bold mb-4">{title}</h1>
-            <div class="flex items-center justify-center mt-4">
-              <Image
-                src={authorImage}
-                alt="author Avatar"
-                format="avif"
-                class="w-12 h-12 rounded-full mr-2"
-              />
-              <span class="text-white" id="authorname">Abdul Rafay</span>
+            <div
+              class="flex flex-col items-center justify-center mt-6 space-y-2"
+            >
+              <p class="text-gray-500 text-lg">Written by</p>
+
+              {
+                authorAvatar && (
+                  <Image
+                    src={authorAvatar}
+                    alt="Author avatar"
+                    class="rounded-full w-28 h-28 object-cover border-4 border-gray-300 shadow-lg"
+                    width={24}
+                    height={24}
+                  />
+                )
+              }
+              <p class="text-lg font-semibold text-gray-100 space-y-2">
+                {authorName}
+              </p>
             </div>
+            <!-- Share buttons -->
+            <div>
+              <ShareButtons url={pageUrl} />
+            </div>
+
             <hr class="mt-4" />
           </div>
           <slot />
@@ -117,4 +142,5 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   />
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" onload="AOS.init()"
   ></script>
+  <script type="module" src="/src//scripts/sharebutton/shareButton.js"></script>
 </html>

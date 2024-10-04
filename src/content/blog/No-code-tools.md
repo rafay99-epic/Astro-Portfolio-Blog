@@ -4,6 +4,8 @@ description: "Explores the nuanced relationship with GitHub copilot, discussing 
 pubDate: "July 25 2024"
 heroImage: "/WhynoCode.png"
 draft: false
+authorName: Abdul Rafay
+authorAvatar: /author.jpg
 ---
 
 In recent years, no-code tools have surged in popularity, promising quick and easy application development without the need for extensive coding knowledge. These platforms are enticing, especially for small projects or non-technical users. However, as someone who has ventured deep into the realm of no-code and low-code development, I've come to realize that they are far from ideal for large-scale projects. Here’s why:

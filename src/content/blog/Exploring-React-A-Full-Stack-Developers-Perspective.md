@@ -4,6 +4,8 @@ description: "My Journey on Learning React in a Project "
 pubDate: 2024-08-30T19:00:00.000Z
 heroImage: /Exploring React A Full-Stack Developer's Perspective (2).png
 draft: false
+authorName: Abdul Rafay
+authorAvatar: /author.jpg
 ---
 
 If you don't know, I'm a full-stack developer who develops Android and web apps for different clients. I wanted to explore more skill sets, so I started learning React. Now, if you're unfamiliar with React, you must be living under a rock because it's the biggest and most popular web framework for developing frontend applications. With multiple backend support, you can create a good-looking UI using React with a great developer experience, and it's all done with JavaScript. What could go wrong, right!?

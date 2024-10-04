@@ -1,20 +1,21 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
+import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
+import Header from "../components/AstroCompoent/header/Header.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import "../styles/home/home-page.css";
-import JobExperience from "../components/JobExperience.astro";
+import JobExperience from "../components/AstroCompoent/JobAndExperience/JobExperience.astro";
 import { Image } from "astro:assets";
 import authorImage from "../assets/author.jpg";
-import Footer from "../components/Footer.astro";
+import Footer from "../components/AstroCompoent/footer/Footer.astro";
 export const prerender = true;
+import SpeedInsights from "@vercel/speed-insights/astro";
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    <style></style>
+    <SpeedInsights />
   </head>
 
   <body>

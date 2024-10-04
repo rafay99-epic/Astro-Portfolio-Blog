@@ -1,5 +1,5 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
+import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
 export const prerender = true;
@@ -13,6 +13,7 @@ import animationData from "../assets/animation/error_2.json";
 <html lang="en">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <SpeedInsights />
   </head>
   <body class="min-h-screen overflow-hidden flex">
     <SpeedInsights />
