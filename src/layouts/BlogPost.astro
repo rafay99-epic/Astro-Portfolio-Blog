@@ -5,8 +5,9 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import { Image } from "astro:assets";
-import authorImage from "../assets/author.jpg";
+import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton.tsx";
 
+const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];
 
 const {
@@ -32,9 +33,6 @@ const {
         display: none;
         color: red;
         font-weight: bold;
-      }
-      .author-section {
-        padding-top: 2rem;
       }
     </style>
   </head>
@@ -93,7 +91,10 @@ const {
               <p class="text-lg font-semibold text-gray-100 space-y-2">
                 {authorName}
               </p>
-              <!-- Author's name with larger text and bold font -->
+            </div>
+            <!-- Share buttons -->
+            <div>
+              <ShareButtons url={pageUrl} />
             </div>
 
             <hr class="mt-4" />
@@ -141,4 +142,5 @@ const {
   />
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" onload="AOS.init()"
   ></script>
+  <script type="module" src="/src//scripts/sharebutton/shareButton.js"></script>
 </html>
