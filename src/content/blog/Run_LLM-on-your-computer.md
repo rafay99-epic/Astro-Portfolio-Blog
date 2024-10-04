@@ -1,5 +1,5 @@
 ---
-title: "DIY AI Chatbot: Free Local Setup"
+title: 'DIY AI Chatbot: Free Local Setup'
 description: >-
   Learn how to set up and run powerful AI chatbots on your PC for free, without
   spending a dime.
@@ -19,9 +19,9 @@ Don’t worry! I’m here to provide you with a free solution so you won’t hav
 Before we dive in, let’s cover some basic requirements. Don’t worry—these aren’t set in stone, but having them will significantly improve your experience.
 
 1. **Nvidia GPU**
-   - If you don’t have an Nvidia GPU, no problem. This process can run on CPUs as well, although a GPU will speed things up.
+   * If you don’t have an Nvidia GPU, no problem. This process can run on CPUs as well, although a GPU will speed things up.
 2. **A Processor with More Than 4 Cores**
-   - Ideally, you'll have a modern CPU with at least 6 cores for a smoother experience.
+   * Ideally, you'll have a modern CPU with at least 6 cores for a smoother experience.
 
 ### Installing Necessary Programs
 
@@ -32,8 +32,6 @@ To get these LLMs running on your computer, you need three main programs:
 3. Ollama WebUI
 
 I'll guide you through the installation process step by step.
-
----
 
 ### Installing Docker
 
@@ -108,8 +106,6 @@ sudo systemctl start docker
 sudo usermod -aG docker $USER
 ```
 
----
-
 ### Installing Ollama
 
 ### For Windows:
@@ -135,8 +131,6 @@ docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
 
----
-
 ### Installing Web UI
 
 To get a user-friendly experience similar to ChatGPT, you can install a Web UI using the following project: [Open WebUI](https://github.com/open-webui/open-webui).
@@ -148,8 +142,6 @@ docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-
 ```
 
 This will download the WebUI image and start it in Docker. Once the setup is complete, you can access the UI by navigating to `localhost:3000` in your browser.
-
----
 
 ### Installing a Language Model
 
@@ -169,19 +161,15 @@ ollama run llama3.2:1b
 
 Remember, the more parameters a model has, the more capable it will be—but also more resource-intensive. Make sure your system can handle it.
 
----
-
 ### Checking the Setup
 
 Once everything is up and running, open your browser and go to `localhost:3000`. You'll see the WebUI, similar to ChatGPT’s interface, and you can start using your local models!
 
----
+***
 
 ### Important Notes
 
 These models are quite large and will require a decent amount of storage space and a fast internet connection for downloading. Make sure your setup meets these needs to ensure the best experience.
-
----
 
 ### Conclusion
 
