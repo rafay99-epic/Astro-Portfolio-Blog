@@ -10,8 +10,6 @@ test.describe("404 Error Page", () => {
   });
 
   test("should display error component and animation", async ({ page }) => {
-    await page.goto("http://localhost:3000/404");
-
     // Check for ErrorPage component
     await expect(page.locator(".animated-text-container")).toBeVisible();
 

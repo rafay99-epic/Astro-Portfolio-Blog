@@ -13,8 +13,6 @@ test.describe("Homepage", () => {
   });
 
   test("should display header and social links", async ({ page }) => {
-    await page.goto("http://localhost:3000");
-
     // Check if header is visible
     await expect(page.locator("header")).toBeVisible();
 
@@ -36,8 +34,6 @@ test.describe("Homepage", () => {
   });
 
   test("should display Lottie animation", async ({ page }) => {
-    await page.goto("http://localhost:3000");
-
     // Check if Lottie animation is visible
     await expect(page.locator(".lottie-animation-container")).toBeVisible();
   });
@@ -45,8 +41,6 @@ test.describe("Homepage", () => {
   test('should navigate to contact page when clicking "Connect with Me"', async ({
     page,
   }) => {
-    await page.goto("http://localhost:3000");
-
     // Click the "Connect with Me" button and verify redirection
     await page.locator("button.connect-button").click();
     await expect(page).toHaveURL(/\/contact-me/);

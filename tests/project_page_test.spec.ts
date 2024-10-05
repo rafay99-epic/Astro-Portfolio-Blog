@@ -65,8 +65,6 @@ test.describe("Projects Page", () => {
   });
 
   test("should have correct layout and styling", async ({ page }) => {
-    await page.goto("http://localhost:3000/projects");
-
     // Check if the main container has the correct classes
     const main = page.locator("main");
     await expect(main).toBeVisible();

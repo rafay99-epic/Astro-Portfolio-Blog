@@ -14,15 +14,11 @@ test.describe("Homepage", () => {
   });
 
   test("should display author image", async ({ page }) => {
-    await page.goto("http://localhost:3000");
-
     // Check if the author image is visible
     await expect(page.locator('img[alt="author image"]')).toBeVisible();
   });
 
   test('should display "Who am I?" section', async ({ page }) => {
-    await page.goto("http://localhost:3000");
-
     // Check for the presence of "Who am I?" text
     await expect(page.locator("h2.animated-text")).toContainText(
       "So, who am I?"
@@ -36,15 +32,11 @@ test.describe("Homepage", () => {
   });
 
   test("should display job experience section", async ({ page }) => {
-    await page.goto("http://localhost:3000");
-
     // Check if JobExperience component is rendered
     await expect(page.locator("jobexperience")).toBeVisible(); // Adjust selector if needed
   });
 
   test("should display footer", async ({ page }) => {
-    await page.goto("http://localhost:3000");
-
     // Check if footer is visible
     await expect(page.locator("footer")).toBeVisible();
   });
