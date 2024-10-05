@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import projects from "../src/data/projectData.json";
+import projects from "../src/data/projectData.json" assert { type: "json" };
 
 test.describe("Projects Page", () => {
   test("should load and display correct content", async ({ page }) => {
