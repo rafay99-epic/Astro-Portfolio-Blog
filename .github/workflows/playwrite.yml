@@ -1,55 +1,65 @@
-# name: Playwright Tests on PR
-
-# on:
-#   pull_request:
-#     branches:
-#       - main
-
-# jobs:
-#   build-and-test:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - uses: actions/setup-node@v2
-#         with:
-#           node-version: "22"
-
-#       - run: npm ci
-#       - run: npm run build
-
-#       # Serve the site locally for tests (use something like serve or your own dev server)
-#       - run: npm install -g serve
-#       - run: serve -s build -l 3000 & # Assuming your build output is in a folder named 'build'
-
-#       # Run Playwright tests on localhost
-#       - run: npx playwright test --base-url=http://localhost:3000
-
 name: Playwright Tests on PR
 
 on:
   pull_request:
-    branches: [main]
 
 jobs:
-  test:
-    timeout-minutes: 60
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      # Check out the repository
+      - uses: actions/checkout@v2
+
+      # Set up Node.js version 22
+      - uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: "21"
+
+      # Install dependencies
       - name: Install dependencies
         run: npm install
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+
+      # Build the project
       - name: Build the project
         run: npm run build
+
+      # Use the preview command to serve the built site
+      - name: Preview the build
+        run: npm run preview &
+
+      # Run Playwright tests with the correct base URL
       - name: Run Playwright tests
-        run: npx playwright test
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+        run: npx playwright test --base-url=http://localhost:4321
+# Play write tests on PR and without loacl deploy
+#
+#
+#
+# name: Playwright Tests on PR
+
+# on:
+#   pull_request:
+#     branches: [main]
+
+# jobs:
+#   test:
+#     timeout-minutes: 60
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: 20
+#       - name: Install dependencies
+#         run: npm install
+#       - name: Install Playwright Browsers
+#         run: npx playwright install --with-deps
+#       - name: Build the project
+#         run: npm run build
+#       - name: Run Playwright tests
+#         run: npx playwright test
+#       - uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: playwright-report
+#           path: playwright-report/
+#           retention-days: 30
