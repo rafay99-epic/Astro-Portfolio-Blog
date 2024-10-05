@@ -29,7 +29,7 @@ jobs:
 
       # Run Playwright tests with the correct base URL
       - name: Run Playwright tests
-        run: npx playwright test --base-url=http://localhost:4321
+        run: npx playwright test
 # Play write tests on PR and without loacl deploy
 #
 #
