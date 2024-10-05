@@ -1,4 +1,5 @@
 // tests/404-page.spec.ts
+
 import { test, expect } from "@playwright/test";
 
 test.describe("404 Error Page", () => {
@@ -14,12 +15,15 @@ test.describe("404 Error Page", () => {
   });
 
   test("should display the Lottie animation", async ({ page }) => {
-    // Verify that the Lottie animation container is rendered
-    const lottieAnimation = await page.locator(".mx-auto");
-    await expect(lottieAnimation).toBeVisible();
+    // Wait for the Lottie animation container to appear
+    const lottieContainer = await page.locator(".mx-auto");
+    await expect(lottieContainer).toBeVisible();
 
-    // Optionally check for Lottie canvas (specific class might differ based on your setup)
+    // Wait for the canvas element to appear inside the Lottie animation
     const lottieCanvas = await page.locator("canvas");
-    await expect(lottieCanvas).toHaveCount(1); // Should load the canvas for Lottie
+    await lottieCanvas.waitFor({ state: "visible", timeout: 10000 });
+
+    // Verify the canvas is rendered correctly (if using canvas)
+    await expect(lottieCanvas).toHaveCount(1);
   });
 });
