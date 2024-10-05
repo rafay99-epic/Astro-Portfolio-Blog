@@ -1,44 +1,56 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Home Page", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+test.describe("Homepage", () => {
+  test("should display correct title and meta description", async ({
+    page,
+  }) => {
+    await page.goto("http://localhost:3000"); // Adjust URL if needed
+
+    // Verify page title and description
+    await expect(page).toHaveTitle(/SITE_TITLE/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      /SITE_DESCRIPTION/
+    );
   });
 
-  test("should display the header", async ({ page }) => {
-    const header = page.locator("header");
-    await expect(header).toBeVisible();
+  test("should display header and social links", async ({ page }) => {
+    await page.goto("http://localhost:3000");
+
+    // Check if header is visible
+    await expect(page.locator("header")).toBeVisible();
+
+    // Check if social links are visible
+    await expect(page.locator(".social-links-container")).toBeVisible();
   });
 
-  test("should display the greeting text", async ({ page }) => {
-    const greeting = page.locator("h1.animated-text");
-    await expect(greeting).toHaveText("Hi There!");
-  });
+  test("should display intro text", async ({ page }) => {
+    await page.goto("http://localhost:3000/");
 
-  test("should display the author name", async ({ page }) => {
-    const authorName = page.locator("h2.animated-text");
-    await expect(authorName).toHaveText("I'm Abdul Rafay");
-  });
-
-  test("should display the description", async ({ page }) => {
-    const description = page.locator("p.description");
-    await expect(description).toHaveText(
+    // Check for the presence of introductory text
+    await expect(page.locator("h1.animated-text")).toContainText("Hi There!");
+    await expect(page.locator("h2.animated-text")).toContainText(
+      "I'm Abdul Rafay"
+    );
+    await expect(page.locator(".description")).toContainText(
       "Software Engineer | Full Stack & Flutter Developer"
     );
   });
 
-  test("should display the social links", async ({ page }) => {
-    const socialLinks = page.locator(".social-links-container");
-    await expect(socialLinks).toBeVisible();
+  test("should display Lottie animation", async ({ page }) => {
+    await page.goto("http://localhost:3000");
+
+    // Check if Lottie animation is visible
+    await expect(page.locator(".lottie-animation-container")).toBeVisible();
   });
 
-  test("should display the connect button", async ({ page }) => {
-    const connectButton = page.locator("button.connect-button");
-    await expect(connectButton).toBeVisible();
-  });
+  test('should navigate to contact page when clicking "Connect with Me"', async ({
+    page,
+  }) => {
+    await page.goto("http://localhost:3000");
 
-  test("should display the Lottie animation", async ({ page }) => {
-    const lottieAnimation = page.locator(".lottie-animation-container");
-    await expect(lottieAnimation).toBeVisible();
+    // Click the "Connect with Me" button and verify redirection
+    await page.locator("button.connect-button").click();
+    await expect(page).toHaveURL(/\/contact-me/);
   });
 });
