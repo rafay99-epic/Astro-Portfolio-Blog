@@ -19,7 +19,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Build the project
+        # Installing Play writes
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
+        # Build the project
       - name: Build the project
         run: npm run build
 
