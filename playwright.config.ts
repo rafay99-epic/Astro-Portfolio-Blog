@@ -25,11 +25,10 @@ export default defineConfig({
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    permissions: ["read-write-file-system"],
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL:
     //   "https://rafay99-git-new-development-rafay99epics-projects.vercel.app/",
-    // baseURL: "http://localhost:4321",
+    baseURL: "http://localhost:4321",
     // baseURL: "http://localhost:4322"
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
