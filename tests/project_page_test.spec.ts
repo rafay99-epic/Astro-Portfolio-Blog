@@ -4,7 +4,6 @@ import projects from "../src/data/projectData.json" assert { type: "json" };
 test.describe("Projects Page", () => {
   test("should load and display correct content", async ({ page }) => {
     // Navigate to the projects page
-    await page.goto("http://localhost:3000/projects");
 
     // Check if the page title is correct
     await expect(page).toHaveTitle(/Projects/);

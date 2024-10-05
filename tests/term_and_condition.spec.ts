@@ -3,7 +3,6 @@ import { test, expect } from "@playwright/test";
 test.describe("Terms and Conditions Page", () => {
   test("should load and display correct content", async ({ page }) => {
     // Navigate to the terms and conditions page
-    await page.goto("http://localhost:3000/terms-and-conditions");
 
     // Check if the page title is correct
     await expect(page).toHaveTitle("Terms and Conditions");

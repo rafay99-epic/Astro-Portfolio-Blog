@@ -4,8 +4,6 @@ test.describe("Homepage", () => {
   test("should display correct title and meta description", async ({
     page,
   }) => {
-    await page.goto("http://localhost:3000"); // Adjust URL if needed
-
     // Verify page title and description
     await expect(page).toHaveTitle(/SITE_TITLE/);
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(

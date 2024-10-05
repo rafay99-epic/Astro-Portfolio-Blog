@@ -3,7 +3,6 @@ import { test, expect } from "@playwright/test";
 test.describe("Privacy Policy Page", () => {
   test("should load and display correct content", async ({ page }) => {
     // Navigate to the privacy policy page
-    await page.goto("http://localhost:3000/privacy-policy");
 
     // Check if the page title is correct
     await expect(page).toHaveTitle("Privacy Policy");

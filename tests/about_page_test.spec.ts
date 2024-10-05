@@ -2,8 +2,6 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Homepage", () => {
   test("should display header, title, and description", async ({ page }) => {
-    await page.goto("http://localhost:3000/about-me"); // Adjust URL if needed
-
     // Check if header is visible
     await expect(page.locator("header")).toBeVisible();
 
