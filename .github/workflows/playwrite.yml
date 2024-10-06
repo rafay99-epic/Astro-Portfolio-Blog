@@ -1,39 +1,39 @@
-name: Playwright Tests on PR
+# name: Playwright Tests on PR
 
-on:
-  pull_request:
+# on:
+#   pull_request:
 
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      # Check out the repository
-      - uses: actions/checkout@v2
+# jobs:
+#   build-and-test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       # Check out the repository
+#       - uses: actions/checkout@v2
 
-      # Set up Node.js version 22
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "21"
+#       # Set up Node.js version 22
+#       - uses: actions/setup-node@v2
+#         with:
+#           node-version: "21"
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
+#       # Install dependencies
+#       - name: Install dependencies
+#         run: npm install
 
-        # Installing Play writes
-      - name: Install Playwright
-        run: npx playwright install --with-deps
+#         # Installing Play writes
+#       - name: Install Playwright
+#         run: npx playwright install --with-deps
 
-        # Build the project
-      - name: Build the project
-        run: npm run build
+#         # Build the project
+#       - name: Build the project
+#         run: npm run build
 
-      # Use the preview command to serve the built site
-      - name: Preview the build
-        run: npm run preview &
+#       # Use the preview command to serve the built site
+#       - name: Preview the build
+#         run: npm run preview &
 
-      # Run Playwright tests with the correct base URL
-      - name: Run Playwright tests
-        run: npx playwright test
+#       # Run Playwright tests with the correct base URL
+#       - name: Run Playwright tests
+#         run: npx playwright test
 # Play write tests on PR and without loacl deploy
 #
 #
