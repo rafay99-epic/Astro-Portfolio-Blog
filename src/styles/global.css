@@ -10,17 +10,7 @@
 	--box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33),
 		0 16px 32px rgba(76, 80, 106, 0.33);
 
-	--pagefind-ui-scale: 1;
-	--pagefind-ui-primary: #7aa2f7;
-	--pagefind-ui-text: #F8F8F8;
-	--pagefind-ui-background: #1a1b26;
-	--pagefind-ui-border: #7aa2f7;
-	--pagefind-ui-tag: #7aa2f7;
-	--pagefind-ui-border-width: 2px;
-	--pagefind-ui-border-radius: 8px;
-	--pagefind-ui-image-border-radius: 8px;
-	--pagefind-ui-image-box-ratio: 3 / 2;
-	--pagefind-ui-font: sans-serif;
+
 }
 
 
