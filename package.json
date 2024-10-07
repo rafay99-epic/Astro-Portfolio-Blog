@@ -25,7 +25,6 @@
     "astro": "^4.12.0",
     "astro-pagefind": "^1.5.0",
     "fuse.js": "^7.0.0",
-    "pagefind": "^1.1.0",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1",
     "react": "^18.3.1",

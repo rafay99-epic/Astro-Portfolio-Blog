@@ -1,7 +1,6 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import pagefind from "astro-pagefind";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/static";
@@ -19,7 +18,6 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap(),
-    pagefind(),
     react({
       include: ["**/react/*"],
     }),
