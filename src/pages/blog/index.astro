@@ -5,7 +5,6 @@ import Footer from "../../components/AstroCompoent/footer/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
-import SearchField from "../../components/AstroCompoent/SearchField/SearchField.astro";
 import { Image } from "astro:assets";
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
@@ -95,7 +94,7 @@ const posts = (await getCollection("blog")).sort(
     <Header />
     <main>
       <h1>Articles</h1>
-      <SearchField />
+
       <br />
       <section>
         <ul>
