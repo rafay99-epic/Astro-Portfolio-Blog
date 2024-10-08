@@ -1,0 +1,54 @@
+{
+    "App Development": [
+        "flutter",
+        "android",
+        "reactnative",
+        "xamarin",
+        "androidstudio",
+        "xcode",
+        "vscode",
+        "intellijidea"
+    ],
+    "Frontend Development": [
+        "astro",
+        "tailwindcss",
+        "nodejs",
+        "react",
+        "HUGO",
+        "TypeScript",
+        "Handlebars"
+    ],
+    "Backend Development": [
+        "firebase",
+        "docker",
+        "mongodb",
+        "mysql",
+        "amazonwebservices",
+        "googlecloudfunctions",
+        "restapi",
+        "graphql",
+        "sqlite",
+        "realm"
+    ],
+    "Cloud Computing": [
+        "vercel",
+        "aws",
+        "linux",
+        "Netlify",
+        "Digital Ocean",
+        "Microsoft"
+    ],
+    "Essential": [
+        "git",
+        "github",
+        "gitlab",
+        "bitbucket",
+        "sketch"
+    ],
+    "Scripting": [
+        "powershell",
+        "bash",
+        "lua",
+        "python"
+    ]
+}

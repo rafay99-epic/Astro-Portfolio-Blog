@@ -1,67 +1,32 @@
 ---
 import { getCollection } from "astro:content";
 
-// Get all blog posts and sort them by date
 const allPosts = await getCollection("blog");
 allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// Select only the first 4 posts (you can modify this selection criteria as needed)
 const selectedPosts = allPosts.slice(0, 4);
 ---
 
-
 <div class="bg-[#1f2335] text-[#F8F8F8] py-8">
-    <div class="container mx-auto px-6">
-      <h1 class="text-center text-6xl font-bold mb-6">Featured Content</h1>
-      <p class="text-center text-lg font-bold mb-6">
-        A collection of my best and most popular articles. Make sure to take a look!
-
-      </p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {
-          selectedPosts.map((post) => (
-            <a href={`/blog/${post.slug}`} class="block">
-              <article
-                class="bg-[#1f2335] border border-[#7aa2f7] rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full" 
-                style="box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33);"
-              >
-                <img
-                  src={post.data.heroImage} 
-                  alt={post.data.title}
-                  class="w-full h-48 object-cover" 
-                />
-                <div class="p-6 flex-1"> <!-- Added flex-1 to allow this section to take remaining space -->
-                  <h2 class="text-2xl font-bold mb-2 text-[#7aa2f7]">
-                    {post.data.title}
-                  </h2>
-                  <p class="text-[#F8F8F8] opacity-75 mb-4">
-                    {post.data.pubDate.toLocaleDateString()}
-                  </p>
-                  <p class="text-[#F8F8F8]">
-                    {post.data.description || "No description available"}
-                  </p>
-                </div>
-              </article>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </div>
-  
-<!-- 
-<div class="bg-[#1f2335] text-[#F8F8F8] py-8">
-  <div class="container mx-auto px-6">
-    <h1 class="text-center text-6xl font-bold mb-6">Search Articles</h1>
+  <div class="container mx-auto px-4 md:px-6">
+    <h1 class="text-center text-6xl font-bold mb-6">Featured Content</h1>
+    <p class="text-center text-lg font-bold mb-6">
+      A collection of my best and most popular articles. Make sure to take a
+      look!
+    </p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {
         selectedPosts.map((post) => (
           <a href={`/blog/${post.slug}`} class="block">
             <article
-              class="bg-[#1f2335] border border-[#7aa2f7] rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              class="bg-[#1f2335] border border-[#7aa2f7] rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
               style="box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33);"
             >
-              <div class="p-6">
+              <img
+                src={post.data.heroImage}
+                alt={post.data.title}
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-6 flex-1">
                 <h2 class="text-2xl font-bold mb-2 text-[#7aa2f7]">
                   {post.data.title}
                 </h2>
@@ -78,4 +43,4 @@ const selectedPosts = allPosts.slice(0, 4);
       }
     </div>
   </div>
-</div> -->
+</div>

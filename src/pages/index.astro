@@ -8,7 +8,9 @@ export const prerender = true;
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import FeaturedPost from "../components/AstroCompoent/home/FeaturePost/featurePost.astro";
-import NewsletterReactCompoent from "../components/ReaactCompoents/Newsletter/newsletter";
+import LatestPost from "../components/AstroCompoent/home/LatestPost/LatestPost.astro";
+import SkillsShowcase from "../components/ReaactCompoents/JobSkills/jobSkills";
+import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePageContact";
 ---
 
 <!doctype html>
@@ -19,6 +21,20 @@ import NewsletterReactCompoent from "../components/ReaactCompoents/Newsletter/ne
   <body>
     <Header />
     <SpeedInsights />
+    <style>
+      /* Add this in your CSS file */
+      #next-button {
+        cursor: pointer;
+      }
+
+      #next-button:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .grid {
+        transition: all 0.3s ease-in-out;
+      }
+    </style>
     <main>
       <section>
         <div class="main-container">
@@ -55,18 +71,35 @@ import NewsletterReactCompoent from "../components/ReaactCompoents/Newsletter/ne
       </section>
       <!-- Next section: Feature Content -->
       <section style="margin-top: 12rem;">
-        <!-- Adjust the margin value as per your preference -->
         <FeaturedPost />
       </section>
 
-      <!-- Subscribe to my newsletter -->
-      <section style="margin-top: 12rem;">
-        <NewsletterReactCompoent client:load />
+      <section style="margin-top: 5rem;">
+        <LatestPost />
       </section>
 
-      <!-- Lattest Blog Post -->
+      <section style="margin-top: 5rem;">
+        <h1 class="text-center text-6xl font-bold mb-6">Tool & Technology</h1>
+        <p class="text-center text-lg font-bold mb-6">
+          I have experience with these technologies
+        </p>
+        <SkillsShowcase client:load />
+      </section>
 
-      <!-- I will be happy to connect with you  -->
+      <section style="margin-top: 5rem; margin-bottom: 10rem;">
+        <h1 class="text-6xl font-bold text-center text-[#c0caf5] leading-snug">
+          I'D BE HAPPY TO CONNECT
+          <span
+            class="bg-gradient-to-r from-blue-500 via-blue-700 to-teal-600 text-transparent bg-clip-text"
+          >
+            WITH YOU
+          </span>
+        </h1>
+        <p class="text-center text-lg font-bold mb-6">
+          Let's Connect & Build Something Together
+        </p>
+        <ContactFormHome client:load />
+      </section>
 
       <!-- footer -->
       <Footer />

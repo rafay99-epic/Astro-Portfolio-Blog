@@ -61,7 +61,8 @@ const Newsletter: React.FC = () => {
       <div
         className=" rounded-lg shadow-lg p-8 w-full max-w-4xl"
         style={{
-          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.4)",
+          boxShadow:
+            "0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33);",
         }}
       >
         <h2 className="text-5xl font-extrabold text-center text-white mb-6">

@@ -11,6 +11,10 @@
 		0 16px 32px rgba(76, 80, 106, 0.33);
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 @font-face {
 	font-family: 'Atkinson';
 	src: url('/fonts/atkinson-regular.woff') format('woff');
@@ -414,4 +418,23 @@ ol ol {
 ul li::marker,
 ol li::marker {
 	color: var(--accent);
+}
+
+.custom-button {
+	background-color: #7aa2f7;
+	color: #f8f8f8;
+	padding: 0.5rem 1rem;
+	max-width: 150px;
+	border-radius: 0.375rem;
+	display: flex;
+	box-shadow:
+		0 2px 6px rgba(76, 80, 106, 0.25),
+		0 8px 24px rgba(76, 80, 106, 0.33);
+	transition:
+		transform 0.3s,
+		box-shadow 0.3s;
+}
+
+.custom-button:hover {
+	transform: scale(1.05);
 }
