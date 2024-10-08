@@ -65,7 +65,7 @@ const Newsletter: React.FC = () => {
         }}
       >
         <h2 className="text-5xl font-extrabold text-center text-white mb-6">
-          Subscribe to Our Newsletter
+          Subscribe to my Newsletter
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

@@ -7,6 +7,8 @@ import "../styles/home/home-page.css";
 export const prerender = true;
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
+import FeaturedPost from "../components/AstroCompoent/home/FeaturePost/featurePost.astro";
+import NewsletterReactCompoent from "../components/ReaactCompoents/Newsletter/newsletter";
 ---
 
 <!doctype html>
@@ -52,9 +54,15 @@ import Footer from "../components/AstroCompoent/footer/Footer.astro";
         </div>
       </section>
       <!-- Next section: Feature Content -->
-      <section></section>
+      <section style="margin-top: 12rem;">
+        <!-- Adjust the margin value as per your preference -->
+        <FeaturedPost />
+      </section>
 
       <!-- Subscribe to my newsletter -->
+      <section style="margin-top: 12rem;">
+        <NewsletterReactCompoent client:load />
+      </section>
 
       <!-- Lattest Blog Post -->
 
