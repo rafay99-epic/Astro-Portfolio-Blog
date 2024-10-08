@@ -7,6 +7,7 @@ import FormattedDate from "../components/FormattedDate.astro";
 import { Image } from "astro:assets";
 import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton.tsx";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import PostComment from "../components/AstroCompoent/BlogComments/PostComment.astro";
 
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];
@@ -115,9 +116,10 @@ const {
             </div>
             <script src="/src/scripts/AdBlocker/addblocker.js"></script>
           </div>
-          <div>
+          <div class="my-8 text-center">
             <h2 class="text-2xl font-semibold mb-4">Comments</h2>
-            <script
+            <PostComment />
+            <!-- <script
               src="https://giscus.app/client.js"
               data-repo="rafay99-epic/Astro-Portfolio-Blog"
               data-repo-id="R_kgDOMZI1RA"
@@ -131,7 +133,7 @@ const {
               data-theme="dark"
               data-lang="en"
               crossorigin="anonymous"
-              async></script>
+              async></script> -->
           </div>
         </div>
       </article>
