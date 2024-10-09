@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Fuse from "fuse.js";
 
-// Updated Post interface matching Astro's post structure
 interface Post {
   id: string;
   slug: string;
@@ -39,21 +38,18 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
   useEffect(() => {
     let filteredPosts = [...posts];
 
-    // Apply author filter
     if (authorFilter) {
       filteredPosts = filteredPosts.filter((post) =>
         post.data.authorName.toLowerCase().includes(authorFilter.toLowerCase())
       );
     }
 
-    // Apply date filter (start date)
     if (startDate) {
       filteredPosts = filteredPosts.filter(
         (post) => new Date(post.data.pubDate) >= new Date(startDate)
       );
     }
 
-    // Use Fuse.js to search in title and description fields
     if (query) {
       const fuse = new Fuse(filteredPosts, {
         keys: ["data.title", "data.description"],
@@ -62,17 +58,14 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
       const searchResults = fuse.search(query).map((result) => result.item);
       setResults(searchResults);
     } else if (authorFilter || startDate) {
-      // If no query but filters are applied, show filtered results
       setResults(filteredPosts);
     } else {
-      // If no search and no filters, clear the results
       setResults([]);
     }
   }, [query, authorFilter, startDate, posts]);
 
   return (
     <div className="p-4 text-white">
-      {/* Search bar */}
       <div className="mb-4">
         <input
           type="text"
@@ -90,12 +83,8 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
         />
       </div>
 
-      {/* Filters */}
-      {/* Filters */}
       <div className="mb-4 space-y-4">
-        {/* Filters Section */}
         <div className="flex flex-wrap gap-4 items-start">
-          {/* Date Range Filters */}
           <div className="w-full sm:w-1/3">
             <label className="block mb-1 text-gray-200">Date:</label>
             <input
@@ -109,12 +98,11 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
                 borderColor: searchStyles.border,
                 borderRadius: "8px",
                 fontFamily: "sans-serif",
-                fontSize: "1rem", // Same font size as input
+                fontSize: "1rem",
               }}
             />
           </div>
 
-          {/* Filter by Author */}
           <div className="w-full sm:w-1/3">
             <label className="block mb-1 text-gray-200">Author:</label>
             <input
@@ -129,14 +117,13 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
                 borderColor: searchStyles.border,
                 borderRadius: "8px",
                 fontFamily: "sans-serif",
-                fontSize: "1rem", // Matching font size
+                fontSize: "1rem",
               }}
             />
           </div>
         </div>
       </div>
 
-      {/* Search results */}
       <div className="space-y-4">
         {results.length > 0
           ? results.map((post, index) => (
@@ -149,7 +136,13 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
                 }}
               >
                 <h2 className="text-xl" style={{ color: searchStyles.primary }}>
-                  {post.data.title}
+                  <a
+                    href={`/blog/${post.slug}`}
+                    className="hover:underline"
+                    style={{ color: searchStyles.primary }}
+                  >
+                    {post.data.title}
+                  </a>
                 </h2>
                 <p className="text-gray-300">{post.data.description}</p>
                 <p className="text-gray-500 text-sm">
