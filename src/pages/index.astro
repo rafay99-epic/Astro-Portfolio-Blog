@@ -11,6 +11,8 @@ import FeaturedPost from "../components/AstroCompoent/home/FeaturePost/featurePo
 import LatestPost from "../components/AstroCompoent/home/LatestPost/LatestPost.astro";
 import SkillsShowcase from "../components/ReaactCompoents/JobSkills/jobSkills";
 import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePageContact";
+import authorConfig from "../config/info";
+const { name, jobTitle, position, picture } = authorConfig;
 ---
 
 <!doctype html>
@@ -21,20 +23,6 @@ import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePage
   <body>
     <Header />
     <SpeedInsights />
-    <style>
-      /* Add this in your CSS file */
-      #next-button {
-        cursor: pointer;
-      }
-
-      #next-button:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-
-      .grid {
-        transition: all 0.3s ease-in-out;
-      }
-    </style>
     <main>
       <section>
         <div class="main-container">
@@ -42,9 +30,9 @@ import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePage
             <div class="left-container">
               <div class="animated-text-container">
                 <h1 class="animated-text fade-slide-in">Hi There!</h1>
-                <h2 class="animated-text fade-slide-in">I'm Abdul Rafay</h2>
+                <h2 class="animated-text fade-slide-in">I'm {name}</h2>
                 <p class="animated-text fade-slide-in description">
-                  Software Engineer | Full Stack & Flutter Developer
+                  {jobTitle} | {position}
                 </p>
                 <div class="animated-text fade-slide-in social-links-container">
                   <SocialLinks />
@@ -60,7 +48,7 @@ import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePage
               <div class="relative flex items-center justify-center">
                 <div class="animate-random-blob"></div>
                 <img
-                  src="/author.jpg"
+                  src={picture}
                   alt="Profile Image"
                   class="relative z-10 w-[26rem] h-[26rem] rounded-full object-cover shadow-2xl"
                 />
@@ -83,7 +71,7 @@ import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePage
         <p class="text-center text-lg font-bold mb-6">
           I have experience with these technologies
         </p>
-        <SkillsShowcase client:load />
+        <SkillsShowcase client:idle />
       </section>
 
       <section style="margin-top: 5rem; margin-bottom: 10rem;">
@@ -98,7 +86,7 @@ import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePage
         <p class="text-center text-lg font-bold mb-6">
           Let's Connect & Build Something Together
         </p>
-        <ContactFormHome client:load />
+        <ContactFormHome client:idle />
       </section>
 
       <!-- footer -->

@@ -1,6 +1,7 @@
-// hooks/useContactForm.ts
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import authorConfig from "../../../config/info";
 
+const { webformKey } = authorConfig;
 interface FormData {
   name: string;
   email: string;
@@ -32,7 +33,7 @@ export const useContactForm = () => {
     setFormStatus("loading");
 
     const data = new FormData();
-    data.append("access_key", "c0613ed5-2935-40a1-8d33-b32fd9eea403");
+    data.append("access_key", webformKey);
     data.append("name", formData.name);
     data.append("email", formData.email);
     data.append("message", formData.message);

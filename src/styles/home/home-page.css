@@ -169,3 +169,15 @@
 .main-container {
     margin-top: 4rem;
 }
+
+#next-button {
+    cursor: pointer;
+}
+
+#next-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.grid {
+    transition: all 0.3s ease-in-out;
+}
