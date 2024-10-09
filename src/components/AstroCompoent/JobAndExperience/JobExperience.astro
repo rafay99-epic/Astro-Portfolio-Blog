@@ -1,6 +1,7 @@
 ---
 import ExperienceCards from "./ExperienceCard.astro";
-import jobData from "../../../data/jobData.json";
+import authorConfig from "../../../config/info";
+const workExperience = authorConfig.workExperience;
 ---
 
 <style>
@@ -14,11 +15,12 @@ import jobData from "../../../data/jobData.json";
     gap: 20px;
   }
 </style>
+
 <div class="experience-container">
   <h2 style="text-align: center;" class="job-experience">Job Experience</h2>
   <div class="experience-cards">
     {
-      jobData.map((job) => (
+      workExperience.map((job) => (
         <ExperienceCards
           company={job.companyName}
           position={job.position}

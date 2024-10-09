@@ -110,6 +110,7 @@
 
     .connect-button {
         align-self: center;
+        margin-bottom: 5rem;
     }
 
     .left-container,
@@ -128,4 +129,55 @@
     .animated-text-container {
         align-items: flex-start;
     }
+}
+
+@keyframes randomBlobShift {
+
+    0%,
+    100% {
+        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+        transform: translate(0, 0) scale(1);
+    }
+
+    25% {
+        border-radius: 60% 40% 70% 30% / 30% 60% 40% 70%;
+        transform: translate(-20px, 30px) scale(1.1);
+    }
+
+    50% {
+        border-radius: 40% 60% 50% 50% / 70% 30% 60% 40%;
+        transform: translate(20px, -30px) scale(0.9);
+    }
+
+    75% {
+        border-radius: 70% 30% 40% 60% / 50% 50% 40% 60%;
+        transform: translate(-30px, 20px) scale(1.2);
+    }
+}
+
+.animate-random-blob {
+    background: linear-gradient(135deg, #7aa2f7, #414868);
+    animation: randomBlobShift 6s ease-in-out infinite;
+    width: 30rem;
+    height: 30rem;
+    position: absolute;
+    opacity: 0.8;
+    filter: blur(100px);
+    transform-origin: center;
+}
+
+.main-container {
+    margin-top: 4rem;
+}
+
+#next-button {
+    cursor: pointer;
+}
+
+#next-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.grid {
+    transition: all 0.3s ease-in-out;
 }

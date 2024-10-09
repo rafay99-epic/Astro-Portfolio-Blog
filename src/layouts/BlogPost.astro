@@ -6,6 +6,9 @@ import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import { Image } from "astro:assets";
 import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton.tsx";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import PostComment from "../components/AstroCompoent/BlogComments/PostComment.astro";
+import AdLoader from "../components/ReaactCompoents/AdsLoader/Adloader";
 
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];
@@ -39,7 +42,8 @@ const {
 
   <body>
     <Header />
-    <main data-pagefind-body class="w-full max-w-5xl mx-auto px-4 py-8">
+    <SpeedInsights />
+    <main class="w-full max-w-5xl mx-auto px-4 py-8">
       <article>
         <div class="w-full mb-4">
           {
@@ -92,7 +96,6 @@ const {
                 {authorName}
               </p>
             </div>
-            <!-- Share buttons -->
             <div>
               <ShareButtons url={pageUrl} />
             </div>
@@ -101,36 +104,11 @@ const {
           </div>
           <slot />
           <div class="my-8 text-center">
-            <h2 class="text-2xl font-semibold mb-4">Advertisements</h2>
-            <script
-              async="async"
-              data-cfasync="false"
-              src="//pl24384595.cpmrevenuegate.com/75a9e4d4cdc61042594f971bcbc143dd/invoke.js"
-            ></script>
-            <div id="container-75a9e4d4cdc61042594f971bcbc143dd"></div>
-            <div id="ad-blocker-message">
-              It looks like you are using an ad blocker. Please disable it to
-              support our site.
-            </div>
-            <script src="/src/scripts/AdBlocker/addblocker.js"></script>
+            <AdLoader client:load />
           </div>
-          <div>
+          <div class="my-8 text-center">
             <h2 class="text-2xl font-semibold mb-4">Comments</h2>
-            <script
-              src="https://giscus.app/client.js"
-              data-repo="rafay99-epic/Astro-Portfolio-Blog"
-              data-repo-id="R_kgDOMZI1RA"
-              data-category="General"
-              data-category-id="DIC_kwDOMZI1RM4ChJFA"
-              data-mapping="url"
-              data-strict="0"
-              data-reactions-enabled="1"
-              data-emit-metadata="0"
-              data-input-position="bottom"
-              data-theme="dark"
-              data-lang="en"
-              crossorigin="anonymous"
-              async></script>
+            <PostComment />
           </div>
         </div>
       </article>
@@ -142,5 +120,4 @@ const {
   />
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" onload="AOS.init()"
   ></script>
-  <script type="module" src="/src//scripts/sharebutton/shareButton.js"></script>
 </html>

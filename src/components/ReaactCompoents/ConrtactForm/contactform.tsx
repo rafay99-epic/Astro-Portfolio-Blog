@@ -1,59 +1,9 @@
-import React, { useState, type ChangeEvent, type FormEvent } from "react";
-
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
+// components/ContactForm.tsx
+import React from "react";
+import { useContactForm } from "../ConrtactForm/contactFormHook"; // Import the custom hook
 
 const ContactForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [formStatus, setFormStatus] = useState<
-    "success" | "error" | "loading" | null
-  >(null);
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setFormStatus("loading");
-
-    const data = new FormData();
-    data.append("access_key", "c0613ed5-2935-40a1-8d33-b32fd9eea403");
-    data.append("name", formData.name);
-    data.append("email", formData.email);
-    data.append("message", formData.message);
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: data,
-      });
-
-      if (response.ok) {
-        setFormStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-
-        // Clear the URL after successful submission
-        window.history.replaceState(null, "", window.location.pathname);
-      } else {
-        setFormStatus("error");
-      }
-    } catch (error) {
-      setFormStatus("error");
-    }
-  };
+  const { formData, formStatus, handleChange, handleSubmit } = useContactForm();
 
   return (
     <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-xxl mx-auto">
