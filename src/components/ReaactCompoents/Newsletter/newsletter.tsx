@@ -2,7 +2,6 @@ import React from "react";
 import { useNewsletter } from "./useNewletter";
 
 const Newsletter: React.FC = () => {
-
   const {
     email,
     setEmail,
