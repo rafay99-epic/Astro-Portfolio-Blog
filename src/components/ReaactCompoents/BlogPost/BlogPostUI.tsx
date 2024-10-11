@@ -23,7 +23,7 @@ const BlogSectionUI: React.FC<BlogSectionUIProps> = ({
       transition={{ duration: 0.3 }}
       style={{ backgroundColor: "var(--accent-dark)" }}
     >
-      <h1 className="text-6xl p-7 font-bold text-accent mb-8">Articles</h1>
+      <h1 className="text-6xl p-7 font-bold  mb-8">Articles</h1>
       <section>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
           {currentPosts.map((post) => (
