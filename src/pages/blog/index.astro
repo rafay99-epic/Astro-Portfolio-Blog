@@ -4,14 +4,50 @@ import Header from "../../components/AstroCompoent/header/Header.astro";
 import Footer from "../../components/AstroCompoent/footer/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
-import FormattedDate from "../../components/FormattedDate.astro";
-import SearchField from "../../components/AstroCompoent/SearchField/SearchField.astro";
-import { Image } from "astro:assets";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import BlogSection from "../../components/ReaactCompoents/BlogPost/BlogPost";
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
 ---
 
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <SpeedInsights />
+    <BlogSection posts={posts} client:idle />
+    <Footer />
+  </body>
+</html>
+
+<!-- 
+
+ ██████╗ ██╗     ██████╗     ██╗   ██╗███████╗██████╗ ███████╗██╗ ██████╗ ███╗   ██╗
+██╔═══██╗██║     ██╔══██╗    ██║   ██║██╔════╝██╔══██╗██╔════╝██║██╔═══██╗████╗  ██║
+██║   ██║██║     ██║  ██║    ██║   ██║█████╗  ██████╔╝███████╗██║██║   ██║██╔██╗ ██║
+██║   ██║██║     ██║  ██║    ╚██╗ ██╔╝██╔══╝  ██╔══██╗╚════██║██║██║   ██║██║╚██╗██║
+╚██████╔╝███████╗██████╔╝     ╚████╔╝ ███████╗██║  ██║███████║██║╚██████╔╝██║ ╚████║
+ ╚═════╝ ╚══════╝╚═════╝       ╚═══╝  ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
+██████╗ ██╗   ██╗██████╗ ███████╗     █████╗ ███████╗████████╗██████╗  ██████╗ 
+██╔══██╗██║   ██║██╔══██╗██╔════╝    ██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔═══██╗
+██████╔╝██║   ██║██████╔╝█████╗      ███████║███████╗   ██║   ██████╔╝██║   ██║
+██╔═══╝ ██║   ██║██╔══██╗██╔══╝      ██╔══██║╚════██║   ██║   ██╔══██╗██║   ██║
+██║     ╚██████╔╝██║  ██║███████╗    ██║  ██║███████║   ██║   ██║  ██║╚██████╔╝
+╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝    ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ 
+                                                                               
+ ██████╗ ██████╗ ███╗   ███╗██████╗  ██████╗ ███╗   ██╗███████╗███╗   ██╗████████╗        
+██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔═══██╗████╗  ██║██╔════╝████╗  ██║╚══██╔══╝        
+██║     ██║   ██║██╔████╔██║██████╔╝██║   ██║██╔██╗ ██║█████╗  ██╔██╗ ██║   ██║           
+██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██║   ██║██║╚██╗██║██╔══╝  ██║╚██╗██║   ██║           
+╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ╚██████╔╝██║ ╚████║███████╗██║ ╚████║   ██║           
+ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═══╝   ╚═╝           
+                                                                                          
+-->
+<!--
 <!doctype html>
 <html lang="en">
   <head>
@@ -93,9 +129,10 @@ const posts = (await getCollection("blog")).sort(
   </head>
   <body>
     <Header />
+    <SpeedInsights />
     <main>
       <h1>Articles</h1>
-      <SearchField />
+
       <br />
       <section>
         <ul>
@@ -133,4 +170,4 @@ const posts = (await getCollection("blog")).sort(
     </main>
     <Footer />
   </body>
-</html>
+</html> -->
