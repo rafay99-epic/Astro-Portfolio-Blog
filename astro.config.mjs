@@ -12,6 +12,18 @@ export default defineConfig({
   build: {
     format: "file",
   },
+  markdown: {
+    shikiConfig: {
+      theme: "tokyo-night",
+      defaultColor: false,
+      langs: [],
+      langAlias: {
+        cjs: "javascript",
+      },
+      wrap: true,
+      transformers: [],
+    },
+  },
   security: {
     checkOrigin: true,
   },
