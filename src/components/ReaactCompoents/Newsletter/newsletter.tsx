@@ -1,60 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNewsletter } from "./useNewletter";
 
 const Newsletter: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [isAgreed, setIsAgreed] = useState<boolean>(false);
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [statusColor, setStatusColor] = useState<string>("");
 
-  const apiKey = import.meta.env.PUBLIC_API_KEY;
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!email) {
-      setStatusMessage("Please enter an email.");
-      setStatusColor("text-red-500");
-      return;
-    }
-
-    if (!isAgreed) {
-      setStatusMessage("You must agree to the terms to subscribe.");
-      setStatusColor("text-red-500");
-      return;
-    }
-
-    try {
-      const response = await fetch("https://api.brevo.com/v3/contacts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "api-key": apiKey,
-        },
-        body: JSON.stringify({
-          email: email,
-          listIds: [4],
-          updateEnabled: false,
-          attributes: {},
-        }),
-      });
-
-      if (response.ok) {
-        setStatusMessage("Thank you for subscribing!");
-        setStatusColor("text-[#7aa2f7]");
-        setEmail("");
-        setIsAgreed(false);
-      } else {
-        const errorData = await response.json();
-        console.error("Error response:", errorData);
-        setStatusMessage(`Error: ${errorData.message || "Please try again."}`);
-        setStatusColor("text-red-500");
-      }
-    } catch (error) {
-      console.error("Request failed:", error);
-      setStatusMessage("Error, please try again.");
-      setStatusColor("text-red-500");
-    }
-  };
+  const {
+    email,
+    setEmail,
+    isAgreed,
+    setIsAgreed,
+    statusMessage,
+    statusColor,
+    handleSubmit,
+  } = useNewsletter();
 
   return (
     <div className="flex items-center justify-center p-4 bg-gradient-to-br">
