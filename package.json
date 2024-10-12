@@ -17,6 +17,9 @@
     "@astrojs/sitemap": "^3.1.6",
     "@astrojs/tailwind": "^5.1.0",
     "@astrojs/vercel": "^7.8.0",
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/ios": "^6.1.2",
     "@tailwindcss/typography": "^0.5.15",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -37,6 +40,7 @@
     "tinacms": "^1.5.17"
   },
   "devDependencies": {
+    "@capacitor/cli": "^6.1.2",
     "@gsap/react": "^2.1.1",
     "@playwright/test": "^1.45.3",
     "@tinacms/cli": "^1.5.26",
