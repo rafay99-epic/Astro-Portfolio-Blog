@@ -1,9 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-
 const allPosts = await getCollection("blog");
-allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const selectedPosts = allPosts.slice(0, 4);
+const publishedPosts = allPosts.filter((post) => !post.data.draft);
+publishedPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const selectedPosts = publishedPosts.slice(0, 4);
 ---
 
 <div class="bg-[#1f2335] text-[#F8F8F8] py-8">
