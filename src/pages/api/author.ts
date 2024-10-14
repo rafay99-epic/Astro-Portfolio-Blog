@@ -1,12 +1,12 @@
-import { getCollection } from "astro:content";
+import authorConfig from "../../config/info";
 
 export async function GET({ request }: { request: Request }) {
   try {
     // Get the API key from the headers
-    const apiKey = request.headers.get("blog-api-key");
+    const apiKey = request.headers.get("x-api-key");
 
     // Compare with the environment API key
-    if (apiKey !== import.meta.env.BlogAPIKey) {
+    if (apiKey !== import.meta.env.AuthorAPIKey) {
       return new Response(
         JSON.stringify({ error: "Unauthorized: Invalid API Key" }),
         {
@@ -19,10 +19,11 @@ export async function GET({ request }: { request: Request }) {
       );
     }
 
-    // Fetch blog posts
-    const posts = await getCollection("blog");
+    const responseData = {
+      author: authorConfig,
+    };
 
-    return new Response(JSON.stringify(posts), {
+    return new Response(JSON.stringify(responseData), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -30,9 +31,9 @@ export async function GET({ request }: { request: Request }) {
       },
     });
   } catch (error) {
-    console.error("Error fetching blog posts:", error);
+    console.error("Error fetching author data:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to fetch blog posts" }),
+      JSON.stringify({ error: "Failed to fetch author data" }),
       {
         status: 500,
         headers: {

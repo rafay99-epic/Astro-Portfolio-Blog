@@ -25,6 +25,7 @@
     "astro": "^4.12.0",
     "astro-pagefind": "^1.5.0",
     "devicon": "^2.16.0",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.11.4",
     "fuse.js": "^7.0.0",
     "prettier": "^3.3.3",
