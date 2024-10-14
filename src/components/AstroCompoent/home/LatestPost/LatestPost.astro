@@ -1,12 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 
-// Fetch blog posts and sort them by publication date (latest first)
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+// Fetch blog posts and filter out drafts
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft) // Filter out drafts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()); // Sort by publication date
 
-// Select the first four posts
+// Select the first four published posts
 const selectedPosts = posts.slice(0, 4);
 ---
 

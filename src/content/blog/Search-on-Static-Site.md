@@ -1,6 +1,6 @@
 ---
 title: Search on Static Site
-description: 'Custom Search via React '
+description: "Custom Search via React "
 pubDate: 2024-10-12T19:00:00.000Z
 draft: true
 heroImage: /_aaf6eae4-3d51-4891-93ec-a658eda79461.jpeg
