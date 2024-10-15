@@ -2,6 +2,8 @@ import { defineConfig } from "tinacms";
 
 const branch = "main";
 
+const BlogPostFields = [];
+
 export default defineConfig({
   branch,
   clientId: "ca928060-14c1-452c-938e-9a1e7feaae19",
@@ -20,8 +22,9 @@ export default defineConfig({
     collections: [
       {
         name: "post",
-        label: "Posts",
+        label: "Articles",
         path: "/src/content/blog",
+        format: "mdx",
         fields: [
           {
             type: "string",
@@ -64,6 +67,44 @@ export default defineConfig({
             type: "image",
             name: "authorAvatar",
             label: "Author Avatar",
+            required: true,
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Body",
+            isBody: true,
+          },
+        ],
+      },
+      {
+        name: "newsletter",
+        label: "Newsletters",
+        path: "/src/content/newsletter",
+        format: "mdx",
+        fields: [
+          {
+            type: "string",
+            name: "title",
+            label: "Newsletter Title",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "summary",
+            label: "Summary",
+            required: true,
+          },
+          {
+            type: "datetime",
+            name: "pubDate",
+            label: "Publish Date",
+            required: true,
+          },
+          {
+            type: "boolean",
+            name: "draft",
+            label: "Draft",
             required: true,
           },
           {

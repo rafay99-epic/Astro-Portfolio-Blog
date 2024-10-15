@@ -83,6 +83,8 @@ export type Query = {
   document: DocumentNode;
   post: Post;
   postConnection: PostConnection;
+  newsletter: Newsletter;
+  newsletterConnection: NewsletterConnection;
 };
 
 
@@ -121,8 +123,24 @@ export type QueryPostConnectionArgs = {
   filter?: InputMaybe<PostFilter>;
 };
 
+
+export type QueryNewsletterArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryNewsletterConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<NewsletterFilter>;
+};
+
 export type DocumentFilter = {
   post?: InputMaybe<PostFilter>;
+  newsletter?: InputMaybe<NewsletterFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -162,7 +180,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Post | Folder;
+export type DocumentNode = Post | Newsletter | Folder;
 
 export type Post = Node & Document & {
   __typename?: 'Post';
@@ -236,6 +254,39 @@ export type PostConnection = Connection & {
   edges?: Maybe<Array<Maybe<PostConnectionEdges>>>;
 };
 
+export type Newsletter = Node & Document & {
+  __typename?: 'Newsletter';
+  title: Scalars['String']['output'];
+  summary: Scalars['String']['output'];
+  pubDate: Scalars['String']['output'];
+  draft: Scalars['Boolean']['output'];
+  body?: Maybe<Scalars['JSON']['output']>;
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
+export type NewsletterFilter = {
+  title?: InputMaybe<StringFilter>;
+  summary?: InputMaybe<StringFilter>;
+  pubDate?: InputMaybe<DatetimeFilter>;
+  draft?: InputMaybe<BooleanFilter>;
+  body?: InputMaybe<RichTextFilter>;
+};
+
+export type NewsletterConnectionEdges = {
+  __typename?: 'NewsletterConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<Newsletter>;
+};
+
+export type NewsletterConnection = Connection & {
+  __typename?: 'NewsletterConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<NewsletterConnectionEdges>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -244,6 +295,8 @@ export type Mutation = {
   createDocument: DocumentNode;
   updatePost: Post;
   createPost: Post;
+  updateNewsletter: Newsletter;
+  createNewsletter: Newsletter;
 };
 
 
@@ -285,13 +338,27 @@ export type MutationCreatePostArgs = {
   params: PostMutation;
 };
 
+
+export type MutationUpdateNewsletterArgs = {
+  relativePath: Scalars['String']['input'];
+  params: NewsletterMutation;
+};
+
+
+export type MutationCreateNewsletterArgs = {
+  relativePath: Scalars['String']['input'];
+  params: NewsletterMutation;
+};
+
 export type DocumentUpdateMutation = {
   post?: InputMaybe<PostMutation>;
+  newsletter?: InputMaybe<NewsletterMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type DocumentMutation = {
   post?: InputMaybe<PostMutation>;
+  newsletter?: InputMaybe<NewsletterMutation>;
 };
 
 export type PostMutation = {
@@ -305,7 +372,17 @@ export type PostMutation = {
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
+export type NewsletterMutation = {
+  title?: InputMaybe<Scalars['String']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  pubDate?: InputMaybe<Scalars['String']['input']>;
+  draft?: InputMaybe<Scalars['Boolean']['input']>;
+  body?: InputMaybe<Scalars['JSON']['input']>;
+};
+
 export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage: string, authorName: string, authorAvatar: string, body?: any | null };
+
+export type NewsletterPartsFragment = { __typename?: 'Newsletter', title: string, summary: string, pubDate: string, draft: boolean, body?: any | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -326,6 +403,25 @@ export type PostConnectionQueryVariables = Exact<{
 
 export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, draft: boolean, heroImage: string, authorName: string, authorAvatar: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
+export type NewsletterQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type NewsletterQuery = { __typename?: 'Query', newsletter: { __typename?: 'Newsletter', id: string, title: string, summary: string, pubDate: string, draft: boolean, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+
+export type NewsletterConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<NewsletterFilter>;
+}>;
+
+
+export type NewsletterConnectionQuery = { __typename?: 'Query', newsletterConnection: { __typename?: 'NewsletterConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'NewsletterConnectionEdges', cursor: string, node?: { __typename?: 'Newsletter', id: string, title: string, summary: string, pubDate: string, draft: boolean, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
   title
@@ -335,6 +431,15 @@ export const PostPartsFragmentDoc = gql`
   heroImage
   authorName
   authorAvatar
+  body
+}
+    `;
+export const NewsletterPartsFragmentDoc = gql`
+    fragment NewsletterParts on Newsletter {
+  title
+  summary
+  pubDate
+  draft
   body
 }
     `;
@@ -393,6 +498,61 @@ export const PostConnectionDocument = gql`
   }
 }
     ${PostPartsFragmentDoc}`;
+export const NewsletterDocument = gql`
+    query newsletter($relativePath: String!) {
+  newsletter(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...NewsletterParts
+  }
+}
+    ${NewsletterPartsFragmentDoc}`;
+export const NewsletterConnectionDocument = gql`
+    query newsletterConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: NewsletterFilter) {
+  newsletterConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...NewsletterParts
+      }
+    }
+  }
+}
+    ${NewsletterPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -401,6 +561,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     postConnection(variables?: PostConnectionQueryVariables, options?: C): Promise<{data: PostConnectionQuery, variables: PostConnectionQueryVariables, query: string}> {
         return requester<{data: PostConnectionQuery, variables: PostConnectionQueryVariables, query: string}, PostConnectionQueryVariables>(PostConnectionDocument, variables, options);
+      },
+    newsletter(variables: NewsletterQueryVariables, options?: C): Promise<{data: NewsletterQuery, variables: NewsletterQueryVariables, query: string}> {
+        return requester<{data: NewsletterQuery, variables: NewsletterQueryVariables, query: string}, NewsletterQueryVariables>(NewsletterDocument, variables, options);
+      },
+    newsletterConnection(variables?: NewsletterConnectionQueryVariables, options?: C): Promise<{data: NewsletterConnectionQuery, variables: NewsletterConnectionQueryVariables, query: string}> {
+        return requester<{data: NewsletterConnectionQuery, variables: NewsletterConnectionQueryVariables, query: string}, NewsletterConnectionQueryVariables>(NewsletterConnectionDocument, variables, options);
       }
     };
   }

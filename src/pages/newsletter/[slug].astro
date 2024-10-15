@@ -1,0 +1,26 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Newsletter from "../../layouts/Newsletter.astro";
+
+export async function getStaticPaths() {
+  const newsletters = await getCollection("newsletter");
+
+  const filteredNewsletters = import.meta.env.PROD
+    ? newsletters.filter((newsletter) => !newsletter.data.draft)
+    : newsletters;
+
+  return filteredNewsletters.map((newsletter) => ({
+    params: { slug: newsletter.slug },
+    props: newsletter,
+  }));
+}
+
+type Props = CollectionEntry<"newsletter">;
+
+const newsletter: Props = Astro.props;
+const { Content } = await newsletter.render();
+---
+
+<Newsletter {...newsletter.data}>
+  <Content />
+</Newsletter>

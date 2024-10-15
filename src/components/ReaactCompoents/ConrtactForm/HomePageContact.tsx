@@ -1,8 +1,26 @@
-import React from "react";
 import { useContactForm } from "../ConrtactForm/contactFormHook";
+import { useState, useEffect } from "react";
 
 const ContactMap = () => {
   const { formData, formStatus, handleChange, handleSubmit } = useContactForm();
+  const [showMap, setShowMap] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setShowMap(false);
+      } else {
+        setShowMap(true);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col sm:flex-row w-full h-full">
@@ -63,16 +81,18 @@ const ContactMap = () => {
       </div>
 
       {/* Google Map */}
-      <div className="w-full sm:w-1/2 h-64 sm:h-96 mb-8 sm:mb-0 sm:ml-4">
-        <iframe
-          title="Google Map"
-          className="w-full h-full rounded-lg shadow-lg transition-transform transform hover:scale-105"
-          frameBorder="0"
-          style={{ border: 0 }}
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.2621789003247!2d73.0461689764773!3d33.59850127333117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38df94845cbcdbc7%3A0x937f5539de027943!2sFashion%20Hub!5e0!3m2!1sen!2s!4v1724187834820!5m2!1sen!2s"
-          allowFullScreen
-        ></iframe>
-      </div>
+      {showMap && (
+        <div className="w-full sm:w-1/2 h-64 sm:h-96 mb-8 sm:mb-0 sm:ml-4">
+          <iframe
+            title="Google Map"
+            className="w-full h-full rounded-lg shadow-lg transition-transform transform hover:scale-105"
+            frameBorder="0"
+            style={{ border: 0 }}
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.2621789003247!2d73.0461689764773!3d33.59850127333117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38df94845cbcdbc7%3A0x937f5539de027943!2sFashion%20Hub!5e0!3m2!1sen!2s!4v1724187834820!5m2!1sen!2s"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
     </div>
   );
 };

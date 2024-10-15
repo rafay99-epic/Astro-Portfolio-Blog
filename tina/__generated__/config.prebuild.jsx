@@ -21,6 +21,7 @@ var config_default = defineConfig({
         name: "post",
         label: "Posts",
         path: "/src/content/blog",
+        format: "mdx",
         fields: [
           {
             type: "string",
@@ -63,6 +64,43 @@ var config_default = defineConfig({
             type: "image",
             name: "authorAvatar",
             label: "Author Avatar",
+            required: true
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Body",
+            isBody: true
+          }
+        ]
+      },
+      {
+        name: "newsletter",
+        label: "Newsletters",
+        path: "/src/content/newsletter",
+        fields: [
+          {
+            type: "string",
+            name: "title",
+            label: "Newsletter Title",
+            required: true
+          },
+          {
+            type: "string",
+            name: "summary",
+            label: "Summary",
+            required: true
+          },
+          {
+            type: "datetime",
+            name: "pubDate",
+            label: "Publish Date",
+            required: true
+          },
+          {
+            type: "boolean",
+            name: "draft",
+            label: "Draft",
             required: true
           },
           {

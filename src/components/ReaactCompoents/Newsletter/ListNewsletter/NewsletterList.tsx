@@ -1,37 +1,29 @@
-import BlogSectionLogic from "./BlogPostLogic";
-import BlogSectionUI from "./BlogPostUI";
+import NewsletterListLogic from "./NewsletterListLogic";
+import NewsletterListUI from "./NewsletterListUI.tsx";
 
-interface Post {
-  id: string;
+interface Newsletter {
   slug: string;
-  body: string;
-  collection: string;
   data: {
     title: string;
-    description: string;
+    summary: string;
     pubDate: Date;
-    updatedDate?: Date;
-    heroImage?: string;
-    draft: boolean;
-    authorName: string;
-    authorAvatar?: string;
   };
 }
 
-interface BlogSectionProps {
-  posts: Post[];
+interface NewsletterListProps {
+  newsletters: Newsletter[];
 }
 
-const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
-  if (posts.length === 0) {
+const NewsletterList: React.FC<NewsletterListProps> = ({ newsletters }) => {
+  if (newsletters.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center mt-[-10vh] space-y-6 p-8 ">
         <h2 className="text-3xl font-bold text-[#7aa2f7] tracking-wide">
-          No Blogs Available Yet
+          No Newsletters Available Yet
         </h2>
         <p className="text-lg text-gray-400">
           Stay tuned! New content is coming soon. In the meantime, check out the
-          Newsletter or subscribe for updates.
+          blog or subscribe for updates.
         </p>
         <a
           href="/"
@@ -44,17 +36,17 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
   }
 
   return (
-    <BlogSectionLogic posts={posts}>
-      {(currentPosts, totalPages, currentPage, handlePageChange) => (
-        <BlogSectionUI
-          currentPosts={currentPosts}
+    <NewsletterListLogic newsletters={newsletters}>
+      {(currentNewsletters, totalPages, currentPage, handlePageChange) => (
+        <NewsletterListUI
+          currentNewsletters={currentNewsletters}
           totalPages={totalPages}
           currentPage={currentPage}
           handlePageChange={handlePageChange}
         />
       )}
-    </BlogSectionLogic>
+    </NewsletterListLogic>
   );
 };
 
-export default BlogSection;
+export default NewsletterList;

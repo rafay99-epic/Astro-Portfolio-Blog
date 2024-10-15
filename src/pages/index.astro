@@ -12,6 +12,9 @@ import LatestPost from "../components/AstroCompoent/home/LatestPost/LatestPost.a
 import SkillsShowcase from "../components/ReaactCompoents/JobSkills/jobSkills";
 import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePageContact";
 import authorConfig from "../config/info";
+import ProfileImage from "../components/ReaactCompoents/HeroSection/ProfileImage";
+import Greeting from "../components/ReaactCompoents/HeroSection/Greeting";
+import ConnectButton from "../components/ReaactCompoents/HeroSection/ConnectButton";
 const { name, jobTitle, position, picture } = authorConfig;
 ---
 
@@ -28,31 +31,14 @@ const { name, jobTitle, position, picture } = authorConfig;
         <div class="main-container">
           <div class="side-by-side-containers">
             <div class="left-container">
-              <div class="animated-text-container">
-                <h1 class="animated-text fade-slide-in">Hi There!</h1>
-                <h2 class="animated-text fade-slide-in">I'm {name}</h2>
-                <p class="animated-text fade-slide-in description">
-                  {jobTitle} | {position}
-                </p>
-                <div class="animated-text fade-slide-in social-links-container">
-                  <SocialLinks />
-                  <button
-                    class="animated-text fade-slide-in connect-button"
-                    onclick="window.location.href = '/contact-me';"
-                    >Connect with Me</button
-                  >
-                </div>
+              <Greeting name={name} jobTitle={jobTitle} position={position} />
+              <div class="animated-text fade-slide-in social-links-container">
+                <SocialLinks />
               </div>
+              <ConnectButton />
             </div>
             <div class="right-container">
-              <div class="relative flex items-center justify-center">
-                <div class="animate-random-blob"></div>
-                <img
-                  src={picture}
-                  alt="Profile Image"
-                  class="relative z-10 w-[26rem] h-[26rem] rounded-full object-cover shadow-2xl"
-                />
-              </div>
+              <ProfileImage picture={picture} />
             </div>
           </div>
         </div>

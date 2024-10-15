@@ -106,29 +106,38 @@
     .animated-text-container {
         align-items: center;
         text-align: center;
+        margin-top: -6rem;
+
+        .connect-button {
+            align-self: center;
+            margin-bottom: 5rem;
+        }
+
+        .left-container,
+        .right-container {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .left-container {
+            order: 1;
+        }
+
+        .right-container {
+            order: 2;
+        }
     }
 
     .connect-button {
         align-self: center;
-        margin-bottom: 5rem;
+        margin-bottom: 2rem;
+        /* Maintain existing margin */
     }
 
-    .left-container,
-    .right-container {
-        width: 100%;
+    .social-links-container {
+        align-self: center;
     }
 
-    .left-container {
-        order: 1;
-    }
-
-    .right-container {
-        order: 2;
-    }
-
-    .animated-text-container {
-        align-items: flex-start;
-    }
 }
 
 @keyframes randomBlobShift {
