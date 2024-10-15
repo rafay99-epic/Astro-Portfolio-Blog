@@ -8,3 +8,11 @@ fragment PostParts on Post {
   authorAvatar
   body
 }
+
+fragment NewsletterParts on Newsletter {
+  title
+  summary
+  pubDate
+  draft
+  body
+}

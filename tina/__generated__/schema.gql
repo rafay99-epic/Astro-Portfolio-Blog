@@ -55,10 +55,13 @@ type Query {
   document(collection: String, relativePath: String): DocumentNode!
   post(relativePath: String): Post!
   postConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: PostFilter): PostConnection!
+  newsletter(relativePath: String): Newsletter!
+  newsletterConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: NewsletterFilter): NewsletterConnection!
 }
 
 input DocumentFilter {
   post: PostFilter
+  newsletter: NewsletterFilter
 }
 
 type DocumentConnectionEdges {
@@ -84,7 +87,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Post | Folder
+union DocumentNode = Post | Newsletter | Folder
 
 type Post implements Node & Document {
   title: String!
@@ -155,6 +158,36 @@ type PostConnection implements Connection {
   edges: [PostConnectionEdges]
 }
 
+type Newsletter implements Node & Document {
+  title: String!
+  summary: String!
+  pubDate: String!
+  draft: Boolean!
+  body: JSON
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input NewsletterFilter {
+  title: StringFilter
+  summary: StringFilter
+  pubDate: DatetimeFilter
+  draft: BooleanFilter
+  body: RichTextFilter
+}
+
+type NewsletterConnectionEdges {
+  cursor: String!
+  node: Newsletter
+}
+
+type NewsletterConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [NewsletterConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -162,15 +195,19 @@ type Mutation {
   createDocument(collection: String, relativePath: String!, params: DocumentMutation!): DocumentNode!
   updatePost(relativePath: String!, params: PostMutation!): Post!
   createPost(relativePath: String!, params: PostMutation!): Post!
+  updateNewsletter(relativePath: String!, params: NewsletterMutation!): Newsletter!
+  createNewsletter(relativePath: String!, params: NewsletterMutation!): Newsletter!
 }
 
 input DocumentUpdateMutation {
   post: PostMutation
+  newsletter: NewsletterMutation
   relativePath: String
 }
 
 input DocumentMutation {
   post: PostMutation
+  newsletter: NewsletterMutation
 }
 
 input PostMutation {
@@ -181,6 +218,14 @@ input PostMutation {
   heroImage: String
   authorName: String
   authorAvatar: String
+  body: JSON
+}
+
+input NewsletterMutation {
+  title: String
+  summary: String
+  pubDate: String
+  draft: Boolean
   body: JSON
 }
 
