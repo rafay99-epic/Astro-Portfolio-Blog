@@ -19,7 +19,7 @@ var config_default = defineConfig({
     collections: [
       {
         name: "post",
-        label: "Posts",
+        label: "Articles",
         path: "/src/content/blog",
         format: "mdx",
         fields: [
@@ -78,6 +78,7 @@ var config_default = defineConfig({
         name: "newsletter",
         label: "Newsletters",
         path: "/src/content/newsletter",
+        format: "mdx",
         fields: [
           {
             type: "string",
