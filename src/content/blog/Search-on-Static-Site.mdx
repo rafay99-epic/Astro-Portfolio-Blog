@@ -39,3 +39,282 @@ what command will do, it will ask some question, answer them and you will have a
 This commadn will also ask for a starting tempate and I would recommand to start with a Blog Template because, it will make life so much easier.
 
 The starter Templates adds alot of features that you don't need to config. FGor more information you can checkout astro office Documentation], by [clicking here](https://docs.astro.build/en/tutorial/1-setup/2/)
+
+## Enabling React:
+
+Now Once, you have a site using astro now, it's time to enable and install reaact to your astro project and the reasone why we are using react is because react can give you awesome UI and with Fuzzy find package you can create something clean, simple and custom to your need.
+
+To enable react in your astro project enter the following command,
+
+```astro
+npx astro add react
+```
+
+This will automatically add react tp your astro site but if you want to do it manually, then checkout this [docs](https://docs.astro.build/en/guides/integrations-guide/react/).
+
+## Creating Compoents
+
+It's time to create some compoents for your astro Project and react Project as well.
+So in the code structure for my Project is:
+
+```
+SearchInAstro
+├── .gitignore
+├── astro.config.mjs
+├── package-lock.json
+├── package.json
+├── README.md
+├── tailwind.config.mjs
+├── tsconfig.json
+├── .astro
+│   ├── settings.json
+│   ├── types.d.ts
+│   ├── astro
+│   │   └── content.d.ts
+│   └── collections
+├── .vscode
+│   ├── extensions.json
+│   └── launch.json
+├── public
+│   ├── blog-placeholder-1.jpg
+│   ├── blog-placeholder-2.jpg
+│   ├── blog-placeholder-3.jpg
+│   ├── blog-placeholder-4.jpg
+│   ├── blog-placeholder-5.jpg
+│   ├── blog-placeholder-about.jpg
+│   ├── favicon.svg
+│   └── fonts
+│       ├── atkinson-bold.woff
+│       └── atkinson-regular.woff
+└── src
+    ├── consts.ts
+    ├── env.d.ts
+    ├── components
+    │   ├── BaseHead.astro
+    │   ├── Footer.astro
+    │   ├── FormattedDate.astro
+    │   ├── Header.astro
+    │   ├── HeaderLink.astro
+    │   └── react
+    │       ├── SearchComponent.tsx
+    │       └── SearchComponentLogic.tsx
+    ├── content
+    │   ├── config.ts
+    │   └── blog
+    │       ├── first-post.md
+    │       ├── markdown-style-guide.md
+    │       ├── second-post.md
+    │       ├── third-post.md
+    │       └── using-mdx.mdx
+    ├── layouts
+    │   └── BlogPost.astro
+    ├── pages
+    │   ├── about.astro
+    │   ├── index.astro
+    │   ├── rss.xml.js
+    │   └── blog
+    │       ├── index.astro
+    │       └── [...slug].astro
+    └── styles
+        └── global.css
+```
+
+In the above strcuture, I have created two files, called SearchComponent and SearchComponentLogic one compoent will hold the Ui for the Application and the Other react compoent will have the logic for the application.
+
+## Fuzzy Find
+
+So now you almost you have something but you need one more package to make this work, that package is called [Fuzzy](https://www.npmjs.com/package/fuzzy). If you don't about this Package, here is the thing, from the text field it will search through all the words and file then matching from the user input it will display the information.
+
+# Application Logic
+
+The logic for this search is simple, Ww all know that astro uses the content layer and we can pass the data from this layer to anywhere with in the Project, using this power we will create the search.
+We will pass all the data into the react compoent called `SearchData` and the react will take this data and with the fuxxy find will the index it and when user enter any data into the fext field, the fuzzy will search and then spit out the matching result, the react compoent will will display those search items.
+
+## Reason for going with react.
+
+The logic is very simple and with coding knowloedges you can do anything with this approach, you have add multiple search options, or Just used one, I think it is way better then a javascript function crawling through the whole site and making and then the while website slow with not great UI as well.
+
+So this is the Purpose of this approach, it's all about the cutomization and making sure that the it is according to your need.
+
+For example onmy site, I am search through multiple things, Search through, the author name, Content of the blog post, Title of the blog post and even date of the blog post as well.
+this is all about making the perfect set for you.
+
+# Code Logic:
+
+Now we will go through the code base what make this tick.
+
+## SearchUiCompoent:
+
+Explaing the UI Code
+
+### **Imports**
+
+* **React**: This is the core library for building user interfaces in JavaScript using a component-based architecture.
+* **useSearchablePosts**: This is a custom hook (not shown in the provided code) that manages the search logic, handling the state for the query and filtered posts.
+
+### **Post Interface**
+
+```typescript
+interface Post {
+  id: string;
+  slug: string;
+  body: string;
+  collection: string;
+  data: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    updatedDate?: Date;
+    heroImage?: string;
+  };
+}
+```
+
+* This interface defines the structure of a blog post object. Each post has several properties:
+  * `id`: A unique identifier for the post.
+  * `slug`: A URL-friendly version of the post title.
+  * `body`: The main content of the post.
+  * `collection`: The type of content (in this case, it’s from a "blog" collection).
+  * `data`: An object containing the post's metadata, including:
+    * `title`: The title of the post.
+    * `description`: A brief description of the post.
+    * `pubDate`: The publication date of the post.
+    * `updatedDate`: An optional date indicating when the post was last updated.
+    * `heroImage`: An optional URL for a featured image.
+
+### **SearchablePostsProps Interface**
+
+```typescript
+interface SearchablePostsProps {
+  posts: Post[];
+}
+```
+
+* This interface describes the props that the `SearchablePosts` component will receive. It expects an array of `Post` objects.
+
+### **SearchablePostsUI Component**
+
+```typescript
+const SearchablePostsUI: React.FC<{
+  query: string;
+  filteredPosts: Post[];
+  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ query, filteredPosts, handleSearch }) => {
+  // UI rendering logic here...
+};
+```
+
+* This functional component is responsible for rendering the user interface for the search functionality. It takes three props:
+  * `query`: The current search text input by the user.
+  * `filteredPosts`: The list of posts that match the search query.
+  * `handleSearch`: A function that handles changes to the search input field.
+
+#### Inside `SearchablePostsUI`:
+
+* It contains an input field for users to type their search queries.
+* If there is a query, it displays a list of filtered posts. If no posts match the query, it shows a message saying "No posts found."
+
+### **SearchablePosts Component**
+
+```typescript
+const SearchablePosts: React.FC<SearchablePostsProps> = ({ posts }) => {
+  const { query, filteredPosts, handleSearch } = useSearchablePosts(posts);
+
+  return (
+    <SearchablePostsUI
+      query={query}
+      filteredPosts={filteredPosts}
+      handleSearch={handleSearch}
+    />
+  );
+};
+```
+
+* This is the main component that combines the UI and the search logic:
+  * It receives an array of posts as props.
+  * It uses the `useSearchablePosts` hook to manage the state related to searching (like the current query and the filtered results).
+  * It renders the `SearchablePostsUI` component, passing in the current query, filtered posts, and the search handler function.
+
+### **Export**
+
+```typescript
+export default SearchablePosts;
+```
+
+* This line exports the `SearchablePosts` component as the default export from this module, making it available for import in other parts of the application.
+
+## useSearchablePosts Compoents:
+
+### **Custom Hook: `useSearchablePosts`**
+
+```typescript
+const useSearchablePosts = (posts: Post[]) => {
+```
+
+* This is a custom hook that accepts an array of `Post` objects as its parameter (`posts`). The hook will manage the state and logic for searching through these posts.
+
+### **State Management**
+
+```typescript
+const [query, setQuery] = useState<string>("");
+const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+```
+
+* **`query`**: This state holds the current search input from the user.
+* **`setQuery`**: This function is used to update the `query` state.
+* **`filteredPosts`**: This state holds the list of posts that match the search query.
+* **`setFilteredPosts`**: This function updates the `filteredPosts` state.
+
+### **Search Handler**
+
+```typescript
+const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+  const searchQuery = e.target.value;
+  setQuery(searchQuery);
+```
+
+* This function is triggered whenever the input value changes (i.e., when the user types in the search box).
+* It retrieves the current value from the input field (`e.target.value`) and updates the `query` state.
+
+#### Inside the `handleSearch` function:
+
+```typescript
+if (searchQuery === "") {
+  setFilteredPosts([]);
+} else {
+  const options = {
+    extract: (el: Post) => el.data.title,
+  };
+```
+
+* If the search query is empty, it sets `filteredPosts` to an empty array (meaning no results to display).
+* If there is a search query, it defines the options for fuzzy searching. The `extract` function specifies that the search should be performed based on the `title` of the posts.
+
+```typescript
+const results = fuzzy.filter(searchQuery, posts, options);
+const matches = results.map((result) => result.original);
+```
+
+* `fuzzy.filter` performs the fuzzy search on the `posts` array based on the `searchQuery` and the options provided.
+* It returns an array of results, from which the original matching posts are extracted.
+
+```typescript
+setFilteredPosts(matches);
+```
+
+* Finally, it updates the `filteredPosts` state with the matching posts.
+
+### **Return Statement**
+
+```typescript
+return { query, filteredPosts, handleSearch };
+```
+
+* The hook returns an object containing:
+  * `query`: The current search query.
+  * `filteredPosts`: The list of posts that match the search query.
+  * `handleSearch`: The function that handles input changes and triggers the search.
+
+## Summary
+
+These components provide a functional search feature for blog posts. The `SearchablePosts` component manages the logic of fetching and filtering posts, while the `SearchablePostsUI` component handles the user interface. This separation helps keep the code organized and makes it easier to maintain and reuse in different contexts.
