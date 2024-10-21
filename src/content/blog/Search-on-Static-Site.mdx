@@ -193,56 +193,9 @@ Since you are using MDX, we can make your blog post more interactive by embeddin
 
 I've implemented the search functionality in an Astro project, and you can explore the full code on GitHub. Below is an interactive code snippet for the setup. You can collapse sections to focus on specific areas or expand them to dive deeper into the code logic.
 
-### GitHub Project:
+## GitHub Project:
 
 **[Check out the full project on GitHub](https://github.com/FutureInsightTech/SearchAstro)**
-
-### Interactive Code Snippet:
-
-```jsx
-
-  import React, { useState } from 'react';
-  import fuzzy from 'fuzzy';
-
-  // Dummy posts array for demo purposes
-  const posts = [
-    { title: 'First Post' },
-    { title: 'Second Post' },
-    { title: 'React and Astro' },
-    { title: 'Using Fuzzy Search' },
-  ];
-
-  const SearchComponent = () => {
-    const [query, setQuery] = useState('');
-    const [results, setResults] = useState([]);
-
-    const handleSearch = (e) => {
-      const searchQuery = e.target.value;
-      setQuery(searchQuery);
-
-      if (searchQuery) {
-        const searchResults = fuzzy.filter(searchQuery, posts, { extract: (post) => post.title });
-        setResults(searchResults.map(result => result.original));
-      } else {
-        setResults([]);
-      }
-    };
-
-    return (
-      <div>
-        <input type="text" value={query} onChange={handleSearch} placeholder="Search posts..." />
-        <ul>
-          {results.length > 0 ? results.map((post, index) => (
-            <li key={index}>{post.title}</li>
-          )) : <li>No posts found</li>}
-        </ul>
-      </div>
-    );
-  };
-
-  export default SearchComponent;
-
-```
 
 # Conclusion
 
