@@ -4,7 +4,6 @@ const AdLoader: React.FC = () => {
   const [adBlockerDetected, setAdBlockerDetected] = useState(false);
 
   useEffect(() => {
-    // Function to load the ad script
     const loadAdScript = () => {
       const adScript = document.createElement("script");
       adScript.src =
@@ -20,7 +19,6 @@ const AdLoader: React.FC = () => {
       }
     };
 
-    // Function to detect ad blocker
     const detectAdBlocker = () => {
       const testAd = document.createElement("div");
       testAd.className = "adsbygoogle";
@@ -28,7 +26,7 @@ const AdLoader: React.FC = () => {
       document.body.appendChild(testAd);
       window.setTimeout(() => {
         if (!testAd || testAd.offsetHeight === 0) {
-          setAdBlockerDetected(true); // Ad blocker is active
+          setAdBlockerDetected(true);
         }
         document.body.removeChild(testAd);
       }, 100);
