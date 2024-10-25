@@ -20,17 +20,17 @@ import SearchReactCompoent from "../components/ReaactCompoents/SearchField/Searc
     />
     <style>
       main {
-        width: 960px;
+        inline-size: 960px;
       }
     </style>
   </head>
 
   <body>
     <Header />
-    <main class="max-w-screen-lg mx-auto px-4">
+    <main class="mx-auto">
       <h1 class="text-center text-6xl font-bold mb-6">Search Articles</h1>
       <div>
-        <SearchReactCompoent client:load posts={posts} />
+        <SearchReactCompoent client:idle posts={posts} />
       </div>
     </main>
     <Footer />

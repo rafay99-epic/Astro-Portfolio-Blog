@@ -17,13 +17,6 @@ import SpeedInsights from "@vercel/speed-insights/astro";
       description={authorConfig.SiteDescription}
     />
     <SpeedInsights />
-    <style>
-      @media (max-width: 767px) {
-        .lottie-animation {
-          display: none;
-        }
-      }
-    </style>
   </head>
   <body>
     <Header />
@@ -34,7 +27,9 @@ import SpeedInsights from "@vercel/speed-insights/astro";
           <ContactFormReactCompoent client:load />
         </div>
 
-        <div class="flex justify-center items-center lottie-animation">
+        <div
+          class="hidden md:flex justify-center items-center lottie-animation"
+        >
           <LottieReactCompoent
             client:only
             animationData={contactPageAnimation}
