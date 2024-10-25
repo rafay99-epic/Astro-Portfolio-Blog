@@ -57,6 +57,17 @@ import { ViewTransitions } from "astro:transitions";
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
+<!-- Open Graph Metadata for LinkedIn and WhatsApp -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} />
+
+<!-- Additional metadata -->
+<meta name="description" content={description} />
+<meta name="image" content={new URL(image, Astro.url)} />
+
 <ViewTransitions />
 
 <link
