@@ -175,23 +175,7 @@ const authorConfig = {
       githubLink: "https://github.com/rafay99-epic/Dienstleistro",
       deployedLink: "",
     },
-    {
-      title: "Check Point",
-      description:
-        "Check Point: Your sleek, Flutter-powered companion for seamless task management. Effortlessly create, organize, and conquer your to-do list with intuitive ease. Simplify your productivity and achieve more with Check Point.",
-      imageUrl: "/CoverPageCheckPoint.png",
-      technologies: [
-        "Flutter",
-        "Firebase",
-        "Dart",
-        "VS-code",
-        "Local Storage Support",
-        "Postman",
-        "Test Magic",
-      ],
-      githubLink: "https://github.com/rafay99-epic/CheckPoint",
-      deployedLink: "",
-    },
+
     {
       title: "Chess Master",
       description:

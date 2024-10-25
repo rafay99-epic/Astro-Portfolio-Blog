@@ -1,0 +1,117 @@
+---
+import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
+import Footer from "../components/AstroCompoent/footer/Footer.astro";
+import Header from "../components/AstroCompoent/header/Header.astro";
+import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton";
+import authorConfig from "../config/info";
+import SpeedInsights from "@vercel/speed-insights/astro";
+const pageUrl = Astro.url.href;
+
+type Props = {
+  Projecttitle: string;
+  ProjectDescription: string;
+  ProjectImage?: string;
+  ProjectTech?: string[];
+};
+
+const { Projecttitle, ProjectDescription, ProjectImage, ProjectTech } =
+  Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead
+      title={authorConfig.SiteName}
+      description={authorConfig.SiteDescription}
+    />
+    <style>
+      .project-tech li {
+        @apply bg-[#3b4252] text-[#f8f8f8] px-3 py-1 rounded-lg text-sm;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+    <SpeedInsights />
+    <main class="w-full max-w-5xl mx-auto px-4 py-8">
+      <article class="text-align-justify">
+        <div>
+          <div class="w-full mb-4">
+            {
+              ProjectImage && (
+                <figure class="mb-4">
+                  <img
+                    src={ProjectImage}
+                    alt={Projecttitle}
+                    width="1020"
+                    height="510"
+                  />
+                </figure>
+              )
+            }
+          </div>
+
+          <div
+            data-aos="fade-up"
+            data-aos-delay="300"
+            data-aos-anchor-placement="top-bottom"
+            class="my-8 prose mx-auto text-justify"
+          >
+            <div class="flex flex-col items-center">
+              <h1
+                class="mt-6 text-4xl sm:text-5xl lg:text-5xl font-extrabold text-center text-gray-800 dark:text-gray-100 leading-tight mb-6"
+              >
+                {Projecttitle}
+              </h1>
+            </div>
+
+            <div class="mb-4 text-gray-300">
+              <p>
+                <span class="text-2xl font-bold">Description: </span>{
+                  ProjectDescription
+                }
+              </p>
+            </div>
+            <div>
+              <ShareButtons url={pageUrl} pagetitle="Project" />
+            </div>
+            <hr class="mt-4" />
+            <div>
+              <div class="">
+                <h2
+                  class="text-2xl font-semibold text-[#f8f8f8] mt-4 mb-4 text-center"
+                >
+                  Technologies Used:
+                </h2>
+              </div>
+              <div class="flex justify-center">
+                {
+                  ProjectTech && (
+                    <ul class="flex gap-2 flex-wrap list-none justify-center">
+                      {ProjectTech.map((tech) => (
+                        <li class="bg-[#3b4252] text-[#f8f8f8] px-3 py-1 rounded-lg text-base">
+                          {tech}
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                }
+              </div>
+            </div>
+
+            <div>
+              <slot />
+            </div>
+          </div>
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body><link
+    href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" onload="AOS.init()"
+  ></script>
+</html>
