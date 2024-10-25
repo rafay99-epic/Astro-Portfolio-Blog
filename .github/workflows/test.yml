@@ -44,7 +44,7 @@ jobs:
         uses: s0/git-publish-subdir-action@develop
         env:
           REPO: self
-          BRANCH: testing-deploy # Branch to push the build output
-          FOLDER: .vercel/output/static # Folder where Astro outputs the built site
+          BRANCH: testing-deploy
+          FOLDER: .vercel/output/static
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "Build: (${GITHUB_SHA}) ${GITHUB_HEAD_REF}"
