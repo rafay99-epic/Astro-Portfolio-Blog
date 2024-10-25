@@ -3,6 +3,8 @@ import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import Header from "../components/AstroCompoent/header/Header.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import AdLoader from "../components/ReaactCompoents/AdsLoader/Adloader";
+import PostComment from "../components/AstroCompoent/BlogComments/PostComment.astro";
 
 type Props = {
   title: string;
@@ -35,14 +37,39 @@ const { title, pubDate, summary } = Astro.props;
     <SpeedInsights />
     <main class="w-full max-w-5xl mx-auto px-4 py-8">
       <article class="newsletter">
-        <header>
-          <h1>{title}</h1>
-          <p>{pubDate.toLocaleDateString()}</p>
-          {summary && <p>{summary}</p>}
-        </header>
-        <section>
+        <h1
+          class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-center text-gray-800 dark:text-gray-100 leading-tight mb-6"
+        >
+          {title}
+        </h1>
+
+        <p>
+          <span class="font-bold">Date: </span>{pubDate.toLocaleDateString()}
+        </p>
+        {
+          summary && (
+            <p>
+              <span class="font-bold">Summary: </span>
+              {summary}
+            </p>
+          )
+        }
+        <div
+          data-aos="fade-up"
+          data-aos-delay="300"
+          data-aos-anchor-placement="top-bottom"
+          class="prose mx-auto text-justify"
+        >
           <slot />
-        </section>
+        </div>
+
+        <div class="my-8 text-center">
+          <AdLoader client:load />
+        </div>
+        <div class="my-8 text-center">
+          <h2 class="text-2xl font-semibold mb-4">Comments</h2>
+          <PostComment />
+        </div>
       </article>
     </main>
     <Footer />
