@@ -1,5 +1,8 @@
 // config.ts
 const authorConfig = {
+  SiteName: "Abdul Rafay",
+  SiteDescription:
+    "Welcome to my universe, Software Engineer and Open Source enthusiast",
   name: "Abdul Rafay",
   jobTitle: "Software Engineer",
   position: "Full Stack & Flutter Developer",
@@ -11,6 +14,7 @@ const authorConfig = {
     upwork: "https://www.upwork.com/freelancers/~018c78c37a53bf3cac",
     youtube: "https://www.youtube.com/@BinaryBridgeHQ",
   },
+  avator: "/favicon.png",
   webformKey: "c0613ed5-2935-40a1-8d33-b32fd9eea403",
   about: {
     whoAmI:

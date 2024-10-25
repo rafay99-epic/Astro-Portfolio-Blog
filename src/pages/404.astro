@@ -1,6 +1,7 @@
 ---
 import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+// import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import authorConfig from "../config/info";
 export const prerender = true;
 import SpeedInsights from "@vercel/speed-insights/astro";
 import ErrorPageCompeont from "../components/ReaactCompoents/ErroPage/404-Compoent";
@@ -9,7 +10,10 @@ import ErrorPageCompeont from "../components/ReaactCompoents/ErroPage/404-Compoe
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead
+      title={authorConfig.SiteName}
+      description={authorConfig.SiteDescription}
+    />
     <SpeedInsights />
   </head>
   <body class="min-h-screen overflow-hidden flex">

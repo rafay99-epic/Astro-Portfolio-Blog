@@ -1,9 +1,9 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
 import { Image } from "astro:assets";
-import authorCartoon from "../../../assets/favicon.png";
 import SearchSVG from "./nav/SearchSVG.astro";
 import LetterSVG from "./nav/LetterSVG.astro";
+import authorConfig from "../../../config/info";
 ---
 
 <header>
@@ -11,7 +11,7 @@ import LetterSVG from "./nav/LetterSVG.astro";
     <h2>
       <a href="/">
         <Image
-          src={authorCartoon}
+          src={authorConfig.avator}
           alt="author Avator"
           format="avif"
           width={90}
@@ -87,13 +87,11 @@ import LetterSVG from "./nav/LetterSVG.astro";
   nav a {
     padding: 1em 0.5em;
     color: var(--black);
-    border-bottom: 4px solid transparent;
     text-decoration: none;
   }
 
   nav a.active {
     text-decoration: none;
-    border-bottom-color: var(--accent);
   }
 
   .hamburger-icon {
@@ -112,12 +110,6 @@ import LetterSVG from "./nav/LetterSVG.astro";
 
   .hamburger.open .hamburger-icon:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
-  }
-
-  @media (min-width: 768px) {
-    #mobile-menu {
-      display: none;
-    }
   }
 </style>
 

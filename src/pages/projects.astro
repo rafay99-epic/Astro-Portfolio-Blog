@@ -2,7 +2,6 @@
 import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import Header from "../components/AstroCompoent/header/Header.astro";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import ProjectCard from "../components/AstroCompoent/JobAndExperience/projectCard.astro";
 import authorConfig from "../config/info";
 export const prerender = true;
@@ -12,7 +11,10 @@ const projects = authorConfig.projectData;
 
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead
+      title={authorConfig.SiteName}
+      description={authorConfig.SiteDescription}
+    />
   </head>
 
   <body>
