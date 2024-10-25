@@ -1,22 +1,24 @@
 import React from "react";
 import { siX, siFacebook, siLinkedin, siWhatsapp } from "simple-icons/icons";
 import { generateShareUrls } from "./shareUtils";
+import { title } from "process";
 
 interface ShareButtonsProps {
   url: string;
+  pagetitle: string;
 }
 
 const injectFillColor = (svg: string, color: string) => {
   return svg.replace("<svg", `<svg fill="${color}"`);
 };
 
-const ShareButtons: React.FC<ShareButtonsProps> = ({ url }) => {
+const ShareButtons: React.FC<ShareButtonsProps> = ({ url, pagetitle }) => {
   const shareUrls = generateShareUrls(url);
 
   return (
     <div className="mt-4 text-center">
       <p className="text-lg font-semibold text-white mb-2">
-        Share this blog post:
+        Share this {pagetitle}:
       </p>
 
       <div className="flex justify-center space-x-4">
