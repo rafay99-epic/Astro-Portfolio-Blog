@@ -13,6 +13,7 @@ const authorConfig = {
     github: "https://github.com/rafay99-epic",
     upwork: "https://www.upwork.com/freelancers/~018c78c37a53bf3cac",
     youtube: "https://www.youtube.com/@BinaryBridgeHQ",
+    whatsNumber: "+923035650798",
   },
   avator: "/favicon.png",
   webformKey: "c0613ed5-2935-40a1-8d33-b32fd9eea403",
