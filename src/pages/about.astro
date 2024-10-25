@@ -1,8 +1,7 @@
 ---
 import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import Header from "../components/AstroCompoent/header/Header.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import "../styles/home/home-page.css";
+
 import JobExperience from "../components/AstroCompoent/JobAndExperience/JobExperience.astro";
 import authorConfig from "../config/info";
 export const prerender = true;
@@ -12,41 +11,78 @@ import Footer from "../components/AstroCompoent/footer/Footer.astro";
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
+    <BaseHead
+      title={authorConfig.SiteName}
+      description={authorConfig.SiteDescription}
+    />
+    <style>
+      @keyframes fadeSlideIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-  <body>
+      @keyframes typing {
+        from {
+          max-inline-size: 0;
+        }
+
+        to {
+          max-inline-size: 100%;
+        }
+      }
+
+      @keyframes blink-caret {
+        from,
+        to {
+          border-color: transparent;
+        }
+
+        50% {
+          border-color: white;
+        }
+      }
+    </style>
+  </head>
+  <body class="">
     <Header />
-    <main>
-      <div class="side-by-side-containers">
-        <div class="left-container">
-          <div
-            class="lottie-animation-container"
-            style="width: 70%; height: 70%;"
-          >
-            <img src={authorConfig.picture} alt="Profile Image" />
+    <main class="mt-16">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div
+          class="flex-1 flex flex-col items-center md:items-start mb-8 md:mb-0"
+        >
+          <div class="w-5/6 h-5/6 mx-auto">
+            <img
+              src={authorConfig.picture}
+              alt="Profile Image"
+              class="w-full h-full object-cover"
+            />
           </div>
         </div>
-        <div class="right-container">
-          <div>
-            <div class="animated-text-container">
-              <h2 class="animated-text">So, who am I?</h2>
+        <div class="flex-1 px-4 md:px-0 text-center md:text-left">
+          <div class="space-y-4">
+            <div
+              class="animate-fadeSlideIn opacity-0 translate-y-5 font-bold"
+              style="animation-delay: 0.5s;"
+            >
+              <h2 class="text-5xl">So, who am I?</h2>
             </div>
             <p
-              style="font-size: 1.2rem; text-align: justify; font-weight: normal;"
-              class="animated-text fade-slide-in description"
+              class="animate-fadeSlideIn opacity-0 translate-y-5 font-normal text-justify"
+              style="animation-delay: 1s;"
             >
               {authorConfig.about.whoAmI}
             </p>
             <p
-              style="font-size: 1.2rem; text-align: justify; font-weight: normal;"
-              class="animated-text fade-slide-in description"
+              class="animate-fadeSlideIn opacity-0 translate-y-5 font-normal text-justify"
+              style="animation-delay: 1.5s;"
             >
               {authorConfig.about.lifeBeyondCode}
             </p>
             <p
-              style="font-size: 1.2rem; text-align: justify; font-weight: normal;"
-              class="animated-text fade-slide-in description"
+              class="animate-fadeSlideIn opacity-0 translate-y-5 font-normal text-justify"
+              style="animation-delay: 2s;"
             >
               {authorConfig.about.continuousLearning}
             </p>

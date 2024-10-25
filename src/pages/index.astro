@@ -1,7 +1,6 @@
 ---
 import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import Header from "../components/AstroCompoent/header/Header.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import SocialLinks from "../components/AstroCompoent/SocialMedia/SocialMedia.astro";
 import "../styles/home/home-page.css";
 export const prerender = true;
@@ -21,7 +20,10 @@ const { name, jobTitle, position, picture } = authorConfig;
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead
+      title={authorConfig.SiteName}
+      description={authorConfig.SiteDescription}
+    />
   </head>
   <body>
     <Header />
@@ -43,16 +45,16 @@ const { name, jobTitle, position, picture } = authorConfig;
           </div>
         </div>
       </section>
-      <!-- Next section: Feature Content -->
-      <section style="margin-top: 12rem;">
+
+      <section style="margin-block-start: 12rem;">
         <FeaturedPost />
       </section>
 
-      <section style="margin-top: 5rem;">
+      <section style="margin-block-start: 5rem;">
         <LatestPost />
       </section>
 
-      <section style="margin-top: 5rem;">
+      <section style="margin-block-start: 5rem;">
         <h1 class="text-center text-6xl font-bold mb-6">Tool & Technology</h1>
         <p class="text-center text-lg font-bold mb-6">
           I have experience with these technologies
@@ -60,7 +62,7 @@ const { name, jobTitle, position, picture } = authorConfig;
         <SkillsShowcase client:idle />
       </section>
 
-      <section style="margin-top: 5rem; margin-bottom: 10rem;">
+      <section style="margin-block-start: 5rem; margin-block-end: 10rem;">
         <h1 class="text-6xl font-bold text-center text-[#c0caf5] leading-snug">
           I'D BE HAPPY TO CONNECT
           <span
@@ -75,7 +77,6 @@ const { name, jobTitle, position, picture } = authorConfig;
         <ContactFormHome client:idle />
       </section>
 
-      <!-- footer -->
       <Footer />
     </main>
   </body>

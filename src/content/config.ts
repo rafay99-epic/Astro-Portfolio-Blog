@@ -14,7 +14,7 @@ const blog = defineCollection({
     authorAvatar: z.string().optional(),
   }),
 });
-
+// NewsLetter Collection
 const newsletter = defineCollection({
   type: "content",
   schema: z.object({
@@ -25,7 +25,23 @@ const newsletter = defineCollection({
   }),
 });
 
+// Projects Collection
+const projects = defineCollection({
+  type: "content",
+  schema: z.object({
+    Projecttitle: z.string(),
+    ProjectDescription: z.string(),
+    ProjectImage: z.string().optional(),
+    draft: z.boolean().default(true),
+    ProjectTech: z.array(z.string()).optional(),
+    ProjectGithubLink: z.string().optional(),
+    ProjectDeployedLink: z.string().optional(),
+  }),
+});
+
+// Export collections
 export const collections = {
   blog: blog,
   newsletter: newsletter,
+  projects: projects,
 };

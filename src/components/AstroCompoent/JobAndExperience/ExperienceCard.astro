@@ -2,90 +2,37 @@
 const { company, position, employementDate, roles, technologies } = Astro.props;
 ---
 
-<style>
-  .card {
-    border: 1px solid var(--gray-light);
-    border-radius: 8px;
-    padding: 16px;
-    margin: 16px 0;
-    box-shadow: var(--box-shadow);
-    background-color: var(--accent-dark);
-    color: var(--text-light);
-  }
+<div
+  class="rounded-lg p-4 my-4 bg-[#1f2335] text-gray-200 transition-shadow duration-300"
+  style="box-shadow: var(--box-shadow);"
+>
+  <div
+    class="mb-2"
+    style="font-size: 1.25em; font-weight: bold; color: var(--accent);"
+  >
+    {position} at {company}
+  </div>
+  <div class="text-base text-gray-400 mb-2">{employementDate}</div>
 
-  .card-header {
-    font-size: 1.25em;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: var(--accent);
-  }
-
-  .card-subheader {
-    font-size: 1em;
-    color: var(--gray);
-    margin-bottom: 8px;
-  }
-
-  .card-content {
-    margin-bottom: 8px;
-  }
-
-  .card-content ul {
-    list-style-type: disc;
-    padding-left: 20px;
-  }
-
-  .card-content ul li {
-    margin-bottom: 4px;
-  }
-
-  .card-footer {
-    font-size: 0.9em;
-    color: var(--gray-dark);
-  }
-
-  .roles-list,
-  .tech-list {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  .tech-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .tech-item {
-    background-color: rgba(var(--gray-light), 1);
-    border-radius: 5px;
-    padding: 10px 15px;
-    transition:
-      background-color 0.3s,
-      transform 0.3s;
-    cursor: pointer;
-  }
-
-  .tech-item:hover {
-    background-color: rgba(var(--gray), 1);
-    transform: scale(1.05);
-  }
-</style>
-
-<div class="card">
-  <div class="card-header">{position} at {company}</div>
-  <div class="card-subheader">{employementDate}</div>
-  <div class="card-content">
+  <div class="mb-2">
     <p><strong>Roles:</strong></p>
-    <ul class="roles-list">
+    <ul class="list-disc pl-5">
       {roles.map((role) => <li>{role}</li>)}
     </ul>
   </div>
-  <div class="card-content">
+
+  <div class="mb-2">
     <p><strong>Technologies Used:</strong></p>
-    <ul class="tech-list">
-      {technologies.map((tech) => <span class="tech-item">{tech}</span>)}
+    <ul class="flex flex-wrap gap-2">
+      {
+        technologies.map((tech) => (
+          <span class="bg-gray-600 rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer hover:bg-gray-500 hover:scale-105">
+            {tech}
+          </span>
+        ))
+      }
     </ul>
   </div>
-  <div class="card-footer">Employment Date: {employementDate}</div>
+
+  <div class="text-sm text-gray-500">Employment Date: {employementDate}</div>
 </div>

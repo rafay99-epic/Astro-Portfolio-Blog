@@ -20,7 +20,7 @@ export default defineConfig({
       langAlias: {
         cjs: "javascript",
       },
-      wrap: true,
+      wrap: false,
       transformers: [],
     },
   },

@@ -6,7 +6,7 @@ description: >-
 pubDate: 2024-10-23T19:00:00.000Z
 draft: false
 heroImage: /Building a Powerful Text Search Application with Python and Tkinter.png
-authorName: 'Abdul Rafay '
+authorName: "Abdul Rafay "
 authorAvatar: /IMG-20221105-WA0007.jpg
 ---
 
@@ -37,10 +37,10 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 ```
 
-* **pandas**: For data manipulation and managing text file content.
-* **glob**: For file handling and pattern matching to read specific text files.
-* **time**: To measure the performance of the search operations.
-* **tkinter**: For creating a graphical user interface (GUI).
+- **pandas**: For data manipulation and managing text file content.
+- **glob**: For file handling and pattern matching to read specific text files.
+- **time**: To measure the performance of the search operations.
+- **tkinter**: For creating a graphical user interface (GUI).
 
 ### 2. Brute Force Search Algorithm
 
@@ -58,15 +58,15 @@ def brute_force_search(text, pattern):
             j += 1
         if j == m:
             locations.append(i)
-    
+
     return locations
 ```
 
 **Explanation**:
 
-* This function takes a `text` and a `pattern` as input.
-* It iterates through the text to check for matches with the pattern.
-* If a match is found, the starting index is stored in the `locations` list.
+- This function takes a `text` and a `pattern` as input.
+- It iterates through the text to check for matches with the pattern.
+- If a match is found, the starting index is stored in the `locations` list.
 
 ### 3. KMP Search Algorithm
 
@@ -112,14 +112,14 @@ def kmp_search(text, pattern):
                 j = lps[j - 1]
             else:
                 i += 1
-    
+
     return locations
 ```
 
 **Explanation**:
 
-* `compute_lps`: Preprocesses the pattern to create a longest prefix-suffix (LPS) array.
-* `kmp_search`: Uses the LPS array to skip unnecessary comparisons, improving search efficiency.
+- `compute_lps`: Preprocesses the pattern to create a longest prefix-suffix (LPS) array.
+- `kmp_search`: Uses the LPS array to skip unnecessary comparisons, improving search efficiency.
 
 ### 4. Searching the DataFrame
 
@@ -128,27 +128,22 @@ The function to search through the DataFrame containing text file content:
 ```python
 def search_dataframe(df, pattern, algorithm='brute_force', case_sensitive=False, whole_word=False):
     results = []
-    
+
     if not pattern:
         raise ValueError("Search pattern cannot be empty.")
 
-    # Modify pattern and content based on case sensitivity
     if not case_sensitive:
         pattern = pattern.lower()
 
-    # Choose search algorithm
     search_func = brute_force_search if algorithm == 'brute_force' else kmp_search
 
-    # Search each file (row in the DataFrame)
     for index, row in df.iterrows():
         filename = row['Filename']
         content = row['Content']
-        
-        # Modify content based on case sensitivity
+
         if not case_sensitive:
             content = content.lower()
 
-        # Search the pattern in the content
         start_time = time.time()
         try:
             positions = search_func(content, pattern)
@@ -157,12 +152,10 @@ def search_dataframe(df, pattern, algorithm='brute_force', case_sensitive=False,
 
         end_time = time.time()
 
-        # Filter results based on whole word match
         if whole_word:
             positions = [pos for pos in positions if (pos == 0 or not content[pos - 1].isalnum()) and
                          (pos + len(pattern) == len(content) or not content[pos + len(pattern)].isalnum())]
 
-        # Record time taken and matches
         for pos in positions:
             results.append({
                 'Filename': filename,
@@ -176,8 +169,8 @@ def search_dataframe(df, pattern, algorithm='brute_force', case_sensitive=False,
 
 **Explanation**:
 
-* This function takes a DataFrame `df`, a `pattern`, and additional parameters for case sensitivity and whole word matching.
-* It iterates through each file in the DataFrame, applies the chosen search algorithm, and records the results.
+- This function takes a DataFrame `df`, a `pattern`, and additional parameters for case sensitivity and whole word matching.
+- It iterates through each file in the DataFrame, applies the chosen search algorithm, and records the results.
 
 ### 5. User Interface and Event Handling
 
@@ -197,17 +190,16 @@ def run_search():
     try:
         results = search_dataframe(df, search_text, algorithm, case_sensitive, whole_word)
         if results:
-            output_text.delete(1.0, tk.END)  # Clear previous results
+            output_text.delete(1.0, tk.END)
             output_text.insert(tk.END, "Search Results:\n")
             output_text.insert(tk.END, "-"*50 + "\n")
-            
-            # Format and display each result
+
             for result in results:
                 output_text.insert(tk.END, f"Filename: {result['Filename']}\n")
                 output_text.insert(tk.END, f"Row: {result['Row']}\n")
                 output_text.insert(tk.END, f"Position (Column): {result['Column (position)']}\n")
                 output_text.insert(tk.END, f"Time Taken: {result['Time Taken (s)']} seconds\n")
-                output_text.insert(tk.END, "-"*50 + "\n")  # Separator for each result
+                output_text.insert(tk.END, "-"*50 + "\n")
         else:
             output_text.delete(1.0, tk.END)
             output_text.insert(tk.END, "No matches found.\n")
@@ -222,15 +214,14 @@ def run_search():
 
 **Explanation**:
 
-* The `run_search` function is triggered when the user clicks the "Search" button.
-* It retrieves the user's input, runs the search, and displays results in the output text widget.
+- The `run_search` function is triggered when the user clicks the "Search" button.
+- It retrieves the user's input, runs the search, and displays results in the output text widget.
 
 ### 6. Loading Files and Creating the Main Window
 
 Finally, we load the text files into a DataFrame and create the main window:
 
 ```python
-# Load the text files into DataFrame
 file_pattern = "Research#*.txt"
 data = {'Filename': [], 'Content': []}
 
@@ -246,7 +237,7 @@ try:
                 data['Content'].append(file.read())
         except Exception as e:
             raise IOError(f"Error reading file {filepath}: {str(e)}")
-    
+
     df = pd.DataFrame(data)
     if df.empty:
         raise ValueError("No valid content found in files.")
@@ -258,46 +249,39 @@ except IOError as io_error:
 except Exception as e:
     messagebox.showerror("Unexpected Error", f"An unexpected error occurred: {str(e)}")
 
-# Create the main window
 root = tk.Tk()
 root.title("Text Search App")
 
-# Create the search text input
 tk.Label(root, text="Enter search text:").pack(pady=10)
 search_entry = tk.Entry(root, width=50)
 search_entry.pack(pady=5)
 
-# Create the algorithm choice dropdown
 tk.Label(root, text="Choose algorithm:").pack(pady=
 
 10)
 algorithm_choice = ttk.Combobox(root, values=["brute_force", "kmp"])
 algorithm_choice.pack(pady=5)
-algorithm_choice.current(0)  # Default to brute_force
+algorithm_choice.current(0)
 
-# Create checkboxes for case sensitivity and whole word matching
 case_sensitive_var = tk.BooleanVar()
 whole_word_var = tk.BooleanVar()
 tk.Checkbutton(root, text="Case Sensitive", variable=case_sensitive_var).pack(pady=5)
 tk.Checkbutton(root, text="Whole Word Matching", variable=whole_word_var).pack(pady=5)
 
-# Create the search button
 search_button = tk.Button(root, text="Search", command=run_search)
 search_button.pack(pady=20)
 
-# Create the output text area
 output_text = tk.Text(root, width=70, height=20)
 output_text.pack(pady=10)
 
-# Start the Tkinter main loop
 root.mainloop()
 ```
 
 **Explanation**:
 
-* We use `glob` to find all text files matching the specified pattern.
-* Each file’s content is loaded into a DataFrame.
-* The Tkinter window is created with widgets for user input, algorithm selection, checkboxes for options, and a button to initiate the search.
+- We use `glob` to find all text files matching the specified pattern.
+- Each file’s content is loaded into a DataFrame.
+- The Tkinter window is created with widgets for user input, algorithm selection, checkboxes for options, and a button to initiate the search.
 
 ## Conclusion
 

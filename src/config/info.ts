@@ -1,5 +1,8 @@
 // config.ts
 const authorConfig = {
+  SiteName: "Abdul Rafay",
+  SiteDescription:
+    "Welcome to my universe, Software Engineer and Open Source enthusiast",
   name: "Abdul Rafay",
   jobTitle: "Software Engineer",
   position: "Full Stack & Flutter Developer",
@@ -10,7 +13,9 @@ const authorConfig = {
     github: "https://github.com/rafay99-epic",
     upwork: "https://www.upwork.com/freelancers/~018c78c37a53bf3cac",
     youtube: "https://www.youtube.com/@BinaryBridgeHQ",
+    whatsNumber: "+923035650798",
   },
+  avator: "/favicon.png",
   webformKey: "c0613ed5-2935-40a1-8d33-b32fd9eea403",
   about: {
     whoAmI:
@@ -170,23 +175,7 @@ const authorConfig = {
       githubLink: "https://github.com/rafay99-epic/Dienstleistro",
       deployedLink: "",
     },
-    {
-      title: "Check Point",
-      description:
-        "Check Point: Your sleek, Flutter-powered companion for seamless task management. Effortlessly create, organize, and conquer your to-do list with intuitive ease. Simplify your productivity and achieve more with Check Point.",
-      imageUrl: "/CoverPageCheckPoint.png",
-      technologies: [
-        "Flutter",
-        "Firebase",
-        "Dart",
-        "VS-code",
-        "Local Storage Support",
-        "Postman",
-        "Test Magic",
-      ],
-      githubLink: "https://github.com/rafay99-epic/CheckPoint",
-      deployedLink: "",
-    },
+
     {
       title: "Chess Master",
       description:

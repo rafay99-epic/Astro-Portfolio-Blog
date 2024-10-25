@@ -1,6 +1,6 @@
 // components/ContactForm.tsx
 import React from "react";
-import { useContactForm } from "../ConrtactForm/contactFormHook"; // Import the custom hook
+import { useContactForm } from "../ConrtactForm/contactFormHook";
 
 const ContactForm: React.FC = () => {
   const { formData, formStatus, handleChange, handleSubmit } = useContactForm();

@@ -2,8 +2,8 @@
 import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import Header from "../components/AstroCompoent/header/Header.astro";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
+import authorConfig from "../config/info";
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
@@ -14,20 +14,23 @@ import SearchReactCompoent from "../components/ReaactCompoents/SearchField/Searc
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead
+      title={authorConfig.SiteName}
+      description={authorConfig.SiteDescription}
+    />
     <style>
       main {
-        width: 960px;
+        inline-size: 960px;
       }
-    </style></head
-  >
+    </style>
+  </head>
 
   <body>
     <Header />
-    <main class="max-w-screen-lg mx-auto px-4">
+    <main class="mx-auto">
       <h1 class="text-center text-6xl font-bold mb-6">Search Articles</h1>
       <div>
-        <SearchReactCompoent client:load posts={posts} />
+        <SearchReactCompoent client:idle posts={posts} />
       </div>
     </main>
     <Footer />

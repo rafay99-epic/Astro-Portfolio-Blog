@@ -1,22 +1,6 @@
-import React, { useState, useEffect } from "react";
-import Fuse from "fuse.js";
-
-interface Post {
-  id: string;
-  slug: string;
-  body: string;
-  collection: string;
-  data: {
-    title: string;
-    description: string;
-    pubDate: Date;
-    updatedDate?: Date;
-    heroImage?: string;
-    draft: boolean;
-    authorName: string;
-    authorAvatar?: string;
-  };
-}
+import React from "react";
+import useSearch from "./SearchLogic";
+import type { Post } from "./types";
 
 interface SearchProps {
   posts: Post[];
@@ -30,39 +14,15 @@ const searchStyles = {
 };
 
 const Search: React.FC<SearchProps> = ({ posts }) => {
-  const [query, setQuery] = useState<string>("");
-  const [results, setResults] = useState<Post[]>([]);
-  const [authorFilter, setAuthorFilter] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>("");
-
-  useEffect(() => {
-    let filteredPosts = [...posts];
-
-    if (authorFilter) {
-      filteredPosts = filteredPosts.filter((post) =>
-        post.data.authorName.toLowerCase().includes(authorFilter.toLowerCase())
-      );
-    }
-
-    if (startDate) {
-      filteredPosts = filteredPosts.filter(
-        (post) => new Date(post.data.pubDate) >= new Date(startDate)
-      );
-    }
-
-    if (query) {
-      const fuse = new Fuse(filteredPosts, {
-        keys: ["data.title", "data.description"],
-        threshold: 0.3,
-      });
-      const searchResults = fuse.search(query).map((result) => result.item);
-      setResults(searchResults);
-    } else if (authorFilter || startDate) {
-      setResults(filteredPosts);
-    } else {
-      setResults([]);
-    }
-  }, [query, authorFilter, startDate, posts]);
+  const {
+    query,
+    setQuery,
+    results,
+    authorFilter,
+    setAuthorFilter,
+    startDate,
+    setStartDate,
+  } = useSearch(posts);
 
   return (
     <div className="p-4 text-white">

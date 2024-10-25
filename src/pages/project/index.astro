@@ -5,10 +5,10 @@ import Footer from "../../components/AstroCompoent/footer/Footer.astro";
 import authorConfig from "../../config/info";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import BlogSection from "../../components/ReaactCompoents/BlogPost/BlogPost";
-const posts = (await getCollection("blog")).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-);
+
+import ProjectList from "../../components/ReaactCompoents/ProjectList/Projectlist.tsx";
+
+const projects = await getCollection("projects");
 ---
 
 <html lang="en">
@@ -18,10 +18,18 @@ const posts = (await getCollection("blog")).sort(
       description={authorConfig.SiteDescription}
     />
   </head>
+
   <body>
     <Header />
     <SpeedInsights />
-    <BlogSection posts={posts} client:idle />
+    <main>
+      <h1 class="text-6xl font-bold text-center mb-8">
+        Some Things I've Built
+      </h1>
+      <div class="flex flex-wrap gap-5 justify-center">
+        <ProjectList projects={projects} client:idle />
+      </div>
+    </main>
     <Footer />
   </body>
 </html>
