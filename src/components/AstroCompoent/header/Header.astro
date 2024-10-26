@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 import SearchSVG from "./nav/SearchSVG.astro";
 import LetterSVG from "./nav/LetterSVG.astro";
 import authorConfig from "../../../config/info";
+import TagSVG from "./nav/TagSVG.astro";
 ---
 
 <header>
@@ -24,6 +25,9 @@ import authorConfig from "../../../config/info";
       <HeaderLink href="/newsletter-subscribe">Newsletter</HeaderLink>
       <HeaderLink href="/about">About</HeaderLink>
       <HeaderLink href="/project">Projects</HeaderLink>
+      <HeaderLink href="/tag" style="color: white;">
+        <TagSVG />
+      </HeaderLink>
       <HeaderLink href="/newsletter" style="color: white;">
         <LetterSVG />
       </HeaderLink>
@@ -59,6 +63,9 @@ import authorConfig from "../../../config/info";
     <HeaderLink href="/newsletter-subscribe">Newsletter</HeaderLink>
     <HeaderLink href="/about">About</HeaderLink>
     <HeaderLink href="/project">Projects</HeaderLink>
+    <HeaderLink href="/tag" style="color: white;">
+      <TagSVG />
+    </HeaderLink>
     <HeaderLink href="/newsletter" style="color: white;">
       <LetterSVG />
     </HeaderLink>
