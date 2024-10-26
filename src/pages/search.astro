@@ -8,6 +8,10 @@ const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
 
+const newsletter = (await getCollection("newsletter")).sort(
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+);
+
 import SearchReactCompoent from "../components/ReaactCompoents/SearchField/SearchField";
 ---
 

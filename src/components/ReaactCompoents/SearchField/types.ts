@@ -13,5 +13,6 @@ export interface Post {
     draft: boolean;
     authorName: string;
     authorAvatar?: string;
+    tags?: string[];
   };
 }
