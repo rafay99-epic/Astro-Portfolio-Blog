@@ -12,6 +12,7 @@ const blog = defineCollection({
     draft: z.boolean().default(true),
     authorName: z.string(),
     authorAvatar: z.string().optional(),
+    tags: z.array(z.string()).optional(),
   }),
 });
 // NewsLetter Collection
