@@ -98,6 +98,7 @@ type Post implements Node & Document {
   authorName: String!
   authorAvatar: String!
   body: JSON
+  tags: [String]
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -145,6 +146,7 @@ input PostFilter {
   authorName: StringFilter
   authorAvatar: ImageFilter
   body: RichTextFilter
+  tags: StringFilter
 }
 
 type PostConnectionEdges {
@@ -219,6 +221,7 @@ input PostMutation {
   authorName: String
   authorAvatar: String
   body: JSON
+  tags: [String]
 }
 
 input NewsletterMutation {
