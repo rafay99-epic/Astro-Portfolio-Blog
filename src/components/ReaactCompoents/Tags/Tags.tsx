@@ -24,11 +24,7 @@ const TagFilter: React.FC<TagFilterProps> = ({ posts }) => {
           {tags.map((tag) => (
             <button
               key={tag}
-              className={`px-4 py-2 rounded ${
-                selectedTag === tag
-                  ? "bg-[#7aa2f7] text-white"
-                  : "bg-gray-300 text-gray-800"
-              }`}
+              className={` bg-gray-600 rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer hover:bg-[#7aa2f7] hover:scale-105`}
               onClick={() => handleTagClick(tag)}
             >
               {tag}
