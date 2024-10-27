@@ -29,14 +29,14 @@ import SearchReactCompoent from "../components/ReaactCompoents/SearchField/Searc
     </style>
   </head>
 
-  <body>
+  <body class="flex flex-col min-h-screen">
     <Header />
-    <main class="mx-auto">
+    <main class="flex-grow mx-auto py-8">
       <h1 class="text-center text-6xl font-bold mb-6">Search Articles</h1>
       <div>
         <SearchReactCompoent client:idle posts={posts} />
       </div>
     </main>
-    <Footer />
+    <Footer class="mt-auto" />
   </body>
 </html>
