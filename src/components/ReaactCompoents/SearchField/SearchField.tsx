@@ -116,9 +116,6 @@
 //     </div>
 //   );
 // };
-
-// export default Search;
-
 import React from "react";
 import useSearch from "./SearchLogic";
 import type { Post } from "./types";
@@ -135,21 +132,12 @@ const searchStyles = {
 };
 
 const Search: React.FC<SearchProps> = ({ posts }) => {
-  const {
-    query,
-    setQuery,
-    results,
-    authorFilter,
-    setAuthorFilter,
-    startDate,
-    setStartDate,
-    tagFilter,
-    setTagFilter,
-  } = useSearch(posts);
+  const { query, setQuery, results, searchCategory, setSearchCategory } =
+    useSearch(posts);
 
   return (
     <div className="p-4 text-white">
-      <div className="mb-4">
+      <div className="mb-4 flex gap-2 items-center">
         <input
           type="text"
           value={query}
@@ -164,69 +152,27 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
             fontFamily: "sans-serif",
           }}
         />
+
+        <select
+          value={searchCategory}
+          onChange={(e) => setSearchCategory(e.target.value)}
+          className="p-2 border-2"
+          style={{
+            backgroundColor: searchStyles.background,
+            color: searchStyles.text,
+            borderColor: searchStyles.border,
+            borderRadius: "8px",
+          }}
+        >
+          <option value="title">Title</option>
+          <option value="description">Description</option>
+          <option value="author">Author</option>
+          <option value="tag">Tag</option>
+          <option value="date">Date</option>
+        </select>
       </div>
 
-      <div className="mb-4 space-y-4">
-        <div className="flex flex-wrap gap-4 items-start">
-          {/* Date Filter */}
-          <div className="w-full sm:w-1/3">
-            <label className="block mb-1 text-gray-200">Date:</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="w-full p-2 border-2 focus:outline-none"
-              style={{
-                backgroundColor: searchStyles.background,
-                color: searchStyles.text,
-                borderColor: searchStyles.border,
-                borderRadius: "8px",
-                fontFamily: "sans-serif",
-              }}
-            />
-          </div>
-
-          {/* Author Filter */}
-          <div className="w-full sm:w-1/3">
-            <label className="block mb-1 text-gray-200">Author:</label>
-            <input
-              type="text"
-              value={authorFilter}
-              onChange={(e) => setAuthorFilter(e.target.value)}
-              placeholder="Filter by author"
-              className="w-full p-2 border-2 focus:outline-none"
-              style={{
-                backgroundColor: searchStyles.background,
-                color: searchStyles.text,
-                borderColor: searchStyles.border,
-                borderRadius: "8px",
-                fontFamily: "sans-serif",
-              }}
-            />
-          </div>
-
-          {/* Tag Filter */}
-          <div className="w-full sm:w-1/3">
-            <label className="block mb-1 text-gray-200">Tag:</label>
-            <input
-              type="text"
-              value={tagFilter}
-              onChange={(e) => setTagFilter(e.target.value)}
-              placeholder="Filter by tag"
-              className="w-full p-2 border-2 focus:outline-none"
-              style={{
-                backgroundColor: searchStyles.background,
-                color: searchStyles.text,
-                borderColor: searchStyles.border,
-                borderRadius: "8px",
-                fontFamily: "sans-serif",
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Results */}
+      {/* Display Results */}
       <div className="space-y-4">
         {results.length > 0
           ? results.map((post, index) => (
@@ -254,7 +200,7 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
                 </p>
               </div>
             ))
-          : query && <p className="text-gray-400">No results found.</p>}
+          : query && <p className="text-gray-400">No blog post was found.</p>}
       </div>
     </div>
   );
