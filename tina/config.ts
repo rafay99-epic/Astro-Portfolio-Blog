@@ -75,6 +75,16 @@ export default defineConfig({
             label: "Body",
             isBody: true,
           },
+          {
+            type: "string",
+            name: "tags",
+            label: "Tags",
+            list: true, // Allows for multiple tags
+            required: false,
+            ui: {
+              component: "tags", // Optional: This makes tags editable as a list in the Tina CMS interface
+            },
+          },
         ],
       },
       {

@@ -7,6 +7,7 @@ fragment PostParts on Post {
   authorName
   authorAvatar
   body
+  tags
 }
 
 fragment NewsletterParts on Newsletter {
