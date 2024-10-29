@@ -78,11 +78,11 @@ export const useContactForm = () => {
       });
 
       if (response.ok) {
-        // await addContactToNotion(
-        //   formData.name,
-        //   formData.email,
-        //   formData.message
-        // );
+        await addContactToNotion(
+          formData.name,
+          formData.email,
+          formData.message
+        );
 
         setFormStatus("success");
         setFormData({ name: "", email: "", message: "" });
