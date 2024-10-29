@@ -17,6 +17,7 @@ const authorConfig = {
   },
   avator: "/favicon.png",
   webformKey: "c0613ed5-2935-40a1-8d33-b32fd9eea403",
+  hcaptchaSiteKey: "54a02fee-3ed6-4202-a504-ead64bc8817a",
   about: {
     whoAmI:
       "I'm a Full Stack Flutter Developer with a year's experience, transitioning from Machine Learning to crafting intuitive web experiences. Currently freelancing on platforms like Upwork, I deliver solutions that exceed client expectations.",
