@@ -3,12 +3,12 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel/static";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.rafay99.com",
-  output: "hybrid",
+  output: "static",
   build: {
     format: "file",
   },
