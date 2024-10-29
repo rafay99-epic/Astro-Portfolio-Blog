@@ -12,18 +12,14 @@ let {
 
 if (!webformKey) {
   if (!webformKeyAuthorFile) {
-    throw new Error(
-      "Webform key is not set in either .env or author config file"
-    );
+    console.error("Missing webform configuration");
   }
   webformKey = webformKeyAuthorFile;
 }
 
 if (!hcaptchaSiteKey) {
   if (!hcaptchaSiteKeyAuthorFile) {
-    throw new Error(
-      "hCaptcha site key is not set in either .env or author config file"
-    );
+    console.error("Missing hCaptcha configuration");
   }
   hcaptchaSiteKey = hcaptchaSiteKeyAuthorFile;
 }
