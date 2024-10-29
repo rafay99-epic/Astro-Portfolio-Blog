@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import authorConfig from "../../../config/info";
+import { addContactToNotion } from "./notion";
 
 const webformKeyAuthorFile = authorConfig.webformKey;
 const hcaptchaSiteKeyAuthorFile = authorConfig.hcaptchaSiteKey;
@@ -81,6 +82,12 @@ export const useContactForm = () => {
       });
 
       if (response.ok) {
+        await addContactToNotion(
+          formData.name,
+          formData.email,
+          formData.message
+        );
+
         setFormStatus("success");
         setFormData({ name: "", email: "", message: "" });
         setHCaptchaToken(null);
