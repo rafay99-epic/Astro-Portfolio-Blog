@@ -78,11 +78,14 @@ export const useContactForm = () => {
       });
 
       if (response.ok) {
-        await addContactToNotion(
-          formData.name,
-          formData.email,
-          formData.message
-        );
+        //  Disabling Notion api becuase it does not work with static site generator
+        // Need to convert this into a serverless function
+        // Notion API is present in the pages/api/notion.ts file
+        // await addContactToNotion(
+        //   formData.name,
+        //   formData.email,
+        //   formData.message
+        // );
 
         setFormStatus("success");
         setFormData({ name: "", email: "", message: "" });
