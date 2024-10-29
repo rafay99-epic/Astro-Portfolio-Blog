@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import authorConfig from "../../../config/info";
-import { addContactToNotion } from "./notion";
+import { addContactToNotion } from "../../../pages/api/notion";
 
 const webformKeyAuthorFile = authorConfig.webformKey;
 const hcaptchaSiteKeyAuthorFile = authorConfig.hcaptchaSiteKey;

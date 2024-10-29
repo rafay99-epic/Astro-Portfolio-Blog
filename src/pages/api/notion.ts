@@ -1,5 +1,7 @@
 import { Client } from "@notionhq/client";
+
 let notionAPI = import.meta.env.PUBLIC_NOTION_KEY;
+
 const notion = new Client({
   auth: notionAPI,
 });
