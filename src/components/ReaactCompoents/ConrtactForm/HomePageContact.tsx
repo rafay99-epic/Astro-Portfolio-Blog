@@ -1,7 +1,6 @@
 import { useContactForm } from "./contactFormHook";
 import { useState, useEffect } from "react";
-import HCaptcha from "@hcaptcha/react-hcaptcha"; // Import HCaptcha
-import authorConfig from "../../../config/info";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 const ContactMap = () => {
   const {
@@ -10,6 +9,7 @@ const ContactMap = () => {
     handleChange,
     handleSubmit,
     handleCaptchaVerify,
+    hcaptchaSiteKey,
   } = useContactForm();
   const [showMap, setShowMap] = useState(true);
 
@@ -66,7 +66,7 @@ const ContactMap = () => {
           ></textarea>
 
           <HCaptcha
-            sitekey={authorConfig.hcaptchaSiteKey}
+            sitekey={hcaptchaSiteKey}
             onVerify={(token) => handleCaptchaVerify(token)}
           />
 

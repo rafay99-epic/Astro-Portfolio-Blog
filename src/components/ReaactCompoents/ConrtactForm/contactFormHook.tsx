@@ -1,7 +1,31 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import authorConfig from "../../../config/info";
 
-const { webformKey, hcaptchaSiteKey } = authorConfig;
+const webformKeyAuthorFile = authorConfig.webformKey;
+const hcaptchaSiteKeyAuthorFile = authorConfig.hcaptchaSiteKey;
+
+let {
+  PUBLIC_WEBFORM_KEY: webformKey,
+  PUBLIC_HCAPTCHA_SITE_KEY: hcaptchaSiteKey,
+} = import.meta.env;
+
+if (!webformKey) {
+  if (!webformKeyAuthorFile) {
+    throw new Error(
+      "Webform key is not set in either .env or author config file"
+    );
+  }
+  webformKey = webformKeyAuthorFile;
+}
+
+if (!hcaptchaSiteKey) {
+  if (!hcaptchaSiteKeyAuthorFile) {
+    throw new Error(
+      "hCaptcha site key is not set in either .env or author config file"
+    );
+  }
+  hcaptchaSiteKey = hcaptchaSiteKeyAuthorFile;
+}
 
 interface FormData {
   name: string;
