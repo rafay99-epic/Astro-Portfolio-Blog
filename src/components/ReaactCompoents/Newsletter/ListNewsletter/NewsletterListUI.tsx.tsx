@@ -1,13 +1,5 @@
 import { motion } from "framer-motion";
-
-interface Newsletter {
-  slug: string;
-  data: {
-    title: string;
-    summary: string;
-    pubDate: Date;
-  };
-}
+import type { Newsletter } from "../../scheme/newsletter_types.ts";
 
 interface NewsletterListUIProps {
   currentNewsletters: Newsletter[];
@@ -22,12 +14,10 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
   currentPage,
   handlePageChange,
 }) => {
-  // Sort newsletters by date, with the newest first
   const sortedNewsletters = [...currentNewsletters].sort(
     (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
   );
 
-  // Format the date for display
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-us", {
       year: "numeric",
@@ -49,7 +39,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
       </h1>
       <ul className="space-y-8 max-w-4xl mx-auto list-none">
         {" "}
-        {/* Add list-none here to remove dots */}
         {sortedNewsletters.map((newsletter) => (
           <li
             key={newsletter.slug}
