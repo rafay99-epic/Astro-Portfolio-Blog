@@ -16,7 +16,8 @@ const authorConfig = {
     whatsNumber: "+923035650798",
   },
   avator: "/favicon.png",
-  webformKey: "c0613ed5-2935-40a1-8d33-b32fd9eea403",
+  webformKey: "", //add these keys
+  hcaptchaSiteKey: "", //add these keys
   about: {
     whoAmI:
       "I'm a Full Stack Flutter Developer with a year's experience, transitioning from Machine Learning to crafting intuitive web experiences. Currently freelancing on platforms like Upwork, I deliver solutions that exceed client expectations.",

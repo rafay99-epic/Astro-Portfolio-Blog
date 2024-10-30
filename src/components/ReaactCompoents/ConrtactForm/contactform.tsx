@@ -1,9 +1,16 @@
-// components/ContactForm.tsx
 import React from "react";
 import { useContactForm } from "../ConrtactForm/contactFormHook";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 const ContactForm: React.FC = () => {
-  const { formData, formStatus, handleChange, handleSubmit } = useContactForm();
+  const {
+    formData,
+    formStatus,
+    handleChange,
+    handleSubmit,
+    handleCaptchaVerify,
+    hcaptchaSiteKey,
+  } = useContactForm();
 
   return (
     <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-xxl mx-auto">
@@ -25,6 +32,7 @@ const ContactForm: React.FC = () => {
             className="mt-1 p-2 block w-full rounded-md bg-gray-700 border-gray-500 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
           />
         </div>
+
         <div>
           <label
             htmlFor="email"
@@ -42,6 +50,7 @@ const ContactForm: React.FC = () => {
             className="mt-1 p-2 block w-full rounded-md bg-gray-700 border-gray-500 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
           />
         </div>
+
         <div>
           <label
             htmlFor="message"
@@ -57,7 +66,11 @@ const ContactForm: React.FC = () => {
             onChange={handleChange}
             required
             className="mt-1 p-2 block w-full rounded-md bg-gray-700 border-gray-500 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-          ></textarea>
+          />
+        </div>
+
+        <div>
+          <HCaptcha sitekey={hcaptchaSiteKey} onVerify={handleCaptchaVerify} />
         </div>
 
         <div>
@@ -70,47 +83,15 @@ const ContactForm: React.FC = () => {
         </div>
       </form>
 
-      {/* Success Message */}
       {formStatus === "success" && (
         <div className="mt-4 p-4 bg-green-500 text-white rounded-lg">
-          <p className="flex items-center">
-            <svg
-              className="w-6 h-6 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M5 13l4 4L19 7"
-              ></path>
-            </svg>
-            Message sent successfully!
-          </p>
+          <p className="flex items-center">Message sent successfully!</p>
         </div>
       )}
 
-      {/* Error Message */}
       {formStatus === "error" && (
         <div className="mt-4 p-4 bg-red-500 text-white rounded-lg">
           <p className="flex items-center">
-            <svg
-              className="w-6 h-6 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
             Failed to send the message. Please try again.
           </p>
         </div>

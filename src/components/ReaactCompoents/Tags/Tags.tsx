@@ -1,21 +1,26 @@
 import React from "react";
 import { useTagFilter } from "./useTagFilter";
-
-type Post = {
-  data: {
-    title: string;
-    tags: string[];
-  };
-  slug: string;
-};
+import type { Post } from "../scheme/types";
 
 interface TagFilterProps {
   posts: Post[];
 }
 
 const TagFilter: React.FC<TagFilterProps> = ({ posts }) => {
-  const { tags, filteredPosts, fade, selectedTag, handleTagClick } =
-    useTagFilter(posts);
+  const {
+    tags,
+    paginatedPosts,
+    fade,
+    selectedTag,
+    handleTagClick,
+    currentPage,
+    totalPages,
+    setCurrentPage,
+  } = useTagFilter(posts);
+
+  const handleNextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
   return (
     <div className="p-4">
@@ -24,8 +29,14 @@ const TagFilter: React.FC<TagFilterProps> = ({ posts }) => {
           {tags.map((tag) => (
             <button
               key={tag}
-              className={` bg-gray-600 rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer hover:bg-[#7aa2f7] hover:scale-105`}
+              className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
+                ${
+                  selectedTag === tag
+                    ? "bg-[#7aa2f7] text-white scale-105"
+                    : "bg-gray-600 text-gray-200 hover:bg-[#7aa2f7] hover:text-white hover:scale-105"
+                }`}
               onClick={() => handleTagClick(tag)}
+              aria-pressed={selectedTag === tag}
             >
               {tag}
             </button>
@@ -40,7 +51,7 @@ const TagFilter: React.FC<TagFilterProps> = ({ posts }) => {
             fade ? "opacity-0" : "opacity-100"
           }`}
         >
-          {filteredPosts.map((post) => (
+          {paginatedPosts.map((post) => (
             <li key={post.slug} className="mt-2">
               <a
                 href={`/blog/${post.slug}`}
@@ -51,6 +62,25 @@ const TagFilter: React.FC<TagFilterProps> = ({ posts }) => {
             </li>
           ))}
         </ul>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            className="px-4 py-2 mx-1 bg-gray-500 rounded text-white disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2">{`Page ${currentPage} of ${totalPages}`}</span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 mx-1 bg-gray-500 rounded text-white disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
 const ConnectButton = () => {
   return (
     <div className="animated-text fade-slide-in social-links-container">
-      <button
+      <a
+        href="/contact-me"
         className="animated-text fade-slide-in connect-button"
-        onClick={() => (window.location.href = "/contact-me")}
+        role="button"
       >
         Connect with Me
-      </button>
+      </a>
     </div>
   );
 };

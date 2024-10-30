@@ -1,13 +1,5 @@
 import { useState } from "react";
-
-interface Newsletter {
-  slug: string;
-  data: {
-    title: string;
-    summary: string;
-    pubDate: Date;
-  };
-}
+import type { Newsletter } from "../../scheme/newsletter_types.ts";
 
 interface NewsletterLogicProps {
   newsletters: Newsletter[];

@@ -4,35 +4,26 @@ const AdLoader: React.FC = () => {
   const [adBlockerDetected, setAdBlockerDetected] = useState(false);
 
   useEffect(() => {
-    const loadAdScript = () => {
+    const detectAdBlocker = async () => {
       const adScript = document.createElement("script");
       adScript.src =
         "//pl24384595.cpmrevenuegate.com/75a9e4d4cdc61042594f971bcbc143dd/invoke.js";
       adScript.async = true;
       adScript.dataset.cfasync = "false";
 
+      adScript.onload = () => setAdBlockerDetected(false);
+      adScript.onerror = () => setAdBlockerDetected(true);
+
       const adContainer = document.getElementById(
         "container-75a9e4d4cdc61042594f971bcbc143dd"
       );
       if (adContainer) {
         adContainer.appendChild(adScript);
+      } else {
+        setAdBlockerDetected(true);
       }
     };
 
-    const detectAdBlocker = () => {
-      const testAd = document.createElement("div");
-      testAd.className = "adsbygoogle";
-      testAd.style.display = "none";
-      document.body.appendChild(testAd);
-      window.setTimeout(() => {
-        if (!testAd || testAd.offsetHeight === 0) {
-          setAdBlockerDetected(true);
-        }
-        document.body.removeChild(testAd);
-      }, 100);
-    };
-
-    loadAdScript();
     detectAdBlocker();
   }, []);
 

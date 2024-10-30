@@ -1,22 +1,6 @@
 import BlogSectionLogic from "./BlogPostLogic";
 import BlogSectionUI from "./BlogPostUI";
-
-interface Post {
-  id: string;
-  slug: string;
-  body: string;
-  collection: string;
-  data: {
-    title: string;
-    description: string;
-    pubDate: Date;
-    updatedDate?: Date;
-    heroImage?: string;
-    draft: boolean;
-    authorName: string;
-    authorAvatar?: string;
-  };
-}
+import type { Post } from "../scheme/types";
 
 interface BlogSectionProps {
   posts: Post[];
