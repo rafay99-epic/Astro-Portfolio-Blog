@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { Post } from "./BlogPostLogic";
+import type { Post } from "../scheme/types";
 
 interface BlogSectionUIProps {
   currentPosts: Post[];

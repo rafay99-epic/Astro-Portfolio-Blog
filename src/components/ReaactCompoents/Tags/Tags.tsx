@@ -1,6 +1,6 @@
 import React from "react";
 import { useTagFilter } from "./useTagFilter";
-import type { Post } from "../SearchField/types";
+import type { Post } from "../scheme/types";
 
 interface TagFilterProps {
   posts: Post[];

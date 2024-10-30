@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Post } from "../SearchField/types";
+import type { Post } from "../scheme/types";
 
 export const useTagFilter = (posts: Post[]) => {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
