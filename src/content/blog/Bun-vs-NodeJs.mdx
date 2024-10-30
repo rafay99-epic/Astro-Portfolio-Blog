@@ -1,0 +1,143 @@
+---
+title: 'Cooking Up a Storm: Bun vs. Node.js Performance Showdown'
+description: 'Node.js vs. Bun: Which One Prevails?'
+pubDate: 2023-09-20T19:00:00.000Z
+draft: true
+heroImage: /thumbnail.png
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - Web-Development
+  - 'Blog '
+---
+
+There's a new sensation in town, and it goes by the name "Bun." Recently, a new JavaScript runtime called "Bun" was released. I've been a long-time user of Node.js, having completed my final year project and various client projects with it. Node.js has served me well, getting the job done with its reliability over the years. However, I'm eager to explore what Bun has to offer and discover if it can persuade me to switch to it for my application development needs.
+
+# Introducing Bun: A New JavaScript Runtime
+
+Bun is a super fast all-in-one toolkit for JavaScript and TypeScript apps. The beauty of Bun lies in its ability to streamline the development process, making it smoother and more efficient than ever. This is possible because Bun is not just a runtime, it's also a package manager, a bundler, and a test runner. Imagine having a Swiss Army knife for JS development; that's Bun for you.
+
+# What Bun solves for
+
+The inception of Node.js in 2009 was groundbreaking. However, as with many technologies, as it grew, so did its complexity. Think of it like a city. As a city expands, traffic congestion can become a problem.
+
+Bun aims to be the new infrastructure that alleviates this congestion, making things run smoother and faster. It's not about reinventing the wheel but refining it, ensuring that while we get the speed and simplicity, we don't lose the essence of what makes JavaScript unique and powerful.
+
+Bun is designed as a faster, leaner, more modern replacement for Node.js so let’s take a closer look at some comparison. But first let’s discuss one other topic.
+
+# **Bun versus Node.js: JavaScript runtime**
+
+A JavaScript runtime is an environment which provides all the necessary components in order to use and run a JavaScript program.
+
+Both Node.js and Bun are runtimes. Node.js is primarily written in C++ where as Bun is written with a low-level general purpose programming language called [Zig](https://ziglang.org/). But that is just the tip of the ice berg. Let’s take a closer look at other differences when treating Bun as a runtime alone.
+
+## JavaScript Engine
+
+A JavaScript engine is a program that converts JavaScript code we write into machine code that allows a computer to perform specific tasks.
+
+While Node.js uses Google's [V8 engine](https://v8.dev/) that power's Chrome browser, Bun uses [JavaScriptCore](https://developer.apple.com/documentation/javascriptcore) (JSC), which is an open source JavaScript engine developed by Apple for Safari.
+
+V8 and JSC have different architectures and optimization strategies. JSC prioritizes faster start times and reduced memory usage with a slightly slower execution time. On the other hand, V8 prioritizes fast execution with more runtime optimization which may lead to more memory usage.
+
+This makes Bun fast, starting up to 4x faster than Node.js.
+
+## Bun Result
+
+## NPM Result
+
+## **Transpiler**
+
+While Node.js is a powerful runtime for JavaScript, it doesn't natively support TypeScript files. To execute TypeScript in a Node.js environment, external dependencies are required. One common approach is to use a build step to transpile TypeScript (TS) into JavaScript (JS) and then run the resulting JS code. Here's a basic setup that uses the `[ts-node](https://github.com/TypeStrong/ts-node)` package:
+
+1. Installer
+
+```shell
+npm install -D typescript ts-node
+```
+
+**2. Script configuration**
+
+In your `package.json`, you can set up scripts to streamline the process:
+
+```javascript
+{
+  "scripts": {
+    "start": "ts-node ./path/to/your/file.ts"
+  }
+}
+```
+
+**3. Execution**
+
+With the above script, you can easily run your TypeScript file:
+
+```shell
+npm start
+```
+
+In contrast, Bun offers a more streamlined approach. It comes with a JavaScript transpiler integrated into the runtime. This allows you to directly run .`js, .ts, .jsx` and `.tsx` files. Bun's built-in transpiler seamlessly converts these files to vanilla JavaScript, facilitating immediate execution without additional steps.
+
+```shell
+bun index.ts
+```
+
+The difference in speed is magnified when running a TypeScript file as Node.js requires a transpilation step before it can be run.
+
+## Hot Reloading
+
+Hot reloading is a feature that boosts developer productivity by automatically refreshing or reloading parts of an application in real-time as the code changes, without requiring a full restart.
+
+In the Node.js ecosystem, you have a couple of options for achieving hot reloading. One popular tool has been `[nodemon](https://github.com/remy/nodemon)`, which hard-restarts the entire process:
+
+```shell
+nodemon index.js
+```
+
+Alternatively, starting from Node.js v18, there's an experimental `--watch` flag introduced:
+
+```shell
+node --watch index.js
+```
+
+Both methods aim to provide real-time reloading of the application as code changes. However, they might have different behaviors, especially in certain environments or scenarios.
+
+For instance, `nodemon` can lead to disruptions like disconnecting HTTP and WebSocket connections, while the `--watch` flag, being experimental, might not offer the full suite of features and has some reported issues in the [GitHub issues](https://github.com/nodejs/node/issues?q=--watch).
+
+Bun takes hot reloading a step further. By running Bun with the `--hot` flag, hot reloading is enabled:
+
+```shell
+bun --hot index.ts
+```
+
+Unlike the Node.js methods that might require a full process restart, Bun reloads your code in-place without terminating the old process. This ensures that HTTP and WebSocket connections remain uninterrupted and the application state is preserved, providing a smoother development experience.
+
+## Package Manager
+
+Bun is more than just a runtime; it's an advanced toolkit that includes a powerful package manager. If you've ever found yourself patiently waiting during dependency installations, Bun offers a refreshingly faster alternative. Even if you don't use Bun as a runtime, its built-in package manager can speed up your development workflow.
+
+Check out this table comparing Bun commands with [npm](https://www.npmjs.com/), Node's package manager:
+
+```
+| Bun|npm| Purpose |
+| ---| ---| --- |
+| bun install|  npm install | Install all dependencies from package.json|
+| bun add <package>| npm install <package> | Add a new package to the project|
+| bun add <package> --dev| npm install <package> --dev | Add a new development-only package|
+| bun remove <package>| npm uninstall <package> | Remove a package from the project|
+| bun update <package> | npm update <package> | Update a specific package to its latest version|
+| bun run <script_name>| npm run <script_name> | Execute a specified script from package.json|
+```
+
+At a glance, Bun's commands might seem familiar but the experience is anything but ordinary. Bun boasts installation speeds that are orders of magnitude faster than npm. It achieves this by leveraging a global module cache, eliminating redundant downloads from the npm registry. Additionally, Bun employs the fastest system calls available for each operating system, ensuring optimal performance.
+
+# Comparing Speed: Is It Faster or Slower?
+
+Till this point have seen how much faster bun is as compare to NodeJS in every single way, from the  build of project to running the Project everything seem faster and code is much optimize as compare to nodejs. So yeah It is faster then nodejs.
+
+# Conclusion
+
+Node.js has long been a cornerstone in the JavaScript world, setting benchmarks and guiding developers. However, Bun is stepping onto the scene as a noteworthy challenger, pushing boundaries.
+
+While it's still early days for Bun, the buzz it's generating is undeniable. Currently, it's optimized for MacOS and Linux, and while Windows support is in progress, some features are still on the horizon. With all it offers, Bun is certainly a toolkit you should consider exploring.
+
+With that, we will see you next time.❤️❤️
