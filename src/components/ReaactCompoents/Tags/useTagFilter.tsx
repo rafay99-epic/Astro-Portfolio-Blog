@@ -4,6 +4,8 @@ type Post = {
   data: {
     title: string;
     tags: string[];
+    draft?: boolean;
+    date: string;
   };
   slug: string;
 };
@@ -14,15 +16,24 @@ export const useTagFilter = (posts: Post[]) => {
   const [fade, setFade] = useState(false);
 
   useEffect(() => {
+    const publishedPosts = posts.filter((post) => !post.data.draft);
+
     const allTags = Array.from(
-      new Set(posts.flatMap((post) => post.data.tags))
+      new Set(publishedPosts.flatMap((post) => post.data.tags))
     ).sort((a, b) => a.localeCompare(b));
+
     setTags(allTags);
   }, [posts]);
 
-  const filteredPosts = selectedTag
-    ? posts.filter((post) => post.data.tags.includes(selectedTag))
-    : posts;
+  const filteredPosts = (
+    selectedTag
+      ? posts
+          .filter((post) => !post.data.draft)
+          .filter((post) => post.data.tags.includes(selectedTag))
+      : posts.filter((post) => !post.data.draft)
+  ).sort((a, b) => {
+    return new Date(a.data.date).getTime() - new Date(b.data.date).getTime();
+  });
 
   useEffect(() => {
     setFade(true);

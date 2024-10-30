@@ -5,6 +5,8 @@ type Post = {
   data: {
     title: string;
     tags: string[];
+    date: string;
+    draft?: boolean;
   };
   slug: string;
 };
