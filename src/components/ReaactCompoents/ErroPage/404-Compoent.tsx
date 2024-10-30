@@ -24,7 +24,6 @@ const NotFoundPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center h-screen text-white">
       <h1 className="text-3xl font-mono">Oops! You're Lost in Code</h1>
 
-      {/* SVG only contains text elements, no image */}
       <svg
         ref={svgRef}
         xmlns="http://www.w3.org/2000/svg"
