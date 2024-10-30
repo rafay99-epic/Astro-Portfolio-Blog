@@ -1,0 +1,144 @@
+---
+title: 'Optimize Your Fedora: 5 Essential Post-Installation Steps'
+description: Top 5 things when freshed installed Fedora
+pubDate: 2023-06-30T19:00:00.000Z
+draft: false
+heroImage: /Optimize-Your-Fedora-5-Essential-Post-Installation-Steps.png
+authorName: 'Abdul Rafay '
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - Blog
+  - Linux
+---
+
+So you've installed Fedora on your system, and I hope you're enjoying it. However, out of the box, there are a few things that could be improved. In this blog post, we will go through the top five things to do after installing Fedora on your system.
+
+# Top 5:
+
+Here are the top 5 things I would do when I install Fedora on my system, and I will be throwing in a bonus one as well.
+
+## Update your system
+
+Even if you used the latest ISO to install Fedora, there will still be some updates available. It's a good idea to update your system using these steps:
+
+1. Open the Terminal.
+2. Enter the following command:
+
+```bash
+   sudo dnf update -y 
+```
+
+## Enable RPM Fusion Repository
+
+Fedora, out of the box, does not include non-free software. So, you need to enable the RPM Fusion Repository to access these additional packages. Follow these steps:
+
+1. Open the Terminal.
+2. Enter the following commands:
+   * To enable the Free repository:
+
+```bash
+     sudo dnf install \
+     https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+```
+
+* To enable the Nonfree repository:
+
+```bash
+     sudo dnf install \
+     https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+```
+
+* Install one command line tool:
+
+```bash
+     sudo dnf group update core -y
+```
+
+## Change dnf.conf file
+
+Out of the box, Fedora uses DNF as the package manager, but it can be slow. To give it a speed boost, you can change some options in the dnf.conf file. Follow these steps:
+
+1. Open the Terminal.
+2. Navigate to the dnf folder:
+
+```bash
+   cd /etc/dnf/
+```
+
+1. Edit the dnf.conf file:
+
+```bash
+   sudo nano dnf.conf
+```
+
+1. Add the following lines of code to the conf file:
+
+```bash
+   fastestmirror=True
+   max_parallel_downloads=10
+   defaultyes=True
+   keepcache=True
+```
+
+1. Press Ctrl+X on your keyboard to exit and press Enter to exit the editor.
+2. Update your system once more:
+
+```bash
+   sudo dnf update -y 
+```
+
+**This time the update will take some time, so please wait.**
+
+## Adding Flatpaks support
+
+Flatpaks are a great way to find and install applications without any compatibility issues. To enable Flatpak support, follow these steps:
+
+1. Open the Terminal.
+2. Enter the following commands:
+
+```bash
+   sudo dnf install flatpak
+   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+```
+
+Once these commands are entered, Flatpak will be enabled and installed on your system. You can now install applications using Flatpak. Visit the [Flathub website](https://flathub.org/) to search for applications and find installation commands.
+
+## Enable Multimedia Codecs
+
+Starting from Fedora 38, the Fedora team decided not to include Multimedia Codecs by default. To install these codecs, follow these steps:
+
+1. Open the Terminal.
+2. Enter the following commands:
+   * Switch to the FFmpeg codec:
+
+```bash
+        sudo dnf swap ffmpeg-free ffmpeg --allowerasing
+```
+
+* Install additional codecs:
+
+```bash
+     sudo dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+     sudo dnf groupupdate sound-and-video
+```
+
+**For a full custom installation of multimedia codecs, stay tuned for an upcoming blog post. You can also refer to the official documentation in the references section of this blog post.**
+
+## Bonus: Change your Host Name
+
+By default, the system name is set to "fedora," and if you prefer a different name, you can change it easily. For example, to change the system name to "Prometheus," follow these steps:
+
+1. Open the Terminal.
+2. Enter the command:
+
+```bash
+   sudo hostnamectl set-hostname "Prometheus"
+```
+
+1. Reboot or restart your system for the changes to take effect.
+
+# Conclusion:
+
+In conclusion, by updating your system, enabling the RPM Fusion Repository, optimizing the dnf.conf file, adding Flatpak support, enabling Multimedia Codecs, and customizing your hostname, you can enhance your Fedora experience, expand software availability, improve system performance, and personalize your setup. Enjoy the benefits of a more optimized and feature-rich Fedora system!
+
+With that, we will see you next time.❤️❤️
