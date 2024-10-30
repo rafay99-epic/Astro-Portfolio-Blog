@@ -29,10 +29,14 @@ const TagFilter: React.FC<TagFilterProps> = ({ posts }) => {
           {tags.map((tag) => (
             <button
               key={tag}
-              className={`bg-gray-600 rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer hover:bg-[#7aa2f7] hover:scale-105 ${
-                selectedTag === tag ? "bg-[#7aa2f7]" : ""
-              }`}
+              className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
+                ${
+                  selectedTag === tag
+                    ? "bg-[#7aa2f7] text-white scale-105"
+                    : "bg-gray-600 text-gray-200 hover:bg-[#7aa2f7] hover:text-white hover:scale-105"
+                }`}
               onClick={() => handleTagClick(tag)}
+              aria-pressed={selectedTag === tag}
             >
               {tag}
             </button>
