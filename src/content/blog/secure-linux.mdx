@@ -21,7 +21,7 @@ The base security layer is the first line of defense against attackers and consi
 
 ## Network Level
 
-Managing a firewall on a system can be a daunting task, but it is crucial for maintaining security. In this section, we will discuss the two most common types of firewalls in Linux: ***ufw*** and ***fail2ban***.
+Managing a firewall on a system can be a daunting task, but it is crucial for maintaining security. In this section, we will discuss the two most common types of firewalls in Linux: **_ufw_** and **_fail2ban_**.
 
 ### UFW (Uncomplicated Firewall)
 
@@ -31,22 +31,22 @@ UFW is easy to set up and understand. It efficiently blocks and allows network t
 
 To install UFW on major Linux distributions, use the following commands:
 
-* Debian/Ubuntu
+- Debian/Ubuntu
 
 ```bash
-  sudo apt-get install ufw
+sudo apt-get install ufw
 ```
 
-* Fedora
+- Fedora
 
 ```bash
-  sudo dnf install ufw
+sudo dnf install ufw
 ```
 
-* Arch
+- Arch
 
 ```bash
-  sudo pacman -S ufw
+sudo pacman -S ufw
 ```
 
 #### Recommended UFW Rules
@@ -70,19 +70,19 @@ Fail2Ban is an excellent intrusion prevention utility present in almost all Linu
 
 To install Fail2Ban on major Linux distributions, use the following commands:
 
-* Debian/Ubuntu
+- Debian/Ubuntu
 
 ```bash
-  sudo apt-get install fail2ban
+sudo apt-get install fail2ban
 ```
 
-* Fedora
+- Fedora
 
 ```bash
 sudo dnf install fail2ban
 ```
 
-* Arch
+- Arch
 
 ```bash
 sudo pacman -S fail2ban
@@ -120,7 +120,7 @@ Adding untrusted repositories can lead to serious security issues. It's crucial 
 
 ### Prioritizing Repositories
 
-On Debian-based systems, you can set priority preferences for repositories. Example: ***volian.pref***
+On Debian-based systems, you can set priority preferences for repositories. Example: **_volian.pref_**
 
 ```conf
 Package: *
@@ -128,12 +128,12 @@ Pin: origin deb.volian.org
 Pin-Priority: 100
 ```
 
-* Set specific packages to only install with the Package: \* Line
-* Pin: Origin is the address of the repo
-* Pin-Priority is generally 100 which means it will update packages NOT in base repos.
-  * 1 = do not auto-update
-  * 100 = update if not in other repos
-  * over 100 = overwrite base repos
+- Set specific packages to only install with the Package: \* Line
+- Pin: Origin is the address of the repo
+- Pin-Priority is generally 100 which means it will update packages NOT in base repos.
+  - 1 = do not auto-update
+  - 100 = update if not in other repos
+  - over 100 = overwrite base repos
 
 (Note: Arch Linux does not have built-in repository priorities in Pacman)
 
@@ -145,8 +145,8 @@ However, simply installing these tools in permissive modes is not enough to prov
 
 To learn more about using AppArmor or SELinux, refer to the respective documentation:
 
-* [AppArmor Documentation](https://gitlab.com/apparmor/apparmor/-/wikis/Documentation)
-* [SELinux Documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/index)
+- [AppArmor Documentation](https://gitlab.com/apparmor/apparmor/-/wikis/Documentation)
+- [SELinux Documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/index)
 
 # Conclusion
 

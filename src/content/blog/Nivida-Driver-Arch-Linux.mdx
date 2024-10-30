@@ -1,10 +1,10 @@
 ---
-title: 'Nivida Driver: Arch Linux'
+title: "Nivida Driver: Arch Linux"
 description: Nvidia Drivers on Arch Linux
 pubDate: 2023-03-11T19:00:00.000Z
 draft: false
 heroImage: /NVIDIA-Graphic-Arch-Linux.png
-authorName: 'Abdul Rafay '
+authorName: "Abdul Rafay "
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
   - Nvidia-Drivers
@@ -20,13 +20,13 @@ In order to install Nvidia drivers on your system, there are a couple of things 
 1. Check which kernel you are running on your system. To check which kernel you are running, enter this command in your terminal.
 
 ```bash
-        uname -r
+uname -r
 ```
 
 1. Check which session you are running—is it Xorg or Wayland? Enter this command to checkout.
 
 ```bash
-    loginctl show-session   $XDG_SESSION_ID -p Type
+loginctl show-session   $XDG_SESSION_ID -p Type
 ```
 
 This command will display the type of session you are currently running, which can be either "x11" or "wayland". If the output is "Type=x11", it means that you are running an Xorg session, and if the output is "Type=wayland", it means that you are running a Wayland session.
@@ -34,7 +34,7 @@ This command will display the type of session you are currently running, which c
 1. Check which graphics card you are running on your system, and to check, enter the following command into your terminal:
 
 ```perl
-        lspci -k | grep-A 2 -E "(VGA | 3D)"
+lspci -k | grep-A 2 -E "(VGA | 3D)"
 ```
 
 ![](/my-driver.png)
@@ -57,13 +57,13 @@ To install the nVidia driver, there are four things that must be kept in mind.
 1. Before you begin, make sure that your system is up-to-date by running the following command in the terminal:
 
 ```bash
-        sudo pacman -Syu
+sudo pacman -Syu
 ```
 
 1. If your kernel is new and your GPU is supported, then all the drivers can be installed using these commands.
 
 ```bash
-       sudo pacman -Sy nvidia nvidia-settings nvidia-utils
+sudo pacman -Sy nvidia nvidia-settings nvidia-utils
 ```
 
 The above package will install all the drivers on your system.
@@ -74,7 +74,7 @@ The above package will install all the drivers on your system.
 2. To install the nouveau driver, enter the following command in your terminal.
 
 ```bash
-        paru -S xf86-video-nouveau
+paru -S xf86-video-nouveau
 ```
 
 Remember, these are open-source drivers and might not be as good as the originals, but still, something is better than nothing.
@@ -86,16 +86,16 @@ To read more about unsupported drivers, checkout the [Arch Linux Wiki](https://w
 2. So if you are running such a kernel, then you need to install this driver.
 
 ```bash
-        paru -S nvidia-dkms
+paru -S nvidia-dkms
 ```
 
 1. Paru is an AUR helper, and if you don't have it installed, then install it using these commands.
 
 ```bash
-        sudo pacman -S --needed base-devel
-        git clone https://aur.archlinux.org/paru.git
-        cd paru
-        makepkg -si
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
 ```
 
 ## Enabling Drivers:
@@ -105,16 +105,16 @@ If your session is on Xorg, then you need to activate it manually; if you are on
 1. Once the driver is installed, you need to enable it. You can do this by creating a configuration file using the following command:
 
 ```bash
-        sudo nano /etc/X11/xorg.conf.d/20-nvidia.conf
+sudo nano /etc/X11/xorg.conf.d/20-nvidia.conf
 ```
 
 1. In the configuration file, add the following lines:
 
 ```python
-        Section "Device"
-        Identifier "Nvidia Card"
-        Driver "nvidia"
-        EndSection
+Section "Device"
+Identifier "Nvidia Card"
+Driver "nvidia"
+EndSection
 ```
 
 Save the file and exit the editor.
@@ -149,22 +149,22 @@ There are three modes.
 
 ##### Commands to change mode:
 
-* Set graphics mode to integrated
+- Set graphics mode to integrated
 
 ```bash
-        sudo envycontrol's integrated
+sudo envycontrol's integrated
 ```
 
-* Set graphics mode to hybrid.
+- Set graphics mode to hybrid.
 
 ```bash
-        sudo envycontrol --s hybrid
+sudo envycontrol --s hybrid
 ```
 
-* Set graphics mode to Nvidia:
+- Set graphics mode to Nvidia:
 
 ```bash
-        sudo envycontrol -s nvidia
+sudo envycontrol -s nvidia
 ```
 
 For more information, check out the EnvyControl page on [GitHub](https://github.com/bayasdev/EnvyControl).
@@ -181,9 +181,9 @@ paru-S optimus-prime
 
 #### Switch Mode:
 
-* `optimus-manager --switch nvidia` to switch to the Nvidia GPU
-* `optimus-manager --switch integrated` to switch to the integrated GPU and power the Nvidia GPU off
-* `optimus-manager --switch hybrid` to switch to the iGPU but leave the Nvidia GPU available for on-demand offloading.
+- `optimus-manager --switch nvidia` to switch to the Nvidia GPU
+- `optimus-manager --switch integrated` to switch to the integrated GPU and power the Nvidia GPU off
+- `optimus-manager --switch hybrid` to switch to the iGPU but leave the Nvidia GPU available for on-demand offloading.
 
 To read more about Optimus Prime, check out these links:
 
@@ -225,7 +225,7 @@ prime-run android-studio
 Finally, restart your computer to apply the changes:
 
 ```bash
-    sudo reboot
+sudo reboot
 ```
 
 That's it! You should now have NVIDIA drivers installed and running on your Arch Linux system.

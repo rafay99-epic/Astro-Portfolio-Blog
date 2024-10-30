@@ -1,6 +1,6 @@
 ---
-title: 'Cooking Up a Storm: Bun vs. Node.js Performance Showdown'
-description: 'Node.js vs. Bun: Which One Prevails?'
+title: "Cooking Up a Storm: Bun vs. Node.js Performance Showdown"
+description: "Node.js vs. Bun: Which One Prevails?"
 pubDate: 2023-09-20T19:00:00.000Z
 draft: true
 heroImage: /thumbnail.png
@@ -8,7 +8,7 @@ authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
   - Web-Development
-  - 'Blog '
+  - "Blog "
 ---
 
 There's a new sensation in town, and it goes by the name "Bun." Recently, a new JavaScript runtime called "Bun" was released. I've been a long-time user of Node.js, having completed my final year project and various client projects with it. Node.js has served me well, getting the job done with its reliability over the years. However, I'm eager to explore what Bun has to offer and discover if it can persuade me to switch to it for my application development needs.
@@ -117,22 +117,20 @@ Bun is more than just a runtime; it's an advanced toolkit that includes a powerf
 
 Check out this table comparing Bun commands with [npm](https://www.npmjs.com/), Node's package manager:
 
-```
-| Bun|npm| Purpose |
-| ---| ---| --- |
-| bun install|  npm install | Install all dependencies from package.json|
-| bun add <package>| npm install <package> | Add a new package to the project|
-| bun add <package> --dev| npm install <package> --dev | Add a new development-only package|
-| bun remove <package>| npm uninstall <package> | Remove a package from the project|
-| bun update <package> | npm update <package> | Update a specific package to its latest version|
-| bun run <script_name>| npm run <script_name> | Execute a specified script from package.json|
-```
+| Bun                          | npm                              | Purpose                                         |
+| ---------------------------- | -------------------------------- | ----------------------------------------------- |
+| bun install                  | npm install                      | Install all dependencies from package.json      |
+| bun add "package_name"       | npm install "add Package name"   | Add a new package to the project                |
+| bun add "package_name" --dev | npm install "package_name" --dev | Add a new development-only package              |
+| bun remove "package_name"    | npm uninstall "package_name"     | Remove a package from the project               |
+| bun update "package_name"    | npm update "package_name"        | Update a specific package to its latest version |
+| bun run "script_name"        | npm run "script_name"            | Execute a specified script from package.json    |
 
 At a glance, Bun's commands might seem familiar but the experience is anything but ordinary. Bun boasts installation speeds that are orders of magnitude faster than npm. It achieves this by leveraging a global module cache, eliminating redundant downloads from the npm registry. Additionally, Bun employs the fastest system calls available for each operating system, ensuring optimal performance.
 
 # Comparing Speed: Is It Faster or Slower?
 
-Till this point have seen how much faster bun is as compare to NodeJS in every single way, from the  build of project to running the Project everything seem faster and code is much optimize as compare to nodejs. So yeah It is faster then nodejs.
+Till this point have seen how much faster bun is as compare to NodeJS in every single way, from the build of project to running the Project everything seem faster and code is much optimize as compare to nodejs. So yeah It is faster then nodejs.
 
 # Conclusion
 

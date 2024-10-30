@@ -1,10 +1,10 @@
 ---
-title: 'Optimize Your Fedora: 5 Essential Post-Installation Steps'
+title: "Optimize Your Fedora: 5 Essential Post-Installation Steps"
 description: Top 5 things when freshed installed Fedora
 pubDate: 2023-06-30T19:00:00.000Z
 draft: false
 heroImage: /Optimize-Your-Fedora-5-Essential-Post-Installation-Steps.png
-authorName: 'Abdul Rafay '
+authorName: "Abdul Rafay "
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
   - Blog
@@ -25,7 +25,7 @@ Even if you used the latest ISO to install Fedora, there will still be some upda
 2. Enter the following command:
 
 ```bash
-   sudo dnf update -y 
+sudo dnf update -y
 ```
 
 ## Enable RPM Fusion Repository
@@ -34,24 +34,24 @@ Fedora, out of the box, does not include non-free software. So, you need to enab
 
 1. Open the Terminal.
 2. Enter the following commands:
-   * To enable the Free repository:
+   - To enable the Free repository:
 
 ```bash
-     sudo dnf install \
+sudo dnf install \
      https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 ```
 
-* To enable the Nonfree repository:
+- To enable the Nonfree repository:
 
 ```bash
-     sudo dnf install \
+sudo dnf install \
      https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 ```
 
-* Install one command line tool:
+- Install one command line tool:
 
 ```bash
-     sudo dnf group update core -y
+sudo dnf group update core -y
 ```
 
 ## Change dnf.conf file
@@ -62,29 +62,29 @@ Out of the box, Fedora uses DNF as the package manager, but it can be slow. To g
 2. Navigate to the dnf folder:
 
 ```bash
-   cd /etc/dnf/
+cd /etc/dnf/
 ```
 
 1. Edit the dnf.conf file:
 
 ```bash
-   sudo nano dnf.conf
+sudo nano dnf.conf
 ```
 
 1. Add the following lines of code to the conf file:
 
 ```bash
-   fastestmirror=True
-   max_parallel_downloads=10
-   defaultyes=True
-   keepcache=True
+fastestmirror=True
+max_parallel_downloads=10
+defaultyes=True
+keepcache=True
 ```
 
 1. Press Ctrl+X on your keyboard to exit and press Enter to exit the editor.
 2. Update your system once more:
 
 ```bash
-   sudo dnf update -y 
+sudo dnf update -y
 ```
 
 **This time the update will take some time, so please wait.**
@@ -97,8 +97,8 @@ Flatpaks are a great way to find and install applications without any compatibil
 2. Enter the following commands:
 
 ```bash
-   sudo dnf install flatpak
-   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+sudo dnf install flatpak
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 
 Once these commands are entered, Flatpak will be enabled and installed on your system. You can now install applications using Flatpak. Visit the [Flathub website](https://flathub.org/) to search for applications and find installation commands.
@@ -109,17 +109,17 @@ Starting from Fedora 38, the Fedora team decided not to include Multimedia Codec
 
 1. Open the Terminal.
 2. Enter the following commands:
-   * Switch to the FFmpeg codec:
+   - Switch to the FFmpeg codec:
 
 ```bash
-        sudo dnf swap ffmpeg-free ffmpeg --allowerasing
+ sudo dnf swap ffmpeg-free ffmpeg --allowerasing
 ```
 
-* Install additional codecs:
+- Install additional codecs:
 
 ```bash
-     sudo dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
-     sudo dnf groupupdate sound-and-video
+sudo dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+sudo dnf groupupdate sound-and-video
 ```
 
 **For a full custom installation of multimedia codecs, stay tuned for an upcoming blog post. You can also refer to the official documentation in the references section of this blog post.**
@@ -132,7 +132,7 @@ By default, the system name is set to "fedora," and if you prefer a different na
 2. Enter the command:
 
 ```bash
-   sudo hostnamectl set-hostname "Prometheus"
+sudo hostnamectl set-hostname "Prometheus"
 ```
 
 1. Reboot or restart your system for the changes to take effect.
