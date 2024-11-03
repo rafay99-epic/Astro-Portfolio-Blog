@@ -22,7 +22,7 @@ const posts = (await getCollection("blog")).sort(
     <Header />
     <SpeedInsights />
     <section>
-      <BlogSection posts={posts} client:idle />
+      <BlogSection posts={posts} client:load />
     </section>
     <section>
       <Footer class="mt-auto" />

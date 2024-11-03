@@ -20,7 +20,7 @@ const newsletters = await getCollection("newsletter");
   <body>
     <Header />
     <SpeedInsights />
-    <Newsletter newsletters={newsletters} client:idle />
+    <Newsletter newsletters={newsletters} client:load />
 
     <Footer />
   </body>
