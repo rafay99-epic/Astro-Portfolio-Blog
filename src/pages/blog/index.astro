@@ -21,7 +21,11 @@ const posts = (await getCollection("blog")).sort(
   <body>
     <Header />
     <SpeedInsights />
-    <BlogSection posts={posts} client:idle />
-    <Footer />
+    <section>
+      <BlogSection posts={posts} client:idle />
+    </section>
+    <section>
+      <Footer class="mt-auto" />
+    </section>
   </body>
 </html>
