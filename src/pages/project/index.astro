@@ -27,7 +27,7 @@ const projects = await getCollection("projects");
         Some Things I've Built
       </h1>
       <div class="flex flex-wrap gap-5 justify-center">
-        <ProjectList projects={projects} client:idle />
+        <ProjectList projects={projects} client:load />
       </div>
     </main>
     <Footer />

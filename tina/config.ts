@@ -2,8 +2,6 @@ import { defineConfig } from "tinacms";
 
 const branch = "main";
 
-const BlogPostFields = [];
-
 export default defineConfig({
   branch,
   clientId: "ca928060-14c1-452c-938e-9a1e7feaae19",
@@ -20,6 +18,7 @@ export default defineConfig({
   },
   schema: {
     collections: [
+      // Blog Collection
       {
         name: "post",
         label: "Articles",
@@ -79,14 +78,15 @@ export default defineConfig({
             type: "string",
             name: "tags",
             label: "Tags",
-            list: true, // Allows for multiple tags
+            list: true,
             required: false,
             ui: {
-              component: "tags", // Optional: This makes tags editable as a list in the Tina CMS interface
+              component: "tags",
             },
           },
         ],
       },
+      // Newsletter Collection
       {
         name: "newsletter",
         label: "Newsletters",
@@ -116,6 +116,55 @@ export default defineConfig({
             name: "draft",
             label: "Draft",
             required: true,
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Body",
+            isBody: true,
+          },
+        ],
+      },
+      // Project Collection
+      {
+        name: "projects",
+        label: "Projects",
+        path: "/src/content/projects",
+        format: "mdx",
+        fields: [
+          {
+            type: "string",
+            name: "Projecttitle",
+            label: "Project Title",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "ProjectDescription",
+            label: "project Description",
+            required: true,
+          },
+          {
+            type: "image",
+            name: "ProjectImage",
+            label: "Project Thumbnail",
+            required: true,
+          },
+          {
+            type: "boolean",
+            name: "draft",
+            label: "Draft",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "ProjectTech",
+            label: "Project Tech",
+            list: true,
+            required: false,
+            ui: {
+              component: "tags",
+            },
           },
           {
             type: "rich-text",

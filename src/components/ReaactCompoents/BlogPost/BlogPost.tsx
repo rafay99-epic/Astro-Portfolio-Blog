@@ -1,6 +1,7 @@
 import BlogSectionLogic from "./BlogPostLogic";
 import BlogSectionUI from "./BlogPostUI";
 import type { Post } from "../scheme/types";
+import { AnimatePresence } from "framer-motion";
 
 interface BlogSectionProps {
   posts: Post[];
@@ -28,16 +29,18 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
   }
 
   return (
-    <BlogSectionLogic posts={posts}>
-      {(currentPosts, totalPages, currentPage, handlePageChange) => (
-        <BlogSectionUI
-          currentPosts={currentPosts}
-          totalPages={totalPages}
-          currentPage={currentPage}
-          handlePageChange={handlePageChange}
-        />
-      )}
-    </BlogSectionLogic>
+    <AnimatePresence mode="wait">
+      <BlogSectionLogic posts={posts}>
+        {(currentPosts, totalPages, currentPage, handlePageChange) => (
+          <BlogSectionUI
+            currentPosts={currentPosts}
+            totalPages={totalPages}
+            currentPage={currentPage}
+            handlePageChange={handlePageChange}
+          />
+        )}
+      </BlogSectionLogic>
+    </AnimatePresence>
   );
 };
 
