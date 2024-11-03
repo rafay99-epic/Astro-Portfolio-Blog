@@ -85,6 +85,8 @@ export type Query = {
   postConnection: PostConnection;
   newsletter: Newsletter;
   newsletterConnection: NewsletterConnection;
+  projects: Projects;
+  projectsConnection: ProjectsConnection;
 };
 
 
@@ -138,9 +140,25 @@ export type QueryNewsletterConnectionArgs = {
   filter?: InputMaybe<NewsletterFilter>;
 };
 
+
+export type QueryProjectsArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryProjectsConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<ProjectsFilter>;
+};
+
 export type DocumentFilter = {
   post?: InputMaybe<PostFilter>;
   newsletter?: InputMaybe<NewsletterFilter>;
+  projects?: InputMaybe<ProjectsFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -180,7 +198,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Post | Newsletter | Folder;
+export type DocumentNode = Post | Newsletter | Projects | Folder;
 
 export type Post = Node & Document & {
   __typename?: 'Post';
@@ -289,6 +307,41 @@ export type NewsletterConnection = Connection & {
   edges?: Maybe<Array<Maybe<NewsletterConnectionEdges>>>;
 };
 
+export type Projects = Node & Document & {
+  __typename?: 'Projects';
+  Projecttitle: Scalars['String']['output'];
+  ProjectDescription: Scalars['String']['output'];
+  ProjectImage: Scalars['String']['output'];
+  draft: Scalars['Boolean']['output'];
+  ProjectTech?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  body?: Maybe<Scalars['JSON']['output']>;
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
+export type ProjectsFilter = {
+  Projecttitle?: InputMaybe<StringFilter>;
+  ProjectDescription?: InputMaybe<StringFilter>;
+  ProjectImage?: InputMaybe<ImageFilter>;
+  draft?: InputMaybe<BooleanFilter>;
+  ProjectTech?: InputMaybe<StringFilter>;
+  body?: InputMaybe<RichTextFilter>;
+};
+
+export type ProjectsConnectionEdges = {
+  __typename?: 'ProjectsConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<Projects>;
+};
+
+export type ProjectsConnection = Connection & {
+  __typename?: 'ProjectsConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<ProjectsConnectionEdges>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -299,6 +352,8 @@ export type Mutation = {
   createPost: Post;
   updateNewsletter: Newsletter;
   createNewsletter: Newsletter;
+  updateProjects: Projects;
+  createProjects: Projects;
 };
 
 
@@ -352,15 +407,29 @@ export type MutationCreateNewsletterArgs = {
   params: NewsletterMutation;
 };
 
+
+export type MutationUpdateProjectsArgs = {
+  relativePath: Scalars['String']['input'];
+  params: ProjectsMutation;
+};
+
+
+export type MutationCreateProjectsArgs = {
+  relativePath: Scalars['String']['input'];
+  params: ProjectsMutation;
+};
+
 export type DocumentUpdateMutation = {
   post?: InputMaybe<PostMutation>;
   newsletter?: InputMaybe<NewsletterMutation>;
+  projects?: InputMaybe<ProjectsMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type DocumentMutation = {
   post?: InputMaybe<PostMutation>;
   newsletter?: InputMaybe<NewsletterMutation>;
+  projects?: InputMaybe<ProjectsMutation>;
 };
 
 export type PostMutation = {
@@ -383,9 +452,20 @@ export type NewsletterMutation = {
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
+export type ProjectsMutation = {
+  Projecttitle?: InputMaybe<Scalars['String']['input']>;
+  ProjectDescription?: InputMaybe<Scalars['String']['input']>;
+  ProjectImage?: InputMaybe<Scalars['String']['input']>;
+  draft?: InputMaybe<Scalars['Boolean']['input']>;
+  ProjectTech?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  body?: InputMaybe<Scalars['JSON']['input']>;
+};
+
 export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage: string, authorName: string, authorAvatar: string, body?: any | null, tags?: Array<string | null> | null };
 
 export type NewsletterPartsFragment = { __typename?: 'Newsletter', title: string, summary: string, pubDate: string, draft: boolean, body?: any | null };
+
+export type ProjectsPartsFragment = { __typename?: 'Projects', Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, body?: any | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -425,6 +505,25 @@ export type NewsletterConnectionQueryVariables = Exact<{
 
 export type NewsletterConnectionQuery = { __typename?: 'Query', newsletterConnection: { __typename?: 'NewsletterConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'NewsletterConnectionEdges', cursor: string, node?: { __typename?: 'Newsletter', id: string, title: string, summary: string, pubDate: string, draft: boolean, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
+export type ProjectsQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type ProjectsQuery = { __typename?: 'Query', projects: { __typename?: 'Projects', id: string, Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+
+export type ProjectsConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<ProjectsFilter>;
+}>;
+
+
+export type ProjectsConnectionQuery = { __typename?: 'Query', projectsConnection: { __typename?: 'ProjectsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ProjectsConnectionEdges', cursor: string, node?: { __typename?: 'Projects', id: string, Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
   title
@@ -444,6 +543,16 @@ export const NewsletterPartsFragmentDoc = gql`
   summary
   pubDate
   draft
+  body
+}
+    `;
+export const ProjectsPartsFragmentDoc = gql`
+    fragment ProjectsParts on Projects {
+  Projecttitle
+  ProjectDescription
+  ProjectImage
+  draft
+  ProjectTech
   body
 }
     `;
@@ -557,6 +666,61 @@ export const NewsletterConnectionDocument = gql`
   }
 }
     ${NewsletterPartsFragmentDoc}`;
+export const ProjectsDocument = gql`
+    query projects($relativePath: String!) {
+  projects(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...ProjectsParts
+  }
+}
+    ${ProjectsPartsFragmentDoc}`;
+export const ProjectsConnectionDocument = gql`
+    query projectsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: ProjectsFilter) {
+  projectsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...ProjectsParts
+      }
+    }
+  }
+}
+    ${ProjectsPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -571,6 +735,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     newsletterConnection(variables?: NewsletterConnectionQueryVariables, options?: C): Promise<{data: NewsletterConnectionQuery, variables: NewsletterConnectionQueryVariables, query: string}> {
         return requester<{data: NewsletterConnectionQuery, variables: NewsletterConnectionQueryVariables, query: string}, NewsletterConnectionQueryVariables>(NewsletterConnectionDocument, variables, options);
+      },
+    projects(variables: ProjectsQueryVariables, options?: C): Promise<{data: ProjectsQuery, variables: ProjectsQueryVariables, query: string}> {
+        return requester<{data: ProjectsQuery, variables: ProjectsQueryVariables, query: string}, ProjectsQueryVariables>(ProjectsDocument, variables, options);
+      },
+    projectsConnection(variables?: ProjectsConnectionQueryVariables, options?: C): Promise<{data: ProjectsConnectionQuery, variables: ProjectsConnectionQueryVariables, query: string}> {
+        return requester<{data: ProjectsConnectionQuery, variables: ProjectsConnectionQueryVariables, query: string}, ProjectsConnectionQueryVariables>(ProjectsConnectionDocument, variables, options);
       }
     };
   }
@@ -602,7 +772,7 @@ const generateRequester = (client: TinaClient) => {
  **/
 export const ExperimentalGetTinaClient = () =>
   getSdk(
-    generateRequester(createClient({ url: "https://content.tinajs.io/1.4/content/ca928060-14c1-452c-938e-9a1e7feaae19/github/main", queries }))
+    generateRequester(createClient({ url: "http://localhost:4001/graphql", queries }))
   );
 
 export const queries = (client: TinaClient) => {

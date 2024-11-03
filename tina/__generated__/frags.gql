@@ -17,3 +17,12 @@ fragment NewsletterParts on Newsletter {
   draft
   body
 }
+
+fragment ProjectsParts on Projects {
+  Projecttitle
+  ProjectDescription
+  ProjectImage
+  draft
+  ProjectTech
+  body
+}

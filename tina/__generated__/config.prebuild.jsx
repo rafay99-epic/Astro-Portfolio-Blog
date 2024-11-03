@@ -17,6 +17,7 @@ var config_default = defineConfig({
   },
   schema: {
     collections: [
+      // Blog Collection
       {
         name: "post",
         label: "Articles",
@@ -77,15 +78,14 @@ var config_default = defineConfig({
             name: "tags",
             label: "Tags",
             list: true,
-            // Allows for multiple tags
             required: false,
             ui: {
               component: "tags"
-              // Optional: This makes tags editable as a list in the Tina CMS interface
             }
           }
         ]
       },
+      // Newsletter Collection
       {
         name: "newsletter",
         label: "Newsletters",
@@ -115,6 +115,55 @@ var config_default = defineConfig({
             name: "draft",
             label: "Draft",
             required: true
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Body",
+            isBody: true
+          }
+        ]
+      },
+      // Project Collection
+      {
+        name: "projects",
+        label: "Projects",
+        path: "/src/content/projects",
+        format: "mdx",
+        fields: [
+          {
+            type: "string",
+            name: "Projecttitle",
+            label: "Project Title",
+            required: true
+          },
+          {
+            type: "string",
+            name: "ProjectDescription",
+            label: "project Description",
+            required: true
+          },
+          {
+            type: "image",
+            name: "ProjectImage",
+            label: "Project Thumbnail",
+            required: true
+          },
+          {
+            type: "boolean",
+            name: "draft",
+            label: "Draft",
+            required: true
+          },
+          {
+            type: "string",
+            name: "ProjectTech",
+            label: "Project Tech",
+            list: true,
+            required: false,
+            ui: {
+              component: "tags"
+            }
           },
           {
             type: "rich-text",
