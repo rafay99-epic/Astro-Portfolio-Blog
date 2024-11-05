@@ -12,7 +12,7 @@ export default defineConfig({
   },
   media: {
     tina: {
-      mediaRoot: "public",
+      mediaRoot: "",
       publicFolder: "public",
     },
   },
@@ -72,7 +72,7 @@ export default defineConfig({
             type: "rich-text",
             name: "body",
             label: "Body",
-            isBody: false,
+            isBody: true,
           },
           {
             type: "string",

@@ -11,7 +11,7 @@ var config_default = defineConfig({
   },
   media: {
     tina: {
-      mediaRoot: "public",
+      mediaRoot: "",
       publicFolder: "public"
     }
   },
@@ -71,7 +71,7 @@ var config_default = defineConfig({
             type: "rich-text",
             name: "body",
             label: "Body",
-            isBody: false
+            isBody: true
           },
           {
             type: "string",
