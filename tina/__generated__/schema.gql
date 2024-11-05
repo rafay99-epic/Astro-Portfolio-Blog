@@ -97,9 +97,9 @@ type Post implements Node & Document {
   description: String!
   pubDate: String!
   draft: Boolean!
-  heroImage: String!
-  authorName: String!
-  authorAvatar: String!
+  heroImage: String
+  authorName: String
+  authorAvatar: String
   body: JSON
   tags: [String]
   id: ID!
