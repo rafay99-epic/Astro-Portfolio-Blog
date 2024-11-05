@@ -12,7 +12,7 @@ export default defineConfig({
   },
   media: {
     tina: {
-      mediaRoot: "",
+      mediaRoot: "public",
       publicFolder: "public",
     },
   },
@@ -54,25 +54,25 @@ export default defineConfig({
             type: "image",
             name: "heroImage",
             label: "Thubnail Image",
-            required: true,
+            required: false,
           },
           {
             type: "string",
             name: "authorName",
             label: "Author Name",
-            required: true,
+            required: false,
           },
           {
             type: "image",
             name: "authorAvatar",
             label: "Author Avatar",
-            required: true,
+            required: false,
           },
           {
             type: "rich-text",
             name: "body",
             label: "Body",
-            isBody: true,
+            isBody: false,
           },
           {
             type: "string",
