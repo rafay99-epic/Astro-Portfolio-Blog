@@ -1,19 +1,6 @@
 import { useState } from "react";
 import { usePaginatedProjects } from "./usePaginatedProjects";
-
-interface Project {
-  slug: string;
-  data: {
-    draft: boolean;
-    ProjectImage?: string;
-    Projecttitle: string;
-    ProjectDescription: string;
-    ProjectTech?: string[];
-    ProjectCategory?: string[];
-    githubLink?: string;
-    deployedLink?: string;
-  };
-}
+import type { Project } from "../scheme/ProjectTypes";
 
 interface ProjectListProps {
   projects: Project[];
