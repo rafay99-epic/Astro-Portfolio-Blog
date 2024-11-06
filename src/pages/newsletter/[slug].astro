@@ -1,8 +1,15 @@
 ---
+// Import feature flags and necessary modules
+import { featureFlags } from "../../config/featureFlag"; // Update with the correct path
 import { type CollectionEntry, getCollection } from "astro:content";
 import Newsletter from "../../layouts/Newsletter.astro";
 
+// Only execute getStaticPaths if showNewsletter is true
 export async function getStaticPaths() {
+  if (!featureFlags.showNewsletter) {
+    return []; // Return empty paths if newsletter is disabled
+  }
+
   const newsletters = await getCollection("newsletter");
 
   const filteredNewsletters = import.meta.env.PROD
@@ -17,10 +24,16 @@ export async function getStaticPaths() {
 
 type Props = CollectionEntry<"newsletter">;
 
-const newsletter: Props = Astro.props;
-const { Content } = await newsletter.render();
+const newsletter = featureFlags.showNewsletter ? Astro.props : null;
+const { Content } = newsletter ? await newsletter.render() : { Content: null };
 ---
 
-<Newsletter {...newsletter.data}>
-  <Content />
-</Newsletter>
+{
+  featureFlags.showNewsletter && Content && newsletter ? (
+    <Newsletter {...newsletter.data}>
+      <Content />
+    </Newsletter>
+  ) : (
+    <p>Newsletter is currently disabled.</p>
+  )
+}

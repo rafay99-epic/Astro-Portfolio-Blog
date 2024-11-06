@@ -1,8 +1,15 @@
 ---
+// Import feature flags and necessary modules
+import { featureFlags } from "../../config/featureFlag"; // Update with the correct path
 import { type CollectionEntry, getCollection } from "astro:content";
 import Project from "../../layouts/Project.astro";
 
+// Only execute getStaticPaths if showProjects is true
 export async function getStaticPaths() {
+  if (!featureFlags.showProjects) {
+    return []; // Return empty paths if projects are disabled
+  }
+
   const projects = await getCollection("projects");
 
   const filteredProjects = import.meta.env.PROD
@@ -17,10 +24,16 @@ export async function getStaticPaths() {
 
 type Props = CollectionEntry<"projects">;
 
-const project: Props = Astro.props;
-const { Content } = await project.render();
+const project = featureFlags.showProjects ? Astro.props : null;
+const { Content } = project ? await project.render() : { Content: null };
 ---
 
-<Project {...project.data}>
-  <Content />
-</Project>
+{
+  featureFlags.showProjects && Content && project ? (
+    <Project {...project.data}>
+      <Content />
+    </Project>
+  ) : (
+    <p>Projects are currently disabled.</p>
+  )
+}
