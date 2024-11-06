@@ -1,5 +1,9 @@
 ---
+import { featureFlags } from "../../../config/featureFlag";
 
+if (!featureFlags.showBlog) {
+  return Astro.redirect("/404");
+}
 ---
 
 <section class="giscus mx-auto mt-10 w-full">

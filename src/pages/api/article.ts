@@ -1,8 +1,21 @@
 import { getCollection } from "astro:content";
+import { featureFlags } from "../../config/featureFlag";
 
 export async function GET() {
   try {
-    // Fetch blog posts
+    if (!featureFlags.showBlog) {
+      return new Response(
+        JSON.stringify({ error: "Blog feature is disabled" }),
+        {
+          status: 403,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "https://www.rafay99.com",
+          },
+        }
+      );
+    }
+
     const posts = await getCollection("blog");
 
     return new Response(JSON.stringify(posts), {

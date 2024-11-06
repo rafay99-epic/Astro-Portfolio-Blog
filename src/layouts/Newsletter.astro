@@ -3,7 +3,6 @@ import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import Header from "../components/AstroCompoent/header/Header.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import AdLoader from "../components/ReaactCompoents/AdsLoader/Adloader";
 import PostComment from "../components/AstroCompoent/BlogComments/PostComment.astro";
 import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton";
 const pageUrl = Astro.url.href;
@@ -16,6 +15,11 @@ type Props = {
 };
 
 const { title, pubDate, summary } = Astro.props;
+
+import { featureFlags } from "../config/featureFlag";
+if (!featureFlags.showNewsletterArchieve) {
+  return Astro.redirect("/404");
+}
 ---
 
 <html lang="en">
@@ -68,10 +72,6 @@ const { title, pubDate, summary } = Astro.props;
         >
           <slot />
         </div>
-
-        <!-- <div class="my-8 text-center">
-          <AdLoader client:load />
-        </div> -->
         <div class="my-8 text-center">
           <h2 class="text-2xl font-semibold mb-4">Comments</h2>
           <PostComment />

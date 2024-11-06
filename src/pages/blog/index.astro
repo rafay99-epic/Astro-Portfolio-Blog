@@ -9,13 +9,19 @@ import BlogSection from "../../components/ReaactCompoents/BlogPost/BlogPost";
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
+
+import { featureFlags } from "../../config/featureFlag";
+
+if (!featureFlags.showBlog) {
+  return Astro.redirect("/404");
+}
 ---
 
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteName}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
   </head>
   <body>

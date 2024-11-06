@@ -10,6 +10,12 @@ import TagFilter from "../components/ReaactCompoents/Tags/Tags";
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
+
+import { featureFlags } from "../config/featureFlag";
+
+if (!featureFlags.showTags) {
+  return Astro.redirect("/404");
+}
 ---
 
 <html lang="en">

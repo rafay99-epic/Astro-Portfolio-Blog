@@ -10,8 +10,8 @@ import ErrorPageCompeont from "../components/ReaactCompoents/ErroPage/404-Compoe
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteName}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
     <SpeedInsights />
   </head>

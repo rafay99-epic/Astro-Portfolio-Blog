@@ -6,14 +6,20 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import NewsletterReactCompoent from "../components/ReaactCompoents/Newsletter/SubNewsletter/newsletter";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import authorConfig from "../config/info";
+
+import { featureFlags } from "../config/featureFlag";
+
+if (!featureFlags.showNewsletter) {
+  return Astro.redirect("/404");
+}
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteDescription}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
   </head>
 

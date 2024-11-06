@@ -6,6 +6,10 @@ publishedPosts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 const selectedPosts = publishedPosts.slice(0, 4);
+import { featureFlags } from "../../../../config/featureFlag";
+if (!featureFlags.showBlog) {
+  return Astro.redirect("/404");
+}
 ---
 
 <div class="bg-[#1f2335] text-[#F8F8F8] py-8">

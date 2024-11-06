@@ -15,14 +15,21 @@ import ProfileImage from "../components/ReaactCompoents/HeroSection/ProfileImage
 import Greeting from "../components/ReaactCompoents/HeroSection/Greeting";
 import ConnectButton from "../components/ReaactCompoents/HeroSection/ConnectButton";
 const { name, jobTitle, position, picture } = authorConfig;
+
+// Feature Flag: Enable or disable
+import { featureFlags } from "../config/featureFlag";
+
+if (!featureFlags.showIndex) {
+  return Astro.redirect("/404");
+}
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteName}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
   </head>
   <body>
@@ -45,13 +52,11 @@ const { name, jobTitle, position, picture } = authorConfig;
           </div>
         </div>
       </section>
-
       <section style="margin-block-start: 12rem;">
-        <FeaturedPost />
+        {featureFlags.showBlog && <FeaturedPost />}
       </section>
-
       <section style="margin-block-start: 5rem;">
-        <LatestPost />
+        {featureFlags.showBlog && <LatestPost />}
       </section>
 
       <section style="margin-block-start: 5rem;">

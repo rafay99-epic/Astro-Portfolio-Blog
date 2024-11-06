@@ -13,6 +13,11 @@ import AdLoader from "../components/ReaactCompoents/AdsLoader/Adloader";
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];
 
+import { featureFlags } from "../config/featureFlag";
+if (!featureFlags.showBlog) {
+  return Astro.redirect("/404");
+}
+
 const {
   title,
   description,

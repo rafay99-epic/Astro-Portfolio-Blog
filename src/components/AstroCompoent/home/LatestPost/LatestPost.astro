@@ -7,6 +7,11 @@ const posts = (await getCollection("blog"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const selectedPosts = posts.slice(0, 4);
+
+import { featureFlags } from "../../../../config/featureFlag";
+if (!featureFlags.showBlog) {
+  return Astro.redirect("/404");
+}
 ---
 
 <style>
@@ -14,7 +19,6 @@ const selectedPosts = posts.slice(0, 4);
     background-color: #7aa2f7;
     color: #f8f8f8;
     padding: 0.5rem 1rem;
-    max-width: 150px;
     border-radius: 0.375rem;
     display: flex;
     box-shadow:

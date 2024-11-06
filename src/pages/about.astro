@@ -6,14 +6,19 @@ import JobExperience from "../components/AstroCompoent/JobAndExperience/JobExper
 import authorConfig from "../config/info";
 export const prerender = true;
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
+import { featureFlags } from "../config/featureFlag";
+
+if (!featureFlags.showAbout) {
+  return Astro.redirect("/404");
+}
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteName}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
     <style>
       @keyframes fadeSlideIn {
@@ -54,7 +59,7 @@ import Footer from "../components/AstroCompoent/footer/Footer.astro";
         >
           <div class="w-5/6 h-5/6 mx-auto">
             <img
-              src={authorConfig.picture}
+              src={authorConfig?.picture ?? ""}
               alt="Profile Image"
               class="w-full h-full object-cover"
             />
@@ -72,19 +77,19 @@ import Footer from "../components/AstroCompoent/footer/Footer.astro";
               class="animate-fadeSlideIn opacity-0 translate-y-5 font-normal text-justify"
               style="animation-delay: 1s;"
             >
-              {authorConfig.about.whoAmI}
+              {authorConfig?.about?.whoAmI ?? ""}
             </p>
             <p
               class="animate-fadeSlideIn opacity-0 translate-y-5 font-normal text-justify"
               style="animation-delay: 1.5s;"
             >
-              {authorConfig.about.lifeBeyondCode}
+              {authorConfig?.about?.lifeBeyondCode ?? ""}
             </p>
             <p
               class="animate-fadeSlideIn opacity-0 translate-y-5 font-normal text-justify"
               style="animation-delay: 2s;"
             >
-              {authorConfig.about.continuousLearning}
+              {authorConfig?.about?.continuousLearning ?? ""}
             </p>
           </div>
         </div>

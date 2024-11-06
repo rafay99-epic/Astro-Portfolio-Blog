@@ -1,10 +1,24 @@
 import authorConfig from "../../config/info";
+import { FeatureFlagsApi } from "../../config/featureFlag";
 
 export async function GET() {
   try {
     const responseData = {
       author: authorConfig,
     };
+
+    if (!FeatureFlagsApi.enableauthorInfoAPI) {
+      return new Response(
+        JSON.stringify({ error: "Author Profile is disabled" }),
+        {
+          status: 403,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "https://www.rafay99.com",
+          },
+        }
+      );
+    }
 
     return new Response(JSON.stringify(responseData), {
       status: 200,
