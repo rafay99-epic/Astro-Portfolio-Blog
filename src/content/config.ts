@@ -37,6 +37,7 @@ const projects = defineCollection({
     ProjectTech: z.array(z.string()).optional(),
     ProjectGithubLink: z.string().optional(),
     ProjectDeployedLink: z.string().optional(),
+    ProjectCategory: z.array(z.string()).default(["projects"]),
   }),
 });
 
