@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { usePaginatedProjects } from "./usePaginatedProjects";
 
 interface Project {
@@ -8,6 +9,7 @@ interface Project {
     Projecttitle: string;
     ProjectDescription: string;
     ProjectTech?: string[];
+    ProjectCategory?: string[];
     githubLink?: string;
     deployedLink?: string;
   };
@@ -18,16 +20,56 @@ interface ProjectListProps {
 }
 
 const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  const filteredProjects = selectedTag
+    ? projects.filter((project) =>
+        project.data.ProjectCategory?.includes(selectedTag)
+      )
+    : projects;
+
   const {
     currentProjects,
     currentPage,
     totalPages,
     goToNextPage,
     goToPrevPage,
-  } = usePaginatedProjects(projects);
+  } = usePaginatedProjects(filteredProjects);
+
+  const uniqueTags = Array.from(
+    new Set(projects.flatMap((project) => project.data.ProjectCategory || []))
+  );
 
   return (
     <div>
+      <div className="flex justify-center space-x-4 mb-4">
+        <button
+          onClick={() => setSelectedTag(null)}
+          className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
+      ${
+        selectedTag === null
+          ? "bg-[#7aa2f7] text-white scale-105"
+          : "bg-gray-600 text-gray-200 hover:bg-[#7aa2f7] hover:text-white hover:scale-105"
+      }`}
+        >
+          All
+        </button>
+        {uniqueTags.map((tag) => (
+          <button
+            key={tag}
+            onClick={() => setSelectedTag(tag)}
+            className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
+        ${
+          selectedTag === tag
+            ? "bg-[#7aa2f7] text-white scale-105"
+            : "bg-gray-600 text-gray-200 hover:bg-[#7aa2f7] hover:text-white hover:scale-105"
+        }`}
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         {currentProjects.map((project) => (
           <a
@@ -76,7 +118,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                     rel="noopener noreferrer"
                     className="inline-block mr-3 text-[#7aa2f7] hover:text-[#4c88f7]"
                   >
-                    <i className="fab fa-github" />{" "}
+                    <i className="fab fa-github" />
                   </a>
                 )}
                 {project.data.deployedLink && (
@@ -87,7 +129,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                     rel="noopener noreferrer"
                     className="inline-block text-[#7aa2f7] hover:text-[#4c88f7]"
                   >
-                    <i className="fas fa-external-link-alt" />{" "}
+                    <i className="fas fa-external-link-alt" />
                   </a>
                 )}
               </div>
