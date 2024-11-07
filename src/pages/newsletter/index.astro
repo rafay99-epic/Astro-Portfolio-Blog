@@ -6,13 +6,12 @@ import authorConfig from "../../config/info";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Newsletter from "../../components/ReaactCompoents/Newsletter/ListNewsletter/NewsletterList";
-const newsletters = await getCollection("newsletter");
-
 import { featureFlags } from "../../config/featureFlag";
 
 if (!featureFlags.showNewsletter) {
   return Astro.redirect("/404");
 }
+const newsletters = await getCollection("newsletter");
 ---
 
 <html lang="en">

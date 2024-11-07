@@ -1,13 +1,11 @@
 ---
-// Import feature flags and necessary modules
-import { featureFlags } from "../../config/featureFlag"; // Update with the correct path
+import { featureFlags } from "../../config/featureFlag";
 import { type CollectionEntry, getCollection } from "astro:content";
 import Project from "../../layouts/Project.astro";
 
-// Only execute getStaticPaths if showProjects is true
 export async function getStaticPaths() {
   if (!featureFlags.showProjects) {
-    return []; // Return empty paths if projects are disabled
+    return [];
   }
 
   const projects = await getCollection("projects");
@@ -34,6 +32,13 @@ const { Content } = project ? await project.render() : { Content: null };
       <Content />
     </Project>
   ) : (
-    <p>Projects are currently disabled.</p>
+    <div class="projects-disabled">
+      + <h1>Coming Soon!</h1>+{" "}
+      <p>
+        We're working on something exciting. Our project showcase will be
+        available soon.
+      </p>
+      + <a href="/">Return to Homepage</a>+{" "}
+    </div>
   )
 }
