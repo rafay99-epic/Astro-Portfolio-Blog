@@ -16,10 +16,13 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ featureName }) => {
           This feature is currently in development. Stay tuned for updates!
         </p>
         <a
-          className="mt-6 px-6 py-3 bg-[#7aa2f7] hover:text-gray-800 text-white rounded-lg shadow-md transition duration-300"
+          className="mt-6 px-6 py-3 bg-[#7aa2f7] hover:text-gray-800 text-white rounded-lg shadow-md transition duration-300 inline-flex items-center"
           href="/"
+          aria-label="Return to homepage"
+          role="button"
         >
-          Back to Home
+          <span>Back to Home</span>
+          <span className="ml-2">←</span>
         </a>
       </div>
     </div>
