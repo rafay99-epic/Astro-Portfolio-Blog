@@ -1,33 +1,90 @@
+import { useState, useEffect } from "react";
 import { usePaginatedProjects } from "./usePaginatedProjects";
-
-interface Project {
-  slug: string;
-  data: {
-    draft: boolean;
-    ProjectImage?: string;
-    Projecttitle: string;
-    ProjectDescription: string;
-    ProjectTech?: string[];
-    githubLink?: string;
-    deployedLink?: string;
-  };
-}
+import type { Project } from "../scheme/ProjectTypes";
 
 interface ProjectListProps {
   projects: Project[];
 }
 
 const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
+
+  useEffect(() => {
+    try {
+      setFilteredProjects(
+        selectedTag
+          ? projects.filter((project) =>
+              project.data.ProjectCategory?.includes(selectedTag)
+            )
+          : projects
+      );
+      setError(null);
+    } catch (err) {
+      setError("Failed to filter projects. Please try again.");
+    }
+  }, [selectedTag, projects]);
+
   const {
     currentProjects,
     currentPage,
     totalPages,
     goToNextPage,
     goToPrevPage,
-  } = usePaginatedProjects(projects);
+    error: paginationError,
+  } = usePaginatedProjects(filteredProjects);
+
+  useEffect(() => {
+    if (paginationError) {
+      setError("Failed to load projects. Please try again later.");
+    }
+  }, [paginationError]);
+
+  const uniqueTags = Array.from(
+    new Set(projects.flatMap((project) => project.data.ProjectCategory || []))
+  );
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500 font-semibold">{error}</div>
+    );
+  }
 
   return (
     <div>
+      <div className="flex justify-center space-x-4 mb-4">
+        <button
+          onClick={() => setSelectedTag(null)}
+          aria-label="Show all projects"
+          aria-pressed={selectedTag === null}
+          className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
+      ${
+        selectedTag === null
+          ? "bg-[#7aa2f7] text-white scale-105"
+          : "bg-gray-600 text-gray-200 hover:bg-[#7aa2f7] hover:text-white hover:scale-105"
+      }`}
+        >
+          All
+        </button>
+        {uniqueTags.map((tag) => (
+          <button
+            key={tag}
+            onClick={() => setSelectedTag(tag)}
+            aria-label={`Filter by ${tag}`}
+            aria-pressed={selectedTag === tag}
+            className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
+        ${
+          selectedTag === tag
+            ? "bg-[#7aa2f7] text-white scale-105"
+            : "bg-gray-600 text-gray-200 hover:bg-[#7aa2f7] hover:text-white hover:scale-105"
+        }`}
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         {currentProjects.map((project) => (
           <a
@@ -76,7 +133,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                     rel="noopener noreferrer"
                     className="inline-block mr-3 text-[#7aa2f7] hover:text-[#4c88f7]"
                   >
-                    <i className="fab fa-github" />{" "}
+                    <i className="fab fa-github" />
                   </a>
                 )}
                 {project.data.deployedLink && (
@@ -87,7 +144,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                     rel="noopener noreferrer"
                     className="inline-block text-[#7aa2f7] hover:text-[#4c88f7]"
                   >
-                    <i className="fas fa-external-link-alt" />{" "}
+                    <i className="fas fa-external-link-alt" />
                   </a>
                 )}
               </div>

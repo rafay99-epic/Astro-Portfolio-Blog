@@ -6,7 +6,7 @@ import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButto
 import authorConfig from "../config/info";
 import SpeedInsights from "@vercel/speed-insights/astro";
 const pageUrl = Astro.url.href;
-
+import { featureFlags } from "../config/featureFlag";
 type Props = {
   Projecttitle: string;
   ProjectDescription: string;
@@ -16,13 +16,21 @@ type Props = {
 
 const { Projecttitle, ProjectDescription, ProjectImage, ProjectTech } =
   Astro.props;
+
+try {
+  if (!featureFlags.showProjects) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteName}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
     <style>
       .project-tech li {

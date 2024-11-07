@@ -8,10 +8,17 @@ import { Image } from "astro:assets";
 import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton.tsx";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "../components/AstroCompoent/BlogComments/PostComment.astro";
-import AdLoader from "../components/ReaactCompoents/AdsLoader/Adloader";
-
+import { featureFlags } from "../config/featureFlag";
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];
+
+try {
+  if (!featureFlags.showBlog) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
 
 const {
   title,

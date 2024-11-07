@@ -1,8 +1,13 @@
 ---
+import { featureFlags } from "../../config/featureFlag";
 import { type CollectionEntry, getCollection } from "astro:content";
 import Project from "../../layouts/Project.astro";
 
 export async function getStaticPaths() {
+  if (!featureFlags.showProjects) {
+    return [];
+  }
+
   const projects = await getCollection("projects");
 
   const filteredProjects = import.meta.env.PROD
@@ -17,10 +22,23 @@ export async function getStaticPaths() {
 
 type Props = CollectionEntry<"projects">;
 
-const project: Props = Astro.props;
-const { Content } = await project.render();
+const project = featureFlags.showProjects ? Astro.props : null;
+const { Content } = project ? await project.render() : { Content: null };
 ---
 
-<Project {...project.data}>
-  <Content />
-</Project>
+{
+  featureFlags.showProjects && Content && project ? (
+    <Project {...project.data}>
+      <Content />
+    </Project>
+  ) : (
+    <div class="projects-disabled">
+      + <h1>Coming Soon!</h1>+{" "}
+      <p>
+        We're working on something exciting. Our project showcase will be
+        available soon.
+      </p>
+      + <a href="/">Return to Homepage</a>+{" "}
+    </div>
+  )
+}

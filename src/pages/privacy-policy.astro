@@ -4,14 +4,23 @@ import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import Header from "../components/AstroCompoent/header/Header.astro";
 import authorConfig from "../config/info";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import { featureFlags } from "../config/featureFlag";
+
+try {
+  if (!featureFlags.showPrivacy) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteName}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
   </head>
 

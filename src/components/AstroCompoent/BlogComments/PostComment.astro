@@ -1,5 +1,13 @@
 ---
+import { featureFlags } from "../../../config/featureFlag";
 
+try {
+  if (!featureFlags.showBlog) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <section class="giscus mx-auto mt-10 w-full">

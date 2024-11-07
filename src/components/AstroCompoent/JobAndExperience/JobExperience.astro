@@ -2,6 +2,15 @@
 import ExperienceCards from "./ExperienceCard.astro";
 import authorConfig from "../../../config/info";
 const workExperience = authorConfig.workExperience;
+import { featureFlags } from "../../../config/featureFlag";
+
+try {
+  if (!featureFlags.showAbout) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <style>
@@ -20,7 +29,7 @@ const workExperience = authorConfig.workExperience;
   <h2 style="text-align: center;" class="job-experience">Job Experience</h2>
   <div class="experience-cards">
     {
-      workExperience.map((job) => (
+      workExperience?.map((job) => (
         <ExperienceCards
           company={job.companyName}
           position={job.position}

@@ -1,18 +1,26 @@
 import { Client } from "@notionhq/client";
+import { FeatureFlagsApi } from "../../config/featureFlag";
 
-let notionAPI = import.meta.env.PUBLIC_NOTION_KEY;
-
-const notion = new Client({
-  auth: notionAPI,
-});
-
+const notionAPI = import.meta.env.PUBLIC_NOTION_KEY;
 const DATABASE_ID = import.meta.env.PUBLIC_NOTION_DATABASE_ID;
+
+let notion: Client | null = null;
+if (FeatureFlagsApi.enableNotionAPI && notionAPI) {
+  notion = new Client({
+    auth: notionAPI,
+  });
+}
 
 export async function addContactToNotion(
   name: string,
   email: string,
   message: string
 ) {
+  if (!notion) {
+    console.log("Notion API is disabled or the Notion API key is missing.");
+    return;
+  }
+
   try {
     const response = await notion.pages.create({
       parent: {

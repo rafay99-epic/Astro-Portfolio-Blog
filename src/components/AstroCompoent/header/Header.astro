@@ -5,6 +5,7 @@ import SearchSVG from "./nav/SearchSVG.astro";
 import LetterSVG from "./nav/LetterSVG.astro";
 import authorConfig from "../../../config/info";
 import TagSVG from "./nav/TagSVG.astro";
+import { featureFlags } from "../../../config/featureFlag";
 ---
 
 <header>
@@ -20,20 +21,41 @@ import TagSVG from "./nav/TagSVG.astro";
         />
       </a>
     </h2>
+
     <nav class="hidden md:flex space-x-6">
-      <HeaderLink href="/blog">Articles</HeaderLink>
-      <HeaderLink href="/newsletter-subscribe">Newsletter</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
-      <HeaderLink href="/project">Projects</HeaderLink>
-      <HeaderLink href="/tag" style="color: white;">
-        <TagSVG />
-      </HeaderLink>
-      <HeaderLink href="/newsletter" style="color: white;">
-        <LetterSVG />
-      </HeaderLink>
-      <HeaderLink href="/search" style="color: white;">
-        <SearchSVG />
-      </HeaderLink>
+      {featureFlags.showBlog && <HeaderLink href="/blog">Articles</HeaderLink>}
+      {
+        featureFlags.showNewsletter && (
+          <HeaderLink href="/newsletter-subscribe">Newsletter</HeaderLink>
+        )
+      }
+      {featureFlags.showAbout && <HeaderLink href="/about">About</HeaderLink>}
+      {
+        featureFlags.showProjects && (
+          <HeaderLink href="/project">Projects</HeaderLink>
+        )
+      }
+      {
+        featureFlags.showTags && (
+          <HeaderLink href="/tag" style="color: white;">
+            <TagSVG />
+          </HeaderLink>
+        )
+      }
+      {
+        featureFlags.showNewsletter && (
+          <HeaderLink href="/newsletter" style="color: white;">
+            <LetterSVG />
+          </HeaderLink>
+        )
+      }
+      {
+        featureFlags.showSearch && (
+          <HeaderLink href="/search" style="color: white;">
+            <SearchSVG />
+          </HeaderLink>
+        )
+      }
     </nav>
     <button
       class="hamburger block md:hidden focus:outline-none"
@@ -59,19 +81,39 @@ import TagSVG from "./nav/TagSVG.astro";
     class="hidden flex-col items-center space-y-6 md:hidden mt-4"
   >
     <HeaderLink href="/">Home</HeaderLink>
-    <HeaderLink href="/blog">Articles</HeaderLink>
-    <HeaderLink href="/newsletter-subscribe">Newsletter</HeaderLink>
-    <HeaderLink href="/about">About</HeaderLink>
-    <HeaderLink href="/project">Projects</HeaderLink>
-    <HeaderLink href="/tag" style="color: white;">
-      <TagSVG />
-    </HeaderLink>
-    <HeaderLink href="/newsletter" style="color: white;">
-      <LetterSVG />
-    </HeaderLink>
-    <HeaderLink href="/search" style="color: white;">
-      <SearchSVG />
-    </HeaderLink>
+    {featureFlags.showBlog && <HeaderLink href="/blog">Articles</HeaderLink>}
+    {
+      featureFlags.showNewsletter && (
+        <HeaderLink href="/newsletter-subscribe">Newsletter</HeaderLink>
+      )
+    }
+    {featureFlags.showAbout && <HeaderLink href="/about">About</HeaderLink>}
+    {
+      featureFlags.showProjects && (
+        <HeaderLink href="/project">Projects</HeaderLink>
+      )
+    }
+    {
+      featureFlags.showTags && (
+        <HeaderLink href="/tag" style="color: white;">
+          <TagSVG />
+        </HeaderLink>
+      )
+    }
+    {
+      featureFlags.showNewsletter && (
+        <HeaderLink href="/newsletter" style="color: white;">
+          <LetterSVG />
+        </HeaderLink>
+      )
+    }
+    {
+      featureFlags.showSearch && (
+        <HeaderLink href="/search" style="color: white;">
+          <SearchSVG />
+        </HeaderLink>
+      )
+    }
   </nav>
 </header>
 

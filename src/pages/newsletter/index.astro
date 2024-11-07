@@ -6,6 +6,15 @@ import authorConfig from "../../config/info";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Newsletter from "../../components/ReaactCompoents/Newsletter/ListNewsletter/NewsletterList";
+import { featureFlags } from "../../config/featureFlag";
+
+try {
+  if (!featureFlags.showNewsletter) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
 
 const newsletters = await getCollection("newsletter");
 ---
@@ -13,8 +22,8 @@ const newsletters = await getCollection("newsletter");
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteName}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
   </head>
   <body>

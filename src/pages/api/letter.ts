@@ -1,10 +1,21 @@
 import { getCollection } from "astro:content";
+import { featureFlags } from "../../config/featureFlag";
 
 export async function GET() {
   try {
-    // Fetch blog posts
+    if (!featureFlags.showAbout) {
+      return new Response(
+        JSON.stringify({ error: "Newsletter Read is disabled" }),
+        {
+          status: 403,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "https://www.rafay99.com",
+          },
+        }
+      );
+    }
     const posts = await getCollection("newsletter");
-
     return new Response(JSON.stringify(posts), {
       status: 200,
       headers: {

@@ -4,23 +4,30 @@ import Header from "../components/AstroCompoent/header/Header.astro";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import { getCollection } from "astro:content";
 import authorConfig from "../config/info";
-const posts = (await getCollection("blog")).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-);
-
-const newsletter = (await getCollection("newsletter")).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-);
-
 import SearchReactCompoent from "../components/ReaactCompoents/SearchField/SearchField";
+import { featureFlags } from "../config/featureFlag";
+
+const posts = featureFlags.showBlog
+  ? (await getCollection("blog")).sort(
+      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+    )
+  : [];
+
+try {
+  if (!featureFlags.showSearch) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/400");
+}
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteName}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
     <style>
       main {

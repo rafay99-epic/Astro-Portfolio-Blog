@@ -1,8 +1,13 @@
 ---
+import { featureFlags } from "../../config/featureFlag";
 import { type CollectionEntry, getCollection } from "astro:content";
 import BlogPost from "../../layouts/BlogPost.astro";
 
 export async function getStaticPaths() {
+  if (!featureFlags.showBlog) {
+    return [];
+  }
+
   const posts = await getCollection("blog");
 
   const filteredPosts = import.meta.env.PROD
@@ -18,9 +23,17 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
-const { Content } = await post.render();
+const { Content } = featureFlags.showBlog
+  ? await post.render()
+  : { Content: null };
 ---
 
-<BlogPost {...post.data}>
-  <Content />
-</BlogPost>
+{
+  featureFlags.showBlog && Content ? (
+    <BlogPost {...post.data}>
+      <Content />
+    </BlogPost>
+  ) : (
+    <p>Blog is currently disabled.</p>
+  )
+}

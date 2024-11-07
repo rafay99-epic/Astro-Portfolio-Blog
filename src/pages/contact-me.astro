@@ -7,13 +7,22 @@ import LottieReactCompoent from "../components/ReaactCompoents/LottieAnimation/L
 import ContactPageAnimation from "../assets/animation/contact-lottie.json";
 import ContactFormReactCompoent from "../components/ReaactCompoents/ConrtactForm/contactform";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import { featureFlags } from "../config/featureFlag";
+
+try {
+  if (!featureFlags.showContact) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/400");
+}
 ---
 
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig.SiteName}
-      description={authorConfig.SiteDescription}
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
     />
     <SpeedInsights />
   </head>

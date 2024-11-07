@@ -1,9 +1,11 @@
 ---
 import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import authorConfig from "../config/info";
-export const prerender = true;
 import SpeedInsights from "@vercel/speed-insights/astro";
-import ErrorPageCompeont from "../components/ReaactCompoents/ErroPage/404-Compoent";
+import ComingSoon from "../components/ReaactCompoents/ErroPage/ComingSoon";
+export const prerender = true;
+
+const featureName = Astro.url.searchParams.get("feature") ?? "Exciting Feature";
 ---
 
 <!doctype html>
@@ -15,14 +17,18 @@ import ErrorPageCompeont from "../components/ReaactCompoents/ErroPage/404-Compoe
     />
     <SpeedInsights />
   </head>
-  <body class="min-h-screen overflow-hidden flex">
-    <main class="flex flex-1 justify-center items-center w-full h-screen">
+  <body class="min-h-screen overflow-hidden flex" role="application">
+    <main
+      class="flex flex-1 justify-center items-center w-full h-screen"
+      role="main"
+      aria-label="Feature not available"
+    >
       <div
         class="flex flex-col justify-center w-full md:w-1/2 text-center md:text-left"
+        role="alert"
+        aria-live="polite"
       >
-        <div class="animated-text-container">
-          <ErrorPageCompeont client:load />
-        </div>
+        <ComingSoon featureName={featureName} client:idle />
       </div>
     </main>
   </body>

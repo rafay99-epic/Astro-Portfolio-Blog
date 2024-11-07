@@ -2,10 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "./node_modules/.bin/astro dev",
-      "name": "Development server",
+      "type": "chrome",
       "request": "launch",
-      "type": "node-terminal"
+      "name": "Launch Chrome & Astro",
+      "url": "http://localhost:4321",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "Start Astro Dev"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Launch Chrome & Server",
+      "configurations": ["Launch Chrome & Astro"]
     }
   ]
 }
