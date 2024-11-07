@@ -56,6 +56,8 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
       <div className="flex justify-center space-x-4 mb-4">
         <button
           onClick={() => setSelectedTag(null)}
+          aria-label="Show all projects"
+          aria-pressed={selectedTag === null}
           className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
       ${
         selectedTag === null
@@ -69,6 +71,8 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
           <button
             key={tag}
             onClick={() => setSelectedTag(tag)}
+            aria-label={`Filter by ${tag}`}
+            aria-pressed={selectedTag === tag}
             className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
         ${
           selectedTag === tag
