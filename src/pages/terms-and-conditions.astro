@@ -7,7 +7,11 @@ import authorConfig from "../config/info";
 
 import { featureFlags } from "../config/featureFlag";
 
-if (!featureFlags.showTermsOfService) {
+try {
+  if (!featureFlags.showTermsOfService) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
 ---

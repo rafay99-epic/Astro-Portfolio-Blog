@@ -9,8 +9,12 @@ import ContactFormReactCompoent from "../components/ReaactCompoents/ConrtactForm
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "../config/featureFlag";
 
-if (!featureFlags.showContact) {
-  return Astro.redirect("/404");
+try {
+  if (!featureFlags.showContact) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
+  return Astro.redirect("/400");
 }
 ---
 

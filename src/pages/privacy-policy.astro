@@ -6,7 +6,11 @@ import authorConfig from "../config/info";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "../config/featureFlag";
 
-if (!featureFlags.showPrivacy) {
+try {
+  if (!featureFlags.showPrivacy) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
 ---

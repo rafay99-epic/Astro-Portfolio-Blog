@@ -1,7 +1,11 @@
 ---
 import { featureFlags } from "../../../config/featureFlag";
 
-if (!featureFlags.showBlog) {
+try {
+  if (!featureFlags.showBlog) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
 ---

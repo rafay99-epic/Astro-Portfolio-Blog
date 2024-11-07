@@ -14,13 +14,14 @@ import authorConfig from "../config/info";
 import ProfileImage from "../components/ReaactCompoents/HeroSection/ProfileImage";
 import Greeting from "../components/ReaactCompoents/HeroSection/Greeting";
 import ConnectButton from "../components/ReaactCompoents/HeroSection/ConnectButton";
-const { name, jobTitle, position, picture } = authorConfig;
-
-// Feature Flag: Enable or disable
 import { featureFlags } from "../config/featureFlag";
-
-if (!featureFlags.showIndex) {
-  return Astro.redirect("/404");
+const { name, jobTitle, position, picture } = authorConfig;
+try {
+  if (!featureFlags.showIndex) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
+  return Astro.redirect("/400");
 }
 ---
 

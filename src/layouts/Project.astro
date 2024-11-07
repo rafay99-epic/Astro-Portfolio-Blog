@@ -6,7 +6,7 @@ import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButto
 import authorConfig from "../config/info";
 import SpeedInsights from "@vercel/speed-insights/astro";
 const pageUrl = Astro.url.href;
-
+import { featureFlags } from "../config/featureFlag";
 type Props = {
   Projecttitle: string;
   ProjectDescription: string;
@@ -17,8 +17,11 @@ type Props = {
 const { Projecttitle, ProjectDescription, ProjectImage, ProjectTech } =
   Astro.props;
 
-import { featureFlags } from "../config/featureFlag";
-if (!featureFlags.showProjects) {
+try {
+  if (!featureFlags.showProjects) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
 ---

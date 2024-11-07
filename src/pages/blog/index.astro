@@ -6,13 +6,17 @@ import authorConfig from "../../config/info";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import BlogSection from "../../components/ReaactCompoents/BlogPost/BlogPost";
+import { featureFlags } from "../../config/featureFlag";
+
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
 
-import { featureFlags } from "../../config/featureFlag";
-
-if (!featureFlags.showBlog) {
+try {
+  if (!featureFlags.showBlog) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
 ---

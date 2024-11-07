@@ -5,6 +5,7 @@ import Header from "../components/AstroCompoent/header/Header.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "../components/AstroCompoent/BlogComments/PostComment.astro";
 import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton";
+import { featureFlags } from "../config/featureFlag";
 const pageUrl = Astro.url.href;
 
 type Props = {
@@ -15,9 +16,11 @@ type Props = {
 };
 
 const { title, pubDate, summary } = Astro.props;
-
-import { featureFlags } from "../config/featureFlag";
-if (!featureFlags.showNewsletter) {
+try {
+  if (!featureFlags.showNewsletter) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
 ---

@@ -13,7 +13,11 @@ const posts = (await getCollection("blog")).sort(
 
 import { featureFlags } from "../config/featureFlag";
 
-if (!featureFlags.showTags) {
+try {
+  if (!featureFlags.showTags) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
 ---

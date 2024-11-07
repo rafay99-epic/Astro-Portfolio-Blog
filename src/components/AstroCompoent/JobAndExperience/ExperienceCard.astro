@@ -1,9 +1,12 @@
 ---
 const { company, position, employementDate, roles, technologies } = Astro.props;
-
 import { featureFlags } from "../../../config/featureFlag";
 
-if (!featureFlags.showAbout) {
+try {
+  if (!featureFlags.showAbout) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
 ---

@@ -11,7 +11,7 @@ export const featureFlags = {
   showProjects: true,
   showIndex: true,
   showTags: true,
-  showSearch: true,
+  showSearch: false,
   showNewsletter: true,
   showPrivacy: true,
   showTermsOfService: true,

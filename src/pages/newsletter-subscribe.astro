@@ -9,7 +9,11 @@ import authorConfig from "../config/info";
 
 import { featureFlags } from "../config/featureFlag";
 
-if (!featureFlags.showNewsletter) {
+try {
+  if (!featureFlags.showNewsletter) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
 ---

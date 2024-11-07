@@ -8,9 +8,14 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import Newsletter from "../../components/ReaactCompoents/Newsletter/ListNewsletter/NewsletterList";
 import { featureFlags } from "../../config/featureFlag";
 
-if (!featureFlags.showNewsletter) {
+try {
+  if (!featureFlags.showNewsletter) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
   return Astro.redirect("/404");
 }
+
 const newsletters = await getCollection("newsletter");
 ---
 

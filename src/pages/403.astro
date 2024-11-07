@@ -1,0 +1,30 @@
+---
+import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
+import authorConfig from "../config/info";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import ComingSoon from "../components/ReaactCompoents/ErroPage/ComingSoon";
+export const prerender = true;
+
+// Extract feature name from URL or set a default
+const featureName = Astro.url.searchParams.get("feature") ?? "Exciting Feature";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
+    />
+    <SpeedInsights />
+  </head>
+  <body class="min-h-screen overflow-hidden flex">
+    <main class="flex flex-1 justify-center items-center w-full h-screen">
+      <div
+        class="flex flex-col justify-center w-full md:w-1/2 text-center md:text-left"
+      >
+        <ComingSoon featureName={featureName} client:idle />
+      </div>
+    </main>
+  </body>
+</html>

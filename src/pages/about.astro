@@ -8,8 +8,12 @@ export const prerender = true;
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import { featureFlags } from "../config/featureFlag";
 
-if (!featureFlags.showAbout) {
-  return Astro.redirect("/404");
+try {
+  if (!featureFlags.showAbout) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
+  return Astro.redirect("/400");
 }
 ---
 

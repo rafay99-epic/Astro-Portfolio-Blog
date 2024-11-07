@@ -13,9 +13,14 @@ const posts = (await getCollection("blog")).sort(
 const newsletter = (await getCollection("newsletter")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
-// Feature Flags
-if (!featureFlags.showSearch) {
-  return Astro.redirect("/404");
+
+try {
+  // Feature Flags
+  if (!featureFlags.showSearch) {
+    return Astro.redirect("/403");
+  }
+} catch (error) {
+  return Astro.redirect("/400");
 }
 ---
 
