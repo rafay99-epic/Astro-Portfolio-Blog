@@ -9,13 +9,9 @@ import ProjectList from "../../components/ReaactCompoents/ProjectList/Projectlis
 import { featureFlags } from "../../config/featureFlag";
 const projects = await getCollection("projects");
 
-if (!featureFlags.showProjects) {
-  return Astro.redirect("/404");
-}
-
 try {
   if (!featureFlags.showProjects) {
-    return Astro.redirect("/403");
+    return Astro.redirect("/access-denied");
   }
 } catch (error) {
   return Astro.redirect("/404");

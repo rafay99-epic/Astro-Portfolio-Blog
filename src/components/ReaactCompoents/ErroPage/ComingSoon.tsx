@@ -15,9 +15,12 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ featureName }) => {
         <p className="text-gray-300 mb-8">
           This feature is currently in development. Stay tuned for updates!
         </p>
-        <button className="mt-6 px-6 py-3 bg-[#7aa2f7] hover:bg-[#4c88f7] text-white rounded-lg shadow-md transition duration-300">
+        <a
+          className="mt-6 px-6 py-3 bg-[#7aa2f7] hover:text-gray-800 text-white rounded-lg shadow-md transition duration-300"
+          href="/"
+        >
           Back to Home
-        </button>
+        </a>
       </div>
     </div>
   );

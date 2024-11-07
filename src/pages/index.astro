@@ -18,7 +18,7 @@ import { featureFlags } from "../config/featureFlag";
 const { name, jobTitle, position, picture } = authorConfig;
 try {
   if (!featureFlags.showIndex) {
-    return Astro.redirect("/403");
+    return Astro.redirect("/access-denied");
   }
 } catch (error) {
   return Astro.redirect("/400");

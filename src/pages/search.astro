@@ -6,18 +6,16 @@ import { getCollection } from "astro:content";
 import authorConfig from "../config/info";
 import SearchReactCompoent from "../components/ReaactCompoents/SearchField/SearchField";
 import { featureFlags } from "../config/featureFlag";
-// Content Collection
-const posts = (await getCollection("blog")).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-);
-const newsletter = (await getCollection("newsletter")).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-);
+
+const posts = featureFlags.showBlog
+  ? (await getCollection("blog")).sort(
+      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+    )
+  : [];
 
 try {
-  // Feature Flags
   if (!featureFlags.showSearch) {
-    return Astro.redirect("/403");
+    return Astro.redirect("/access-denied");
   }
 } catch (error) {
   return Astro.redirect("/400");

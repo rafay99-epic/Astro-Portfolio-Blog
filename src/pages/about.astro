@@ -10,7 +10,7 @@ import { featureFlags } from "../config/featureFlag";
 
 try {
   if (!featureFlags.showAbout) {
-    return Astro.redirect("/403");
+    return Astro.redirect("/access-denied");
   }
 } catch (error) {
   return Astro.redirect("/400");

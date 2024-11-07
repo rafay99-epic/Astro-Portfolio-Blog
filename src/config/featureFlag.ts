@@ -11,7 +11,7 @@ export const featureFlags = {
   showProjects: true,
   showIndex: true,
   showTags: true,
-  showSearch: false,
+  showSearch: true,
   showNewsletter: true,
   showPrivacy: true,
   showTermsOfService: true,
@@ -20,6 +20,6 @@ export const featureFlags = {
 
 // Feature Flag for API calls
 export const FeatureFlagsApi = {
-  enableNotionAPI: true,
+  enableNotionAPI: false,
   enableauthorInfoAPI: true,
 };

@@ -14,7 +14,7 @@ const posts = (await getCollection("blog")).sort(
 
 try {
   if (!featureFlags.showBlog) {
-    return Astro.redirect("/403");
+    return Astro.redirect("/access-denied");
   }
 } catch (error) {
   return Astro.redirect("/404");

@@ -5,7 +5,6 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import ComingSoon from "../components/ReaactCompoents/ErroPage/ComingSoon";
 export const prerender = true;
 
-// Extract feature name from URL or set a default
 const featureName = Astro.url.searchParams.get("feature") ?? "Exciting Feature";
 ---
 
@@ -18,10 +17,16 @@ const featureName = Astro.url.searchParams.get("feature") ?? "Exciting Feature";
     />
     <SpeedInsights />
   </head>
-  <body class="min-h-screen overflow-hidden flex">
-    <main class="flex flex-1 justify-center items-center w-full h-screen">
+  <body class="min-h-screen overflow-hidden flex" role="application">
+    <main
+      class="flex flex-1 justify-center items-center w-full h-screen"
+      role="main"
+      aria-label="Feature not available"
+    >
       <div
         class="flex flex-col justify-center w-full md:w-1/2 text-center md:text-left"
+        role="alert"
+        aria-live="polite"
       >
         <ComingSoon featureName={featureName} client:idle />
       </div>
