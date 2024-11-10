@@ -14,30 +14,163 @@ tags:
   - Thoughts-Process
 ---
 
-Not to long ago, I was scrolling video on youtube, finding something to watch as I was working on an android application, and then Youtube suggested this vide to me, *[Embrace GitHub Copilot, Cursor AI & ChatGPT as a developer!](https://www.youtube.com/watch?v=3xu_QrZRYRw\&t=174s)* and I am a sucker, I watched the whole video and then it hit me a question should I use AI tools for making application, what are the side effects and how much should I use.
+Not too long ago, as I was working on an Android application, I was scrolling through YouTube, looking for something interesting to watch. Then, YouTube recommended a video to me: *[Embrace GitHub Copilot, Cursor AI & ChatGPT as a Developer!](https://www.youtube.com/watch?v=3xu_QrZRYRw\&t=174s)*. As a curious developer, I watched the entire video. It raised a question that I’ve been thinking about a lot: should I rely on AI tools to build applications, and if so, how much should I use them? What are the potential side effects?
 
-Like the questions to these answers, I have already disscused in my pervious blog post. *[My Love and Hate relationship with github- copiolet](https://www.rafay99.com/blog/mylovehaterelationshipwithcopilot)* and in that blog post, I conculded that there should be a limit on how much you use these tools.
+I've already discussed similar questions in a previous blog post, *[My Love and Hate Relationship with GitHub Copilot](https://www.rafay99.com/blog/mylovehaterelationshipwithcopilot)*, where I concluded that it’s best to set boundaries on how much we rely on these tools. But this video only highlighted the benefits of using AI for development. For instance, it pointed out how these tools can generate boilerplate code effortlessly. Generating boilerplate code for a Flutter widget or an HTML page can be tedious, but with AI, you just need to provide a prompt like "create this widget with this title and metadata," and it gets done in seconds.
 
-But in the video, I only hera the plus points of using these tools, for example these can be help full to you for generating boiller code, if you rembr generating boilder code for flutter widget or an html page is a pain to create, and telling these tools to make me this widget with this title and meta data, they will do in a second.
+This feature can make life so much easier, especially for tasks that feel more like obstacles than creative work. I want to focus on creating meaningful UI and logic for my app to function, rather than dealing with repetitive code. Another key benefit mentioned in the video was how AI can help refactor code, making it easier to break down components into reusable pieces. This reusability improves maintainability, eases debugging, and facilitates adding new features.
 
-This will make life easier, Like these task where pain for me, I just want to create some UI and Some logic so that my app can work. the other thing that was pointed out in the vide was the amount of refracing code, making some compoent into a seoerate compoent is good, make the code resulable and having the feature that cna be resulable make like easer to debug, add more features and much more.
-
-These are solid points that are in the video but here is my hot take for the blog post.
+These are all solid points from the video, but here’s my personal take on using AI tools in development.
 
 ## My Usage
 
-I am going to be honest with you all ad a developer, I use these AI tools for learning news tech, Modifying the existing UI to make it much better, I am not a froent end developer and I might an idea what I need to build so I code it but I know it's not perfect so here is what I do,
+Honestly, as a developer, I use these AI tools mainly for learning new technologies and improving UI design. I’m not a front-end developer, but I usually have a vision for what I want to build. I code it, but I know it’s not perfect. That’s when I turn to AI. Here’s an example of a prompt I often use:
 
-I pass this prmote to the any AI tool, like chatGPT
+> Imagine you are a designer and developer with five years of experience. With this expertise, you are tasked with improving a UI. Here is the code. Now, modify this UI to make it better.
 
-> Consider your a designer and Developer with 5 years of experience, with this experience you are going to modify a UI. Here is the code. Now modify this UI and make it better.
+**For Example**
+I was working on the Tools section on my own website using Astro, React, and Framer Motion. This was the original code:
 
-With this Promote AI will fix most of the issue that I was happening in the UI and will make thing much better, but still not better, I still have to twak some of the things, for exmple, changing the fonts, icons or even the colors, not matching the whole style of the application.
+```typescript
+import React, { useState } from "react";
+import "devicon/devicon.min.css";
+import { motion } from "framer-motion";
+import authorConfig from "../../../config/info";
 
-## Hot take
+const techStack = authorConfig.techStack;
 
-Here is my hot take from all this video and my own thought, you should use these AI tools to learn, to refractor but don't use them to generate alot of code, becasue the code that AI will be generating won't be good and won't be hight qulaity plus not so much secure as well. Plus if you are a new dev and don't know anything then you are in trouble, because these AI will shorten your abibiluty to read docs and will make your debugging skills worst.
+const SkillsShowcase: React.FC = () => {
+  // Set initial tab as the first category in the tech stack
+  const [activeTab, setActiveTab] = useState(Object.keys(techStack)[0]);
 
-To checkout more about the consusives check out my blog post on [My Love & Hate Relationship with Copilot](https://www.rafay99.com/blog/mylovehaterelationshipwithcopilot)
+  return (
+    <div
+      style={{
+        boxShadow:
+          "0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33)",
+      }}
+      className="py-12 px-6 md:px-12 bg-[var(--accent-dark)] rounded-lg"
+    >
+      {/* Tab Navigation for Tech Stack Categories */}
+      <div className="flex flex-wrap justify-center space-x-2 mb-8">
+        {Object.keys(techStack).map((category) => (
+          <button
+            key={category}
+            className={`py-2 px-4 font-semibold rounded-lg ${
+              activeTab === category
+                ? "bg-[var(--accent)] text-white"
+                : "bg-transparent text-[var(--text-light)]"
+            } transition duration-300 whitespace-nowrap`}
+            onClick={() => setActiveTab(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
 
-Untill then
+      {/* Skills Table */}
+      <div className="flex overflow-x-auto">
+        {Object.entries(techStack).map(([category, skills]) =>
+          activeTab === category ? (
+            <motion.div
+              key={category}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center justify-start"
+              style={{ whiteSpace: "nowrap" }}
+            >
+              {skills.map((skill) => (
+                <i
+                  key={skill}
+                  className={`devicon-${skill}-plain colored text-6xl mx-2`}
+                ></i>
+              ))}
+            </motion.div>
+          ) : null
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default SkillsShowcase;
+```
+
+And this is the modified code
+
+```typescript
+import React, { useState } from "react";
+import "devicon/devicon.min.css";
+import { motion } from "framer-motion";
+import authorConfig from "../../../config/info";
+
+const techStack = authorConfig.techStack;
+
+const SkillsShowcase: React.FC = () => {
+  const [activeTab, setActiveTab] = useState(Object.keys(techStack)[0]);
+
+  return (
+    <div
+      className="py-12 px-6 md:px-12 bg-[var(--accent-dark)] rounded-lg shadow-lg"
+      style={{
+        boxShadow:
+          "0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33)",
+      }}
+    >
+      {/* Tab Navigation */}
+      <div className="flex flex-wrap justify-center gap-4 mb-8">
+        {Object.keys(techStack).map((category) => (
+          <button
+            key={category}
+            onClick={() => setActiveTab(category)}
+            className={`py-2 px-6 font-semibold rounded-full transition duration-300 text-sm md:text-base ${
+              activeTab === category
+                ? "bg-[var(--accent)] text-white shadow-md"
+                : "bg-transparent text-[var(--text-light)] hover:bg-gray-700 hover:text-[var(--accent)]"
+            }`}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      {/* Skills Grid */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 10 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6">
+          {techStack[activeTab].map((skill) => (
+            <motion.div
+              key={skill}
+              whileHover={{ scale: 1.1 }}
+              className="flex flex-col items-center text-center"
+            >
+              <i className={`devicon-${skill}-plain colored text-5xl`}></i>
+              <p className="mt-2 text-sm text-[var(--text-light)]">
+                {skill.charAt(0).toUpperCase() + skill.slice(1)}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+export default SkillsShowcase;
+```
+
+Using this prompt, the AI suggests enhancements that usually address the issues in my design. However, I still tweak things afterward to better fit my vision—whether it’s changing fonts, icons, or colors to align with the overall style of the application.
+
+## Hot Take
+
+Here’s my perspective on AI usage after watching the video and reflecting on my own experiences: AI tools are valuable for learning, refactoring, and improving code structure, but they shouldn’t be overused for generating large chunks of code. Code generated by AI often lacks high quality, security, and precision. And if you’re a new developer without a solid foundation, relying heavily on AI can be harmful. It might weaken your ability to read documentation and hinder your debugging skills.
+
+For more on this topic, check out my blog post, *[My Love & Hate Relationship with Copilot](https://www.rafay99.com/blog/mylovehaterelationshipwithcopilot)*.
+
+Until next time, peace out, nerds. 👓
