@@ -199,6 +199,7 @@ type Projects implements Node & Document {
   ProjectImage: String!
   draft: Boolean!
   ProjectTech: [String]
+  ProjectCategory: [String]
   body: JSON
   id: ID!
   _sys: SystemInfo!
@@ -211,6 +212,7 @@ input ProjectsFilter {
   ProjectImage: ImageFilter
   draft: BooleanFilter
   ProjectTech: StringFilter
+  ProjectCategory: StringFilter
   body: RichTextFilter
 }
 
@@ -277,6 +279,7 @@ input ProjectsMutation {
   ProjectImage: String
   draft: Boolean
   ProjectTech: [String]
+  ProjectCategory: [String]
   body: JSON
 }
 
