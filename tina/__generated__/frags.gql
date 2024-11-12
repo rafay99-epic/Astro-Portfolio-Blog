@@ -24,5 +24,6 @@ fragment ProjectsParts on Projects {
   ProjectImage
   draft
   ProjectTech
+  ProjectCategory
   body
 }

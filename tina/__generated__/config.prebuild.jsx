@@ -166,6 +166,16 @@ var config_default = defineConfig({
             }
           },
           {
+            type: "string",
+            name: "ProjectCategory",
+            label: "Project Category",
+            list: true,
+            required: false,
+            ui: {
+              component: "categories"
+            }
+          },
+          {
             type: "rich-text",
             name: "body",
             label: "Body",
