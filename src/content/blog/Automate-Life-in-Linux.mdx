@@ -1,0 +1,109 @@
+---
+title: Automate Life in Linux
+description: 'Services and Automation via Script & Services '
+pubDate: 2024-11-14T19:00:00.000Z
+draft: true
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - Linux
+  - Blog
+---
+
+I have beeing using linux for the last 5 years and in this time, I have learned alot, every distro might work the same but there is just a little change that make it unique but on any distro I am, I always do is called creating my own services and making thing automated.
+
+Making some script and then enabling it so that I can forget about some stuff and make my life so much easy and one of this automatation is called file management.
+
+File Management can be tricky and for this work, I am deal with only three things, git repo, pictures and zip files. All these file will moved to the defined location in the script and for me it was the Document folder and Picture Folder.
+
+alright, let's break the script line by line and then we will deploy the script on own system using systemctl services.
+
+### Writing the Code
+
+Let's go through the key sections of our Bash script:
+
+#### Setting Destination Folders
+
+We start by setting the destination folder paths for Git repositories and images. These paths will be used throughout the script for moving files. Here's the code snippet:
+
+```bash
+# Set the destination folder paths
+gitDestination="$HOME/Documents/Testing-Repo"
+imageDestination="$HOME/Pictures/Images"
+```
+
+#### Functions for Moving Images and Git Repositories
+
+Next, we create two functions to handle the movement of image directories and Git repositories. The `moveImages()` function moves image files from a specified folder to the image destination folder, while the `moveGitRepo()` function moves Git repositories to the Git destination folder. These functions perform necessary checks and move the files accordingly. Here are the code snippets:
+
+```bash
+# Function to move images to the image destination folder
+moveImages() {
+    # Code snippet for moving images
+    
+}
+```
+
+#### Function to move Git repositories to the Git destination folder
+
+```bash
+moveGitRepo() {
+    # Code snippet for moving Git repositories
+    # ...
+}
+```
+
+#### Checking and Moving Existing Files
+
+The script starts by checking if the destination folders for Git repositories and images exist. If they don't, it creates them using `mkdir -p`. Then, it moves existing Git repositories (excluding those with images) and image files from the Downloads folder to the designated destination folders. Here's the code snippet:
+
+```bash
+# Check if the destination folder exists for Git repositories, if not, create it
+if [ ! -d "$gitDestination" ]; then
+    mkdir -p "$gitDestination"
+    echo "✅ Created destination folder for Git repositories: $gitDestination"
+fi
+
+# Move existing Git repositories to the destination folder, excluding those containing images
+find "$HOME/Downloads" -maxdepth 1 -type d -name "*.git" -exec sh -c '
+    repoDir=$(dirname "$0")
+    if ! find "$repoDir" -type f -exec file -N -i -- {} + | grep -qE "image/"; then
+        moveGitRepo "$repoDir" "$gitDestination"
+    fi
+' {} \;
+```
+
+Check if the destination folder exists for images, if not, create it
+
+```bash
+if [ ! -d "$imageDestination" ]; then
+    mkdir -p "$imageDestination"
+    echo "✅ Created destination folder for images: $imageDestination"
+fi
+
+
+moveImages "$HOME/Downloads" "$imageDestination"
+```
+
+## Live Monitoring for New Files
+
+The script enters a live monitoring loop using `inotifywait`. It waits for new directory creations in the Downloads folder and performs actions based on the type of the newly created directory. If it's a Git repository without images, it waits for 3 minutes using a countdown timer and then moves it to the Git destination folder. If it's an image directory, it moves it to the image destination folder. Here's the code snippet:
+
+```bash
+# Start live monitoring of the Downloads folder for new directory creations using inotifywait
+inotifywait -m -e create -r --format "%w%f" -q "$HOME/Downloads" |
+while read -r directory; do
+    # Check if the newly created directory is a Git repository
+    if [ -d "$directory/.git" ]; then
+        # Check if the Git repository contains images
+        if ! find "$directory" -type f -exec file -N -i -- {} + | grep -qE "image/"; then
+            # Move the Git repository to the Git destination folder after 3 minutes
+            moveGitRepo "$directory" "$gitDestination" &
+        fi
+    elif file -N -i "$directory" | grep -qE 'image/'; then
+        # Check if the newly created directory is an image
+        # Move the image directory to the image destination folder
+        moveImages "$directory" "$imageDestination"
+    fi
+done
+```
