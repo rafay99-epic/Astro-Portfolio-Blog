@@ -3,8 +3,8 @@ import { defineConfig } from "tinacms";
 var branch = "main";
 var config_default = defineConfig({
   branch,
-  clientId: "ca928060-14c1-452c-938e-9a1e7feaae19",
-  token: "8824be588169be37ca1b34e4e50b4ed5715f6040",
+  clientId: process.env.TINA_CLIENT_ID,
+  token: process.env.TINA_TOKEN,
   build: {
     outputFolder: "admin",
     publicFolder: "public"
@@ -17,7 +17,6 @@ var config_default = defineConfig({
   },
   schema: {
     collections: [
-      // Blog Collection
       {
         name: "post",
         label: "Articles",
@@ -46,13 +45,13 @@ var config_default = defineConfig({
           {
             type: "boolean",
             name: "draft",
-            label: "draft",
+            label: "Draft",
             required: true
           },
           {
             type: "image",
             name: "heroImage",
-            label: "Thubnail Image",
+            label: "Thumbnail Image",
             required: false
           },
           {
@@ -85,7 +84,6 @@ var config_default = defineConfig({
           }
         ]
       },
-      // Newsletter Collection
       {
         name: "newsletter",
         label: "Newsletters",
@@ -124,7 +122,6 @@ var config_default = defineConfig({
           }
         ]
       },
-      // Project Collection
       {
         name: "projects",
         label: "Projects",
@@ -140,7 +137,7 @@ var config_default = defineConfig({
           {
             type: "string",
             name: "ProjectDescription",
-            label: "project Description",
+            label: "Project Description",
             required: true
           },
           {
@@ -187,7 +184,7 @@ var config_default = defineConfig({
   },
   search: {
     tina: {
-      indexerToken: "4d255fd2c6b48ce0fb6de0ca4f700b90f04033fc",
+      indexerToken: process.env.TINA_INDEXER_TOKEN,
       stopwordLanguages: ["eng"]
     },
     indexBatchSize: 100,
