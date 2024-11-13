@@ -10,21 +10,21 @@ tags:
   - Blog
 ---
 
-I have beeing using linux for the last 5 years and in this time, I have learned alot, every distro might work the same but there is just a little change that make it unique but on any distro I am, I always do is called creating my own services and making thing automated.
+I've been using Linux for the past five years, and during this time, I've learned a lot. Every distribution might operate similarly, but each has unique characteristics that make it special. Regardless of the distribution I'm using, one of my key practices is creating my own services and automating tasks.
 
-Making some script and then enabling it so that I can forget about some stuff and make my life so much easy and one of this automatation is called file management.
+Writing scripts and enabling them as services has streamlined my workflow and made my life easier. One of my favorite automations is file management.
 
-File Management can be tricky and for this work, I am deal with only three things, git repo, pictures and zip files. All these file will moved to the defined location in the script and for me it was the Document folder and Picture Folder.
+File management can be tricky, so I've created a script to handle three main types of files: Git repositories, images, and zip files. This script automatically moves these files to designated locations—specifically, the `Documents` and `Pictures` folders.
 
-alright, let's break the script line by line and then we will deploy the script on own system using systemctl services.
+Now, let’s break down the script line-by-line, then set it up to run on our system as a `systemctl` service.
 
 ### Writing the Code
 
-Let's go through the key sections of our Bash script:
+Let’s go over the key sections of our Bash script.
 
 #### Setting Destination Folders
 
-We start by setting the destination folder paths for Git repositories and images. These paths will be used throughout the script for moving files. Here's the code snippet:
+First, we define the destination folder paths for Git repositories and images. These paths will be used throughout the script to move files.
 
 ```bash
 # Set the destination folder paths
@@ -34,37 +34,32 @@ imageDestination="$HOME/Pictures/Images"
 
 #### Functions for Moving Images and Git Repositories
 
-Next, we create two functions to handle the movement of image directories and Git repositories. The `moveImages()` function moves image files from a specified folder to the image destination folder, while the `moveGitRepo()` function moves Git repositories to the Git destination folder. These functions perform necessary checks and move the files accordingly. Here are the code snippets:
+Next, we create two functions to handle moving image directories and Git repositories. The `moveImages()` function moves images from a specified folder to the image destination folder, while the `moveGitRepo()` function moves Git repositories to the Git destination. These functions perform necessary checks before moving the files.
 
 ```bash
 # Function to move images to the image destination folder
 moveImages() {
     # Code snippet for moving images
-    
 }
-```
 
-#### Function to move Git repositories to the Git destination folder
-
-```bash
+# Function to move Git repositories to the Git destination folder
 moveGitRepo() {
     # Code snippet for moving Git repositories
-    # ...
 }
 ```
 
 #### Checking and Moving Existing Files
 
-The script starts by checking if the destination folders for Git repositories and images exist. If they don't, it creates them using `mkdir -p`. Then, it moves existing Git repositories (excluding those with images) and image files from the Downloads folder to the designated destination folders. Here's the code snippet:
+The script begins by checking if the destination folders for Git repositories and images exist. If not, it creates them using `mkdir -p`. Then, it moves existing Git repositories (excluding those containing images) and image files from the Downloads folder to the appropriate destination folders.
 
 ```bash
-# Check if the destination folder exists for Git repositories, if not, create it
+# Check if the Git destination folder exists; if not, create it
 if [ ! -d "$gitDestination" ]; then
     mkdir -p "$gitDestination"
     echo "✅ Created destination folder for Git repositories: $gitDestination"
 fi
 
-# Move existing Git repositories to the destination folder, excluding those containing images
+# Move existing Git repositories to the destination folder, excluding those with images
 find "$HOME/Downloads" -maxdepth 1 -type d -name "*.git" -exec sh -c '
     repoDir=$(dirname "$0")
     if ! find "$repoDir" -type f -exec file -N -i -- {} + | grep -qE "image/"; then
@@ -73,7 +68,7 @@ find "$HOME/Downloads" -maxdepth 1 -type d -name "*.git" -exec sh -c '
 ' {} \;
 ```
 
-Check if the destination folder exists for images, if not, create it
+Checking if the destination folder exists for images and creating it if it doesn’t:
 
 ```bash
 if [ ! -d "$imageDestination" ]; then
@@ -81,13 +76,12 @@ if [ ! -d "$imageDestination" ]; then
     echo "✅ Created destination folder for images: $imageDestination"
 fi
 
-
 moveImages "$HOME/Downloads" "$imageDestination"
 ```
 
 ### Live Monitoring for New Files
 
-The script enters a live monitoring loop using `inotifywait`. It waits for new directory creations in the Downloads folder and performs actions based on the type of the newly created directory. If it's a Git repository without images, it waits for 3 minutes using a countdown timer and then moves it to the Git destination folder. If it's an image directory, it moves it to the image destination folder. Here's the code snippet:
+The script then enters a live monitoring loop using `inotifywait`. It waits for new directories to be created in the Downloads folder and performs actions based on the type of the new directory. If it’s a Git repository without images, it waits for 3 minutes and then moves it to the Git destination folder. If it’s an image directory, it moves it to the image destination folder.
 
 ```bash
 # Start live monitoring of the Downloads folder for new directory creations using inotifywait
@@ -110,62 +104,60 @@ done
 
 ### Running the Script as a System Process
 
-To ensure our script runs as a background process whenever the Linux system starts, we'll create a systemd service. This allows the script to run continuously in the background, monitoring files and performing actions. Follow the steps below to create and configure the systemd service:
+To run the script as a background process whenever the system starts, we’ll create a `systemd` service. This enables the script to continuously monitor files and perform actions.
 
-1. Create a service file for the script using a text editor, such as `nano`:
+1. Create a service file for the script:
 
 ```bash
-sudo nano /etc/systemd/system/file-management.service
+   sudo nano /etc/systemd/system/file-management.service
 ```
 
 1. Add the following content to the file:
 
 ```plaintext
-[Unit]
-Description=File Management Script
-After=network.target
+   [Unit]
+   Description=File Management Script
+   After=network.target
 
-[Service]
-ExecStart=/bin/bash /path/to/your/script.sh
-Restart=always
+   [Service]
+   ExecStart=/bin/bash /path/to/your/script.sh
+   Restart=always
 
-[Install]
-WantedBy=multi-user.target
+   [Install]
+   WantedBy=multi-user.target
 ```
 
-Replace `/path/to/your/script.sh` with the actual path to your Bash script.
+Replace `/path/to/your/script.sh` with the actual path to your script.
 
-1. Save the file and exit the text editor.
-2. Reload systemd to read the new service:
+1. Save the file and exit.
+2. Reload `systemd` to read the new service:
 
 ```bash
-sudo systemctl daemon-reload
+   sudo systemctl daemon-reload
 ```
 
 1. Enable the service to start on boot:
 
 ```bash
-sudo systemctl enable file-management.service
+   sudo systemctl enable file-management.service
 ```
 
 1. Start the service:
 
 ```bash
-sudo systemctl start file-management.service
+   sudo systemctl start file-management.service
 ```
 
 1. Verify that the service is running:
 
 ```bash
-sudo systemctl status file-management.service
+   sudo systemctl status file-management.service
 ```
 
-Congratulations! Your script is now running as a system process. It will start automatically on system boot and continue monitoring files in the background.
+Your script is now running as a system process. It will start automatically on system boot and monitor files in the background.
 
-### Conculision
+### Conclusion
 
-Now the final thoughts with the intoducation to systemd and systemctl service, making service is very easy. this is just the tip of the ice bruge and you can do so much to create services that can automate your regualr stuff, Manage videos, Images, keep git record, keep snap shot of the system and much more. so be creative and code some cool scrip that that can be much better.
+With this introduction to `systemd` and `systemctl` services, you can see how easy it is to create services that automate routine tasks. This is just the beginning—you can create services to manage videos, images, Git repositories, system snapshots, and much more. So be creative, write some cool scripts, and share your work with others!
 
-so Expolore the world and do share these cool services.
-
-Untill then keep coding Nerds.
+Until next time, keep coding, nerds!
