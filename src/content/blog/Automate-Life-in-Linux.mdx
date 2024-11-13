@@ -85,7 +85,7 @@ fi
 moveImages "$HOME/Downloads" "$imageDestination"
 ```
 
-## Live Monitoring for New Files
+### Live Monitoring for New Files
 
 The script enters a live monitoring loop using `inotifywait`. It waits for new directory creations in the Downloads folder and performs actions based on the type of the newly created directory. If it's a Git repository without images, it waits for 3 minutes using a countdown timer and then moves it to the Git destination folder. If it's an image directory, it moves it to the image destination folder. Here's the code snippet:
 
@@ -107,3 +107,57 @@ while read -r directory; do
     fi
 done
 ```
+
+### Running the Script as a System Process
+
+To ensure our script runs as a background process whenever the Linux system starts, we'll create a systemd service. This allows the script to run continuously in the background, monitoring files and performing actions. Follow the steps below to create and configure the systemd service:
+
+1. Create a service file for the script using a text editor, such as `nano`:
+
+```bash
+sudo nano /etc/systemd/system/file-management.service
+```
+
+1. Add the following content to the file:
+
+```plaintext
+[Unit]
+Description=File Management Script
+After=network.target
+
+[Service]
+ExecStart=/bin/bash /path/to/your/script.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Replace `/path/to/your/script.sh` with the actual path to your Bash script.
+
+1. Save the file and exit the text editor.
+2. Reload systemd to read the new service:
+
+```bash
+sudo systemctl daemon-reload
+```
+
+1. Enable the service to start on boot:
+
+```bash
+sudo systemctl enable file-management.service
+```
+
+1. Start the service:
+
+```bash
+sudo systemctl start file-management.service
+```
+
+1. Verify that the service is running:
+
+```bash
+sudo systemctl status file-management.service
+```
+
+Congratulations! Your script is now running as a system process. It will start automatically on system boot and continue monitoring files in the background.
