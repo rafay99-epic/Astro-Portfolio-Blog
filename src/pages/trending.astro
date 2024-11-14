@@ -1,5 +1,14 @@
 ---
-import { getTrendingPosts } from "../pages/api/traffic";
+import { getTrendingPosts } from "./api/umamiService";
+import { featureFlags } from "../util/featureFlag";
+
+try {
+  if (!featureFlags.showTrendingPosts) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/400");
+}
 
 const startDate = new Date();
 startDate.setDate(startDate.getDate() - 30);
