@@ -3,10 +3,10 @@ import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
 import Header from "../components/AstroCompoent/header/Header.astro";
 import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton";
-import authorConfig from "../config/info";
+import authorConfig from "../util/info";
 import SpeedInsights from "@vercel/speed-insights/astro";
 const pageUrl = Astro.url.href;
-import { featureFlags } from "../config/featureFlag";
+import { featureFlags } from "../util/featureFlag";
 type Props = {
   Projecttitle: string;
   ProjectDescription: string;

@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { popularBlogs } from "../../../../config/traffic";
+import { popularBlogs } from "../../../../util/traffic";
 
 const allPosts = await getCollection("blog");
 const publishedPosts = allPosts.filter((post) => !post.data.draft);

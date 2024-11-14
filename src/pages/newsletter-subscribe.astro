@@ -5,9 +5,9 @@ export const prerender = true;
 import SpeedInsights from "@vercel/speed-insights/astro";
 import NewsletterReactCompoent from "../components/ReaactCompoents/Newsletter/SubNewsletter/newsletter";
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
-import authorConfig from "../config/info";
+import authorConfig from "../util/info";
 
-import { featureFlags } from "../config/featureFlag";
+import { featureFlags } from "../util/featureFlag";
 
 try {
   if (!featureFlags.showNewsletter) {

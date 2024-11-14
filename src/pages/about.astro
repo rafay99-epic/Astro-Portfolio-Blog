@@ -3,10 +3,10 @@ import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
 import Header from "../components/AstroCompoent/header/Header.astro";
 
 import JobExperience from "../components/AstroCompoent/JobAndExperience/JobExperience.astro";
-import authorConfig from "../config/info";
+import authorConfig from "../util/info";
 export const prerender = true;
 import Footer from "../components/AstroCompoent/footer/Footer.astro";
-import { featureFlags } from "../config/featureFlag";
+import { featureFlags } from "../util/featureFlag";
 
 try {
   if (!featureFlags.showAbout) {

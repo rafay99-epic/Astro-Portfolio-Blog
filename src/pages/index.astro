@@ -10,11 +10,11 @@ import FeaturedPost from "../components/AstroCompoent/home/FeaturePost/featurePo
 import LatestPost from "../components/AstroCompoent/home/LatestPost/LatestPost.astro";
 import SkillsShowcase from "../components/ReaactCompoents/JobSkills/jobSkills";
 import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePageContact";
-import authorConfig from "../config/info";
+import authorConfig from "../util/info";
 import ProfileImage from "../components/ReaactCompoents/HeroSection/ProfileImage";
 import Greeting from "../components/ReaactCompoents/HeroSection/Greeting";
 import ConnectButton from "../components/ReaactCompoents/HeroSection/ConnectButton";
-import { featureFlags } from "../config/featureFlag";
+import { featureFlags } from "../util/featureFlag";
 const { name, jobTitle, position, picture } = authorConfig;
 try {
   if (!featureFlags.showIndex) {

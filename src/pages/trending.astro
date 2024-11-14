@@ -1,0 +1,31 @@
+---
+import { getTrendingPosts } from "../pages/api/traffic";
+
+const startDate = new Date();
+startDate.setDate(startDate.getDate() - 30);
+const endDate = new Date();
+
+const trendingPosts = await getTrendingPosts(
+  startDate.toISOString().split("T")[0],
+  endDate.toISOString().split("T")[0]
+);
+---
+
+<section>
+  <h2>Trending Posts</h2>
+  {
+    Array.isArray(trendingPosts) && trendingPosts.length > 0 ? (
+      <ul>
+        {trendingPosts.map((post) => (
+          <li>
+            <a href={post.url}>
+              {post.url} - {post.pageviews} views
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>{trendingPosts.message || "No trending posts available."}</p>
+    )
+  }
+</section>

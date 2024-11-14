@@ -22,4 +22,5 @@ export const featureFlags = {
 export const FeatureFlagsApi = {
   enableNotionAPI: false,
   enableauthorInfoAPI: true,
+  enableTrendingPostsAPI: true,
 };

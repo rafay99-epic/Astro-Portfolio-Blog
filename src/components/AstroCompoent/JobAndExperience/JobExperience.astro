@@ -1,8 +1,8 @@
 ---
 import ExperienceCards from "./ExperienceCard.astro";
-import authorConfig from "../../../config/info";
+import authorConfig from "../../../util/info";
 const workExperience = authorConfig.workExperience;
-import { featureFlags } from "../../../config/featureFlag";
+import { featureFlags } from "../../../util/featureFlag";
 
 try {
   if (!featureFlags.showAbout) {
