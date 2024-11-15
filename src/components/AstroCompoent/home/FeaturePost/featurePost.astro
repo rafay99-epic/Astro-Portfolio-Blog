@@ -9,18 +9,15 @@ import type {
   CombinedPost,
 } from "../../../../util/types";
 
-// Fetch all blog posts
 const allPosts = await getCollection("blog");
 const publishedPosts = allPosts.filter((post) => !post.data.draft);
 
-// Initialize API trending posts array
 let apiTrendingPosts: ApiTrendingPost[] = [];
 
-// Check if Umami Service API is enabled
 if (FeatureFlagsApi.enableUmamiServiceAPI) {
   try {
     const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 30); // Last 30 days
+    startDate.setDate(startDate.getDate() - 30);
     const endDate = new Date();
 
     const response = await getTrendingPosts(
@@ -43,18 +40,15 @@ if (FeatureFlagsApi.enableUmamiServiceAPI) {
   console.info("Umami Service API is disabled. Using local dataset only.");
 }
 
-// Create a map of popular blogs from the local dataset
 const popularPages = new Map<string, PopularBlog>(
   popularBlogs.map((entry) => [entry.Page.replace("/blog/", ""), entry])
 );
 
-// Combine local and API data, using the higher view count for each post
 const combinedPopularPosts: CombinedPost[] = publishedPosts
   .map((post) => {
     const localData = popularPages.get(post.slug);
     const apiData = apiTrendingPosts.find((item) => item.slug === post.slug);
 
-    // Choose the source with higher visitor count
     const visitors = Math.max(localData?.Visitors ?? 0, apiData?.visitors ?? 0);
 
     return {
@@ -62,9 +56,9 @@ const combinedPopularPosts: CombinedPost[] = publishedPosts
       visitors,
     };
   })
-  .filter((item) => item.visitors > 0) // Only include posts with view counts
-  .sort((a, b) => b.visitors - a.visitors) // Sort by visitors count
-  .slice(0, 4); // Limit to top 4 posts
+  .filter((item) => item.visitors > 0)
+  .sort((a, b) => b.visitors - a.visitors)
+  .slice(0, 4);
 ---
 
 <div class="bg-[#1f2335] text-[#F8F8F8] py-8">
