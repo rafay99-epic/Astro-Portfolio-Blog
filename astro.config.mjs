@@ -4,6 +4,9 @@ import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/static";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // https://astro.build/config
 export default defineConfig({
@@ -39,4 +42,21 @@ export default defineConfig({
     webAnalytics: { enabled: true },
     imageService: true,
   }),
+
+  vite: {
+    resolve: {
+      alias: {
+        "@assets": "/src/assets",
+        "@components": "/src/components",
+        "@astro": "/src/components/AstroCompoent",
+        "@react": "/src/components/ReaactCompoents",
+        "@content": "/src/content",
+        "@layouts": "/src/layouts",
+        "@pages": "/src/pages",
+        "@styles": "/src/styles",
+        "@types": "/src/types",
+        "@util": "/src/util",
+      },
+    },
+  },
 });

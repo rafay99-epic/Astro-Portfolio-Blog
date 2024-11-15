@@ -16,10 +16,12 @@ export const featureFlags = {
   showPrivacy: true,
   showTermsOfService: true,
   showSubNewsletter: true,
+  showTrendingPosts: false,
 };
 
 // Feature Flag for API calls
 export const FeatureFlagsApi = {
   enableNotionAPI: false,
   enableauthorInfoAPI: true,
+  enableUmamiServiceAPI: false,
 };

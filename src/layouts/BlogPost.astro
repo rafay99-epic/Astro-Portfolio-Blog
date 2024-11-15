@@ -8,7 +8,8 @@ import { Image } from "astro:assets";
 import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton.tsx";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "../components/AstroCompoent/BlogComments/PostComment.astro";
-import { featureFlags } from "../config/featureFlag";
+import { featureFlags } from "../util/featureFlag.ts";
+
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];
 
@@ -29,6 +30,7 @@ const {
   authorName,
   authorAvatar,
   tags,
+  readTime,
 } = Astro.props;
 ---
 
@@ -80,6 +82,11 @@ const {
                   <div class="italic">
                     Last updated on <FormattedDate date={updatedDate} />
                   </div>
+                )
+              }
+              {
+                readTime && (
+                  <p class="text-sm text-gray-500 italic">{readTime}</p>
                 )
               }
             </div>

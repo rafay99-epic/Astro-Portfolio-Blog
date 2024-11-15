@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Newsletter } from "../../scheme/newsletter_types.ts";
+import type { Newsletter } from "types/newsletter_types.ts";
 
 interface NewsletterLogicProps {
   newsletters: Newsletter[];

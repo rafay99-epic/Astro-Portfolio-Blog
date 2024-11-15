@@ -1,27 +1,28 @@
 ---
-import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
-import Header from "../components/AstroCompoent/header/Header.astro";
-import SocialLinks from "../components/AstroCompoent/SocialMedia/SocialMedia.astro";
-import "../styles/home/home-page.css";
-export const prerender = true;
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import SocialLinks from "@astro/SocialMedia/SocialMedia.astro";
+import "@styles/home/home-page.css";
+import Footer from "@astro/footer/Footer.astro";
+import FeaturedPost from "@astro/home/FeaturePost/featurePost.astro";
+import LatestPost from "@astro/home/LatestPost/LatestPost.astro";
+import SkillsShowcase from "@react/JobSkills/jobSkills";
+import ContactFormHome from "@react/ConrtactForm/HomePageContact";
+import authorConfig from "@util/info";
+import ProfileImage from "@react/HeroSection/ProfileImage";
+import Greeting from "@react/HeroSection/Greeting";
+import ConnectButton from "@react/HeroSection/ConnectButton";
+import { featureFlags } from "@util/featureFlag";
+
 import SpeedInsights from "@vercel/speed-insights/astro";
-import Footer from "../components/AstroCompoent/footer/Footer.astro";
-import FeaturedPost from "../components/AstroCompoent/home/FeaturePost/featurePost.astro";
-import LatestPost from "../components/AstroCompoent/home/LatestPost/LatestPost.astro";
-import SkillsShowcase from "../components/ReaactCompoents/JobSkills/jobSkills";
-import ContactFormHome from "../components/ReaactCompoents/ConrtactForm/HomePageContact";
-import authorConfig from "../config/info";
-import ProfileImage from "../components/ReaactCompoents/HeroSection/ProfileImage";
-import Greeting from "../components/ReaactCompoents/HeroSection/Greeting";
-import ConnectButton from "../components/ReaactCompoents/HeroSection/ConnectButton";
-import { featureFlags } from "../config/featureFlag";
+
 const { name, jobTitle, position, picture } = authorConfig;
 try {
   if (!featureFlags.showIndex) {
     return Astro.redirect("/access-denied");
   }
 } catch (error) {
-  return Astro.redirect("/400");
+  return Astro.redirect("/404");
 }
 ---
 

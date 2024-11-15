@@ -1,5 +1,5 @@
 import React from "react";
-import { useNewsletter } from "./useNewletter";
+import { useNewsletter } from "@react/Newsletter/SubNewsletter/useNewletter";
 
 const Newsletter: React.FC = () => {
   const {

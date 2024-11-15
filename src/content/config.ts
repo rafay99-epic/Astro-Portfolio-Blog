@@ -13,6 +13,7 @@ const blog = defineCollection({
     authorName: z.string(),
     authorAvatar: z.string().optional(),
     tags: z.array(z.string()).default(["blog"]),
+    readTime: z.string().optional(),
   }),
 });
 // NewsLetter Collection

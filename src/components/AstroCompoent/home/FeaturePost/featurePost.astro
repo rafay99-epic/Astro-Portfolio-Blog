@@ -1,21 +1,59 @@
 ---
 import { getCollection } from "astro:content";
-import { popularBlogs } from "../../../../config/traffic";
+import { getTrendingPosts } from "@pages/api/umamiService";
+import { popularBlogs } from "@util/traffic";
+import { FeatureFlagsApi } from "@util/featureFlag";
+import type { PopularBlog, ApiTrendingPost, CombinedPost } from "@util/types";
 
 const allPosts = await getCollection("blog");
 const publishedPosts = allPosts.filter((post) => !post.data.draft);
 
-const popularPages = new Map(
+let apiTrendingPosts: ApiTrendingPost[] = [];
+
+if (FeatureFlagsApi.enableUmamiServiceAPI) {
+  try {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 30);
+    const endDate = new Date();
+
+    const response = await getTrendingPosts(
+      startDate.toISOString(),
+      endDate.toISOString()
+    );
+
+    if (Array.isArray(response)) {
+      apiTrendingPosts = response.map((entry: any) => ({
+        slug: entry.page.replace("/blog/", ""),
+        visitors: entry.pageviews,
+      }));
+    }
+  } catch (error) {
+    console.warn(
+      "Failed to fetch Umami trending posts, falling back to local dataset."
+    );
+  }
+} else {
+  console.info("Umami Service API is disabled. Using local dataset only.");
+}
+
+const popularPages = new Map<string, PopularBlog>(
   popularBlogs.map((entry) => [entry.Page.replace("/blog/", ""), entry])
 );
 
-const popularPosts = publishedPosts
-  .filter((post) => popularPages.has(post.slug))
-  .sort(
-    (a, b) =>
-      (popularPages.get(b.slug)?.Visitors ?? 0) -
-      (popularPages.get(a.slug)?.Visitors ?? 0)
-  )
+const combinedPopularPosts: CombinedPost[] = publishedPosts
+  .map((post) => {
+    const localData = popularPages.get(post.slug);
+    const apiData = apiTrendingPosts.find((item) => item.slug === post.slug);
+
+    const visitors = Math.max(localData?.Visitors ?? 0, apiData?.visitors ?? 0);
+
+    return {
+      post,
+      visitors,
+    };
+  })
+  .filter((item) => item.visitors > 0)
+  .sort((a, b) => b.visitors - a.visitors)
   .slice(0, 4);
 ---
 
@@ -29,7 +67,7 @@ const popularPosts = publishedPosts
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       {
-        popularPosts.map((post) => (
+        combinedPopularPosts.map(({ post }) => (
           <a href={`/blog/${post.slug}`} class="block">
             <article
               class="bg-[#1f2335] border border-[#7aa2f7] rounded-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-transform duration-300 flex flex-col h-full"

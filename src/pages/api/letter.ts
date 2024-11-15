@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import { featureFlags } from "../../config/featureFlag";
+import { featureFlags } from "../../util/featureFlag";
 
 export async function GET() {
   try {
