@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import type { Project } from "../../../types/ProjectTypes";
+import type { Project } from "types/ProjectTypes";
 
 interface UsePaginatedProjects {
   currentProjects: Project[];

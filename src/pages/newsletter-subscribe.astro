@@ -1,13 +1,12 @@
 ---
-import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
-import Header from "../components/AstroCompoent/header/Header.astro";
-export const prerender = true;
-import SpeedInsights from "@vercel/speed-insights/astro";
-import NewsletterReactCompoent from "../components/ReaactCompoents/Newsletter/SubNewsletter/newsletter";
-import Footer from "../components/AstroCompoent/footer/Footer.astro";
-import authorConfig from "../util/info";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import NewsletterReactCompoent from "@react/Newsletter/SubNewsletter/newsletter";
+import Footer from "@astro/footer/Footer.astro";
+import authorConfig from "@util/info";
+import { featureFlags } from "@util/featureFlag";
 
-import { featureFlags } from "../util/featureFlag";
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 try {
   if (!featureFlags.showNewsletter) {

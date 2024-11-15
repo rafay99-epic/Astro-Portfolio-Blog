@@ -1,6 +1,20 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
+    "moduleResolution": "bundler",
+    "baseUrl": "./src",
+    "paths": {
+      "@assets/*": ["assets/*"],
+      "@components/*": ["components/*"],
+      "@astro/*": ["components/AstroCompoent/*"],
+      "@react/*": ["components/ReaactCompoents/*"],
+      "@content/*": ["content/*"],
+      "@layouts/*": ["layouts/*"],
+      "@pages/*": ["pages/*"],
+      "@styles/*": ["styles/*"],
+      "@types/*": ["types/*"],
+      "@util/*": ["util/*"]
+    },
     "strictNullChecks": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",

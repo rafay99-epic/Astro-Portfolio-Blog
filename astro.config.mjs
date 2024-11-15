@@ -42,4 +42,21 @@ export default defineConfig({
     webAnalytics: { enabled: true },
     imageService: true,
   }),
+
+  vite: {
+    resolve: {
+      alias: {
+        "@assets": "/src/assets",
+        "@components": "/src/components",
+        "@astro": "/src/components/AstroCompoent",
+        "@react": "/src/components/ReaactCompoents",
+        "@content": "/src/content",
+        "@layouts": "/src/layouts",
+        "@pages": "/src/pages",
+        "@styles": "/src/styles",
+        "@types": "/src/types",
+        "@util": "/src/util",
+      },
+    },
+  },
 });

@@ -1,4 +1,4 @@
-import { useContactForm } from "./contactFormHook";
+import { useContactForm } from "@react/ConrtactForm/contactFormHook";
 import { useState, useEffect } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 

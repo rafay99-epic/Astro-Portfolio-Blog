@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Fuse from "fuse.js";
-import type { Post } from "../../../types/articles";
+import type { Post } from "types/articles";
 
 interface UseSearchResult {
   query: string;

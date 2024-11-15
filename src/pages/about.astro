@@ -1,12 +1,12 @@
 ---
-import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
-import Header from "../components/AstroCompoent/header/Header.astro";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
 
-import JobExperience from "../components/AstroCompoent/JobAndExperience/JobExperience.astro";
-import authorConfig from "../util/info";
-export const prerender = true;
-import Footer from "../components/AstroCompoent/footer/Footer.astro";
-import { featureFlags } from "../util/featureFlag";
+import JobExperience from "@astro/JobAndExperience/JobExperience.astro";
+import authorConfig from "@util/info";
+
+import Footer from "@astro/footer/Footer.astro";
+import { featureFlags } from "@util/featureFlag";
 
 try {
   if (!featureFlags.showAbout) {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useContactForm } from "../ConrtactForm/contactFormHook";
+import { useContactForm } from "@react/ConrtactForm/contactFormHook";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 const ContactForm: React.FC = () => {

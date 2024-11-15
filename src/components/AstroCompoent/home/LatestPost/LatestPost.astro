@@ -7,7 +7,7 @@ const posts = (await getCollection("blog"))
 
 const selectedPosts = posts.slice(0, 4);
 
-import { featureFlags } from "../../../../util/featureFlag";
+import { featureFlags } from "@util/featureFlag";
 if (!featureFlags.showBlog) {
   return Astro.redirect("/404");
 }

@@ -1,17 +1,17 @@
 ---
 import { getCollection } from "astro:content";
 
-import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
-import Header from "../components/AstroCompoent/header/Header.astro";
-import Footer from "../components/AstroCompoent/footer/Footer.astro";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import authorConfig from "../util/info";
-import TagFilter from "../components/ReaactCompoents/Tags/Tags";
+import authorConfig from "@util/info";
+import TagFilter from "@react/Tags/Tags";
+import { featureFlags } from "@util/featureFlag";
+
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
-
-import { featureFlags } from "../util/featureFlag";
 
 try {
   if (!featureFlags.showTags) {

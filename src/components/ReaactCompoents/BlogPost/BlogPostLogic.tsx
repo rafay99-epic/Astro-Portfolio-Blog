@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Post } from "../../../types/articles";
+import type { Post } from "types/articles";
 
 interface BlogSectionLogicProps {
   posts: Post[];

@@ -1,6 +1,6 @@
 ---
-import { getTrendingPosts } from "./api/umamiService";
-import { featureFlags } from "../util/featureFlag";
+import { getTrendingPosts } from "@pages/api/umamiService";
+import { featureFlags } from "@util/featureFlag";
 
 try {
   if (!featureFlags.showTrendingPosts) {

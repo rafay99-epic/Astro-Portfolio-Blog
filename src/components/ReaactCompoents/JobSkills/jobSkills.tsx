@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "devicon/devicon.min.css";
 import { motion } from "framer-motion";
-import authorConfig from "../../../util/info";
+import authorConfig from "@util/info";
 
 const techStack = authorConfig.techStack;
 

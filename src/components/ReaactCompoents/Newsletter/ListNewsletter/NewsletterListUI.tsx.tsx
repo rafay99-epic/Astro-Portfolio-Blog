@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { Newsletter } from "../../../../types/newsletter_types.ts";
+import type { Newsletter } from "types/newsletter_types.ts";
 
 interface NewsletterListUIProps {
   currentNewsletters: Newsletter[];
