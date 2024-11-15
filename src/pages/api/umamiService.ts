@@ -1,6 +1,9 @@
 import axios from "axios";
 import { FeatureFlagsApi } from "../../util/featureFlag";
-
+import type {
+  PageView,
+  TrendingPostResponse,
+} from "../../types/api/umamiInterfaces";
 // Constants
 const UMAMI_API_URL = "https://api.umami.is/api";
 const UMAMI_API_KEY = process.env.UMAMI_API_KEY;
@@ -13,30 +16,12 @@ const MAX_REQUESTS = 5;
 let requestCount = 0;
 let lastRequestTime = Date.now();
 
-// Interfaces
-interface PageView {
-  page: string;
-  pageviews: number;
-}
-
-interface TrendingPostResponse {
-  message?: string;
-  posts?: PageView[];
-}
-
-/**
- * Validate date format.
- * @param date - Date string to validate.
- * @returns {boolean} - True if the date is valid, false otherwise.
- */
+// Check for valid Date
 function isValidDate(date: string): boolean {
   return !isNaN(Date.parse(date));
 }
 
-/**
- * Check if the Umami API feature is enabled and environment variables are set.
- * @returns {boolean} - True if configuration is valid, false otherwise.
- */
+// API config
 function isUmamiAPIConfigured(): boolean {
   if (!FeatureFlagsApi.enableUmamiServiceAPI) {
     console.warn("Trending posts feature is disabled via config.");
@@ -53,10 +38,7 @@ function isUmamiAPIConfigured(): boolean {
   return true;
 }
 
-/**
- * Check if the rate limit has been exceeded.
- * @returns {boolean} - True if rate limit is exceeded, false otherwise.
- */
+// rate limit
 function isRateLimited(): boolean {
   const currentTime = Date.now();
 
@@ -69,12 +51,7 @@ function isRateLimited(): boolean {
   return requestCount >= MAX_REQUESTS;
 }
 
-/**
- * Fetch page views data from Umami API.
- * @param startDate - Start date for the data.
- * @param endDate - End date for the data.
- * @returns {Promise<PageView[]>} - Array of page views data.
- */
+// featching data
 async function fetchPageViews(
   startDate: string,
   endDate: string
@@ -98,12 +75,7 @@ async function fetchPageViews(
   return response.data;
 }
 
-/**
- * Get the top trending posts based on page views.
- * @param data - Array of page views data.
- * @param limit - Number of top posts to return.
- * @returns {PageView[]} - Array of top trending posts.
- */
+//getting the trending page
 function getTopTrendingPosts(data: PageView[], limit = 5): PageView[] {
   return data.sort((a, b) => b.pageviews - a.pageviews).slice(0, limit);
 }
@@ -145,10 +117,7 @@ export async function getTrendingPosts(
   }
 }
 
-/**
- * Handle errors from the Umami API request.
- * @param error - The error object.
- */
+// Error Handeling
 function handleAPIError(error: unknown): void {
   if (axios.isAxiosError(error)) {
     console.error("Error fetching page views from Umami:", error.message);

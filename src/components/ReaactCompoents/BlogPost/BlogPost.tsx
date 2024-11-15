@@ -1,6 +1,6 @@
 import BlogSectionLogic from "./BlogPostLogic";
 import BlogSectionUI from "./BlogPostUI";
-import type { Post } from "../scheme/types";
+import type { Post } from "../../../types/articles";
 import { AnimatePresence } from "framer-motion";
 
 interface BlogSectionProps {

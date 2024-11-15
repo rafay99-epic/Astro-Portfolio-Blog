@@ -1,6 +1,6 @@
 import React from "react";
 import useSearch from "./SearchLogic";
-import type { Post } from "../scheme/types";
+import type { Post } from "../../../types/articles";
 
 interface SearchProps {
   posts: Post[];

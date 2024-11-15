@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { usePaginatedProjects } from "./usePaginatedProjects";
-import type { Project } from "../scheme/ProjectTypes";
+import type { Project } from "../../../types/ProjectTypes";
 
 interface ProjectListProps {
   projects: Project[];

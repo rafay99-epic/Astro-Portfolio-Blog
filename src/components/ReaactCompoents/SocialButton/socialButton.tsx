@@ -1,6 +1,6 @@
 import React from "react";
 import { siX, siFacebook, siLinkedin, siWhatsapp } from "simple-icons/icons";
-import { generateShareUrls } from "../scheme/shareUtils";
+import { generateShareUrls } from "../../../types/shareUtils";
 
 interface ShareButtonsProps {
   url: string;

@@ -1,6 +1,6 @@
 import NewsletterListLogic from "./NewsletterListLogic";
 import NewsletterListUI from "./NewsletterListUI.tsx";
-import type { Newsletter } from "../../scheme/newsletter_types.ts";
+import type { Newsletter } from "../../../../types/newsletter_types.ts";
 
 interface NewsletterListProps {
   newsletters: Newsletter[];
