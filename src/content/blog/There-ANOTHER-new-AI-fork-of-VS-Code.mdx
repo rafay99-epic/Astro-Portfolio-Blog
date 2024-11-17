@@ -38,3 +38,13 @@ In other words, it’s like a smart text box that manages multiple files and per
 ### The Bad
 
 Now, these features are cool and all, but here’s where things get a bit messy...
+
+For this review, I cloned my Astro project from GitHub to see how it works in this new AI code editor. I opened the codebase in Windsurf and decided to test out the Cascade feature by asking it to guide me on how to run the project. You can check out the video below to see how it all played out:
+
+**\[Video link will be here]**
+
+In the video, you can see me prompting Cascade to tell me how to run the project. It started off by suggesting `npm`. Now here’s the thing: I use **nvm (Node Version Manager)** for my Node setup, which is a shell-based install, not a system-wide one. On the other hand, **Bun** is installed system-wide.
+
+The AI first tried to use the system's Node.js, and unsurprisingly, it failed. There were a ton of warnings, and in the end, it just didn’t work. Next, it attempted to use Bun. It did work, but here’s the problem: it was **so slow**. It took more than 10 minutes to get this going.
+
+And this is where I see a big issue. The AI can do some cool stuff, but it relies heavily on having the right environment set up on your system. Plus, the speed is a major letdown. Please, Codeium, I love your products—can you make it faster? Please!
