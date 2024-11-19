@@ -1,13 +1,11 @@
 ---
-// Import feature flags and necessary modules
-import { featureFlags } from "../../util/featureFlag"; // Update with the correct path
+import { featureFlags } from "@util/featureFlag";
 import { type CollectionEntry, getCollection } from "astro:content";
-import Newsletter from "../../layouts/Newsletter.astro";
+import Newsletter from "@layouts/Newsletter.astro";
 
-// Only execute getStaticPaths if showNewsletter is true
 export async function getStaticPaths() {
   if (!featureFlags.showNewsletter) {
-    return []; // Return empty paths if newsletter is disabled
+    return [];
   }
 
   const newsletters = await getCollection("newsletter");

@@ -1,9 +1,9 @@
 ---
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
 import SocialLinks from "@astro/SocialMedia/SocialMedia.astro";
 import "@styles/home/home-page.css";
-import Footer from "@astro/footer/Footer.astro";
 import FeaturedPost from "@astro/home/FeaturePost/featurePost.astro";
 import LatestPost from "@astro/home/LatestPost/LatestPost.astro";
 import SkillsShowcase from "@react/JobSkills/jobSkills";
@@ -13,7 +13,6 @@ import ProfileImage from "@react/HeroSection/ProfileImage";
 import Greeting from "@react/HeroSection/Greeting";
 import ConnectButton from "@react/HeroSection/ConnectButton";
 import { featureFlags } from "@util/featureFlag";
-
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 const { name, jobTitle, position, picture } = authorConfig;
