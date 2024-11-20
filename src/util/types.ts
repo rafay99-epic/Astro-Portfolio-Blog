@@ -14,9 +14,3 @@ export interface CombinedPost {
   post: any;
   visitors: number;
 }
-
-export type PageAnalytics = {
-  Page: string;
-  Visitors: number;
-  Total: number;
-};
