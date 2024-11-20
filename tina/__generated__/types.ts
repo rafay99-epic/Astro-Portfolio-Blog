@@ -87,6 +87,8 @@ export type Query = {
   newsletterConnection: NewsletterConnection;
   projects: Projects;
   projectsConnection: ProjectsConnection;
+  siteConfig: SiteConfig;
+  siteConfigConnection: SiteConfigConnection;
 };
 
 
@@ -155,10 +157,26 @@ export type QueryProjectsConnectionArgs = {
   filter?: InputMaybe<ProjectsFilter>;
 };
 
+
+export type QuerySiteConfigArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QuerySiteConfigConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<SiteConfigFilter>;
+};
+
 export type DocumentFilter = {
   post?: InputMaybe<PostFilter>;
   newsletter?: InputMaybe<NewsletterFilter>;
   projects?: InputMaybe<ProjectsFilter>;
+  siteConfig?: InputMaybe<SiteConfigFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -198,7 +216,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Post | Newsletter | Projects | Folder;
+export type DocumentNode = Post | Newsletter | Projects | SiteConfig | Folder;
 
 export type Post = Node & Document & {
   __typename?: 'Post';
@@ -344,6 +362,111 @@ export type ProjectsConnection = Connection & {
   edges?: Maybe<Array<Maybe<ProjectsConnectionEdges>>>;
 };
 
+export type SiteConfigSocialLinks = {
+  __typename?: 'SiteConfigSocialLinks';
+  twitter?: Maybe<Scalars['String']['output']>;
+  linkedin?: Maybe<Scalars['String']['output']>;
+  github?: Maybe<Scalars['String']['output']>;
+  upwork?: Maybe<Scalars['String']['output']>;
+  youtube?: Maybe<Scalars['String']['output']>;
+  whatsNumber?: Maybe<Scalars['String']['output']>;
+};
+
+export type SiteConfigAbout = {
+  __typename?: 'SiteConfigAbout';
+  whoAmI?: Maybe<Scalars['String']['output']>;
+  lifeBeyondCode?: Maybe<Scalars['String']['output']>;
+  continuousLearning?: Maybe<Scalars['String']['output']>;
+};
+
+export type SiteConfigTechStack = {
+  __typename?: 'SiteConfigTechStack';
+  category?: Maybe<Scalars['String']['output']>;
+  tools?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+export type SiteConfigWorkExperience = {
+  __typename?: 'SiteConfigWorkExperience';
+  companyName?: Maybe<Scalars['String']['output']>;
+  position?: Maybe<Scalars['String']['output']>;
+  employmentTime?: Maybe<Scalars['String']['output']>;
+  roles?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  toolsUsed?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+export type SiteConfig = Node & Document & {
+  __typename?: 'SiteConfig';
+  SiteName: Scalars['String']['output'];
+  SiteDescription: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  jobTitle: Scalars['String']['output'];
+  position: Scalars['String']['output'];
+  picture?: Maybe<Scalars['String']['output']>;
+  avator?: Maybe<Scalars['String']['output']>;
+  socialLinks?: Maybe<SiteConfigSocialLinks>;
+  about?: Maybe<SiteConfigAbout>;
+  techStack?: Maybe<Array<Maybe<SiteConfigTechStack>>>;
+  workExperience?: Maybe<Array<Maybe<SiteConfigWorkExperience>>>;
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
+export type SiteConfigSocialLinksFilter = {
+  twitter?: InputMaybe<StringFilter>;
+  linkedin?: InputMaybe<StringFilter>;
+  github?: InputMaybe<StringFilter>;
+  upwork?: InputMaybe<StringFilter>;
+  youtube?: InputMaybe<StringFilter>;
+  whatsNumber?: InputMaybe<StringFilter>;
+};
+
+export type SiteConfigAboutFilter = {
+  whoAmI?: InputMaybe<StringFilter>;
+  lifeBeyondCode?: InputMaybe<StringFilter>;
+  continuousLearning?: InputMaybe<StringFilter>;
+};
+
+export type SiteConfigTechStackFilter = {
+  category?: InputMaybe<StringFilter>;
+  tools?: InputMaybe<StringFilter>;
+};
+
+export type SiteConfigWorkExperienceFilter = {
+  companyName?: InputMaybe<StringFilter>;
+  position?: InputMaybe<StringFilter>;
+  employmentTime?: InputMaybe<StringFilter>;
+  roles?: InputMaybe<StringFilter>;
+  toolsUsed?: InputMaybe<StringFilter>;
+};
+
+export type SiteConfigFilter = {
+  SiteName?: InputMaybe<StringFilter>;
+  SiteDescription?: InputMaybe<StringFilter>;
+  name?: InputMaybe<StringFilter>;
+  jobTitle?: InputMaybe<StringFilter>;
+  position?: InputMaybe<StringFilter>;
+  picture?: InputMaybe<ImageFilter>;
+  avator?: InputMaybe<ImageFilter>;
+  socialLinks?: InputMaybe<SiteConfigSocialLinksFilter>;
+  about?: InputMaybe<SiteConfigAboutFilter>;
+  techStack?: InputMaybe<SiteConfigTechStackFilter>;
+  workExperience?: InputMaybe<SiteConfigWorkExperienceFilter>;
+};
+
+export type SiteConfigConnectionEdges = {
+  __typename?: 'SiteConfigConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<SiteConfig>;
+};
+
+export type SiteConfigConnection = Connection & {
+  __typename?: 'SiteConfigConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<SiteConfigConnectionEdges>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -356,6 +479,8 @@ export type Mutation = {
   createNewsletter: Newsletter;
   updateProjects: Projects;
   createProjects: Projects;
+  updateSiteConfig: SiteConfig;
+  createSiteConfig: SiteConfig;
 };
 
 
@@ -421,10 +546,23 @@ export type MutationCreateProjectsArgs = {
   params: ProjectsMutation;
 };
 
+
+export type MutationUpdateSiteConfigArgs = {
+  relativePath: Scalars['String']['input'];
+  params: SiteConfigMutation;
+};
+
+
+export type MutationCreateSiteConfigArgs = {
+  relativePath: Scalars['String']['input'];
+  params: SiteConfigMutation;
+};
+
 export type DocumentUpdateMutation = {
   post?: InputMaybe<PostMutation>;
   newsletter?: InputMaybe<NewsletterMutation>;
   projects?: InputMaybe<ProjectsMutation>;
+  siteConfig?: InputMaybe<SiteConfigMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -432,6 +570,7 @@ export type DocumentMutation = {
   post?: InputMaybe<PostMutation>;
   newsletter?: InputMaybe<NewsletterMutation>;
   projects?: InputMaybe<ProjectsMutation>;
+  siteConfig?: InputMaybe<SiteConfigMutation>;
 };
 
 export type PostMutation = {
@@ -464,11 +603,55 @@ export type ProjectsMutation = {
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
+export type SiteConfigSocialLinksMutation = {
+  twitter?: InputMaybe<Scalars['String']['input']>;
+  linkedin?: InputMaybe<Scalars['String']['input']>;
+  github?: InputMaybe<Scalars['String']['input']>;
+  upwork?: InputMaybe<Scalars['String']['input']>;
+  youtube?: InputMaybe<Scalars['String']['input']>;
+  whatsNumber?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SiteConfigAboutMutation = {
+  whoAmI?: InputMaybe<Scalars['String']['input']>;
+  lifeBeyondCode?: InputMaybe<Scalars['String']['input']>;
+  continuousLearning?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SiteConfigTechStackMutation = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  tools?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type SiteConfigWorkExperienceMutation = {
+  companyName?: InputMaybe<Scalars['String']['input']>;
+  position?: InputMaybe<Scalars['String']['input']>;
+  employmentTime?: InputMaybe<Scalars['String']['input']>;
+  roles?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  toolsUsed?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type SiteConfigMutation = {
+  SiteName?: InputMaybe<Scalars['String']['input']>;
+  SiteDescription?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  jobTitle?: InputMaybe<Scalars['String']['input']>;
+  position?: InputMaybe<Scalars['String']['input']>;
+  picture?: InputMaybe<Scalars['String']['input']>;
+  avator?: InputMaybe<Scalars['String']['input']>;
+  socialLinks?: InputMaybe<SiteConfigSocialLinksMutation>;
+  about?: InputMaybe<SiteConfigAboutMutation>;
+  techStack?: InputMaybe<Array<InputMaybe<SiteConfigTechStackMutation>>>;
+  workExperience?: InputMaybe<Array<InputMaybe<SiteConfigWorkExperienceMutation>>>;
+};
+
 export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null };
 
 export type NewsletterPartsFragment = { __typename?: 'Newsletter', title: string, summary: string, pubDate: string, draft: boolean, body?: any | null };
 
 export type ProjectsPartsFragment = { __typename?: 'Projects', Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null };
+
+export type SiteConfigPartsFragment = { __typename?: 'SiteConfig', SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -527,6 +710,25 @@ export type ProjectsConnectionQueryVariables = Exact<{
 
 export type ProjectsConnectionQuery = { __typename?: 'Query', projectsConnection: { __typename?: 'ProjectsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ProjectsConnectionEdges', cursor: string, node?: { __typename?: 'Projects', id: string, Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
+export type SiteConfigQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type SiteConfigQuery = { __typename?: 'Query', siteConfig: { __typename?: 'SiteConfig', id: string, SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null } };
+
+export type SiteConfigConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<SiteConfigFilter>;
+}>;
+
+
+export type SiteConfigConnectionQuery = { __typename?: 'Query', siteConfigConnection: { __typename?: 'SiteConfigConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SiteConfigConnectionEdges', cursor: string, node?: { __typename?: 'SiteConfig', id: string, SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null } | null } | null> | null } };
+
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
   title
@@ -558,6 +760,45 @@ export const ProjectsPartsFragmentDoc = gql`
   ProjectTech
   ProjectCategory
   body
+}
+    `;
+export const SiteConfigPartsFragmentDoc = gql`
+    fragment SiteConfigParts on SiteConfig {
+  SiteName
+  SiteDescription
+  name
+  jobTitle
+  position
+  picture
+  avator
+  socialLinks {
+    __typename
+    twitter
+    linkedin
+    github
+    upwork
+    youtube
+    whatsNumber
+  }
+  about {
+    __typename
+    whoAmI
+    lifeBeyondCode
+    continuousLearning
+  }
+  techStack {
+    __typename
+    category
+    tools
+  }
+  workExperience {
+    __typename
+    companyName
+    position
+    employmentTime
+    roles
+    toolsUsed
+  }
 }
     `;
 export const PostDocument = gql`
@@ -725,6 +966,61 @@ export const ProjectsConnectionDocument = gql`
   }
 }
     ${ProjectsPartsFragmentDoc}`;
+export const SiteConfigDocument = gql`
+    query siteConfig($relativePath: String!) {
+  siteConfig(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...SiteConfigParts
+  }
+}
+    ${SiteConfigPartsFragmentDoc}`;
+export const SiteConfigConnectionDocument = gql`
+    query siteConfigConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: SiteConfigFilter) {
+  siteConfigConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...SiteConfigParts
+      }
+    }
+  }
+}
+    ${SiteConfigPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -745,6 +1041,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     projectsConnection(variables?: ProjectsConnectionQueryVariables, options?: C): Promise<{data: ProjectsConnectionQuery, variables: ProjectsConnectionQueryVariables, query: string}> {
         return requester<{data: ProjectsConnectionQuery, variables: ProjectsConnectionQueryVariables, query: string}, ProjectsConnectionQueryVariables>(ProjectsConnectionDocument, variables, options);
+      },
+    siteConfig(variables: SiteConfigQueryVariables, options?: C): Promise<{data: SiteConfigQuery, variables: SiteConfigQueryVariables, query: string}> {
+        return requester<{data: SiteConfigQuery, variables: SiteConfigQueryVariables, query: string}, SiteConfigQueryVariables>(SiteConfigDocument, variables, options);
+      },
+    siteConfigConnection(variables?: SiteConfigConnectionQueryVariables, options?: C): Promise<{data: SiteConfigConnectionQuery, variables: SiteConfigConnectionQueryVariables, query: string}> {
+        return requester<{data: SiteConfigConnectionQuery, variables: SiteConfigConnectionQueryVariables, query: string}, SiteConfigConnectionQueryVariables>(SiteConfigConnectionDocument, variables, options);
       }
     };
   }

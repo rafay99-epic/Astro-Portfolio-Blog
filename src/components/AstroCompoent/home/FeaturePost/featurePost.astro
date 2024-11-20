@@ -65,34 +65,46 @@ const combinedPopularPosts: CombinedPost[] = publishedPosts
       look!
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      {
-        combinedPopularPosts.map(({ post }) => (
-          <a href={`/blog/${post.slug}`} class="block">
-            <article
-              class="bg-[#1f2335] border border-[#7aa2f7] rounded-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-transform duration-300 flex flex-col h-full"
-              style="box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33);"
-            >
-              <img
-                src={post.data.heroImage}
-                alt={post.data.title}
-                class="w-full h-48 object-cover"
-              />
-              <div class="p-6 flex-1">
-                <h2 class="text-2xl font-bold mb-2 text-[#7aa2f7]">
-                  {post.data.title}
-                </h2>
-                <p class="text-[#F8F8F8] opacity-75 mb-4">
-                  {post.data.pubDate.toLocaleDateString()}
-                </p>
-                <p class="text-[#F8F8F8]">
-                  {post.data.description || "No description available"}
-                </p>
-              </div>
-            </article>
-          </a>
-        ))
-      }
-    </div>
+    {
+      combinedPopularPosts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {combinedPopularPosts.map(({ post }) => (
+            <a href={`/blog/${post.slug}`} class="block">
+              <article
+                class="bg-[#1f2335] border border-[#7aa2f7] rounded-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-transform duration-300 flex flex-col h-full"
+                style="box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33);"
+              >
+                <img
+                  src={post.data.heroImage}
+                  alt={post.data.title}
+                  class="w-full h-48 object-cover"
+                />
+                <div class="p-6 flex-1">
+                  <h2 class="text-2xl font-bold mb-2 text-[#7aa2f7]">
+                    {post.data.title}
+                  </h2>
+                  <p class="text-[#F8F8F8] opacity-75 mb-4">
+                    {post.data.pubDate.toLocaleDateString()}
+                  </p>
+                  <p class="text-[#F8F8F8]">
+                    {post.data.description || "No description available"}
+                  </p>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <p class="text-2xl font-bold text-[#7aa2f7] mb-4">
+            Sorry, No Featured Blog Posts
+          </p>
+          <p class="text-lg text-[#F8F8F8] opacity-75">
+            It seems we don’t have any featured blog posts right now. Check back
+            later!
+          </p>
+        </div>
+      )
+    }
   </div>
 </div>

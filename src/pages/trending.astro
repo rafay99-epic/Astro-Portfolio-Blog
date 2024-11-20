@@ -1,40 +1,132 @@
 ---
+import { getCollection } from "astro:content";
 import { getTrendingPosts } from "@pages/api/umamiService";
-import { featureFlags } from "@util/featureFlag";
+import { popularBlogs } from "@util/traffic";
+import { FeatureFlagsApi } from "@util/featureFlag";
+import type { PopularBlog, ApiTrendingPost, CombinedPost } from "@util/types";
+import Footer from "@components/AstroCompoent/footer/Footer.astro";
+import BaseHead from "@components/AstroCompoent/base/BaseHead.astro";
+import Header from "@components/AstroCompoent/header/Header.astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import authorConfig from "@util/info.json";
 
-try {
-  if (!featureFlags.showTrendingPosts) {
-    return Astro.redirect("/access-denied");
+const allPosts = await getCollection("blog");
+const publishedPosts = allPosts.filter((post) => !post.data.draft);
+
+let apiTrendingPosts: ApiTrendingPost[] = [];
+
+if (FeatureFlagsApi.enableUmamiServiceAPI) {
+  try {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 30);
+    const endDate = new Date();
+
+    const response = await getTrendingPosts(
+      startDate.toISOString(),
+      endDate.toISOString()
+    );
+
+    if (Array.isArray(response)) {
+      apiTrendingPosts = response.map((entry: any) => ({
+        slug: entry.page.replace("/blog/", ""),
+        visitors: entry.pageviews,
+      }));
+    }
+  } catch (error) {
+    console.warn(
+      "Failed to fetch Umami trending posts, falling back to local dataset."
+    );
   }
-} catch (error) {
-  return Astro.redirect("/400");
+} else {
+  console.info("Umami Service API is disabled. Using local dataset only.");
 }
 
-const startDate = new Date();
-startDate.setDate(startDate.getDate() - 30);
-const endDate = new Date();
-
-const trendingPosts = await getTrendingPosts(
-  startDate.toISOString().split("T")[0],
-  endDate.toISOString().split("T")[0]
+const popularPages = new Map<string, PopularBlog>(
+  popularBlogs.map((entry) => [entry.Page.replace("/blog/", ""), entry])
 );
+
+const combinedPopularPosts: CombinedPost[] = publishedPosts
+  .map((post) => {
+    const localData = popularPages.get(post.slug);
+    const apiData = apiTrendingPosts.find((item) => item.slug === post.slug);
+
+    const visitors = Math.max(localData?.Visitors ?? 0, apiData?.visitors ?? 0);
+
+    return {
+      post,
+      visitors,
+    };
+  })
+  .filter((item) => item.visitors > 0)
+  .sort((a, b) => b.visitors - a.visitors);
 ---
 
-<section>
-  <h2>Trending Posts</h2>
-  {
-    Array.isArray(trendingPosts) && trendingPosts.length > 0 ? (
-      <ul>
-        {trendingPosts.map((post) => (
-          <li>
-            <a href={post.url}>
-              {post.url} - {post.pageviews} views
-            </a>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p>{trendingPosts.message || "No trending posts available."}</p>
-    )
-  }
-</section>
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
+    />
+  </head>
+  <body>
+    <Header />
+    <SpeedInsights />
+    <section>
+      <div class="bg-[#1f2335] text-[#F8F8F8] py-8">
+        <div class="container mx-auto px-4 md:px-6">
+          <h1 class="text-center text-6xl font-bold mb-6">Trending Content</h1>
+          <p class="text-center text-lg font-bold mb-6">
+            A collection of my best and most popular articles. Make sure to take
+            a look!
+          </p>
+
+          {
+            combinedPopularPosts.length > 0 ? (
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                {combinedPopularPosts.map(({ post }) => (
+                  <a href={`/blog/${post.slug}`} class="block">
+                    <article
+                      class="bg-[#1f2335] border border-[#7aa2f7] rounded-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-transform duration-300 flex flex-col h-full"
+                      style="box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33);"
+                    >
+                      <img
+                        src={post.data.heroImage}
+                        alt={post.data.title}
+                        class="w-full h-48 object-cover"
+                      />
+                      <div class="p-6 flex-1">
+                        <h2 class="text-2xl font-bold mb-2 text-[#7aa2f7]">
+                          {post.data.title}
+                        </h2>
+                        <p class="text-[#F8F8F8] opacity-75 mb-4">
+                          {post.data.pubDate.toLocaleDateString()}
+                        </p>
+                        <p class="text-[#F8F8F8]">
+                          {post.data.description || "No description available"}
+                        </p>
+                      </div>
+                    </article>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <div class="text-center py-16">
+                <p class="text-2xl font-bold text-[#7aa2f7] mb-4">
+                  Sorry, No Trending Blog Posts
+                </p>
+                <p class="text-lg text-[#F8F8F8] opacity-75">
+                  It seems we don’t have any trending blog posts right now.
+                  Check back later!
+                </p>
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </section>
+    <main>
+      <Footer class="mt-auto" />
+    </main>
+  </body>
+</html>

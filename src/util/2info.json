@@ -1,0 +1,153 @@
+{
+    "SiteName": "Abdul Rafay",
+    "SiteDescription": "Welcome to my universe, Software Engineer and Open Source enthusiast",
+    "name": "Abdul Rafay",
+    "jobTitle": "Software Engineer",
+    "position": "Full Stack & Flutter Developer",
+    "picture": "/author.jpg",
+    "avator": "/favicon.png",
+    "socialLinks": {
+        "twitter": "https://twitter.com/future_insight9",
+        "linkedin": "https://linkedin.com/in/yourlinkedin",
+        "github": "https://github.com/rafay99-epic",
+        "upwork": "https://www.upwork.com/freelancers/~018c78c37a53bf3cac",
+        "youtube": "https://www.youtube.com/@BinaryBridgeHQ",
+        "whatsNumber": "+923035650798"
+    },
+    "webformKey": "",
+    "hcaptchaSiteKey": "",
+    "about": {
+        "whoAmI": "I'm a Full Stack Flutter Developer with a year's experience, transitioning from Machine Learning to crafting intuitive web experiences. Currently freelancing on platforms like Upwork, I deliver solutions that exceed client expectations.",
+        "lifeBeyondCode": "Beyond code, I find joy in life's simple pleasures – sipping coffee, engaging in video game battles, and embracing the challenge of new experiences. This holistic approach recharges my creativity and enriches my problem-solving perspective.",
+        "continuousLearning": "In my free time, I'm passionate about continuous learning. Thriving on the tech industry's dynamic challenges, I expand my skill set, always seeking growth. Let's collaborate and create something extraordinary!"
+    },
+    "techStack": {
+        "App Development": [
+            "flutter",
+            "android",
+            "xamarin",
+            "androidstudio",
+            "xcode",
+            "vscode",
+            "intellij"
+        ],
+        "Frontend Development": [
+            "astro",
+            "tailwindcss",
+            "nodejs",
+            "react",
+            "hugo",
+            "typescript",
+            "handlebars",
+            "javascript"
+        ],
+        "Backend Development": [
+            "firebase",
+            "docker",
+            "mongodb",
+            "mysql",
+            "amazonwebservices",
+            "googlecloud",
+            "fastapi",
+            "graphql",
+            "sqlite",
+            "realm"
+        ],
+        "Cloud Computing": [
+            "vercel",
+            "amazonwebservices",
+            "linux",
+            "netlify",
+            "digitalocean"
+        ],
+        "Essential": [
+            "git",
+            "github",
+            "gitlab",
+            "bitbucket",
+            "sketch"
+        ],
+        "Scripting": [
+            "powershell",
+            "bash",
+            "lua",
+            "python"
+        ]
+    },
+    "workExperience": [
+        {
+            "companyName": "Daxno Technology",
+            "position": "Flutter Developer & Team Lead",
+            "employmentTime": "2nd Feb, 2024 - Present",
+            "roles": [
+                "Building Stunning looking Android Applications",
+                "Testing Multiple Applications",
+                "Making sure the production does not go down"
+            ],
+            "toolsUsed": [
+                "Flutter",
+                "VS Code",
+                "Git",
+                "Android Studio",
+                "Firebase",
+                "Superbase"
+            ]
+        },
+        {
+            "companyName": "Swam Technology",
+            "position": "Machine Learning Engineer",
+            "employmentTime": "Sep, 2022 - Dec, 2023",
+            "roles": [
+                "Expert in software design and machine learning model development",
+                "Specialized in text analysis for abusive language detection",
+                "Proven ability to apply machine learning to real-world problems",
+                "Versatile skill set that bridges software engineering and advanced analytics."
+            ],
+            "toolsUsed": [
+                "Python",
+                "Flusk",
+                "SQL Lite",
+                "MongoDB",
+                "Git",
+                "TensorFlow"
+            ]
+        },
+        {
+            "companyName": "Swam Technology",
+            "position": "Full Stack Web Developer",
+            "employmentTime": "Sep, 2022 - Dec, 2023",
+            "roles": [
+                "Incorporated design principles to enhance navigation and readability.",
+                "Implemented user-friendly CMS for law firm.",
+                "Empowered non-technical users to manage website content seamlessly.",
+                "Ensured intuitive design for easy content updates."
+            ],
+            "toolsUsed": [
+                "HTML5",
+                "JavaScript",
+                "React",
+                "NodeJs",
+                "MongoDB",
+                "Firebase"
+            ]
+        },
+        {
+            "companyName": "Innovation Tech",
+            "position": "Intern",
+            "employmentTime": "2021",
+            "roles": [
+                "Code review and testing responsibilities.",
+                "Design of multiple user interfaces.",
+                "Acquisition of significant knowledge through project involvement.",
+                "Extensive test writing for various applications."
+            ],
+            "toolsUsed": [
+                "Java",
+                "XML",
+                "Figma",
+                "Firebase",
+                "SQL Lite"
+            ]
+        }
+    ]
+}

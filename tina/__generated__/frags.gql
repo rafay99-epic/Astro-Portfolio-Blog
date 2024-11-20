@@ -27,3 +27,41 @@ fragment ProjectsParts on Projects {
   ProjectCategory
   body
 }
+
+fragment SiteConfigParts on SiteConfig {
+  SiteName
+  SiteDescription
+  name
+  jobTitle
+  position
+  picture
+  avator
+  socialLinks {
+    __typename
+    twitter
+    linkedin
+    github
+    upwork
+    youtube
+    whatsNumber
+  }
+  about {
+    __typename
+    whoAmI
+    lifeBeyondCode
+    continuousLearning
+  }
+  techStack {
+    __typename
+    category
+    tools
+  }
+  workExperience {
+    __typename
+    companyName
+    position
+    employmentTime
+    roles
+    toolsUsed
+  }
+}

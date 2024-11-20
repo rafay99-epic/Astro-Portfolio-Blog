@@ -1,6 +1,7 @@
 ---
 const today = new Date();
 import SocialLinks from "@astro/SocialMedia/SocialMedia.astro";
+import { featureFlags } from "@util/featureFlag";
 ---
 
 <footer class="text-white py-8">
@@ -14,20 +15,53 @@ import SocialLinks from "@astro/SocialMedia/SocialMedia.astro";
 
     <!-- Navigation Links Section -->
     <nav class="flex flex-wrap justify-center gap-4 text-sm">
-      <a
-        href="/privacy-policy"
-        class="text-accent hover:text-gray-300 transition">Privacy Policy</a
-      >
-      <a
-        href="/terms-and-conditions"
-        class="text-accent hover:text-gray-300 transition">Terms & Conditions</a
-      >
-      <a href="/about" class="text-accent hover:text-gray-300 transition"
-        >About Us</a
-      >
-      <a href="/contact-me" class="text-accent hover:text-gray-300 transition"
-        >Contact</a
-      >
+      {
+        featureFlags.showPrivacyPolicy && (
+          <a
+            href="/privacy-policy"
+            class="text-accent hover:text-gray-300 transition"
+          >
+            Privacy Policy
+          </a>
+        )
+      }
+      {
+        featureFlags.showTermsandConditions && (
+          <a
+            href="/terms-and-conditions"
+            class="text-accent hover:text-gray-300 transition"
+          >
+            Terms & Conditions
+          </a>
+        )
+      }
+      {
+        featureFlags.showTrendingPosts && (
+          <a
+            href="/trending"
+            class="text-accent hover:text-gray-300 transition"
+          >
+            Trending Posts
+          </a>
+        )
+      }
+      {
+        featureFlags.showAbout && (
+          <a href="/about" class="text-accent hover:text-gray-300 transition">
+            About Us
+          </a>
+        )
+      }
+      {
+        featureFlags.showContact && (
+          <a
+            href="/contact-me"
+            class="text-accent hover:text-gray-300 transition"
+          >
+            Contact
+          </a>
+        )
+      }
     </nav>
 
     <!-- Branding Section -->

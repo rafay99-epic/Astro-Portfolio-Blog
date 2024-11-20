@@ -16,7 +16,9 @@ export const featureFlags = {
   showPrivacy: true,
   showTermsOfService: true,
   showSubNewsletter: true,
-  showTrendingPosts: false,
+  showTrendingPosts: true,
+  showTermsandConditions: true,
+  showPrivacyPolicy: true,
 };
 
 // Feature Flag for API calls
