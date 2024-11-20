@@ -84,6 +84,7 @@ var config_default = defineConfig({
           }
         ]
       },
+      // newsletter
       {
         name: "newsletter",
         label: "Newsletters",
@@ -122,6 +123,7 @@ var config_default = defineConfig({
           }
         ]
       },
+      /// projects
       {
         name: "projects",
         label: "Projects",
@@ -177,6 +179,134 @@ var config_default = defineConfig({
             name: "body",
             label: "Body",
             isBody: true
+          }
+        ]
+      },
+      // site config
+      {
+        name: "siteConfig",
+        label: "Site Configuration",
+        path: "/src/content/config",
+        format: "json",
+        fields: [
+          {
+            type: "string",
+            name: "SiteName",
+            label: "Site Name",
+            required: true
+          },
+          {
+            type: "string",
+            name: "SiteDescription",
+            label: "Site Description",
+            required: true
+          },
+          {
+            type: "string",
+            name: "name",
+            label: "Author Name",
+            required: true
+          },
+          {
+            type: "string",
+            name: "jobTitle",
+            label: "Job Title",
+            required: true
+          },
+          {
+            type: "string",
+            name: "position",
+            label: "Position",
+            required: true
+          },
+          {
+            type: "image",
+            name: "picture",
+            label: "Picture",
+            required: false
+          },
+          {
+            type: "image",
+            name: "avator",
+            label: "Avatar",
+            required: false
+          },
+          {
+            type: "object",
+            name: "socialLinks",
+            label: "Social Links",
+            fields: [
+              { type: "string", name: "twitter", label: "Twitter" },
+              { type: "string", name: "linkedin", label: "LinkedIn" },
+              { type: "string", name: "github", label: "GitHub" },
+              { type: "string", name: "upwork", label: "Upwork" },
+              { type: "string", name: "youtube", label: "YouTube" },
+              { type: "string", name: "whatsNumber", label: "WhatsApp Number" }
+            ]
+          },
+          {
+            type: "object",
+            name: "about",
+            label: "About",
+            fields: [
+              { type: "string", name: "whoAmI", label: "Who Am I" },
+              {
+                type: "string",
+                name: "lifeBeyondCode",
+                label: "Life Beyond Code"
+              },
+              {
+                type: "string",
+                name: "continuousLearning",
+                label: "Continuous Learning"
+              }
+            ]
+          },
+          {
+            type: "object",
+            name: "techStack",
+            label: "Tech Stack",
+            list: true,
+            fields: [
+              {
+                type: "string",
+                name: "category",
+                label: "Category"
+              },
+              {
+                type: "string",
+                name: "tools",
+                label: "Tools",
+                list: true
+              }
+            ]
+          },
+          {
+            type: "object",
+            name: "workExperience",
+            label: "Work Experience",
+            list: true,
+            fields: [
+              { type: "string", name: "companyName", label: "Company Name" },
+              { type: "string", name: "position", label: "Position" },
+              {
+                type: "string",
+                name: "employmentTime",
+                label: "Employment Time"
+              },
+              {
+                type: "string",
+                name: "roles",
+                label: "Roles",
+                list: true
+              },
+              {
+                type: "string",
+                name: "toolsUsed",
+                label: "Tools Used",
+                list: true
+              }
+            ]
           }
         ]
       }

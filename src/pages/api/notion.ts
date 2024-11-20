@@ -1,5 +1,5 @@
 import { Client } from "@notionhq/client";
-import { FeatureFlagsApi } from "../../util/featureFlag";
+import { FeatureFlagsApi } from "@util/featureFlag";
 
 const notionAPI = import.meta.env.PUBLIC_NOTION_KEY;
 const DATABASE_ID = import.meta.env.PUBLIC_NOTION_DATABASE_ID;

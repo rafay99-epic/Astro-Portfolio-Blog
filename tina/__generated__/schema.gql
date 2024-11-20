@@ -59,12 +59,15 @@ type Query {
   newsletterConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: NewsletterFilter): NewsletterConnection!
   projects(relativePath: String): Projects!
   projectsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: ProjectsFilter): ProjectsConnection!
+  siteConfig(relativePath: String): SiteConfig!
+  siteConfigConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: SiteConfigFilter): SiteConfigConnection!
 }
 
 input DocumentFilter {
   post: PostFilter
   newsletter: NewsletterFilter
   projects: ProjectsFilter
+  siteConfig: SiteConfigFilter
 }
 
 type DocumentConnectionEdges {
@@ -90,7 +93,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Post | Newsletter | Projects | Folder
+union DocumentNode = Post | Newsletter | Projects | SiteConfig | Folder
 
 type Post implements Node & Document {
   title: String!
@@ -227,6 +230,104 @@ type ProjectsConnection implements Connection {
   edges: [ProjectsConnectionEdges]
 }
 
+type SiteConfigSocialLinks {
+  twitter: String
+  linkedin: String
+  github: String
+  upwork: String
+  youtube: String
+  whatsNumber: String
+}
+
+type SiteConfigAbout {
+  whoAmI: String
+  lifeBeyondCode: String
+  continuousLearning: String
+}
+
+type SiteConfigTechStack {
+  category: String
+  tools: [String]
+}
+
+type SiteConfigWorkExperience {
+  companyName: String
+  position: String
+  employmentTime: String
+  roles: [String]
+  toolsUsed: [String]
+}
+
+type SiteConfig implements Node & Document {
+  SiteName: String!
+  SiteDescription: String!
+  name: String!
+  jobTitle: String!
+  position: String!
+  picture: String
+  avator: String
+  socialLinks: SiteConfigSocialLinks
+  about: SiteConfigAbout
+  techStack: [SiteConfigTechStack]
+  workExperience: [SiteConfigWorkExperience]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input SiteConfigSocialLinksFilter {
+  twitter: StringFilter
+  linkedin: StringFilter
+  github: StringFilter
+  upwork: StringFilter
+  youtube: StringFilter
+  whatsNumber: StringFilter
+}
+
+input SiteConfigAboutFilter {
+  whoAmI: StringFilter
+  lifeBeyondCode: StringFilter
+  continuousLearning: StringFilter
+}
+
+input SiteConfigTechStackFilter {
+  category: StringFilter
+  tools: StringFilter
+}
+
+input SiteConfigWorkExperienceFilter {
+  companyName: StringFilter
+  position: StringFilter
+  employmentTime: StringFilter
+  roles: StringFilter
+  toolsUsed: StringFilter
+}
+
+input SiteConfigFilter {
+  SiteName: StringFilter
+  SiteDescription: StringFilter
+  name: StringFilter
+  jobTitle: StringFilter
+  position: StringFilter
+  picture: ImageFilter
+  avator: ImageFilter
+  socialLinks: SiteConfigSocialLinksFilter
+  about: SiteConfigAboutFilter
+  techStack: SiteConfigTechStackFilter
+  workExperience: SiteConfigWorkExperienceFilter
+}
+
+type SiteConfigConnectionEdges {
+  cursor: String!
+  node: SiteConfig
+}
+
+type SiteConfigConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [SiteConfigConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -238,12 +339,15 @@ type Mutation {
   createNewsletter(relativePath: String!, params: NewsletterMutation!): Newsletter!
   updateProjects(relativePath: String!, params: ProjectsMutation!): Projects!
   createProjects(relativePath: String!, params: ProjectsMutation!): Projects!
+  updateSiteConfig(relativePath: String!, params: SiteConfigMutation!): SiteConfig!
+  createSiteConfig(relativePath: String!, params: SiteConfigMutation!): SiteConfig!
 }
 
 input DocumentUpdateMutation {
   post: PostMutation
   newsletter: NewsletterMutation
   projects: ProjectsMutation
+  siteConfig: SiteConfigMutation
   relativePath: String
 }
 
@@ -251,6 +355,7 @@ input DocumentMutation {
   post: PostMutation
   newsletter: NewsletterMutation
   projects: ProjectsMutation
+  siteConfig: SiteConfigMutation
 }
 
 input PostMutation {
@@ -281,6 +386,48 @@ input ProjectsMutation {
   ProjectTech: [String]
   ProjectCategory: [String]
   body: JSON
+}
+
+input SiteConfigSocialLinksMutation {
+  twitter: String
+  linkedin: String
+  github: String
+  upwork: String
+  youtube: String
+  whatsNumber: String
+}
+
+input SiteConfigAboutMutation {
+  whoAmI: String
+  lifeBeyondCode: String
+  continuousLearning: String
+}
+
+input SiteConfigTechStackMutation {
+  category: String
+  tools: [String]
+}
+
+input SiteConfigWorkExperienceMutation {
+  companyName: String
+  position: String
+  employmentTime: String
+  roles: [String]
+  toolsUsed: [String]
+}
+
+input SiteConfigMutation {
+  SiteName: String
+  SiteDescription: String
+  name: String
+  jobTitle: String
+  position: String
+  picture: String
+  avator: String
+  socialLinks: SiteConfigSocialLinksMutation
+  about: SiteConfigAboutMutation
+  techStack: [SiteConfigTechStackMutation]
+  workExperience: [SiteConfigWorkExperienceMutation]
 }
 
 schema {

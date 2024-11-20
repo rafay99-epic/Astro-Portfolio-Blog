@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FeatureFlagsApi } from "../../util/featureFlag";
+import { FeatureFlagsApi } from "@util/featureFlag";
 import type {
   PageView,
   TrendingPostResponse,

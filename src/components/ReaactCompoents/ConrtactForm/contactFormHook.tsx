@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import authorConfig from "@util/info";
+import authorConfig from "@util/info.json";
 import { addContactToNotion } from "@pages/api/notion";
 
 const webformKeyAuthorFile = authorConfig.webformKey;
