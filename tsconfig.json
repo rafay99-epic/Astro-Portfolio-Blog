@@ -13,7 +13,8 @@
       "@pages/*": ["pages/*"],
       "@styles/*": ["styles/*"],
       "@types/*": ["types/*"],
-      "@util/*": ["util/*"]
+      "@util/*": ["util/*"],
+      "@config/*": ["config/*"]
     },
     "strictNullChecks": true,
     "jsx": "react-jsx",

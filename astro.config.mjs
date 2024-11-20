@@ -56,6 +56,7 @@ export default defineConfig({
         "@styles": "/src/styles",
         "@types": "/src/types",
         "@util": "/src/util",
+        "@config": "/src/config",
       },
     },
   },
