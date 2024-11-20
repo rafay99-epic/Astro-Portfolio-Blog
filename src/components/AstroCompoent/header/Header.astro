@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 import SearchSVG from "@astro/header/nav/SearchSVG.astro";
 import LetterSVG from "@astro/header/nav/LetterSVG.astro";
 import authorConfig from "@util/info";
+import TrendingSVG from "@astro/header/nav/TrendingSVG.astro";
 import TagSVG from "@astro/header/nav/TagSVG.astro";
 import { featureFlags } from "@util/featureFlag";
 ---
@@ -46,6 +47,13 @@ import { featureFlags } from "@util/featureFlag";
         featureFlags.showNewsletter && (
           <HeaderLink href="/newsletter" style="color: white;">
             <LetterSVG />
+          </HeaderLink>
+        )
+      }
+      {
+        featureFlags.showTrendingPosts && (
+          <HeaderLink href="/trending" style="color: white;">
+            <TrendingSVG />
           </HeaderLink>
         )
       }
@@ -104,6 +112,13 @@ import { featureFlags } from "@util/featureFlag";
       featureFlags.showNewsletter && (
         <HeaderLink href="/newsletter" style="color: white;">
           <LetterSVG />
+        </HeaderLink>
+      )
+    }
+    {
+      featureFlags.showTrendingPosts && (
+        <HeaderLink href="/trending" style="color: white;">
+          <TrendingSVG />
         </HeaderLink>
       )
     }
