@@ -318,9 +318,6 @@ export default defineConfig({
         label: "Feature Flags",
         path: "src/config/featureFlag",
         format: "json",
-        match: {
-          include: "featureFlag.json",
-        },
         fields: [
           {
             type: "object",
@@ -397,9 +394,6 @@ export default defineConfig({
         label: "Popular Blogs",
         path: "src/config/popularBlogs",
         format: "json",
-        match: {
-          include: "traffic.json",
-        },
         fields: [
           {
             type: "object",
