@@ -91,3 +91,12 @@ fragment FeatureFlagsParts on FeatureFlags {
     enableUmamiServiceAPI
   }
 }
+
+fragment PopularBlogsParts on PopularBlogs {
+  popularBlogs {
+    __typename
+    Page
+    Visitors
+    Total
+  }
+}

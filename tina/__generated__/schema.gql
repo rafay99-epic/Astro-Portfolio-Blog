@@ -63,6 +63,8 @@ type Query {
   siteConfigConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: SiteConfigFilter): SiteConfigConnection!
   featureFlags(relativePath: String): FeatureFlags!
   featureFlagsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: FeatureFlagsFilter): FeatureFlagsConnection!
+  popularBlogs(relativePath: String): PopularBlogs!
+  popularBlogsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: PopularBlogsFilter): PopularBlogsConnection!
 }
 
 input DocumentFilter {
@@ -71,6 +73,7 @@ input DocumentFilter {
   projects: ProjectsFilter
   siteConfig: SiteConfigFilter
   featureFlags: FeatureFlagsFilter
+  popularBlogs: PopularBlogsFilter
 }
 
 type DocumentConnectionEdges {
@@ -96,7 +99,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | Folder
+union DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | PopularBlogs | Folder
 
 type Post implements Node & Document {
   title: String!
@@ -401,6 +404,50 @@ type FeatureFlagsConnection implements Connection {
   edges: [FeatureFlagsConnectionEdges]
 }
 
+type PopularBlogsPopularBlogs {
+  Page: String!
+  Visitors: Float!
+  Total: Float!
+}
+
+type PopularBlogs implements Node & Document {
+  popularBlogs: [PopularBlogsPopularBlogs]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input NumberFilter {
+  lt: Float
+  lte: Float
+  gte: Float
+  gt: Float
+  eq: Float
+  exists: Boolean
+  in: [Float]
+}
+
+input PopularBlogsPopularBlogsFilter {
+  Page: StringFilter
+  Visitors: NumberFilter
+  Total: NumberFilter
+}
+
+input PopularBlogsFilter {
+  popularBlogs: PopularBlogsPopularBlogsFilter
+}
+
+type PopularBlogsConnectionEdges {
+  cursor: String!
+  node: PopularBlogs
+}
+
+type PopularBlogsConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [PopularBlogsConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -416,6 +463,8 @@ type Mutation {
   createSiteConfig(relativePath: String!, params: SiteConfigMutation!): SiteConfig!
   updateFeatureFlags(relativePath: String!, params: FeatureFlagsMutation!): FeatureFlags!
   createFeatureFlags(relativePath: String!, params: FeatureFlagsMutation!): FeatureFlags!
+  updatePopularBlogs(relativePath: String!, params: PopularBlogsMutation!): PopularBlogs!
+  createPopularBlogs(relativePath: String!, params: PopularBlogsMutation!): PopularBlogs!
 }
 
 input DocumentUpdateMutation {
@@ -424,6 +473,7 @@ input DocumentUpdateMutation {
   projects: ProjectsMutation
   siteConfig: SiteConfigMutation
   featureFlags: FeatureFlagsMutation
+  popularBlogs: PopularBlogsMutation
   relativePath: String
 }
 
@@ -433,6 +483,7 @@ input DocumentMutation {
   projects: ProjectsMutation
   siteConfig: SiteConfigMutation
   featureFlags: FeatureFlagsMutation
+  popularBlogs: PopularBlogsMutation
 }
 
 input PostMutation {
@@ -533,6 +584,16 @@ input FeatureFlagsFeatureFlagsApiMutation {
 input FeatureFlagsMutation {
   featureFlags: FeatureFlagsFeatureFlagsMutation
   FeatureFlagsApi: FeatureFlagsFeatureFlagsApiMutation
+}
+
+input PopularBlogsPopularBlogsMutation {
+  Page: String
+  Visitors: Float
+  Total: Float
+}
+
+input PopularBlogsMutation {
+  popularBlogs: [PopularBlogsPopularBlogsMutation]
 }
 
 schema {

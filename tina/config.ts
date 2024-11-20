@@ -18,6 +18,7 @@ export default defineConfig({
   },
   schema: {
     collections: [
+      // blog & Article
       {
         name: "post",
         label: "Articles",
@@ -385,6 +386,44 @@ export default defineConfig({
                 type: "boolean",
                 name: "enableUmamiServiceAPI",
                 label: "Enable Umami Service API",
+              },
+            ],
+          },
+        ],
+      },
+      //popular Blog posts
+      {
+        name: "popularBlogs",
+        label: "Popular Blogs",
+        path: "src/config/popularBlogs",
+        format: "json",
+        match: {
+          include: "traffic.json",
+        },
+        fields: [
+          {
+            type: "object",
+            name: "popularBlogs",
+            label: "Popular Blogs List",
+            list: true,
+            fields: [
+              {
+                type: "string",
+                name: "Page",
+                label: "Page URL",
+                required: true,
+              },
+              {
+                type: "number",
+                name: "Visitors",
+                label: "Visitors Count",
+                required: true,
+              },
+              {
+                type: "number",
+                name: "Total",
+                label: "Total Views",
+                required: true,
               },
             ],
           },

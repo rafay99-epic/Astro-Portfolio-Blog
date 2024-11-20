@@ -1,14 +1,16 @@
 ---
+import popularBlogsData from "@config/popularBlogs/traffic.json";
 import { getCollection } from "astro:content";
 import { getTrendingPosts } from "@pages/api/umamiService";
-import { popularBlogs } from "@util/traffic";
 import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
-import type { PopularBlog, ApiTrendingPost, CombinedPost } from "@util/types";
+import type { ApiTrendingPost, CombinedPost } from "@util/types";
 
 const allPosts = await getCollection("blog");
 const publishedPosts = allPosts.filter((post) => !post.data.draft);
 
 let apiTrendingPosts: ApiTrendingPost[] = [];
+
+const popularBlogs = popularBlogsData.popularBlogs;
 
 if (FeatureFlagsApi.enableUmamiServiceAPI) {
   try {
@@ -36,7 +38,7 @@ if (FeatureFlagsApi.enableUmamiServiceAPI) {
   console.info("Umami Service API is disabled. Using local dataset only.");
 }
 
-const popularPages = new Map<string, PopularBlog>(
+const popularPages = new Map<string, { Page: string; Visitors: number }>(
   popularBlogs.map((entry) => [entry.Page.replace("/blog/", ""), entry])
 );
 

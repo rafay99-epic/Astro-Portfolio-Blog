@@ -262,3 +262,56 @@ query featureFlagsConnection($before: String, $after: String, $first: Float, $la
     }
   }
 }
+
+query popularBlogs($relativePath: String!) {
+  popularBlogs(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...PopularBlogsParts
+  }
+}
+
+query popularBlogsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: PopularBlogsFilter) {
+  popularBlogsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...PopularBlogsParts
+      }
+    }
+  }
+}
