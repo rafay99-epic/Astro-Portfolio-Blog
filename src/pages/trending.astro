@@ -8,7 +8,7 @@ import Footer from "@components/AstroCompoent/footer/Footer.astro";
 import BaseHead from "@components/AstroCompoent/base/BaseHead.astro";
 import Header from "@components/AstroCompoent/header/Header.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import authorConfig from "@util/info.json";
+import authorConfig from "@config/info.json";
 
 const allPosts = await getCollection("blog");
 const publishedPosts = allPosts.filter((post) => !post.data.draft);

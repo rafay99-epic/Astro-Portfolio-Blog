@@ -186,7 +186,7 @@ var config_default = defineConfig({
       {
         name: "siteConfig",
         label: "Site Configuration",
-        path: "/src/content/config",
+        path: "/src/config",
         format: "json",
         fields: [
           {
