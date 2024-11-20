@@ -5,7 +5,7 @@ import Footer from "@astro/footer/Footer.astro";
 import { getCollection } from "astro:content";
 import authorConfig from "@config/info.json";
 import SearchReactCompoent from "@react/SearchField/SearchField";
-import { featureFlags } from "@util/featureFlag";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 const posts = featureFlags.showBlog
   ? (await getCollection("blog")).sort(

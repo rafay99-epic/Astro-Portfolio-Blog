@@ -6,7 +6,7 @@ import JobExperience from "@astro/JobAndExperience/JobExperience.astro";
 import authorConfig from "@config/info.json";
 
 import Footer from "@astro/footer/Footer.astro";
-import { featureFlags } from "@util/featureFlag";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 try {
   if (!featureFlags.showAbout) {

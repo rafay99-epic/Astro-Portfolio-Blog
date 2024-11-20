@@ -89,6 +89,10 @@ export type Query = {
   projectsConnection: ProjectsConnection;
   siteConfig: SiteConfig;
   siteConfigConnection: SiteConfigConnection;
+  featureFlags: FeatureFlags;
+  featureFlagsConnection: FeatureFlagsConnection;
+  popularBlogs: PopularBlogs;
+  popularBlogsConnection: PopularBlogsConnection;
 };
 
 
@@ -172,11 +176,43 @@ export type QuerySiteConfigConnectionArgs = {
   filter?: InputMaybe<SiteConfigFilter>;
 };
 
+
+export type QueryFeatureFlagsArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryFeatureFlagsConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<FeatureFlagsFilter>;
+};
+
+
+export type QueryPopularBlogsArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryPopularBlogsConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<PopularBlogsFilter>;
+};
+
 export type DocumentFilter = {
   post?: InputMaybe<PostFilter>;
   newsletter?: InputMaybe<NewsletterFilter>;
   projects?: InputMaybe<ProjectsFilter>;
   siteConfig?: InputMaybe<SiteConfigFilter>;
+  featureFlags?: InputMaybe<FeatureFlagsFilter>;
+  popularBlogs?: InputMaybe<PopularBlogsFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -216,7 +252,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Post | Newsletter | Projects | SiteConfig | Folder;
+export type DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | PopularBlogs | Folder;
 
 export type Post = Node & Document & {
   __typename?: 'Post';
@@ -467,6 +503,129 @@ export type SiteConfigConnection = Connection & {
   edges?: Maybe<Array<Maybe<SiteConfigConnectionEdges>>>;
 };
 
+export type FeatureFlagsFeatureFlags = {
+  __typename?: 'FeatureFlagsFeatureFlags';
+  showBlog?: Maybe<Scalars['Boolean']['output']>;
+  showAbout?: Maybe<Scalars['Boolean']['output']>;
+  showContact?: Maybe<Scalars['Boolean']['output']>;
+  showProjects?: Maybe<Scalars['Boolean']['output']>;
+  showIndex?: Maybe<Scalars['Boolean']['output']>;
+  showTags?: Maybe<Scalars['Boolean']['output']>;
+  showSearch?: Maybe<Scalars['Boolean']['output']>;
+  showNewsletter?: Maybe<Scalars['Boolean']['output']>;
+  showPrivacy?: Maybe<Scalars['Boolean']['output']>;
+  showTermsOfService?: Maybe<Scalars['Boolean']['output']>;
+  showSubNewsletter?: Maybe<Scalars['Boolean']['output']>;
+  showTrendingPosts?: Maybe<Scalars['Boolean']['output']>;
+  showTermsandConditions?: Maybe<Scalars['Boolean']['output']>;
+  showPrivacyPolicy?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type FeatureFlagsFeatureFlagsApi = {
+  __typename?: 'FeatureFlagsFeatureFlagsApi';
+  enableNotionAPI?: Maybe<Scalars['Boolean']['output']>;
+  enableauthorInfoAPI?: Maybe<Scalars['Boolean']['output']>;
+  enableUmamiServiceAPI?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type FeatureFlags = Node & Document & {
+  __typename?: 'FeatureFlags';
+  featureFlags?: Maybe<FeatureFlagsFeatureFlags>;
+  FeatureFlagsApi?: Maybe<FeatureFlagsFeatureFlagsApi>;
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
+export type FeatureFlagsFeatureFlagsFilter = {
+  showBlog?: InputMaybe<BooleanFilter>;
+  showAbout?: InputMaybe<BooleanFilter>;
+  showContact?: InputMaybe<BooleanFilter>;
+  showProjects?: InputMaybe<BooleanFilter>;
+  showIndex?: InputMaybe<BooleanFilter>;
+  showTags?: InputMaybe<BooleanFilter>;
+  showSearch?: InputMaybe<BooleanFilter>;
+  showNewsletter?: InputMaybe<BooleanFilter>;
+  showPrivacy?: InputMaybe<BooleanFilter>;
+  showTermsOfService?: InputMaybe<BooleanFilter>;
+  showSubNewsletter?: InputMaybe<BooleanFilter>;
+  showTrendingPosts?: InputMaybe<BooleanFilter>;
+  showTermsandConditions?: InputMaybe<BooleanFilter>;
+  showPrivacyPolicy?: InputMaybe<BooleanFilter>;
+};
+
+export type FeatureFlagsFeatureFlagsApiFilter = {
+  enableNotionAPI?: InputMaybe<BooleanFilter>;
+  enableauthorInfoAPI?: InputMaybe<BooleanFilter>;
+  enableUmamiServiceAPI?: InputMaybe<BooleanFilter>;
+};
+
+export type FeatureFlagsFilter = {
+  featureFlags?: InputMaybe<FeatureFlagsFeatureFlagsFilter>;
+  FeatureFlagsApi?: InputMaybe<FeatureFlagsFeatureFlagsApiFilter>;
+};
+
+export type FeatureFlagsConnectionEdges = {
+  __typename?: 'FeatureFlagsConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<FeatureFlags>;
+};
+
+export type FeatureFlagsConnection = Connection & {
+  __typename?: 'FeatureFlagsConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<FeatureFlagsConnectionEdges>>>;
+};
+
+export type PopularBlogsPopularBlogs = {
+  __typename?: 'PopularBlogsPopularBlogs';
+  Page: Scalars['String']['output'];
+  Visitors: Scalars['Float']['output'];
+  Total: Scalars['Float']['output'];
+};
+
+export type PopularBlogs = Node & Document & {
+  __typename?: 'PopularBlogs';
+  popularBlogs?: Maybe<Array<Maybe<PopularBlogsPopularBlogs>>>;
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
+export type NumberFilter = {
+  lt?: InputMaybe<Scalars['Float']['input']>;
+  lte?: InputMaybe<Scalars['Float']['input']>;
+  gte?: InputMaybe<Scalars['Float']['input']>;
+  gt?: InputMaybe<Scalars['Float']['input']>;
+  eq?: InputMaybe<Scalars['Float']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
+};
+
+export type PopularBlogsPopularBlogsFilter = {
+  Page?: InputMaybe<StringFilter>;
+  Visitors?: InputMaybe<NumberFilter>;
+  Total?: InputMaybe<NumberFilter>;
+};
+
+export type PopularBlogsFilter = {
+  popularBlogs?: InputMaybe<PopularBlogsPopularBlogsFilter>;
+};
+
+export type PopularBlogsConnectionEdges = {
+  __typename?: 'PopularBlogsConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<PopularBlogs>;
+};
+
+export type PopularBlogsConnection = Connection & {
+  __typename?: 'PopularBlogsConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<PopularBlogsConnectionEdges>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -481,6 +640,10 @@ export type Mutation = {
   createProjects: Projects;
   updateSiteConfig: SiteConfig;
   createSiteConfig: SiteConfig;
+  updateFeatureFlags: FeatureFlags;
+  createFeatureFlags: FeatureFlags;
+  updatePopularBlogs: PopularBlogs;
+  createPopularBlogs: PopularBlogs;
 };
 
 
@@ -558,11 +721,37 @@ export type MutationCreateSiteConfigArgs = {
   params: SiteConfigMutation;
 };
 
+
+export type MutationUpdateFeatureFlagsArgs = {
+  relativePath: Scalars['String']['input'];
+  params: FeatureFlagsMutation;
+};
+
+
+export type MutationCreateFeatureFlagsArgs = {
+  relativePath: Scalars['String']['input'];
+  params: FeatureFlagsMutation;
+};
+
+
+export type MutationUpdatePopularBlogsArgs = {
+  relativePath: Scalars['String']['input'];
+  params: PopularBlogsMutation;
+};
+
+
+export type MutationCreatePopularBlogsArgs = {
+  relativePath: Scalars['String']['input'];
+  params: PopularBlogsMutation;
+};
+
 export type DocumentUpdateMutation = {
   post?: InputMaybe<PostMutation>;
   newsletter?: InputMaybe<NewsletterMutation>;
   projects?: InputMaybe<ProjectsMutation>;
   siteConfig?: InputMaybe<SiteConfigMutation>;
+  featureFlags?: InputMaybe<FeatureFlagsMutation>;
+  popularBlogs?: InputMaybe<PopularBlogsMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -571,6 +760,8 @@ export type DocumentMutation = {
   newsletter?: InputMaybe<NewsletterMutation>;
   projects?: InputMaybe<ProjectsMutation>;
   siteConfig?: InputMaybe<SiteConfigMutation>;
+  featureFlags?: InputMaybe<FeatureFlagsMutation>;
+  popularBlogs?: InputMaybe<PopularBlogsMutation>;
 };
 
 export type PostMutation = {
@@ -645,6 +836,44 @@ export type SiteConfigMutation = {
   workExperience?: InputMaybe<Array<InputMaybe<SiteConfigWorkExperienceMutation>>>;
 };
 
+export type FeatureFlagsFeatureFlagsMutation = {
+  showBlog?: InputMaybe<Scalars['Boolean']['input']>;
+  showAbout?: InputMaybe<Scalars['Boolean']['input']>;
+  showContact?: InputMaybe<Scalars['Boolean']['input']>;
+  showProjects?: InputMaybe<Scalars['Boolean']['input']>;
+  showIndex?: InputMaybe<Scalars['Boolean']['input']>;
+  showTags?: InputMaybe<Scalars['Boolean']['input']>;
+  showSearch?: InputMaybe<Scalars['Boolean']['input']>;
+  showNewsletter?: InputMaybe<Scalars['Boolean']['input']>;
+  showPrivacy?: InputMaybe<Scalars['Boolean']['input']>;
+  showTermsOfService?: InputMaybe<Scalars['Boolean']['input']>;
+  showSubNewsletter?: InputMaybe<Scalars['Boolean']['input']>;
+  showTrendingPosts?: InputMaybe<Scalars['Boolean']['input']>;
+  showTermsandConditions?: InputMaybe<Scalars['Boolean']['input']>;
+  showPrivacyPolicy?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type FeatureFlagsFeatureFlagsApiMutation = {
+  enableNotionAPI?: InputMaybe<Scalars['Boolean']['input']>;
+  enableauthorInfoAPI?: InputMaybe<Scalars['Boolean']['input']>;
+  enableUmamiServiceAPI?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type FeatureFlagsMutation = {
+  featureFlags?: InputMaybe<FeatureFlagsFeatureFlagsMutation>;
+  FeatureFlagsApi?: InputMaybe<FeatureFlagsFeatureFlagsApiMutation>;
+};
+
+export type PopularBlogsPopularBlogsMutation = {
+  Page?: InputMaybe<Scalars['String']['input']>;
+  Visitors?: InputMaybe<Scalars['Float']['input']>;
+  Total?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type PopularBlogsMutation = {
+  popularBlogs?: InputMaybe<Array<InputMaybe<PopularBlogsPopularBlogsMutation>>>;
+};
+
 export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null };
 
 export type NewsletterPartsFragment = { __typename?: 'Newsletter', title: string, summary: string, pubDate: string, draft: boolean, body?: any | null };
@@ -652,6 +881,10 @@ export type NewsletterPartsFragment = { __typename?: 'Newsletter', title: string
 export type ProjectsPartsFragment = { __typename?: 'Projects', Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null };
 
 export type SiteConfigPartsFragment = { __typename?: 'SiteConfig', SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null };
+
+export type FeatureFlagsPartsFragment = { __typename?: 'FeatureFlags', featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null };
+
+export type PopularBlogsPartsFragment = { __typename?: 'PopularBlogs', popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -729,6 +962,44 @@ export type SiteConfigConnectionQueryVariables = Exact<{
 
 export type SiteConfigConnectionQuery = { __typename?: 'Query', siteConfigConnection: { __typename?: 'SiteConfigConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SiteConfigConnectionEdges', cursor: string, node?: { __typename?: 'SiteConfig', id: string, SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null } | null } | null> | null } };
 
+export type FeatureFlagsQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type FeatureFlagsQuery = { __typename?: 'Query', featureFlags: { __typename?: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null } };
+
+export type FeatureFlagsConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<FeatureFlagsFilter>;
+}>;
+
+
+export type FeatureFlagsConnectionQuery = { __typename?: 'Query', featureFlagsConnection: { __typename?: 'FeatureFlagsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'FeatureFlagsConnectionEdges', cursor: string, node?: { __typename?: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null } | null } | null> | null } };
+
+export type PopularBlogsQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type PopularBlogsQuery = { __typename?: 'Query', popularBlogs: { __typename?: 'PopularBlogs', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null } };
+
+export type PopularBlogsConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<PopularBlogsFilter>;
+}>;
+
+
+export type PopularBlogsConnectionQuery = { __typename?: 'Query', popularBlogsConnection: { __typename?: 'PopularBlogsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PopularBlogsConnectionEdges', cursor: string, node?: { __typename?: 'PopularBlogs', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null } | null } | null> | null } };
+
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
   title
@@ -798,6 +1069,43 @@ export const SiteConfigPartsFragmentDoc = gql`
     employmentTime
     roles
     toolsUsed
+  }
+}
+    `;
+export const FeatureFlagsPartsFragmentDoc = gql`
+    fragment FeatureFlagsParts on FeatureFlags {
+  featureFlags {
+    __typename
+    showBlog
+    showAbout
+    showContact
+    showProjects
+    showIndex
+    showTags
+    showSearch
+    showNewsletter
+    showPrivacy
+    showTermsOfService
+    showSubNewsletter
+    showTrendingPosts
+    showTermsandConditions
+    showPrivacyPolicy
+  }
+  FeatureFlagsApi {
+    __typename
+    enableNotionAPI
+    enableauthorInfoAPI
+    enableUmamiServiceAPI
+  }
+}
+    `;
+export const PopularBlogsPartsFragmentDoc = gql`
+    fragment PopularBlogsParts on PopularBlogs {
+  popularBlogs {
+    __typename
+    Page
+    Visitors
+    Total
   }
 }
     `;
@@ -1021,6 +1329,116 @@ export const SiteConfigConnectionDocument = gql`
   }
 }
     ${SiteConfigPartsFragmentDoc}`;
+export const FeatureFlagsDocument = gql`
+    query featureFlags($relativePath: String!) {
+  featureFlags(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...FeatureFlagsParts
+  }
+}
+    ${FeatureFlagsPartsFragmentDoc}`;
+export const FeatureFlagsConnectionDocument = gql`
+    query featureFlagsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: FeatureFlagsFilter) {
+  featureFlagsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...FeatureFlagsParts
+      }
+    }
+  }
+}
+    ${FeatureFlagsPartsFragmentDoc}`;
+export const PopularBlogsDocument = gql`
+    query popularBlogs($relativePath: String!) {
+  popularBlogs(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...PopularBlogsParts
+  }
+}
+    ${PopularBlogsPartsFragmentDoc}`;
+export const PopularBlogsConnectionDocument = gql`
+    query popularBlogsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: PopularBlogsFilter) {
+  popularBlogsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...PopularBlogsParts
+      }
+    }
+  }
+}
+    ${PopularBlogsPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -1047,6 +1465,18 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     siteConfigConnection(variables?: SiteConfigConnectionQueryVariables, options?: C): Promise<{data: SiteConfigConnectionQuery, variables: SiteConfigConnectionQueryVariables, query: string}> {
         return requester<{data: SiteConfigConnectionQuery, variables: SiteConfigConnectionQueryVariables, query: string}, SiteConfigConnectionQueryVariables>(SiteConfigConnectionDocument, variables, options);
+      },
+    featureFlags(variables: FeatureFlagsQueryVariables, options?: C): Promise<{data: FeatureFlagsQuery, variables: FeatureFlagsQueryVariables, query: string}> {
+        return requester<{data: FeatureFlagsQuery, variables: FeatureFlagsQueryVariables, query: string}, FeatureFlagsQueryVariables>(FeatureFlagsDocument, variables, options);
+      },
+    featureFlagsConnection(variables?: FeatureFlagsConnectionQueryVariables, options?: C): Promise<{data: FeatureFlagsConnectionQuery, variables: FeatureFlagsConnectionQueryVariables, query: string}> {
+        return requester<{data: FeatureFlagsConnectionQuery, variables: FeatureFlagsConnectionQueryVariables, query: string}, FeatureFlagsConnectionQueryVariables>(FeatureFlagsConnectionDocument, variables, options);
+      },
+    popularBlogs(variables: PopularBlogsQueryVariables, options?: C): Promise<{data: PopularBlogsQuery, variables: PopularBlogsQueryVariables, query: string}> {
+        return requester<{data: PopularBlogsQuery, variables: PopularBlogsQueryVariables, query: string}, PopularBlogsQueryVariables>(PopularBlogsDocument, variables, options);
+      },
+    popularBlogsConnection(variables?: PopularBlogsConnectionQueryVariables, options?: C): Promise<{data: PopularBlogsConnectionQuery, variables: PopularBlogsConnectionQueryVariables, query: string}> {
+        return requester<{data: PopularBlogsConnectionQuery, variables: PopularBlogsConnectionQueryVariables, query: string}, PopularBlogsConnectionQueryVariables>(PopularBlogsConnectionDocument, variables, options);
       }
     };
   }

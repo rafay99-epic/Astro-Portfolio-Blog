@@ -65,3 +65,38 @@ fragment SiteConfigParts on SiteConfig {
     toolsUsed
   }
 }
+
+fragment FeatureFlagsParts on FeatureFlags {
+  featureFlags {
+    __typename
+    showBlog
+    showAbout
+    showContact
+    showProjects
+    showIndex
+    showTags
+    showSearch
+    showNewsletter
+    showPrivacy
+    showTermsOfService
+    showSubNewsletter
+    showTrendingPosts
+    showTermsandConditions
+    showPrivacyPolicy
+  }
+  FeatureFlagsApi {
+    __typename
+    enableNotionAPI
+    enableauthorInfoAPI
+    enableUmamiServiceAPI
+  }
+}
+
+fragment PopularBlogsParts on PopularBlogs {
+  popularBlogs {
+    __typename
+    Page
+    Visitors
+    Total
+  }
+}

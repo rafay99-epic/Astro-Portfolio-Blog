@@ -18,6 +18,7 @@ export default defineConfig({
   },
   schema: {
     collections: [
+      // blog & Article
       {
         name: "post",
         label: "Articles",
@@ -306,6 +307,123 @@ export default defineConfig({
                 name: "toolsUsed",
                 label: "Tools Used",
                 list: true,
+              },
+            ],
+          },
+        ],
+      },
+      // Feature Flag
+      {
+        name: "featureFlags",
+        label: "Feature Flags",
+        path: "src/config/featureFlag",
+        format: "json",
+        match: {
+          include: "featureFlag.json",
+        },
+        fields: [
+          {
+            type: "object",
+            name: "featureFlags",
+            label: "UI Feature Flags",
+            fields: [
+              { type: "boolean", name: "showBlog", label: "Show Blog" },
+              { type: "boolean", name: "showAbout", label: "Show About" },
+              { type: "boolean", name: "showContact", label: "Show Contact" },
+              { type: "boolean", name: "showProjects", label: "Show Projects" },
+              { type: "boolean", name: "showIndex", label: "Show Index" },
+              { type: "boolean", name: "showTags", label: "Show Tags" },
+              { type: "boolean", name: "showSearch", label: "Show Search" },
+              {
+                type: "boolean",
+                name: "showNewsletter",
+                label: "Show Newsletter",
+              },
+              { type: "boolean", name: "showPrivacy", label: "Show Privacy" },
+              {
+                type: "boolean",
+                name: "showTermsOfService",
+                label: "Show Terms of Service",
+              },
+              {
+                type: "boolean",
+                name: "showSubNewsletter",
+                label: "Show Subscribe to Newsletter",
+              },
+              {
+                type: "boolean",
+                name: "showTrendingPosts",
+                label: "Show Trending Posts",
+              },
+              {
+                type: "boolean",
+                name: "showTermsandConditions",
+                label: "Show Terms and Conditions",
+              },
+              {
+                type: "boolean",
+                name: "showPrivacyPolicy",
+                label: "Show Privacy Policy",
+              },
+            ],
+          },
+          {
+            type: "object",
+            name: "FeatureFlagsApi",
+            label: "API Feature Flags",
+            fields: [
+              {
+                type: "boolean",
+                name: "enableNotionAPI",
+                label: "Enable Notion API",
+              },
+              {
+                type: "boolean",
+                name: "enableauthorInfoAPI",
+                label: "Enable Author Info API",
+              },
+              {
+                type: "boolean",
+                name: "enableUmamiServiceAPI",
+                label: "Enable Umami Service API",
+              },
+            ],
+          },
+        ],
+      },
+      //popular Blog posts
+      {
+        name: "popularBlogs",
+        label: "Popular Blogs",
+        path: "src/config/popularBlogs",
+        format: "json",
+        match: {
+          include: "traffic.json",
+        },
+        fields: [
+          {
+            type: "object",
+            name: "popularBlogs",
+            label: "Popular Blogs List",
+            list: true,
+            fields: [
+              {
+                type: "string",
+                name: "Page",
+                label: "Page URL",
+                required: true,
+              },
+              {
+                type: "number",
+                name: "Visitors",
+                label: "Visitors Count",
+                required: true,
+              },
+              {
+                type: "number",
+                name: "Total",
+                label: "Total Views",
+                required: true,
               },
             ],
           },

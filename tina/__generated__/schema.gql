@@ -61,6 +61,10 @@ type Query {
   projectsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: ProjectsFilter): ProjectsConnection!
   siteConfig(relativePath: String): SiteConfig!
   siteConfigConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: SiteConfigFilter): SiteConfigConnection!
+  featureFlags(relativePath: String): FeatureFlags!
+  featureFlagsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: FeatureFlagsFilter): FeatureFlagsConnection!
+  popularBlogs(relativePath: String): PopularBlogs!
+  popularBlogsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: PopularBlogsFilter): PopularBlogsConnection!
 }
 
 input DocumentFilter {
@@ -68,6 +72,8 @@ input DocumentFilter {
   newsletter: NewsletterFilter
   projects: ProjectsFilter
   siteConfig: SiteConfigFilter
+  featureFlags: FeatureFlagsFilter
+  popularBlogs: PopularBlogsFilter
 }
 
 type DocumentConnectionEdges {
@@ -93,7 +99,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Post | Newsletter | Projects | SiteConfig | Folder
+union DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | PopularBlogs | Folder
 
 type Post implements Node & Document {
   title: String!
@@ -328,6 +334,120 @@ type SiteConfigConnection implements Connection {
   edges: [SiteConfigConnectionEdges]
 }
 
+type FeatureFlagsFeatureFlags {
+  showBlog: Boolean
+  showAbout: Boolean
+  showContact: Boolean
+  showProjects: Boolean
+  showIndex: Boolean
+  showTags: Boolean
+  showSearch: Boolean
+  showNewsletter: Boolean
+  showPrivacy: Boolean
+  showTermsOfService: Boolean
+  showSubNewsletter: Boolean
+  showTrendingPosts: Boolean
+  showTermsandConditions: Boolean
+  showPrivacyPolicy: Boolean
+}
+
+type FeatureFlagsFeatureFlagsApi {
+  enableNotionAPI: Boolean
+  enableauthorInfoAPI: Boolean
+  enableUmamiServiceAPI: Boolean
+}
+
+type FeatureFlags implements Node & Document {
+  featureFlags: FeatureFlagsFeatureFlags
+  FeatureFlagsApi: FeatureFlagsFeatureFlagsApi
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input FeatureFlagsFeatureFlagsFilter {
+  showBlog: BooleanFilter
+  showAbout: BooleanFilter
+  showContact: BooleanFilter
+  showProjects: BooleanFilter
+  showIndex: BooleanFilter
+  showTags: BooleanFilter
+  showSearch: BooleanFilter
+  showNewsletter: BooleanFilter
+  showPrivacy: BooleanFilter
+  showTermsOfService: BooleanFilter
+  showSubNewsletter: BooleanFilter
+  showTrendingPosts: BooleanFilter
+  showTermsandConditions: BooleanFilter
+  showPrivacyPolicy: BooleanFilter
+}
+
+input FeatureFlagsFeatureFlagsApiFilter {
+  enableNotionAPI: BooleanFilter
+  enableauthorInfoAPI: BooleanFilter
+  enableUmamiServiceAPI: BooleanFilter
+}
+
+input FeatureFlagsFilter {
+  featureFlags: FeatureFlagsFeatureFlagsFilter
+  FeatureFlagsApi: FeatureFlagsFeatureFlagsApiFilter
+}
+
+type FeatureFlagsConnectionEdges {
+  cursor: String!
+  node: FeatureFlags
+}
+
+type FeatureFlagsConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [FeatureFlagsConnectionEdges]
+}
+
+type PopularBlogsPopularBlogs {
+  Page: String!
+  Visitors: Float!
+  Total: Float!
+}
+
+type PopularBlogs implements Node & Document {
+  popularBlogs: [PopularBlogsPopularBlogs]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input NumberFilter {
+  lt: Float
+  lte: Float
+  gte: Float
+  gt: Float
+  eq: Float
+  exists: Boolean
+  in: [Float]
+}
+
+input PopularBlogsPopularBlogsFilter {
+  Page: StringFilter
+  Visitors: NumberFilter
+  Total: NumberFilter
+}
+
+input PopularBlogsFilter {
+  popularBlogs: PopularBlogsPopularBlogsFilter
+}
+
+type PopularBlogsConnectionEdges {
+  cursor: String!
+  node: PopularBlogs
+}
+
+type PopularBlogsConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [PopularBlogsConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -341,6 +461,10 @@ type Mutation {
   createProjects(relativePath: String!, params: ProjectsMutation!): Projects!
   updateSiteConfig(relativePath: String!, params: SiteConfigMutation!): SiteConfig!
   createSiteConfig(relativePath: String!, params: SiteConfigMutation!): SiteConfig!
+  updateFeatureFlags(relativePath: String!, params: FeatureFlagsMutation!): FeatureFlags!
+  createFeatureFlags(relativePath: String!, params: FeatureFlagsMutation!): FeatureFlags!
+  updatePopularBlogs(relativePath: String!, params: PopularBlogsMutation!): PopularBlogs!
+  createPopularBlogs(relativePath: String!, params: PopularBlogsMutation!): PopularBlogs!
 }
 
 input DocumentUpdateMutation {
@@ -348,6 +472,8 @@ input DocumentUpdateMutation {
   newsletter: NewsletterMutation
   projects: ProjectsMutation
   siteConfig: SiteConfigMutation
+  featureFlags: FeatureFlagsMutation
+  popularBlogs: PopularBlogsMutation
   relativePath: String
 }
 
@@ -356,6 +482,8 @@ input DocumentMutation {
   newsletter: NewsletterMutation
   projects: ProjectsMutation
   siteConfig: SiteConfigMutation
+  featureFlags: FeatureFlagsMutation
+  popularBlogs: PopularBlogsMutation
 }
 
 input PostMutation {
@@ -428,6 +556,44 @@ input SiteConfigMutation {
   about: SiteConfigAboutMutation
   techStack: [SiteConfigTechStackMutation]
   workExperience: [SiteConfigWorkExperienceMutation]
+}
+
+input FeatureFlagsFeatureFlagsMutation {
+  showBlog: Boolean
+  showAbout: Boolean
+  showContact: Boolean
+  showProjects: Boolean
+  showIndex: Boolean
+  showTags: Boolean
+  showSearch: Boolean
+  showNewsletter: Boolean
+  showPrivacy: Boolean
+  showTermsOfService: Boolean
+  showSubNewsletter: Boolean
+  showTrendingPosts: Boolean
+  showTermsandConditions: Boolean
+  showPrivacyPolicy: Boolean
+}
+
+input FeatureFlagsFeatureFlagsApiMutation {
+  enableNotionAPI: Boolean
+  enableauthorInfoAPI: Boolean
+  enableUmamiServiceAPI: Boolean
+}
+
+input FeatureFlagsMutation {
+  featureFlags: FeatureFlagsFeatureFlagsMutation
+  FeatureFlagsApi: FeatureFlagsFeatureFlagsApiMutation
+}
+
+input PopularBlogsPopularBlogsMutation {
+  Page: String
+  Visitors: Float
+  Total: Float
+}
+
+input PopularBlogsMutation {
+  popularBlogs: [PopularBlogsPopularBlogsMutation]
 }
 
 schema {

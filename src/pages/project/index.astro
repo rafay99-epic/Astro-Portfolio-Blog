@@ -6,7 +6,7 @@ import authorConfig from "@config/info.json";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import ProjectList from "@react/ProjectList/Projectlist.tsx";
-import { featureFlags } from "@util/featureFlag.ts";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 const projects = await getCollection("projects");
 
 try {
