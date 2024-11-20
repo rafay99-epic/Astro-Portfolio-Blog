@@ -209,3 +209,56 @@ query siteConfigConnection($before: String, $after: String, $first: Float, $last
     }
   }
 }
+
+query featureFlags($relativePath: String!) {
+  featureFlags(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...FeatureFlagsParts
+  }
+}
+
+query featureFlagsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: FeatureFlagsFilter) {
+  featureFlagsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...FeatureFlagsParts
+      }
+    }
+  }
+}

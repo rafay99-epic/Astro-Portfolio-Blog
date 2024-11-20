@@ -7,7 +7,7 @@ import authorConfig from "@config/info.json";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Newsletter from "@react/Newsletter/ListNewsletter/NewsletterList";
-import { featureFlags } from "@util/featureFlag";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 try {
   if (!featureFlags.showNewsletter) {

@@ -1,6 +1,6 @@
 ---
 const { company, position, employementDate, roles, technologies } = Astro.props;
-import { featureFlags } from "@util/featureFlag";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 try {
   if (!featureFlags.showAbout) {

@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import { getTrendingPosts } from "@pages/api/umamiService";
 import { popularBlogs } from "@util/traffic";
-import { FeatureFlagsApi } from "@util/featureFlag";
+import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 import type { PopularBlog, ApiTrendingPost, CombinedPost } from "@util/types";
 
 const allPosts = await getCollection("blog");

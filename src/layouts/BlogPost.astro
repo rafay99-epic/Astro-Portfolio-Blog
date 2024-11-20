@@ -8,7 +8,7 @@ import { Image } from "astro:assets";
 import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton.tsx";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "../components/AstroCompoent/BlogComments/PostComment.astro";
-import { featureFlags } from "../util/featureFlag.ts";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];

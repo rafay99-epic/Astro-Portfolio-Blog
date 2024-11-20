@@ -1,0 +1,23 @@
+{
+    "featureFlags": {
+        "showBlog": true,
+        "showAbout": true,
+        "showContact": true,
+        "showProjects": true,
+        "showIndex": true,
+        "showTags": true,
+        "showSearch": true,
+        "showNewsletter": true,
+        "showPrivacy": true,
+        "showTermsOfService": true,
+        "showSubNewsletter": true,
+        "showTrendingPosts": true,
+        "showTermsandConditions": true,
+        "showPrivacyPolicy": true
+    },
+    "FeatureFlagsApi": {
+        "enableNotionAPI": false,
+        "enableauthorInfoAPI": true,
+        "enableUmamiServiceAPI": false
+    }
+}
