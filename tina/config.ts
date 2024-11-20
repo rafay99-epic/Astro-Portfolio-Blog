@@ -187,7 +187,7 @@ export default defineConfig({
       {
         name: "siteConfig",
         label: "Site Configuration",
-        path: "/src/content/config",
+        path: "/src/util",
         format: "json",
         fields: [
           {
