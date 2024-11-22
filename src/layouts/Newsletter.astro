@@ -1,10 +1,13 @@
 ---
-import BaseHead from "../components/AstroCompoent/base/BaseHead.astro";
-import Footer from "../components/AstroCompoent/footer/Footer.astro";
-import Header from "../components/AstroCompoent/header/Header.astro";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+
 import SpeedInsights from "@vercel/speed-insights/astro";
-import PostComment from "../components/AstroCompoent/BlogComments/PostComment.astro";
-import ShareButtons from "../components/ReaactCompoents/SocialButton/socialButton";
+
+import PostComment from "@astro/BlogComments/PostComment.astro";
+import ShareButtons from "@react/SocialButton/socialButton";
+
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 const pageUrl = Astro.url.href;
 
