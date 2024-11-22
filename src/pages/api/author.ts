@@ -1,4 +1,4 @@
-import authorConfig from "@util/info";
+import authorConfig from "@config/siteConfig/info.json";
 import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 
 export async function GET() {
