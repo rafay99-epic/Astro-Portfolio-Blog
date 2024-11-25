@@ -7,6 +7,7 @@ heroImage: /comingsoon.png
 authorName: 'Abdul Rafay '
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
+  - Developer-Tools
   - Thoughts-Process
   - Blogs
 ---
@@ -35,4 +36,115 @@ If you haven’t installed Docker or WSL on your machine yet, no problem. Check 
 * [Docker Installation Guide](https://docs.docker.com/get-docker/)
 * [WSL Installation Guide](https://learn.microsoft.com/en-us/windows/wsl/install)
 
-I followed these guides myself, and they’ll walk you through everything you need. Just read them carefully, and you’ll have both Docker and WSL up and running in no time.
+Here's a polished version of your text while keeping the casual tone intact:
+
+***
+
+Once you’ve installed WSL, head over to the Microsoft Store and install **Ubuntu**. If this is your first time setting up WSL, Ubuntu will automatically be installed on your system. Next, we’ll install Docker inside Ubuntu. Yes, I know—it’s a bit of a pain, but trust me, it’s worth it.
+
+To install Docker on Ubuntu, just follow these steps:
+
+### Enable Docker in Ubuntu
+
+Run the following commands one by one:
+
+```shell
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
+
+### Install Docker
+
+Once the above steps are done, install Docker using this command:
+
+```shell
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose
+```
+
+Now that Docker is installed, we’re almost there!
+
+### Setting Up SearXNG
+
+1. Switch to the root user with the following command:
+
+```shell
+sudo su
+```
+
+Enter your password when prompted.
+
+1. Navigate to the `/usr/local` directory:
+
+```shell
+cd /usr/local
+```
+
+1. Clone the **SearXNG Docker** project:
+
+```shell
+git clone https://github.com/searxng/searxng-docker.git
+```
+
+1. Enter the cloned project directory:
+
+```shell
+cd searxng-docker
+```
+
+1. If you plan to host this search engine on the internet, you’ll need to edit the `.env` file. This file is where you specify the domain you’ll be using and the email address for SSL encryption (via Let’s Encrypt). However, since I’ll be running this on my local machine, I’m skipping this step.
+
+### Running the Docker Container
+
+Finally, let’s get this search engine up and running! The Docker container will handle cloning, installing dependencies, and running the project in the background. To start it, run the following command:
+
+```shell
+sudo docker-compose up -d
+```
+
+Make sure you’re in the directory where the `docker-compose.yml` file is located; otherwise, this command won’t work.
+
+To bring down the Docker container, simply run this command in the same folder:
+
+```shell
+sudo docker-compose down
+```
+
+This command will stop your Docker container.
+
+And that’s it! Your private search engine should now be up and running. If everything worked as expected, you’re one step closer to reclaiming control over your digital privacy.
+
+### Access the Search Engine
+
+To access your search engine locally, just open your browser and type `localhost` into the address bar. Your search engine should be live and working like a champ, with no issues at all regarding its privacy features.
+
+However, here’s the thing: when I was using WSL with Ubuntu, the Docker container ran fine, but I couldn’t access `localhost`. I searched and searched but couldn’t find a solution. Windows sucks. I followed the same process on my Linux machine, and guess what? It worked perfectly.
+
+### Customization
+
+Not a fan of the default look or feel? No problem! Customizing SearXNG is straightforward. Inside the `searxng` folder, there’s a file called `settings.yml`. This is where all the magic happens. Be careful not to touch the other files unless you know what you’re doing.
+
+For a full list of customization options, check out the official [SearXNG documentation](https://docs.searxng.org/admin/settings/index.html). There are so many options that even I can’t explain them all here. Dive into the docs, and you’ll be good to go.
+
+### Final Thoughts
+
+After spending an hour or two setting this up, I’ve finally got my answers:
+
+* **Is it private?** Yes, it’s the real deal. When I read about how this search engine works, I was blown away by the level of detail and care the developers put into it.
+* **Does it cost money?** Nope! For me, it didn’t cost a dime, but it will use some of your PC’s performance. If you’ve got an extra machine, even better—zero cost and zero interruptions.
+* **Does it update automatically?** Yes, it does. It handles indexing and keeps everything up-to-date with minimal effort on your part.
+* **Can the average person set this up?** Honestly, with this blog post and NetworkChuck’s video as a guide, yes. It might take you a day to get it running, but it’s absolutely worth it in the end.
+
+I’ll be running this on my Linux machine moving forward because, let’s face it, Windows just doesn’t cut it for projects like this. If you’re serious about privacy, switching to Linux will make your life so much easier.
+
+Until next time—keep coding, nerds!
