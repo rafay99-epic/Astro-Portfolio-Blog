@@ -360,6 +360,11 @@ var config_default = defineConfig({
                 type: "boolean",
                 name: "showPrivacyPolicy",
                 label: "Show Privacy Policy"
+              },
+              {
+                type: "boolean",
+                name: "showIdeaPanel",
+                label: "Show Idea Panel"
               }
             ]
           },
@@ -417,6 +422,56 @@ var config_default = defineConfig({
                 name: "Total",
                 label: "Total Views",
                 required: true
+              }
+            ]
+          }
+        ]
+      },
+      // Idea Panel Adding Ideas Page
+      {
+        name: "ideaPanel",
+        label: "Idea Panel",
+        path: "src/config/ideaPanel",
+        format: "json",
+        fields: [
+          {
+            type: "object",
+            name: "categories",
+            label: "Categories",
+            list: true,
+            fields: [
+              {
+                type: "string",
+                name: "category",
+                label: "Category Name",
+                required: true
+              },
+              {
+                type: "object",
+                name: "ideas",
+                label: "Ideas",
+                list: true,
+                fields: [
+                  {
+                    type: "string",
+                    name: "title",
+                    label: "Title",
+                    required: true
+                  },
+                  {
+                    type: "string",
+                    name: "description",
+                    label: "Description",
+                    required: true
+                  },
+                  {
+                    type: "string",
+                    name: "stage",
+                    label: "Stage",
+                    options: ["Idea", "Searching", "Writing"],
+                    required: true
+                  }
+                ]
               }
             ]
           }

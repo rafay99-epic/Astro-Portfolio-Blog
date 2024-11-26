@@ -83,6 +83,7 @@ fragment FeatureFlagsParts on FeatureFlags {
     showTrendingPosts
     showTermsandConditions
     showPrivacyPolicy
+    showIdeaPanel
   }
   FeatureFlagsApi {
     __typename
@@ -98,5 +99,18 @@ fragment PopularBlogsParts on PopularBlogs {
     Page
     Visitors
     Total
+  }
+}
+
+fragment IdeaPanelParts on IdeaPanel {
+  categories {
+    __typename
+    category
+    ideas {
+      __typename
+      title
+      description
+      stage
+    }
   }
 }

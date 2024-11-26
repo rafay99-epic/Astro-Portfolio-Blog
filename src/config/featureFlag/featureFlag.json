@@ -13,7 +13,8 @@
         "showSubNewsletter": true,
         "showTrendingPosts": true,
         "showTermsandConditions": true,
-        "showPrivacyPolicy": true
+        "showPrivacyPolicy": true,
+        "showIdeaPanel": true
     },
     "FeatureFlagsApi": {
         "enableNotionAPI": false,
