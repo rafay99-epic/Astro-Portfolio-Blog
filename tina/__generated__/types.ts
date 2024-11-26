@@ -93,6 +93,8 @@ export type Query = {
   featureFlagsConnection: FeatureFlagsConnection;
   popularBlogs: PopularBlogs;
   popularBlogsConnection: PopularBlogsConnection;
+  ideaPannel: IdeaPannel;
+  ideaPannelConnection: IdeaPannelConnection;
 };
 
 
@@ -206,6 +208,21 @@ export type QueryPopularBlogsConnectionArgs = {
   filter?: InputMaybe<PopularBlogsFilter>;
 };
 
+
+export type QueryIdeaPannelArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryIdeaPannelConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<IdeaPannelFilter>;
+};
+
 export type DocumentFilter = {
   post?: InputMaybe<PostFilter>;
   newsletter?: InputMaybe<NewsletterFilter>;
@@ -213,6 +230,7 @@ export type DocumentFilter = {
   siteConfig?: InputMaybe<SiteConfigFilter>;
   featureFlags?: InputMaybe<FeatureFlagsFilter>;
   popularBlogs?: InputMaybe<PopularBlogsFilter>;
+  ideaPannel?: InputMaybe<IdeaPannelFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -252,7 +270,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | PopularBlogs | Folder;
+export type DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | PopularBlogs | IdeaPannel | Folder;
 
 export type Post = Node & Document & {
   __typename?: 'Post';
@@ -626,6 +644,55 @@ export type PopularBlogsConnection = Connection & {
   edges?: Maybe<Array<Maybe<PopularBlogsConnectionEdges>>>;
 };
 
+export type IdeaPannelCategoriesIdeas = {
+  __typename?: 'IdeaPannelCategoriesIdeas';
+  title: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  stage: Scalars['String']['output'];
+};
+
+export type IdeaPannelCategories = {
+  __typename?: 'IdeaPannelCategories';
+  category: Scalars['String']['output'];
+  ideas?: Maybe<Array<Maybe<IdeaPannelCategoriesIdeas>>>;
+};
+
+export type IdeaPannel = Node & Document & {
+  __typename?: 'IdeaPannel';
+  categories?: Maybe<Array<Maybe<IdeaPannelCategories>>>;
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
+export type IdeaPannelCategoriesIdeasFilter = {
+  title?: InputMaybe<StringFilter>;
+  description?: InputMaybe<StringFilter>;
+  stage?: InputMaybe<StringFilter>;
+};
+
+export type IdeaPannelCategoriesFilter = {
+  category?: InputMaybe<StringFilter>;
+  ideas?: InputMaybe<IdeaPannelCategoriesIdeasFilter>;
+};
+
+export type IdeaPannelFilter = {
+  categories?: InputMaybe<IdeaPannelCategoriesFilter>;
+};
+
+export type IdeaPannelConnectionEdges = {
+  __typename?: 'IdeaPannelConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<IdeaPannel>;
+};
+
+export type IdeaPannelConnection = Connection & {
+  __typename?: 'IdeaPannelConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<IdeaPannelConnectionEdges>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -644,6 +711,8 @@ export type Mutation = {
   createFeatureFlags: FeatureFlags;
   updatePopularBlogs: PopularBlogs;
   createPopularBlogs: PopularBlogs;
+  updateIdeaPannel: IdeaPannel;
+  createIdeaPannel: IdeaPannel;
 };
 
 
@@ -745,6 +814,18 @@ export type MutationCreatePopularBlogsArgs = {
   params: PopularBlogsMutation;
 };
 
+
+export type MutationUpdateIdeaPannelArgs = {
+  relativePath: Scalars['String']['input'];
+  params: IdeaPannelMutation;
+};
+
+
+export type MutationCreateIdeaPannelArgs = {
+  relativePath: Scalars['String']['input'];
+  params: IdeaPannelMutation;
+};
+
 export type DocumentUpdateMutation = {
   post?: InputMaybe<PostMutation>;
   newsletter?: InputMaybe<NewsletterMutation>;
@@ -752,6 +833,7 @@ export type DocumentUpdateMutation = {
   siteConfig?: InputMaybe<SiteConfigMutation>;
   featureFlags?: InputMaybe<FeatureFlagsMutation>;
   popularBlogs?: InputMaybe<PopularBlogsMutation>;
+  ideaPannel?: InputMaybe<IdeaPannelMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -762,6 +844,7 @@ export type DocumentMutation = {
   siteConfig?: InputMaybe<SiteConfigMutation>;
   featureFlags?: InputMaybe<FeatureFlagsMutation>;
   popularBlogs?: InputMaybe<PopularBlogsMutation>;
+  ideaPannel?: InputMaybe<IdeaPannelMutation>;
 };
 
 export type PostMutation = {
@@ -874,6 +957,21 @@ export type PopularBlogsMutation = {
   popularBlogs?: InputMaybe<Array<InputMaybe<PopularBlogsPopularBlogsMutation>>>;
 };
 
+export type IdeaPannelCategoriesIdeasMutation = {
+  title?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  stage?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type IdeaPannelCategoriesMutation = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  ideas?: InputMaybe<Array<InputMaybe<IdeaPannelCategoriesIdeasMutation>>>;
+};
+
+export type IdeaPannelMutation = {
+  categories?: InputMaybe<Array<InputMaybe<IdeaPannelCategoriesMutation>>>;
+};
+
 export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null };
 
 export type NewsletterPartsFragment = { __typename?: 'Newsletter', title: string, summary: string, pubDate: string, draft: boolean, body?: any | null };
@@ -885,6 +983,8 @@ export type SiteConfigPartsFragment = { __typename?: 'SiteConfig', SiteName: str
 export type FeatureFlagsPartsFragment = { __typename?: 'FeatureFlags', featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null };
 
 export type PopularBlogsPartsFragment = { __typename?: 'PopularBlogs', popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null };
+
+export type IdeaPannelPartsFragment = { __typename?: 'IdeaPannel', categories?: Array<{ __typename: 'IdeaPannelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPannelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -1000,6 +1100,25 @@ export type PopularBlogsConnectionQueryVariables = Exact<{
 
 export type PopularBlogsConnectionQuery = { __typename?: 'Query', popularBlogsConnection: { __typename?: 'PopularBlogsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PopularBlogsConnectionEdges', cursor: string, node?: { __typename?: 'PopularBlogs', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null } | null } | null> | null } };
 
+export type IdeaPannelQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type IdeaPannelQuery = { __typename?: 'Query', ideaPannel: { __typename?: 'IdeaPannel', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'IdeaPannelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPannelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null } };
+
+export type IdeaPannelConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<IdeaPannelFilter>;
+}>;
+
+
+export type IdeaPannelConnectionQuery = { __typename?: 'Query', ideaPannelConnection: { __typename?: 'IdeaPannelConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'IdeaPannelConnectionEdges', cursor: string, node?: { __typename?: 'IdeaPannel', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'IdeaPannelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPannelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null } | null } | null> | null } };
+
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
   title
@@ -1106,6 +1225,20 @@ export const PopularBlogsPartsFragmentDoc = gql`
     Page
     Visitors
     Total
+  }
+}
+    `;
+export const IdeaPannelPartsFragmentDoc = gql`
+    fragment IdeaPannelParts on IdeaPannel {
+  categories {
+    __typename
+    category
+    ideas {
+      __typename
+      title
+      description
+      stage
+    }
   }
 }
     `;
@@ -1439,6 +1572,61 @@ export const PopularBlogsConnectionDocument = gql`
   }
 }
     ${PopularBlogsPartsFragmentDoc}`;
+export const IdeaPannelDocument = gql`
+    query ideaPannel($relativePath: String!) {
+  ideaPannel(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...IdeaPannelParts
+  }
+}
+    ${IdeaPannelPartsFragmentDoc}`;
+export const IdeaPannelConnectionDocument = gql`
+    query ideaPannelConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: IdeaPannelFilter) {
+  ideaPannelConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...IdeaPannelParts
+      }
+    }
+  }
+}
+    ${IdeaPannelPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -1477,6 +1665,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     popularBlogsConnection(variables?: PopularBlogsConnectionQueryVariables, options?: C): Promise<{data: PopularBlogsConnectionQuery, variables: PopularBlogsConnectionQueryVariables, query: string}> {
         return requester<{data: PopularBlogsConnectionQuery, variables: PopularBlogsConnectionQueryVariables, query: string}, PopularBlogsConnectionQueryVariables>(PopularBlogsConnectionDocument, variables, options);
+      },
+    ideaPannel(variables: IdeaPannelQueryVariables, options?: C): Promise<{data: IdeaPannelQuery, variables: IdeaPannelQueryVariables, query: string}> {
+        return requester<{data: IdeaPannelQuery, variables: IdeaPannelQueryVariables, query: string}, IdeaPannelQueryVariables>(IdeaPannelDocument, variables, options);
+      },
+    ideaPannelConnection(variables?: IdeaPannelConnectionQueryVariables, options?: C): Promise<{data: IdeaPannelConnectionQuery, variables: IdeaPannelConnectionQueryVariables, query: string}> {
+        return requester<{data: IdeaPannelConnectionQuery, variables: IdeaPannelConnectionQueryVariables, query: string}, IdeaPannelConnectionQueryVariables>(IdeaPannelConnectionDocument, variables, options);
       }
     };
   }

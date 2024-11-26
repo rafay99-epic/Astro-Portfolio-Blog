@@ -100,3 +100,16 @@ fragment PopularBlogsParts on PopularBlogs {
     Total
   }
 }
+
+fragment IdeaPannelParts on IdeaPannel {
+  categories {
+    __typename
+    category
+    ideas {
+      __typename
+      title
+      description
+      stage
+    }
+  }
+}
