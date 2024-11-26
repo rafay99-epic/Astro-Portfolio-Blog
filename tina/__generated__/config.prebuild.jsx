@@ -360,6 +360,11 @@ var config_default = defineConfig({
                 type: "boolean",
                 name: "showPrivacyPolicy",
                 label: "Show Privacy Policy"
+              },
+              {
+                type: "boolean",
+                name: "showIdeaPanel",
+                label: "Show Idea Panel"
               }
             ]
           },
@@ -422,10 +427,11 @@ var config_default = defineConfig({
           }
         ]
       },
+      // Idea Panel Adding Ideas Page
       {
-        name: "ideaPannel",
+        name: "ideaPanel",
         label: "Idea Panel",
-        path: "src/config/ideaPannel",
+        path: "src/config/ideaPanel",
         format: "json",
         fields: [
           {
@@ -463,7 +469,6 @@ var config_default = defineConfig({
                     name: "stage",
                     label: "Stage",
                     options: ["Idea", "Searching", "Writing"],
-                    // Adjust options as needed
                     required: true
                   }
                 ]

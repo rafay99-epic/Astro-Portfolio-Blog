@@ -65,8 +65,8 @@ type Query {
   featureFlagsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: FeatureFlagsFilter): FeatureFlagsConnection!
   popularBlogs(relativePath: String): PopularBlogs!
   popularBlogsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: PopularBlogsFilter): PopularBlogsConnection!
-  ideaPannel(relativePath: String): IdeaPannel!
-  ideaPannelConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: IdeaPannelFilter): IdeaPannelConnection!
+  ideaPanel(relativePath: String): IdeaPanel!
+  ideaPanelConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: IdeaPanelFilter): IdeaPanelConnection!
 }
 
 input DocumentFilter {
@@ -76,7 +76,7 @@ input DocumentFilter {
   siteConfig: SiteConfigFilter
   featureFlags: FeatureFlagsFilter
   popularBlogs: PopularBlogsFilter
-  ideaPannel: IdeaPannelFilter
+  ideaPanel: IdeaPanelFilter
 }
 
 type DocumentConnectionEdges {
@@ -102,7 +102,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | PopularBlogs | IdeaPannel | Folder
+union DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | PopularBlogs | IdeaPanel | Folder
 
 type Post implements Node & Document {
   title: String!
@@ -352,6 +352,7 @@ type FeatureFlagsFeatureFlags {
   showTrendingPosts: Boolean
   showTermsandConditions: Boolean
   showPrivacyPolicy: Boolean
+  showIdeaPanel: Boolean
 }
 
 type FeatureFlagsFeatureFlagsApi {
@@ -383,6 +384,7 @@ input FeatureFlagsFeatureFlagsFilter {
   showTrendingPosts: BooleanFilter
   showTermsandConditions: BooleanFilter
   showPrivacyPolicy: BooleanFilter
+  showIdeaPanel: BooleanFilter
 }
 
 input FeatureFlagsFeatureFlagsApiFilter {
@@ -451,48 +453,48 @@ type PopularBlogsConnection implements Connection {
   edges: [PopularBlogsConnectionEdges]
 }
 
-type IdeaPannelCategoriesIdeas {
+type IdeaPanelCategoriesIdeas {
   title: String!
   description: String!
   stage: String!
 }
 
-type IdeaPannelCategories {
+type IdeaPanelCategories {
   category: String!
-  ideas: [IdeaPannelCategoriesIdeas]
+  ideas: [IdeaPanelCategoriesIdeas]
 }
 
-type IdeaPannel implements Node & Document {
-  categories: [IdeaPannelCategories]
+type IdeaPanel implements Node & Document {
+  categories: [IdeaPanelCategories]
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
 }
 
-input IdeaPannelCategoriesIdeasFilter {
+input IdeaPanelCategoriesIdeasFilter {
   title: StringFilter
   description: StringFilter
   stage: StringFilter
 }
 
-input IdeaPannelCategoriesFilter {
+input IdeaPanelCategoriesFilter {
   category: StringFilter
-  ideas: IdeaPannelCategoriesIdeasFilter
+  ideas: IdeaPanelCategoriesIdeasFilter
 }
 
-input IdeaPannelFilter {
-  categories: IdeaPannelCategoriesFilter
+input IdeaPanelFilter {
+  categories: IdeaPanelCategoriesFilter
 }
 
-type IdeaPannelConnectionEdges {
+type IdeaPanelConnectionEdges {
   cursor: String!
-  node: IdeaPannel
+  node: IdeaPanel
 }
 
-type IdeaPannelConnection implements Connection {
+type IdeaPanelConnection implements Connection {
   pageInfo: PageInfo!
   totalCount: Float!
-  edges: [IdeaPannelConnectionEdges]
+  edges: [IdeaPanelConnectionEdges]
 }
 
 type Mutation {
@@ -512,8 +514,8 @@ type Mutation {
   createFeatureFlags(relativePath: String!, params: FeatureFlagsMutation!): FeatureFlags!
   updatePopularBlogs(relativePath: String!, params: PopularBlogsMutation!): PopularBlogs!
   createPopularBlogs(relativePath: String!, params: PopularBlogsMutation!): PopularBlogs!
-  updateIdeaPannel(relativePath: String!, params: IdeaPannelMutation!): IdeaPannel!
-  createIdeaPannel(relativePath: String!, params: IdeaPannelMutation!): IdeaPannel!
+  updateIdeaPanel(relativePath: String!, params: IdeaPanelMutation!): IdeaPanel!
+  createIdeaPanel(relativePath: String!, params: IdeaPanelMutation!): IdeaPanel!
 }
 
 input DocumentUpdateMutation {
@@ -523,7 +525,7 @@ input DocumentUpdateMutation {
   siteConfig: SiteConfigMutation
   featureFlags: FeatureFlagsMutation
   popularBlogs: PopularBlogsMutation
-  ideaPannel: IdeaPannelMutation
+  ideaPanel: IdeaPanelMutation
   relativePath: String
 }
 
@@ -534,7 +536,7 @@ input DocumentMutation {
   siteConfig: SiteConfigMutation
   featureFlags: FeatureFlagsMutation
   popularBlogs: PopularBlogsMutation
-  ideaPannel: IdeaPannelMutation
+  ideaPanel: IdeaPanelMutation
 }
 
 input PostMutation {
@@ -624,6 +626,7 @@ input FeatureFlagsFeatureFlagsMutation {
   showTrendingPosts: Boolean
   showTermsandConditions: Boolean
   showPrivacyPolicy: Boolean
+  showIdeaPanel: Boolean
 }
 
 input FeatureFlagsFeatureFlagsApiMutation {
@@ -647,19 +650,19 @@ input PopularBlogsMutation {
   popularBlogs: [PopularBlogsPopularBlogsMutation]
 }
 
-input IdeaPannelCategoriesIdeasMutation {
+input IdeaPanelCategoriesIdeasMutation {
   title: String
   description: String
   stage: String
 }
 
-input IdeaPannelCategoriesMutation {
+input IdeaPanelCategoriesMutation {
   category: String
-  ideas: [IdeaPannelCategoriesIdeasMutation]
+  ideas: [IdeaPanelCategoriesIdeasMutation]
 }
 
-input IdeaPannelMutation {
-  categories: [IdeaPannelCategoriesMutation]
+input IdeaPanelMutation {
+  categories: [IdeaPanelCategoriesMutation]
 }
 
 schema {

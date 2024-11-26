@@ -14,7 +14,7 @@
         "showTrendingPosts": true,
         "showTermsandConditions": true,
         "showPrivacyPolicy": true,
-        "showIdeaPannel": true
+        "showIdeaPanel": true
     },
     "FeatureFlagsApi": {
         "enableNotionAPI": false,

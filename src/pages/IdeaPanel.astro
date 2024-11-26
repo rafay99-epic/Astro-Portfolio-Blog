@@ -5,14 +5,14 @@ import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import IdeaPannelReact from "@react/IdeasPannel/ideaPannel";
+import IdeaPannelReact from "@components/ReaactCompoents/IdeaPanel/ideaPanel";
 import { getCollection } from "astro:content";
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
 
 try {
-  if (!featureFlags.showIdeaPannel) {
+  if (!featureFlags.showIdeaPanel) {
     return Astro.redirect("/access-denied");
   }
 } catch (error) {
@@ -27,16 +27,16 @@ try {
       title={`Ideas Pannel | ${authorConfig.SiteName}`}
       description={`Checkout all ideas on ${authorConfig.SiteName} and explore categorized content.`}
     />
+    <SpeedInsights />
   </head>
   <body>
     <Header />
-    <SpeedInsights />
+
     <main>
       <section>
         <IdeaPannelReact client:idle posts={posts} />
-
-        <Footer class="mt-auto" />
       </section>
+      <Footer class="mt-auto" />
     </main>
   </body>
 </html>

@@ -362,6 +362,11 @@ export default defineConfig({
                 name: "showPrivacyPolicy",
                 label: "Show Privacy Policy",
               },
+              {
+                type: "boolean",
+                name: "showIdeaPanel",
+                label: "Show Idea Panel",
+              },
             ],
           },
           {
@@ -423,10 +428,11 @@ export default defineConfig({
           },
         ],
       },
+      // Idea Panel Adding Ideas Page
       {
-        name: "ideaPannel",
+        name: "ideaPanel",
         label: "Idea Panel",
-        path: "src/config/ideaPannel",
+        path: "src/config/ideaPanel",
         format: "json",
         fields: [
           {
@@ -463,7 +469,7 @@ export default defineConfig({
                     type: "string",
                     name: "stage",
                     label: "Stage",
-                    options: ["Idea", "Searching", "Writing"], // Adjust options as needed
+                    options: ["Idea", "Searching", "Writing"],
                     required: true,
                   },
                 ],
