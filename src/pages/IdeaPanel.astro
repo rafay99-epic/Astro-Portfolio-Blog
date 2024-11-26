@@ -5,7 +5,7 @@ import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import IdeaPannelReact from "@components/ReaactCompoents/IdeaPanel/ideaPanel";
+import IdeaPanelReact from "@components/ReaactCompoents/IdeaPanel/ideaPanel";
 import { getCollection } from "astro:content";
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
@@ -34,7 +34,7 @@ try {
 
     <main>
       <section>
-        <IdeaPannelReact client:idle posts={posts} />
+        <IdeaPanelReact client:idle posts={posts} />
       </section>
       <Footer class="mt-auto" />
     </main>
