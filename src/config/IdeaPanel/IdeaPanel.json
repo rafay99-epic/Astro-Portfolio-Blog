@@ -149,6 +149,11 @@
       "category": "Flutter",
       "ideas": [
         {
+          "title": "Deploy Apps using Store bird  in Flutter",
+          "description": "Using Store bird to sent update to flutter app",
+          "stage": "Idea"
+        },
+        {
           "title": "Battle of Bases",
           "description": "Which base is good, Superbase, Firebase, AppWrite, PocketBase",
           "stage": "Idea"
