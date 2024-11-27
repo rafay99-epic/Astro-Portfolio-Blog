@@ -431,7 +431,7 @@ var config_default = defineConfig({
       {
         name: "ideaPanel",
         label: "Idea Panel",
-        path: "src/config/ideaPanel",
+        path: "src/config/IdeaPanel",
         format: "json",
         fields: [
           {
