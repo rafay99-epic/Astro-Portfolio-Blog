@@ -1,147 +1,159 @@
-[
+{
+  "0": {
+    "category": "Programming and Frameworks",
+    "ideas": [
+      {
+        "title": "The Art of State Management in React: Beyond Redux",
+        "description": "Explore alternatives to Redux, like Zustand, Jotai, or React Context API, and discuss performance considerations.",
+        "stage": "Idea"
+      },
+      {
+        "title": "Asynchronous Programming: From Callbacks to Rust's Async/Await",
+        "description": "A deep dive into the evolution of async programming paradigms across languages.",
+        "stage": "Searching"
+      },
+      {
+        "title": "Why TypeScript Isn’t Just JavaScript with Types",
+        "description": "Explore the benefits, hidden challenges, and advanced use cases of TypeScript.",
+        "stage": "Writing"
+      },
+      {
+        "title": "The Anatomy of a Custom React Hook",
+        "description": "Teach how to build reusable hooks for complex state and effects in real-world applications.",
+        "stage": "Idea"
+      }
+    ]
+  },
+  "1": {
+    "category": "DevOps and Infrastructure",
+    "ideas": [
+      {
+        "title": "Dockerize Everything: Creating Portable Development Environments",
+        "description": "Showcase the step-by-step process of containerizing a full-stack application.",
+        "stage": "Writing"
+      },
+      {
+        "title": "CI/CD Pipelines Demystified: Automating Everything from Code to Production",
+        "description": "Explain how to set up pipelines with GitHub Actions, GitLab CI/CD, or CircleCI.",
+        "stage": "Searching"
+      },
+      {
+        "title": "Terraform vs. Pulumi: Infrastructure as Code Showdown",
+        "description": "A comparative analysis of two powerful tools for managing cloud infrastructure.",
+        "stage": "Idea"
+      }
+    ]
+  },
+  "2": {
+    "category": "AI and Machine Learning",
+    "ideas": [
+      {
+        "title": "The Nuts and Bolts of Deploying Machine Learning Models",
+        "description": "Discuss best practices for deploying ML models to production environments using frameworks like TensorFlow Serving or FastAPI.",
+        "stage": "Idea"
+      },
+      {
+        "title": "AI-Powered Code Review: How GPT Models Transform Development",
+        "description": "Explore AI tools like GitHub Copilot and how they integrate into modern workflows.",
+        "stage": "Writing"
+      },
+      {
+        "title": "Applications of AI for Mental Health Illness: A Deep Dive into Current Research",
+        "description": "A focused article sharing insights from your academic assignment.",
+        "stage": "Searching"
+      }
+    ]
+  },
+  "3": {
+    "category": "Frontend and UI/UX",
+    "ideas": [
+      {
+        "title": "The Psychology of Color: How to Choose a Palette for Your Next App",
+        "description": "Discuss the science and user experience impact of color choices in design.",
+        "stage": "Idea"
+      },
+      {
+        "title": "Optimizing Web Performance: A Case Study on Core Web Vitals",
+        "description": "Share insights and tools for improving site speed and usability.",
+        "stage": "Writing"
+      },
+      {
+        "title": "Dynamic Animations in React with Framer Motion",
+        "description": "Create a tutorial on implementing complex animations while maintaining performance.",
+        "stage": "Searching"
+      }
+    ]
+  },
+  "4": {
+    "category": "Backend and Databases",
+    "ideas": [
+      {
+        "title": "GraphQL vs. REST: When to Use Which?",
+        "description": "Discuss practical scenarios where one might outperform the other.",
+        "stage": "Writing"
+      },
+      {
+        "title": "Scaling Databases: The Why and How of Sharding and Replication",
+        "description": "Dive into techniques for managing large-scale data.",
+        "stage": "Searching"
+      },
+      {
+        "title": "Exploring Event-Driven Architectures with Kafka",
+        "description": "Teach the basics and real-world use cases of Kafka.",
+        "stage": "Idea"
+      }
+    ]
+  },
+  "5": {
+    "category": "Security and Best Practices",
+    "ideas": [
+      {
+        "title": "Securing APIs: OAuth, JWT, and Beyond",
+        "description": "A guide to modern API authentication techniques.",
+        "stage": "Idea"
+      },
+      {
+        "title": "Web Application Security: Top 10 Vulnerabilities and How to Mitigate Them",
+        "description": "Focus on OWASP guidelines with examples.",
+        "stage": "Writing"
+      },
+      {
+        "title": "Secrets Management in CI/CD Pipelines",
+        "description": "Discuss tools like HashiCorp Vault or AWS Secrets Manager.",
+        "stage": "Searching"
+      }
+    ]
+  },
+  "6": {
+    "category": "Career Development",
+    "ideas": [
+      {
+        "title": "The Developer Portfolio: What Hiring Managers Look For",
+        "description": "Share tips and strategies for creating a standout portfolio.",
+        "stage": "Searching"
+      },
+      {
+        "title": "Code Smells and How to Deal with Them",
+        "description": "An in-depth analysis of bad code patterns and refactoring strategies.",
+        "stage": "Idea"
+      },
+      {
+        "title": "How to Write Developer-Focused Documentation That Doesn’t Suck",
+        "description": "Offer insights on creating useful and concise documentation.",
+        "stage": "Writing"
+      }
+    ]
+  },
+  "categories": [
     {
-        "category": "Programming and Frameworks",
-        "ideas": [
-            {
-                "title": "The Art of State Management in React: Beyond Redux",
-                "description": "Explore alternatives to Redux, like Zustand, Jotai, or React Context API, and discuss performance considerations.",
-                "stage": "Idea"
-            },
-            {
-                "title": "Asynchronous Programming: From Callbacks to Rust's Async/Await",
-                "description": "A deep dive into the evolution of async programming paradigms across languages.",
-                "stage": "Searching"
-            },
-            {
-                "title": "Why TypeScript Isn’t Just JavaScript with Types",
-                "description": "Explore the benefits, hidden challenges, and advanced use cases of TypeScript.",
-                "stage": "Writing"
-            },
-            {
-                "title": "The Anatomy of a Custom React Hook",
-                "description": "Teach how to build reusable hooks for complex state and effects in real-world applications.",
-                "stage": "Idea"
-            }
-        ]
-    },
-    {
-        "category": "DevOps and Infrastructure",
-        "ideas": [
-            {
-                "title": "Dockerize Everything: Creating Portable Development Environments",
-                "description": "Showcase the step-by-step process of containerizing a full-stack application.",
-                "stage": "Writing"
-            },
-            {
-                "title": "CI/CD Pipelines Demystified: Automating Everything from Code to Production",
-                "description": "Explain how to set up pipelines with GitHub Actions, GitLab CI/CD, or CircleCI.",
-                "stage": "Searching"
-            },
-            {
-                "title": "Terraform vs. Pulumi: Infrastructure as Code Showdown",
-                "description": "A comparative analysis of two powerful tools for managing cloud infrastructure.",
-                "stage": "Idea"
-            }
-        ]
-    },
-    {
-        "category": "AI and Machine Learning",
-        "ideas": [
-            {
-                "title": "The Nuts and Bolts of Deploying Machine Learning Models",
-                "description": "Discuss best practices for deploying ML models to production environments using frameworks like TensorFlow Serving or FastAPI.",
-                "stage": "Idea"
-            },
-            {
-                "title": "AI-Powered Code Review: How GPT Models Transform Development",
-                "description": "Explore AI tools like GitHub Copilot and how they integrate into modern workflows.",
-                "stage": "Writing"
-            },
-            {
-                "title": "Applications of AI for Mental Health Illness: A Deep Dive into Current Research",
-                "description": "A focused article sharing insights from your academic assignment.",
-                "stage": "Searching"
-            }
-        ]
-    },
-    {
-        "category": "Frontend and UI/UX",
-        "ideas": [
-            {
-                "title": "The Psychology of Color: How to Choose a Palette for Your Next App",
-                "description": "Discuss the science and user experience impact of color choices in design.",
-                "stage": "Idea"
-            },
-            {
-                "title": "Optimizing Web Performance: A Case Study on Core Web Vitals",
-                "description": "Share insights and tools for improving site speed and usability.",
-                "stage": "Writing"
-            },
-            {
-                "title": "Dynamic Animations in React with Framer Motion",
-                "description": "Create a tutorial on implementing complex animations while maintaining performance.",
-                "stage": "Searching"
-            }
-        ]
-    },
-    {
-        "category": "Backend and Databases",
-        "ideas": [
-            {
-                "title": "GraphQL vs. REST: When to Use Which?",
-                "description": "Discuss practical scenarios where one might outperform the other.",
-                "stage": "Writing"
-            },
-            {
-                "title": "Scaling Databases: The Why and How of Sharding and Replication",
-                "description": "Dive into techniques for managing large-scale data.",
-                "stage": "Searching"
-            },
-            {
-                "title": "Exploring Event-Driven Architectures with Kafka",
-                "description": "Teach the basics and real-world use cases of Kafka.",
-                "stage": "Idea"
-            }
-        ]
-    },
-    {
-        "category": "Security and Best Practices",
-        "ideas": [
-            {
-                "title": "Securing APIs: OAuth, JWT, and Beyond",
-                "description": "A guide to modern API authentication techniques.",
-                "stage": "Idea"
-            },
-            {
-                "title": "Web Application Security: Top 10 Vulnerabilities and How to Mitigate Them",
-                "description": "Focus on OWASP guidelines with examples.",
-                "stage": "Writing"
-            },
-            {
-                "title": "Secrets Management in CI/CD Pipelines",
-                "description": "Discuss tools like HashiCorp Vault or AWS Secrets Manager.",
-                "stage": "Searching"
-            }
-        ]
-    },
-    {
-        "category": "Career Development",
-        "ideas": [
-            {
-                "title": "The Developer Portfolio: What Hiring Managers Look For",
-                "description": "Share tips and strategies for creating a standout portfolio.",
-                "stage": "Searching"
-            },
-            {
-                "title": "Code Smells and How to Deal with Them",
-                "description": "An in-depth analysis of bad code patterns and refactoring strategies.",
-                "stage": "Idea"
-            },
-            {
-                "title": "How to Write Developer-Focused Documentation That Doesn’t Suck",
-                "description": "Offer insights on creating useful and concise documentation.",
-                "stage": "Writing"
-            }
-        ]
+      "category": "Flutter",
+      "ideas": [
+        {
+          "title": "Battle of Bases",
+          "description": "Which base is good, Superbase, Firebase, AppWrite, PocketBase",
+          "stage": "Idea"
+        }
+      ]
     }
-]
+  ]
+}
