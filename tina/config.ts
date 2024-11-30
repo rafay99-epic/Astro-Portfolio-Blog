@@ -173,7 +173,7 @@ export default defineConfig({
             list: true,
             required: false,
             ui: {
-              component: "categories",
+              component: "tags",
             },
           },
           {

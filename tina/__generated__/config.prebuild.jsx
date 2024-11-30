@@ -172,7 +172,7 @@ var config_default = defineConfig({
             list: true,
             required: false,
             ui: {
-              component: "categories"
+              component: "tags"
             }
           },
           {
