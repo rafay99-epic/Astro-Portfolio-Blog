@@ -1,80 +1,114 @@
 ---
 Projecttitle: Cinematic Experience
-ProjectDescription: 'Blogging Website Developed with React, Astro and Tailwind'
+ProjectDescription: "Blogging Website Developed with React, Astro and Tailwind"
 ProjectImage: /ProjectImages//Cinematic-Experience.png
-draft: true
+draft: false
 ProjectTech:
   - CSS
   - Typescript
   - Tailwind
   - Astro
   - React
+  - Svelte
+ProjectCategory: ["Web Apps"]
 ---
 
-> **A captivating platform that brings cinematic wonders to life!**\
-> Explore immersive content powered by cutting-edge technologies and a seamless user experience.
+In my latest project, **Cinematic Experience**, I’ve crafted a platform dedicated to exploring the world of movies, TV shows, and entertainment. This project blends my love for film with my technical skills, resulting in a space where thoughtful reviews and engaging content take center stage. Let me walk you through the details of how I built it, the challenges I faced, and the technology that powers it.
 
-## 🚀 Features
+## 🎥 What is Cinematic Experience?
 
-* 🌐 **Modern Tech Stack**: Astro, React, Svelte, Tailwind CSS.
-* ✍️ **Content Management**: TinaCMS for effortless blog post handling.
-* 📄 **Markdown Support**: Write content with simplicity and flexibility.
+**Cinematic Experience** is a content-driven website that hosts blog posts, reviews, and opinion pieces about movies and TV shows. Whether you’re looking for an in-depth analysis of a recent blockbuster or insights into storytelling trends, this platform has something for every cinephile.
 
-## 🛠️ Tech Stack
+## 💻 Tech Stack
 
-\| Technology  | Purpose                |
-\|-------------|------------------------|
-\| Astro       | Static site generation |
-\| Tailwind CSS| Styling and layout     |
-\| React & Svelte | Interactive components |
-\| Markdown    | Content writing        |
-\| TinaCMS     | Blog post management   |
+Building a content-focused platform required choosing the right tools to manage both the technical and editorial sides. Here's what I used:
 
-## 💻 Live Demo
+- **Astro**: A modern static site generator that makes the site fast and flexible.
+- **React & Svelte**: For building dynamic, interactive components.
+- **Tailwind CSS**: To create a clean, responsive, and minimalist design.
+- **Markdown**: For easy content writing and formatting.
+- **TinaCMS**: To manage blog posts effortlessly.
 
-Experience it online here: **[Cinematic Experience](https://github.com/rafay99-epic/Cinematic-Experience)**
+## 🗂️ Project Structure
 
-## 🏃‍♂️ Running Locally
+The project’s folder structure is organized for scalability and maintainability:
 
-### Prerequisites
-
-Ensure you have **Node.js** installed. You can download it from [Node.js official site](https://nodejs.org/).
-
-### Steps to Run:
-
-1. **Fork the repository**:\
-   Click the **Fork** button on the top right corner of the repo.
-2. **Clone your forked repo**:
-
-```bash
-   git clone https://github.com/your-username/Cinematic-Experience.git  
+```
+├───.astro
+│   ├───astro
+│   └───collections
+├───.vscode
+├───content
+│   └───posts
+├───public
+│   ├───admin
+│   └───assets
+│       ├───blog
+│       └───fonts
+├───src
+│   ├───components
+│   │   ├───ReactCompoent
+│   │   │   ├───blogPosts
+│   │   │   ├───search
+│   │   │   └───tag
+│   │   └───svg
+│   ├───content
+│   │   ├───blog
+│   │   └───config
+│   ├───interfaces
+│   ├───layouts
+│   ├───pages
+│   │   └───blog
+│   ├───styles
+│   └───utils
+└───tina
+    └───__generated__
 ```
 
-1. **Navigate into the project folder**:
+### Key Highlights:
 
-```bash
-   cd Cinematic-Experience  
-```
+- **`src/components`**: Contains reusable components for blog posts, search functionality, and tags.
+- **`content/posts`**: Stores all the Markdown files for blog posts.
+- **`tina/__generated__`**: Automatically generated files by TinaCMS to manage content dynamically.
 
-1. **Install dependencies**:
+## 🏃‍♂️ Running the Project
 
-```bash
-   npm install  
-```
+If you’re interested in running this project locally, follow these steps:
 
-1. **Start the development server**:
+1. **Fork and clone the repository**:
+   ```bash
+   git clone https://github.com/rafay99-epic/Cinematic-Experience.git
+   ```
+2. **Navigate to the project directory**:
+   ```bash
+   cd Cinematic-Experience
+   ```
+3. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+4. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+5. Open your browser and visit `http://localhost:4321` to see the site in action.
 
-```bash
-   npm run dev  
-```
+## ✍️ Writing Content
 
-1. Open your browser and go to `http://localhost:4321`.
+Writing blog posts is simple with Markdown, making it easy to focus on the content rather than formatting. TinaCMS provides a user-friendly interface to manage and update posts without diving into the codebase.
 
-***
+## 🚀 Lessons Learned
 
-## ✍️ Writing Blog Posts
+Throughout this project, I learned:
 
-* Use **Markdown** to create and edit content.
-* Manage blog posts with **TinaCMS**, providing an intuitive interface for handling content updates.
+- How to integrate **TinaCMS** for seamless content management.
+- The power of **Astro** in building fast and flexible websites.
+- The importance of organizing a codebase for long-term maintainability.
 
-### 🎥 Ready to dive into a cinematic journey? Fork the repo and start your adventure today! 🎬
+## 🌟 Conclusion
+
+**Cinematic Experience** is more than just a blog; it’s a passion project that merges my love for storytelling with technology. Whether you’re here to read reviews or contribute to the content, I hope this platform offers value to all movie lovers.
+
+If you're interested in the code or want to contribute, check out the GitHub repository [here](https://github.com/rafay99-epic/Cinematic-Experience).
+
+Lights, camera, action! 🎥
