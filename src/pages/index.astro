@@ -41,14 +41,19 @@ try {
         <div class="main-container">
           <div class="side-by-side-containers">
             <div class="left-container">
-              <Greeting name={name} jobTitle={jobTitle} position={position} />
+              <Greeting
+                client:load
+                name={name}
+                jobTitle={jobTitle}
+                position={position}
+              />
               <div class="animated-text fade-slide-in social-links-container">
                 <SocialLinks />
               </div>
               <ConnectButton />
             </div>
             <div class="right-container">
-              <ProfileImage picture={picture} />
+              <ProfileImage client:load picture={picture} />
             </div>
           </div>
         </div>
@@ -65,7 +70,7 @@ try {
         <p class="text-center text-lg font-bold mb-6">
           I have experience with these technologies
         </p>
-        <SkillsShowcase client:idle />
+        <SkillsShowcase client:load />
       </section>
 
       <section style="margin-block-start: 5rem; margin-block-end: 10rem;">
@@ -80,7 +85,7 @@ try {
         <p class="text-center text-lg font-bold mb-6">
           Let's Connect & Build Something Together
         </p>
-        <ContactFormHome client:idle />
+        <ContactFormHome client:load />
       </section>
 
       <Footer class="mt-auto" />

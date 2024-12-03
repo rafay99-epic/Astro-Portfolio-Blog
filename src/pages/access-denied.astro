@@ -27,7 +27,7 @@ const featureName = Astro.url.searchParams.get("feature") ?? "Exciting Feature";
         role="alert"
         aria-live="polite"
       >
-        <ComingSoon featureName={featureName} client:idle />
+        <ComingSoon featureName={featureName} client:load />
       </div>
     </main>
   </body>
