@@ -1,4 +1,5 @@
 const codeBlocks = document.querySelectorAll('pre:has(code)');
+if (!codeBlocks.length) return;
 
 //add copy btn to every code block on the dom
 codeBlocks.forEach((code) => {
@@ -7,12 +8,15 @@ codeBlocks.forEach((code) => {
   use.setAttribute('href', '/copy.svg#empty');
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.classList.add('copy-svg');
+  svg.setAttribute('aria-hidden', 'true');
   svg.appendChild(use);
 
   //create button
   const btn = document.createElement('button');
   btn.appendChild(svg);
   btn.classList.add('copy-btn');
+  btn.setAttribute('aria-label', 'Copy code to clipboard');
+  btn.setAttribute('title', 'Copy code to clipboard');
   btn.addEventListener('click', (e) => copyCode(e));
 
   //container to fix copy button
