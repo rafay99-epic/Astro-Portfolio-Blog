@@ -11,8 +11,8 @@ const featureName = Astro.url.searchParams.get("feature") ?? "Exciting Feature";
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig?.SiteName ?? ""}
-      description={authorConfig?.SiteDescription ?? ""}
+      title={`Access Denied | ${authorConfig.SiteName}`}
+      description={`Sorry, you don't have access to this ${featureName}.`}
     />
     <SpeedInsights />
   </head>

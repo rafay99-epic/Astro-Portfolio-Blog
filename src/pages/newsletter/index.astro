@@ -23,8 +23,8 @@ const newsletters = await getCollection("newsletter");
 <html lang="en">
   <head>
     <BaseHead
-      title={authorConfig?.SiteName ?? ""}
-      description={authorConfig?.SiteDescription ?? ""}
+      title={`Newsletter | ${authorConfig.SiteName}`}
+      description={`Subscribe to my newsletter and get updates on my latest projects.`}
     />
   </head>
   <body>
