@@ -14,8 +14,8 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const hCaptchaSecret = import.meta.env.HCAPTCHA_SECRET_KEY;
-    const webformKey = import.meta.env.WEBFORM_KEY;
+    const hCaptchaSecret = process.env.HCAPTCHA_SECRET_KEY;
+    const webformKey = process.env.WEBFORM_KEY;
 
     if (!hCaptchaSecret || !webformKey) {
       console.error("Server configuration is missing");
