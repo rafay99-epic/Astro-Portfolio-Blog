@@ -6,6 +6,7 @@ import ShareButtons from "@react/SocialButton/socialButton";
 import authorConfig from "@config/siteConfig/info.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
 const pageUrl = Astro.url.href;
+export const prerender = true;
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 type Props = {
   Projecttitle: string;

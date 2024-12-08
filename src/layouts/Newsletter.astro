@@ -10,7 +10,7 @@ import ShareButtons from "@react/SocialButton/socialButton";
 
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 const pageUrl = Astro.url.href;
-
+export const prerender = true;
 type Props = {
   title: string;
   pubDate: Date;

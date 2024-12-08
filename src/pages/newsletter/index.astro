@@ -8,6 +8,7 @@ import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Newsletter from "@react/Newsletter/ListNewsletter/NewsletterList";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+export const prerender = true;
 
 try {
   if (!featureFlags.showNewsletter) {

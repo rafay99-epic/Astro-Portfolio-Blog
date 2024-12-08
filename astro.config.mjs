@@ -3,7 +3,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel/static";
+import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -11,9 +11,9 @@ dotenv.config();
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.rafay99.com",
-  output: "static",
+  output: "server",
   build: {
-    format: "file",
+    format: "directory",
   },
   markdown: {
     shikiConfig: {

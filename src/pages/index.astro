@@ -14,7 +14,7 @@ import Greeting from "@react/HeroSection/Greeting";
 import ConnectButton from "@react/HeroSection/ConnectButton";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
-
+export const prerender = true;
 const { name, jobTitle, position, picture } = authorConfig;
 try {
   if (!featureFlags.showIndex) {
@@ -85,7 +85,7 @@ try {
         <p class="text-center text-lg font-bold mb-6">
           Let's Connect & Build Something Together
         </p>
-        <ContactFormHome client:load />
+        <ContactFormHome client:load server:defer />
       </section>
 
       <Footer class="mt-auto" />
