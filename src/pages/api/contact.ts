@@ -1,5 +1,4 @@
 import type { APIRoute } from "astro";
-import fetch from "node-fetch";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -14,7 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const hCaptchaSecret = process.env.HCAPTCHA_SECRET_KEY;
+    const hCaptchaSecret = process.env.HCAPTCHA;
     const webformKey = process.env.WEBFORM_KEY;
 
     if (!hCaptchaSecret || !webformKey) {
