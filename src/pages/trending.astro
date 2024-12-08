@@ -9,6 +9,7 @@ import BaseHead from "@components/AstroCompoent/base/BaseHead.astro";
 import Header from "@components/AstroCompoent/header/Header.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import authorConfig from "@config/siteConfig/info.json";
+export const prerender = true;
 
 const allPosts = await getCollection("blog");
 const publishedPosts = allPosts.filter((post) => !post.data.draft);
