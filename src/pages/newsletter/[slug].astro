@@ -2,6 +2,7 @@
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { type CollectionEntry, getCollection } from "astro:content";
 import Newsletter from "@layouts/Newsletter.astro";
+export const prerender = true;
 
 export async function getStaticPaths() {
   if (!featureFlags.showNewsletter) {

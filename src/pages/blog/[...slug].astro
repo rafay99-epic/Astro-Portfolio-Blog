@@ -3,6 +3,7 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { type CollectionEntry, getCollection } from "astro:content";
 import BlogPost from "@layouts/BlogPost.astro";
 import { calculateReadTime } from "@util/read_time";
+export const prerender = true;
 
 export async function getStaticPaths() {
   if (!featureFlags.showBlog) {

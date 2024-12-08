@@ -11,6 +11,7 @@ import ShareButtons from "@react/SocialButton/socialButton.tsx";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "@astro/BlogComments/PostComment.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+export const prerender = true;
 
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];

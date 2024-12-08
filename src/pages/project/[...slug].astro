@@ -2,7 +2,7 @@
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { type CollectionEntry, getCollection } from "astro:content";
 import Project from "@layouts/Project.astro";
-
+export const prerender = true;
 export async function getStaticPaths() {
   if (!featureFlags.showProjects) {
     return [];
