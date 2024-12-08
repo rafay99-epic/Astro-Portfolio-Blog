@@ -8,36 +8,13 @@ interface IdeaPanelProps {
   posts: Post[];
 }
 
-const ideaDataTyped: IdeaCategory[] = ideaData;
+const ideaDataTyped: IdeaCategory[] = ideaData.categories;
 
 export default function IdeaPanel({ posts }: IdeaPanelProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [collapsedCategories, setCollapsedCategories] = useState<
-    Record<string, boolean>
-  >({});
   const [currentPage, setCurrentPage] = useState<"ideas" | "blogs">("ideas");
-
-  if (!ideaDataTyped.length) {
-    return (
-      <div className="bg-[var(--accent-dark)] min-h-screen p-4 sm:p-6 flex justify-center items-center">
-        <h1 className="text-[var(--text-light)] text-4xl font-bold">
-          Sorry, no ideas are present.
-        </h1>
-      </div>
-    );
-  }
-
-  if (!posts.length) {
-    return (
-      <div className="bg-[var(--accent-dark)] min-h-screen p-4 sm:p-6 flex justify-center items-center">
-        <h1 className="text-[var(--text-light)] text-4xl font-bold">
-          Blog posts should be present, but none were found.
-        </h1>
-      </div>
-    );
-  }
 
   const uniqueStages = Array.from(
     new Set(
@@ -92,22 +69,25 @@ export default function IdeaPanel({ posts }: IdeaPanelProps) {
       ),
     }));
 
-  const toggleCollapse = (category: string) => {
-    setCollapsedCategories((prev) => ({
-      ...prev,
-      [category]: !prev[category],
+  const [collapsedCategories, setCollapsedCategories] = useState({});
+
+  // Toggle collapse state for a specific category
+  const toggleCollapse = (category) => {
+    setCollapsedCategories((prevState) => ({
+      ...prevState,
+      [category]: !prevState[category], // Toggle the current state
     }));
   };
 
   return (
     <div className="bg-[var(--accent-dark)] min-h-screen p-4 sm:p-6">
       <h1 className="text-[var(--text-light)] text-6xl sm:text-6xl font-bold mb-4 text-center">
-        {currentPage === "ideas" ? "Idea Panel" : "Blog Panel"}
+        {currentPage === "ideas" ? "Idea Board" : "Blog Panel"}
       </h1>
 
       {currentPage === "ideas" && (
         <>
-          {/* Idea Panel Section */}
+          {/* Filters */}
           <div className="mb-4 flex flex-col sm:flex-row sm:gap-4">
             <input
               type="text"
@@ -146,55 +126,50 @@ export default function IdeaPanel({ posts }: IdeaPanelProps) {
             </select>
           </div>
 
-          <div className="flex flex-col sm:flex-row">
-            <main className="sm:w-full">
-              <div className="space-y-6">
-                {categoryAndStageFilteredResults.map((category) => (
-                  <section key={category.category}>
-                    <div
-                      className="flex justify-between items-center cursor-pointer bg-[var(--gray-gradient)] p-4 sm:p-6 rounded-lg shadow-lg border border-[var(--accent)]"
-                      onClick={() => toggleCollapse(category.category)}
-                    >
-                      <h2 className="text-[var(--accent)] text-2xl font-semibold">
-                        {category.category}
-                      </h2>
-                      <span className="text-[var(--text-light)] text-lg">
-                        {collapsedCategories[category.category] ? "▼" : "▲"}
-                      </span>
-                    </div>
+          {/* Sticker Board */}
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {categoryAndStageFilteredResults.map((category) => (
+              <section key={category.category}>
+                <div
+                  className="flex justify-between items-center cursor-pointer bg-[var(--gray-gradient)] p-4 sm:p-6 rounded-lg shadow-lg border border-[var(--accent)]"
+                  onClick={() => toggleCollapse(category.category)}
+                >
+                  <h2 className="text-[var(--accent)] text-xl font-bold">
+                    {category.category}
+                  </h2>
+                  <span className="text-[var(--text-light)] text-lg">
+                    {collapsedCategories[category.category] ? "▼" : "▲"}
+                  </span>
+                </div>
 
-                    {!collapsedCategories[category.category] && (
-                      <div className="space-y-4 mt-4">
-                        {category.ideas.map((idea) => (
-                          <div
-                            key={idea.title}
-                            className="bg-[var(--gray-gradient)] p-4 sm:p-6 rounded-lg shadow-lg border border-[var(--accent)] transform transition-transform duration-300 hover:scale-105 hover:shadow-[var(--box-shadow)]"
-                          >
-                            <h3 className="text-[var(--text-light)] text-lg sm:text-xl font-semibold">
-                              {idea.title}
-                            </h3>
-                            <p className="text-[var(--gray-light)] mt-2 text-sm sm:text-base">
-                              {idea.description}
-                            </p>
-
-                            <p className="text-[var(--accent)] mt-4 text-sm">
-                              <strong>Status:</strong>{" "}
-                              {idea.stage || "No status set"}
-                            </p>
-                          </div>
-                        ))}
+                {!collapsedCategories[category.category] && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    {category.ideas.map((idea) => (
+                      <div
+                        key={idea.title}
+                        className="bg-[var(--gray-gradient)] p-4 rounded-lg shadow-lg border border-[var(--accent)] transform transition-transform duration-300 hover:scale-105 hover:shadow-[var(--box-shadow)]"
+                      >
+                        <h3 className="text-[var(--text-light)] text-lg sm:text-xl font-semibold">
+                          {idea.title}
+                        </h3>
+                        <p className="text-[var(--gray-light)] mt-2 text-sm sm:text-base">
+                          {idea.description}
+                        </p>
+                        <p className="text-[var(--accent)] mt-4 text-sm">
+                          <strong>Status:</strong>{" "}
+                          {idea.stage || "No status set"}
+                        </p>
                       </div>
-                    )}
-                  </section>
-                ))}
-              </div>
-            </main>
+                    ))}
+                  </div>
+                )}
+              </section>
+            ))}
           </div>
         </>
       )}
-
       {currentPage === "blogs" && (
-        <div className="space-y-4">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {posts.filter((post) => post.data.draft).length > 0 ? (
             posts
               .filter((post) => post.data.draft)
@@ -220,6 +195,7 @@ export default function IdeaPanel({ posts }: IdeaPanelProps) {
         </div>
       )}
 
+      {/* Navigation Buttons */}
       <div className="mt-6 flex justify-center">
         <button
           className={`p-3 mx-2 rounded-lg text-[var(--text-light)] bg-[var(--gray-gradient)] border ${
