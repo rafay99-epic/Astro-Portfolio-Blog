@@ -6,7 +6,7 @@ const AUTH_KEY = import.meta.env.AUTH_KEY;
 
 export async function GET({ request }: { request: Request }) {
   try {
-    if (!featureFlags.showAbout) {
+    if (!featureFlags.showNewsletter) {
       return new Response(
         JSON.stringify({ error: "Newsletter Read is disabled" }),
         {
@@ -20,7 +20,6 @@ export async function GET({ request }: { request: Request }) {
     }
 
     const authHeader = request.headers.get("Authorization");
-    console.log("Received Auth Header:", authHeader);
 
     if (!authHeader || authHeader.trim() !== `Bearer ${AUTH_KEY}`) {
       console.error("Authorization failed: Headers do not match");
