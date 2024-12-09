@@ -5,7 +5,6 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { name, email, message, hCaptchaToken } = body;
 
-    // Validate required fields
     if (!name || !email || !message || !hCaptchaToken) {
       return new Response(
         JSON.stringify({ success: false, error: "Missing required fields" }),
@@ -13,8 +12,8 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const hCaptchaSecret = import.meta.env.HCAPTCHA;
-    const webformKey = import.meta.env.WEBFORM_KEY;
+    const hCaptchaSecret = process.env.HCAPTCHA;
+    const webformKey = process.env.WEBFORM_KEY;
 
     if (!hCaptchaSecret || !webformKey) {
       console.error("Server configuration is missing");
@@ -25,7 +24,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Verify hCaptcha token
-    const hCaptchaResponse = await fetch(`https://hcaptcha.com/siteverify`, {
+    const hCaptchaResponse = await fetch("https://hcaptcha.com/siteverify", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
@@ -43,7 +42,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Send data to Web3Forms
+    // Submit form data to Web3Forms
     const web3Response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
