@@ -11,6 +11,29 @@ export const POST: APIRoute = async ({ request }) => {
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Invalid email format" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Validate field lengths
+    const maxNameLength = 100;
+    const maxEmailLength = 100;
+    const maxMessageLength = 5000;
+    if (
+      name.length > maxNameLength ||
+      email.length > maxEmailLength ||
+      message.length > maxMessageLength
+    ) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Input exceeds maximum allowed length" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
 
     const hCaptchaSecret = process.env.HCAPTCHA;
     const webformKey = process.env.WEBFORM_KEY;
