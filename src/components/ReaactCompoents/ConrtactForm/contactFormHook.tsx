@@ -8,7 +8,7 @@ const hcaptchaSiteKeyAuthorFile = authorConfig.hcaptchaSiteKey;
 let {
   PUBLIC_WEBFORM_KEY: webformKey,
   PUBLIC_HCAPTCHA_SITE_KEY: hcaptchaSiteKey,
-} = import.meta.env;
+} = process.env;
 
 if (!webformKey) {
   if (!webformKeyAuthorFile) {

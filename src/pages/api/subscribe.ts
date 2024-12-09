@@ -18,7 +18,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const apiKey = process.env.SUBSCRIBENEWSLETTER;
+    const apiKey = process.env.BREVO_API_KEY;
 
     if (!apiKey) {
       console.error("SUBSCRIBENEWSLETTER environment variable is missing.");
@@ -55,7 +55,8 @@ export const POST: APIRoute = async ({ request }) => {
       console.error("Brevo API error:", errorData);
       return new Response(
         JSON.stringify({
-          error: errorData.message || "Unknown error occurred.",
+          // error: errorData.message || "Unknown error occurred.",
+          error: "An error occurred while processing your request.",
         }),
         { status: response.status }
       );
