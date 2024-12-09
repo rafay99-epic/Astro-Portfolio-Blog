@@ -6,20 +6,18 @@ const AUTH_KEY = import.meta.env.AUTH_KEY;
 
 export async function GET({ request }: { request: Request }) {
   try {
-    if (!featureFlags.showBlog) {
-      return new Response(
-        JSON.stringify({ error: "Blog feature is disabled" }),
-        {
-          status: 403,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "https://www.rafay99.com",
-          },
-        }
-      );
+    if (!featureFlags.showProjects) {
+      return new Response(JSON.stringify({ error: "Projects are  disabled" }), {
+        status: 403,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "https://www.rafay99.com",
+        },
+      });
     }
 
     const authHeader = request.headers.get("Authorization");
+    console.log("Received Auth Header:", authHeader);
 
     if (!authHeader || authHeader.trim() !== `Bearer ${AUTH_KEY}`) {
       console.error("Authorization failed: Headers do not match");
@@ -32,7 +30,7 @@ export async function GET({ request }: { request: Request }) {
       });
     }
 
-    const posts = await getCollection("blog");
+    const posts = await getCollection("projects");
     return new Response(JSON.stringify(posts), {
       status: 200,
       headers: {
@@ -41,9 +39,9 @@ export async function GET({ request }: { request: Request }) {
       },
     });
   } catch (error) {
-    console.error("Error fetching blog posts:", error);
+    console.error("Error fetching newsletter posts:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to fetch blog posts" }),
+      JSON.stringify({ error: "Failed to fetch newsletter posts" }),
       {
         status: 500,
         headers: {
