@@ -1,5 +1,3 @@
-// Orginal Version Client Side Script
-
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import authorConfig from "@config/siteConfig/info.json";
 import { addContactToNotion } from "@pages/api/notion";
@@ -7,8 +5,10 @@ import { addContactToNotion } from "@pages/api/notion";
 const webformKeyAuthorFile = authorConfig.webformKey;
 const hcaptchaSiteKeyAuthorFile = authorConfig.hcaptchaSiteKey;
 
-let { WEBFORM_KEY: webformKey, HCAPTCHA_SITE_KEY: hcaptchaSiteKey } =
-  import.meta.env;
+let {
+  PUBLIC_WEBFORM_KEY: webformKey,
+  PUBLIC_HCAPTCHA_SITE_KEY: hcaptchaSiteKey,
+} = import.meta.env;
 
 if (!webformKey) {
   if (!webformKeyAuthorFile) {
