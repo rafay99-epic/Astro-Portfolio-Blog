@@ -1,0 +1,88 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import ShareButtons from "@react/SocialButton/socialButton.tsx";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+export const prerender = true;
+const pageUrl = Astro.url.href;
+type Props = CollectionEntry<"webwiki">["data"];
+
+try {
+  if (!featureFlags.showWiki) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  version,
+  versionreleasedate,
+  readTime,
+  tags,
+} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <SpeedInsights />
+  </head>
+  <body>
+    <Header />
+    <main class="w-full max-w-5xl mx-auto px-4 py-8">
+      <article>
+        <div
+          data-aos="fade-up"
+          data-aos-delay="300"
+          data-aos-anchor-placement="top-bottom"
+          class="prose mx-auto text-gray-800 text-justify"
+        >
+          <div class="mb-8 text-center">
+            <h1 class="text-6xl font-bold mb-4">{title}</h1>
+            <div class="mb-2 text-white">
+              <FormattedDate date={pubDate} />
+              {
+                readTime && (
+                  <p class="text-sm text-gray-500 italic">{readTime}</p>
+                )
+              }
+            </div>
+            <div class="mb-4 text-center">
+              <div class="flex flex-wrap justify-center mt-4 space-x-2">
+                {
+                  tags?.map((tag) => (
+                    <span class="technology-chip inline-block m-1 px-2 py-1 bg-[#3b4252] text-[#f8f8f8] rounded-lg text-base hover:bg-[#7aa2f7] ">
+                      {tag}
+                    </span>
+                  ))
+                }
+              </div>
+            </div>
+            <div>
+              <ShareButtons url={pageUrl} pagetitle="Web Wiki" />
+            </div>
+            <hr class="mt-4" />
+          </div>
+          <div>
+            <slot />
+          </div>
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body><link
+    href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" onload="AOS.init()"
+  ></script>
+</html>

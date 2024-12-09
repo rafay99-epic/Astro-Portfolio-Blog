@@ -1,0 +1,43 @@
+---
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import { getCollection } from "astro:content";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import WikiPost from "@react/WikiPost/WikiPost";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+const webwiki = await getCollection("webwiki");
+export const prerender = false;
+// change feature flag
+try {
+  if (!featureFlags.showWiki) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
+---
+
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`Wiki | ${authorConfig.SiteName}`}
+      description={`Browse all releases of the website `}
+    />
+    <SpeedInsights />
+  </head>
+
+  <body>
+    <Header />
+    <main>
+      <h1 class="text-6xl font-bold text-center mb-8">
+        All Releases of the Website
+      </h1>
+      <div class="">
+        <WikiPost versions={webwiki} client:load />
+      </div>
+      <Footer />
+    </main>
+  </body>
+</html>
