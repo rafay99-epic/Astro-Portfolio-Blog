@@ -39,9 +39,9 @@ export async function GET({ request }: { request: Request }) {
       },
     });
   } catch (error) {
-    console.error("Error fetching newsletter posts:", error);
+    console.error("Error fetching projects:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to fetch newsletter posts" }),
+      JSON.stringify({ error: "Failed to fetch projects" }),
       {
         status: 500,
         headers: {
