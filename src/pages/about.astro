@@ -1,13 +1,11 @@
 ---
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
-
 import JobExperience from "@astro/JobAndExperience/JobExperience.astro";
 import authorConfig from "@config/siteConfig/info.json";
-
 import Footer from "@astro/footer/Footer.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-
+export const prerender = true;
 try {
   if (!featureFlags.showAbout) {
     return Astro.redirect("/access-denied");

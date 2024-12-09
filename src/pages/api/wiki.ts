@@ -32,7 +32,7 @@ export async function GET({ request }: { request: Request }) {
       });
     }
 
-    const posts = await getCollection("blog");
+    const posts = await getCollection("webwiki");
     return new Response(JSON.stringify(posts), {
       status: 200,
       headers: {

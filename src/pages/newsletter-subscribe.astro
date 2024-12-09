@@ -6,7 +6,7 @@ import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
-
+export const prerender = true;
 try {
   if (!featureFlags.showNewsletter) {
     return Astro.redirect("/access-denied");

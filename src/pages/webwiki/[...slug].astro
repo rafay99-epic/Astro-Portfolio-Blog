@@ -1,16 +1,16 @@
 ---
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { type CollectionEntry, getCollection } from "astro:content";
-import BlogPost from "@layouts/BlogPost.astro";
+import WebWiki from "@layouts/Wiki.astro";
 import { calculateReadTime } from "@util/read_time";
 export const prerender = true;
 
 export async function getStaticPaths() {
-  if (!featureFlags.showBlog) {
+  if (!featureFlags.showWiki) {
     return [];
   }
 
-  const posts = await getCollection("blog");
+  const posts = await getCollection("webwiki");
 
   const filteredPosts = import.meta.env.PROD
     ? posts.filter((post) => !post.data.draft)
@@ -22,22 +22,22 @@ export async function getStaticPaths() {
   }));
 }
 
-type Props = CollectionEntry<"blog">;
+type Props = CollectionEntry<"webwiki">;
 
 const post = Astro.props;
 
 const readTime = calculateReadTime(post.body);
 
-const { Content } = featureFlags.showBlog
+const { Content } = featureFlags.showWiki
   ? await post.render()
   : { Content: null };
 ---
 
 {
-  featureFlags.showBlog && Content ? (
-    <BlogPost {...post.data} readTime={readTime}>
+  featureFlags.showWiki && Content ? (
+    <WebWiki {...post.data} readTime={readTime}>
       <Content />
-    </BlogPost>
+    </WebWiki>
   ) : (
     <p>Blog is currently disabled.</p>
   )

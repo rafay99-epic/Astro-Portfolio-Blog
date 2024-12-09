@@ -4,20 +4,16 @@ import type { CollectionEntry } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-
 import FormattedDate from "@components/FormattedDate.astro";
-import { Image } from "astro:assets";
 import ShareButtons from "@react/SocialButton/socialButton.tsx";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import PostComment from "@astro/BlogComments/PostComment.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
-
 const pageUrl = Astro.url.href;
-type Props = CollectionEntry<"blog">["data"];
+type Props = CollectionEntry<"webwiki">["data"];
 
 try {
-  if (!featureFlags.showBlog) {
+  if (!featureFlags.showWiki) {
     return Astro.redirect("/access-denied");
   }
 } catch (error) {
@@ -28,49 +24,22 @@ const {
   title,
   description,
   pubDate,
-  updatedDate,
-  heroImage,
-  authorName,
-  authorAvatar,
-  tags,
+  version,
+  versionreleasedate,
   readTime,
+  tags,
 } = Astro.props;
 ---
 
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} />
-    <style>
-      .ad-container {
-        margin: 2em 0;
-        text-align: center;
-      }
-      #ad-blocker-message {
-        display: none;
-        color: red;
-        font-weight: bold;
-      }
-    </style>
+    <SpeedInsights />
   </head>
-
   <body>
     <Header />
-    <SpeedInsights />
     <main class="w-full max-w-5xl mx-auto px-4 py-8">
       <article>
-        <div class="w-full mb-4">
-          {
-            heroImage && (
-              <Image
-                src={heroImage || ""}
-                alt="hero Image Blog"
-                format="avif"
-                width={1020}
-                height={510}
-              />
-            )
-          }
-        </div>
         <div
           data-aos="fade-up"
           data-aos-delay="300"
@@ -78,22 +47,15 @@ const {
           class="prose mx-auto text-gray-800 text-justify"
         >
           <div class="mb-8 text-center">
+            <h1 class="text-6xl font-bold mb-4">{title}</h1>
             <div class="mb-2 text-white">
               <FormattedDate date={pubDate} />
-              {
-                updatedDate && (
-                  <div class="italic">
-                    Last updated on <FormattedDate date={updatedDate} />
-                  </div>
-                )
-              }
               {
                 readTime && (
                   <p class="text-sm text-gray-500 italic">{readTime}</p>
                 )
               }
             </div>
-            <h1 class="text-3xl font-bold mb-4">{title}</h1>
             <div class="mb-4 text-center">
               <div class="flex flex-wrap justify-center mt-4 space-x-2">
                 {
@@ -105,41 +67,13 @@ const {
                 }
               </div>
             </div>
-            <div
-              class="flex flex-col items-center justify-center mt-6 space-y-2"
-            >
-              <p class="text-gray-500 text-lg">Written by</p>
-
-              {
-                authorAvatar && (
-                  <Image
-                    src={authorAvatar}
-                    alt="Author avatar"
-                    class="rounded-full w-28 h-28 object-cover border-4 border-gray-300 shadow-lg"
-                    width={24}
-                    height={24}
-                  />
-                )
-              }
-              <p class="text-lg font-semibold text-gray-100 space-y-2">
-                {authorName}
-              </p>
-            </div>
             <div>
-              <ShareButtons url={pageUrl} pagetitle="Blog Post" />
+              <ShareButtons url={pageUrl} pagetitle="Web Wiki" />
             </div>
-
             <hr class="mt-4" />
           </div>
           <div>
             <slot />
-          </div>
-          <!-- <div class="my-8 text-center">
-            <AdLoader client:load />
-          </div> -->
-          <div class="my-8 text-center">
-            <h2 class="text-2xl font-semibold mb-4">Comments</h2>
-            <PostComment />
           </div>
         </div>
       </article>

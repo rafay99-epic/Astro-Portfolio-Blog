@@ -1,9 +1,12 @@
 import { getCollection } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
-export async function GET() {
+// Load the auth key from the environment variables
+const AUTH_KEY = import.meta.env.AUTH_KEY;
+
+export async function GET({ request }: { request: Request }) {
   try {
-    if (!featureFlags.showAbout) {
+    if (!featureFlags.showNewsletter) {
       return new Response(
         JSON.stringify({ error: "Newsletter Read is disabled" }),
         {
@@ -15,6 +18,20 @@ export async function GET() {
         }
       );
     }
+
+    const authHeader = request.headers.get("Authorization");
+
+    if (!authHeader || authHeader.trim() !== `Bearer ${AUTH_KEY}`) {
+      console.error("Authorization failed: Headers do not match");
+      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "https://www.rafay99.com",
+        },
+      });
+    }
+
     const posts = await getCollection("newsletter");
     return new Response(JSON.stringify(posts), {
       status: 200,
@@ -24,9 +41,9 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error("Error fetching blog posts:", error);
+    console.error("Error fetching newsletter posts:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to fetch blog posts" }),
+      JSON.stringify({ error: "Failed to fetch newsletter posts" }),
       {
         status: 500,
         headers: {
