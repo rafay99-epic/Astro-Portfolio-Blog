@@ -3,7 +3,9 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 // Load the auth key from the environment variables
 const AUTH_KEY = import.meta.env.AUTH_KEY;
-
+if (!AUTH_KEY) {
+  throw new Error('AUTH_KEY environment variable is required');
+}
 export async function GET({ request }: { request: Request }) {
   try {
     if (!featureFlags.showNewsletter) {
