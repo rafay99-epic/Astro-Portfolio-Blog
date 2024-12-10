@@ -71,8 +71,16 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
   const totalPages = Math.ceil(filteredVersions.length / versionsPerPage);
   const paginatedVersions = useMemo(() => {
     try {
+      if (currentPage < 1) {
+        setCurrentPage(1);
+        return [];
+      }
       const startIndex = (currentPage - 1) * versionsPerPage;
       const endIndex = startIndex + versionsPerPage;
+      if (startIndex >= filteredVersions.length) {
+        setCurrentPage(Math.max(1, Math.ceil(filteredVersions.length / versionsPerPage)));
+        return [];
+      }
       return filteredVersions.slice(startIndex, endIndex);
     } catch (err) {
       console.error("Error paginating versions:", err);
