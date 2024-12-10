@@ -180,11 +180,12 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
+          aria-label="Go to previous page"
           className="text-[#7aa2f7] hover:text-[#4c88f7] disabled:opacity-50"
         >
           Previous
         </button>
-        <span className="text-gray-300">
+        <span className="text-gray-300" aria-live="polite" role="status">
           Page {currentPage} of {totalPages}
         </span>
         <button
@@ -192,6 +193,7 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
+          aria-label="Go to next page"
           className="text-[#7aa2f7] hover:text-[#4c88f7] disabled:opacity-50"
         >
           Next
