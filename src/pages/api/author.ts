@@ -1,17 +1,7 @@
-import authorConfig from "@config/siteConfig/info.json";
 import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
-import { secureCompare } from "@util/security";
+import { checkAuthorization } from "@util/authUtils";
+import authorConfig from "@config/siteConfig/info.json";
 
-const AUTH_KEY = import.meta.env.AUTH_KEY;
-
-if (!AUTH_KEY || AUTH_KEY.trim() === "") {
-  console.error(
-    "Critical Error: AUTH_KEY environment variable is missing or empty. Ensure it is properly set in your environment."
-  );
-  throw new Error(
-    "Server cannot start: AUTH_KEY environment variable is required for API authentication."
-  );
-}
 export async function GET({ request }: { request: Request }) {
   try {
     if (!FeatureFlagsApi.enableauthorInfoAPI) {
@@ -27,13 +17,7 @@ export async function GET({ request }: { request: Request }) {
       );
     }
 
-    const authHeader = request.headers.get("Authorization");
-
-    if (
-      !authHeader ||
-      !secureCompare(authHeader.trim(), `Bearer ${AUTH_KEY}`)
-    ) {
-      console.error("Authorization failed: Headers do not match");
+    if (!checkAuthorization(request)) {
       return new Response(JSON.stringify({ error: "Unauthorized access" }), {
         status: 401,
         headers: {
