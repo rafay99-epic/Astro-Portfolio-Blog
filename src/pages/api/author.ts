@@ -1,21 +1,17 @@
 import authorConfig from "@config/siteConfig/info.json";
 import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
+import { secureCompare } from "@util/security";
 
 const AUTH_KEY = import.meta.env.AUTH_KEY;
-if (!AUTH_KEY) {
-  throw new Error("AUTH_KEY environment variable is required");
+
+if (!AUTH_KEY || AUTH_KEY.trim() === "") {
+  console.error(
+    "Critical Error: AUTH_KEY environment variable is missing or empty. Ensure it is properly set in your environment."
+  );
+  throw new Error(
+    "Server cannot start: AUTH_KEY environment variable is required for API authentication."
+  );
 }
-
-function secureCompare(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-
-  let result = 0;
-  for (let i = 0; i < a.length; i++) {
-    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return result === 0;
-}
-
 export async function GET({ request }: { request: Request }) {
   try {
     if (!FeatureFlagsApi.enableauthorInfoAPI) {

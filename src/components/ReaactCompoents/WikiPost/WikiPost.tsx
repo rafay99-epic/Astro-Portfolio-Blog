@@ -115,6 +115,8 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
               boxShadow: "var(--box-shadow)",
               transition: "box-shadow 0.3s ease, transform 0.3s ease",
             }}
+            aria-label={`Version ${version.version}: ${version.title}`}
+            role="Wiki Post Link"
           >
             {/* Title */}
             <h2 className="text-3xl font-bold text-[var(--text-light)] mb-2">
