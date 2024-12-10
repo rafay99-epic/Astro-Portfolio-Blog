@@ -4,46 +4,70 @@ import TagFilter from "./TagFilter";
 import type { Version, WikiPageProps } from "../../../types/wiki";
 
 const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
-  const mappedVersions: Version[] = versions.map((item) => ({
-    title: item.data.title,
-    description: item.data.description,
-    pubDate: item.data.pubDate,
-    version: item.data.version,
-    versionreleasedate: item.data.versionreleasedate,
-    tags: item.data.tags || [],
-    slug: item.slug,
-    draft: item.data.draft || false,
-  }));
+  const [error, setError] = useState<string | null>(null);
+
+  const mappedVersions: Version[] = useMemo(() => {
+    try {
+      return versions.map((item) => ({
+        title: item.data.title,
+        description: item.data.description,
+        pubDate: item.data.pubDate,
+        version: item.data.version,
+        versionreleasedate: item.data.versionreleasedate,
+        tags: item.data.tags || [],
+        slug: item.slug,
+        draft: item.data.draft || false,
+      }));
+    } catch (err) {
+      console.error("Error mapping versions:", err);
+      setError("Failed to load version data.");
+      return [];
+    }
+  }, [versions]);
 
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const versionsPerPage = 6;
 
-  const sortedVersions = useMemo(
-    () =>
-      mappedVersions.sort((a, b) => {
+  const sortedVersions = useMemo(() => {
+    try {
+      return mappedVersions.sort((a, b) => {
         const versionA = parseFloat(a.version);
         const versionB = parseFloat(b.version);
         return versionB - versionA;
-      }),
-    [mappedVersions]
-  );
+      });
+    } catch (err) {
+      console.error("Error sorting versions:", err);
+      setError("Error occurred while sorting versions.");
+      return [];
+    }
+  }, [mappedVersions]);
 
-  const filteredVersions = useMemo(
-    () =>
-      selectedTag
+  const filteredVersions = useMemo(() => {
+    try {
+      return selectedTag
         ? sortedVersions.filter(
             (version) => !version.draft && version.tags.includes(selectedTag)
           )
-        : sortedVersions.filter((version) => !version.draft),
-    [selectedTag, sortedVersions]
-  );
+        : sortedVersions.filter((version) => !version.draft);
+    } catch (err) {
+      console.error("Error filtering versions:", err);
+      setError("Error occurred while filtering versions.");
+      return [];
+    }
+  }, [selectedTag, sortedVersions]);
 
   const totalPages = Math.ceil(filteredVersions.length / versionsPerPage);
   const paginatedVersions = useMemo(() => {
-    const startIndex = (currentPage - 1) * versionsPerPage;
-    const endIndex = startIndex + versionsPerPage;
-    return filteredVersions.slice(startIndex, endIndex);
+    try {
+      const startIndex = (currentPage - 1) * versionsPerPage;
+      const endIndex = startIndex + versionsPerPage;
+      return filteredVersions.slice(startIndex, endIndex);
+    } catch (err) {
+      console.error("Error paginating versions:", err);
+      setError("Error occurred while paginating versions.");
+      return [];
+    }
   }, [currentPage, filteredVersions, versionsPerPage]);
 
   const handleTagSelect = (tag: string | null) => {
@@ -54,6 +78,22 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
   const uniqueTags = Array.from(
     new Set(sortedVersions.flatMap((version) => version.tags || []))
   );
+
+  if (error) {
+    return (
+      <div className="min-h-screen p-6 flex justify-center items-center text-red-500">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (filteredVersions.length === 0) {
+    return (
+      <div className="min-h-screen p-6 flex justify-center items-center text-[var(--text-light)]">
+        <p>Sorry, no versions released yet.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-6">

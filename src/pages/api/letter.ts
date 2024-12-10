@@ -4,8 +4,20 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 // Load the auth key from the environment variables
 const AUTH_KEY = import.meta.env.AUTH_KEY;
 if (!AUTH_KEY) {
-  throw new Error('AUTH_KEY environment variable is required');
+  throw new Error("AUTH_KEY environment variable is required");
 }
+
+// Timing-safe comparison function
+function secureCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return result === 0;
+}
+
 export async function GET({ request }: { request: Request }) {
   try {
     if (!featureFlags.showNewsletter) {
@@ -23,7 +35,10 @@ export async function GET({ request }: { request: Request }) {
 
     const authHeader = request.headers.get("Authorization");
 
-    if (!authHeader || authHeader.trim() !== `Bearer ${AUTH_KEY}`) {
+    if (
+      !authHeader ||
+      !secureCompare(authHeader.trim(), `Bearer ${AUTH_KEY}`)
+    ) {
       console.error("Authorization failed: Headers do not match");
       return new Response(JSON.stringify({ error: "Unauthorized access" }), {
         status: 401,
