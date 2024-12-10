@@ -4,9 +4,9 @@ import { checkAuthorization } from "@util/authUtils";
 
 export async function GET({ request }: { request: Request }) {
   try {
-    if (!featureFlags.showNewsletter) {
+    if (!featureFlags.showProjects) {
       return new Response(
-        JSON.stringify({ error: "Newsletter Read is disabled" }),
+        JSON.stringify({ error: "Projects API is disabled" }),
         {
           status: 403,
           headers: {
@@ -27,7 +27,8 @@ export async function GET({ request }: { request: Request }) {
       });
     }
 
-    const posts = await getCollection("newsletter");
+    const posts = await getCollection("projects");
+
     return new Response(JSON.stringify(posts), {
       status: 200,
       headers: {
@@ -36,7 +37,7 @@ export async function GET({ request }: { request: Request }) {
       },
     });
   } catch (error) {
-    console.error("Error fetching newsletter posts:", error);
+    console.error("Error fetching Project posts:", error);
     return new Response(
       JSON.stringify({ error: "Failed to fetch newsletter posts" }),
       {

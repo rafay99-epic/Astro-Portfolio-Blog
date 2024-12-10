@@ -1,7 +1,8 @@
 import { getCollection } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import { checkAuthorization } from "@util/authUtils";
 
-export async function GET() {
+export async function GET({ request }: { request: Request }) {
   try {
     if (!featureFlags.showBlog) {
       return new Response(
@@ -16,8 +17,17 @@ export async function GET() {
       );
     }
 
-    const posts = await getCollection("blog");
+    if (!checkAuthorization(request)) {
+      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "https://www.rafay99.com",
+        },
+      });
+    }
 
+    const posts = await getCollection("blog");
     return new Response(JSON.stringify(posts), {
       status: 200,
       headers: {

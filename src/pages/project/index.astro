@@ -8,7 +8,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import ProjectList from "@react/ProjectList/Projectlist.tsx";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 const projects = await getCollection("projects");
-
+export const prerender = true;
 try {
   if (!featureFlags.showProjects) {
     return Astro.redirect("/access-denied");

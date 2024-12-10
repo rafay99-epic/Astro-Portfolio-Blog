@@ -5,16 +5,13 @@ import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import BlogSection from "@react/BlogPost/BlogPost";
+import WikiPost from "@react/WikiPost/WikiPost";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-export const prerender = true;
-
-const posts = (await getCollection("blog")).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-);
-
+const webwiki = await getCollection("webwiki");
+export const prerender = false;
+// change feature flag
 try {
-  if (!featureFlags.showBlog) {
+  if (!featureFlags.showWiki) {
     return Astro.redirect("/access-denied");
   }
 } catch (error) {
@@ -25,18 +22,22 @@ try {
 <html lang="en">
   <head>
     <BaseHead
-      title={`Articles | ${authorConfig.SiteName}`}
-      description={`Browse all articles on ${authorConfig.SiteName} and explore categorized content.`}
+      title={`Wiki | ${authorConfig.SiteName}`}
+      description={`Browse all releases of the website `}
     />
+    <SpeedInsights />
   </head>
+
   <body>
     <Header />
-    <SpeedInsights />
-    <section>
-      <BlogSection posts={posts} client:load />
-    </section>
-    <section>
-      <Footer class="mt-auto" />
-    </section>
+    <main>
+      <h1 class="text-6xl font-bold text-center mb-8">
+        All Releases of the Website
+      </h1>
+      <div class="wiki-container">
+        <WikiPost versions={webwiki} client:load />
+      </div>
+      <Footer />
+    </main>
   </body>
 </html>

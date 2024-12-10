@@ -8,6 +8,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import authorConfig from "@config/siteConfig/info.json";
 import TagFilter from "@react/Tags/Tags";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+export const prerender = true;
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
