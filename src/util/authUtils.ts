@@ -31,8 +31,15 @@ export function checkAuthorization(request: Request): boolean {
     return false;
   }
 
+  if (!authHeader.startsWith("Bearer ")) {
+    console.error("Authorization failed: Invalid header format");
+    return false;
+  }
+
   const authKey = getAuthKey();
-  const isValid = secureCompare(authHeader.trim(), `Bearer ${authKey}`);
+  const providedToken = authHeader.slice(7).trim();
+  const isValid = secureCompare(providedToken, authKey);
+
   if (!isValid) {
     console.error("Authorization failed: Header value does not match");
   }
