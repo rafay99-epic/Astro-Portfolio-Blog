@@ -32,13 +32,21 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
   const sortedVersions = useMemo(() => {
     try {
       return mappedVersions.sort((a, b) => {
-        const versionA = parseFloat(a.version);
-        const versionB = parseFloat(b.version);
+        // Handle semantic versioning (e.g., "1.2.3")
+        const parseVersion = (v: string) => {
+          const parts = v.split('.').map(Number);
+          if (parts.some(isNaN)) {
+            throw new Error(`Invalid version format: ${v}`);
+          }
+          return parts.reduce((acc, part, i) => acc + part * Math.pow(100, 2 - i), 0);
+        };
+        const versionA = parseVersion(a.version);
+        const versionB = parseVersion(b.version);
         return versionB - versionA;
       });
     } catch (err) {
       console.error("Error sorting versions:", err);
-      setError("Error occurred while sorting versions.");
+      setError("Error sorting versions: Invalid version format detected");
       return [];
     }
   }, [mappedVersions]);
