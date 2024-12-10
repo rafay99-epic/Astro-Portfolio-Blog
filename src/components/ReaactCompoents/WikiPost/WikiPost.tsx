@@ -35,7 +35,7 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
         // Handle semantic versioning (e.g., "1.2.3")
         const parseVersion = (v: string) => {
           const parts = v.split(".").map(Number);
-          if (parts.some(isNaN)) {
+          if (parts.some(Number.isNaN)) {
             throw new Error(`Invalid version format: ${v}`);
           }
           return parts.reduce(
