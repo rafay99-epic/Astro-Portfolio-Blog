@@ -3,6 +3,10 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 const AUTH_KEY = import.meta.env.AUTH_KEY;
 
+if (!AUTH_KEY) {
+  throw new Error("AUTH_KEY environment variable is required");
+}
+
 function secureCompare(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
 

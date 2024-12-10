@@ -1,10 +1,12 @@
 import { getCollection } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
-// Load the auth key from the environment variables
 const AUTH_KEY = import.meta.env.AUTH_KEY;
 
-// Timing-safe comparison function
+if (!AUTH_KEY) {
+  throw new Error("AUTH_KEY environment variable is required");
+}
+
 function secureCompare(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
 

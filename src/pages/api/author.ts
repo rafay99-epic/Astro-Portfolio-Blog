@@ -2,8 +2,10 @@ import authorConfig from "@config/siteConfig/info.json";
 import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 
 const AUTH_KEY = import.meta.env.AUTH_KEY;
+if (!AUTH_KEY) {
+  throw new Error("AUTH_KEY environment variable is required");
+}
 
-// Timing-safe comparison function
 function secureCompare(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
 
