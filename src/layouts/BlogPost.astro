@@ -1,16 +1,16 @@
 ---
 import type { CollectionEntry } from "astro:content";
-
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-
 import FormattedDate from "@components/FormattedDate.astro";
 import { Image } from "astro:assets";
 import ShareButtons from "@react/SocialButton/socialButton.tsx";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "@astro/BlogComments/PostComment.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import { getCollection } from "astro:content";
+import TextToSpeech from "@components/ReaactCompoents/TextSpeech/TextToSpeech";
 export const prerender = true;
 
 const pageUrl = Astro.url.href;
@@ -23,6 +23,21 @@ try {
 } catch (error) {
   return Astro.redirect("/404");
 }
+
+const BlogPosts = featureFlags.showBlog
+  ? (await getCollection("blog")).sort(
+      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+    )
+  : [];
+
+const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
+const currentBlog = BlogPosts.find((post) => post.slug === currentSlug);
+
+if (!currentBlog) {
+  return Astro.redirect("/access-denied");
+}
+
+const blogContent = currentBlog.body;
 
 const {
   title,
@@ -40,22 +55,32 @@ const {
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} />
+    <SpeedInsights />
     <style>
-      .ad-container {
-        margin: 2em 0;
-        text-align: center;
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
       }
-      #ad-blocker-message {
-        display: none;
-        color: red;
-        font-weight: bold;
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .item {
+        text-align: center;
       }
     </style>
   </head>
-
   <body>
     <Header />
-    <SpeedInsights />
+
     <main class="w-full max-w-5xl mx-auto px-4 py-8">
       <article>
         <div class="w-full mb-4">
@@ -108,7 +133,7 @@ const {
             <div
               class="flex flex-col items-center justify-center mt-6 space-y-2"
             >
-              <p class="text-gray-500 text-lg">Written by</p>
+              <p class="text-gray-500 text-lg">Published by</p>
 
               {
                 authorAvatar && (
@@ -125,18 +150,28 @@ const {
                 {authorName}
               </p>
             </div>
-            <div>
-              <ShareButtons url={pageUrl} pagetitle="Blog Post" />
+            <hr class="mt-4" />
+            <div class="container">
+              <div
+                role="region"
+                aria-label="Text to speech controls"
+                class="item"
+              >
+                <TextToSpeech client:load content={blogContent} />
+              </div>
+              <div class="item">
+                <ShareButtons
+                  url={pageUrl}
+                  pagetitle="Blog Post"
+                  aria-label="Share this post"
+                />
+              </div>
             </div>
-
             <hr class="mt-4" />
           </div>
           <div>
             <slot />
           </div>
-          <!-- <div class="my-8 text-center">
-            <AdLoader client:load />
-          </div> -->
           <div class="my-8 text-center">
             <h2 class="text-2xl font-semibold mb-4">Comments</h2>
             <PostComment />

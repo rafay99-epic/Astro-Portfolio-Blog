@@ -5,10 +5,15 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
+import expressiveCode from "astro-expressive-code";
+import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
+// "remark-mermaidjs": "^7.0.0",
+// "@playwright/test": "^1.49.1",
+// import remarkMermaid from "remark-mermaidjs";
 dotenv.config();
 
-// https://astro.build/config
 export default defineConfig({
   site: "https://www.rafay99.com",
   output: "server",
@@ -16,6 +21,7 @@ export default defineConfig({
     format: "directory",
   },
   markdown: {
+    // remarkPlugins: [remarkMermaid],
     shikiConfig: {
       theme: "tokyo-night",
       defaultColor: false,
@@ -31,6 +37,25 @@ export default defineConfig({
     checkOrigin: true,
   },
   integrations: [
+    expressiveCode({
+      themes: ["tokyo-night"],
+      plugins: [pluginLineNumbers(), pluginCollapsibleSections({})],
+      defaultProps: {
+        showLineNumbers: true,
+        startLineNumber: 1,
+        foreground: "#578298a6",
+        highlightForeground: "#85c7ebb3",
+      },
+      styleOverrides: {
+        codeFontFamily: "Atkinson, sans-serif",
+        codeFontSize: "1.05em",
+        codeLineHeight: "1.8",
+        codeBackground: "transparent",
+        codePaddingInline: "1rem",
+        codeWidth: "auto",
+        codeMaxWidth: "100%",
+      },
+    }),
     mdx(),
     sitemap(),
     react({
@@ -39,10 +64,11 @@ export default defineConfig({
     tailwind(),
   ],
   adapter: vercel({
-    webAnalytics: { enabled: true },
+    webAnalytics: {
+      enabled: true,
+    },
     imageService: true,
   }),
-
   vite: {
     resolve: {
       alias: {
@@ -57,6 +83,24 @@ export default defineConfig({
         "@types": "/src/types",
         "@util": "/src/util",
         "@config": "/src/config",
+      },
+      resolve: {
+        alias: {
+          "@assets": "/src/assets",
+          "@components": "/src/components",
+          "@astro": "/src/components/AstroCompoent",
+          "@react": "/src/components/ReaactCompoents",
+          "@content": "/src/content",
+          "@layouts": "/src/layouts",
+          "@pages": "/src/pages",
+          "@styles": "/src/styles",
+          "@types": "/src/types",
+          "@util": "/src/util",
+          "@config": "/src/config",
+        },
+      },
+      optimizeDeps: {
+        include: ["react-icons/fa"],
       },
     },
   },
