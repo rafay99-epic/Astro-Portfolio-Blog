@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { FaPlay, FaPause } from "react-icons/fa";
 
 function TextToSpeech({ content }: { content: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   useEffect(() => {
     if (!window.speechSynthesis) {
@@ -58,46 +58,19 @@ function TextToSpeech({ content }: { content: string }) {
   };
 
   return (
-    <div
-      className="flex flex-col items-center justify-center p-4 rounded-lg "
-      style={{
-        background: "var(--accent-dark)",
-      }}
-    >
-      <div className="flex items-center space-x-4">
-        <button
-          onClick={isPlaying ? stopAudio : playAudio}
-          className="w-12 h-12 flex items-center justify-center rounded-full text-2xl font-bold transition-transform transform active:scale-90"
-          style={{
-            background: "var(--accent)",
-            color: "var(--text-light)",
-          }}
-        >
-          {isPlaying ? "⏹️" : "▶️"}
-        </button>
-        <div className="flex-1 text-left">
-          <div
-            className="text-sm font-medium truncate"
-            style={{ color: "var(--text-light)" }}
-          >
-            {isPlaying ? "Playing Audio..." : "Ready to Play Audio"}
-          </div>
-          <div
-            className="w-full h-1 rounded-full mt-2"
-            style={{
-              background: "var(--gray-dark)",
-            }}
-          >
-            {/* Placeholder for progress bar */}
-            <div
-              className={`h-1 rounded-full transition-all ${
-                isPlaying ? "w-full" : "w-0"
-              }`}
-              style={{ background: "var(--accent)" }}
-            ></div>
-          </div>
-        </div>
-      </div>
+    <div className="flex flex-col items-center justify-center p-4 rounded-lg w-full max-w-xs mx-auto">
+      <p className="mb-2 text-lg font-semibold text-white">Audio Content</p>
+
+      <button
+        onClick={isPlaying ? stopAudio : playAudio}
+        className="flex justify-center items-center w-12 h-12 rounded-full bg-[#1f2335] border-2 border-white hover:bg-[#7aa2f7] transition duration-300"
+      >
+        {isPlaying ? (
+          <FaPause style={{ color: "white" }} />
+        ) : (
+          <FaPlay style={{ color: "white" }} />
+        )}
+      </button>
     </div>
   );
 }

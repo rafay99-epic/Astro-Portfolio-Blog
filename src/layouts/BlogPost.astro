@@ -52,9 +52,31 @@ const {
   <head>
     <BaseHead title={title} description={description} />
     <SpeedInsights />
+    <style>
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .item {
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <Header />
+
     <main class="w-full max-w-5xl mx-auto px-4 py-8">
       <article>
         <div class="w-full mb-4">
@@ -107,7 +129,7 @@ const {
             <div
               class="flex flex-col items-center justify-center mt-6 space-y-2"
             >
-              <p class="text-gray-500 text-lg">Written by</p>
+              <p class="text-gray-500 text-lg">Published by</p>
 
               {
                 authorAvatar && (
@@ -124,13 +146,15 @@ const {
                 {authorName}
               </p>
             </div>
-            <div>
-              <TextToSpeech client:load content={blogContent} />
+            <hr class="mt-4" />
+            <div class="container">
+              <div class="item">
+                <TextToSpeech client:load content={blogContent} />
+              </div>
+              <div class="item">
+                <ShareButtons url={pageUrl} pagetitle="Blog Post" />
+              </div>
             </div>
-            <div>
-              <ShareButtons url={pageUrl} pagetitle="Blog Post" />
-            </div>
-
             <hr class="mt-4" />
           </div>
           <div>
