@@ -7,8 +7,7 @@
     "start": "astro dev",
     "build": "tinacms build && astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "test": "npx playwright test"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.3",
