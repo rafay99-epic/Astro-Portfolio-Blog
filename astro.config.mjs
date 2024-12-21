@@ -58,6 +58,9 @@ export default defineConfig({
         "@util": "/src/util",
         "@config": "/src/config",
       },
+      optimizeDeps: {
+        include: ["react-icons/fa"],
+      },
     },
   },
 });
