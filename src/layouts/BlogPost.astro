@@ -33,7 +33,11 @@ const BlogPosts = featureFlags.showBlog
 const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
 const currentBlog = BlogPosts.find((post) => post.slug === currentSlug);
 
-const blogContent = currentBlog?.body || "";
+if (!currentBlog) {
+  return Astro.redirect("/access-denied");
+}
+
+const blogContent = currentBlog.body;
 
 const {
   title,
@@ -148,11 +152,19 @@ const {
             </div>
             <hr class="mt-4" />
             <div class="container">
-              <div class="item">
+              <div
+                role="region"
+                aria-label="Text to speech controls"
+                class="item"
+              >
                 <TextToSpeech client:load content={blogContent} />
               </div>
               <div class="item">
-                <ShareButtons url={pageUrl} pagetitle="Blog Post" />
+                <ShareButtons
+                  url={pageUrl}
+                  pagetitle="Blog Post"
+                  aria-label="Share this post"
+                />
               </div>
             </div>
             <hr class="mt-4" />
