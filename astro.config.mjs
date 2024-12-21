@@ -5,11 +5,13 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
-import remarkMermaid from "remark-mermaidjs";
 import expressiveCode from "astro-expressive-code";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
+// "remark-mermaidjs": "^7.0.0",
+// "@playwright/test": "^1.49.1",
+// import remarkMermaid from "remark-mermaidjs";
 dotenv.config();
 
 export default defineConfig({
@@ -19,7 +21,7 @@ export default defineConfig({
     format: "directory",
   },
   markdown: {
-    remarkPlugins: [remarkMermaid],
+    // remarkPlugins: [remarkMermaid],
     shikiConfig: {
       theme: "tokyo-night",
       defaultColor: false,
