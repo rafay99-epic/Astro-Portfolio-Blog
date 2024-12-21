@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tinacms dev -c \"astro dev\"",
     "start": "astro dev",
-    "build": "tinacms build  && astro build",
+    "build": "tinacms build &&  astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -44,7 +44,7 @@
     "simple-icons": "^13.12.0",
     "tailwindcss": "^3.4.10",
     "tinacms": "^1.5.17",
-    "@playwright": "^1.49.1"
+    "@playwright/test": "^1.49.1"
   },
   "devDependencies": {
     "@gsap/react": "^2.1.1",
