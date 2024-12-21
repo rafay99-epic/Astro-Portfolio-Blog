@@ -58,9 +58,24 @@ export default defineConfig({
         "@util": "/src/util",
         "@config": "/src/config",
       },
-      optimizeDeps: {
-        include: ["react-icons/fa"],
+      resolve: {
+        alias: {
+          "@assets": "/src/assets",
+          "@components": "/src/components",
+          "@astro": "/src/components/AstroCompoent",
+          "@react": "/src/components/ReaactCompoents",
+          "@content": "/src/content",
+          "@layouts": "/src/layouts",
+          "@pages": "/src/pages",
+          "@styles": "/src/styles",
+          "@types": "/src/types",
+          "@util": "/src/util",
+          "@config": "/src/config",
+        }
       },
+      optimizeDeps: {
+        include: ["react-icons/fa"]
+      }
     },
   },
 });
