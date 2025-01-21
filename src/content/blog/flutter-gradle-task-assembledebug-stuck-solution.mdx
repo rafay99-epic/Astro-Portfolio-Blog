@@ -2,7 +2,7 @@
 title: >-
   Fixing Flutter: Stuck at 'Running Gradle task assembleDebug...' – Quick
   Solution
-description: 'Fixing Flutter Error and Solution '
+description: "Fixing Flutter Error and Solution "
 pubDate: 2025-01-17T19:00:00.000Z
 draft: false
 heroImage: >-
@@ -12,11 +12,10 @@ authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
   - MobileDevelopment
-  - Blog
   - Flutter
 ---
 
-Flutter is fantastic for developing anything from small apps to complex applications. I absolutely love using Flutter, but sometimes, it can be a real pain in the **you-know-what**. Managing different Flutter versions, dealing with various Java versions—yeah, it's not always smooth sailing. But there’s one error that has truly driven me *crazy*.
+Flutter is fantastic for developing anything from small apps to complex applications. I absolutely love using Flutter, but sometimes, it can be a real pain in the **you-know-what**. Managing different Flutter versions, dealing with various Java versions—yeah, it's not always smooth sailing. But there’s one error that has truly driven me _crazy_.
 
 That error is: **"Running Gradle task 'assembleDebug'..."**.
 
@@ -59,14 +58,14 @@ Alright, let’s get straight to the point. If you’re stuck staring at the **"
    Change to the Android directory inside your Flutter project:
 
 ```bash
-cd android  
+cd android
 ```
 
 1. **Clean Gradle**\
    Run this command to clean Gradle:
 
 ```bash
-./gradlew clean  
+./gradlew clean
 ```
 
 This will clear out any cached or corrupted files that might be causing the hang-up.
@@ -75,13 +74,13 @@ This will clear out any cached or corrupted files that might be causing the hang
    After cleaning, build Gradle by running:
 
 ```bash
-./gradlew build  
+./gradlew build
 ```
 
 Or, to save time, you can combine the clean and build steps into one command:
 
 ```bash
-./gradlew clean build  
+./gradlew clean build
 ```
 
 1. **Run Your Flutter Project**\
