@@ -20,123 +20,159 @@ If you haven’t seen the benchmarks yet, check out the image below:\
 
 ### So, which AI is better for developers?
 
-To find out, I designed **four tasks**—each consisting of two sections:
+I mainly develop Android and iOS applications using Flutter, but sometimes I have to get my hands dirty with JavaScript. In the world of mobile development, UI is the main focus, and I suck at UI. You give me the logic, and I can write it down, but improving UI is something that I truly hate.
 
-1. **One focused on coding**
-2. **One focused on problem-solving**
+So, this is the test. I am working on an app called **Meaning Mate**, which has a section called the **Quiz section**. I have created a UI for the quiz, but it's too simple. I will be asking both AI to improve the UI while keeping it professional and using the color scheme that I provided. I don't want random colors in my app.
 
-Here are the tasks:
+Here is the **Quiz UI code** that I wrote:
 
-#### **Section 1: Code Innovation & Uniqueness**
+```dart
+import 'package:flutter/material.dart';
 
-✅ **Task 1:**\
-Write a function that sorts a list of numbers **without using built-in sorting functions**. The goal is to implement a novel approach—**no classic algorithms** like Merge Sort, Quick Sort, or Bubble Sort.
+class Quizui extends StatelessWidget {
+  final String question;
+  final List<String> options;
+  final void Function(String) onOptionSelected;
 
-✅ **Task 2:**\
-Create a function that generates random yet **aesthetically pleasing ASCII art** based on a given keyword (e.g., "mountain," "wave," or "tree"). The output should follow a pattern rather than being completely random.
+  const Quizui({
+    super.key,
+    required this.question,
+    required this.options,
+    required this.onOptionSelected,
+  });
 
-#### **Section 2: Problem-Solving with Constraints**
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            question,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ...options.map(
+            (option) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.surface,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    textStyle: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    elevation: 8,
+                    shadowColor: Colors.black.withOpacity(0.3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  ),
+                  onPressed: () => onOptionSelected(option),
+                  child: Text(
+                    option,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-✅ **Task 3:**\
-Design an algorithm to find the **shortest path in a maze**. The maze is represented by a **2D array**, where `0` represents an open path and `1` represents a wall.
-
-* The AI **must not** simply implement BFS or Dijkstra’s Algorithm—it needs to come up with a unique approach.
-
-✅ **Task 4:**\
-Write a function that generates **efficiently compressible JSON** while maintaining readability. The AI should consider:
-
-* Reducing redundant keys
-* Using data structures that aid compression
-* Preserving human readability
-
-### **Base Rules**
-
-Before we begin, I’m using the **free version** of both AI models—**OpenAI Free Access** and **Deepseak Free Access**—no paid versions. Plus, I’ll also be asking about their **thought processes** along the way.
-
-Let’s see which AI comes out on top! 🚀
-
-## ChatGPT
-
-Here are the results
-
-### Task 01:
-
-```py
-import time
-import random
-
-# Custom function to find the minimum value
-def find_min(arr):
-    min_val = arr[0]
-    for num in arr:
-        if num < min_val:
-            min_val = num
-    return min_val
-
-# Custom function to find the maximum value
-def find_max(arr):
-    max_val = arr[0]
-    for num in arr:
-        if num > max_val:
-            max_val = num
-    return max_val
-
-# Histogram Sort (without built-in functions)
-def histogram_sort(arr):
-    if not arr or len(arr) == 1:
-        return
-
-    # Step 1: Find min and max manually
-    min_val = find_min(arr)
-    max_val = find_max(arr)
-
-    # Step 2: Create a histogram (frequency array)
-    size = max_val - min_val + 1
-    histogram = [0] * size  # Zero-initialized list
-
-    for num in arr:
-        histogram[num - min_val] += 1
-
-    # Step 3: Reconstruct sorted array
-    index = 0
-    i = 0
-    while i < size:
-        while histogram[i] > 0:
-            arr[index] = i + min_val
-            index += 1
-            histogram[i] -= 1
-        i += 1
-
-# Custom function to generate a list of random numbers
-def generate_random_list(size, min_val, max_val):
-    arr = [0] * size
-    for i in range(size):
-        arr[i] = random.randint(min_val, max_val)
-    return arr
-
-# Benchmarking function
-def benchmark_sorting(size, min_val, max_val):
-    arr1 = generate_random_list(size, min_val, max_val)
-    arr2 = [arr1[i] for i in range(len(arr1))]  # Manual copy (no built-in functions)
-
-    # Measure Histogram Sort
-    start1 = time.time()
-    histogram_sort(arr1)
-    end1 = time.time()
-
-    # Measure Custom Manual Sorting (Simulated Built-in sort)
-    start2 = time.time()
-    for i in range(len(arr2)):
-        for j in range(i + 1, len(arr2)):
-            if arr2[i] > arr2[j]:  # Swap if needed
-                arr2[i], arr2[j] = arr2[j], arr2[i]
-    end2 = time.time()
-
-    # Output results
-    print("Histogram Sort Time: ", (end1 - start1) * 1e6, "microseconds")
-    print("Manual Sorting (Selection Sort) Time: ", (end2 - start2) * 1e6, "microseconds")
-
-# Run benchmark
-random.seed(0)  # Ensure reproducibility
-benchmark_sorting(10000, 0, 1000)
 ```
+
+And this is the UI code that chatgpt provided:
+
+```dart
+import 'package:flutter/material.dart';
+
+class Quizui extends StatelessWidget {
+  final String question;
+  final List<String> options;
+  final void Function(String) onOptionSelected;
+
+  const Quizui({
+    super.key,
+    required this.question,
+    required this.options,
+    required this.onOptionSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: theme.surface,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Text(
+              question,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: theme.onSurface,
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          ...options.map(
+            (option) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.primary,
+                  foregroundColor: theme.onPrimary,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 6,
+                  shadowColor: Colors.black.withOpacity(0.2),
+                ),
+                onPressed: () => onOptionSelected(option),
+                child: Text(
+                  option,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+## screenshots
