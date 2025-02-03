@@ -1,50 +1,52 @@
 import { getCollection } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { checkAuthorization } from "@util/authUtils";
 
 export async function GET({ request }: { request: Request }) {
+  const headers = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "https://www.rafay99.com",
+  };
+
   try {
-    if (!featureFlags.showWiki) {
+    // Feature flag check
+    if (!featureFlags?.showWiki) {
       return new Response(
-        JSON.stringify({ error: "Wiki feature is disabled" }),
+        JSON.stringify({ error: "Wiki feature is currently disabled." }),
         {
           status: 403,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "https://www.rafay99.com",
-          },
+          headers,
         }
       );
     }
 
-    if (!checkAuthorization(request)) {
-      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
-        status: 401,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://www.rafay99.com",
-        },
-      });
+    // Fetch wiki posts
+    const posts = await getCollection("webwiki");
+
+    if (!posts || posts.length === 0) {
+      return new Response(
+        JSON.stringify({ message: "No Wiki posts available." }),
+        {
+          status: 404,
+          headers,
+        }
+      );
     }
 
-    const posts = await getCollection("webwiki");
     return new Response(JSON.stringify(posts), {
       status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "https://www.rafay99.com",
-      },
+      headers,
     });
   } catch (error) {
     console.error("Error fetching Wiki posts:", error);
+
     return new Response(
-      JSON.stringify({ error: "Failed to fetch Wiki posts" }),
+      JSON.stringify({
+        error: "An unexpected error occurred while fetching Wiki posts.",
+        details: error instanceof Error ? error.message : "Unknown error",
+      }),
       {
         status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://www.rafay99.com",
-        },
+        headers,
       }
     );
   }

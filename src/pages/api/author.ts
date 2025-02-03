@@ -1,5 +1,4 @@
 import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
-import { checkAuthorization } from "@util/authUtils";
 import authorConfig from "@config/siteConfig/info.json";
 
 export async function GET({ request }: { request: Request }) {
@@ -15,16 +14,6 @@ export async function GET({ request }: { request: Request }) {
           },
         }
       );
-    }
-
-    if (!checkAuthorization(request)) {
-      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
-        status: 401,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://www.rafay99.com",
-        },
-      });
     }
 
     const responseData = {
