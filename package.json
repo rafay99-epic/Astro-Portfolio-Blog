@@ -14,6 +14,7 @@
     "@astrojs/react": "^4.1.6",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/starlight": "^0.31.1",
     "@astrojs/tailwind": "^5.1.5",
     "@astrojs/vercel": "^8.0.2",
     "@expressive-code/plugin-collapsible-sections": "^0.38.3",

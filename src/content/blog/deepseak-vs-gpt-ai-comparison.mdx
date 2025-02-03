@@ -1,0 +1,527 @@
+---
+title: "Deepseak vs GPT: The Battle of AI Interfaces"
+description: "New Model in Town "
+pubDate: 2025-01-30T19:00:00.000Z
+draft: true
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - AI
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+While... While what? Today, we have a new AI model going wild on the internet, and it's called **Deepseak**—the new **thinking AI model** that’s set to change everything! Will it take our jobs? Just kidding. But the future is here, and these new thinking models are truly fascinating. The ability to **think independently** is incredible.
+
+But we’re here for something else—**which one is better?** By now, we’ve all seen the benchmarks, and they point to **Deepseak (R1)** outperforming **ChatGPT (O1)**. But how much of a difference does this improvement make for us **developers**? And more importantly, how can we **make money** from it? (Because that’s what capitalists do—but that’s a topic for another day.)
+
+For now, let's talk about **AI**.
+
+If you haven’t seen the benchmarks yet, check out the image below:\
+![image](/BlogImages/deepseak_benchmark.jpg "Benchmark Result")
+
+## So, which AI is better for developers?
+
+I mainly develop Android and iOS applications using Flutter, but sometimes I have to get my hands dirty with JavaScript. In the world of mobile development, UI is the main focus, and I suck at UI. You give me the logic, and I can write it down, but improving UI is something that I truly hate.
+
+So, this is the test. I am working on an app called **Meaning Mate**, which has a section called the **Quiz section**. I have created a UI for the quiz, but it's too simple. I will be asking both AI to improve the UI while keeping it professional and using the color scheme that I provided. I don't want random colors in my app.
+
+### ChatGPT
+
+Here in the Tab form, both the UI are provided, The first one is the UI that is codede by me and the other one is the UI that chatgpt provided.
+
+<Tabs class="p-4 rounded-lg bg-(#7aa2f7)">
+  <TabItem class="bg-(#7aa2f7)" label="Orginal Code">
+  
+```dart
+import 'package:flutter/material.dart';
+
+class Quizui extends StatelessWidget {
+final String question;
+final List<String> options;
+final void Function(String) onOptionSelected;
+
+const Quizui({
+super.key,
+required this.question,
+required this.options,
+required this.onOptionSelected,
+});
+
+@override
+Widget build(BuildContext context) {
+return Padding(
+padding: const EdgeInsets.all(16.0),
+child: Column(
+crossAxisAlignment: CrossAxisAlignment.center,
+children: [
+Text(
+question,
+style: TextStyle(
+fontSize: 20,
+fontWeight: FontWeight.bold,
+color: Theme.of(context).colorScheme.onSurface,
+),
+),
+const SizedBox(height: 16),
+...options.map(
+(option) => Padding(
+padding: const EdgeInsets.symmetric(vertical: 8.0),
+child: SizedBox(
+width: double.infinity,
+child: ElevatedButton(
+style: ElevatedButton.styleFrom(
+foregroundColor: Theme.of(context).colorScheme.surface,
+backgroundColor: Theme.of(context).colorScheme.primary,
+padding: const EdgeInsets.symmetric(vertical: 14),
+textStyle: TextStyle(
+fontSize: 16,
+color: Theme.of(context).colorScheme.primary,
+),
+elevation: 8,
+shadowColor: Colors.black.withOpacity(0.3),
+shape: RoundedRectangleBorder(
+borderRadius: BorderRadius.circular(6),
+),
+),
+onPressed: () => onOptionSelected(option),
+child: Text(
+option,
+textAlign: TextAlign.center,
+overflow: TextOverflow.ellipsis,
+),
+),
+),
+),
+),
+],
+),
+);
+}
+}
+
+````
+</TabItem>
+<TabItem    class="" label="ChatGPT Code">
+
+```dart
+import 'package:flutter/material.dart';
+
+class Quizui extends StatelessWidget {
+  final String question;
+  final List<String> options;
+  final void Function(String) onOptionSelected;
+
+  const Quizui({
+    super.key,
+    required this.question,
+    required this.options,
+    required this.onOptionSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Quiz Time!"),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Card(
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  question,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                ...options.map(
+                  (option) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: GestureDetector(
+                      onTap: () => onOptionSelected(option),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            )
+                          ],
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 16,
+                          horizontal: 24,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                option,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
+                                textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### Screenshot
+
+Here are the results
+<div class="flex justify-center gap-4 p-4 bg-[#7aa2f7] rounded-lg">
+  <div class="w-1/2 flex flex-col items-center">
+    <h3 class="text-white text-lg mb-2">Original Code</h3>
+    <img src="/BlogImages/orginal.png" alt="Original UI" class="max-w-full h-auto rounded-lg shadow-md" />
+  </div>
+  <div class="w-1/2 flex flex-col items-center">
+    <h3 class="text-white text-lg mb-2">ChatGPT Code</h3>
+    <img src="/BlogImages/ChatGPT.png" alt="ChatGPT UI" class="max-w-full h-auto rounded-lg shadow-md" />
+  </div>
+</div>
+
+<br>
+</br>
+#### Observation
+
+The UI is not as good as the original one, but it is still usable. The only problem is that the UI is too simple, and the colors are not consistent. I will try to improve the UI by adding more colors and making it more professional.
+Moreover, I don't see the need for a big box in the UI, especially since the original UI doesn't require one. But what can I say? I will be using the original UI.
+
+### Deepseak
+
+Here is the **Quiz UI code** that I wrote:
+<Tabs class="p-4 rounded-lg bg-(#7aa2f7)">
+  <TabItem class="bg-(#7aa2f7)" label="Orginal Code">
+    ```dart
+import 'package:flutter/material.dart';
+
+class Quizui extends StatelessWidget {
+  final String question;
+  final List<String> options;
+  final void Function(String) onOptionSelected;
+
+  const Quizui({
+    super.key,
+    required this.question,
+    required this.options,
+    required this.onOptionSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            question,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ...options.map(
+            (option) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.surface,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    textStyle: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    elevation: 8,
+                    shadowColor: Colors.black.withOpacity(0.3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  ),
+                  onPressed: () => onOptionSelected(option),
+                  child: Text(
+                    option,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+  ```
+</TabItem>
+<TabItem    class="" label="DeepSeak Code">
+
+  ```dart
+import 'package:flutter/material.dart';
+
+class Quizui extends StatelessWidget {
+  final String question;
+  final List<String> options;
+  final void Function(String) onOptionSelected;
+
+  const Quizui({
+    super.key,
+    required this.question,
+    required this.options,
+    required this.onOptionSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary.withOpacity(0.8),
+              Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 40),
+              Hero(
+                tag: 'question',
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    question,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black.withOpacity(0.3),
+                          blurRadius: 4,
+                          offset: const Offset(2, 2),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 32),
+              ...options.map(
+                (option) => AnimatedButton(
+                  option: option,
+                  onPressed: () => onOptionSelected(option),
+                ),
+              ),
+              const Spacer(),
+              LinearProgressIndicator(
+                value: 0.5, // Replace with actual progress
+                backgroundColor: Colors.grey[300],
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AnimatedButton extends StatefulWidget {
+  final String option;
+  final VoidCallback onPressed;
+
+  const AnimatedButton({
+    super.key,
+    required this.option,
+    required this.onPressed,
+  });
+
+  @override
+  _AnimatedButtonState createState() => _AnimatedButtonState();
+}
+
+class _AnimatedButtonState extends State<AnimatedButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    _controller.forward();
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    _controller.reverse();
+    widget.onPressed();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: _onTapDown,
+      onTapUp: _onTapUp,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(context).colorScheme.secondary,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(2, 2),
+                ),
+              ],
+            ),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: widget.onPressed,
+              child: Text(
+                widget.option,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+
+
+  </TabItem>
+</Tabs>
+
+<br></br>
+
+#### Screenshot
+Here are the results
+<div class="flex justify-center gap-4 p-4 bg-[#7aa2f7] rounded-lg">
+  <div class="w-1/2 flex flex-col items-center">
+    <h3 class="text-white text-lg mb-2">Original Code</h3>
+    <img src="/BlogImages/orginal.png" alt="Original UI" class="max-w-full h-auto rounded-lg shadow-md" />
+  </div>
+  <div class="w-1/2 flex flex-col items-center">
+    <h3 class="text-white text-lg mb-2">DeepSeak Code</h3>
+    <img src="/BlogImages/deepseak.png" alt="Deep Seak UI" class="max-w-full h-auto rounded-lg shadow-md" />
+  </div>
+</div>
+
+<br>
+</br>
+#### Observation
+The UI is not as good as the original one, but it is still usable. The problem is that the UI has too many colors, like a rainbow. I can remove the colors and update it to fit my app's theme. Here's what I noticed: they don't understand the theme and culture of the app, which is why they're using rainbow colors.
+
+### Comparison
+Now let's compare the ChatGPT UI and Deepseak UI. To be honest, neither is good. I don't know why both are lacking—one uses rainbow colors, and the other is just a box builder. I'm not sure why they aren't able to create a better UI. I have used these tools in the past, and while they work some of the time, not always. Let's see what happens.
+
+## Conclusion
+Here is the conclusion:
+Both AI bots are not able to create a great UI, but they do provide usable ones. I will be using the Deepseak UI in my app because it provides more context and features that I can integrate into the application.
+
+Both AI models have their own approach and flow for problem-solving, but sometimes they fall short. The advantage of Deepseak is that it is free and open-source, allowing you to deploy the model on your own machine and use it as you see fit without limits. However, ChatGPT is closed-source, requiring a subscription to access its APIs, which is frustrating for both developers and users.
+
+````
