@@ -57,10 +57,25 @@ const webwiki = defineCollection({
   }),
 });
 
+const ms_notes = defineCollection({
+  type: "content",
+  schema: z.object({
+    lecture_title: z.string(),
+    lecture_description: z.string(),
+    pubDate: z.coerce.date(),
+    lecture_draft: z.boolean().default(true),
+    readTime: z.string().optional(),
+    lecture_tags: z.array(z.string()).default(["MS-Notes"]),
+    lectureNumber: z.string(),
+    subject: z.string(),
+  }),
+});
+
 // Export collections
 export const collections = {
   blog: blog,
   newsletter: newsletter,
   projects: projects,
   webwiki: webwiki,
+  ms_notes: ms_notes,
 };

@@ -15,7 +15,9 @@
         "showTermsandConditions": true,
         "showPrivacyPolicy": true,
         "showIdeaPanel": true,
-        "showWiki": true
+        "showWiki": true,
+        "showNotes": true,
+        "showWhatsNew": true
     },
     "FeatureFlagsApi": {
         "enableNotionAPI": false,

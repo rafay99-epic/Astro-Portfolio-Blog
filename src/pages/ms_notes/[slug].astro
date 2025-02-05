@@ -1,0 +1,48 @@
+---
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import { type CollectionEntry, getCollection } from "astro:content";
+import MSNoteLayout from "@layouts/MSNotes.astro";
+import { calculateReadTime } from "@util/read_time";
+export const prerender = true;
+
+export async function getStaticPaths() {
+  if (!featureFlags.showNotes) {
+    return [];
+  }
+
+  const posts = await getCollection("ms_notes");
+
+  const filteredPosts = import.meta.env.PROD
+    ? posts.filter((post) => !post.data.lecture_draft)
+    : posts;
+
+  return filteredPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+
+type Props = CollectionEntry<"ms_notes">;
+
+const post = Astro.props;
+
+const readTime = calculateReadTime(post.body);
+
+const { Content } = featureFlags.showNotes
+  ? await post.render()
+  : { Content: null };
+---
+
+{
+  featureFlags.showNotes ? (
+    Content ? (
+      <MSNoteLayout {...post.data} readTime={readTime}>
+        <Content />
+      </MSNoteLayout>
+    ) : (
+      <p>Failed to load note content.</p>
+    )
+  ) : (
+    <p>Notes is currently disabled.</p>
+  )
+}

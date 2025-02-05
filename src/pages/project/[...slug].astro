@@ -31,14 +31,22 @@ const { Content } = project ? await project.render() : { Content: null };
     <Project {...project.data}>
       <Content />
     </Project>
-  ) : (
+  ) : project ? (
     <div class="projects-disabled">
-      + <h1>Coming Soon!</h1>+{" "}
+      <h1>Coming Soon!</h1>
       <p>
         We're working on something exciting. Our project showcase will be
         available soon.
       </p>
-      + <a href="/">Return to Homepage</a>+{" "}
+      <a href="/">Return to Homepage</a>
+    </div>
+  ) : (
+    <div class="projects-error">
+      <h1>Error!</h1>
+      <p>
+        Project data is not available at the moment. Please check back later.
+      </p>
+      <a href="/">Return to Homepage</a>
     </div>
   )
 }

@@ -8,8 +8,9 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
-import { ViewTransitions } from "astro:transitions";
+const { title, description, image = "/Rafay99.png" } = Astro.props;
+
+import { ClientRouter } from "astro:transitions";
 ---
 
 <!-- Global Metadata -->
@@ -68,7 +69,7 @@ import { ViewTransitions } from "astro:transitions";
 <meta name="image" content={new URL(image, Astro.url)} />
 
 <!-- View Transitions -->
-<ViewTransitions />
+<ClientRouter />
 
 <link
   rel="stylesheet"

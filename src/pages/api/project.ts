@@ -1,51 +1,38 @@
 import { getCollection } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { checkAuthorization } from "@util/authUtils";
 
 export async function GET({ request }: { request: Request }) {
+  const headers = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "https://www.rafay99.com",
+    "Cache-Control": "public, max-age=3600",
+    ETag: crypto.randomUUID(),
+  };
   try {
     if (!featureFlags.showProjects) {
       return new Response(
         JSON.stringify({ error: "Projects API is disabled" }),
         {
           status: 403,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "https://www.rafay99.com",
-          },
+          headers: headers,
         }
       );
     }
 
-    if (!checkAuthorization(request)) {
-      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
-        status: 401,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://www.rafay99.com",
-        },
-      });
-    }
-
     const posts = await getCollection("projects");
+    const filteredPosts = posts.filter((post) => !post.data.draft);
 
-    return new Response(JSON.stringify(posts), {
+    return new Response(JSON.stringify(filteredPosts), {
       status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "https://www.rafay99.com",
-      },
+      headers: headers,
     });
   } catch (error) {
     console.error("Error fetching Project posts:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to fetch newsletter posts" }),
+      JSON.stringify({ error: "Failed to fetch project posts" }),
       {
         status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://www.rafay99.com",
-        },
+        headers: headers,
       }
     );
   }

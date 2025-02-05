@@ -1,12 +1,15 @@
 ---
 import HeaderLink from "@astro/header/HeaderLink.astro";
 import { Image } from "astro:assets";
-import SearchSVG from "@astro/header/nav/SearchSVG.astro";
-import LetterSVG from "@astro/header/nav/LetterSVG.astro";
 import authorConfig from "@config/siteConfig/info.json";
-import TrendingSVG from "@astro/header/nav/TrendingSVG.astro";
-import TagSVG from "@astro/header/nav/TagSVG.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import TagSVG from "@assets/svg/tag.svg";
+import LetterSVG from "@assets/svg/letter.svg";
+import SearchSVG from "@assets/svg/search.svg";
+import TrendingSVG from "@assets/svg/trending.svg";
+import MSNotesSVG from "@assets/svg/msNotes.svg";
+import ButtonSVG from "@assets/svg/button.svg";
+import WikiSVG from "@assets/svg/wiki.svg";
 ---
 
 <header>
@@ -15,7 +18,7 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
       <a href="/">
         <Image
           src={authorConfig.avator}
-          alt="author Avator"
+          alt="author Avatar"
           format="avif"
           width={90}
           height={90}
@@ -23,7 +26,8 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
       </a>
     </h2>
 
-    <nav class="hidden md:flex space-x-6">
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex items-center space-x-6">
       {featureFlags.showBlog && <HeaderLink href="/blog">Articles</HeaderLink>}
       {
         featureFlags.showNewsletter && (
@@ -44,45 +48,85 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
         )
       }
       {
-        featureFlags.showNewsletter && (
-          <HeaderLink href="/newsletter" style="color: white;">
-            <LetterSVG />
-          </HeaderLink>
-        )
-      }
-      {
-        featureFlags.showTrendingPosts && (
-          <HeaderLink href="/trending" style="color: white;">
-            <TrendingSVG />
-          </HeaderLink>
-        )
-      }
-      {
         featureFlags.showSearch && (
           <HeaderLink href="/search" style="color: white;">
             <SearchSVG />
           </HeaderLink>
         )
       }
+
+      <div class="relative dropdown-group">
+        <button
+          id="dropdown-toggle"
+          class="text-white flex items-center"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-controls="dropdown-menu"
+        >
+          <!-- Button SVG -->
+          <ButtonSVG class="w-7 h-7 text-white" />
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div
+          id="dropdown-menu"
+          class="absolute left-0 hidden bg-gray-800 rounded-lg mt-2 z-50 w-auto min-w-[180px] shadow-md"
+          role="menu"
+          aria-labelledby="dropdown-toggle"
+        >
+          <ul class="py-2 space-y-1">
+            {
+              featureFlags.showNewsletter && (
+                <li class="px-4 py-2 flex items-center space-x-2">
+                  <LetterSVG class="w-6 h-6 text-white" />
+                  <HeaderLink href="/newsletter" style="color: white;">
+                    Newsletter Archive
+                  </HeaderLink>
+                </li>
+              )
+            }
+            {
+              featureFlags.showTrendingPosts && (
+                <li class="px-4 py-2 flex items-center space-x-2">
+                  <TrendingSVG class="w-6 h-6 text-white" />
+                  <HeaderLink href="/trending" style="color: white;">
+                    Trending Articles
+                  </HeaderLink>
+                </li>
+              )
+            }
+            {
+              featureFlags.showNotes && (
+                <li class="px-4 py-2 flex items-center space-x-2">
+                  <MSNotesSVG class="w-6 h-6 text-white" />
+                  <HeaderLink href="/ms_notes">MS Note</HeaderLink>
+                </li>
+              )
+            }
+            {
+              featureFlags.showNotes && (
+                <li class="px-4 py-2 flex items-center space-x-2">
+                  <WikiSVG class="w-6 h-6 text-white" />
+                  <HeaderLink href="/webwiki">Website Wiki</HeaderLink>
+                </li>
+              )
+            }
+          </ul>
+        </div>
+      </div>
     </nav>
+
+    <!-- Hamburger for Mobile -->
     <button
       class="hamburger block md:hidden focus:outline-none"
       onclick="toggleMenu()"
     >
-      <div
-        class="hamburger-icon relative w-6 h-1 bg-gray-200 transform transition-all duration-300"
-      >
-      </div>
-      <div
-        class="hamburger-icon relative w-6 h-1 bg-gray-200 mt-1.5 transform transition-all duration-300"
-      >
-      </div>
-      <div
-        class="hamburger-icon relative w-6 h-1 bg-gray-200 mt-1.5 transform transition-all duration-300"
-      >
-      </div>
+      <div class="hamburger-icon"></div>
+      <div class="hamburger-icon mt-1.5"></div>
+      <div class="hamburger-icon mt-1.5"></div>
     </button>
   </div>
+
   <!-- Mobile Menu -->
   <nav
     id="mobile-menu"
@@ -103,30 +147,50 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
     }
     {
       featureFlags.showTags && (
-        <HeaderLink href="/tag" style="color: white;">
+        <li class="px-4 py-2 flex items-center space-x-2">
           <TagSVG />
-        </HeaderLink>
+          <HeaderLink href="/tag" style="color: white;">
+            Tags
+          </HeaderLink>
+        </li>
       )
     }
     {
       featureFlags.showNewsletter && (
-        <HeaderLink href="/newsletter" style="color: white;">
+        <li class="px-4 py-2 flex items-center space-x-2">
           <LetterSVG />
-        </HeaderLink>
+          <HeaderLink href="/newsletter" style="color: white;">
+            Newsletter Archive
+          </HeaderLink>
+        </li>
       )
     }
     {
       featureFlags.showTrendingPosts && (
-        <HeaderLink href="/trending" style="color: white;">
+        <li class="px-4 py-2 flex items-center space-x-2">
           <TrendingSVG />
-        </HeaderLink>
+          <HeaderLink href="/trending" style="color: white;">
+            Trending Articles
+          </HeaderLink>
+        </li>
       )
     }
     {
       featureFlags.showSearch && (
-        <HeaderLink href="/search" style="color: white;">
+        <li class="px-4 py-2 flex items-center space-x-2">
           <SearchSVG />
-        </HeaderLink>
+          <HeaderLink href="/search" style="color: white;">
+            Search
+          </HeaderLink>
+        </li>
+      )
+    }
+    {
+      featureFlags.showNotes && (
+        <li class="px-4 py-2 flex items-center space-x-2">
+          <MSNotesSVG class="w-6 h-6 text-white" />
+          <HeaderLink href="/ms_notes">MS Note</HeaderLink>
+        </li>
       )
     }
   </nav>
@@ -134,57 +198,52 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 <style>
   header {
-    margin: 0;
     padding: 0 1em;
   }
 
-  h2 {
-    margin: 0;
-    font-size: 1em;
-  }
-
-  h2 a,
-  h2 a.active {
-    text-decoration: none;
-  }
-
   nav a {
-    padding: 1em 0.5em;
-    color: var(--black);
-    text-decoration: none;
+    color: var(--white);
   }
 
-  nav a.active {
-    text-decoration: none;
+  nav a:hover {
+    color: var(--gray);
   }
 
   .hamburger-icon {
-    transition:
-      transform 0.3s ease,
-      background-color 0.3s ease;
+    width: 24px;
+    height: 2px;
+    background: white;
   }
-
-  .hamburger.open .hamburger-icon:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+  #dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
-
-  .hamburger.open .hamburger-icon:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger.open .hamburger-icon:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+  #dropdown-menu ul li:hover {
+    background-color: #2d3748;
   }
 </style>
 
 <script lang="ts">
   function toggleMenu() {
     const menu = document.getElementById("mobile-menu");
-    const hamburger = document.querySelector(".hamburger");
-    if (menu && hamburger) {
-      menu.classList.toggle("hidden");
-      menu.classList.toggle("flex");
-      hamburger.classList.toggle("open");
-    }
+    menu?.classList.toggle("hidden");
+    menu?.classList.toggle("flex");
   }
+
+  document.addEventListener("click", (event) => {
+    const dropdown = document.getElementById("dropdown-menu");
+    const dropdownToggle = document.getElementById("dropdown-toggle");
+
+    if (!dropdown || !dropdownToggle) return;
+
+    if (dropdownToggle.contains(event.target)) {
+      dropdown.classList.toggle("hidden");
+    } else if (
+      event.target instanceof Node &&
+      !dropdown.contains(event.target)
+    ) {
+      dropdown.classList.add("hidden");
+    }
+  });
 </script>

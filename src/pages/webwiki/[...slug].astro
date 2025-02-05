@@ -38,7 +38,21 @@ const { Content } = featureFlags.showWiki
     <WebWiki {...post.data} readTime={readTime}>
       <Content />
     </WebWiki>
+  ) : post ? (
+    <div class="wiki-error">
+      <h1>Error!</h1>
+      <p>
+        Wiki post data is not available at the moment. Please check back later.
+      </p>
+      <a href="/">Return to Homepage</a>
+    </div>
   ) : (
-    <p>Blog is currently disabled.</p>
+    <div class="wiki-error">
+      <h1>Error!</h1>
+      <p>
+        Wiki post data is not available at the moment. Please check back later.
+      </p>
+      <a href="/">Return to Homepage</a>
+    </div>
   )
 }
