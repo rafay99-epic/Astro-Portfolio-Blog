@@ -1,13 +1,12 @@
 ---
 export const prerender = false;
 
-import WebWikiSlider from "@react/ChangeLog/ChangeLog";
+import WebWikiSlider from "@components/ReaactCompoents/ChangeLog/WebWikiSlider";
 import { getCollection } from "astro:content";
 
 const wikiCollection = await getCollection("webwiki");
 
 const wikiData = wikiCollection
-  .filter((entry) => entry.data.tags.includes("Major Release"))
   .sort((a, b) => {
     const versionA = a.data.version.split(".").map(Number);
     const versionB = b.data.version.split(".").map(Number);

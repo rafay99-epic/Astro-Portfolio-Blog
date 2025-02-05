@@ -67,7 +67,7 @@ try {
         {featureFlags.showBlog && <LatestPost />}
       </section>
       <section style="margin-block-start: 5rem;">
-        <ChangeLog />
+        {featureFlags.showWhatsNew && <ChangeLog />}
       </section>
       <section style="margin-block-start: 5rem;">
         <h1 class="text-center text-6xl font-bold mb-6">Tool & Technology</h1>
