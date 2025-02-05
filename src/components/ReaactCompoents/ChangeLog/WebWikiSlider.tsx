@@ -16,10 +16,7 @@ export default function WebWikiSlider({ wikiData }: WebWikiSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [versionType, setVersionType] = useState<"major" | "minor">("major");
 
-  useEffect(() => {
-    console.log("Component Rendered, Current Index:", currentIndex);
-    console.log("Wiki Data Loaded:", wikiData);
-  }, [currentIndex, wikiData]);
+  useEffect(() => {}, [currentIndex, wikiData]);
 
   useEffect(() => {
     setCurrentIndex(0);
