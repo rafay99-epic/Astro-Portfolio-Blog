@@ -8,12 +8,10 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
   <div
     class="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0"
   >
-    <!-- Social Links Section -->
     <div class="flex justify-center space-x-4">
       <SocialLinks class="space-x-4" />
     </div>
 
-    <!-- Navigation Links Section -->
     <nav class="flex flex-wrap justify-center gap-4 text-sm">
       {
         featureFlags.showPrivacyPolicy && (

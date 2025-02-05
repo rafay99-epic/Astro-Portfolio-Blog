@@ -20,6 +20,9 @@ export default defineConfig({
   build: {
     format: "directory",
   },
+  experimental: {
+    svg: true,
+  },
   markdown: {
     // remarkPlugins: [remarkMermaid],
     shikiConfig: {
