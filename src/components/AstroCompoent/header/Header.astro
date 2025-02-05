@@ -56,7 +56,13 @@ import WikiSVG from "@assets/svg/wiki.svg";
       }
 
       <div class="relative dropdown-group">
-        <button id="dropdown-toggle" class="text-white flex items-center">
+        <button
+          id="dropdown-toggle"
+          class="text-white flex items-center"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-controls="dropdown-menu"
+        >
           <!-- Button SVG -->
           <ButtonSVG class="w-7 h-7 text-white" />
         </button>
@@ -65,6 +71,8 @@ import WikiSVG from "@assets/svg/wiki.svg";
         <div
           id="dropdown-menu"
           class="absolute left-0 hidden bg-gray-800 rounded-lg mt-2 z-50 w-auto min-w-[180px] shadow-md"
+          role="menu"
+          aria-labelledby="dropdown-toggle"
         >
           <ul class="py-2 space-y-1">
             {
