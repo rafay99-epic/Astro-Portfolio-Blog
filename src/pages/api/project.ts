@@ -29,7 +29,7 @@ export async function GET({ request }: { request: Request }) {
   } catch (error) {
     console.error("Error fetching Project posts:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to fetch newsletter posts" }),
+      JSON.stringify({ error: "Failed to fetch project posts" }),
       {
         status: 500,
         headers: headers,

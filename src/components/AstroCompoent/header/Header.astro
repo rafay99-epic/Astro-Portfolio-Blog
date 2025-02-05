@@ -9,6 +9,7 @@ import SearchSVG from "@assets/svg/search.svg";
 import TrendingSVG from "@assets/svg/trending.svg";
 import MSNotesSVG from "@assets/svg/msNotes.svg";
 import ButtonSVG from "@assets/svg/button.svg";
+import WikiSVG from "@assets/svg/wiki.svg";
 ---
 
 <header>
@@ -94,6 +95,14 @@ import ButtonSVG from "@assets/svg/button.svg";
                 </li>
               )
             }
+            {
+              featureFlags.showNotes && (
+                <li class="px-4 py-2 flex items-center space-x-2">
+                  <WikiSVG class="w-6 h-6 text-white" />
+                  <HeaderLink href="/webwiki">Website Wiki</HeaderLink>
+                </li>
+              )
+            }
           </ul>
         </div>
       </div>
@@ -130,30 +139,50 @@ import ButtonSVG from "@assets/svg/button.svg";
     }
     {
       featureFlags.showTags && (
-        <HeaderLink href="/tag" style="color: white;">
+        <li class="px-4 py-2 flex items-center space-x-2">
           <TagSVG />
-        </HeaderLink>
+          <HeaderLink href="/tag" style="color: white;">
+            Tags
+          </HeaderLink>
+        </li>
       )
     }
     {
       featureFlags.showNewsletter && (
-        <HeaderLink href="/newsletter" style="color: white;">
+        <li class="px-4 py-2 flex items-center space-x-2">
           <LetterSVG />
-        </HeaderLink>
+          <HeaderLink href="/newsletter" style="color: white;">
+            Newsletter Archive
+          </HeaderLink>
+        </li>
       )
     }
     {
       featureFlags.showTrendingPosts && (
-        <HeaderLink href="/trending" style="color: white;">
+        <li class="px-4 py-2 flex items-center space-x-2">
           <TrendingSVG />
-        </HeaderLink>
+          <HeaderLink href="/trending" style="color: white;">
+            Trending Articles
+          </HeaderLink>
+        </li>
       )
     }
     {
       featureFlags.showSearch && (
-        <HeaderLink href="/search" style="color: white;">
+        <li class="px-4 py-2 flex items-center space-x-2">
           <SearchSVG />
-        </HeaderLink>
+          <HeaderLink href="/search" style="color: white;">
+            Search
+          </HeaderLink>
+        </li>
+      )
+    }
+    {
+      featureFlags.showNotes && (
+        <li class="px-4 py-2 flex items-center space-x-2">
+          <MSNotesSVG class="w-6 h-6 text-white" />
+          <HeaderLink href="/ms_notes">MS Note</HeaderLink>
+        </li>
       )
     }
   </nav>

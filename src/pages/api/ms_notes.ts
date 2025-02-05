@@ -30,13 +30,10 @@ export async function GET({ request }: { request: Request }) {
       headers: headers,
     });
   } catch (error) {
-    console.error("Error fetching blog posts:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to fetch blog posts" }),
-      {
-        status: 500,
-        headers: headers,
-      }
-    );
+    console.error("Error fetching MS notes:", error);
+    return new Response(JSON.stringify({ error: "Failed to fetch MS Notes" }), {
+      status: 500,
+      headers: headers,
+    });
   }
 }
