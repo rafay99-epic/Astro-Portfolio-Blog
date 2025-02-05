@@ -34,10 +34,14 @@ const { Content } = featureFlags.showBlog
 ---
 
 {
-  featureFlags.showBlog && Content ? (
-    <BlogPost {...post.data} readTime={readTime}>
-      <Content />
-    </BlogPost>
+  featureFlags.showBlog ? (
+    Content ? (
+      <BlogPost {...post.data} readTime={readTime}>
+        <Content />
+      </BlogPost>
+    ) : (
+      <p>Failed to load blog content.</p>
+    )
   ) : (
     <p>Blog is currently disabled.</p>
   )

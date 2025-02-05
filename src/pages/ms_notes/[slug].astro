@@ -28,16 +28,20 @@ const post = Astro.props;
 
 const readTime = calculateReadTime(post.body);
 
-const { Content } = featureFlags.showBlog
+const { Content } = featureFlags.showNotes
   ? await post.render()
   : { Content: null };
 ---
 
 {
-  featureFlags.showNotes && Content ? (
-    <MSNoteLayout {...post.data} readTime={readTime}>
-      <Content />
-    </MSNoteLayout>
+  featureFlags.showNotes ? (
+    Content ? (
+      <MSNoteLayout {...post.data} readTime={readTime}>
+        <Content />
+      </MSNoteLayout>
+    ) : (
+      <p>Failed to load note content.</p>
+    )
   ) : (
     <p>Notes is currently disabled.</p>
   )

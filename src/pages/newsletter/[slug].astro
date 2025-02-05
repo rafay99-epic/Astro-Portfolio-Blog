@@ -29,10 +29,28 @@ const { Content } = newsletter ? await newsletter.render() : { Content: null };
 
 {
   featureFlags.showNewsletter && Content && newsletter ? (
-    <Newsletter {...newsletter.data}>
-      <Content />
-    </Newsletter>
+    Content ? (
+      <Newsletter {...newsletter.data}>
+        <Content />
+      </Newsletter>
+    ) : (
+      <div class="newsletter-error">
+        <h2>Oops! Something went wrong.</h2>
+        <p>Failed to load newsletter content. Please try again later.</p>
+        <a href="/" class="btn btn-primary">
+          Return to Homepage
+        </a>
+      </div>
+    )
   ) : (
-    <p>Newsletter is currently disabled.</p>
+    <div class="newsletter-disabled">
+      <h2>Newsletter Unavailable</h2>
+      <p>
+        Our newsletter service is currently disabled. Stay tuned for updates!
+      </p>
+      <a href="/" class="btn btn-secondary">
+        Return to Homepage
+      </a>
+    </div>
   )
 }

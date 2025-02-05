@@ -5,6 +5,8 @@ export async function GET({ request }: { request: Request }) {
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "https://www.rafay99.com",
+    "Cache-Control": "public, max-age=3600",
+    ETag: crypto.randomUUID(),
   };
 
   try {
@@ -19,9 +21,8 @@ export async function GET({ request }: { request: Request }) {
       );
     }
 
-    // Fetch wiki posts
     const posts = await getCollection("webwiki");
-
+    const filteredPosts = posts.filter((post) => !post.data.draft);
     if (!posts || posts.length === 0) {
       return new Response(
         JSON.stringify({ message: "No Wiki posts available." }),
@@ -32,7 +33,7 @@ export async function GET({ request }: { request: Request }) {
       );
     }
 
-    return new Response(JSON.stringify(posts), {
+    return new Response(JSON.stringify(filteredPosts), {
       status: 200,
       headers,
     });
