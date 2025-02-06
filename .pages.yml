@@ -23,10 +23,6 @@ content:
         label: Draft
         type: boolean
         default: true
-      - name: readTime
-        label: Read Time
-        type: string
-        required: false
       - name: lecture_tags
         label: Lecture Tags
         type: select
