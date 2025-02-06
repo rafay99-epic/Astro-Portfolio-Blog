@@ -23,11 +23,6 @@ content:
         label: Draft
         type: boolean
         default: true
-      - name: lecture_tags
-        label: Lecture Tags
-        type: select
-        options:
-          values: ['MS-Notes', 'Research Method', 'Automata'] 
       - name: lectureNumber
         label: Lecture Number
         type: string
