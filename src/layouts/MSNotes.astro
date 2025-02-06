@@ -40,7 +40,6 @@ const {
   lecture_description,
   pubDate,
   readTime,
-  lecture_tags,
   lectureNumber,
   subject,
 } = Astro.props;
@@ -106,16 +105,24 @@ const {
                 class="flex justify-center items-center text-gray-400 mb-2 space-x-4"
               >
                 <FormattedDate date={pubDate} />
-                <span class="text-sm text-gray-500"
+                <span class="text-base text-gray-500"
                   >Lecture {lectureNumber}</span
                 >
               </div>
-
-              {
-                readTime && (
-                  <p class="text-sm text-gray-500 italic mb-4">{readTime}</p>
-                )
-              }
+              <div>
+                {
+                  readTime && (
+                    <p class="text-sm text-gray-500 italic mb-4">{readTime}</p>
+                  )
+                }
+              </div>
+              <div>
+                {
+                  subject && (
+                    <p class="text-lg text-gray-500 italic mb-4">{subject}</p>
+                  )
+                }
+              </div>
 
               <div class="share-buttons-container">
                 <ShareButtons

@@ -65,7 +65,6 @@ const ms_notes = defineCollection({
     pubDate: z.coerce.date(),
     lecture_draft: z.boolean().default(true),
     readTime: z.string().optional(),
-    lecture_tags: z.array(z.string()).default(["MS-Notes"]),
     lectureNumber: z.string(),
     subject: z.string(),
   }),
