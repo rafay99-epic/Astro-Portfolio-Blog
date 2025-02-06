@@ -1,0 +1,39 @@
+media:
+  input: public/ms_notes
+  output: /ms_notes
+
+content:
+  - name: ms_notes
+    label: MS Notes
+    type: collection
+    path: src/content/ms_notes
+    icon: book
+    filename: '{fields.lectureNumber}-{fields.lecture_title}'
+    fields:
+      - name: lecture_title
+        label: Lecture Title
+        type: string
+      - name: lecture_description
+        label: Lecture Description
+        type: text
+      - name: pubDate
+        label: Publication Date
+        type: date
+      - name: lecture_draft
+        label: Draft
+        type: boolean
+        default: true
+      - name: readTime
+        label: Read Time
+        type: string
+        required: false
+      - name: lecture_tags
+        label: Lecture Tags
+        type: list
+        default: ['MS-Notes']
+      - name: lectureNumber
+        label: Lecture Number
+        type: string
+      - name: subject
+        label: Subject
+        type: string
