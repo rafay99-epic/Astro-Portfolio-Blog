@@ -1,6 +1,6 @@
 media:
   input: public/ms_notes
-  output: /ms_notes
+  output: public/ms_notes
 
 content:
   - name: ms_notes
@@ -41,4 +41,3 @@ content:
       - name: body
         label: Content
         type: rich-text
-        format: markdown
