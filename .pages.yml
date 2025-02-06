@@ -8,7 +8,7 @@ content:
     type: collection
     path: src/content/ms_notes
     icon: book
-    filename: '{fields.lectureNumber}-{fields.lecture_title}'
+    filename: '{fields.lectureNumber}-{fields.lecture_title}.md'
     fields:
       - name: lecture_title
         label: Lecture Title
