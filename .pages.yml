@@ -30,10 +30,13 @@ content:
       - name: lecture_tags
         label: Lecture Tags
         type: list
-        default: ['MS-Notes']
       - name: lectureNumber
         label: Lecture Number
         type: string
       - name: subject
         label: Subject
         type: string
+      - name: body
+        label: Content
+        type: rich-text
+        format: markdown
