@@ -49,3 +49,12 @@ There are multiple ways you can do search but in the lecture notes, I will be go
     *   Information gathered from facts, number and anything that lead to have some kind of evidence to back the facts that you are presenting.
         
     *   You follow a path that was provided with facts and evidence that proof your finding.
+        
+
+## What is research & what's isn't ?
+
+My question is how can I objectively find what is research and what is not research.? that is something that I am curious about.
+
+Research is not about gathering more information, it's not about transportation of facts from one location to another location. it's not about catchy words to get attention.
+
+Research is based on the work of others - not a copy of their works, it can be replicated, it is generalizable to other settings, it's based on a theory some logical rationale and tied to theory. It generates new questions or is cyclical in nature. It is incremental.
