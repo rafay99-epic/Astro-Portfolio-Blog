@@ -57,4 +57,74 @@ My question is how can I objectively find what is research and what is not resea
 
 Research is not about gathering more information, it's not about transportation of facts from one location to another location. it's not about catchy words to get attention.
 
-Research is based on the work of others - not a copy of their works, it can be replicated, it is generalizable to other settings, it's based on a theory some logical rationale and tied to theory. It generates new questions or is cyclical in nature. It is incremental.
+Research is based on the work of others - not a copy of their works, it can be replicated, it is generalizable to other settings, it's based on a theory some logical rationale and tied to theory. It generates new questions or is cyclical in nature. It is incremental the knowledge.
+
+## Type of Research
+
+There are mainly three types of research
+
+1.  Non-Experimental
+    
+2.  Experimental
+    
+3.  Quasi Experimental
+    
+
+### Non-Experimental
+
+In this type of experimental, we describe the characteristics of an existing done research, we expand the horizon of existing research and make sure to explain the research according to the author research paper, plus examine the relationship between variables are also explain, every single event that is described is carefully analyzed and then made sure that it explained.
+
+### Experimental
+
+In this type, we conduct some kind of actions, we theory the process and then action is performed on that theory this performance of action is know as experiment. We find the cause and effect and effects on relationships between different options
+
+**For example:** Experiments are done in drug trial, psychology experiments and studies on new teaching methods.
+
+### Quasi Experimental
+
+### In this type of experiment there is no full control over the test process, Test for casual relationship without full control is a type of nonrandomized study that often used when it's not feasible or ethical to conduct a randomized control trial.
+
+Quasi-experimental research is a type of study that aims to evaluate causal relationships but lacks full randomization, making it distinct from true experimental designs. Here are some examples of quasi-experimental research:
+
+**Example of Quasi Experimental**
+
+### **1\. Educational Policy Evaluation**
+
+*   **Example**: A school district implements a new teaching method in one set of schools while others continue with the traditional approach. Researchers compare student performance before and after the implementation without random assignment.
+    
+*   **Why Quasi-Experimental?**: Schools are not randomly assigned to the new teaching method; selection may depend on administrative decisions.
+    
+
+### **2\. Health Intervention Studies**
+
+*   **Example**: A city introduces a smoking cessation program in certain neighborhoods but not others. Researchers measure changes in smoking rates before and after the program.
+    
+*   **Why Quasi-Experimental?**: Participants self-select or are selected based on location, rather than being randomly assigned.
+    
+
+### **3\. Workplace Productivity Analysis**
+
+*   **Example**: A company changes its work-from-home policy for some employees while others continue working on-site. Researchers analyze productivity differences.
+    
+*   **Why Quasi-Experimental?**: Employees are not randomly assigned to work-from-home or on-site conditions.
+    
+
+### **4\. Public Policy Impact Assessment**
+
+*   **Example**: A new minimum wage law is implemented in one state while a neighboring state maintains the old wage. Researchers compare employment trends over time.
+    
+*   **Why Quasi-Experimental?**: The law affects specific locations without random assignment.
+    
+
+### **5\. Crime Reduction Strategies**
+
+*   **Example**: A city installs more streetlights in high-crime areas but leaves others unchanged. Researchers assess crime rates before and after the intervention.
+    
+*   **Why Quasi-Experimental?**: Locations are chosen based on pre-existing crime rates rather than random selection.
+    
+
+### **6\. Media Influence on Behavior**
+
+*   **Example**: A region receives a public health campaign on television, while another does not. Researchers compare changes in public health behaviors.
+    
+*   **Why Quasi-Experimental?**: Exposure to the campaign is determined by regional broadcasting, not random assignment.
