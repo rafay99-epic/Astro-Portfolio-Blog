@@ -129,3 +129,37 @@ Quasi-experimental research is a type of study that aims to evaluate causal rela
 *   **Example**: A region receives a public health campaign on television, while another does not. Researchers compare changes in public health behaviors.
     
 *   **Why Quasi-Experimental?**: Exposure to the campaign is determined by regional broadcasting, not random assignment.
+    
+
+## Characteristic of Research
+
+There are multiple steps involves in research and they are have few characteristic as well, which all of them are stated below:
+
+1.  Research is Systematic:
+    
+    *   It's simple it start with a question and then you fond and tell the answer to solve a problem
+        
+2.  Research is Empirical:
+    
+    *   The finding you do must be based or some collected data with some evidence,
+        
+3.  Research is Logical:
+    
+    *   It's simple, In order to do a research, you need a plan and a specific procedure to follow.
+        
+4.  Research is Reproductive:
+    
+    *   In this main research problem is divided into smaller parts so that each sub-part is manageable.
+        
+5.  Research is Replicable:
+    
+    *   This is where reach of any author that has being published can be repeated with similar result.
+        
+6.  Research is Transmittable:
+    
+    *   This is the studies where finding ca be applied in new setting.
+        
+
+## The Scientific Method
+
+This is a process that is defined
