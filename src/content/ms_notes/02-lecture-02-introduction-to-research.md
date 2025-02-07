@@ -24,3 +24,28 @@ But before we begin, what do I think of research, for me Research is pretty simp
     *   Research is defined as a careful consider of study regrading a particular concern or a problem using scientific method,
         
 *   Organized, systematic, data based critical inquiry or investigation into a specific problem, undertaken with objective of finding answers or solution to it.
+    
+
+## What is Research?
+
+To be honest, you know what is research, you do it every simple day, In the simplest word, Research is gathering the information you need to answer to a questions and thereby help you to solve a problem.
+
+## Ways of Searching for Answers
+
+There are multiple ways you can do search but in the lecture notes, I will be going through only two method.
+
+1.  Arbitrary, crude or rudimentary methods.
+    
+    *   This process is very simple and this involves imagination, opinion and blind belief or impression. This method involves of gather any information from any means, it can be weak or from one person to another person as well.
+        
+    *   It's the rumour system, people talk and they talk all the gathered information lead to opinions and some kind of research method.
+        
+    *   You defined you own ways to do research
+        
+2.  Scientific, logical, systematic method.
+    
+    *   This process involves systematic rational approach to seeking facts. This method is purely based on the find facts and objective.
+        
+    *   Information gathered from facts, number and anything that lead to have some kind of evidence to back the facts that you are presenting.
+        
+    *   You follow a path that was provided with facts and evidence that proof your finding.
