@@ -242,3 +242,35 @@ The **introduction** is one of the most important sections of a research paper. 
 ### **Example of a Well-Written Introduction**
 
 _"Artificial Intelligence (AI) has revolutionized various industries, including healthcare, finance, and education. However, the lack of interpretability in deep learning models remains a major challenge, hindering their adoption in critical fields. While past research has explored various explainable AI (XAI) techniques, there is still no consensus on a standardized approach for balancing accuracy and transparency. This study proposes a novel framework that integrates SHAP and LIME methods to enhance interpretability. Our results demonstrate a 20% improvement in model explainability, paving the way for more trustworthy AI systems."_
+
+### **Tips for Writing a Research Paper**
+
+Here are some key things to keep in mind while writing a research paper:
+
+*   **Use Third-Person Singular** – Avoid using "I" or "we." Instead, write in a formal, objective tone (e.g., "This study analyzes..." instead of "I analyzed...").
+    
+*   **Avoid Jargon & Unnecessary Complexity** – Keep the language simple and clear. Use technical terms **only when necessary** and explain them if needed.
+    
+*   **Write in Complete Sentences** – No fragmented thoughts. Each sentence should express a **complete** idea.
+    
+*   **Be Concise & Precise** – Don't add fluff. Stick to the point and **cut unnecessary words**.
+    
+*   **Use Formal & Academic Tone** – No casual language. Keep it **professional** and **structured**.
+    
+*   **Cite Every Source Properly** – Use proper citation formats like APA, MLA, or IEEE. **No plagiarism!**
+    
+*   **Follow the Research Paper Structure** – Title, Abstract, Introduction, Literature Review, Methodology, Results, Discussion, Conclusion, References.
+    
+*   **Use Passive Voice When Necessary** – Sometimes, it’s better to focus on **the research, not the researcher** (e.g., "The data was analyzed..." instead of "I analyzed the data...").
+    
+*   **Avoid Contractions** – Write "do not" instead of "don’t," "cannot" instead of "can’t." Keep it **formal**.
+    
+*   **Stay Objective** – No personal opinions unless it's a reflection-based research paper. Base everything on **facts and data**.
+    
+*   **Proofread & Edit** – **No spelling mistakes, no grammar errors.** Read it multiple times before submitting.
+    
+*   **Use Figures, Charts & Tables Wisely** – **Visuals help** but only when they are necessary. **Explain them properly** in the text.
+    
+*   **Maintain Logical Flow** – Every section should connect naturally to the next. Readers shouldn't feel lost.
+    
+*   **Follow the Word Limit** – Don't write too much or too little. Stick to the guidelines.
