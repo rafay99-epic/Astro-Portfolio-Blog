@@ -1,8 +1,8 @@
 ---
 lecture_title: "Lecture 02: Introduction to Research "
-lecture_description: The purpose of this lecture is to identify what is research.
+lecture_description: The basic of Research Method
 pubDate: 2025-01-31
-lecture_draft: true
+lecture_draft: false
 lectureNumber: "02"
 subject: Research Methods
 ---
