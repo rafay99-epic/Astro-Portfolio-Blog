@@ -2,6 +2,7 @@
 lecture_title: "Lecture 03: How to Perform Research "
 lecture_description: In this lecture learn how to read a research paper, the
   proper method of reading a research paper.
+pubDate: 2025-02-07
 lecture_draft: true
 lectureNumber: "03"
 subject: Research Methods
