@@ -208,3 +208,13 @@ Communication is the key for everything, Connection and sharing is the best thin
 Research publication is a written document that presents the findings and results of a research study. Typically published in a scholarly journal or other recognized format, allowing the research community to access and evaluate the work done by researchers. A way to disseminate new knowledge generated through research to the wider academic field.
 
 ### Key Points for Publication:
+
+When your are publishing your paper then there are some key points that you need to be in mind and here they are,
+
+1.  Dissemination of Knowledge:
+    
+    *   The primary purpose of research publication is to share research finding with others in the field, enabling further discussion and development of knowledge.
+        
+2.  Peer review Process:
+    
+    *   When paper is submitted then publication will do peer review process, where other expert in their field will review your research, they will check everything from concept, to test to spelling check and grammar check and much more and when it is according to the quality then they will pass and publish the paper.
