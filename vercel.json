@@ -4,6 +4,10 @@
         {
             "src": "/snaprescue.sh",
             "dest": "/snaprescue.sh"
+        },
+        {
+            "src": "/Meaning-Mate-APK",
+            "dest": "/Meaning-Mate-APK.apk"
         }
     ]
 }
