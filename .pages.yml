@@ -1,6 +1,6 @@
 media:
-  input: public/ms_notes
-  output: public/ms_notes
+  input: src/assets/ms_notes
+  output: src/assets/ms_notes
 
 content:
   - name: ms_notes
