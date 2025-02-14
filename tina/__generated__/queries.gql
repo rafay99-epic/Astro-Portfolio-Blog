@@ -4,7 +4,6 @@ query post($relativePath: String!) {
       _sys {
         filename
         basename
-        hasReferences
         breadcrumbs
         path
         relativePath
@@ -39,7 +38,6 @@ query postConnection($before: String, $after: String, $first: Float, $last: Floa
           _sys {
             filename
             basename
-            hasReferences
             breadcrumbs
             path
             relativePath
@@ -59,7 +57,6 @@ query newsletter($relativePath: String!) {
       _sys {
         filename
         basename
-        hasReferences
         breadcrumbs
         path
         relativePath
@@ -94,7 +91,6 @@ query newsletterConnection($before: String, $after: String, $first: Float, $last
           _sys {
             filename
             basename
-            hasReferences
             breadcrumbs
             path
             relativePath
@@ -108,13 +104,65 @@ query newsletterConnection($before: String, $after: String, $first: Float, $last
   }
 }
 
+query projects($relativePath: String!) {
+  projects(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...ProjectsParts
+  }
+}
+
+query projectsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: ProjectsFilter) {
+  projectsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...ProjectsParts
+      }
+    }
+  }
+}
+
 query siteConfig($relativePath: String!) {
   siteConfig(relativePath: $relativePath) {
     ... on Document {
       _sys {
         filename
         basename
-        hasReferences
         breadcrumbs
         path
         relativePath
@@ -149,7 +197,6 @@ query siteConfigConnection($before: String, $after: String, $first: Float, $last
           _sys {
             filename
             basename
-            hasReferences
             breadcrumbs
             path
             relativePath
@@ -169,7 +216,6 @@ query featureFlags($relativePath: String!) {
       _sys {
         filename
         basename
-        hasReferences
         breadcrumbs
         path
         relativePath
@@ -204,7 +250,6 @@ query featureFlagsConnection($before: String, $after: String, $first: Float, $la
           _sys {
             filename
             basename
-            hasReferences
             breadcrumbs
             path
             relativePath
@@ -224,7 +269,6 @@ query popularBlogs($relativePath: String!) {
       _sys {
         filename
         basename
-        hasReferences
         breadcrumbs
         path
         relativePath
@@ -259,7 +303,6 @@ query popularBlogsConnection($before: String, $after: String, $first: Float, $la
           _sys {
             filename
             basename
-            hasReferences
             breadcrumbs
             path
             relativePath
@@ -268,6 +311,59 @@ query popularBlogsConnection($before: String, $after: String, $first: Float, $la
           id
         }
         ...PopularBlogsParts
+      }
+    }
+  }
+}
+
+query ideaPanel($relativePath: String!) {
+  ideaPanel(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...IdeaPanelParts
+  }
+}
+
+query ideaPanelConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: IdeaPanelFilter) {
+  ideaPanelConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...IdeaPanelParts
       }
     }
   }

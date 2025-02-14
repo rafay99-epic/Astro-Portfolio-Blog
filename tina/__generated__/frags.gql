@@ -1,5 +1,4 @@
 fragment PostParts on Post {
-  __typename
   title
   description
   pubDate
@@ -12,7 +11,6 @@ fragment PostParts on Post {
 }
 
 fragment NewsletterParts on Newsletter {
-  __typename
   title
   summary
   pubDate
@@ -20,8 +18,17 @@ fragment NewsletterParts on Newsletter {
   body
 }
 
+fragment ProjectsParts on Projects {
+  Projecttitle
+  ProjectDescription
+  ProjectImage
+  draft
+  ProjectTech
+  ProjectCategory
+  body
+}
+
 fragment SiteConfigParts on SiteConfig {
-  __typename
   SiteName
   SiteDescription
   name
@@ -60,7 +67,6 @@ fragment SiteConfigParts on SiteConfig {
 }
 
 fragment FeatureFlagsParts on FeatureFlags {
-  __typename
   featureFlags {
     __typename
     showBlog
@@ -81,16 +87,30 @@ fragment FeatureFlagsParts on FeatureFlags {
   }
   FeatureFlagsApi {
     __typename
+    enableNotionAPI
     enableauthorInfoAPI
+    enableUmamiServiceAPI
   }
 }
 
 fragment PopularBlogsParts on PopularBlogs {
-  __typename
   popularBlogs {
     __typename
     Page
     Visitors
     Total
+  }
+}
+
+fragment IdeaPanelParts on IdeaPanel {
+  categories {
+    __typename
+    category
+    ideas {
+      __typename
+      title
+      description
+      stage
+    }
   }
 }

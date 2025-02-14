@@ -14,11 +14,14 @@
         "showTrendingPosts": true,
         "showTermsandConditions": true,
         "showPrivacyPolicy": true,
+        "showIdeaPanel": true,
         "showWiki": true,
         "showNotes": true,
         "showWhatsNew": true
     },
     "FeatureFlagsApi": {
-        "enableauthorInfoAPI": true
+        "enableNotionAPI": false,
+        "enableauthorInfoAPI": true,
+        "enableUmamiServiceAPI": false
     }
 }

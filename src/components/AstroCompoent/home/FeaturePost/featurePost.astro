@@ -1,12 +1,42 @@
 ---
 import popularBlogsData from "@config/popularBlogs/traffic.json";
 import { getCollection } from "astro:content";
-import type { CombinedPost } from "types/popular_post";
+import { getTrendingPosts } from "@pages/api/umamiService";
+import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
+import type { ApiTrendingPost, CombinedPost } from "@util/types";
 
 const allPosts = await getCollection("blog");
 const publishedPosts = allPosts.filter((post) => !post.data.draft);
 
+let apiTrendingPosts: ApiTrendingPost[] = [];
+
 const popularBlogs = popularBlogsData.popularBlogs;
+
+if (FeatureFlagsApi.enableUmamiServiceAPI) {
+  try {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 30);
+    const endDate = new Date();
+
+    const response = await getTrendingPosts(
+      startDate.toISOString(),
+      endDate.toISOString()
+    );
+
+    if (Array.isArray(response)) {
+      apiTrendingPosts = response.map((entry: any) => ({
+        slug: entry.page.replace("/blog/", ""),
+        visitors: entry.pageviews,
+      }));
+    }
+  } catch (error) {
+    console.warn(
+      "Failed to fetch Umami trending posts, falling back to local dataset."
+    );
+  }
+} else {
+  console.info("Umami Service API is disabled. Using local dataset only.");
+}
 
 const popularPages = new Map<string, { Page: string; Visitors: number }>(
   popularBlogs.map((entry) => [entry.Page.replace("/blog/", ""), entry])
@@ -15,8 +45,9 @@ const popularPages = new Map<string, { Page: string; Visitors: number }>(
 const combinedPopularPosts: CombinedPost[] = publishedPosts
   .map((post) => {
     const localData = popularPages.get(post.slug);
+    const apiData = apiTrendingPosts.find((item) => item.slug === post.slug);
 
-    const visitors = Math.max(localData?.Visitors ?? 0);
+    const visitors = Math.max(localData?.Visitors ?? 0, apiData?.visitors ?? 0);
 
     return {
       post,

@@ -9,6 +9,7 @@ export interface Note {
     pubDate: Date;
     lecture_draft: boolean;
     readTime?: string;
+    lecture_tags: string[];
     lectureNumber: string;
     subject: string;
   };
