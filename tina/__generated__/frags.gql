@@ -1,4 +1,5 @@
 fragment PostParts on Post {
+  __typename
   title
   description
   pubDate
@@ -11,6 +12,7 @@ fragment PostParts on Post {
 }
 
 fragment NewsletterParts on Newsletter {
+  __typename
   title
   summary
   pubDate
@@ -19,6 +21,7 @@ fragment NewsletterParts on Newsletter {
 }
 
 fragment ProjectsParts on Projects {
+  __typename
   Projecttitle
   ProjectDescription
   ProjectImage
@@ -29,6 +32,7 @@ fragment ProjectsParts on Projects {
 }
 
 fragment SiteConfigParts on SiteConfig {
+  __typename
   SiteName
   SiteDescription
   name
@@ -67,6 +71,7 @@ fragment SiteConfigParts on SiteConfig {
 }
 
 fragment FeatureFlagsParts on FeatureFlags {
+  __typename
   featureFlags {
     __typename
     showBlog
@@ -94,6 +99,7 @@ fragment FeatureFlagsParts on FeatureFlags {
 }
 
 fragment PopularBlogsParts on PopularBlogs {
+  __typename
   popularBlogs {
     __typename
     Page
@@ -103,6 +109,7 @@ fragment PopularBlogsParts on PopularBlogs {
 }
 
 fragment IdeaPanelParts on IdeaPanel {
+  __typename
   categories {
     __typename
     category

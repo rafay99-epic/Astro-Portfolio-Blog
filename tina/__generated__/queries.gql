@@ -4,6 +4,7 @@ query post($relativePath: String!) {
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -38,6 +39,7 @@ query postConnection($before: String, $after: String, $first: Float, $last: Floa
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -57,6 +59,7 @@ query newsletter($relativePath: String!) {
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -91,6 +94,7 @@ query newsletterConnection($before: String, $after: String, $first: Float, $last
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -110,6 +114,7 @@ query projects($relativePath: String!) {
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -144,6 +149,7 @@ query projectsConnection($before: String, $after: String, $first: Float, $last: 
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -163,6 +169,7 @@ query siteConfig($relativePath: String!) {
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -197,6 +204,7 @@ query siteConfigConnection($before: String, $after: String, $first: Float, $last
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -216,6 +224,7 @@ query featureFlags($relativePath: String!) {
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -250,6 +259,7 @@ query featureFlagsConnection($before: String, $after: String, $first: Float, $la
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -269,6 +279,7 @@ query popularBlogs($relativePath: String!) {
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -303,6 +314,7 @@ query popularBlogsConnection($before: String, $after: String, $first: Float, $la
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -322,6 +334,7 @@ query ideaPanel($relativePath: String!) {
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -356,6 +369,7 @@ query ideaPanelConnection($before: String, $after: String, $first: Float, $last:
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath

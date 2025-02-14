@@ -31,6 +31,7 @@ export type SystemInfo = {
   filename: Scalars['String']['output'];
   title?: Maybe<Scalars['String']['output']>;
   basename: Scalars['String']['output'];
+  hasReferences?: Maybe<Scalars['Boolean']['output']>;
   breadcrumbs: Array<Scalars['String']['output']>;
   path: Scalars['String']['output'];
   relativePath: Scalars['String']['output'];
@@ -701,6 +702,7 @@ export type Mutation = {
   updateDocument: DocumentNode;
   deleteDocument: DocumentNode;
   createDocument: DocumentNode;
+  createFolder: DocumentNode;
   updatePost: Post;
   createPost: Post;
   updateNewsletter: Newsletter;
@@ -742,6 +744,12 @@ export type MutationCreateDocumentArgs = {
   collection?: InputMaybe<Scalars['String']['input']>;
   relativePath: Scalars['String']['input'];
   params: DocumentMutation;
+};
+
+
+export type MutationCreateFolderArgs = {
+  collection?: InputMaybe<Scalars['String']['input']>;
+  relativePath: Scalars['String']['input'];
 };
 
 
@@ -975,26 +983,26 @@ export type IdeaPanelMutation = {
   categories?: InputMaybe<Array<InputMaybe<IdeaPanelCategoriesMutation>>>;
 };
 
-export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null };
+export type PostPartsFragment = { __typename: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null };
 
-export type NewsletterPartsFragment = { __typename?: 'Newsletter', title: string, summary: string, pubDate: string, draft: boolean, body?: any | null };
+export type NewsletterPartsFragment = { __typename: 'Newsletter', title: string, summary: string, pubDate: string, draft: boolean, body?: any | null };
 
-export type ProjectsPartsFragment = { __typename?: 'Projects', Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null };
+export type ProjectsPartsFragment = { __typename: 'Projects', Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null };
 
-export type SiteConfigPartsFragment = { __typename?: 'SiteConfig', SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null };
+export type SiteConfigPartsFragment = { __typename: 'SiteConfig', SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null };
 
-export type FeatureFlagsPartsFragment = { __typename?: 'FeatureFlags', featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null, showIdeaPanel?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null };
+export type FeatureFlagsPartsFragment = { __typename: 'FeatureFlags', featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null, showIdeaPanel?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null };
 
-export type PopularBlogsPartsFragment = { __typename?: 'PopularBlogs', popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null };
+export type PopularBlogsPartsFragment = { __typename: 'PopularBlogs', popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null };
 
-export type IdeaPanelPartsFragment = { __typename?: 'IdeaPanel', categories?: Array<{ __typename: 'IdeaPanelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPanelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null };
+export type IdeaPanelPartsFragment = { __typename: 'IdeaPanel', categories?: Array<{ __typename: 'IdeaPanelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPanelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type PostQuery = { __typename?: 'Query', post: { __typename: 'Post', id: string, title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type PostConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -1006,14 +1014,14 @@ export type PostConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename?: 'Post', id: string, title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename: 'Post', id: string, title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type NewsletterQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type NewsletterQuery = { __typename?: 'Query', newsletter: { __typename?: 'Newsletter', id: string, title: string, summary: string, pubDate: string, draft: boolean, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type NewsletterQuery = { __typename?: 'Query', newsletter: { __typename: 'Newsletter', id: string, title: string, summary: string, pubDate: string, draft: boolean, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type NewsletterConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -1025,14 +1033,14 @@ export type NewsletterConnectionQueryVariables = Exact<{
 }>;
 
 
-export type NewsletterConnectionQuery = { __typename?: 'Query', newsletterConnection: { __typename?: 'NewsletterConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'NewsletterConnectionEdges', cursor: string, node?: { __typename?: 'Newsletter', id: string, title: string, summary: string, pubDate: string, draft: boolean, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type NewsletterConnectionQuery = { __typename?: 'Query', newsletterConnection: { __typename?: 'NewsletterConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'NewsletterConnectionEdges', cursor: string, node?: { __typename: 'Newsletter', id: string, title: string, summary: string, pubDate: string, draft: boolean, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type ProjectsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type ProjectsQuery = { __typename?: 'Query', projects: { __typename?: 'Projects', id: string, Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type ProjectsQuery = { __typename?: 'Query', projects: { __typename: 'Projects', id: string, Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type ProjectsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -1044,14 +1052,14 @@ export type ProjectsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type ProjectsConnectionQuery = { __typename?: 'Query', projectsConnection: { __typename?: 'ProjectsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ProjectsConnectionEdges', cursor: string, node?: { __typename?: 'Projects', id: string, Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type ProjectsConnectionQuery = { __typename?: 'Query', projectsConnection: { __typename?: 'ProjectsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ProjectsConnectionEdges', cursor: string, node?: { __typename: 'Projects', id: string, Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type SiteConfigQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type SiteConfigQuery = { __typename?: 'Query', siteConfig: { __typename?: 'SiteConfig', id: string, SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null } };
+export type SiteConfigQuery = { __typename?: 'Query', siteConfig: { __typename: 'SiteConfig', id: string, SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null } };
 
 export type SiteConfigConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -1063,14 +1071,14 @@ export type SiteConfigConnectionQueryVariables = Exact<{
 }>;
 
 
-export type SiteConfigConnectionQuery = { __typename?: 'Query', siteConfigConnection: { __typename?: 'SiteConfigConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SiteConfigConnectionEdges', cursor: string, node?: { __typename?: 'SiteConfig', id: string, SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null } | null } | null> | null } };
+export type SiteConfigConnectionQuery = { __typename?: 'Query', siteConfigConnection: { __typename?: 'SiteConfigConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SiteConfigConnectionEdges', cursor: string, node?: { __typename: 'SiteConfig', id: string, SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null } | null } | null> | null } };
 
 export type FeatureFlagsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type FeatureFlagsQuery = { __typename?: 'Query', featureFlags: { __typename?: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null, showIdeaPanel?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null } };
+export type FeatureFlagsQuery = { __typename?: 'Query', featureFlags: { __typename: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null, showIdeaPanel?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null } };
 
 export type FeatureFlagsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -1082,14 +1090,14 @@ export type FeatureFlagsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type FeatureFlagsConnectionQuery = { __typename?: 'Query', featureFlagsConnection: { __typename?: 'FeatureFlagsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'FeatureFlagsConnectionEdges', cursor: string, node?: { __typename?: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null, showIdeaPanel?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null } | null } | null> | null } };
+export type FeatureFlagsConnectionQuery = { __typename?: 'Query', featureFlagsConnection: { __typename?: 'FeatureFlagsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'FeatureFlagsConnectionEdges', cursor: string, node?: { __typename: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null, showIdeaPanel?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null } | null } | null> | null } };
 
 export type PopularBlogsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type PopularBlogsQuery = { __typename?: 'Query', popularBlogs: { __typename?: 'PopularBlogs', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null } };
+export type PopularBlogsQuery = { __typename?: 'Query', popularBlogs: { __typename: 'PopularBlogs', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null } };
 
 export type PopularBlogsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -1101,14 +1109,14 @@ export type PopularBlogsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PopularBlogsConnectionQuery = { __typename?: 'Query', popularBlogsConnection: { __typename?: 'PopularBlogsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PopularBlogsConnectionEdges', cursor: string, node?: { __typename?: 'PopularBlogs', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null } | null } | null> | null } };
+export type PopularBlogsConnectionQuery = { __typename?: 'Query', popularBlogsConnection: { __typename?: 'PopularBlogsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PopularBlogsConnectionEdges', cursor: string, node?: { __typename: 'PopularBlogs', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null } | null } | null> | null } };
 
 export type IdeaPanelQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type IdeaPanelQuery = { __typename?: 'Query', ideaPanel: { __typename?: 'IdeaPanel', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'IdeaPanelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPanelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null } };
+export type IdeaPanelQuery = { __typename?: 'Query', ideaPanel: { __typename: 'IdeaPanel', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'IdeaPanelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPanelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null } };
 
 export type IdeaPanelConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -1120,10 +1128,11 @@ export type IdeaPanelConnectionQueryVariables = Exact<{
 }>;
 
 
-export type IdeaPanelConnectionQuery = { __typename?: 'Query', ideaPanelConnection: { __typename?: 'IdeaPanelConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'IdeaPanelConnectionEdges', cursor: string, node?: { __typename?: 'IdeaPanel', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'IdeaPanelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPanelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null } | null } | null> | null } };
+export type IdeaPanelConnectionQuery = { __typename?: 'Query', ideaPanelConnection: { __typename?: 'IdeaPanelConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'IdeaPanelConnectionEdges', cursor: string, node?: { __typename: 'IdeaPanel', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'IdeaPanelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPanelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null } | null } | null> | null } };
 
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
+  __typename
   title
   description
   pubDate
@@ -1137,6 +1146,7 @@ export const PostPartsFragmentDoc = gql`
     `;
 export const NewsletterPartsFragmentDoc = gql`
     fragment NewsletterParts on Newsletter {
+  __typename
   title
   summary
   pubDate
@@ -1146,6 +1156,7 @@ export const NewsletterPartsFragmentDoc = gql`
     `;
 export const ProjectsPartsFragmentDoc = gql`
     fragment ProjectsParts on Projects {
+  __typename
   Projecttitle
   ProjectDescription
   ProjectImage
@@ -1157,6 +1168,7 @@ export const ProjectsPartsFragmentDoc = gql`
     `;
 export const SiteConfigPartsFragmentDoc = gql`
     fragment SiteConfigParts on SiteConfig {
+  __typename
   SiteName
   SiteDescription
   name
@@ -1196,6 +1208,7 @@ export const SiteConfigPartsFragmentDoc = gql`
     `;
 export const FeatureFlagsPartsFragmentDoc = gql`
     fragment FeatureFlagsParts on FeatureFlags {
+  __typename
   featureFlags {
     __typename
     showBlog
@@ -1224,6 +1237,7 @@ export const FeatureFlagsPartsFragmentDoc = gql`
     `;
 export const PopularBlogsPartsFragmentDoc = gql`
     fragment PopularBlogsParts on PopularBlogs {
+  __typename
   popularBlogs {
     __typename
     Page
@@ -1234,6 +1248,7 @@ export const PopularBlogsPartsFragmentDoc = gql`
     `;
 export const IdeaPanelPartsFragmentDoc = gql`
     fragment IdeaPanelParts on IdeaPanel {
+  __typename
   categories {
     __typename
     category
@@ -1253,6 +1268,7 @@ export const PostDocument = gql`
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -1288,6 +1304,7 @@ export const PostConnectionDocument = gql`
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -1308,6 +1325,7 @@ export const NewsletterDocument = gql`
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -1343,6 +1361,7 @@ export const NewsletterConnectionDocument = gql`
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -1363,6 +1382,7 @@ export const ProjectsDocument = gql`
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -1398,6 +1418,7 @@ export const ProjectsConnectionDocument = gql`
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -1418,6 +1439,7 @@ export const SiteConfigDocument = gql`
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -1453,6 +1475,7 @@ export const SiteConfigConnectionDocument = gql`
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -1473,6 +1496,7 @@ export const FeatureFlagsDocument = gql`
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -1508,6 +1532,7 @@ export const FeatureFlagsConnectionDocument = gql`
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -1528,6 +1553,7 @@ export const PopularBlogsDocument = gql`
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -1563,6 +1589,7 @@ export const PopularBlogsConnectionDocument = gql`
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -1583,6 +1610,7 @@ export const IdeaPanelDocument = gql`
       _sys {
         filename
         basename
+        hasReferences
         breadcrumbs
         path
         relativePath
@@ -1618,6 +1646,7 @@ export const IdeaPanelConnectionDocument = gql`
           _sys {
             filename
             basename
+            hasReferences
             breadcrumbs
             path
             relativePath
@@ -1634,47 +1663,47 @@ export const IdeaPanelConnectionDocument = gql`
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
-      post(variables: PostQueryVariables, options?: C): Promise<{data: PostQuery, variables: PostQueryVariables, query: string}> {
-        return requester<{data: PostQuery, variables: PostQueryVariables, query: string}, PostQueryVariables>(PostDocument, variables, options);
+      post(variables: PostQueryVariables, options?: C): Promise<{data: PostQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostQueryVariables, query: string}> {
+        return requester<{data: PostQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostQueryVariables, query: string}, PostQueryVariables>(PostDocument, variables, options);
       },
-    postConnection(variables?: PostConnectionQueryVariables, options?: C): Promise<{data: PostConnectionQuery, variables: PostConnectionQueryVariables, query: string}> {
-        return requester<{data: PostConnectionQuery, variables: PostConnectionQueryVariables, query: string}, PostConnectionQueryVariables>(PostConnectionDocument, variables, options);
+    postConnection(variables?: PostConnectionQueryVariables, options?: C): Promise<{data: PostConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostConnectionQueryVariables, query: string}> {
+        return requester<{data: PostConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostConnectionQueryVariables, query: string}, PostConnectionQueryVariables>(PostConnectionDocument, variables, options);
       },
-    newsletter(variables: NewsletterQueryVariables, options?: C): Promise<{data: NewsletterQuery, variables: NewsletterQueryVariables, query: string}> {
-        return requester<{data: NewsletterQuery, variables: NewsletterQueryVariables, query: string}, NewsletterQueryVariables>(NewsletterDocument, variables, options);
+    newsletter(variables: NewsletterQueryVariables, options?: C): Promise<{data: NewsletterQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: NewsletterQueryVariables, query: string}> {
+        return requester<{data: NewsletterQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: NewsletterQueryVariables, query: string}, NewsletterQueryVariables>(NewsletterDocument, variables, options);
       },
-    newsletterConnection(variables?: NewsletterConnectionQueryVariables, options?: C): Promise<{data: NewsletterConnectionQuery, variables: NewsletterConnectionQueryVariables, query: string}> {
-        return requester<{data: NewsletterConnectionQuery, variables: NewsletterConnectionQueryVariables, query: string}, NewsletterConnectionQueryVariables>(NewsletterConnectionDocument, variables, options);
+    newsletterConnection(variables?: NewsletterConnectionQueryVariables, options?: C): Promise<{data: NewsletterConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: NewsletterConnectionQueryVariables, query: string}> {
+        return requester<{data: NewsletterConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: NewsletterConnectionQueryVariables, query: string}, NewsletterConnectionQueryVariables>(NewsletterConnectionDocument, variables, options);
       },
-    projects(variables: ProjectsQueryVariables, options?: C): Promise<{data: ProjectsQuery, variables: ProjectsQueryVariables, query: string}> {
-        return requester<{data: ProjectsQuery, variables: ProjectsQueryVariables, query: string}, ProjectsQueryVariables>(ProjectsDocument, variables, options);
+    projects(variables: ProjectsQueryVariables, options?: C): Promise<{data: ProjectsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: ProjectsQueryVariables, query: string}> {
+        return requester<{data: ProjectsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: ProjectsQueryVariables, query: string}, ProjectsQueryVariables>(ProjectsDocument, variables, options);
       },
-    projectsConnection(variables?: ProjectsConnectionQueryVariables, options?: C): Promise<{data: ProjectsConnectionQuery, variables: ProjectsConnectionQueryVariables, query: string}> {
-        return requester<{data: ProjectsConnectionQuery, variables: ProjectsConnectionQueryVariables, query: string}, ProjectsConnectionQueryVariables>(ProjectsConnectionDocument, variables, options);
+    projectsConnection(variables?: ProjectsConnectionQueryVariables, options?: C): Promise<{data: ProjectsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: ProjectsConnectionQueryVariables, query: string}> {
+        return requester<{data: ProjectsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: ProjectsConnectionQueryVariables, query: string}, ProjectsConnectionQueryVariables>(ProjectsConnectionDocument, variables, options);
       },
-    siteConfig(variables: SiteConfigQueryVariables, options?: C): Promise<{data: SiteConfigQuery, variables: SiteConfigQueryVariables, query: string}> {
-        return requester<{data: SiteConfigQuery, variables: SiteConfigQueryVariables, query: string}, SiteConfigQueryVariables>(SiteConfigDocument, variables, options);
+    siteConfig(variables: SiteConfigQueryVariables, options?: C): Promise<{data: SiteConfigQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: SiteConfigQueryVariables, query: string}> {
+        return requester<{data: SiteConfigQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: SiteConfigQueryVariables, query: string}, SiteConfigQueryVariables>(SiteConfigDocument, variables, options);
       },
-    siteConfigConnection(variables?: SiteConfigConnectionQueryVariables, options?: C): Promise<{data: SiteConfigConnectionQuery, variables: SiteConfigConnectionQueryVariables, query: string}> {
-        return requester<{data: SiteConfigConnectionQuery, variables: SiteConfigConnectionQueryVariables, query: string}, SiteConfigConnectionQueryVariables>(SiteConfigConnectionDocument, variables, options);
+    siteConfigConnection(variables?: SiteConfigConnectionQueryVariables, options?: C): Promise<{data: SiteConfigConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: SiteConfigConnectionQueryVariables, query: string}> {
+        return requester<{data: SiteConfigConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: SiteConfigConnectionQueryVariables, query: string}, SiteConfigConnectionQueryVariables>(SiteConfigConnectionDocument, variables, options);
       },
-    featureFlags(variables: FeatureFlagsQueryVariables, options?: C): Promise<{data: FeatureFlagsQuery, variables: FeatureFlagsQueryVariables, query: string}> {
-        return requester<{data: FeatureFlagsQuery, variables: FeatureFlagsQueryVariables, query: string}, FeatureFlagsQueryVariables>(FeatureFlagsDocument, variables, options);
+    featureFlags(variables: FeatureFlagsQueryVariables, options?: C): Promise<{data: FeatureFlagsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: FeatureFlagsQueryVariables, query: string}> {
+        return requester<{data: FeatureFlagsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: FeatureFlagsQueryVariables, query: string}, FeatureFlagsQueryVariables>(FeatureFlagsDocument, variables, options);
       },
-    featureFlagsConnection(variables?: FeatureFlagsConnectionQueryVariables, options?: C): Promise<{data: FeatureFlagsConnectionQuery, variables: FeatureFlagsConnectionQueryVariables, query: string}> {
-        return requester<{data: FeatureFlagsConnectionQuery, variables: FeatureFlagsConnectionQueryVariables, query: string}, FeatureFlagsConnectionQueryVariables>(FeatureFlagsConnectionDocument, variables, options);
+    featureFlagsConnection(variables?: FeatureFlagsConnectionQueryVariables, options?: C): Promise<{data: FeatureFlagsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: FeatureFlagsConnectionQueryVariables, query: string}> {
+        return requester<{data: FeatureFlagsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: FeatureFlagsConnectionQueryVariables, query: string}, FeatureFlagsConnectionQueryVariables>(FeatureFlagsConnectionDocument, variables, options);
       },
-    popularBlogs(variables: PopularBlogsQueryVariables, options?: C): Promise<{data: PopularBlogsQuery, variables: PopularBlogsQueryVariables, query: string}> {
-        return requester<{data: PopularBlogsQuery, variables: PopularBlogsQueryVariables, query: string}, PopularBlogsQueryVariables>(PopularBlogsDocument, variables, options);
+    popularBlogs(variables: PopularBlogsQueryVariables, options?: C): Promise<{data: PopularBlogsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PopularBlogsQueryVariables, query: string}> {
+        return requester<{data: PopularBlogsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PopularBlogsQueryVariables, query: string}, PopularBlogsQueryVariables>(PopularBlogsDocument, variables, options);
       },
-    popularBlogsConnection(variables?: PopularBlogsConnectionQueryVariables, options?: C): Promise<{data: PopularBlogsConnectionQuery, variables: PopularBlogsConnectionQueryVariables, query: string}> {
-        return requester<{data: PopularBlogsConnectionQuery, variables: PopularBlogsConnectionQueryVariables, query: string}, PopularBlogsConnectionQueryVariables>(PopularBlogsConnectionDocument, variables, options);
+    popularBlogsConnection(variables?: PopularBlogsConnectionQueryVariables, options?: C): Promise<{data: PopularBlogsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PopularBlogsConnectionQueryVariables, query: string}> {
+        return requester<{data: PopularBlogsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PopularBlogsConnectionQueryVariables, query: string}, PopularBlogsConnectionQueryVariables>(PopularBlogsConnectionDocument, variables, options);
       },
-    ideaPanel(variables: IdeaPanelQueryVariables, options?: C): Promise<{data: IdeaPanelQuery, variables: IdeaPanelQueryVariables, query: string}> {
-        return requester<{data: IdeaPanelQuery, variables: IdeaPanelQueryVariables, query: string}, IdeaPanelQueryVariables>(IdeaPanelDocument, variables, options);
+    ideaPanel(variables: IdeaPanelQueryVariables, options?: C): Promise<{data: IdeaPanelQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: IdeaPanelQueryVariables, query: string}> {
+        return requester<{data: IdeaPanelQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: IdeaPanelQueryVariables, query: string}, IdeaPanelQueryVariables>(IdeaPanelDocument, variables, options);
       },
-    ideaPanelConnection(variables?: IdeaPanelConnectionQueryVariables, options?: C): Promise<{data: IdeaPanelConnectionQuery, variables: IdeaPanelConnectionQueryVariables, query: string}> {
-        return requester<{data: IdeaPanelConnectionQuery, variables: IdeaPanelConnectionQueryVariables, query: string}, IdeaPanelConnectionQueryVariables>(IdeaPanelConnectionDocument, variables, options);
+    ideaPanelConnection(variables?: IdeaPanelConnectionQueryVariables, options?: C): Promise<{data: IdeaPanelConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: IdeaPanelConnectionQueryVariables, query: string}> {
+        return requester<{data: IdeaPanelConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: IdeaPanelConnectionQueryVariables, query: string}, IdeaPanelConnectionQueryVariables>(IdeaPanelConnectionDocument, variables, options);
       }
     };
   }
@@ -1683,35 +1712,57 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
 // TinaSDK generated code
 import { createClient, TinaClient } from "tinacms/dist/client";
 
-const generateRequester = (client: TinaClient) => {
+const generateRequester = (
+  client: TinaClient,
+) => {
   const requester: (
     doc: any,
     vars?: any,
-    options?: any,
+    options?: {
+      branch?: string,
+      /**
+       * Aside from `method` and `body`, all fetch options are passed
+       * through to underlying fetch request
+       */
+      fetchOptions?: Omit<Parameters<typeof fetch>[1], 'body' | 'method'>,
+    },
     client
-  ) => Promise<any> = async (doc, vars, _options) => {
+  ) => Promise<any> = async (doc, vars, options) => {
+    let url = client.apiUrl
+    if (options?.branch) {
+      const index = client.apiUrl.lastIndexOf('/')
+      url = client.apiUrl.substring(0, index + 1) + options.branch
+    }
     const data = await client.request({
       query: doc,
       variables: vars,
-    });
+      url,
+    }, options)
 
-    return { data: data?.data, query: doc, variables: vars || {} };
-  };
+    return { data: data?.data, errors: data?.errors, query: doc, variables: vars || {} }
+  }
 
-  return requester;
-};
+  return requester
+}
 
 /**
  * @experimental this class can be used but may change in the future
  **/
 export const ExperimentalGetTinaClient = () =>
   getSdk(
-    generateRequester(createClient({ url: "http://localhost:4001/graphql", queries }))
-  );
+    generateRequester(
+      createClient({
+        url: "https://content.tinajs.io/1.5/content/ca928060-14c1-452c-938e-9a1e7feaae19/github/main",
+        queries,
+      })
+    )
+  )
 
-export const queries = (client: TinaClient) => {
-  const requester = generateRequester(client);
-  return getSdk(requester);
-};
+export const queries = (
+  client: TinaClient,
+) => {
+  const requester = generateRequester(client)
+  return getSdk(requester)
+}
 
   

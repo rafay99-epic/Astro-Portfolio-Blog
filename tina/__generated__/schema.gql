@@ -9,6 +9,7 @@ type SystemInfo {
   filename: String!
   title: String
   basename: String!
+  hasReferences: Boolean
   breadcrumbs(excludeExtension: Boolean): [String!]!
   path: String!
   relativePath: String!
@@ -502,6 +503,7 @@ type Mutation {
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
   deleteDocument(collection: String, relativePath: String!): DocumentNode!
   createDocument(collection: String, relativePath: String!, params: DocumentMutation!): DocumentNode!
+  createFolder(collection: String, relativePath: String!): DocumentNode!
   updatePost(relativePath: String!, params: PostMutation!): Post!
   createPost(relativePath: String!, params: PostMutation!): Post!
   updateNewsletter(relativePath: String!, params: NewsletterMutation!): Newsletter!
