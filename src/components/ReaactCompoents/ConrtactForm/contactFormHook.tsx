@@ -1,6 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import authorConfig from "@config/siteConfig/info.json";
-import { addContactToNotion } from "@pages/api/notion";
 
 const webformKeyAuthorFile = authorConfig.webformKey;
 const hcaptchaSiteKeyAuthorFile = authorConfig.hcaptchaSiteKey;
@@ -77,23 +76,19 @@ export const useContactForm = () => {
         body: data,
       });
 
-      if (response.ok) {
-        //  Disabling Notion api becuase it does not work with static site generator
-        // Need to convert this into a serverless function
-        // Notion API is present in the pages/api/notion.ts file
-        // await addContactToNotion(
-        //   formData.name,
-        //   formData.email,
-        //   formData.message
-        // );
+      const result = await response.json();
+      console.log("API Response:", result);
 
+      if (response.ok) {
         setFormStatus("success");
         setFormData({ name: "", email: "", message: "" });
         setHCaptchaToken(null);
       } else {
+        console.error("Form submission error:", result);
         setFormStatus("error");
       }
     } catch (error) {
+      console.error("Request failed:", error);
       setFormStatus("error");
     }
   };

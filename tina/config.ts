@@ -125,65 +125,7 @@ export default defineConfig({
           },
         ],
       },
-      /// projects
-      {
-        name: "projects",
-        label: "Projects",
-        path: "/src/content/projects",
-        format: "mdx",
-        fields: [
-          {
-            type: "string",
-            name: "Projecttitle",
-            label: "Project Title",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "ProjectDescription",
-            label: "Project Description",
-            required: true,
-          },
-          {
-            type: "image",
-            name: "ProjectImage",
-            label: "Project Thumbnail",
-            required: true,
-          },
-          {
-            type: "boolean",
-            name: "draft",
-            label: "Draft",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "ProjectTech",
-            label: "Project Tech",
-            list: true,
-            required: false,
-            ui: {
-              component: "tags",
-            },
-          },
-          {
-            type: "string",
-            name: "ProjectCategory",
-            label: "Project Category",
-            list: true,
-            required: false,
-            ui: {
-              component: "tags",
-            },
-          },
-          {
-            type: "rich-text",
-            name: "body",
-            label: "Body",
-            isBody: true,
-          },
-        ],
-      },
+
       // site config
       {
         name: "siteConfig",
@@ -376,18 +318,8 @@ export default defineConfig({
             fields: [
               {
                 type: "boolean",
-                name: "enableNotionAPI",
-                label: "Enable Notion API",
-              },
-              {
-                type: "boolean",
                 name: "enableauthorInfoAPI",
                 label: "Enable Author Info API",
-              },
-              {
-                type: "boolean",
-                name: "enableUmamiServiceAPI",
-                label: "Enable Umami Service API",
               },
             ],
           },
@@ -423,56 +355,6 @@ export default defineConfig({
                 name: "Total",
                 label: "Total Views",
                 required: true,
-              },
-            ],
-          },
-        ],
-      },
-      // Idea Panel Adding Ideas Page
-      {
-        name: "ideaPanel",
-        label: "Idea Panel",
-        path: "src/config/IdeaPanel",
-        format: "json",
-        fields: [
-          {
-            type: "object",
-            name: "categories",
-            label: "Categories",
-            list: true,
-            fields: [
-              {
-                type: "string",
-                name: "category",
-                label: "Category Name",
-                required: true,
-              },
-              {
-                type: "object",
-                name: "ideas",
-                label: "Ideas",
-                list: true,
-                fields: [
-                  {
-                    type: "string",
-                    name: "title",
-                    label: "Title",
-                    required: true,
-                  },
-                  {
-                    type: "string",
-                    name: "description",
-                    label: "Description",
-                    required: true,
-                  },
-                  {
-                    type: "string",
-                    name: "stage",
-                    label: "Stage",
-                    options: ["Idea", "Searching", "Writing"],
-                    required: true,
-                  },
-                ],
               },
             ],
           },
