@@ -20,17 +20,6 @@ fragment NewsletterParts on Newsletter {
   body
 }
 
-fragment ProjectsParts on Projects {
-  __typename
-  Projecttitle
-  ProjectDescription
-  ProjectImage
-  draft
-  ProjectTech
-  ProjectCategory
-  body
-}
-
 fragment SiteConfigParts on SiteConfig {
   __typename
   SiteName
@@ -92,9 +81,7 @@ fragment FeatureFlagsParts on FeatureFlags {
   }
   FeatureFlagsApi {
     __typename
-    enableNotionAPI
     enableauthorInfoAPI
-    enableUmamiServiceAPI
   }
 }
 
@@ -105,19 +92,5 @@ fragment PopularBlogsParts on PopularBlogs {
     Page
     Visitors
     Total
-  }
-}
-
-fragment IdeaPanelParts on IdeaPanel {
-  __typename
-  categories {
-    __typename
-    category
-    ideas {
-      __typename
-      title
-      description
-      stage
-    }
   }
 }
