@@ -18,16 +18,6 @@ fragment NewsletterParts on Newsletter {
   body
 }
 
-fragment ProjectsParts on Projects {
-  Projecttitle
-  ProjectDescription
-  ProjectImage
-  draft
-  ProjectTech
-  ProjectCategory
-  body
-}
-
 fragment SiteConfigParts on SiteConfig {
   SiteName
   SiteDescription
@@ -83,34 +73,9 @@ fragment FeatureFlagsParts on FeatureFlags {
     showTrendingPosts
     showTermsandConditions
     showPrivacyPolicy
-    showIdeaPanel
   }
   FeatureFlagsApi {
     __typename
-    enableNotionAPI
     enableauthorInfoAPI
-    enableUmamiServiceAPI
-  }
-}
-
-fragment PopularBlogsParts on PopularBlogs {
-  popularBlogs {
-    __typename
-    Page
-    Visitors
-    Total
-  }
-}
-
-fragment IdeaPanelParts on IdeaPanel {
-  categories {
-    __typename
-    category
-    ideas {
-      __typename
-      title
-      description
-      stage
-    }
   }
 }

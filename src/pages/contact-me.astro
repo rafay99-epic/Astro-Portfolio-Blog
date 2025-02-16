@@ -3,11 +3,7 @@ import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
-import LottieReactCompoent from "@react/LottieAnimation/LottieAnimation";
-import ContactPageAnimation from "@assets/animation/contact-lottie.json";
-import ContactFormReactCompoent from "@react/ConrtactForm/contactform";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-
 import SpeedInsights from "@vercel/speed-insights/astro";
 try {
   if (!featureFlags.showContact) {
@@ -28,26 +24,151 @@ try {
   </head>
   <body>
     <Header />
-    <main class="container mx-auto py-16 px-4 sm:px-6 lg:px-8">
-      <h1 class="text-5xl text-center font-bold mb-12">Let's Collaborate</h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <ContactFormReactCompoent client:load />
-        </div>
+    <main>
+      <h1 class="text-5xl text-center font-bold mb-6">Let's Collaborate</h1>
 
+      <section class="flex justify-center items-center bg-[--accent-dark] px-4">
         <div
-          class="hidden md:flex justify-center items-center lottie-animation"
+          class="w-full max-w-5xl bg-[--gray-gradient] p-10 rounded-2xl border border-[--gray] mt-6"
         >
-          <LottieReactCompoent
-            client:only
-            animationData={ContactPageAnimation}
-            loop={true}
-            autoplay={true}
-            server:defer
-          />
+          <form
+            class="space-y-4"
+            id="form"
+            action="https://api.web3forms.com/submit"
+          >
+            <div>
+              <input
+                type="hidden"
+                name="access_key"
+                value="29b18f36-e5a9-43e0-b896-79ccb8509f17"
+              />
+              <label class="block text-[--text-light] mb-1" for="name"
+                >Your Name</label
+              >
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="w-full p-3 rounded-lg bg-[--gray-dark] text-[--text-light] border border-[--gray] focus:outline-none focus:ring-2 focus:ring-[--accent]"
+                placeholder="John Doe"
+                required
+              />
+            </div>
+
+            <div>
+              <label class="block text-[--text-light] mb-1" for="email"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="w-full p-3 rounded-lg bg-[--gray-dark] text-[--text-light] border border-[--gray] focus:outline-none focus:ring-2 focus:ring-[--accent]"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <div>
+              <label class="block text-[--text-light] mb-1" for="message"
+                >Message</label
+              >
+              <textarea
+                id="message"
+                name="message"
+                class="w-full p-3 rounded-lg bg-[--gray-dark] text-[--text-light] border border-[--gray] focus:outline-none focus:ring-2 focus:ring-[--accent]"
+                rows="4"
+                placeholder="Write your message..."
+                required></textarea>
+            </div>
+
+            <div class="h-captcha" data-captcha="true"></div>
+            <button
+              type="submit"
+              class="w-full p-3 bg-[--accent] text-[--text-light] rounded-lg hover:bg-opacity-90 transition"
+            >
+              Send Message
+            </button>
+            <div id="result" class="hidden text-center p-3 mt-4 rounded-lg">
+            </div>
+          </form>
         </div>
-      </div>
+      </section>
     </main>
-    <Footer class="mt-auto" />
-  </body>
+
+    <div>
+      <Footer class="mt-auto" />
+    </div>
+
+    <script lang="js" is:inline>
+      document.getElementById("form").addEventListener("submit", function (e) {
+        const hcaptchaResponse = document.querySelector(
+          'textarea[name="h-captcha-response"]'
+        );
+        if (!hcaptchaResponse || hcaptchaResponse.value === "") {
+          e.preventDefault();
+          alert("Please complete the hCaptcha.");
+        }
+      });
+    </script>
+
+    <script is:inline src="https://web3forms.com/client/script.js" async defer
+    ></script>
+  </body><script is:inline>
+    const form = document.getElementById("form");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+
+      result.className =
+        "block bg-gray-600 text-white text-center p-3 mt-4 rounded-lg";
+      result.innerHTML = "Please wait...";
+
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
+      })
+        .then(async (response) => {
+          let json = await response.json();
+          if (response.status == 200) {
+            result.className =
+              "block bg-green-600 text-white text-center p-3 mt-4 rounded-lg";
+            result.innerHTML = json.message;
+          } else {
+            result.className =
+              "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
+            result.innerHTML = json.message;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          result.className =
+            "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
+          result.innerHTML = "Something went wrong!";
+        })
+        .then(() => {
+          form.reset();
+          setTimeout(() => {
+            result.classList.add(
+              "opacity-0",
+              "transition-opacity",
+              "duration-500"
+            );
+            setTimeout(() => {
+              result.classList.add("hidden");
+              result.classList.remove("opacity-0");
+            }, 500);
+          }, 3000);
+        });
+    });
+  </script>
 </html>
