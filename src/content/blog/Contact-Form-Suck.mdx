@@ -34,12 +34,11 @@ this is the sequence diagram for this logic
 
 ![](/BlogImages/ssd_contactform_error.png)
 
-Now this logic is good, and I can re use it again and again and number of time and if I don't want to use Web3form service then it's okay, I can just change the api call and nothing need to be changed, correct. While wrong. 
+Now this logic is good, and I can re use it again and again and number of time and if I don't want to use Web3form service then it's okay, I can just change the api call and nothing need to be changed, correct. While wrong.
 
-It's not that Simple, I spend days on debugging, while what is the issue, it's simple message is going to the web3form and I am getting thoses messages into my email box but in the UI it says Server error, this is wired, I am getting the messages and I am getting a server error message on the terminal and UI, what is going on then I start to debug the issue, I open the network tab in the google chrome inspector, and in this tab everything is good, status is 200 means then API is making the good call and the working is perfectly then why server Error, it's so wired. 
+It's not that Simple, I spend days on debugging, while what is the issue, it's simple message is going to the web3form and I am getting thoses messages into my email box but in the UI it says Server error, this is wired, I am getting the messages and I am getting a server error message on the terminal and UI, what is going on then I start to debug the issue, I open the network tab in the google chrome inspector, and in this tab everything is good, status is 200 means then API is making the good call and the working is perfectly then why server Error, it's so wired.
 
-I used postman  for testing the api as well but still nothing same issue again and again. them I think it has to be an is\[sue with the Web3Form API Call it can not be in my code, there is nothing that is cassuing this issue and then made some changes and I was getting another error and this is the error \
-
+I used postman  for testing the api as well but still nothing same issue again and again. them I think it has to be an is\[sue with the Web3Form API Call it can not be in my code, there is nothing that is cassuing this issue and then made some changes and I was getting another error and this is the error \\
 
 ```javascript
 
@@ -178,23 +177,214 @@ export const POST: APIRoute = async ({ request }) => {
 
 ## New Service
 
-At this time, I was done, debugging and trying new thing wring code, debugging code, I need a solution and I start to search for new options and oh boy, I was up for another days of tocher, and it not code that i am talking about the amount of services that are avilable for a simple contact form. 
+At this time, I was done, debugging and trying new thing wring code, debugging code, I need a solution and I start to search for new options and oh boy, I was up for another days of tocher, and it not code that i am talking about the amount of services that are avilable for a simple contact form.
 
 In my experience there are two ways you can a contact form working,
 
-1. Connecting Contact Form with database 
-2. Connecting Contact Fom with a service which will redirect the messages to the your email of your choice. 
+1. Connecting Contact Form with database
+2. Connecting Contact Fom with a service which will redirect the messages to the your email of your choice.
 
-and for me I was using a service called Web3Form and this is greate service if your are using simple html, CSS or tailwind and JavaScript based website but if you envoles react then things get really rough and augh really fast. and I was using React with my Astro. 
+and for me I was using a service called Web3Form and this is greate service if your are using simple html, CSS or tailwind and JavaScript based website but if you envoles react then things get really rough and augh really fast. and I was using React with my Astro.
 
-So I was on the hunt looking for new service there are some out there they seem simple but holy molly the prices are through the roof, and sometime there is no free tier as well, I am a solo  and I don't have to  spend like 10 dollars for a contact form. 
+So I was on the hunt looking for new service there are some out there they seem simple but holy molly the prices are through the roof, and sometime there is no free tier as well, I am a solo  and I don't have to  spend like 10 dollars for a contact form.
 
-Here are some of the services that I found, 
+Here are some of the services that I found,
 
-1. [Formspree](https://formspree.io), Now this service is good but No free tier...It's not for a solo developer...Other wise them seem good enough, I have tried there solution but no luck with react based website as well. 
+1. [Formspree](https://formspree.io), Now this service is good but No free tier...It's not for a solo developer...Other wise them seem good enough, I have tried there solution but no luck with react based website as well.
 
 ![](</BlogImages/Screenshot 2025-02-16 182018.png>)
 
-As you can see in the above image the plan prices are though the roof for a solo website which does not have so many users, but if you are site thave more users then this services will work great. 
+As you can see in the above image the plan prices are though the roof for a solo website which does not have so many users, but if you are site thave more users then this services will work great.
 
-2\. 
+2\. [FormBold ](https://formbold.com/)is a great service but thye have noting for a solo website which have a couple of user, they have very similar price plan just like Formspree.
+
+These services are good but they are way to much from cost point like 10 dollar in my country is too much and No matter what I can afford them an plus in the hobbly plan the features are that good as well. Where as Web3Form have free plan but don't work with react and astro, I have tired so much.
+
+## The Solution
+
+The solution for me is very simple I have use plain Astro component and inline script tage for alot of things like UI changes, status changes and sending request for web3form API as well, I know it's not the solution but I have no other choice, No matter what I do, Web3 Form only works well in the HTML and JavaScript File, in static form.
+
+Here is the code the that I wrote for the Contact form
+
+```javascript
+---
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import SpeedInsights from "@vercel/speed-insights/astro";
+try {
+  if (!featureFlags.showContact) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
+---
+
+  <html lang="en">
+    <head>
+      <BaseHead
+        title={`Contact Me | ${authorConfig.SiteName}`}
+        description={`Contact me and get in touch with me.`}
+      />
+      <SpeedInsights />
+    </head>
+    <body>
+      <Header />
+      <main>
+        <h1 class="text-5xl text-center font-bold mb-6">Let's Collaborate</h1>
+
+        <section class="flex justify-center items-center bg-[--accent-dark] px-4">
+          <div
+            class="w-full max-w-5xl bg-[--gray-gradient] p-10 rounded-2xl border border-[--gray] mt-6"
+          >
+            <form
+              class="space-y-4"
+              id="form"
+              action="https://api.web3forms.com/submit"
+            >
+              <div>
+                <input
+                  type="hidden"
+                  name="access_key"
+                  value="29b18f36-e5a9-43e0-b896-79ccb8509f17"
+                />
+                <label class="block text-[--text-light] mb-1" for="name"
+                >Your Name</label
+                >
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="w-full p-3 rounded-lg bg-[--gray-dark] text-[--text-light] border border-[--gray] focus:outline-none focus:ring-2 focus:ring-[--accent]"
+                  placeholder="John Doe"
+                  required
+                />
+              </div>
+
+              <div>
+                <label class="block text-[--text-light] mb-1" for="email"
+                >Email</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="w-full p-3 rounded-lg bg-[--gray-dark] text-[--text-light] border border-[--gray] focus:outline-none focus:ring-2 focus:ring-[--accent]"
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+
+              <div>
+                <label class="block text-[--text-light] mb-1" for="message"
+                >Message</label
+                >
+                <textarea
+                  id="message"
+                  name="message"
+                  class="w-full p-3 rounded-lg bg-[--gray-dark] text-[--text-light] border border-[--gray] focus:outline-none focus:ring-2 focus:ring-[--accent]"
+                  rows="4"
+                  placeholder="Write your message..."
+                  required></textarea>
+              </div>
+
+              <div class="h-captcha" data-captcha="true"></div>
+              <button
+                type="submit"
+                class="w-full p-3 bg-[--accent] text-[--text-light] rounded-lg hover:bg-opacity-90 transition"
+              >
+                Send Message
+              </button>
+              <div id="result" class="hidden text-center p-3 mt-4 rounded-lg">
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <div>
+        <Footer class="mt-auto" />
+      </div>
+
+      <script lang="js" is:inline>
+        document.getElementById("form").addEventListener("submit", function (e) {
+        const hcaptchaResponse = document.querySelector(
+        'textarea[name="h-captcha-response"]'
+        );
+        if (!hcaptchaResponse || hcaptchaResponse.value === "") {
+          e.preventDefault();
+        alert("Please complete the hCaptcha.");
+        }
+      });
+      </script>
+
+      <script is:inline src="https://web3forms.com/client/script.js" async defer
+      ></script>
+    </body><script is:inline>
+      const form = document.getElementById("form");
+      const result = document.getElementById("result");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+      const formData = new FormData(form);
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+
+      result.className =
+      "block bg-gray-600 text-white text-center p-3 mt-4 rounded-lg";
+      result.innerHTML = "Please wait...";
+
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      Accept: "application/json",
+        },
+      body: json,
+      })
+        .then(async (response) => {
+        let json = await response.json();
+      if (response.status == 200) {
+        result.className =
+        "block bg-green-600 text-white text-center p-3 mt-4 rounded-lg";
+      result.innerHTML = json.message;
+          } else {
+        result.className =
+        "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
+      result.innerHTML = json.message;
+          }
+        })
+        .catch((error) => {
+        console.error(error);
+      result.className =
+      "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
+      result.innerHTML = "Something went wrong!";
+        })
+        .then(() => {
+        form.reset();
+          setTimeout(() => {
+        result.classList.add(
+          "opacity-0",
+          "transition-opacity",
+          "duration-500"
+        );
+            setTimeout(() => {
+        result.classList.add("hidden");
+      result.classList.remove("opacity-0");
+            }, 500);
+          }, 3000);
+        });
+    });
+    </script>
+  </html>
+
+```
+
+This code is very simple, I am creating a section and a form with that form there are two main things one is result id and second is the hcaptch section.
+
+Now Using script tags in astro compoent, I have called these sccript tags when it is need, \
+\\
