@@ -24,4 +24,158 @@ And this how contact form purpose and working for the post part.
 
 ## The Problem.
 
-Let me first explain the Problem then I will show you what I have done to make this semelless. I am using astro for my blog post and my personal site and in that site i have a section called conntect with me, there are two form one is a decated page and other is a home page build in contact form, both working and logic is same but the UI is complete different,
+Let me first explain the Problem then I will show you what I have done to make this semelless. I am using astro for my blog post and my personal site and in that site i have a section called conntect with me, there are two form one is a decated page and other is a home page build in contact form, both working and logic is same but the UI is complete different.
+
+If you are using astro then you are using server side rendering or static site correct, there are two ways you can config astro and for my site, I am using server sider rendering(SSR) and when you build a static compoent then it will  not have interative UI but if you are using SSR then you can have interative UI using react, So I made a react compoent called **ContactForm.tsx** and a hook called **useContactform.tsx** and an API called **submit.ts**
+
+Now we have the files and this is what I was thinking, I will create a UI into ContactForm.tsx and will pass everything to the useContactform.tsx and this will make the api call when the submit button is submitted.
+
+this is the sequence diagram for this logic
+
+![](/BlogImages/ssd_contactform_error.png)
+
+Now this logic is good, and I can re use it again and again and number of time and if I don't want to use Web3form service then it's okay, I can just change the api call and nothing need to be changed, correct. While wrong. 
+
+It's not that Simple, I spend days on debugging, while what is the issue, it's simple message is going to the web3form and I am getting thoses messages into my email box but in the UI it says Server error, this is wired, I am getting the messages and I am getting a server error message on the terminal and UI, what is going on then I start to debug the issue, I open the network tab in the google chrome inspector, and in this tab everything is good, status is 200 means then API is making the good call and the working is perfectly then why server Error, it's so wired. 
+
+I used postman  for testing the api as well but still nothing same issue again and again. them I think it has to be an is\[sue with the Web3Form API Call it can not be in my code, there is nothing that is cassuing this issue and then made some changes and I was getting another error and this is the error \
+
+
+```javascript
+
+Web3Forms Request Failed: TypeError: fetch failed
+    at node: internal / deps / undici / undici: 13392: 13
+    at process.processTicksAndRejections(node: internal / process / task_queues: 95: 5)
+    at async Module.POST(D: /Astro-Portfolio-Blog/src / pages / api / submit.ts: 27: 24)
+    at async renderEndpoint(file:///D:/Astro-Portfolio-Blog/node_modules/astro/dist/runtime/server/endpoint.js:37:18)
+      at async lastNext(file:///D:/Astro-Portfolio-Blog/node_modules/astro/dist/core/render-context.js:158:23)
+        at async callMiddleware(file:///D:/Astro-Portfolio-Blog/node_modules/astro/dist/core/middleware/callMiddleware.js:11:10)
+          at async RenderContext.render(file:///D:/Astro-Portfolio-Blog/node_modules/astro/dist/core/render-context.js:205:22)
+            at async handleRoute(file:///D:/Astro-Portfolio-Blog/node_modules/astro/dist/vite-plugin-astro-server/route.js:138:16)
+              at async run(file:///D:/Astro-Portfolio-Blog/node_modules/astro/dist/vite-plugin-astro-server/request.js:40:14)
+                at async runWithErrorHandling(file:///D:/Astro-Portfolio-Blog/node_modules/astro/dist/vite-plugin-astro-server/controller.js:64:5) {
+                  [cause]: ConnectTimeoutError: Connect Timeout Error(attempted address: api.web3forms.com: 443, timeout: 10000ms)
+      at onConnectTimeout(node: internal / deps / undici / undici: 2599: 28)
+      at Immediate._onImmediate(node: internal / deps / undici / undici: 2568: 35)
+      at process.processImmediate(node: internal / timers: 483: 21)
+      at process.callbackTrampoline(node: internal / async_hooks: 130: 17) {
+                  code: 'UND_ERR_CONNECT_TIMEOUT'
+                }
+}
+
+```
+
+Now you can see the error,  this suuggest that this is a timeout issue but when in the offical docs there is no time issue then why this is occuring, to combact this issue I have created a time out issue and this is the final API that I wrote in the submit.ts file
+
+```javascript
+import type { APIRoute } from "astro";
+export const prerender = false;
+
+export const POST: APIRoute = async ({ request }) => {
+  try {
+    const formData = await request.formData();
+
+    // Validate hCaptcha token
+    const captchaToken = formData.get("h-captcha-response")?.toString().trim();
+    if (!captchaToken) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: "hCaptcha verification failed. No token provided.",
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    const submitFormData = new FormData();
+    formData.forEach((value, key) => {
+      submitFormData.append(key, value);
+    });
+
+    submitFormData.append("access_key", "29b18f36-e5a9-43e0-b896-79ccb8509f17");
+    submitFormData.append("h-captcha-response", captchaToken);
+
+    const controller = new AbortController();
+
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: submitFormData,
+        signal: controller.signal,
+      });
+      console.timeEnd("Web3Forms Request");
+
+      clearTimeout(timeout);
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (error) {
+        console.error("Error parsing JSON response:", error);
+        return new Response(
+          JSON.stringify({
+            success: false,
+            message: "Invalid response from Web3Forms.",
+          }),
+          { status: 502, headers: { "Content-Type": "application/json" } }
+        );
+      }
+
+      if (!response.ok) {
+        console.error("Web3Forms API Error:", data);
+        return new Response(
+          JSON.stringify({
+            success: false,
+            message: data?.message || "Web3Forms submission failed.",
+          }),
+          {
+            status: response.status,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message: "Message sent successfully!",
+          data,
+        }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      );
+    } catch (error) {
+      if (error.name === "AbortError") {
+        console.error("Web3Forms Request Timed Out");
+        return new Response(
+          JSON.stringify({
+            success: false,
+            message: "Request to Web3Forms timed out. Please try again.",
+          }),
+          { status: 504, headers: { "Content-Type": "application/json" } }
+        );
+      }
+
+      console.error("Web3Forms Request Failed:", error);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: "Failed to contact Web3Forms.",
+        }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
+  } catch (error) {
+    console.error("Internal Server Error:", error);
+    return new Response(
+      JSON.stringify({ success: false, message: "Internal Server Error" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
+};
+
+```
+
+## New Service
+
+At this time, I was done, debugging and trying new thing wring code, debugging code, I need a solution and I start to search for new options
