@@ -7,7 +7,7 @@ import "@styles/home/home-page.css";
 import FeaturedPost from "@astro/home/FeaturePost/featurePost.astro";
 import LatestPost from "@astro/home/LatestPost/LatestPost.astro";
 import SkillsShowcase from "@react/JobSkills/jobSkills";
-import ContactFormHome from "@react/ConrtactForm/HomePageContact";
+import ContactMap from "@components/AstroCompoent/home/ContactMap/ContactMap.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import ProfileImage from "@react/HeroSection/ProfileImage";
 import Greeting from "@react/HeroSection/Greeting";
@@ -76,23 +76,9 @@ try {
         </p>
         <SkillsShowcase client:load />
       </section>
-
-      <section style="margin-block-start: 5rem; margin-block-end: 10rem;">
-        <h1 class="text-6xl font-bold text-center text-[#c0caf5] leading-snug">
-          I'D BE HAPPY TO CONNECT
-          <span
-            class="bg-gradient-to-r from-blue-500 via-blue-700 to-teal-600 text-transparent bg-clip-text"
-          >
-            WITH YOU
-          </span>
-        </h1>
-        <p class="text-center text-lg font-bold mb-6">
-          Let's Connect & Build Something Together
-        </p>
-        <ContactFormHome client:load server:defer />
-      </section>
-
-      <Footer class="mt-auto" />
+      <ContactMap />
     </main>
+
+    <Footer class="mt-auto" />
   </body>
 </html>

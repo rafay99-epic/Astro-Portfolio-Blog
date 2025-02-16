@@ -85,16 +85,10 @@ export type Query = {
   postConnection: PostConnection;
   newsletter: Newsletter;
   newsletterConnection: NewsletterConnection;
-  projects: Projects;
-  projectsConnection: ProjectsConnection;
   siteConfig: SiteConfig;
   siteConfigConnection: SiteConfigConnection;
   featureFlags: FeatureFlags;
   featureFlagsConnection: FeatureFlagsConnection;
-  popularBlogs: PopularBlogs;
-  popularBlogsConnection: PopularBlogsConnection;
-  ideaPanel: IdeaPanel;
-  ideaPanelConnection: IdeaPanelConnection;
 };
 
 
@@ -149,21 +143,6 @@ export type QueryNewsletterConnectionArgs = {
 };
 
 
-export type QueryProjectsArgs = {
-  relativePath?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryProjectsConnectionArgs = {
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<ProjectsFilter>;
-};
-
-
 export type QuerySiteConfigArgs = {
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
@@ -193,44 +172,11 @@ export type QueryFeatureFlagsConnectionArgs = {
   filter?: InputMaybe<FeatureFlagsFilter>;
 };
 
-
-export type QueryPopularBlogsArgs = {
-  relativePath?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryPopularBlogsConnectionArgs = {
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<PopularBlogsFilter>;
-};
-
-
-export type QueryIdeaPanelArgs = {
-  relativePath?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryIdeaPanelConnectionArgs = {
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<IdeaPanelFilter>;
-};
-
 export type DocumentFilter = {
   post?: InputMaybe<PostFilter>;
   newsletter?: InputMaybe<NewsletterFilter>;
-  projects?: InputMaybe<ProjectsFilter>;
   siteConfig?: InputMaybe<SiteConfigFilter>;
   featureFlags?: InputMaybe<FeatureFlagsFilter>;
-  popularBlogs?: InputMaybe<PopularBlogsFilter>;
-  ideaPanel?: InputMaybe<IdeaPanelFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -270,7 +216,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | PopularBlogs | IdeaPanel | Folder;
+export type DocumentNode = Post | Newsletter | SiteConfig | FeatureFlags | Folder;
 
 export type Post = Node & Document & {
   __typename?: 'Post';
@@ -377,43 +323,6 @@ export type NewsletterConnection = Connection & {
   pageInfo: PageInfo;
   totalCount: Scalars['Float']['output'];
   edges?: Maybe<Array<Maybe<NewsletterConnectionEdges>>>;
-};
-
-export type Projects = Node & Document & {
-  __typename?: 'Projects';
-  Projecttitle: Scalars['String']['output'];
-  ProjectDescription: Scalars['String']['output'];
-  ProjectImage: Scalars['String']['output'];
-  draft: Scalars['Boolean']['output'];
-  ProjectTech?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  ProjectCategory?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  body?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  _sys: SystemInfo;
-  _values: Scalars['JSON']['output'];
-};
-
-export type ProjectsFilter = {
-  Projecttitle?: InputMaybe<StringFilter>;
-  ProjectDescription?: InputMaybe<StringFilter>;
-  ProjectImage?: InputMaybe<ImageFilter>;
-  draft?: InputMaybe<BooleanFilter>;
-  ProjectTech?: InputMaybe<StringFilter>;
-  ProjectCategory?: InputMaybe<StringFilter>;
-  body?: InputMaybe<RichTextFilter>;
-};
-
-export type ProjectsConnectionEdges = {
-  __typename?: 'ProjectsConnectionEdges';
-  cursor: Scalars['String']['output'];
-  node?: Maybe<Projects>;
-};
-
-export type ProjectsConnection = Connection & {
-  __typename?: 'ProjectsConnection';
-  pageInfo: PageInfo;
-  totalCount: Scalars['Float']['output'];
-  edges?: Maybe<Array<Maybe<ProjectsConnectionEdges>>>;
 };
 
 export type SiteConfigSocialLinks = {
@@ -537,14 +446,11 @@ export type FeatureFlagsFeatureFlags = {
   showTrendingPosts?: Maybe<Scalars['Boolean']['output']>;
   showTermsandConditions?: Maybe<Scalars['Boolean']['output']>;
   showPrivacyPolicy?: Maybe<Scalars['Boolean']['output']>;
-  showIdeaPanel?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type FeatureFlagsFeatureFlagsApi = {
   __typename?: 'FeatureFlagsFeatureFlagsApi';
-  enableNotionAPI?: Maybe<Scalars['Boolean']['output']>;
   enableauthorInfoAPI?: Maybe<Scalars['Boolean']['output']>;
-  enableUmamiServiceAPI?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type FeatureFlags = Node & Document & {
@@ -571,13 +477,10 @@ export type FeatureFlagsFeatureFlagsFilter = {
   showTrendingPosts?: InputMaybe<BooleanFilter>;
   showTermsandConditions?: InputMaybe<BooleanFilter>;
   showPrivacyPolicy?: InputMaybe<BooleanFilter>;
-  showIdeaPanel?: InputMaybe<BooleanFilter>;
 };
 
 export type FeatureFlagsFeatureFlagsApiFilter = {
-  enableNotionAPI?: InputMaybe<BooleanFilter>;
   enableauthorInfoAPI?: InputMaybe<BooleanFilter>;
-  enableUmamiServiceAPI?: InputMaybe<BooleanFilter>;
 };
 
 export type FeatureFlagsFilter = {
@@ -598,103 +501,6 @@ export type FeatureFlagsConnection = Connection & {
   edges?: Maybe<Array<Maybe<FeatureFlagsConnectionEdges>>>;
 };
 
-export type PopularBlogsPopularBlogs = {
-  __typename?: 'PopularBlogsPopularBlogs';
-  Page: Scalars['String']['output'];
-  Visitors: Scalars['Float']['output'];
-  Total: Scalars['Float']['output'];
-};
-
-export type PopularBlogs = Node & Document & {
-  __typename?: 'PopularBlogs';
-  popularBlogs?: Maybe<Array<Maybe<PopularBlogsPopularBlogs>>>;
-  id: Scalars['ID']['output'];
-  _sys: SystemInfo;
-  _values: Scalars['JSON']['output'];
-};
-
-export type NumberFilter = {
-  lt?: InputMaybe<Scalars['Float']['input']>;
-  lte?: InputMaybe<Scalars['Float']['input']>;
-  gte?: InputMaybe<Scalars['Float']['input']>;
-  gt?: InputMaybe<Scalars['Float']['input']>;
-  eq?: InputMaybe<Scalars['Float']['input']>;
-  exists?: InputMaybe<Scalars['Boolean']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
-};
-
-export type PopularBlogsPopularBlogsFilter = {
-  Page?: InputMaybe<StringFilter>;
-  Visitors?: InputMaybe<NumberFilter>;
-  Total?: InputMaybe<NumberFilter>;
-};
-
-export type PopularBlogsFilter = {
-  popularBlogs?: InputMaybe<PopularBlogsPopularBlogsFilter>;
-};
-
-export type PopularBlogsConnectionEdges = {
-  __typename?: 'PopularBlogsConnectionEdges';
-  cursor: Scalars['String']['output'];
-  node?: Maybe<PopularBlogs>;
-};
-
-export type PopularBlogsConnection = Connection & {
-  __typename?: 'PopularBlogsConnection';
-  pageInfo: PageInfo;
-  totalCount: Scalars['Float']['output'];
-  edges?: Maybe<Array<Maybe<PopularBlogsConnectionEdges>>>;
-};
-
-export type IdeaPanelCategoriesIdeas = {
-  __typename?: 'IdeaPanelCategoriesIdeas';
-  title: Scalars['String']['output'];
-  description: Scalars['String']['output'];
-  stage: Scalars['String']['output'];
-};
-
-export type IdeaPanelCategories = {
-  __typename?: 'IdeaPanelCategories';
-  category: Scalars['String']['output'];
-  ideas?: Maybe<Array<Maybe<IdeaPanelCategoriesIdeas>>>;
-};
-
-export type IdeaPanel = Node & Document & {
-  __typename?: 'IdeaPanel';
-  categories?: Maybe<Array<Maybe<IdeaPanelCategories>>>;
-  id: Scalars['ID']['output'];
-  _sys: SystemInfo;
-  _values: Scalars['JSON']['output'];
-};
-
-export type IdeaPanelCategoriesIdeasFilter = {
-  title?: InputMaybe<StringFilter>;
-  description?: InputMaybe<StringFilter>;
-  stage?: InputMaybe<StringFilter>;
-};
-
-export type IdeaPanelCategoriesFilter = {
-  category?: InputMaybe<StringFilter>;
-  ideas?: InputMaybe<IdeaPanelCategoriesIdeasFilter>;
-};
-
-export type IdeaPanelFilter = {
-  categories?: InputMaybe<IdeaPanelCategoriesFilter>;
-};
-
-export type IdeaPanelConnectionEdges = {
-  __typename?: 'IdeaPanelConnectionEdges';
-  cursor: Scalars['String']['output'];
-  node?: Maybe<IdeaPanel>;
-};
-
-export type IdeaPanelConnection = Connection & {
-  __typename?: 'IdeaPanelConnection';
-  pageInfo: PageInfo;
-  totalCount: Scalars['Float']['output'];
-  edges?: Maybe<Array<Maybe<IdeaPanelConnectionEdges>>>;
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -705,16 +511,10 @@ export type Mutation = {
   createPost: Post;
   updateNewsletter: Newsletter;
   createNewsletter: Newsletter;
-  updateProjects: Projects;
-  createProjects: Projects;
   updateSiteConfig: SiteConfig;
   createSiteConfig: SiteConfig;
   updateFeatureFlags: FeatureFlags;
   createFeatureFlags: FeatureFlags;
-  updatePopularBlogs: PopularBlogs;
-  createPopularBlogs: PopularBlogs;
-  updateIdeaPanel: IdeaPanel;
-  createIdeaPanel: IdeaPanel;
 };
 
 
@@ -769,18 +569,6 @@ export type MutationCreateNewsletterArgs = {
 };
 
 
-export type MutationUpdateProjectsArgs = {
-  relativePath: Scalars['String']['input'];
-  params: ProjectsMutation;
-};
-
-
-export type MutationCreateProjectsArgs = {
-  relativePath: Scalars['String']['input'];
-  params: ProjectsMutation;
-};
-
-
 export type MutationUpdateSiteConfigArgs = {
   relativePath: Scalars['String']['input'];
   params: SiteConfigMutation;
@@ -804,49 +592,19 @@ export type MutationCreateFeatureFlagsArgs = {
   params: FeatureFlagsMutation;
 };
 
-
-export type MutationUpdatePopularBlogsArgs = {
-  relativePath: Scalars['String']['input'];
-  params: PopularBlogsMutation;
-};
-
-
-export type MutationCreatePopularBlogsArgs = {
-  relativePath: Scalars['String']['input'];
-  params: PopularBlogsMutation;
-};
-
-
-export type MutationUpdateIdeaPanelArgs = {
-  relativePath: Scalars['String']['input'];
-  params: IdeaPanelMutation;
-};
-
-
-export type MutationCreateIdeaPanelArgs = {
-  relativePath: Scalars['String']['input'];
-  params: IdeaPanelMutation;
-};
-
 export type DocumentUpdateMutation = {
   post?: InputMaybe<PostMutation>;
   newsletter?: InputMaybe<NewsletterMutation>;
-  projects?: InputMaybe<ProjectsMutation>;
   siteConfig?: InputMaybe<SiteConfigMutation>;
   featureFlags?: InputMaybe<FeatureFlagsMutation>;
-  popularBlogs?: InputMaybe<PopularBlogsMutation>;
-  ideaPanel?: InputMaybe<IdeaPanelMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type DocumentMutation = {
   post?: InputMaybe<PostMutation>;
   newsletter?: InputMaybe<NewsletterMutation>;
-  projects?: InputMaybe<ProjectsMutation>;
   siteConfig?: InputMaybe<SiteConfigMutation>;
   featureFlags?: InputMaybe<FeatureFlagsMutation>;
-  popularBlogs?: InputMaybe<PopularBlogsMutation>;
-  ideaPanel?: InputMaybe<IdeaPanelMutation>;
 };
 
 export type PostMutation = {
@@ -866,16 +624,6 @@ export type NewsletterMutation = {
   summary?: InputMaybe<Scalars['String']['input']>;
   pubDate?: InputMaybe<Scalars['String']['input']>;
   draft?: InputMaybe<Scalars['Boolean']['input']>;
-  body?: InputMaybe<Scalars['JSON']['input']>;
-};
-
-export type ProjectsMutation = {
-  Projecttitle?: InputMaybe<Scalars['String']['input']>;
-  ProjectDescription?: InputMaybe<Scalars['String']['input']>;
-  ProjectImage?: InputMaybe<Scalars['String']['input']>;
-  draft?: InputMaybe<Scalars['Boolean']['input']>;
-  ProjectTech?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  ProjectCategory?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
@@ -936,13 +684,10 @@ export type FeatureFlagsFeatureFlagsMutation = {
   showTrendingPosts?: InputMaybe<Scalars['Boolean']['input']>;
   showTermsandConditions?: InputMaybe<Scalars['Boolean']['input']>;
   showPrivacyPolicy?: InputMaybe<Scalars['Boolean']['input']>;
-  showIdeaPanel?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type FeatureFlagsFeatureFlagsApiMutation = {
-  enableNotionAPI?: InputMaybe<Scalars['Boolean']['input']>;
   enableauthorInfoAPI?: InputMaybe<Scalars['Boolean']['input']>;
-  enableUmamiServiceAPI?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type FeatureFlagsMutation = {
@@ -950,44 +695,13 @@ export type FeatureFlagsMutation = {
   FeatureFlagsApi?: InputMaybe<FeatureFlagsFeatureFlagsApiMutation>;
 };
 
-export type PopularBlogsPopularBlogsMutation = {
-  Page?: InputMaybe<Scalars['String']['input']>;
-  Visitors?: InputMaybe<Scalars['Float']['input']>;
-  Total?: InputMaybe<Scalars['Float']['input']>;
-};
-
-export type PopularBlogsMutation = {
-  popularBlogs?: InputMaybe<Array<InputMaybe<PopularBlogsPopularBlogsMutation>>>;
-};
-
-export type IdeaPanelCategoriesIdeasMutation = {
-  title?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  stage?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type IdeaPanelCategoriesMutation = {
-  category?: InputMaybe<Scalars['String']['input']>;
-  ideas?: InputMaybe<Array<InputMaybe<IdeaPanelCategoriesIdeasMutation>>>;
-};
-
-export type IdeaPanelMutation = {
-  categories?: InputMaybe<Array<InputMaybe<IdeaPanelCategoriesMutation>>>;
-};
-
 export type PostPartsFragment = { __typename?: 'Post', title: string, description: string, pubDate: string, draft: boolean, heroImage?: string | null, authorName?: string | null, authorAvatar?: string | null, body?: any | null, tags?: Array<string | null> | null };
 
 export type NewsletterPartsFragment = { __typename?: 'Newsletter', title: string, summary: string, pubDate: string, draft: boolean, body?: any | null };
 
-export type ProjectsPartsFragment = { __typename?: 'Projects', Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null };
-
 export type SiteConfigPartsFragment = { __typename?: 'SiteConfig', SiteName: string, SiteDescription: string, name: string, jobTitle: string, position: string, picture?: string | null, avator?: string | null, socialLinks?: { __typename: 'SiteConfigSocialLinks', twitter?: string | null, linkedin?: string | null, github?: string | null, upwork?: string | null, youtube?: string | null, whatsNumber?: string | null } | null, about?: { __typename: 'SiteConfigAbout', whoAmI?: string | null, lifeBeyondCode?: string | null, continuousLearning?: string | null } | null, techStack?: Array<{ __typename: 'SiteConfigTechStack', category?: string | null, tools?: Array<string | null> | null } | null> | null, workExperience?: Array<{ __typename: 'SiteConfigWorkExperience', companyName?: string | null, position?: string | null, employmentTime?: string | null, roles?: Array<string | null> | null, toolsUsed?: Array<string | null> | null } | null> | null };
 
-export type FeatureFlagsPartsFragment = { __typename?: 'FeatureFlags', featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null, showIdeaPanel?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null };
-
-export type PopularBlogsPartsFragment = { __typename?: 'PopularBlogs', popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null };
-
-export type IdeaPanelPartsFragment = { __typename?: 'IdeaPanel', categories?: Array<{ __typename: 'IdeaPanelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPanelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null };
+export type FeatureFlagsPartsFragment = { __typename?: 'FeatureFlags', featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableauthorInfoAPI?: boolean | null } | null };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -1027,25 +741,6 @@ export type NewsletterConnectionQueryVariables = Exact<{
 
 export type NewsletterConnectionQuery = { __typename?: 'Query', newsletterConnection: { __typename?: 'NewsletterConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'NewsletterConnectionEdges', cursor: string, node?: { __typename?: 'Newsletter', id: string, title: string, summary: string, pubDate: string, draft: boolean, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
-export type ProjectsQueryVariables = Exact<{
-  relativePath: Scalars['String']['input'];
-}>;
-
-
-export type ProjectsQuery = { __typename?: 'Query', projects: { __typename?: 'Projects', id: string, Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
-
-export type ProjectsConnectionQueryVariables = Exact<{
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<ProjectsFilter>;
-}>;
-
-
-export type ProjectsConnectionQuery = { __typename?: 'Query', projectsConnection: { __typename?: 'ProjectsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ProjectsConnectionEdges', cursor: string, node?: { __typename?: 'Projects', id: string, Projecttitle: string, ProjectDescription: string, ProjectImage: string, draft: boolean, ProjectTech?: Array<string | null> | null, ProjectCategory?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
-
 export type SiteConfigQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
@@ -1070,7 +765,7 @@ export type FeatureFlagsQueryVariables = Exact<{
 }>;
 
 
-export type FeatureFlagsQuery = { __typename?: 'Query', featureFlags: { __typename?: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null, showIdeaPanel?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null } };
+export type FeatureFlagsQuery = { __typename?: 'Query', featureFlags: { __typename?: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableauthorInfoAPI?: boolean | null } | null } };
 
 export type FeatureFlagsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -1082,45 +777,7 @@ export type FeatureFlagsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type FeatureFlagsConnectionQuery = { __typename?: 'Query', featureFlagsConnection: { __typename?: 'FeatureFlagsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'FeatureFlagsConnectionEdges', cursor: string, node?: { __typename?: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null, showIdeaPanel?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableNotionAPI?: boolean | null, enableauthorInfoAPI?: boolean | null, enableUmamiServiceAPI?: boolean | null } | null } | null } | null> | null } };
-
-export type PopularBlogsQueryVariables = Exact<{
-  relativePath: Scalars['String']['input'];
-}>;
-
-
-export type PopularBlogsQuery = { __typename?: 'Query', popularBlogs: { __typename?: 'PopularBlogs', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null } };
-
-export type PopularBlogsConnectionQueryVariables = Exact<{
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<PopularBlogsFilter>;
-}>;
-
-
-export type PopularBlogsConnectionQuery = { __typename?: 'Query', popularBlogsConnection: { __typename?: 'PopularBlogsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PopularBlogsConnectionEdges', cursor: string, node?: { __typename?: 'PopularBlogs', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, popularBlogs?: Array<{ __typename: 'PopularBlogsPopularBlogs', Page: string, Visitors: number, Total: number } | null> | null } | null } | null> | null } };
-
-export type IdeaPanelQueryVariables = Exact<{
-  relativePath: Scalars['String']['input'];
-}>;
-
-
-export type IdeaPanelQuery = { __typename?: 'Query', ideaPanel: { __typename?: 'IdeaPanel', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'IdeaPanelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPanelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null } };
-
-export type IdeaPanelConnectionQueryVariables = Exact<{
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<IdeaPanelFilter>;
-}>;
-
-
-export type IdeaPanelConnectionQuery = { __typename?: 'Query', ideaPanelConnection: { __typename?: 'IdeaPanelConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'IdeaPanelConnectionEdges', cursor: string, node?: { __typename?: 'IdeaPanel', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'IdeaPanelCategories', category: string, ideas?: Array<{ __typename: 'IdeaPanelCategoriesIdeas', title: string, description: string, stage: string } | null> | null } | null> | null } | null } | null> | null } };
+export type FeatureFlagsConnectionQuery = { __typename?: 'Query', featureFlagsConnection: { __typename?: 'FeatureFlagsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'FeatureFlagsConnectionEdges', cursor: string, node?: { __typename?: 'FeatureFlags', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, featureFlags?: { __typename: 'FeatureFlagsFeatureFlags', showBlog?: boolean | null, showAbout?: boolean | null, showContact?: boolean | null, showProjects?: boolean | null, showIndex?: boolean | null, showTags?: boolean | null, showSearch?: boolean | null, showNewsletter?: boolean | null, showPrivacy?: boolean | null, showTermsOfService?: boolean | null, showSubNewsletter?: boolean | null, showTrendingPosts?: boolean | null, showTermsandConditions?: boolean | null, showPrivacyPolicy?: boolean | null } | null, FeatureFlagsApi?: { __typename: 'FeatureFlagsFeatureFlagsApi', enableauthorInfoAPI?: boolean | null } | null } | null } | null> | null } };
 
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
@@ -1141,17 +798,6 @@ export const NewsletterPartsFragmentDoc = gql`
   summary
   pubDate
   draft
-  body
-}
-    `;
-export const ProjectsPartsFragmentDoc = gql`
-    fragment ProjectsParts on Projects {
-  Projecttitle
-  ProjectDescription
-  ProjectImage
-  draft
-  ProjectTech
-  ProjectCategory
   body
 }
     `;
@@ -1212,37 +858,10 @@ export const FeatureFlagsPartsFragmentDoc = gql`
     showTrendingPosts
     showTermsandConditions
     showPrivacyPolicy
-    showIdeaPanel
   }
   FeatureFlagsApi {
     __typename
-    enableNotionAPI
     enableauthorInfoAPI
-    enableUmamiServiceAPI
-  }
-}
-    `;
-export const PopularBlogsPartsFragmentDoc = gql`
-    fragment PopularBlogsParts on PopularBlogs {
-  popularBlogs {
-    __typename
-    Page
-    Visitors
-    Total
-  }
-}
-    `;
-export const IdeaPanelPartsFragmentDoc = gql`
-    fragment IdeaPanelParts on IdeaPanel {
-  categories {
-    __typename
-    category
-    ideas {
-      __typename
-      title
-      description
-      stage
-    }
   }
 }
     `;
@@ -1356,61 +975,6 @@ export const NewsletterConnectionDocument = gql`
   }
 }
     ${NewsletterPartsFragmentDoc}`;
-export const ProjectsDocument = gql`
-    query projects($relativePath: String!) {
-  projects(relativePath: $relativePath) {
-    ... on Document {
-      _sys {
-        filename
-        basename
-        breadcrumbs
-        path
-        relativePath
-        extension
-      }
-      id
-    }
-    ...ProjectsParts
-  }
-}
-    ${ProjectsPartsFragmentDoc}`;
-export const ProjectsConnectionDocument = gql`
-    query projectsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: ProjectsFilter) {
-  projectsConnection(
-    before: $before
-    after: $after
-    first: $first
-    last: $last
-    sort: $sort
-    filter: $filter
-  ) {
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    totalCount
-    edges {
-      cursor
-      node {
-        ... on Document {
-          _sys {
-            filename
-            basename
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-        ...ProjectsParts
-      }
-    }
-  }
-}
-    ${ProjectsPartsFragmentDoc}`;
 export const SiteConfigDocument = gql`
     query siteConfig($relativePath: String!) {
   siteConfig(relativePath: $relativePath) {
@@ -1521,116 +1085,6 @@ export const FeatureFlagsConnectionDocument = gql`
   }
 }
     ${FeatureFlagsPartsFragmentDoc}`;
-export const PopularBlogsDocument = gql`
-    query popularBlogs($relativePath: String!) {
-  popularBlogs(relativePath: $relativePath) {
-    ... on Document {
-      _sys {
-        filename
-        basename
-        breadcrumbs
-        path
-        relativePath
-        extension
-      }
-      id
-    }
-    ...PopularBlogsParts
-  }
-}
-    ${PopularBlogsPartsFragmentDoc}`;
-export const PopularBlogsConnectionDocument = gql`
-    query popularBlogsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: PopularBlogsFilter) {
-  popularBlogsConnection(
-    before: $before
-    after: $after
-    first: $first
-    last: $last
-    sort: $sort
-    filter: $filter
-  ) {
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    totalCount
-    edges {
-      cursor
-      node {
-        ... on Document {
-          _sys {
-            filename
-            basename
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-        ...PopularBlogsParts
-      }
-    }
-  }
-}
-    ${PopularBlogsPartsFragmentDoc}`;
-export const IdeaPanelDocument = gql`
-    query ideaPanel($relativePath: String!) {
-  ideaPanel(relativePath: $relativePath) {
-    ... on Document {
-      _sys {
-        filename
-        basename
-        breadcrumbs
-        path
-        relativePath
-        extension
-      }
-      id
-    }
-    ...IdeaPanelParts
-  }
-}
-    ${IdeaPanelPartsFragmentDoc}`;
-export const IdeaPanelConnectionDocument = gql`
-    query ideaPanelConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: IdeaPanelFilter) {
-  ideaPanelConnection(
-    before: $before
-    after: $after
-    first: $first
-    last: $last
-    sort: $sort
-    filter: $filter
-  ) {
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    totalCount
-    edges {
-      cursor
-      node {
-        ... on Document {
-          _sys {
-            filename
-            basename
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-        ...IdeaPanelParts
-      }
-    }
-  }
-}
-    ${IdeaPanelPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -1646,12 +1100,6 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
     newsletterConnection(variables?: NewsletterConnectionQueryVariables, options?: C): Promise<{data: NewsletterConnectionQuery, variables: NewsletterConnectionQueryVariables, query: string}> {
         return requester<{data: NewsletterConnectionQuery, variables: NewsletterConnectionQueryVariables, query: string}, NewsletterConnectionQueryVariables>(NewsletterConnectionDocument, variables, options);
       },
-    projects(variables: ProjectsQueryVariables, options?: C): Promise<{data: ProjectsQuery, variables: ProjectsQueryVariables, query: string}> {
-        return requester<{data: ProjectsQuery, variables: ProjectsQueryVariables, query: string}, ProjectsQueryVariables>(ProjectsDocument, variables, options);
-      },
-    projectsConnection(variables?: ProjectsConnectionQueryVariables, options?: C): Promise<{data: ProjectsConnectionQuery, variables: ProjectsConnectionQueryVariables, query: string}> {
-        return requester<{data: ProjectsConnectionQuery, variables: ProjectsConnectionQueryVariables, query: string}, ProjectsConnectionQueryVariables>(ProjectsConnectionDocument, variables, options);
-      },
     siteConfig(variables: SiteConfigQueryVariables, options?: C): Promise<{data: SiteConfigQuery, variables: SiteConfigQueryVariables, query: string}> {
         return requester<{data: SiteConfigQuery, variables: SiteConfigQueryVariables, query: string}, SiteConfigQueryVariables>(SiteConfigDocument, variables, options);
       },
@@ -1663,18 +1111,6 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     featureFlagsConnection(variables?: FeatureFlagsConnectionQueryVariables, options?: C): Promise<{data: FeatureFlagsConnectionQuery, variables: FeatureFlagsConnectionQueryVariables, query: string}> {
         return requester<{data: FeatureFlagsConnectionQuery, variables: FeatureFlagsConnectionQueryVariables, query: string}, FeatureFlagsConnectionQueryVariables>(FeatureFlagsConnectionDocument, variables, options);
-      },
-    popularBlogs(variables: PopularBlogsQueryVariables, options?: C): Promise<{data: PopularBlogsQuery, variables: PopularBlogsQueryVariables, query: string}> {
-        return requester<{data: PopularBlogsQuery, variables: PopularBlogsQueryVariables, query: string}, PopularBlogsQueryVariables>(PopularBlogsDocument, variables, options);
-      },
-    popularBlogsConnection(variables?: PopularBlogsConnectionQueryVariables, options?: C): Promise<{data: PopularBlogsConnectionQuery, variables: PopularBlogsConnectionQueryVariables, query: string}> {
-        return requester<{data: PopularBlogsConnectionQuery, variables: PopularBlogsConnectionQueryVariables, query: string}, PopularBlogsConnectionQueryVariables>(PopularBlogsConnectionDocument, variables, options);
-      },
-    ideaPanel(variables: IdeaPanelQueryVariables, options?: C): Promise<{data: IdeaPanelQuery, variables: IdeaPanelQueryVariables, query: string}> {
-        return requester<{data: IdeaPanelQuery, variables: IdeaPanelQueryVariables, query: string}, IdeaPanelQueryVariables>(IdeaPanelDocument, variables, options);
-      },
-    ideaPanelConnection(variables?: IdeaPanelConnectionQueryVariables, options?: C): Promise<{data: IdeaPanelConnectionQuery, variables: IdeaPanelConnectionQueryVariables, query: string}> {
-        return requester<{data: IdeaPanelConnectionQuery, variables: IdeaPanelConnectionQueryVariables, query: string}, IdeaPanelConnectionQueryVariables>(IdeaPanelConnectionDocument, variables, options);
       }
     };
   }

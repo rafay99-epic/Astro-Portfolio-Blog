@@ -57,26 +57,17 @@ type Query {
   postConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: PostFilter): PostConnection!
   newsletter(relativePath: String): Newsletter!
   newsletterConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: NewsletterFilter): NewsletterConnection!
-  projects(relativePath: String): Projects!
-  projectsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: ProjectsFilter): ProjectsConnection!
   siteConfig(relativePath: String): SiteConfig!
   siteConfigConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: SiteConfigFilter): SiteConfigConnection!
   featureFlags(relativePath: String): FeatureFlags!
   featureFlagsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: FeatureFlagsFilter): FeatureFlagsConnection!
-  popularBlogs(relativePath: String): PopularBlogs!
-  popularBlogsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: PopularBlogsFilter): PopularBlogsConnection!
-  ideaPanel(relativePath: String): IdeaPanel!
-  ideaPanelConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: IdeaPanelFilter): IdeaPanelConnection!
 }
 
 input DocumentFilter {
   post: PostFilter
   newsletter: NewsletterFilter
-  projects: ProjectsFilter
   siteConfig: SiteConfigFilter
   featureFlags: FeatureFlagsFilter
-  popularBlogs: PopularBlogsFilter
-  ideaPanel: IdeaPanelFilter
 }
 
 type DocumentConnectionEdges {
@@ -102,7 +93,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Post | Newsletter | Projects | SiteConfig | FeatureFlags | PopularBlogs | IdeaPanel | Folder
+union DocumentNode = Post | Newsletter | SiteConfig | FeatureFlags | Folder
 
 type Post implements Node & Document {
   title: String!
@@ -203,40 +194,6 @@ type NewsletterConnection implements Connection {
   pageInfo: PageInfo!
   totalCount: Float!
   edges: [NewsletterConnectionEdges]
-}
-
-type Projects implements Node & Document {
-  Projecttitle: String!
-  ProjectDescription: String!
-  ProjectImage: String!
-  draft: Boolean!
-  ProjectTech: [String]
-  ProjectCategory: [String]
-  body: JSON
-  id: ID!
-  _sys: SystemInfo!
-  _values: JSON!
-}
-
-input ProjectsFilter {
-  Projecttitle: StringFilter
-  ProjectDescription: StringFilter
-  ProjectImage: ImageFilter
-  draft: BooleanFilter
-  ProjectTech: StringFilter
-  ProjectCategory: StringFilter
-  body: RichTextFilter
-}
-
-type ProjectsConnectionEdges {
-  cursor: String!
-  node: Projects
-}
-
-type ProjectsConnection implements Connection {
-  pageInfo: PageInfo!
-  totalCount: Float!
-  edges: [ProjectsConnectionEdges]
 }
 
 type SiteConfigSocialLinks {
@@ -352,13 +309,10 @@ type FeatureFlagsFeatureFlags {
   showTrendingPosts: Boolean
   showTermsandConditions: Boolean
   showPrivacyPolicy: Boolean
-  showIdeaPanel: Boolean
 }
 
 type FeatureFlagsFeatureFlagsApi {
-  enableNotionAPI: Boolean
   enableauthorInfoAPI: Boolean
-  enableUmamiServiceAPI: Boolean
 }
 
 type FeatureFlags implements Node & Document {
@@ -384,13 +338,10 @@ input FeatureFlagsFeatureFlagsFilter {
   showTrendingPosts: BooleanFilter
   showTermsandConditions: BooleanFilter
   showPrivacyPolicy: BooleanFilter
-  showIdeaPanel: BooleanFilter
 }
 
 input FeatureFlagsFeatureFlagsApiFilter {
-  enableNotionAPI: BooleanFilter
   enableauthorInfoAPI: BooleanFilter
-  enableUmamiServiceAPI: BooleanFilter
 }
 
 input FeatureFlagsFilter {
@@ -409,94 +360,6 @@ type FeatureFlagsConnection implements Connection {
   edges: [FeatureFlagsConnectionEdges]
 }
 
-type PopularBlogsPopularBlogs {
-  Page: String!
-  Visitors: Float!
-  Total: Float!
-}
-
-type PopularBlogs implements Node & Document {
-  popularBlogs: [PopularBlogsPopularBlogs]
-  id: ID!
-  _sys: SystemInfo!
-  _values: JSON!
-}
-
-input NumberFilter {
-  lt: Float
-  lte: Float
-  gte: Float
-  gt: Float
-  eq: Float
-  exists: Boolean
-  in: [Float]
-}
-
-input PopularBlogsPopularBlogsFilter {
-  Page: StringFilter
-  Visitors: NumberFilter
-  Total: NumberFilter
-}
-
-input PopularBlogsFilter {
-  popularBlogs: PopularBlogsPopularBlogsFilter
-}
-
-type PopularBlogsConnectionEdges {
-  cursor: String!
-  node: PopularBlogs
-}
-
-type PopularBlogsConnection implements Connection {
-  pageInfo: PageInfo!
-  totalCount: Float!
-  edges: [PopularBlogsConnectionEdges]
-}
-
-type IdeaPanelCategoriesIdeas {
-  title: String!
-  description: String!
-  stage: String!
-}
-
-type IdeaPanelCategories {
-  category: String!
-  ideas: [IdeaPanelCategoriesIdeas]
-}
-
-type IdeaPanel implements Node & Document {
-  categories: [IdeaPanelCategories]
-  id: ID!
-  _sys: SystemInfo!
-  _values: JSON!
-}
-
-input IdeaPanelCategoriesIdeasFilter {
-  title: StringFilter
-  description: StringFilter
-  stage: StringFilter
-}
-
-input IdeaPanelCategoriesFilter {
-  category: StringFilter
-  ideas: IdeaPanelCategoriesIdeasFilter
-}
-
-input IdeaPanelFilter {
-  categories: IdeaPanelCategoriesFilter
-}
-
-type IdeaPanelConnectionEdges {
-  cursor: String!
-  node: IdeaPanel
-}
-
-type IdeaPanelConnection implements Connection {
-  pageInfo: PageInfo!
-  totalCount: Float!
-  edges: [IdeaPanelConnectionEdges]
-}
-
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -506,37 +369,25 @@ type Mutation {
   createPost(relativePath: String!, params: PostMutation!): Post!
   updateNewsletter(relativePath: String!, params: NewsletterMutation!): Newsletter!
   createNewsletter(relativePath: String!, params: NewsletterMutation!): Newsletter!
-  updateProjects(relativePath: String!, params: ProjectsMutation!): Projects!
-  createProjects(relativePath: String!, params: ProjectsMutation!): Projects!
   updateSiteConfig(relativePath: String!, params: SiteConfigMutation!): SiteConfig!
   createSiteConfig(relativePath: String!, params: SiteConfigMutation!): SiteConfig!
   updateFeatureFlags(relativePath: String!, params: FeatureFlagsMutation!): FeatureFlags!
   createFeatureFlags(relativePath: String!, params: FeatureFlagsMutation!): FeatureFlags!
-  updatePopularBlogs(relativePath: String!, params: PopularBlogsMutation!): PopularBlogs!
-  createPopularBlogs(relativePath: String!, params: PopularBlogsMutation!): PopularBlogs!
-  updateIdeaPanel(relativePath: String!, params: IdeaPanelMutation!): IdeaPanel!
-  createIdeaPanel(relativePath: String!, params: IdeaPanelMutation!): IdeaPanel!
 }
 
 input DocumentUpdateMutation {
   post: PostMutation
   newsletter: NewsletterMutation
-  projects: ProjectsMutation
   siteConfig: SiteConfigMutation
   featureFlags: FeatureFlagsMutation
-  popularBlogs: PopularBlogsMutation
-  ideaPanel: IdeaPanelMutation
   relativePath: String
 }
 
 input DocumentMutation {
   post: PostMutation
   newsletter: NewsletterMutation
-  projects: ProjectsMutation
   siteConfig: SiteConfigMutation
   featureFlags: FeatureFlagsMutation
-  popularBlogs: PopularBlogsMutation
-  ideaPanel: IdeaPanelMutation
 }
 
 input PostMutation {
@@ -556,16 +407,6 @@ input NewsletterMutation {
   summary: String
   pubDate: String
   draft: Boolean
-  body: JSON
-}
-
-input ProjectsMutation {
-  Projecttitle: String
-  ProjectDescription: String
-  ProjectImage: String
-  draft: Boolean
-  ProjectTech: [String]
-  ProjectCategory: [String]
   body: JSON
 }
 
@@ -626,43 +467,15 @@ input FeatureFlagsFeatureFlagsMutation {
   showTrendingPosts: Boolean
   showTermsandConditions: Boolean
   showPrivacyPolicy: Boolean
-  showIdeaPanel: Boolean
 }
 
 input FeatureFlagsFeatureFlagsApiMutation {
-  enableNotionAPI: Boolean
   enableauthorInfoAPI: Boolean
-  enableUmamiServiceAPI: Boolean
 }
 
 input FeatureFlagsMutation {
   featureFlags: FeatureFlagsFeatureFlagsMutation
   FeatureFlagsApi: FeatureFlagsFeatureFlagsApiMutation
-}
-
-input PopularBlogsPopularBlogsMutation {
-  Page: String
-  Visitors: Float
-  Total: Float
-}
-
-input PopularBlogsMutation {
-  popularBlogs: [PopularBlogsPopularBlogsMutation]
-}
-
-input IdeaPanelCategoriesIdeasMutation {
-  title: String
-  description: String
-  stage: String
-}
-
-input IdeaPanelCategoriesMutation {
-  category: String
-  ideas: [IdeaPanelCategoriesIdeasMutation]
-}
-
-input IdeaPanelMutation {
-  categories: [IdeaPanelCategoriesMutation]
 }
 
 schema {

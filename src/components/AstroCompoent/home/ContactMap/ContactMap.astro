@@ -1,0 +1,157 @@
+---
+
+---
+
+<section style="margin-block-start: 5rem; margin-block-end: 10rem;">
+  <h1 class="text-6xl font-bold text-center text-[#c0caf5] leading-snug">
+    I'D BE HAPPY TO CONNECT
+    <span
+      class="bg-gradient-to-r from-blue-500 via-blue-700 to-teal-600 text-transparent bg-clip-text"
+    >
+      WITH YOU
+    </span>
+  </h1>
+  <p class="text-center text-lg font-bold mb-6">
+    Let's Connect & Build Something Together
+  </p>
+
+  <div class="flex flex-col sm:flex-row w-full h-full min-h-[400px]">
+    <!-- Contact Form -->
+    <div
+      id="contact-container"
+      class="w-full sm:w-1/2 p-8 bg-gray-800 text-gray-200 rounded-lg shadow-lg flex flex-col justify-between h-full"
+    >
+      <form id="contact-form" class="flex flex-col gap-4 flex-grow">
+        <input
+          type="text"
+          name="name"
+          placeholder="Your Name"
+          class="p-3 bg-gray-700 text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+          required
+          aria-label="Your Name"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Your Email"
+          class="p-3 bg-gray-700 text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+          required
+          aria-label="Your Email"
+        />
+        <textarea
+          name="message"
+          placeholder="Your Message"
+          class="p-3 bg-gray-700 text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition flex-grow h-32"
+          required
+          aria-label="Your Message"></textarea>
+        <div class="h-captcha" data-captcha="true"></div>
+        <button
+          type="submit"
+          class="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition"
+        >
+          Submit
+        </button>
+        <div id="result" class="hidden text-center p-3 mt-4 rounded-lg"></div>
+      </form>
+    </div>
+
+    <!-- Google Map -->
+    <div
+      id="map-container"
+      class="w-full sm:w-1/2 h-full sm:ml-4 rounded-lg shadow-lg flex"
+    >
+      <iframe
+        title="Google Map"
+        class="w-full h-full min-h-[400px] rounded-lg"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.2621789003247!2d73.0461689764773!3d33.59850127333117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38df94845cbcdbc7%3A0x937f5539de027943!2sFashion%20Hub!5e0!3m2!1sen!2s!4v1724187834820!5m2!1sen!2s"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<script lang="ts">
+  function setEqualHeight() {
+    const contactContainer = document.getElementById("contact-container");
+    const mapContainer = document.getElementById("map-container");
+
+    if (contactContainer && mapContainer) {
+      const contactHeight = contactContainer.offsetHeight;
+      mapContainer.style.height = contactHeight + "px";
+    }
+  }
+
+  window.addEventListener("resize", setEqualHeight);
+  window.addEventListener("load", setEqualHeight);
+</script>
+
+<script is:inline>
+  const form = document.getElementById("form");
+  const result = document.getElementById("result");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    result.className =
+      "block bg-gray-600 text-white text-center p-3 mt-4 rounded-lg";
+    result.innerHTML = "Please wait...";
+
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: json,
+    })
+      .then(async (response) => {
+        let json = await response.json();
+        if (response.status == 200) {
+          result.className =
+            "block bg-green-600 text-white text-center p-3 mt-4 rounded-lg";
+          result.innerHTML = json.message;
+        } else {
+          result.className =
+            "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
+          result.innerHTML = json.message;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        result.className =
+          "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
+        result.innerHTML = "Something went wrong!";
+      })
+      .then(() => {
+        form.reset();
+        setTimeout(() => {
+          result.classList.add(
+            "opacity-0",
+            "transition-opacity",
+            "duration-500"
+          );
+          setTimeout(() => {
+            result.classList.add("hidden");
+            result.classList.remove("opacity-0");
+          }, 500);
+        }, 3000);
+      });
+  });
+</script>
+<script is:inline src="https://web3forms.com/client/script.js" async defer
+></script>
+
+<script lang="js" is:inline>
+  document.getElementById("form").addEventListener("submit", function (e) {
+    const hcaptchaResponse = document.querySelector(
+      'textarea[name="h-captcha-response"]'
+    );
+    if (!hcaptchaResponse || hcaptchaResponse.value === "") {
+      e.preventDefault();
+      alert("Please complete the hCaptcha.");
+    }
+  });
+</script>

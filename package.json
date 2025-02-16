@@ -19,8 +19,6 @@
     "@astrojs/vercel": "^8.0.2",
     "@expressive-code/plugin-collapsible-sections": "^0.38.3",
     "@expressive-code/plugin-line-numbers": "^0.38.3",
-    "@hcaptcha/react-hcaptcha": "^1.11.0",
-    "@notionhq/client": "^2.2.15",
     "@tailwindcss/typography": "^0.5.15",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
