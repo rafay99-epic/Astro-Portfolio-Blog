@@ -1,7 +1,7 @@
 const VideoEmbed = ({ src, title, width = "100%", height = "400px" }) => {
   return (
     <div
-      className="relative overflow-hidden rounded-lg shadow-md bg-gray-dark"
+      className="relative overflow-hidden rounded-lg  bg-gray-dark"
       style={{
         paddingBottom: "56.25%",
         height: 0,

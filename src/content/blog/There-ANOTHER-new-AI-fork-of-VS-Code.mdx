@@ -10,6 +10,8 @@ tags:
   - DevelopmentTools
 ---
 
+import VideoEmbed from "../../components/ReaactCompoents/VideoEmbed/VideoEmbed";
+
 While, while, what do we have here? There’s a new AI code editor in town called [Windsurf](https://codeium.com/windsurf), brought to you by a company called Codeium. To be honest, I’ve been using Codeium AI as a VS Code extension, and with their stunning website, I was hopping off my chair and installed Windsurf the moment I learned about this new code editor on my machine.
 
 But why do we need a new editor? Oh wait, it’s because Cursor already has 40,000 developers using their product, and that’s exactly why we need more competition, right?
@@ -39,32 +41,10 @@ Now, these features are cool and all, but here’s where things get a bit messy.
 
 For this review, I cloned my Astro project from GitHub to see how it works in this new AI code editor. I opened the codebase in Windsurf and decided to test out the Cascade feature by asking it to guide me on how to run the project. You can check out the video below to see how it all played out:
 
-<div
-  style="
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  border-radius: 12px;
-
-"
-
->
-
-  <iframe
-    src="https://drive.google.com/file/d/1rbbPJnbbFpJBYjDTIDV1xxepDwLoCxpy/preview"
-    width="800"
-    height="450"
-    style="
-    max-width: 100%;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(31, 34, 40, 0.5);
-    "
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen
-  />
-</div>
+<VideoEmbed
+  src="https://tg6e032cuy.ufs.sh/f/7EEuKSNdyN7FUqGnoNO9toMCIhRK67BP5LdW82S3QxiAgpr0"
+  title="WindSurf Code Editor Working"
+/>
 
 In the above video, you can see me prompting Cascade to tell me how to run the project. It started off by suggesting `npm`. Now here’s the thing: I use **nvm (Node Version Manager)** for my Node setup, which is a shell-based install, not a system-wide one. On the other hand, **Bun** is installed system-wide.
 
