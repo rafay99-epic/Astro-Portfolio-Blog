@@ -4,9 +4,9 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export async function GET({ request }: { request: Request }) {
   const headers = {
     "Content-Type": "application/json",
-    "Cache-Control": "public, max-age=3600",
-    ETag: crypto.randomUUID(),
-    "Access-Control-Allow-Origin": "https://www.rafay99.com",
+    "Cache-Control": "public, max-age=86400",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
   };
 
   try {
