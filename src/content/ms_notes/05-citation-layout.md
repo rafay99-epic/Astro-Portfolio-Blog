@@ -5,7 +5,7 @@ lecture_description: This lecture equips students with the skills to master
   citation styles, build strong paragraphs, and craft engaging introductions for
   impactful research papers.
 pubDate: 2025-03-05
-lecture_draft: true
+lecture_draft: false
 lectureNumber: "05"
 subject: Research Methods
 ---
