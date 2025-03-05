@@ -97,9 +97,8 @@ Different academic disciplines often prefer specific citation styles, each with 
 
 **Key Differences Summarized:**
 
-|     |     |     |     |
-| --- | --- | --- | --- |
 | Feature | ACM | IEEE | APA |
+| --- | --- | --- | --- |
 | In-text Citation | Number in square brackets (\[1\]) | Number in square brackets (\[1\]) | Author (Year) |
 | Reference List | Numerical order of appearance | Numerical order of appearance | Alphabetical by author's last name |
 | Author Names | Full first name, Last Name | Initials, Last Name | Initials, Last Name |
