@@ -1,8 +1,8 @@
 ---
-lecture_title: "Lecture 03: Reading and Understanding Research Papers"
-lecture_description: "Lecture 03: Reading and Understanding Research Papers –
-  Learning the Three-Pass Approach to efficiently read, analyze, and comprehend
-  research papers while using essential tools for effective research."
+lecture_title: Reading and Understanding Research Papers
+lecture_description: Reading and Understanding Research Papers – Learning the
+  Three-Pass Approach to efficiently read, analyze, and comprehend research
+  papers while using essential tools for effective research.
 pubDate: 2025-02-07
 lecture_draft: false
 lectureNumber: "03"
