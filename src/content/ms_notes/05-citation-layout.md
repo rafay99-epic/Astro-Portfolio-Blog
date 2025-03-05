@@ -1,14 +1,12 @@
 ---
-lecture_title: Citation Layout
+lecture_title: "Introduction: Why Citation Styles Matter"
 lecture_description: How to cite a paper and how things can lead to.
 pubDate: 2025-03-05
 lecture_draft: true
 lectureNumber: "05"
 subject: Research Method
 ---
-Okay, let's break down citation styles commonly used in computer science, focusing on ACM, APA, and IEEE, and highlighting their key differences.
-
-**Introduction: Why Citation Styles Matter**
+## Introduction: Why Citation Styles Matter
 
 In academic writing, especially in a rigorous field like computer science, proper citation is _essential_. It serves several crucial purposes:
 
@@ -114,11 +112,74 @@ Different academic disciplines often prefer specific citation styles, each with 
 *   **Use Citation Management Software:** Tools like Zotero, Mendeley, or EndNote can significantly simplify the process of managing your references and generating citations in the correct format.
     
 
-**In summary:** ACM, IEEE, and APA each have their own distinct rules and conventions. Understanding these differences is crucial for producing credible and well-researched work in computer science and related fields. Always prioritize the guidelines of the publication or institution for which you are writing.  
-  
-Okay, let's clarify the abbreviation "et al."
+**In summary:** ACM, IEEE, and APA each have their own distinct rules and conventions. Understanding these differences is crucial for producing credible and well-researched work in computer science and related fields. Always prioritize the guidelines of the publication or institution for which you are writing.
 
-**What "et al." Means**
+* * *
+
+## Question: Why do we need these many citation style ?
+
+Here are some of the reason that I think why there are so many citation syle.
+
+**1\. Disciplinary Differences and Conventions**
+
+*   **Evolution of Specific Fields:** Different academic disciplines have evolved independently over time, developing their own specific norms, values, and ways of communicating knowledge. Citation styles are an integral part of these disciplinary cultures.
+    
+*   **Emphasis on Different Aspects of Sources:** Disciplines emphasize different information about sources. For example:
+    
+    *   **Humanities (MLA, Chicago):** Often prioritize the author's name and the work itself, emphasizing the creator and the historical context.
+        
+    *   **Sciences (APA, IEEE):** Often prioritize the date of publication, reflecting the importance of the most current research.
+        
+    *   **Hard Sciences & Engineering (IEEE, ACM):** Prioritize conciseness and technical detail, hence the numbered format and focus on specific journal issues/conference proceedings.
+        
+*   **Varying Collaboration Patterns:** Some fields (like many sciences) have large collaborative projects, leading to multi-authored papers. Styles like APA have evolved to handle complex authorship situations.
+    
+*   **Types of Sources:** Different fields rely on different types of sources. Some might emphasize books and monographs, while others focus on journal articles or conference proceedings.
+    
+
+**2\. Historical Development**
+
+*   **Organic Growth:** Many citation styles didn't spring into existence fully formed. They developed gradually, often through the practices of specific journals, academic associations, or university presses.
+    
+*   **Early Manuals and Guides:** As academic writing became more formalized, style manuals emerged (e.g., _The Chicago Manual of Style_) to standardize practices. These manuals became influential within certain fields.
+    
+
+**3\. Communication Priorities**
+
+*   **Reader Needs:** Different citation styles serve the needs of different readerships.
+    
+    *   **Accessibility:** Styles like APA aim for accessibility, even for readers outside a specific discipline.
+        
+    *   **Verification:** Styles like IEEE prioritize enabling readers to quickly locate the exact source and verify technical details.
+        
+*   **Reducing Clutter:** Numbered systems (like ACM/IEEE) can reduce visual clutter in the text, making it easier to focus on the technical content.
+    
+
+**4\. Professional Organizations and Standards**
+
+*   **Establishing Authority:** Professional organizations (like the APA, MLA, IEEE, ACM) have adopted and promoted specific citation styles to establish authority and maintain consistency within their fields.
+    
+*   **Journals and Publications:** Academic journals often mandate a particular citation style for submissions to ensure uniformity and readability. This reinforces the dominance of certain styles within specific areas.
+    
+
+**5\. Practical Considerations**
+
+*   **Software Support:** Citation management software (Zotero, Mendeley, EndNote) has played a role in solidifying the use of particular styles. These tools make it easier to manage references in specific formats.
+    
+*   **Habit and Inertia:** Once a particular style becomes established in a field, there's often a degree of inertia. Researchers are accustomed to it, and journals are set up to handle it.
+    
+
+**In Summary:**
+
+The existence of multiple citation styles is a result of a complex interplay of historical factors, disciplinary differences, communication priorities, and the influence of professional organizations. While it might seem confusing at first, each style is designed to best serve the needs of its particular community of scholars and readers.
+
+* * *
+
+* * *
+
+* * *
+
+## What "et al." Means
 
 "Et al." is a Latin abbreviation that stands for "et alia," which translates to "and others." It's used in citations (especially in APA and IEEE styles, and sometimes in ACM, though less frequently) to shorten the author list when there are multiple authors of a work.
 
@@ -174,4 +235,96 @@ Smith, J., Brown, A., Lee, D., & Wilson, E. (2023). _Title of the article_. Jour
 
 **Key takeaway:** "Et al." is a useful shorthand to avoid long and repetitive author lists in your text, making your writing more concise. Always check the specific rules of your chosen citation style.
 
-## Question: Why do we need these many citation style ?
+**Placement of Citations: Ensuring Clarity and Flow**
+
+The placement of in-text citations is crucial for maintaining the clarity and flow of your writing and avoiding ambiguity about which ideas you are attributing to a source. The principle you highlighted – placing the citation _before_ the full stop at the end of a sentence – is generally correct, but there are nuances to consider.
+
+Here's a more detailed explanation:
+
+**1\. Basic Rule: Citation Before the Period**
+
+*   **Principle:** When you are referencing an idea, concept, or information from a specific source within a sentence, the in-text citation (whether it's a number in brackets \[for ACM/IEEE\] or an author-date format \[for APA\]) should generally appear _before_ the final punctuation mark (usually a period, but could also be a question mark or exclamation point) of the sentence.
+    
+*   **Why:** This immediately signals to the reader that the information in _that specific sentence_ is drawn from the cited source.
+    
+*   **Example (ACM/IEEE Style):**
+    
+    "Efficient algorithms are essential for processing large datasets \[1\]."
+    
+*   **Example (APA Style):**
+    
+    "Efficient algorithms are essential for processing large datasets (Smith, 2023)."
+    
+*   **Correct Sentence Construction:** As you noted, the structure is generally:
+    
+    *   \[Underlined text = your paragraph\]\_\_\_\_\_ \[citation\].
+        
+    
+    or
+    
+    *   \[Underlined text = your paragraph\]\_\_\_\_\_ (citation).
+        
+    
+    followed by the full stop.
+    
+
+**2\. Exception: When the Citation is Part of the Sentence's Grammar**
+
+*   Sometimes, the author's name (or the cited work) is grammatically integrated into the sentence. In this case, the year (in APA) or the reference number (in ACM/IEEE) would come _after_ the author's name, but the citation, as a whole, still falls before the final punctuation.
+    
+*   **Example (APA Style):**
+    
+    "Smith (2023) argues that efficient algorithms are essential for processing large datasets."
+    
+    *   Here, the author's name is part of the sentence's structure, so the date follows immediately.
+        
+*   **Example (Potentially in ACM/IEEE, though less common):**
+    
+    "As shown by Knuth \[1\], efficient algorithms are crucial for large datasets."
+    
+    *   Again, the author and citation are a natural part of the sentence.
+        
+
+**3\. Multiple Citations**
+
+*   If a sentence draws upon multiple sources, cite all relevant sources before the period. The order of citations may depend on the citation style.
+    
+    *   **APA:** List in alphabetical order by first author's last name: (Brown, 2022; Smith, 2023).
+        
+    *   **ACM/IEEE:** List in the order they appear or are most relevant, often separated by commas: \[1, 3, 5\].
+        
+    
+    "Several studies have shown the importance of efficient algorithms \[1, 3, 5\]."
+    
+
+**4\. Citing a Specific Part of a Source**
+
+*   If you're citing a specific page number, section, or figure within a source, that information usually follows the year (in APA) or the citation number (in ACM/IEEE) and comes _before_ the period.
+    
+    *   **Example (APA):** "This approach is described in detail (Smith, 2023, p. 45)."
+        
+    *   **Example (ACM/IEEE - depends on the style guide):** "See Section 3 for a detailed explanation \[1, Section 3\]."
+        
+
+**5\. Subsequent Sentences from the Same Source:**
+
+*   If the following sentence _continues_ to draw directly from the _same_ source, you generally do _not_ need to repeat the citation immediately. However, be careful! If you introduce new information or move on to a different idea, you _must_ provide a new citation, even if it's the same source. If there's any ambiguity, it's always best to err on the side of providing a citation.
+    
+
+**6\. Starting a New Paragraph After the Citation**
+
+*   As you mentioned, after the period, you can confidently begin a new paragraph, drawing on a different source or continuing with your own analysis. The period signifies the end of the ideas/information that are being attributed to the previous citation.
+    
+
+**7\. When to Cite at the Beginning of the Sentence**
+
+While citations are typically placed at the end of a clause or sentence, it's sometimes appropriate to begin a sentence with a citation. This is especially useful for highlighting the author of a particularly influential idea or when comparing perspectives.
+
+*   Example (APA): "According to Smith (2023), the use of reinforcement learning can significantly improve the performance of robotics systems."
+    
+*   Example (ACM/IEEE - less common, more natural wording): "As demonstrated in \[1\], the use of reinforcement learning..."
+    
+
+**In summary:** While the general rule is to place the citation before the full stop, always prioritize clarity and avoid ambiguity. Make sure your citation placement accurately reflects which ideas you are attributing to which sources. Refer to your style guide for the specific rules and examples.
+
+* * *
