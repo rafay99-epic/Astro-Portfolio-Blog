@@ -1,218 +1,198 @@
 ---
-lecture_title: "Lecture 02: Introduction to Research "
-lecture_description: The basic of Research Method
+lecture_title: "Research: A Quest for Knowledge and Solutions"
+lecture_description: This lecture explores the core principles of research, from
+  defining its essence and contrasting methodologies to understanding research
+  types, characteristics, and the publication process.
 pubDate: 2025-01-31
 lecture_draft: false
 lectureNumber: "02"
 subject: Research Methods
 ---
-Curiosity is something is is pretty common in every human begin, it will be present is some form, One human is curious about cars, new tech, knowledge anything in this word and this curiosity will lead to research about different thing,
+Curiosity, a fundamental human trait, drives our desire to understand the world around us. Whether it's a fascination with cars, a passion for new technology, or a thirst for general knowledge, curiosity fuels the questions that lead to research. This process of formulating and answering questions is the essence of research itself.
 
-There are some questions are we all ask when we do research, this process of finding some questions and answering these question will lead to the research.
+**Meaning of Research**
 
-## Meaning of Research:
+In its simplest form, research is the systematic search for facts or answers to questions we pose. It is a quest for solutions to problems, an organized and critical inquiry. We seek explanations for unexplained phenomena, clarity for doubtful facts, and corrections for misconceptions.
 
-In simple plain words, research is searching for facts or answers to the questions that you have designed, form or we ask our self. The main purpose is seeking solution to problems. it is a process of find out and organized inquiry.
+**Background and Personal Perspective**
 
-We seek to find explanations to unexplained problem or phenomenon, to clarify the doubtful facts and to correct the misconceived facts.
+For me, research is a straightforward process: identifying problems and then meticulously seeking solutions. These solutions may be derived from existing work or represent an extension of it, depending on the nature of the research.
 
-## Background
+**Formal Definition**
 
-But before we begin, what do I think of research, for me Research is pretty simple, Using the process to identify some problems and then finding the solutions to those problem, the solution can be related from another work or can be extension of another work. It all depends on the type of research you are doing.
+Research can be formally defined as: A careful and considered study of a particular concern or problem using scientific methods; an organized, systematic, data-based critical inquiry or investigation undertaken with the objective of finding answers or solutions.
 
-*   Informal Definition:
+**What is Research? Everyday Application**
+
+Truthfully, you engage in research every day. It's the act of gathering information to answer questions and solve problems, whether you realize it or not.
+
+**Ways of Searching for Answers**
+
+While there are many approaches, we'll focus on two key methods:
+
+1.  **Arbitrary, Crude, or Rudimentary Methods:**
     
-    *   Research is defined as a careful consider of study regrading a particular concern or a problem using scientific method,
+    *   **Description:** This approach relies on imagination, opinion, blind belief, and intuition. It involves gathering information from any available source, often lacking rigor or validation. It can spread through word of mouth.
         
-*   Organized, systematic, data based critical inquiry or investigation into a specific problem, undertaken with objective of finding answers or solution to it.
+    *   **Characterized by:** Gathering information with own ways.
+        
+    *   **Example:** Rumors and anecdotal evidence leading to opinions.
+        
+2.  **Scientific, Logical, and Systematic Methods:**
     
-
-## What is Research?
-
-To be honest, you know what is research, you do it every simple day, In the simplest word, Research is gathering the information you need to answer to a questions and thereby help you to solve a problem.
-
-## Ways of Searching for Answers
-
-There are multiple ways you can do search but in the lecture notes, I will be going through only two method.
-
-1.  Arbitrary, crude or rudimentary methods.
-    
-    *   This process is very simple and this involves imagination, opinion and blind belief or impression. This method involves of gather any information from any means, it can be weak or from one person to another person as well.
+    *   **Description:** This process employs a systematic and rational approach to seeking facts. It's based on objective data, empirical evidence, and rigorous analysis.
         
-    *   It's the rumour system, people talk and they talk all the gathered information lead to opinions and some kind of research method.
+    *   **Characterized by:** This involves the use of evidence and fact to find more proof.
         
-    *   You defined you own ways to do research
-        
-2.  Scientific, logical, systematic method.
-    
-    *   This process involves systematic rational approach to seeking facts. This method is purely based on the find facts and objective.
-        
-    *   Information gathered from facts, number and anything that lead to have some kind of evidence to back the facts that you are presenting.
-        
-    *   You follow a path that was provided with facts and evidence that proof your finding.
+    *   **Example:** Data-driven analysis and controlled experiments.
         
 
-## What is research & what's isn't ?
+**Distinguishing Research from Non-Research**
 
-My question is how can I objectively find what is research and what is not research.? that is something that I am curious about.
+A critical question: How can we objectively determine what constitutes research and what does not?
 
-Research is not about gathering more information, it's not about transportation of facts from one location to another location. it's not about catchy words to get attention.
+Research is _not_ simply:
 
-Research is based on the work of others - not a copy of their works, it can be replicated, it is generalizable to other settings, it's based on a theory some logical rationale and tied to theory. It generates new questions or is cyclical in nature. It is incremental the knowledge.
-
-## Type of Research
-
-There are mainly three types of research
-
-1.  Non-Experimental
+*   Gathering more information without a specific purpose.
     
-2.  Experimental
+*   Relocating facts from one place to another.
     
-3.  Quasi Experimental
+*   Using catchy words solely to attract attention.
     
 
-### Non-Experimental
+Research _is_:
 
-In this type of experimental, we describe the characteristics of an existing done research, we expand the horizon of existing research and make sure to explain the research according to the author research paper, plus examine the relationship between variables are also explain, every single event that is described is carefully analyzed and then made sure that it explained.
-
-### Experimental
-
-In this type, we conduct some kind of actions, we theory the process and then action is performed on that theory this performance of action is know as experiment. We find the cause and effect and effects on relationships between different options
-
-**For example:** Experiments are done in drug trial, psychology experiments and studies on new teaching methods.
-
-### Quasi Experimental
-
-In this type of experiment there is no full control over the test process, Test for casual relationship without full control is a type of nonrandomized study that often used when it's not feasible or ethical to conduct a randomized control trial.
-
-Quasi-experimental research is a type of study that aims to evaluate causal relationships but lacks full randomization, making it distinct from true experimental designs. Here are some examples of quasi-experimental research:
-
-**Example of Quasi Experimental**
-
-**1\. Educational Policy Evaluation**
-
-*   **Example**: A school district implements a new teaching method in one set of schools while others continue with the traditional approach. Researchers compare student performance before and after the implementation without random assignment.
+*   Based on the work of others (building upon, not copying).
     
-*   **Why Quasi-Experimental?**: Schools are not randomly assigned to the new teaching method; selection may depend on administrative decisions.
+*   Replicable, allowing for verification of findings.
+    
+*   Generalizable to other settings or populations.
+    
+*   Based on a theoretical framework and logical rationale.
+    
+*   Tied to existing theory, extending or challenging it.
+    
+*   Cyclical, leading to new questions and further investigation.
+    
+*   Incremental, adding to the body of knowledge.
     
 
-**2\. Health Intervention Studies**
+**Types of Research**
 
-*   **Example**: A city introduces a smoking cessation program in certain neighborhoods but not others. Researchers measure changes in smoking rates before and after the program.
+There are three primary types of research:
+
+1.  **Non-Experimental:**
     
-*   **Why Quasi-Experimental?**: Participants self-select or are selected based on location, rather than being randomly assigned.
-    
-
-**3\. Workplace Productivity Analysis**
-
-*   **Example**: A company changes its work-from-home policy for some employees while others continue working on-site. Researchers analyze productivity differences.
-    
-*   **Why Quasi-Experimental?**: Employees are not randomly assigned to work-from-home or on-site conditions.
-    
-
-**4\. Public Policy Impact Assessment**
-
-*   **Example**: A new minimum wage law is implemented in one state while a neighboring state maintains the old wage. Researchers compare employment trends over time.
-    
-*   **Why Quasi-Experimental?**: The law affects specific locations without random assignment.
-    
-
-**5\. Crime Reduction Strategies**
-
-*   **Example**: A city installs more streetlights in high-crime areas but leaves others unchanged. Researchers assess crime rates before and after the intervention.
-    
-*   **Why Quasi-Experimental?**: Locations are chosen based on pre-existing crime rates rather than random selection.
-    
-
-**6\. Media Influence on Behavior**
-
-*   **Example**: A region receives a public health campaign on television, while another does not. Researchers compare changes in public health behaviors.
-    
-*   **Why Quasi-Experimental?**: Exposure to the campaign is determined by regional broadcasting, not random assignment.
-    
-
-## Characteristic of Research
-
-There are multiple steps involves in research and they are have few characteristic as well, which all of them are stated below:
-
-1.  Research is Systematic:
-    
-    *   It's simple it start with a question and then you fond and tell the answer to solve a problem
+    *   **Description:** Describes the characteristics of existing phenomena. It explores and expands upon existing research, examining relationships between variables and carefully analyzing events.
         
-2.  Research is Empirical:
-    
-    *   The finding you do must be based or some collected data with some evidence,
+    *   **Goal:** To describe and understand existing conditions or relationships.
         
-3.  Research is Logical:
-    
-    *   It's simple, In order to do a research, you need a plan and a specific procedure to follow.
+    *   **Example:** A survey describing the attitudes of computer science students toward online learning.
         
-4.  Research is Reproductive:
+2.  **Experimental:**
     
-    *   In this main research problem is divided into smaller parts so that each sub-part is manageable.
+    *   **Description:** Involves manipulating variables to determine cause-and-effect relationships. Actions are performed on a theory (experiments), and the resulting effects are observed.
         
-5.  Research is Replicable:
-    
-    *   This is where reach of any author that has being published can be repeated with similar result.
+    *   **Goal:** To establish causal relationships between variables.
         
-6.  Research is Transmittable:
-    
-    *   This is the studies where finding ca be applied in new setting.
+    *   **Example:** Drug trials, psychological experiments, studies on new teaching methods with carefully controlled conditions.
         
-
-## The Scientific Method
-
-This is a process that is defined as the processes of doing something task in a defined and proven way, For example in this method.
-
-You can see in the above diagram there is a method of everything, from Asking questions to identifying stuff and then Hypothesize and then gathering data and then testing and Reconsider into a theory and from that more question are asked.
-
-## Why to do Research?
-
-The main purpose of the research is to identify the gaps and how they can help us to push and find new stuff, Reading, writing testing and driving more equation is push the knowledge to what can we do and what can we, to find the answers of the question we have driven before.
-
-## How can you present your research paper?
-
-Research paper is all up to your thinking process, how you see things and make sure that you are doing solid research, sometime your research is based on top of another people research.
-
-## The main question is how can you do research ?
-
-This is the research Process
-
-1.  Select your topicc
+3.  **Quasi-Experimental:**
     
-2.  Refine your topic
-    
-3.  Identify Objectives
-    
-4.  Choose approach (Methodology)
-    
-5.  Explore your Topic (Gather Data)
-    
-6.  Perform Experiments
-    
-7.  Analyze the Data
-    
-8.  Write the paper/ repot
-    
-
-### Identification of Research Area
-
-The topic for your research comes from gathering, Internet and much more. Some topic you like, Literature review, Brainstorming, Talking with friend and professional and much more way you can find a Topic for your research.
-
-Communication is the key for everything, Connection and sharing is the best thing for knowledge and getting the idea that your like.
-
-### What is Publication?
-
-Research publication is a written document that presents the findings and results of a research study. Typically published in a scholarly journal or other recognized format, allowing the research community to access and evaluate the work done by researchers. A way to disseminate new knowledge generated through research to the wider academic field.
-
-### Key Points for Publication:
-
-When your are publishing your paper then there are some key points that you need to be in mind and here they are,
-
-1.  Dissemination of Knowledge:
-    
-    *   The primary purpose of research publication is to share research finding with others in the field, enabling further discussion and development of knowledge.
+    *   **Description:** Examines causal relationships without full control over the test process. It's often used when it's not feasible or ethical to conduct a randomized controlled trial.
         
-2.  Peer review Process:
+    *   **Goal:** To evaluate causal relationships when full randomization is not possible.
+        
+    *   **Examples:**
+        
+        *   **Educational Policy Evaluation:** Implementing a new teaching method in some schools but not others without random assignment.
+            
+        *   **Health Intervention Studies:** Introducing a smoking cessation program in specific neighborhoods.
+            
+        *   **Workplace Productivity Analysis:** Changing work-from-home policies for some employees but not others.
+            
+        *   **Public Policy Impact Assessment:** Implementing a new minimum wage law in one state.
+            
+        *   **Crime Reduction Strategies:** Installing streetlights in high-crime areas.
+            
+        *   **Media Influence on Behavior:** Running a public health campaign in one region but not another.
+            
+
+**Characteristics of Research**
+
+Research adheres to specific characteristics:
+
+*   **Systematic:** Follows a structured process to answer a defined question.
     
-    *   When paper is submitted then publication will do peer review process, where other expert in their field will review your research, they will check everything from concept, to test to spelling check and grammar check and much more and when it is according to the quality then they will pass and publish the paper.
+*   **Empirical:** Findings are based on collected data and evidence.
+    
+*   **Logical:** Requires a well-defined plan and procedure.
+    
+*   **Reductive:** Complex problems are divided into manageable sub-parts.
+    
+*   **Replicable:** Research can be repeated with similar results.
+    
+*   **Transmittable:** Findings can be applied in new settings.
+    
+
+**The Scientific Method**
+
+The scientific method is a process for systematically investigating phenomena and building knowledge. It involves:
+
+1.  Asking a question
+    
+2.  Researching existing knowledge
+    
+3.  Formulating a hypothesis
+    
+4.  Gathering data through experiments or observations
+    
+5.  Testing the hypothesis
+    
+6.  Analyzing the data and drawing conclusions
+    
+7.  Reconsidering and refining the theory (which can lead to new questions)
+    
+
+**Why Conduct Research?**
+
+Research is driven by the need to identify gaps in knowledge, to push the boundaries of understanding, and to discover new possibilities. It involves reading, writing, testing, and deriving equations to expand our knowledge base and answer questions.
+
+**Presenting Your Research**
+
+A research paper reflects your thinking process and solid research efforts. It may build upon existing work or explore entirely new avenues.
+
+**The Research Process**
+
+The research process typically involves these steps:
+
+1.  Select a topic
+    
+2.  Refine the topic
+    
+3.  Identify objectives
+    
+4.  Choose an approach (methodology)
+    
+5.  Explore the topic (gather data)
+    
+6.  Perform experiments (if applicable)
+    
+7.  Analyze the data
+    
+8.  Write the paper/report
+    
+
+**Identifying a Research Area**
+
+Research topics can originate from various sources: existing literature, brainstorming sessions, conversations with colleagues and professionals, personal interests, and more. Communication, connection, and knowledge sharing are essential for generating research ideas.
+
+**What is a Publication?**
+
+A research publication is a written document that presents the findings and results of a research study. It's typically published in a scholarly journal or other recognized format, allowing the research community to access and evaluate the work. It's a crucial means of disseminating new knowledge.
+
+**Key Points for Publication**
+
+*   **Dissemination of Knowledge:** To share research findings with the broader academic community.
+    
+*   **Peer Review Process:** A rigorous process where experts in the field review the research for quality, validity, and originality before publication. This includes evaluating the concept, methodology, testing, grammar, and overall presentation.
