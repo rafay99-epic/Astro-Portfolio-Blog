@@ -1,14 +1,15 @@
 ---
-lecture_title: "Introduction: Why Citation Styles Matter"
-lecture_description: This lecture comprehensively covers citation styles,
-  paragraph structure, and compelling introduction writing for academic papers,
-  particularly in computer science.
+lecture_title: "Research Paper Essentials: Citation Styles, Paragraph Structure,
+  and Compelling Introductions"
+lecture_description: This lecture equips students with the skills to master
+  citation styles, build strong paragraphs, and craft engaging introductions for
+  impactful research papers.
 pubDate: 2025-03-05
 lecture_draft: true
 lectureNumber: "05"
-subject: Research Method
+subject: Research Methods
 ---
-## Introduction: Why Citation Styles Matter
+## Citation Styles
 
 In academic writing, especially in a rigorous field like computer science, proper citation is _essential_. It serves several crucial purposes:
 
