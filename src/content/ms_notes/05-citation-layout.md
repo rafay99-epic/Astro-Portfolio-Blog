@@ -1,6 +1,8 @@
 ---
 lecture_title: "Introduction: Why Citation Styles Matter"
-lecture_description: How to cite a paper and how things can lead to.
+lecture_description: This lecture comprehensively covers citation styles,
+  paragraph structure, and compelling introduction writing for academic papers,
+  particularly in computer science.
 pubDate: 2025-03-05
 lecture_draft: true
 lectureNumber: "05"
