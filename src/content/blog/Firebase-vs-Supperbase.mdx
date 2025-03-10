@@ -1,5 +1,5 @@
 ---
-title: 'Firebase vs. Supabase: Choosing the Right Backend for Your App'
+title: "Firebase vs. Supabase: Choosing the Right Backend for Your App"
 description: >-
   Firebase vs. Supabase: A hands-on comparison to help you choose the best
   backend for your app.
@@ -25,8 +25,8 @@ Let’s dive in!
 
 Picking a backend can be overwhelming with so many choices. That’s where **Backend-as-a-Service (BaaS)** comes in—it handles all the backend stuff (databases, auth, cloud functions) so you can focus on building your app.
 
-* **Firebase** – Google’s BaaS with real-time databases, authentication, and cloud functions. Super easy to use, great for fast development.
-* **Supabase** – The open-source alternative to Firebase, powered by PostgreSQL. More control, SQL support, and still packed with real-time features.
+- **Firebase** – Google’s BaaS with real-time databases, authentication, and cloud functions. Super easy to use, great for fast development.
+- **Supabase** – The open-source alternative to Firebase, powered by PostgreSQL. More control, SQL support, and still packed with real-time features.
 
 Now, let’s compare Firebase and Supabase to see which one actually works best!
 
@@ -34,18 +34,18 @@ Now, let’s compare Firebase and Supabase to see which one actually works best!
 
 As a new dev, you want the best free stuff—something that lets you build without hitting a paywall too soon. So, let’s talk about what you actually get for free.
 
-* **Firebase Free Plan:**
-  * Firestore with **1 GB of storage**
-  * Decent read/write limits
-  * Authentication for **up to 10,000 users per month**
-  * Basic hosting with **10 GB of bandwidth**
-  * **No more free cloud functions or storage** 😢
-* **Supabase Free Plan:**
-  * PostgreSQL database with **500 MB of storage**
-  * Authentication for **up to 50,000 users**
-  * **1 GB of file storage**
-  * **5 GB of bandwidth**
-  * **No free hosting & inactive projects get paused after a week**
+- **Firebase Free Plan:**
+  - Firestore with **1 GB of storage**
+  - Decent read/write limits
+  - Authentication for **up to 10,000 users per month**
+  - Basic hosting with **10 GB of bandwidth**
+  - **No more free cloud functions or storage** 😢
+- **Supabase Free Plan:**
+  - PostgreSQL database with **500 MB of storage**
+  - Authentication for **up to 50,000 users**
+  - **1 GB of file storage**
+  - **5 GB of bandwidth**
+  - **No free hosting & inactive projects get paused after a week**
 
 Both platforms have trade-offs, but which one fits your needs better? Let's break it down.
 
@@ -54,6 +54,10 @@ Both platforms have trade-offs, but which one fits your needs better? Let's brea
 ### Firebase
 
 Firebase provides built-in functions and an SDK, making integration super easy. You just need to install the Firebase CLI, create a project, and configure your Flutter app with a simple command.
+
+#### My Experience with Firebase Setup
+
+Setting up Firebase was straightforward. The documentation is clear, and there are plenty of guides available online. However, when I ran into an issue with authentication, I found myself sifting through a ton of Stack Overflow answers to find the right fix. One thing I appreciated was how Firebase handles SDK integration—it’s smooth and well-optimized for Flutter apps.
 
 ```dart
 import 'package:firebase_core/firebase_core.dart';
@@ -74,6 +78,10 @@ void main() async {
 
 Supabase is just as easy. You install the Flutter package, import it, and pass in your API keys—no CLI required!
 
+#### My Experience with Supabase Setup
+
+Unlike Firebase, Supabase does not require CLI configuration, which I found refreshing. However, since Supabase is newer, finding answers when I ran into an API key issue was a struggle. The documentation is helpful, but not as in-depth as Firebase’s.
+
 ```dart
 await Supabase.initialize(
   url: dotenv.env['SUPABASE_URL']!,
@@ -91,15 +99,15 @@ As a new dev, you rely on documentation, but it doesn’t always cover every edg
 
 ## The Database: Firestore vs. PostgreSQL
 
-* **Firebase (Firestore)** – A NoSQL, document-based database
-* **Supabase (PostgreSQL)** – A relational database
+- **Firebase (Firestore)** – A NoSQL, document-based database
+- **Supabase (PostgreSQL)** – A relational database
 
 **Key takeaway:** It doesn’t matter where you store your data—**if you don’t structure it properly, you’re doomed.**
 
 For example:
 
-* **Meaning Mate (Firebase):** Stored user documents along with AI limits and message quotas.
-* **WallZen (Supabase):** Tracked which users downloaded which images and how many times.
+- **Meaning Mate (Firebase):** Stored user documents along with AI limits and message quotas.
+- **WallZen (Supabase):** Tracked which users downloaded which images and how many times.
 
 The complexity was manageable in both cases, but in the end, **your database structure matters more than your choice of database.**
 
@@ -131,8 +139,8 @@ Supabase authentication is just as simple. The main difference? **Google Sign-In
 
 If your app uses images or videos, storage matters.
 
-* Firebase **used to** offer **5GB free storage**, but not anymore.
-* Supabase **still offers** **5GB free storage**.
+- Firebase **used to** offer **5GB free storage**, but not anymore.
+- Supabase **still offers** **5GB free storage**.
 
 For image-heavy apps like **WallZen**, **Supabase is the clear winner**.
 
@@ -140,18 +148,18 @@ For image-heavy apps like **WallZen**, **Supabase is the clear winner**.
 
 So, which one is better? Well, it depends on your needs.
 
-| Feature                       | Firebase                                    | Supabase                      |
-| ----------------------------- | ------------------------------------------- | ----------------------------- |
-| **Ease of Use**               | ✅ Very easy                                 | ✅ Easy                        |
-| **Free Tier**                 | ✅ Generous, but no free cloud functions     | ✅ More free storage & auth    |
-| **Database**                  | 🔹 NoSQL (Firestore)                        | 🔹 SQL (PostgreSQL)           |
-| **Documentation & Community** | ✅ Huge                                      | ❌ Still growing               |
+| Feature                       | Firebase                                    | Supabase                     |
+| ----------------------------- | ------------------------------------------- | ---------------------------- |
+| **Ease of Use**               | ✅ Very easy                                | ✅ Easy                      |
+| **Free Tier**                 | ✅ Generous, but no free cloud functions    | ✅ More free storage & auth  |
+| **Database**                  | 🔹 NoSQL (Firestore)                        | 🔹 SQL (PostgreSQL)          |
+| **Documentation & Community** | ✅ Huge                                     | ❌ Still growing             |
 | **Best For**                  | 🚀 Fast development, small to mid-size apps | 🏗️ Scalable apps, SQL lovers |
 
 ### My Verdict
 
-* If you're building a quick MVP or small app? **Go with Firebase.**
-* Need more control & SQL? **Supabase is the better choice.**
+- If you're building a quick MVP or small app? **Go with Firebase.**
+- Need more control & SQL? **Supabase is the better choice.**
 
 At the end of the day, **both are solid choices**. Pick the one that best fits your project and coding style.
 
