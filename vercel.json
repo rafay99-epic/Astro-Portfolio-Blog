@@ -28,16 +28,14 @@
                 "search": ""
             }
         ],
-        "remotePatterns": [],
         "minimumCacheTTL": 31536000,
         "formats": [
-            "image/avif",
-            "image/jpeg",
-            "image/png",
-            "image/jpg"
+            "image/webp",
+            "image/avif"
         ],
         "dangerouslyAllowSVG": false,
         "contentSecurityPolicy": "default-src 'self'; script-src 'none'; frame-src 'none'; sandbox;",
-        "contentDispositionType": "inline"
+        "contentDispositionType": "inline",
+        "qualities ": 75
     }
 }
