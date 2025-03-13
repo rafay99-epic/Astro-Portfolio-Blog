@@ -5,9 +5,10 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
-import expressiveCode from "astro-expressive-code";
-import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
-import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
+
+// import expressiveCode from "astro-expressive-code";
+// import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+// import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
 // "remark-mermaidjs": "^7.0.0",
 // "@playwright/test": "^1.49.1",
@@ -36,33 +37,42 @@ export default defineConfig({
       transformers: [],
     },
   },
+  redirects: {
+    "/snaprescue.sh": "/downloads/scripts/snaprescue.sh",
+    "/Meaning-Mate-APK": "/downloads/app/meaning_mate/Meaning-Mate-APK.apk",
+    "/MSBridge-V1": "/downloads/app/msbridge/v1/MSBridge-V1.apk",
+    "/MSBridge-V2": "/downloads/app/msbridge/v2/MSBridge-V2.apk",
+    "/MSBridge-V3": "/downloads/app/msbridge/v3/MSBridge-V3.apk",
+    "/MSBridge-release": "/downloads/app/msbridge/release/MSBridge-release.apk",
+  },
   security: {
     checkOrigin: true,
   },
   integrations: [
-    expressiveCode({
-      themes: ["tokyo-night"],
-      plugins: [pluginLineNumbers(), pluginCollapsibleSections({})],
-      defaultProps: {
-        showLineNumbers: true,
-        startLineNumber: 1,
-        foreground: "var(--accent)",
-        highlightForeground: "#85c7ebb3",
-      },
-      styleOverrides: {
-        codeFontFamily: "'Fira Code', monospace",
-        codeFontSize: "1.5em",
-        codeLineHeight: "1.5",
-        codePaddingBlock: "4px",
-        codeBorderRadius: "4px",
-        codeWidth: "auto",
-        codeMaxWidth: "auto",
-        preColor: "#cddbf7",
-        preFontFamily: "'Fira Code', monospace",
-        preFontSize: "1em",
-        preLineHeight: "1.5",
-      },
-    }),
+    //  expressiveCode block
+    // expressiveCode({
+    //   themes: ["tokyo-night"],
+    //   plugins: [pluginLineNumbers(), pluginCollapsibleSections({})],
+    //   defaultProps: {
+    //     showLineNumbers: true,
+    //     startLineNumber: 1,
+    //     foreground: "var(--accent)",
+    //     highlightForeground: "#85c7ebb3",
+    //   },
+    //   styleOverrides: {
+    //     codeFontFamily: "'Poppins', sans-serif", // Changed to Poppins
+    //     codeFontSize: "1.1em", // Reduced font size (was 1.5em)
+    //     codeLineHeight: "1.4", // Adjusted line height
+    //     codePaddingBlock: "4px",
+    //     codeBorderRadius: "4px",
+    //     codeWidth: "auto",
+    //     codeMaxWidth: "auto",
+    //     preColor: "#cddbf7",
+    //     preFontFamily: "'Poppins', sans-serif", // Changed to Poppins
+    //     preFontSize: "0.9em", // Reduced pre font size (was 1em)
+    //     preLineHeight: "1.4", //Adjusted pre line height to match
+    //   },
+    // }),
     mdx(),
     sitemap(),
     react({

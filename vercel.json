@@ -1,13 +1,44 @@
 {
-    "version": 2,
-    "routes": [
-        {
-            "src": "/snaprescue.sh",
-            "dest": "/snaprescue.sh"
-        },
-        {
-            "src": "/Meaning-Mate-APK",
-            "dest": "/Meaning-Mate-APK.apk"
-        }
-    ]
+    "version": 5.5,
+    "routes": [],
+    "cleanUrls": true,
+    "devCommand": "astro dev",
+    "buildCommand": "astro build",
+    "framework": "astro",
+    "installCommand": "npm install",
+    "images": {
+        "sizes": [
+            256,
+            640,
+            1080,
+            2048
+        ],
+        "domains": [
+            "localhost",
+            "https://rafay99.com",
+            "https://www.rafay99.com"
+        ],
+        "localPatterns": [
+            {
+                "pathname": "^/BlogImages/.*$",
+                "search": ""
+            },
+            {
+                "pathname": "^/Projects/.*$",
+                "search": ""
+            }
+        ],
+        "remotePatterns": [],
+        "minimumCacheTTL": 31536000,
+        "formats": [
+            "image/avif",
+            "image/jpeg",
+            "image/png",
+            "image/jpg"
+        ],
+        "dangerouslyAllowSVG": false,
+        "contentSecurityPolicy": "default-src 'self'; script-src 'none'; frame-src 'none'; sandbox;",
+        "contentDispositionType": "inline",
+        "quality": 75
+    }
 }
