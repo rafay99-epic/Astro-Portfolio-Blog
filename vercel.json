@@ -36,6 +36,6 @@
         "dangerouslyAllowSVG": false,
         "contentSecurityPolicy": "default-src 'self'; script-src 'none'; frame-src 'none'; sandbox;",
         "contentDispositionType": "inline",
-        "qualities ": 75
+        "qualities": 75
     }
 }
