@@ -5,13 +5,7 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
-import expressiveCode from "astro-expressive-code";
-import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
-import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
-// "remark-mermaidjs": "^7.0.0",
-// "@playwright/test": "^1.49.1",
-// import remarkMermaid from "remark-mermaidjs";
 dotenv.config();
 
 export default defineConfig({
@@ -24,7 +18,6 @@ export default defineConfig({
     svg: true,
   },
   markdown: {
-    // remarkPlugins: [remarkMermaid],
     shikiConfig: {
       theme: "tokyo-night",
       defaultColor: false,
@@ -36,33 +29,18 @@ export default defineConfig({
       transformers: [],
     },
   },
+  redirects: {
+    "/snaprescue.sh": "/downloads/scripts/snaprescue.sh",
+    "/Meaning-Mate-APK": "/downloads/app/meaning_mate/Meaning-Mate-APK.apk",
+    "/MSBridge-V1": "/downloads/app/msbridge/v1/MSBridge-V1.apk",
+    "/MSBridge-V2": "/downloads/app/msbridge/v2/MSBridge-V2.apk",
+    "/MSBridge-V3": "/downloads/app/msbridge/v3/MSBridge-V3.apk",
+    "/MSBridge-release": "/downloads/app/msbridge/release/MSBridge-release.apk",
+  },
   security: {
     checkOrigin: true,
   },
   integrations: [
-    expressiveCode({
-      themes: ["tokyo-night"],
-      plugins: [pluginLineNumbers(), pluginCollapsibleSections({})],
-      defaultProps: {
-        showLineNumbers: true,
-        startLineNumber: 1,
-        foreground: "var(--accent)",
-        highlightForeground: "#85c7ebb3",
-      },
-      styleOverrides: {
-        codeFontFamily: "'Fira Code', monospace",
-        codeFontSize: "1.5em",
-        codeLineHeight: "1.5",
-        codePaddingBlock: "4px",
-        codeBorderRadius: "4px",
-        codeWidth: "auto",
-        codeMaxWidth: "auto",
-        preColor: "#cddbf7",
-        preFontFamily: "'Fira Code', monospace",
-        preFontSize: "1em",
-        preLineHeight: "1.5",
-      },
-    }),
     mdx(),
     sitemap(),
     react({
