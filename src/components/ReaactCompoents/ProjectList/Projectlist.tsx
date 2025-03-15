@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { usePaginatedProjects } from "@react/ProjectList/usePaginatedProjects";
+import { useState, useEffect, useMemo } from "react";
 import type { Project } from "types/ProjectTypes";
+import { usePaginatedProjects } from "@react/ProjectList/usePaginatedProjects";
 
 interface ProjectListProps {
   projects: Project[];
@@ -9,20 +9,30 @@ interface ProjectListProps {
 const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
 
-  useEffect(() => {
+  const filteredAndSortedProjects = useMemo(() => {
     try {
-      setFilteredProjects(
-        selectedTag
-          ? projects.filter((project) =>
-              project.data.ProjectCategory?.includes(selectedTag)
-            )
-          : projects
-      );
-      setError(null);
+      let filtered = selectedTag
+        ? projects.filter((project) =>
+            project.data.ProjectCategory?.includes(selectedTag)
+          )
+        : projects;
+
+      filtered = [...filtered].sort((a, b) => {
+        const rankingA = a.data.ProjectRanking
+          ? parseInt(a.data.ProjectRanking, 10)
+          : Infinity;
+        const rankingB = b.data.ProjectRanking
+          ? parseInt(b.data.ProjectRanking, 10)
+          : Infinity;
+
+        return rankingA - rankingB;
+      });
+
+      return filtered;
     } catch (err) {
       setError("Failed to filter projects. Please try again.");
+      return [];
     }
   }, [selectedTag, projects]);
 
@@ -33,7 +43,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
     goToNextPage,
     goToPrevPage,
     error: paginationError,
-  } = usePaginatedProjects(filteredProjects);
+  } = usePaginatedProjects(filteredAndSortedProjects);
 
   useEffect(() => {
     if (paginationError) {
@@ -41,9 +51,11 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
     }
   }, [paginationError]);
 
-  const uniqueTags = Array.from(
-    new Set(projects.flatMap((project) => project.data.ProjectCategory || []))
-  );
+  const uniqueTags = useMemo(() => {
+    return Array.from(
+      new Set(projects.flatMap((project) => project.data.ProjectCategory || []))
+    );
+  }, [projects]);
 
   if (error) {
     return (
@@ -58,7 +70,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
           onClick={() => setSelectedTag(null)}
           aria-label="Show all projects"
           aria-pressed={selectedTag === null}
-          className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
+          className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer
       ${
         selectedTag === null
           ? "bg-[#7aa2f7] text-white scale-105"
