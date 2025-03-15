@@ -68,6 +68,34 @@ For me, I’ll be using Flutter for the UI and Appwrite for the backend. The bac
 
 Don’t choose blindly—do your research and pick what makes you comfortable and what you feel confident coding in. If I weren’t used to Flutter, I would have gone with React Native, since I know how React works but have no experience with React Native. So, choose what works best for you.
 
-# Layout
+# The Flow
 
-with all these, each fucntion will have their own screen and user can acess the notes as well. To make a offline section of app rember you need to make the data need to avaible in the local database.
+You know the features, You know, how to choose a teach stack, now it's time to define a the flow, meaning that how user will nivgiate from one page to another, and this very simple, when user install your applicatin what the user will see first, it could be a Login Screen, Introduction Screen, Splash Screen, anything, according to your through and your application. for me thse where the flow that I created for My application.
+
+## The Auth Flow
+
+The auth flow will show how the authentication is done on an application
+
+### Login
+
+Installed -> Introduction Screen -> Login -> Sucess -> Home Screen
+Installed -> Introduction Screen -> Login -> Failed -> Error Message
+
+### Register
+
+Installed -> Introduction Screen -> Register -> User created -> Login -> Sucess -> Home Screen
+Installed -> Introduction Screen -> Register -> User NOT created -> Error Message
+
+### Auth Gate
+
+User Logged -> Home Screen
+User Note Logged In -> Login Screen
+
+## Note Fetching Feature
+
+This is the flow of the app, how app is working under the hood.
+
+### Getting Notes Via API
+
+App Opened -> Internet Connection -> Call API(Get Data) -> Store in Local Database -> Show User
+App Opened -> NO Internet Connection -> Siwtch to offline Mode
