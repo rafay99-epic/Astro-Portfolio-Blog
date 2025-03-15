@@ -10,5 +10,6 @@ export interface Project {
     ProjectCategory?: string[];
     githubLink?: string;
     deployedLink?: string;
+    ProjectRanking?: string;
   };
 }

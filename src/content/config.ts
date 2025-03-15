@@ -39,6 +39,7 @@ const projects = defineCollection({
     ProjectGithubLink: z.string().optional(),
     ProjectDeployedLink: z.string().optional(),
     ProjectCategory: z.array(z.string()).optional(),
+    ProjectRanking: z.string().optional(),
   }),
 });
 
