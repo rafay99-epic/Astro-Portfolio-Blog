@@ -99,3 +99,35 @@ This is the flow of the app, how app is working under the hood.
 
 App Opened -> Internet Connection -> Call API(Get Data) -> Store in Local Database -> Show User
 App Opened -> NO Internet Connection -> Siwtch to offline Mode
+
+### Taking Notes
+
+Open App -> Switch to Note taking UI -> Create Note -> write some content -> Saved content
+
+## Flow Thoughts
+
+So on you can see how the flow the app is working,
+this is just the beginning, as you have more features the more flow you need, it's better to have one Structure and start coding and thne as you go you will see how the flow will be set.
+I can only tell these flow, becuase I have done it,I have created the app and I came across all the Flow how the app should go from one UI to another UI.
+
+# Coding
+
+Okay, you have thing, Now what ? it's one question that everyone don't know, how can I code the app, You have design, you have the flow of the app and most important the app idea and Tech stack selected.
+
+While short answer is just google and use AI. as your begining, google alot of stuff, don't just ask AI you will forget but use google, using google and stack overflow, you will remember how to resolve error.
+And start coding, if you new then read docs of the language, watch some videos to get things started.
+
+# My App Issue
+
+This was not all sun shine and rainbows, there where few issues and they took some time to resolve, Normally, I want to take a week to make this app and by mine time, and github it did took a week to build the app.
+
+So when I started the app, I created the UI and setup the backend which was Appwrite, wverything was perfectly fine untill appwrite won't add user to my database, I was getting alot of issue and then I decidded to switch from app write to Firebase and My UI was seperated from the backend, all I need to chnage the backend and nothing need to be changed in the frontend of the application.
+
+Make your both end seperated and connect them via a repo file, where all the data will meet and all the logic can perform.
+
+So Now okay, I get the firebase setup, fixed the authm register user and evereything was working great, Now it's time to setup the API for getting the notes from my website.
+
+I used https package from pub.dev and it was great, it was getting the data into the api but the body or the main notes where not getting through, this was an issue, so I set up local database called hive and it's preety good, as local database, it's pretty good, not easy tos etup but very nice, Once the model for Hive was set and few command later, everything from the api was being placed into the local database expect the body, so I decidded to switch the local database  and turn out it was an api call issue.
+
+After hours of dev work, I fixed and the data was comming plus beeing saved into the hive database.
+Now, it's time for the UI, we
