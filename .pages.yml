@@ -66,4 +66,4 @@ content:
         type: rich-text
       - name: tags
         label: Tags
-        type: string
+        type:  string
