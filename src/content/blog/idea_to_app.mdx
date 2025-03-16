@@ -74,8 +74,6 @@ You know the features, you know how to choose a tech stack, now it's time to def
 
 Here’s the flow I created for my application:
 
-***
-
 ## The Auth Flow
 
 The auth flow shows how the authentication process is handled in the app.
@@ -95,8 +93,6 @@ The auth flow shows how the authentication process is handled in the app.
 * User Logged In -> Home Screen
 * User Not Logged In -> Login Screen
 
-***
-
 ## Note Fetching Feature
 
 This flow illustrates how the app operates under the hood.
@@ -110,15 +106,11 @@ This flow illustrates how the app operates under the hood.
 
 * Open App -> Switch to Note-Taking UI -> Create Note -> Write Some Content -> Save Content
 
-***
-
 ## Flow Thoughts
 
 You can see how the app flow is structured. This is just the beginning. As you add more features, you’ll naturally have more flows to define. It’s better to set up a structure early and start coding, because as you develop, the flow will reveal itself more clearly.
 
 I’m only able to describe this flow because I’ve actually done it—I’ve built the app, faced real challenges, and figured out how each UI should connect to the next.
-
-***
 
 # Coding
 
@@ -128,7 +120,7 @@ Here’s the short answer: Google and use AI.
 
 In the beginning, Google *a lot*. Don’t just rely on AI—you’ll forget what you learn that way. Google, Stack Overflow, documentation—they'll stick in your brain better. Watch some tutorials to get a solid foundation. And then... start coding.
 
-# My App Issues (The Rollercoaster 🎢)
+# My App Issues (The Rollercoaster)
 
 Now, let me be honest. It wasn’t all sunshine and rainbows.
 
@@ -146,7 +138,7 @@ Once Firebase was up and running, it was time to fetch notes from my website's A
 
 To handle offline data, I integrated Hive, which was great, but initially tricky to set up. I created models, commands, and started syncing API data to Hive. The issue? Still no note body! Eventually, after hours of frustration, it turned out the API itself had the problem, not Hive.
 
-Once fixed, data was flowing and saving properly. 🎉
+Once fixed, data was flowing and saving properly.
 
 ### UI Layer & Card-Based Madness
 
@@ -156,7 +148,7 @@ Next challenge: UI design. There were multiple subjects, multiple lectures, and 
 
 Search was another beast. Firebase’s built-in search? Nah, it won’t cut it. I wanted powerful search capabilities, so I turned to Fizzy Finder and built my own search functionality. This was crucial for scaling.
 
-# Note-Taking Feature (The Hell Moment 🔥)
+# Note-Taking Feature (The Hell Moment)
 
 After deploying V1, I decided to add a note-taking module. The big question: What editor? Markdown, Rich Text, something else? I found [Flutter Quill](https://pub.dev/packages/flutter_quill)—perfect!
 
@@ -184,7 +176,7 @@ Where should sync happen? How should users know if their data is backed up? At f
 
 Solution? Sync runs when the app launches. It detects changes and pushes them to Firebase. I added settings to give users control over sync, and made sure sync runs off the main thread so the UI stays smooth. (Shoutout to AI for helping me figure this out—I was lost!)
 
-# Wrapping It Up 🎁
+# Wrapping It Up
 
 After all the battles, late nights, and debug sessions, I finally had a polished app. I called it **MS Bridge**.
 
@@ -192,4 +184,10 @@ Every flow, feature, and issue taught me something valuable. And trust me, whate
 
 # Final Thoughts
 
-No, it's time for final thoughs
+Now, it’s time for some final thoughts. I did this not just because I’m getting a blog post and a future video out of it, but more importantly—because it was fun. Coding for fun is something I’ve missed, and writing down my thoughts, sharing my experiences—that’s something I truly enjoy.
+
+Here’s the thing: don’t be afraid. You’re an engineer. You’re *meant* to break things, to see how they unfold, to figure out how things can be done. Coding is fun. Find an idea, and start building. It might look like chaos at times—some parts definitely felt like that—but I genuinely enjoyed every bit of it.
+
+So go on, start coding.
+
+Until then, goodbye nerds.
