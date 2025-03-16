@@ -1,6 +1,6 @@
 media:
-  input: /public/BlogImages
-  output: /public/BlogImages
+  input: /public/
+  output: /public/
 
 content:
   - name: ms_notes
