@@ -1,6 +1,6 @@
 media:
-  input: src/assets/ms_notes
-  output: src/assets/ms_notes
+  input: /public/BlogImages
+  output: /public/BlogImages
 
 content:
   - name: ms_notes
@@ -8,7 +8,7 @@ content:
     type: collection
     path: src/content/ms_notes
     icon: book
-    filename: '{fields.lectureNumber}-{fields.lecture_title}.md'
+    filename: "{fields.lectureNumber}-{fields.lecture_title}.md"
     fields:
       - name: lecture_title
         label: Lecture Title
@@ -32,3 +32,38 @@ content:
       - name: body
         label: Content
         type: rich-text
+  - name: blog
+    label: Blog Posts
+    type: collection
+    path: src/content/blog
+    icon: book
+    filename: "{fields.slug}.mdx"
+    fields:
+      - name: title
+        label: Title
+        type: string
+      - name: description
+        label: Description
+        type: string
+      - name: pubDate
+        label: Publication Date
+        type: date
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+      - name: heroImage
+        label: Hero Image
+        type: image
+      - name: authorName
+        label: Author Name
+        type: string
+      - name: authorAvatar
+        label: Author Image
+        type: image
+      - name: body
+        label: Content
+        type: rich-text
+      - name: tags
+        label: Tags
+        type: string
