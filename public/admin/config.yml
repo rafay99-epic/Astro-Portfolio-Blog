@@ -2,9 +2,6 @@ backend:
   name: github
   repo: rafay99-epic/Astro-Portfolio-Blog
   branch: main
-  auth_scope: repo
-  base_url: https://rafay99-cms-auth.vercel.app
-  auth_endpoint: /auth
 
 publish_mode: editorial_workflow
 media_folder: "/public/BlogImages/"
