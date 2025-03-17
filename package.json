@@ -41,5 +41,8 @@
     "devDependencies": {
         "@types/node": "^22.1.0",
         "@gsap/react": "^2.1.1"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "4.6.1"
     }
 }
