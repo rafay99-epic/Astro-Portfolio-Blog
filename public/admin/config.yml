@@ -1,12 +1,10 @@
 backend:
-  name: github
-  repo: rafay99-epic/Astro-Portfolio-Blog
+  name: git-gateway
   branch: main
 
 publish_mode: editorial_workflow
 media_folder: "/public/BlogImages/"
 public_folder: "/public"
-local_backend: true
 
 collections:
   - name: "blog"
