@@ -3,9 +3,9 @@
     "type": "module",
     "version": "5.5.1",
     "scripts": {
-        "dev": "tinacms dev -c \"astro dev\"",
+        "dev": "astro dev",
         "start": "astro dev",
-        "build": "tinacms build  && astro build",
+        "build": "astro build",
         "preview": "astro preview",
         "astro": "astro"
     },
@@ -24,6 +24,7 @@
         "astro": "^5.1.8",
         "astro-diagram": "^0.7.0",
         "axios": "^1.7.7",
+        "decap-cms-app": "^3.6.2",
         "devicon": "^2.16.0",
         "dotenv": "^16.4.5",
         "framer-motion": "^11.11.4",

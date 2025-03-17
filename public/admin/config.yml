@@ -1,0 +1,57 @@
+backend:
+  name: github
+  repo: rafay99-epic/Astro-Portfolio-Blog
+  branch: main
+  auth_scope: repo
+  base_url: https://rafay99-cms-auth.vercel.app
+  auth_endpoint: /auth
+
+publish_mode: editorial_workflow
+media_folder: "/public/BlogImages/"
+public_folder: "/public"
+local_backend: true
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    extension: "mdx"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Publication Date", name: "pubDate", widget: "datetime" }
+      - {
+          label: "Updated Date",
+          name: "updatedDate",
+          widget: "datetime",
+          required: false,
+        }
+      - {
+          label: "Hero Image",
+          name: "heroImage",
+          widget: "image",
+          required: false,
+        }
+      - { label: "Draft", name: "draft", widget: "boolean", default: true }
+      - { label: "Author Name", name: "authorName", widget: "string" }
+      - {
+          label: "Author Avatar",
+          name: "authorAvatar",
+          widget: "image",
+          required: false,
+        }
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        default: ["blog"]
+        field: { label: "Tag", name: "tag", widget: "string" }
+      - {
+          label: "Read Time",
+          name: "readTime",
+          widget: "string",
+          required: false,
+        }
+      - { label: "Body", name: "body", widget: "markdown" } # Still markdown body inside MDX
