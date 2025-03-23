@@ -35,6 +35,7 @@ export default defineConfig({
     "/MSBridge-V1": "/downloads/app/msbridge/v1/MSBridge-V1.apk",
     "/MSBridge-V2": "/downloads/app/msbridge/v2/MSBridge-V2.apk",
     "/MSBridge-V3": "/downloads/app/msbridge/v3/MSBridge-V3.apk",
+    "/MSBridge-V4": "/downloads/app/msbridge/v3/MSBridge-V4.apk",
     "/MSBridge-release": "/downloads/app/msbridge/release/MSBridge-release.apk",
   },
   security: {
