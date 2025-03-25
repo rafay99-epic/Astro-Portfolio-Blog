@@ -1,18 +1,17 @@
 :root {
   --accent: #7aa2f7;
-  --accent-dark: #1f2335; /* Background color */
+  --accent-dark: #1f2335;
   --black: rgb(8, 12, 17);
   --gray: rgb(76, 80, 106);
   --gray-light: rgb(59, 66, 82);
-  --text-light: #F8F8F8; /* Text color */
+  --text-light: #F8F8F8;
   --gray-dark: rgb(31, 34, 40);
   --gray-gradient: linear-gradient(135deg, #1a1b26 0%, #414868 100%);
-  --box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25), 
-                0 8px 24px rgba(76, 80, 106, 0.33), 
-                0 16px 32px rgba(76, 80, 106, 0.33);
+  --box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25),
+    0 8px 24px rgba(76, 80, 106, 0.33),
+    0 16px 32px rgba(76, 80, 106, 0.33);
 }
 
-/* Main Styles */
 main {
   --primary-default: 170, 90, 255;
   --bg-default: 27, 0, 57;
@@ -26,7 +25,6 @@ main {
   --color-border-muted: rgba(var(--gray-light), 0.2);
 }
 
-/* Giscus Styles */
 .giscus {
   background-color: var(--accent-dark);
   color: var(--text-light);
@@ -41,22 +39,19 @@ main {
   border: 1px solid var(--gray-light);
 }
 
-/* Pagination Loader */
 main .pagination-loader-container {
   background-image: url("https://github.com/images/modules/pulls/progressive-disclosure-line-dark.svg");
 }
 
-/* Loading Image */
 main .gsc-loading-image {
   background-image: url("https://github.githubassets.com/images/mona-loading-dark.gif");
 }
 
-/* Input Focus */
 .input-contrast:focus {
   background-color: var(--gray-dark) !important;
 }
 
-/* Font Family */
-.gsc-is-fixed-width, html {
+.gsc-is-fixed-width,
+html {
   font-family: Inter, Helvetica, Arial, sans-serif;
 }
