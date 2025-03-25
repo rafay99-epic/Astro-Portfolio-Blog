@@ -6,7 +6,7 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
 
-import netlify from "@astrojs/netlify";
+// import netlify from "@astrojs/netlify";
 
 dotenv.config();
 
@@ -51,7 +51,7 @@ export default defineConfig({
     }),
     tailwind(),
   ],
-  adapter: netlify(),
+  adapter: vercel(),
   vite: {
     resolve: {
       alias: {
