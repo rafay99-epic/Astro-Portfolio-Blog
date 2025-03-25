@@ -1,7 +1,7 @@
 backend:
   name: github
   branch: v5.5.3
-  repo: "https://github.com/rafay99-epic/Astro-Portfolio-Blog"
+  repo: "rafay99-epic/Astro-Portfolio-Blog"
 
 publish_mode: editorial_workflow
 media_folder: "/public/BlogImages/"
