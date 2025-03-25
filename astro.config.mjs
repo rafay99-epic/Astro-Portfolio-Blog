@@ -6,6 +6,8 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
 
+import netlify from "@astrojs/netlify";
+
 dotenv.config();
 
 export default defineConfig({
@@ -49,12 +51,7 @@ export default defineConfig({
     }),
     tailwind(),
   ],
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-    imageService: true,
-  }),
+  adapter: netlify(),
   vite: {
     resolve: {
       alias: {
