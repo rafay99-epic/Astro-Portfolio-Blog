@@ -12,6 +12,31 @@ export async function GET(context) {
       pubDate: new Date(),
       link: "/newsletter/",
       author: authorConfig.name,
+      site: context.site,
+    },
+    {
+      title: "MSNotes",
+      description: "A collection of notes and resources.",
+      pubDate: new Date(),
+      link: "/ms_notes/",
+      author: authorConfig.name,
+      site: context.site,
+    },
+    {
+      title: "Projects",
+      description: "A collection of projects.",
+      pubDate: new Date(),
+      link: "/projects",
+      author: authorConfig.name,
+      site: context.site,
+    },
+    {
+      title: "WebWiki",
+      description: "website development wiki.",
+      pubDate: new Date(),
+      link: "/webwiki/",
+      author: authorConfig.name,
+      site: context.site,
     },
   ];
 

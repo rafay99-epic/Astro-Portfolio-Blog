@@ -1,6 +1,7 @@
 backend:
-  name: git-gateway
-  branch: main
+  name: github
+  branch: v5.5.3
+  repo: "rafay99-epic/Astro-Portfolio-Blog"
 
 publish_mode: editorial_workflow
 media_folder: "/public/BlogImages/"
@@ -49,4 +50,4 @@ collections:
           widget: "string",
           required: false,
         }
-      - { label: "Body", name: "body", widget: "markdown" } # Still markdown body inside MDX
+      - { label: "Body", name: "body", widget: "markdown" }
