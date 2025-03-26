@@ -20,15 +20,7 @@ try {
   return Astro.redirect("/404");
 }
 
-const {
-  title,
-  description,
-  pubDate,
-  version,
-  versionreleasedate,
-  readTime,
-  tags,
-} = Astro.props;
+const { title, description, pubDate, readTime, tags } = Astro.props;
 ---
 
 <html lang="en">
@@ -40,12 +32,7 @@ const {
     <Header />
     <main class="w-full max-w-5xl mx-auto px-4 py-8">
       <article>
-        <div
-          data-aos="fade-up"
-          data-aos-delay="300"
-          data-aos-anchor-placement="top-bottom"
-          class="prose mx-auto text-gray-800 text-justify"
-        >
+        <div class="prose mx-auto text-gray-800 text-justify">
           <div class="mb-8 text-center">
             <h1 class="text-6xl font-bold mb-4">{title}</h1>
             <div class="mb-2 text-white">
@@ -79,10 +66,5 @@ const {
       </article>
     </main>
     <Footer />
-  </body><link
-    href="https://unpkg.com/aos@2.3.1/dist/aos.css"
-    rel="stylesheet"
-  />
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" onload="AOS.init()"
-  ></script>
+  </body>
 </html>

@@ -1,28 +1,27 @@
 {
     "name": "rafay99.com",
     "type": "module",
-    "version": "5.5.3",
+    "version": "5.5.4",
     "scripts": {
-        "dev": "astro dev",
+        "dev": "tinacms dev -c \"astro dev",
         "start": "astro dev",
-        "build": "astro build",
+        "build": "tinacms build && astro build",
         "preview": "astro preview",
         "astro": "astro"
     },
     "dependencies": {
-        "@astrojs/mdx": "^4.0.7",
-        "@astrojs/netlify": "^6.2.3",
-        "@astrojs/react": "^4.1.6",
+        "@astrojs/mdx": "^4.2.2",
+        "@astrojs/react": "^4.2.2",
         "@astrojs/rss": "^4.0.11",
-        "@astrojs/sitemap": "^3.2.1",
-        "@astrojs/tailwind": "^5.1.5",
-        "@astrojs/vercel": "^8.0.2",
+        "@astrojs/sitemap": "^3.3.0",
+        "@astrojs/tailwind": "^6.0.2",
+        "@astrojs/vercel": "^8.1.3",
         "@tailwindcss/typography": "^0.5.15",
         "@types/react": "^18.3.3",
         "@types/react-dom": "^18.3.0",
         "@vercel/analytics": "^1.3.1",
         "@vercel/speed-insights": "^1.0.12",
-        "astro": "^5.1.8",
+        "astro": "^5.5.5",
         "astro-diagram": "^0.7.0",
         "axios": "^1.7.7",
         "decap-cms-app": "^3.6.2",
@@ -37,11 +36,13 @@
         "react-dom": "^18.3.1",
         "react-icons": "^5.4.0",
         "simple-icons": "^13.12.0",
-        "tailwindcss": "^3.4.10"
+        "tailwindcss": "^3.4.10",
+        "tinacms": "^2.7.3"
     },
     "devDependencies": {
         "@gsap/react": "^2.1.1",
-        "@types/node": "^22.1.0"
+        "@tinacms/cli": "^1.9.3",
+        "@types/node": "^22.13.13"
     },
     "optionalDependencies": {
         "@rollup/rollup-linux-x64-gnu": "4.6.1"
