@@ -3,9 +3,9 @@
     "type": "module",
     "version": "5.5.4",
     "scripts": {
-        "dev": "astro dev",
+        "dev": "tinacms dev -c \"astro dev",
         "start": "astro dev",
-        "build": "astro build",
+        "build": "tinacms build && astro build",
         "preview": "astro preview",
         "astro": "astro"
     },
@@ -36,11 +36,13 @@
         "react-dom": "^18.3.1",
         "react-icons": "^5.4.0",
         "simple-icons": "^13.12.0",
-        "tailwindcss": "^3.4.10"
+        "tailwindcss": "^3.4.10",
+        "tinacms": "^2.7.3"
     },
     "devDependencies": {
         "@gsap/react": "^2.1.1",
-        "@types/node": "^22.1.0"
+        "@tinacms/cli": "^1.9.3",
+        "@types/node": "^22.13.13"
     },
     "optionalDependencies": {
         "@rollup/rollup-linux-x64-gnu": "4.6.1"
