@@ -1,84 +1,59 @@
 {
     "popularBlogs": [
         {
-            "Page": "/",
-            "Visitors": 192,
-            "Total": 245
+            "Page": "/blog/firebase-vs-supperbase",
+            "Visitors": 44,
+            "Total": 51
         },
         {
-            "Page": "/blog/nvidia-ces-2025-announcements-rtx-50-project-digits",
-            "Visitors": 44,
-            "Total": 54
+            "Page": "/blog/idea_to_app",
+            "Visitors": 39,
+            "Total": 42
         },
         {
             "Page": "/blog/flutter-gradle-task-assembledebug-stuck-solution",
-            "Visitors": 27,
-            "Total": 31
+            "Visitors": 33,
+            "Total": 36
         },
         {
-            "Page": "/blog/private-search-engine",
-            "Visitors": 8,
-            "Total": 11
+            "Page": "/blog/web-assembly-in-flutter",
+            "Visitors": 17,
+            "Total": 17
+        },
+        {
+            "Page": "/blog/deepseak-vs-gpt-ai-comparison",
+            "Visitors": 15,
+            "Total": 15
         },
         {
             "Page": "/blog/flutter_fork_flock",
+            "Visitors": 8,
+            "Total": 8
+        },
+        {
+            "Page": "/blog/text-search-application-python",
+            "Visitors": 7,
+            "Total": 7
+        },
+        {
+            "Page": "/blog",
+            "Visitors": 6,
+            "Total": 7
+        },
+        {
+            "Page": "/blog/private-search-engine",
             "Visitors": 5,
             "Total": 5
         },
         {
             "Page": "/blog/search-on-static-site",
-            "Visitors": 4,
-            "Total": 4
+            "Visitors": 5,
+            "Total": 6
         },
         {
-            "Page": "/blog/web-assembly-in-flutter",
-            "Visitors": 4,
-            "Total": 4
-        },
-        {
-            "Page": "/blog/automate-life-in-linux",
+            "Page": "/blog/diy-ai-chatbot",
             "Visitors": 3,
             "Total": 3
-        },
-        {
-            "Page": "/blog/from-silicon-to-software-tech-trends",
-            "Visitors": 2,
-            "Total": 2
-        },
-        {
-            "Page": "/blog/text-search-application-python",
-            "Visitors": 2,
-            "Total": 4
-        },
-        {
-            "Page": "/blog/ai-coding-machine-learning",
-            "Visitors": 1,
-            "Total": 1
-        },
-        {
-            "Page": "/blog/make-money-from-open-source-software",
-            "Visitors": 1,
-            "Total": 1
-        },
-        {
-            "Page": "/blog/nvidia-driver-fedora",
-            "Visitors": 1,
-            "Total": 1
-        },
-        {
-            "Page": "/blog/there-another-new-ai-fork-of-vs-code",
-            "Visitors": 1,
-            "Total": 1
-        },
-        {
-            "Page": "/project/cinematic-experience",
-            "Visitors": 1,
-            "Total": 2
-        },
-        {
-            "Page": "/project/floaty_astronaut",
-            "Visitors": 1,
-            "Total": 1
         }
     ]
 }

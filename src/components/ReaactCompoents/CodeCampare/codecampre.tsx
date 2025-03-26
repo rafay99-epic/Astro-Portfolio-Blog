@@ -2,7 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import hljs from "highlight.js";
 import "highlight.js/styles/tokyo-night-dark.css";
 
-const CodeTabs = ({
+interface CodeTabsProps {
+  code1: string;
+  code2: string;
+  language1: string;
+  language2: string;
+  file1Title?: string;
+  file2Title?: string;
+}
+
+const CodeTabs: React.FC<CodeTabsProps> = ({
   code1,
   code2,
   language1,
@@ -10,11 +19,12 @@ const CodeTabs = ({
   file1Title = "File 1",
   file2Title = "File 2",
 }) => {
-  const [activeTab, setActiveTab] = useState("file1");
-  const code1Ref = useRef(null);
-  const code2Ref = useRef(null);
+  const [activeTab, setActiveTab] = useState<"file1" | "file2">("file1");
+  const code1Ref = useRef<HTMLDivElement>(null);
+  const code2Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    hljs.highlightAll();
     if (code1Ref.current) {
       hljs.highlightElement(code1Ref.current);
     }
@@ -25,7 +35,7 @@ const CodeTabs = ({
 
   return (
     <div className="rounded-lg shadow-sm mb-6 overflow-hidden">
-      <div className="flex  border-b ">
+      <div className="flex border-b">
         <button
           className={`px-4 py-2 text-white hover:bg-gray-700 transition-colors ${
             activeTab === "file1" ? "bg-gray-700 font-semibold" : ""
