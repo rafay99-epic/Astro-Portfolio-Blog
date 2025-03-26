@@ -70,12 +70,7 @@ try {
           <ShareButtons url={pageUrl} pagetitle="Newsletter" />
         </div>
         <hr class="mt-4" />
-        <div
-          data-aos="fade-up"
-          data-aos-delay="300"
-          data-aos-anchor-placement="top-bottom"
-          class="my-8 prose mx-auto text-justify"
-        >
+        <div class="my-8 prose mx-auto text-justify">
           <slot />
         </div>
         <div class="my-8 text-center">
@@ -85,10 +80,5 @@ try {
       </article>
     </main>
     <Footer />
-  </body><link
-    href="https://unpkg.com/aos@2.3.1/dist/aos.css"
-    rel="stylesheet"
-  />
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" onload="AOS.init()"
-  ></script>
+  </body>
 </html>
