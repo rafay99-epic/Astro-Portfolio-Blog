@@ -49,7 +49,7 @@ if (!featureFlags.showBlog) {
       {
         selectedPosts.map((post) => (
           <div
-            class="bg-[#1f2335] border border-[rgba(76,80,106,0.4)] p-6 rounded-lg shadow-md transition-transform duration-300 hover:-translate-y-1"
+            class="bg-[#1f2335] border border-[rgba(76,80,106,0.4)] p-6 rounded-lg shadow-md transition-transform duration-300 hover:-translate-y-1 flex flex-col"
             style="
               box-shadow: 0 4px 10px rgba(76, 80, 106, 0.25);
             "
@@ -62,13 +62,16 @@ if (!featureFlags.showBlog) {
             >
               {post.data.title}
             </a>
-            <p class="text-[#F8F8F8] opacity-75 text-sm mb-4">
+            <p class="text-[#F8F8F8] opacity-75 text-sm mb-2">
+              {" "}
               Published on: {post.data.pubDate.toLocaleDateString()}
             </p>
-            <p class="text-[#F8F8F8] text-base text-justify mb-3">
+            <p class="text-[#F8F8F8] text-base text-justify mb-3 line-clamp-3">
+              {" "}
               {post.data.description || "No description available"}
             </p>
-            <p class="text-[#F8F8F8] text-sm italic">
+            <p class="text-[#F8F8F8] text-sm italic mt-auto">
+              {" "}
               Written By: {post.data.authorName || "No Author Name"}
             </p>
           </div>
