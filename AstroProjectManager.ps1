@@ -1,7 +1,7 @@
 # Ensure the script stops on errors
 $ErrorActionPreference = "Stop"
 
-$logFile = "D:\Astro-Portfolio-Blog\error_log.txt"
+$logFile = "E:\Astro-Portfolio-Blog\error_log.txt"
 
 # Function to log errors
 function Write-ErrorLog {
@@ -20,7 +20,7 @@ function Resolve-Error {
 }
 
 # Set project directory
-$projectDir = "D:\Astro-Portfolio-Blog"
+$projectDir = "E:\Astro-Portfolio-Blog"
 Set-Location -Path $projectDir
 
 # Function to clean the project

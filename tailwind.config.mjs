@@ -6,6 +6,9 @@ export default {
       animation: {
         fadeSlideIn: "fadeSlideIn 1s forwards",
       },
+      screens: {
+        mobile: { max: "767px" },
+      },
       keyframes: {
         fadeSlideIn: {
           "0%": { opacity: "0", transform: "translateY(20px)" },

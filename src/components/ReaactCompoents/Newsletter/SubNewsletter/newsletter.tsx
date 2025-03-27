@@ -13,60 +13,75 @@ const Newsletter: React.FC = () => {
   } = useNewsletter();
 
   return (
-    <div className="flex items-center justify-center p-4 bg-gradient-to-br">
-      <div
-        className=" rounded-lg shadow-lg p-8 w-full max-w-4xl"
-        style={{
-          boxShadow:
-            "0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33)",
-        }}
-      >
-        <h2 className="text-5xl font-extrabold text-center text-white mb-6">
-          Subscribe to my Newsletter
-        </h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold text-gray-300"
-            >
-              Enter your email:
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-600 rounded-md focus:outline-none focus:border-[#7aa2f7] bg-gray-700 text-gray-200"
-              placeholder="you@example.com"
-              required
-            />
+    <div className="flex justify-center items-start">
+      <div className="max-w-7xl w-full rounded-2xl overflow-hidden flex flex-col md:flex-row items-center md:px-16">
+        <div className="md:w-1/2 flex justify-center items-center p-12 mobile:hidden">
+          {" "}
+          {/* Added mobile:hidden */}
+          <img
+            className="h-96 w-96 object-contain"
+            src="/assets/sub-newsletter.png"
+            alt="Avatar encouraging subscription"
+          />
+        </div>
+        <div className="p-16 md:w-1/2 flex flex-col justify-center h-full">
+          <div className="uppercase tracking-wide text-lg text-indigo-400 font-bold">
+            Stay Connected
           </div>
-
-          <div className="mb-4">
-            <label className="flex items-center text-gray-300 text-sm">
+          <h2 className="mt-2 text-3xl font-semibold text-white">
+            Join Our Newsletter!
+          </h2>
+          <p className="mt-4 text-gray-300 leading-relaxed text-lg">
+            Get the latest articles, tutorials, and exclusive offers delivered
+            straight to your inbox.
+          </p>
+          <form onSubmit={handleSubmit} className="mt-8">
+            <div className="mb-6">
+              <label
+                htmlFor="email"
+                className="block text-lg font-medium text-gray-300"
+              >
+                Email Address
+              </label>
               <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-2 block w-full px-6 py-4 text-gray-200 bg-gray-800 border border-gray-600 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 shadow-sm text-lg"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <div className="flex items-start mb-6">
+              <input
+                id="terms"
                 type="checkbox"
                 checked={isAgreed}
                 onChange={() => setIsAgreed(!isAgreed)}
-                className="mr-2 focus:ring focus:ring-[#7aa2f7]"
+                className="h-6 w-6 text-indigo-600 border-gray-600 rounded focus:ring-indigo-500"
               />
-              I agree to receive your newsletters and accept the data privacy
-              statement.
-            </label>
-          </div>
+              <label htmlFor="terms" className="ml-4 text-lg text-gray-300">
+                I agree to receive newsletters and accept the data privacy
+                statement.
+              </label>
+            </div>
 
-          {statusMessage && (
-            <p className={`mt-2 text-center ${statusColor}`}>{statusMessage}</p>
-          )}
+            {statusMessage && (
+              <p className={`mt-3 text-lg text-center ${statusColor}`}>
+                {statusMessage}
+              </p>
+            )}
 
-          <button
-            type="submit"
-            className="w-full py-3 px-6 mt-4 rounded-md transition-all duration-300 ease-in-out bg-[#7aa2f7] hover:bg-[#6571e0] text-white font-semibold text-lg"
-          >
-            Subscribe
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-full py-4 px-6 text-lg font-medium text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-[1.05]"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
