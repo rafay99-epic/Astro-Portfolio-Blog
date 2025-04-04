@@ -117,27 +117,27 @@ Here's the points about the research paper, and in this, I am telling everything
 
 **Core Idea/Problem:**
 
-\* The internet is plagued by disinformation (lies, conspiracies, general nonsense) with real-world harmful consequences.
+- The internet is plagued by disinformation (lies, conspiracies, general nonsense) with real-world harmful consequences.
 
-\* Current approaches (individual post-level) for tackling disinformation are like playing "whack-a-mole" and are not effective at scale.
+- Current approaches (individual post-level) for tackling disinformation are like playing "whack-a-mole" and are not effective at scale.
 
-\* A small number of sources (users, groups, domains) are responsible for a large portion of online disinformation.
+- A small number of sources (users, groups, domains) are responsible for a large portion of online disinformation.
 
 **Proposed Solution/Approach:**
 
-\* Domain-level analysis: Identify and classify entire domains (e.g., websites) as peddling disinformation, rather than focusing on individual posts.
+- Domain-level analysis: Identify and classify entire domains (e.g., websites) as peddling disinformation, rather than focusing on individual posts.
 
-\* Use a classifier that considers the following signals to predict if a domain is a source of disinformation:
+- Use a classifier that considers the following signals to predict if a domain is a source of disinformation:
 
-\* **Hyperlinks:** Analyze the connections between domains (who links to whom).
+- **Hyperlinks:** Analyze the connections between domains (who links to whom).
 
-\* **Meta Tags:** Examine the meta tags used for search engine optimization (SEO).
+- **Meta Tags:** Examine the meta tags used for search engine optimization (SEO).
 
-\* **Content:** Analyze the text content of the website's pages.
+- **Content:** Analyze the text content of the website's pages.
 
-\* Extend the analysis to identify disinformation on Telegram and Twitter.
+- Extend the analysis to identify disinformation on Telegram and Twitter.
 
-\* Propose systematic demotion of identified disinformation sources by search engines and social media recommendation algorithms.
+- Propose systematic demotion of identified disinformation sources by search engines and social media recommendation algorithms.
 
 **Key Contributions/Findings:**
 
@@ -155,63 +155,63 @@ Here's the points about the research paper, and in this, I am telling everything
 
 1\. **Data Collection:**
 
-\* Acquired lists of disinformation domains from the Global Disinformation Index (GDI) and NewsGuard (organizations that rate websites for journalistic standards).
+- Acquired lists of disinformation domains from the Global Disinformation Index (GDI) and NewsGuard (organizations that rate websites for journalistic standards).
 
-_Scraped content, meta tags, and hyperlinks from these domains and a comparison set of "info" domains (popular websites from the Alexa top 10,000_ not\* in the disinfo lists).
+_Scraped content, meta tags, and hyperlinks from these domains and a comparison set of "info" domains (popular websites from the Alexa top 10,000_ not- in the disinfo lists).
 
 2\. **Feature Extraction:**
 
-\* **Hyperlink Features:** Calculated the ratio of incoming links from disinfo domains, outgoing links to disinfo domains, etc., for each domain.
+- **Hyperlink Features:** Calculated the ratio of incoming links from disinfo domains, outgoing links to disinfo domains, etc., for each domain.
 
-\* **Meta Tag Features:** Extracted text from meta tags (keywords, description, etc.), pre-processed it (removed capitalization, punctuation, stop words, etc.), and weighted words using inverse document frequency (TF-IDF).
+- **Meta Tag Features:** Extracted text from meta tags (keywords, description, etc.), pre-processed it (removed capitalization, punctuation, stop words, etc.), and weighted words using inverse document frequency (TF-IDF).
 
-\* **Content Features:** Extracted visible text from web pages, pre-processed it similarly to meta tags, and weighted words using TF-IDF.
+- **Content Features:** Extracted visible text from web pages, pre-processed it similarly to meta tags, and weighted words using TF-IDF.
 
 3\. **Classification:**
 
-\* Used a linear Support Vector Machine (SVM) to classify domains as either "disinfo" or "info."
+- Used a linear Support Vector Machine (SVM) to classify domains as either "disinfo" or "info."
 
-\* Trained separate SVMs for each feature type (hyperlinks, meta tags, content) and a combined SVM using all features.
+- Trained separate SVMs for each feature type (hyperlinks, meta tags, content) and a combined SVM using all features.
 
-\* Used cross-validation to optimize SVM parameters.
+- Used cross-validation to optimize SVM parameters.
 
 4\. **Telegram Analysis:**
 
-\* Scraped channels on Telegram that share disinformation.
+- Scraped channels on Telegram that share disinformation.
 
-\* Built a graph of Telegram channels connected by message forwarding.
+- Built a graph of Telegram channels connected by message forwarding.
 
-\* Used community detection algorithms to identify clusters of related channels.
+- Used community detection algorithms to identify clusters of related channels.
 
 5\. **Twitter Analysis:**
 
-\* Identified Twitter users sharing disinfo domains.
+- Identified Twitter users sharing disinfo domains.
 
-\* Built a graph of disinfo domains connected by shared Twitter users.
+- Built a graph of disinfo domains connected by shared Twitter users.
 
-\* Identified prominent URLs shared by disinfo spreaders.
+- Identified prominent URLs shared by disinfo spreaders.
 
 **Results (Key Performance Metrics):**
 
-\* The SVM classifier achieved high accuracy in distinguishing disinfo domains from info domains.
+- The SVM classifier achieved high accuracy in distinguishing disinfo domains from info domains.
 
-\* The combined classifier (using meta tags, content, and hyperlinks) performed best (F1 score of 94.1%).
+- The combined classifier (using meta tags, content, and hyperlinks) performed best (F1 score of 94.1%).
 
 **Insights & Observations:**
 
-\* Disinfo domains tend to link heavily to other disinfo domains but are less frequently linked to by reputable information sources.
+- Disinfo domains tend to link heavily to other disinfo domains but are less frequently linked to by reputable information sources.
 
-\* The content and meta tags of disinfo domains contain specific words and phrases that are predictive of their classification.
+- The content and meta tags of disinfo domains contain specific words and phrases that are predictive of their classification.
 
-\* The hyperlinking structure reveals coordinated networks of disinformation efforts (e.g., clusters of fake local news sites).
+- The hyperlinking structure reveals coordinated networks of disinformation efforts (e.g., clusters of fake local news sites).
 
-\* The analysis extended to Telegram and Twitter to identify prolific disinformation spreaders and uncover connections between different disinformation communities.
+- The analysis extended to Telegram and Twitter to identify prolific disinformation spreaders and uncover connections between different disinformation communities.
 
 **Potential Actions/Implications:**
 
-\* Search engines and social media platforms could use domain-level classification to demote or de-monetize disinformation sources.
+- Search engines and social media platforms could use domain-level classification to demote or de-monetize disinformation sources.
 
-\* Recommendation algorithms could avoid promoting content from identified disinfo domains.
+- Recommendation algorithms could avoid promoting content from identified disinfo domains.
 
 **Related work:**
 
@@ -223,9 +223,9 @@ Finally, the research also looks at disinformation domain analysis of Telegram a
 
 **Limitations:**
 
-\* The informational data set is crude because the 10000 Alexa-rated sites are selected without the disinfo domains.
+- The informational data set is crude because the 10000 Alexa-rated sites are selected without the disinfo domains.
 
-\*A smaller dataset would lead to a classification accuracy.
+-A smaller dataset would lead to a classification accuracy.
 
 **Overall Thought Process:**
 
@@ -241,37 +241,37 @@ This research offers a scalable and automated approach to tackling disinformatio
 
 **Strengths:**
 
-\* **Scalable Approach:** The domain-level analysis offers a more scalable approach to combating disinformation compared to traditional methods that focus on individual posts. This is a significant advantage in addressing the sheer volume of online content.
+- **Scalable Approach:** The domain-level analysis offers a more scalable approach to combating disinformation compared to traditional methods that focus on individual posts. This is a significant advantage in addressing the sheer volume of online content.
 
-\* **Multi-faceted Analysis:** The use of multiple signals (hyperlinks, meta tags, content) provides a more robust and accurate classification of disinformation domains. Combining these features improves the overall performance.
+- **Multi-faceted Analysis:** The use of multiple signals (hyperlinks, meta tags, content) provides a more robust and accurate classification of disinformation domains. Combining these features improves the overall performance.
 
-\* **Objective Data Sources:** The use of disinformation domain lists from reputable organizations (GDI and NewsGuard) enhances the credibility of the study.
+- **Objective Data Sources:** The use of disinformation domain lists from reputable organizations (GDI and NewsGuard) enhances the credibility of the study.
 
-\* **Real-World Applicability:** The proposed solution (demoting disinfo domains in search results and recommendation algorithms) is directly applicable to real-world platforms.
+- **Real-World Applicability:** The proposed solution (demoting disinfo domains in search results and recommendation algorithms) is directly applicable to real-world platforms.
 
-\* **Generalizability:** The analysis is extended to Telegram and Twitter, suggesting that the domain-level principles can be applied to other platforms.
+- **Generalizability:** The analysis is extended to Telegram and Twitter, suggesting that the domain-level principles can be applied to other platforms.
 
-\* **Revealing Network Structure:** The hyperlink analysis reveals coordinated disinformation efforts and clusters of fake news sites, providing valuable insights into the disinformation ecosystem.
+- **Revealing Network Structure:** The hyperlink analysis reveals coordinated disinformation efforts and clusters of fake news sites, providing valuable insights into the disinformation ecosystem.
 
-\* **Interpretability:** The use of a linear SVM classifier makes the model interpretable, allowing researchers to identify the words and phrases most predictive of disinformation domains. This transparency is important for understanding the factors driving the classification.
+- **Interpretability:** The use of a linear SVM classifier makes the model interpretable, allowing researchers to identify the words and phrases most predictive of disinformation domains. This transparency is important for understanding the factors driving the classification.
 
-\* **Replicability:** The research offers an anonymous repository to allow other researchers to replicate the team's findings.
+- **Replicability:** The research offers an anonymous repository to allow other researchers to replicate the team's findings.
 
 **Weaknesses:**
 
-\* **Potential for Bias:** While using established data sources helps, any list of disinformation domains is inherently subject to some degree of bias, either in terms of the criteria used for assessment or the types of sources that are focused on. The authors have tried to make this assessment objective by the reliance of independent organizations such as NewsGuard and GDI.
+- **Potential for Bias:** While using established data sources helps, any list of disinformation domains is inherently subject to some degree of bias, either in terms of the criteria used for assessment or the types of sources that are focused on. The authors have tried to make this assessment objective by the reliance of independent organizations such as NewsGuard and GDI.
 
-\* **Crude Comparison Data:** The selection of Alexa top-rated sites as the "info" domain data is simplistic. Alexa rankings capture popularity but not necessarily trustworthiness or journalistic integrity. There is a lack of confidence in the electoral system that would result from using only publicly created content.
+- **Crude Comparison Data:** The selection of Alexa top-rated sites as the "info" domain data is simplistic. Alexa rankings capture popularity but not necessarily trustworthiness or journalistic integrity. There is a lack of confidence in the electoral system that would result from using only publicly created content.
 
-\* **Domain Blocking:** The team identified the inability to scrape certain websites as a weakness in collecting the initial data, and has provided measures they took to narrow the disinformation data.
+- **Domain Blocking:** The team identified the inability to scrape certain websites as a weakness in collecting the initial data, and has provided measures they took to narrow the disinformation data.
 
-\* **Evolving Disinformation Tactics:** Disinformation peddlers could adapt their tactics to evade detection (e.g., adding decoy links). This means that the approach needs to be continuously updated.
+- **Evolving Disinformation Tactics:** Disinformation peddlers could adapt their tactics to evade detection (e.g., adding decoy links). This means that the approach needs to be continuously updated.
 
-\* **Smaller Disinfo Sample Size:** By removing related Metric Media entities the team reduced the overall performance of the dataset and believe that expanding the dataset will solve the problem.
+- **Smaller Disinfo Sample Size:** By removing related Metric Media entities the team reduced the overall performance of the dataset and believe that expanding the dataset will solve the problem.
 
-\* **Oversimplification:** Categorizing a domain as either "disinfo" or "info" may be too simplistic. There may be domains that occasionally publish misleading information but are not consistently dedicated to disinformation. The paper classifies an entire domain (e.g., [www.rt.com](http://www.rt.com)) as an unreliable news source.
+- **Oversimplification:** Categorizing a domain as either "disinfo" or "info" may be too simplistic. There may be domains that occasionally publish misleading information but are not consistently dedicated to disinformation. The paper classifies an entire domain (e.g., [www.rt.com](http://www.rt.com)) as an unreliable news source.
 
-\* **Lack of False Positives Analysis:** The paper focuses on accuracy, precision, recall, and F1 score, but doesn't deeply investigate _false positives_. What kinds of "info" domains are incorrectly classified as "disinfo," and why? This could reveal potential issues with the feature selection or classifier.
+- **Lack of False Positives Analysis:** The paper focuses on accuracy, precision, recall, and F1 score, but doesn't deeply investigate _false positives_. What kinds of "info" domains are incorrectly classified as "disinfo," and why? This could reveal potential issues with the feature selection or classifier.
 
 # Summary
 

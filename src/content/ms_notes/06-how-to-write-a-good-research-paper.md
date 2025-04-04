@@ -7,17 +7,18 @@ lecture_draft: true
 lectureNumber: "06"
 subject: Research Methods
 ---
+
 Simon Peyton Jones, formerly of Microsoft, offered several recommendations for writing effective research papers.
 
 **1\. Don't Wait: Write**
 
 This principle suggests a streamlined process where you begin writing early in the research journey. Instead of the traditional approach:
 
-\* Your Idea -> Do Research -> Write Paper
+- Your Idea -> Do Research -> Write Paper
 
 Peyton Jones advocates for:
 
-\* Your Idea -> Write Paper -> Do Research
+- Your Idea -> Write Paper -> Do Research
 
 According to my lecture, the latter method is preferable. Writing early helps clarify and focus your ideas, crystallize your understanding, and identify gaps in your knowledge. This approach facilitates dialogue, enabling reality checks, critical feedback, and effective collaboration.
 
@@ -35,8 +36,8 @@ Your paper should have just _one_ clear, sharp, reusable idea – a "ping." You 
 
 Many papers contain good ideas but fail to distill what they are. Ensure the reader is in _no doubt_ about your core insight. Be 100% explicit:
 
-\* "The main idea of this paper is..."
+- "The main idea of this paper is..."
 
-\* "In this section, we present the main contributions of the paper..."
+- "In this section, we present the main contributions of the paper..."
 
 Make sure your reader can "hear the 'ping!'" and clearly understand the reusable insight you are offering.
