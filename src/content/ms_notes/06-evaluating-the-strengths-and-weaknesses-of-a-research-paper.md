@@ -8,7 +8,7 @@ lecture_description: This guide provides a structured approach to analyzing
   research work.
 pubDate: 2025-04-04
 lecture_draft: true
-lectureNumber: "06"
+lectureNumber: "07"
 subject: Research Methods
 ---
 ## Agenda
