@@ -4,7 +4,7 @@ lecture_description: "In this lecture, I will discuss how to write a good
   research paper and what matters in a research paper. "
 pubDate: 2025-03-26
 lecture_draft: true
-lectureNumber: "05"
+lectureNumber: "06"
 subject: Research Methods
 ---
 Simon Peyton Jones, formerly of Microsoft, offered several recommendations for writing effective research papers.
