@@ -288,7 +288,7 @@ This research offers a scalable and automated approach to tackling disinformatio
 
 \* **Crude Comparison Data:** The selection of Alexa top-rated sites as the "info" domain data is simplistic. Alexa rankings capture popularity but not necessarily trustworthiness or journalistic integrity. There is a lack of confidence in the electoral system that would result from using only publicly created content.
 
-\* **Domain Blocking:** The team identified the inability to scrape certain websites as a weakness in collecting the initial data, and has provided measures they took to narrow the disinfo data.
+\* **Domain Blocking:** The team identified the inability to scrape certain websites as a weakness in collecting the initial data, and has provided measures they took to narrow the disinformation data.
 
 \* **Evolving Disinformation Tactics:** Disinformation peddlers could adapt their tactics to evade detection (e.g., adding decoy links). This means that the approach needs to be continuously updated.
 
