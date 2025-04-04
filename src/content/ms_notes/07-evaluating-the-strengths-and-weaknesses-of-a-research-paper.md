@@ -7,7 +7,7 @@ lecture_description: This guide provides a structured approach to analyzing
   strengths and weaknesses, ensuring a critical and objective evaluation of
   research work.
 pubDate: 2025-04-04
-lecture_draft: true
+lecture_draft: false
 lectureNumber: "07"
 subject: Research Methods
 ---
