@@ -34,7 +34,7 @@ export default defineConfig({
     "/Meaning-Mate-APK": "/downloads/app/meaning_mate/Meaning-Mate-APK.apk",
     "/MSBridge-APK": "/downloads/app/msbridge/release/MSBridge-release.apk",
     "/MSBridge-beta": "/downloads/app/msbridge/beta/MSBridge-beta.apk",
-    "/SimpleThread-APK": "/downloads/app//SimpleThread/simple_thread.apk",
+    "/SimpleThread-APK": "/downloads/app/SimpleThread/simple_thread.apk",
   },
   security: {
     checkOrigin: true,
