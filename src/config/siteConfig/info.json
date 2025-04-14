@@ -4,7 +4,7 @@
     "name": "Abdul Rafay",
     "jobTitle": "Software Engineer",
     "position": "Full Stack Developer",
-    "picture": "/author.jpg",
+    "picture": "/author.png",
     "avator": "/favicon.png",
     "socialLinks": {
         "twitter": "https://twitter.com/future_insight9",
@@ -19,7 +19,8 @@
         "lifeBeyondCode": "Beyond code, I find joy in life's simple pleasures – sipping coffee, engaging in video game battles, and embracing the challenge of new experiences. This holistic approach recharges my creativity and enriches my problem-solving perspective.",
         "continuousLearning": "In my free time, I'm passionate about continuous learning. Thriving on the tech industry's dynamic challenges, I expand my skill set, always seeking growth. Let's collaborate and create something extraordinary!"
     },
-    "techStack": [{
+    "techStack": [
+        {
             "category": "App Development",
             "tools": [
                 "flutter",
@@ -89,7 +90,8 @@
             ]
         }
     ],
-    "workExperience": [{
+    "workExperience": [
+        {
             "companyName": "Daxno Technology",
             "position": "Flutter Developer & Team Lead",
             "employmentTime": "2nd Feb, 2024 - Present",
