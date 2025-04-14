@@ -14,6 +14,9 @@ export default defineConfig({
   build: {
     format: "directory",
   },
+  prefetch: {
+    prefetchAll: true,
+  },
   experimental: {
     svg: true,
   },

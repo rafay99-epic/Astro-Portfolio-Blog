@@ -19,13 +19,137 @@ import { ClientRouter } from "astro:transitions";
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Google Fonts: Poppins -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-  rel="stylesheet"
-/><!-- Canonical URL -->
+<head>
+  <!-- Preload Poppins Fonts -->
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-Black.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-BlackItalic.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-Bold.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-BoldItalic.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-ExtraBold.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-ExtraBoldItalic.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-ExtraLight.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-ExtraLightItalic.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-Italic.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-Light.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-LightItalic.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-Medium.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-MediumItalic.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-Regular.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-SemiBold.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-SemiBoldItalic.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-Thin.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="/fonts/Poppins/Poppins-ThinItalic.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin="anonymous"
+  />
+</head>
+
+<!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Primary Meta Tags -->
@@ -61,10 +185,6 @@ import { ClientRouter } from "astro:transitions";
 <!-- View Transitions -->
 <ClientRouter />
 
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-/>
 <!-- Good Indexing Search Console  for future Insight-->
 <meta
   name="google-site-verification"
