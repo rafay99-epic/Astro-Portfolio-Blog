@@ -16,14 +16,14 @@ const BlogSectionUI: React.FC<BlogSectionUIProps> = ({
 }) => {
   return (
     <motion.main
-      className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10"
+      className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-1"
       exit={{ opacity: 0, y: 20 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       style={{ backgroundColor: "var(--accent-dark)" }}
     >
-      <h1 className="text-6xl p-7 font-bold">Articles</h1>
+      <h1 className="text-6xl ml-7 mb-5 font-bold">Articles</h1>
       <section>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
           {currentPosts.map((post) => (
@@ -55,7 +55,7 @@ const BlogSectionUI: React.FC<BlogSectionUIProps> = ({
         </ul>
       </section>
 
-      <div className="mt-8 flex justify-center">
+      <div className="mt-6 flex justify-center">
         <nav className="flex gap-2">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
