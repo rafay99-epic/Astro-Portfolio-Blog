@@ -19,135 +19,133 @@ import { ClientRouter } from "astro:transitions";
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 
-<head>
-  <!-- Preload Poppins Fonts -->
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-Black.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-BlackItalic.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-Bold.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-BoldItalic.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-ExtraBold.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-ExtraBoldItalic.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-ExtraLight.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-ExtraLightItalic.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-Italic.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-Light.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-LightItalic.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-Medium.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-MediumItalic.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-Regular.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-SemiBold.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-SemiBoldItalic.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-Thin.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="preload"
-    href="/fonts/Poppins/Poppins-ThinItalic.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin="anonymous"
-  />
-</head>
+<!-- Preload Poppins Fonts -->
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-Black.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-BlackItalic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-Bold.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-BoldItalic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-ExtraBold.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-ExtraBoldItalic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-ExtraLight.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-ExtraLightItalic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-Italic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-Light.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-LightItalic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-Medium.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-MediumItalic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-Regular.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-SemiBold.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-SemiBoldItalic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-Thin.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-ThinItalic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+/>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
