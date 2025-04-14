@@ -87,3 +87,6 @@ export default defineConfig({
     },
   },
 });
+
+// Worst Performance  Link
+//  https://pagespeed.web.dev/analysis/https-rafay99-com/4535jegvpv?form_factor=desktop
