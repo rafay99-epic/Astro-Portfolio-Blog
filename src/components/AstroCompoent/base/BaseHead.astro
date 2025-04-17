@@ -11,6 +11,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = "/Rafay99.png" } = Astro.props;
 
 import { ClientRouter } from "astro:transitions";
+
+import FeatureFlage from "@config/featureFlag/featureFlag.json";
 ---
 
 <!-- Global Metadata -->
@@ -181,7 +183,7 @@ import { ClientRouter } from "astro:transitions";
 <meta name="image" content={new URL(image, Astro.url)} />
 
 <!-- View Transitions -->
-<!-- <ClientRouter /> -->
+{FeatureFlage.featureFlags.enableViewTransation && <ClientRouter />}
 
 <!-- Good Indexing Search Console  for future Insight-->
 <meta

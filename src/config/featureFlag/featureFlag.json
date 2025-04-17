@@ -16,7 +16,8 @@
         "showPrivacyPolicy": true,
         "showWiki": true,
         "showNotes": true,
-        "showWhatsNew": true
+        "showWhatsNew": true,
+        "enableViewTransation": false
     },
     "FeatureFlagsApi": {
         "enableauthorInfoAPI": true
