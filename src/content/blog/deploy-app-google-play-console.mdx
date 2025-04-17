@@ -1,7 +1,7 @@
 ---
-title: 'From Code to Chaos: The Pain of App Deployment'
+title: Deploying Android Apps in 2025 — A Solo Dev's Journey
 description: 'Once upon a time, deploying an app was simple. Then Google changed everything.'
-pubDate: 2025-04-12T07:00:00.000Z
+pubDate: 2025-04-17T19:00:00.000Z
 draft: true
 heroImage: /BlogImages/Untitled%20design.png
 authorName: Abdul Rafay
@@ -11,25 +11,67 @@ tags:
   - ThoughtsProcess
 ---
 
-We all know I develop Android and iOS applications using Flutter — and I’m quite good at it. Building an application is one part of the game, but the second part is deploying Android and iOS applications.
+We all know I develop Android and iOS applications using Flutter — and I’m pretty good at it. Building an application is just one part of the game. The real challenge often lies in the second part: **deploying** those applications to the respective app stores.
 
-Here’s the truth: I develop Android applications because I don’t have an Apple device to test or deploy my apps to the Apple Store. But today, we’re going to talk about the hard reality of deploying Android applications on the Google Play Console.
+Now, here's the truth:\
+I mainly develop Android applications because I **don’t own an Apple device**, which means I can’t test or deploy apps to the Apple Store. That’s a story for another day.
 
-Buckle your belt, because it’s going to be a hell of a ride.
- This is my journey of deploying an Android application after a long time.
+But today, we’re going to talk about something closer to home — the **harsh reality of deploying Android applications on the Google Play Console in 2025**.
 
-### TL;DR
+> Buckle up, because it’s going to be a hell of a ride.
 
-A long time ago, you paid for access to the Google Play Console. Once you were in, you added your email, name, and then created a release for your application.
+This blog post is my personal journey of deploying an Android app after a long time. Things have changed, and if you’re getting back into it after a while, you might want to read this all the way through.
 
-After that, you'd create a signed AAB file for your Android app, fill out some forms, provide a few details, and share a demo username and password. Once everything was set up, your application would go through a review process that usually took two to three business days. If everything was good, your app would be deployed to millions of users around the world.
+## A Little Context
 
-That was the process for quite a while.
- But then Google changed the policy — and the whole structure.
+In one of my previous blog posts, I shared the journey of building a new Android app called **[MS Bridge](https://ms-bridge-app.vercel.app/)**. It’s a simple note-reading and note-taking application — something I built because I was never really a fan of Google Keep. I wanted to create a tool that met **my own workflow** and personal needs.
 
-I don’t know what the new structure is exactly. I don’t deploy Android applications anymore. I just build and test them — the deployment is now handled by other team members.
+And guess what?\
+I actually use this app **every day**.
 
-But recently, a client came up, and I had to deploy the application myself.
-So now, we’re going to explore the new process of deploying an Android application
+If you’re curious about the build process or want to see how I made it using Flutter, check out the full write-up [here](https://www.rafay99.com/blog/idea_to_app/). In that blog post, I dive into the architecture and the thought process behind the app.
 
-.
+## TL;DR
+
+A while back, deploying apps on Google Play Console used to be **simple**:
+
+* You paid a one-time $25 fee.
+* Filled out your developer profile.
+* Generated and uploaded a signed AAB file.
+* Completed a few forms and privacy declarations.
+* Shared demo credentials (if applicable).
+* And then, waited 2–3 business days for a manual review.
+
+If all was well, your app would go live and be available to users around the world. **Easy, right?**
+
+Well, that was then.
+
+## The Past: How It Used to Be
+
+Back in the day, Google had **the most lenient rules** for deploying apps. Whether those rules were too relaxed is up for debate, but for indie developers like myself, it was manageable.
+
+The flow was straightforward:
+
+* Buy access to the Play Console for $25 (one-time payment).
+* Verify your identity with a valid ID.
+* Build and sign your APK or AAB file.
+* Create a new release and fill out the required forms.
+* Upload your AAB, and submit it for review.
+
+If everything was filled out correctly, your app would get approved — no fuss, no confusion.
+
+It was a **solo dev's dream**.
+
+## The Present: A Reality Check
+
+I won’t lie — I haven’t deployed Android apps myself in a long time. Nowadays, I usually just **build and test** the apps, while someone else on the team handles deployment.
+
+But recently, a client came to me with a request that required me to **handle everything** — including the deployment.
+
+That’s when I realized just how much things have changed.
+
+Google has **restructured** the deployment process significantly. New identity verification steps, stricter policies, longer wait times, and even more granular forms to fill out.
+
+I’ll walk you through that updated process — what changed, what’s still the same, and what to watch out for — in the next section of this blog.
+
+The things have changed now
