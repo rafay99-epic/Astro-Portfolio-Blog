@@ -50,7 +50,15 @@ export default defineConfig({
     }),
     tailwind(),
   ],
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+    maxDuration: 3,
+    imageService: true,
+    devImageService: "sharp",
+    isr: true,
+  }),
   vite: {
     resolve: {
       alias: {
