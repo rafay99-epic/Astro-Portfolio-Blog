@@ -38,6 +38,7 @@ export default defineConfig({
     "/MSBridge-APK": "/downloads/app/msbridge/release/MSBridge-release.apk",
     "/MSBridge-beta": "/downloads/app/msbridge/beta/app-release.apk",
     "/SimpleThread-APK": "/downloads/app/SimpleThread/simple_thread.apk",
+    "/MeetTime-APK": "/downloads/app/meet_time/MeetTime.apk",
   },
   security: {
     checkOrigin: true,
