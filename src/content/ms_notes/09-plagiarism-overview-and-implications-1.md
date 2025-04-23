@@ -5,7 +5,7 @@ lecture_description: >+
   serious offense with academic and professional consequences.
 
 pubDate: 2025-04-16
-lecture_draft: true
+lecture_draft: false
 lectureNumber: "09"
 subject: Research Methods
 ---
