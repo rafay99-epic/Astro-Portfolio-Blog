@@ -54,23 +54,31 @@ try {
 <html lang="en">
   <head>
     <BaseHead
-      title={`MS Notes | ${authorConfig.SiteName}`}
-      description={`Browse all notes on ${authorConfig.SiteName} and explore categorized content.`}
+      title={`MS Notes | ${subject} | ${authorConfig.SiteName}`}
+      description={`Browse notes for the subject ${subject} on ${authorConfig.SiteName}.`}
     />
   </head>
   <body>
     <Header />
     <SpeedInsights />
-    <main>
+    <main class="pt-4 px-4">
       <section>
-        <h1 class="text-3xl font-bold, text-white, text-center">
+        <h1 class="text-3xl font-bold, text-white, text-center mb-6">
           Notes for {subject}
         </h1>
-        <NotesGrid notes={notes} client:load />
+        {
+          notes.length > 0 ? (
+            <NotesGrid notes={notes} client:load />
+          ) : (
+            <p class="text-center text-gray-400 mt-4">
+              No notes found for this subject.
+            </p>
+          )
+        }
       </section>
     </main>
-    <section>
-      <Footer class="mt-auto" />
+    <section class="mt-auto">
+      <Footer />
     </section>
   </body>
 </html>
