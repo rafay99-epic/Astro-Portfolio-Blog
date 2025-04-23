@@ -10,12 +10,23 @@ function getChildByTagName(
 }
 
 function copyCode(event: MouseEvent) {
+  const target = event.currentTarget as HTMLElement;
+  if (!target || !target.parentElement || !target.parentElement.parentElement) {
+    console.error('Invalid DOM structure for copy button');
+    return;
+  }
+
   const codeBlock = getChildByTagName(
-    (event.currentTarget as HTMLElement)?.parentElement?.parentElement!,
+    target.parentElement.parentElement,
     "code"
   );
-  if (!codeBlock) return;
+  if (!codeBlock) {
+    console.error('Could not find code element to copy');
+    return;
+  }
 
+  // ...rest of your copy logic
+}
   navigator.clipboard.writeText(codeBlock.textContent || "")
     .then(() => {
       const svg = getChildByTagName(event.currentTarget as HTMLElement, "svg");
