@@ -1,5 +1,9 @@
 ---
-lecture_title: Qualitative Research vs quantitative Research
+lecture_title: Qualitative Research vs Quantitative Research
+lecture_description: >
+  A comprehensive guide exploring the types of research methods, qualitative and
+  quantitative data, and how to assess the adequacy and reliability of your
+  research findings.
 pubDate: 2025-04-23
 lecture_draft: true
 lectureNumber: "11"
