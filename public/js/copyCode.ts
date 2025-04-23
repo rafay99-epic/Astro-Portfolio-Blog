@@ -10,61 +10,34 @@ function getChildByTagName(
 }
 
 function copyCode(event: MouseEvent) {
-  const target = event.currentTarget as HTMLElement;
-  if (!target || !target.parentElement || !target.parentElement.parentElement) {
-    console.error('Invalid DOM structure for copy button');
-    return;
-  }
-
   const codeBlock = getChildByTagName(
-    target.parentElement.parentElement,
+    (event.currentTarget as HTMLElement)?.parentElement?.parentElement!,
     "code"
   );
-  if (!codeBlock) {
-    console.error('Could not find code element to copy');
-    return;
-  }
+  if (!codeBlock) return;
 
-  // ...rest of your copy logic
-}
-  navigator.clipboard.writeText(codeBlock.textContent || "")
-    .then(() => {
-      const svg = getChildByTagName(event.currentTarget as HTMLElement, "svg");
-      if (!svg) {
-        console.error('SVG element not found');
-        return;
-      }
-      const use = getChildByTagName(svg, "use");
-      if (!use) {
-        console.error('Use element not found in SVG');
-        return;
-      }
+  navigator.clipboard.writeText(codeBlock.textContent || "").then(() => {
+    const svg = getChildByTagName(event.currentTarget as HTMLElement, "svg");
+    const use = getChildByTagName(svg!, "use");
 
+    if (use instanceof SVGUseElement) {
+      use.setAttribute("href", "/copy.svg#filled");
+    }
+
+    (event.currentTarget as HTMLElement).setAttribute(
+      "aria-label",
+      "Code copied!"
+    );
+    setTimeout(() => {
       if (use instanceof SVGUseElement) {
-        use.setAttribute("href", "/copy.svg#filled");
+        use.setAttribute("href", "/copy.svg#empty");
       }
-
       (event.currentTarget as HTMLElement).setAttribute(
         "aria-label",
-        "Code copied!"
+        "Copy code to clipboard"
       );
-      setTimeout(() => {
-        if (use instanceof SVGUseElement) {
-          use.setAttribute("href", "/copy.svg#empty");
-        }
-        (event.currentTarget as HTMLElement).setAttribute(
-          "aria-label",
-          "Copy code to clipboard"
-        );
-      }, 2000);
-    })
-    .catch(err => {
-      console.error('Failed to copy code to clipboard:', err);
-      (event.currentTarget as HTMLElement).setAttribute(
-        "aria-label",
-        "Failed to copy"
-      );
-    });
+    }, 2000);
+  });
 }
 
 export default function initCopyCode() {
