@@ -16,28 +16,44 @@ function copyCode(event: MouseEvent) {
   );
   if (!codeBlock) return;
 
-  navigator.clipboard.writeText(codeBlock.textContent || "").then(() => {
-    const svg = getChildByTagName(event.currentTarget as HTMLElement, "svg");
-    const use = getChildByTagName(svg!, "use");
-
-    if (use instanceof SVGUseElement) {
-      use.setAttribute("href", "/copy.svg#filled");
-    }
-
-    (event.currentTarget as HTMLElement).setAttribute(
-      "aria-label",
-      "Code copied!"
-    );
-    setTimeout(() => {
-      if (use instanceof SVGUseElement) {
-        use.setAttribute("href", "/copy.svg#empty");
+  navigator.clipboard.writeText(codeBlock.textContent || "")
+    .then(() => {
+      const svg = getChildByTagName(event.currentTarget as HTMLElement, "svg");
+      if (!svg) {
+        console.error('SVG element not found');
+        return;
       }
+      const use = getChildByTagName(svg, "use");
+      if (!use) {
+        console.error('Use element not found in SVG');
+        return;
+      }
+
+      if (use instanceof SVGUseElement) {
+        use.setAttribute("href", "/copy.svg#filled");
+      }
+
       (event.currentTarget as HTMLElement).setAttribute(
         "aria-label",
-        "Copy code to clipboard"
+        "Code copied!"
       );
-    }, 2000);
-  });
+      setTimeout(() => {
+        if (use instanceof SVGUseElement) {
+          use.setAttribute("href", "/copy.svg#empty");
+        }
+        (event.currentTarget as HTMLElement).setAttribute(
+          "aria-label",
+          "Copy code to clipboard"
+        );
+      }, 2000);
+    })
+    .catch(err => {
+      console.error('Failed to copy code to clipboard:', err);
+      (event.currentTarget as HTMLElement).setAttribute(
+        "aria-label",
+        "Failed to copy"
+      );
+    });
 }
 
 export default function initCopyCode() {
