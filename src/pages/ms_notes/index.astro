@@ -9,7 +9,11 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import NotesGrid from "@components/ReaactCompoents/MS_Notes/MS_Notes";
 export const prerender = true;
 
-const notes = (await getCollection("ms_notes")).sort(
+const publishedNotes = await getCollection("ms_notes", ({ data }) => {
+  return data.lecture_draft === false;
+});
+
+const notes = publishedNotes.sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
 
