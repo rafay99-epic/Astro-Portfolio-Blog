@@ -156,24 +156,49 @@ Aims to measure and test hypotheses using numerical data.
 
 * * *
 
-### **Evaluating Research Quality**
+* * *
 
-#### **Qualitative**
+## 🔍 **Evaluating Research Quality**
 
-*   Are the research questions clear and methods appropriate?
-    
-*   Are conclusions grounded in the data?
-    
-*   Are themes logically constructed and researcher biases addressed?
-    
+### **🔹 Qualitative Research**
 
-#### **Quantitative**
-
-*   Is the chosen method (survey, experiment) suitable for the research?
+1.  **Are the research questions clear and methods appropriate?**
     
-*   Is the sample size sufficient and representative?
+    *   Good qualitative research starts with well-defined, open-ended questions that align with interpretive methods such as interviews or observations.
+        
+    *   The method (e.g., narrative, ethnography, case study) should match the aim of exploring complex human experiences or social phenomena.
+        
+2.  **Are conclusions grounded in the data?**
     
-*   Are the findings statistically valid and well-analyzed?
+    *   Findings must be directly supported by data collected (quotes, field notes, themes).
+        
+    *   There should be a transparent link between participant responses and interpretations made by the researcher.
+        
+3.  **Are themes logically constructed and researcher biases addressed?**
     
+    *   Thematic coding must follow a logical process, usually backed by coding frameworks.
+        
+    *   Researchers should disclose potential biases and reflect on their influence on the analysis (reflexivity).
+        
 
 * * *
+
+### **🔹 Quantitative Research**
+
+1.  **Is the chosen method (survey, experiment) suitable for the research?**
+    
+    *   The research method must match the research objective: surveys for broad trends, experiments for causal relationships.
+        
+    *   Appropriateness depends on whether the method can effectively test the hypothesis.
+        
+2.  **Is the sample size sufficient and representative?**
+    
+    *   The sample should be large enough to achieve statistical power.
+        
+    *   It should also represent the population being studied to ensure findings can be generalized.
+        
+3.  **Are the findings statistically valid and well-analyzed?**
+    
+    *   The use of proper statistical tests (e.g., t-tests, ANOVA, regression) is crucial.
+        
+    *   Data must be clean, and assumptions of statistical tests must be met; conclusions must be supported by p-values, confidence intervals, or effect sizes.
