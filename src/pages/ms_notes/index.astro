@@ -6,12 +6,12 @@ import authorConfig from "@config/siteConfig/info.json";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import NotesGrid from "@components/ReaactCompoents/MS_Notes/MS_Notes";
-export const prerender = true;
-
-const notes = (await getCollection("ms_notes")).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+export const prerender = false;
+const publishedNotes = await getCollection(
+  "ms_notes",
+  ({ data }) => !data.lecture_draft
 );
+const subjects = [...new Set(publishedNotes.map((note) => note.data.subject))];
 
 try {
   if (!featureFlags.showNotes) {
@@ -26,25 +26,39 @@ try {
   <head>
     <BaseHead
       title={`MS Notes | ${authorConfig.SiteName}`}
-      description={`Browse all notes on ${authorConfig.SiteName} and explore categorized content.`}
+      description={`Browse categorized notes on ${authorConfig.SiteName}`}
     />
   </head>
-  <body>
+  <body class="text-white min-h-screen flex flex-col">
     <Header />
     <SpeedInsights />
-    <main>
-      <section>
-        <h1 class="text-6xl font-bold text-center mb-8 text-white">
-          All Notes
-        </h1>
-      </section>
-      <section>
-        <NotesGrid notes={notes} client:load />
-      </section>
+
+    <main
+      class="flex-grow px-4 sm:px-8 lg:px-20 pt-2 pb-10 flex flex-col items-start w-full"
+    >
+      <h1 class="text-5xl font-extrabold mb-6 w-full text-center">
+        Welcome to MS Notes
+      </h1>
+
+      <div class="w-full max-w-2xl space-y-4">
+        {
+          subjects.map((subject, idx) => (
+            <a
+              href={`/ms_notes/${subject}`}
+              class="group block bg-[--accent-dark] hover:bg-white/10 text-white px-6 py-4 rounded-lg relative overflow-hidden shadow-lg transition-all duration-300 border border-white/10 hover:pl-8"
+              style={`z-index: ${100 - idx}`}
+            >
+              <div class="text-xl font-bold tracking-wide">{subject}</div>
+              <div class="text-sm opacity-70 mt-1">
+                Open notes in this subject
+              </div>
+              <span class="absolute left-0 top-0 h-full w-1 bg-white opacity-0 group-hover:opacity-100 transition-all duration-300" />
+            </a>
+          ))
+        }
+      </div>
     </main>
 
-    <section>
-      <Footer class="mt-auto" />
-    </section>
+    <Footer />
   </body>
 </html>

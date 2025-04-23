@@ -610,3 +610,30 @@ iframe {
   margin: 0 auto;
   display: block;
 }
+
+.copy-cnt {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  z-index: 10;
+}
+
+.copy-btn {
+  background: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.copy-btn:hover {
+  opacity: 1;
+}
+
+.copy-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: var(--gray);
+}

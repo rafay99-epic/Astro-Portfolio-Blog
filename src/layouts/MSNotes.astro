@@ -1,5 +1,4 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
@@ -7,32 +6,18 @@ import FormattedDate from "@components/FormattedDate.astro";
 import ShareButtons from "@react/SocialButton/socialButton.tsx";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { getCollection } from "astro:content";
 
 export const prerender = true;
 
 const pageUrl = Astro.url.href;
-type Props = CollectionEntry<"ms_notes">["data"];
 
-try {
-  if (!featureFlags.showNotes) {
-    return Astro.redirect("/access-denied");
-  }
-} catch (error) {
-  return Astro.redirect("/404");
-}
-
-const BlogPosts = featureFlags.showNotes
-  ? (await getCollection("ms_notes")).sort(
-      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-    )
-  : [];
-
-const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
-const currentBlog = BlogPosts.find((post) => post.slug === currentSlug);
-
-if (!currentBlog) {
-  return Astro.redirect("/access-denied");
+interface Props {
+  lecture_title: string;
+  lecture_description: string;
+  pubDate: Date;
+  readTime?: string;
+  lectureNumber: string;
+  subject: string;
 }
 
 const {
@@ -43,93 +28,59 @@ const {
   lectureNumber,
   subject,
 } = Astro.props;
+
+try {
+  if (!featureFlags.showNotes) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <html lang="en">
   <head>
     <BaseHead title={lecture_title} description={lecture_description} />
     <SpeedInsights />
-    <style>
-      .container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-      }
-
-      .item {
-        text-align: center;
-      }
-
-      .content-wrapper {
-        background: var(--gray-gradient);
-        box-shadow: var(--box-shadow);
-        padding: 2rem;
-        border-radius: 1rem;
-      }
-
-      .share-buttons-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 1.5rem;
-      }
-    </style>
+    <style></style>
   </head>
   <body>
     <Header />
     <main class="w-full max-w-5xl mx-auto px-4 py-8">
       <article>
         <div class="prose mx-auto text-gray-800 text-justify">
-          <div class="mb-8 text-center">
-            <div class="content-wrapper">
-              <h1 class="text-5xl font-extrabold text-white mb-4">
+          <div class="mb-12">
+            <header class="text-center mb-6">
+              <h1
+                class="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-2"
+              >
                 {lecture_title}
               </h1>
-
               <div
-                class="flex justify-center items-center text-gray-400 mb-2 space-x-4"
+                class="flex justify-center flex-wrap items-center gap-x-4 text-sm text-gray-400"
               >
                 <FormattedDate date={pubDate} />
-                <span class="text-base text-gray-500"
-                  >Lecture {lectureNumber}</span
-                >
+                <span>Lecture {lectureNumber}</span>
+                {readTime && <span>{readTime}</span>}
               </div>
-              <div>
-                {
-                  readTime && (
-                    <p class="text-sm text-gray-500 italic mb-4">{readTime}</p>
-                  )
-                }
-              </div>
-              <div>
-                {
-                  subject && (
-                    <p class="text-lg text-gray-500 italic mb-4">{subject}</p>
-                  )
-                }
-              </div>
+              {
+                subject && (
+                  <p class="text-base italic text-gray-500 mt-2">{subject}</p>
+                )
+              }
+            </header>
 
-              <div class="share-buttons-container">
-                <ShareButtons
-                  url={pageUrl}
-                  pagetitle="Notes"
-                  aria-label="Share this post"
-                />
-              </div>
-
-              <hr class="my-6 border-gray-600" />
+            <div class="flex justify-center">
+              <ShareButtons
+                url={pageUrl}
+                pagetitle="Notes"
+                aria-label="Share this post"
+              />
             </div>
+
+            <hr class="mt-8 border-gray-600" />
           </div>
+
           <div>
             <slot />
           </div>
