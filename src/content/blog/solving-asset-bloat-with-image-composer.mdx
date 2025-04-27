@@ -31,4 +31,232 @@ So, there you have it. Large assets are now a big problem for me because perform
 
 ## The Solution
 
-While the solution is very simple, use image compressor but here is the thing, Image compressor sucks, like there are a dozen of image copressor out there but they have alot of problems right of the box. Sometimes they are too slow to load, some times, they are 
+The solution to my image woes is actually quite straightforward: use an image compressor. However, I've found that many image compressors out there have their own set of issues. Some are slow to load, others have limitations, and some can even degrade image quality to the point where it's not worth using them. And then there are those that take an eternity to compress an image, turning a simple task into a frustrating experience.
+
+As my image sizes continued to balloon and my site's performance suffered, I decided to take matters into my own hands. I set out to build a new tool that would streamline my workflow and help me manage my images more efficiently. And so, Image Composer was born.
+
+## Image Composer
+
+Image Composer is a tool I designed and built to fix the whole asset problem I was facing.
+I coded the entire app in just a single day — literally paused everything else (even my blog posts) and went full focus on it.
+
+The goal was simple:
+I needed a way to compress images without trashing their quality, and maybe even add a little something extra — like rounded corners, because honestly, rounded images just look cleaner and more modern.
+And of course, the UI had to be simple and clean so that anyone could use it without needing a manual.
+
+For the tech stack, I kept it super lightweight and fast:
+
+* Node.js server
+* EJS for template rendering
+* Tailwind CSS for styling
+
+### TLD'R: How it Works
+
+If you don't want to nerd out on the code, here's the short version:
+
+* Visit the website
+* Drag and drop your images
+* Pick the quality you want
+* Choose if you want rounded corners
+* Hit "Compress Images."
+* The server compresses them using a library called Sharp
+* The compressed images get displayed back in the UI
+* Hit "Download," and boom — new, smaller, clean, high-quality images.
+
+## Now, Let’s Nerd Out: Full Code Breakdown
+
+Here's a full breakdown of the codebase — from starting the server all the way to the endpoint where the image gets uploaded, processed, and sent back to the user and much more.
+
+### **1. `app.js` – The Entry Point**
+
+This is where everything starts.
+
+```javascript
+const express = require("express");
+const path = require("path");
+
+const configureMiddleware = require("./config/middleware");
+const configureViewEngine = require("./config/viewEngine");
+const { notFoundHandler, globalErrorHandler } = require("./middleware/errorHandler");
+
+const indexRoutes = require("./routes/routes");
+const imageRoutes = require("./routes/image");
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+configureViewEngine(app);
+configureMiddleware(app);
+
+app.use("/", indexRoutes);
+app.use("/", imageRoutes);
+
+app.use(notFoundHandler);
+app.use(globalErrorHandler);
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
+```
+
+#### **What’s Happening Here?**
+
+* We **import Express** and a few core modules.
+* We set up **middleware** (security, rate limiting, etc.).
+* We define **routes** (for the homepage + image compression API).
+* We handle **errors** properly.
+* We start the server and make it listen on **port 3000** (or whatever's in `process.env.PORT`).
+
+Nothing fancy, just a solid Express setup.
+
+***
+
+### **2. `config/middleware.js` – Security & Performance Middleware**
+
+This file **hardens** the server and **prevents abuse**.
+
+```javascript
+const express = require("express");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
+const cors = require("cors");
+const path = require("path");
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: "Too many requests, try again later",
+});
+
+function configureMiddleware(app) {
+  app.use(cors()); // Allow cross-origin requests
+  app.use(hpp()); // Prevent HTTP param pollution
+  app.use(limiter); // Prevent spam requests
+  app.use(helmet()); // Security headers
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.static(path.join(__dirname, "..", "public")));
+}
+
+module.exports = configureMiddleware;
+```
+
+#### **Why This Matters**
+
+* **Helmet** adds security headers.
+* **Rate limiting** prevents abuse (max 100 requests per 15 mins per IP).
+* **CORS** is enabled so the API can be used from different origins.
+* **Multer** (used later) only allows **JPEG, PNG, GIF, and WebP**—nothing shady.
+
+This keeps the server **safe, fast, and reliable**.
+
+***
+
+### **3. `config/multer.js` – File Upload Handling**
+
+Handles file uploads before passing them to **Sharp**.
+
+```javascript
+const multer = require("multer");
+
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 30 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowedMimes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    allowedMimes.includes(file.mimetype) ? cb(null, true) : cb(new Error("Invalid file type"), false);
+  },
+});
+
+module.exports = upload;
+```
+
+#### **What’s Happening?**
+
+* **Stores images in memory** instead of disk (faster processing).
+* **Limits file size** to **30MB** (to prevent server crashes).
+* **Blocks unsupported formats** (JPEG, PNG, WebP, and GIF only).
+
+Multer makes sure **only valid images** reach our processor.
+
+***
+
+### **4. `controller/imageController.js` – The Brain of the Operation**
+
+This is where **Sharp** does its magic.
+
+```javascript
+const sharp = require("sharp");
+
+async function compressImage(req, res, next) {
+  if (!req.file) return res.status(400).send("No image uploaded.");
+
+  try {
+    const quality = Math.max(1, Math.min(100, parseInt(req.body.quality) || 80));
+    const format = ["jpeg", "png", "webp"].includes(req.body.format) ? req.body.format : "jpeg";
+    const rounded = req.body.roundedCorners === "true";
+    
+    let image = sharp(req.file.buffer).toFormat(format, { quality });
+
+    if (rounded) {
+      const metadata = await image.metadata();
+      const mask = Buffer.from(`<svg><rect x="0" y="0" width="${metadata.width}" height="${metadata.height}" rx="50" ry="50"/></svg>`);
+      image = image.composite([{ input: mask, blend: "dest-in" }]);
+    }
+
+    res.set("Content-Type", `image/${format}`);
+    res.send(await image.toBuffer());
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { compressImage };
+```
+
+#### **What’s Happening?**
+
+* **Validates inputs** (quality: `1-100`, formats: `jpeg/png/webp`).
+* **Sharp compresses the image** based on selected quality.
+* **Optional rounded corners** applied via SVG mask.
+* **Sends back the optimized image**—no saving to disk needed.
+
+This keeps things **fast** and **efficient**.
+
+***
+
+### **5. `routes/image.js` – The API Endpoint**
+
+This is where the magic happens.
+
+```javascript
+const express = require("express");
+const upload = require("../config/multer");
+const { compressImage } = require("../controller/imageController");
+
+const router = express.Router();
+
+router.post("/compress", upload.single("image"), compressImage);
+
+module.exports = router;
+```
+
+#### **How It Works**
+
+* **Receives an image** via a POST request.
+* **Passes it to Multer** for validation.
+* **Sends it to Sharp** for compression.
+* **Returns the optimized image.**
+
+And that’s it—**one clean API route that just works**.
+
+## Final Thoughts
+
+Building this small application was cool and I learned like a lot, I didn't now image process can be thing much work, Most of my times was done making sure that image compress was working becasue in the begining it was not working very well, designing the UI was simple task.
+
+If you like to try it out then visit the website [Image Compser](https://imagecomposer-production.up.railway.app/), Or want to checkout the code then all the code is hosted on [github](https://github.com/rafay99-epic/ImageComposer) as well.
+
+So I tried in production, I compress all the big images in to small images adn changed some files in the code base, removed some JavaScript from the Astro Blog Site, Performace went up like from 50% to 100%, You don;t believe me check the Speed
