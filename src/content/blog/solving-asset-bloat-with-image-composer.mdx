@@ -11,3 +11,20 @@ tags:
   - WebDevelopement
 ---
 
+As you may know, my blog has evolved significantly over time, transforming from a simple online journal to a comprehensive reflection of my personality and interests. This digital space has become a sanctuary where I can freely express my thoughts and feelings without reservation. However, building this online home, brick by brick, has not been without its challenges. When I was working on version 5 of my application, I encountered an unexpected and unprecedented problem - one that I never thought I'd face, but here we are.
+
+## The Web Flow
+
+Before, I explain the problem you need to understant the flow and core tech of my wesbite and trust me it's not hard, it's pretty simple, So my website is build on a Framework called Astro, React, Markdown and Tailwind CSS, each of these technologies have a part to play, Astro render the content, React makes the UI, Tailwind CSS add styles to the website and I wrote all my content using Markdown files,
+
+I use a CMS to write the content and then add the content to a github repo called  [Astro-Blog](https://github.com/rafay99-epic/Astro-Portfolio-Blog) where a github action wil build the new changes and deploy the website on to the internet, Simple and Clean so there is backend for my website just simple code and alot of markdown files, Everytime a files or images added into my github repo, new build is generated this whole Process is called **Static Stite**.
+
+## The problem
+
+Now you know the working and the flow of the website let's talk about the problem, it's pretty simple problem and that is assets mangement. I do add images to my blog post and there are alot of images, depending upone the Project and every image is hosted in the *public* folder, so it's need to small and fast but As I add more elemets into the images the sized of the images increases, and this will casusing the performances issues.
+
+Now you will thinking why would would you be adding so much large images or even in the public folder, you should not be adding content there, and to that you are correct but here is the thing, My thumbnails for my blogs have changes, I can't go back to simple thumbnails, so that is not any options so me, I need to move forwards not backwards. and second thing is not my choice, it has to be done with the framwework Astro.
+
+According to [Astro Docs on Images](https://docs.astro.build/en/guides/images/) they recommanded that if you are using Astro Image compoent then you should put images in the src folder but if you are using `img` in html then the image need to be in the public folder and I have no UI in native html and tailwind, I am using React for every single Page, all the UI and made and designed with React Tailwind and I can not use `<Image>` compoent in the react code, the whole code base through and error.
+
+So there you have it have large assets is now a big problem for me becasue the performace and load time where the worst.
