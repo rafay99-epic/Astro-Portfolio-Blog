@@ -15,16 +15,20 @@ As you may know, my blog has evolved significantly over time, transforming from 
 
 ## The Web Flow
 
-Before, I explain the problem you need to understant the flow and core tech of my wesbite and trust me it's not hard, it's pretty simple, So my website is build on a Framework called Astro, React, Markdown and Tailwind CSS, each of these technologies have a part to play, Astro render the content, React makes the UI, Tailwind CSS add styles to the website and I wrote all my content using Markdown files,
+Before I dive into the problem I'm facing, let me give you a quick rundown of how my website works. It's actually pretty simple. My site is built using Astro, React, Markdown, and Tailwind CSS. Each of these technologies plays a crucial role: Astro handles content rendering, React takes care of the UI, Tailwind CSS adds styles, and I write all my content in Markdown files.
 
-I use a CMS to write the content and then add the content to a github repo called  [Astro-Blog](https://github.com/rafay99-epic/Astro-Portfolio-Blog) where a github action wil build the new changes and deploy the website on to the internet, Simple and Clean so there is backend for my website just simple code and alot of markdown files, Everytime a files or images added into my github repo, new build is generated this whole Process is called **Static Stite**.
+I use a CMS to create content, which is then pushed to a GitHub repo called [Astro-Blog](https://github.com/rafay99-epic/Astro-Portfolio-Blog). A GitHub action takes care of building and deploying the site to the internet. It's a simple, clean setup with no backend – just code and a lot of Markdown files. Every time I add a new file or image to the repo, a new build is generated. This whole process is called Static Site Generation.
 
-## The problem
+## The Problem
 
-Now you know the working and the flow of the website let's talk about the problem, it's pretty simple problem and that is assets mangement. I do add images to my blog post and there are alot of images, depending upone the Project and every image is hosted in the *public* folder, so it's need to small and fast but As I add more elemets into the images the sized of the images increases, and this will casusing the performances issues.
+Now that you know how my site works, let's talk about the issue I'm facing. It's a pretty straightforward problem, but it's been causing me some headaches. I'm talking about asset management. I add images to my blog posts, and there are a lot of them. Depending on the project, the number of images can vary. The problem is that these images are hosted in the \_public folder, which needs to be small and fast. As I add more elements to the images, their size increases, causing performance issues.
 
-Now you will thinking why would would you be adding so much large images or even in the public folder, you should not be adding content there, and to that you are correct but here is the thing, My thumbnails for my blogs have changes, I can't go back to simple thumbnails, so that is not any options so me, I need to move forwards not backwards. and second thing is not my choice, it has to be done with the framwework Astro.
+You might be thinking, "Why are you adding so many large images to the public folder? You shouldn't be doing that!" And you're right; I shouldn't be. But here's the thing: my blog thumbnails have changed, and I need to move forward, not backward. I don't have a choice in the matter.
 
-According to [Astro Docs on Images](https://docs.astro.build/en/guides/images/) they recommanded that if you are using Astro Image compoent then you should put images in the src folder but if you are using `img` in html then the image need to be in the public folder and I have no UI in native html and tailwind, I am using React for every single Page, all the UI and made and designed with React Tailwind and I can not use `<Image>` compoent in the react code, the whole code base through and error.
+According to the [Astro Docs on Images](https://docs.astro.build/en/guides/images/), if I'm using the Astro Image component, I should put images in the src folder. However, if I'm using the img tag in HTML, the images need to be in the public folder. The problem is that I'm using React for every single page, and all the UI is built with React, Tailwind, and designed with... well, you get the idea. I can't use the \<Image> component in my React code without causing errors throughout the codebase.
 
-So there you have it have large assets is now a big problem for me becasue the performace and load time where the worst.
+So, there you have it. Large assets are now a big problem for me because performance and load times are suffering.
+
+## The Solution
+
+While the solution is very simple, use image compressor but here is the thing, Image compressor sucks, like there are a dozen of image copressor out there but they have alot of problems right of the box. Sometimes they are too slow to load, some times, they are 
