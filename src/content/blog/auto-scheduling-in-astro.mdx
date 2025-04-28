@@ -13,10 +13,43 @@ tags:
   - WebDevelopment
 ---
 
-If you know me, I like to rite blog post in a story way, making user thinks they are journey as I tell them what is happening and this day is no different, last night, I was writing a blog post and I a thought came into my mind. I wrote a blog post and i set the time to be in the future but on that data, I will definietly forgot to enable that blog post.
+If you know me, you already know I love writing blog posts like a story — taking you on a little journey while telling you what's happening. Today is no different.
 
-After fews months that blog post won't be out, no matter untill I make the `draft: false`, and this piss me of so much.. Like what the hell I wrote a blog, I published put it to draft becuase, I want to spread out some of the blog post not release theme at the same time, they are complete, they are in the build files, just need to enabled.
+Last night, while I was writing a blog post, a thought popped into my mind. I had set the blog post’s publish date sometime in the future. But I knew myself well — when that day came, I would definitely forget to **enable** that blog post manually.
 
-It was simple correct...While not so much..
+And guess what? After a few months, that blog post would still be stuck there — unpublished — because I forgot to change `draft: true` to `draft: false`.\
+That pissed me off so much. Like seriously — what the hell? I wrote the blog, finished it, set the publish date, but it would still sit there hidden just because I wanted to space out my posts instead of dumping them all at once.
 
-Like Every other Software Engineer, I went on Google and Search `auto schedule a post in astro` and I came across fews
+The blog was **done**. It was **built** with the site files. It was just sitting there, needing to be enabled.\
+Sounds simple to fix, right?\
+Well... not so much.
+
+Like every other software engineer when they're stuck, I went to Google and searched:\
+`auto schedule a post in astro`
+
+I came across a few blog posts that were close to what I was looking for — and honestly, they were **so well written** that I highly recommend you read them:
+
+1. [jonathanyeong.com - Blog Post 01](https://jonathanyeong.com/writing/changelog-scheduling-posts-with-astrojs/)
+2. [destiner.io - Blog Post 02](https://destiner.io/blog/post/draft-publications-and-post-scheduling-in-astro/)
+
+Both blog posts made some solid points, and I genuinely enjoyed reading them.\
+But... they didn’t exactly solve the problem **I** was facing.
+
+So, like any desperate developer, I asked AI for suggestions.\
+Spoiler alert: the AI suggestions were a complete **miss** for brainstorming.\
+Sometimes AI can help. Sometimes it just makes you want to close your laptop and go outside.\
+But before I explain how I *actually* solved the problem, you first need to understand **why** this problem exists.
+
+## The Problem with Static Sites
+
+Astro is a **static site generator**.\
+Everything for my site is built ahead of time and hosted on GitHub — **there’s no backend**.
+
+(If you’re interested, I explained my entire website setup in this [blog post](/blog/solving-asset-bloat-with-image-composer/), but here’s the TL;DR:\
+Everything is static. Every change requires a **full rebuild** of the site.)
+
+Because of this, any functionality that needs **dynamic behavior** (like auto-scheduling posts) **can’t just magically happen** at runtime.\
+There’s no server to "wake up" on a certain day and publish the post.\
+The site is already frozen in time until the next rebuild.
+
+So what’s the solution?
