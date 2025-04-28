@@ -1,0 +1,63 @@
+name: Auto-Publish Astro Blog Posts
+
+on:
+  schedule:
+    - cron: "0 * * * *" # Runs every hour at minute 0 (UTC)
+  workflow_dispatch: {} # Allows manual triggering for testing
+
+jobs:
+  publish-posts:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # VERY IMPORTANT: Allows the job to push changes
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Use latest checkout action
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10" # Choose a Python version
+          cache: "pip" # Cache dependencies
+
+      - name: Install dependencies
+        run: pip install PyYAML
+
+      - name: Run publish script
+        id: publish_script # Give the step an ID
+        run: python scripts/publish_posts.py
+
+      # --- Git Operations (only if changes were made) ---
+      - name: Check for file changes
+        id: git_check # Give the step an ID
+        run: |
+          # Check if there are any changes (staged or unstaged) in the blog directory
+          if git diff --quiet --exit-code ${{ github.workspace }}/src/content/blog; then
+            echo "No changes detected in blog posts."
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in blog posts."
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure Git user
+        # Only run if changes were detected by the previous step
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Stage, Commit, and Push changes
+        # Only run if changes were detected
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: |
+          git add src/content/blog/ # Stage changes specifically in the blog dir
+          # Check if staging resulted in actual changes to commit
+          if ! git diff --staged --quiet; then
+             git commit -m "Auto-publish scheduled blog posts"
+             echo "Pushing changes..."
+             git push origin HEAD:${{ github.ref_name }} # Push to the branch the workflow ran on
+          else
+             echo "No effective changes staged after running script, skipping commit/push."
+          fi
