@@ -40,16 +40,269 @@ Spoiler alert: the AI suggestions were a complete **miss** for brainstorming.\
 Sometimes AI can help. Sometimes it just makes you want to close your laptop and go outside.\
 But before I explain how I *actually* solved the problem, you first need to understand **why** this problem exists.
 
-## The Problem with Static Sites
+## The Static Site Conundrum
 
-Astro is a **static site generator**.\
-Everything for my site is built ahead of time and hosted on GitHub — **there’s no backend**.
-
+Astro is a **static site generator**. Everything for my site is built ahead of time and hosted on GitHub — **there’s no backend**.
 (If you’re interested, I explained my entire website setup in this [blog post](/blog/solving-asset-bloat-with-image-composer/), but here’s the TL;DR:\
 Everything is static. Every change requires a **full rebuild** of the site.)
-
 Because of this, any functionality that needs **dynamic behavior** (like auto-scheduling posts) **can’t just magically happen** at runtime.\
-There’s no server to "wake up" on a certain day and publish the post.\
-The site is already frozen in time until the next rebuild.
+There’s no server to "wake up" on a certain day and publish the post. The site is already frozen in time until the next rebuild.
 
 So what’s the solution?
+
+## The Solution: Simpler Than It Seemed
+
+The solution, at its core, turned out to be pretty simple and straightforward — but it definitely needed some thought. I already had metadata defined for every blog post. If you haven’t seen it before, here’s an example:
+
+```yml
+---
+title: Is AI Just Hype or Something More?
+description: >-
+  Unveiling the truth behind AI: is it a revolutionary force or just a glorified autocomplete?
+pubDate: 2024-09-30T19:00:00.000Z
+draft: false
+heroImage: /BlogImages/Is AI Just Hype or Something More.png
+authorName: Abdul Rafay
+authorAvatar: /author.jpg
+tags:
+  - AI
+---
+```
+
+This is from one of my older posts. Now if you look closely, there are two fields that matter: `pubDate` and `draft`. Based on the `pubDate`, I needed a way to automatically flip the `draft` value from `true` to `false` once the scheduled date arrived. Simple, right? Except... how was I supposed to do it? Manually updating it every time wasn’t realistic. I needed something automatic. And that’s when GitHub Actions came into the picture.
+
+## The Logic Behind It
+
+Before diving into what I actually built inside the GitHub Action, I had to map out the logic. It was pretty straightforward when I thought about it. I just needed to loop through all the `.md` and `.mdx` files (my blog posts), read their metadata, check if the `pubDate` had already passed, and then see what the `draft` status was. If the post was still marked as `draft: true` even after the `pubDate` had passed, I would update it to `draft: false`. And if the `pubDate` was still in the future, I wouldn’t touch it. Clean, simple, and something that could easily be scripted.
+
+## The Script Journey: JavaScript vs Python
+
+With the logic sorted, I sat down and started writing the script — in JavaScript, because why not? I figured it would be quick. Spoiler alert: it was not. File manipulation with JavaScript turned out to be way more painful than I had expected. It wasn’t that it was impossible — it was just... annoying. Everything felt clunky. I kept running into issues, and on top of that, I had to install a bunch of packages just to do basic file handling.
+
+At one point, I just stopped and thought about it. I remembered that a friend of mine had done something similar before — not blog posts, but handling big research papers, identifying different sections and modifying content automatically. They used Python for it. And at that moment, it clicked. I scrapped all the JavaScript code without a second thought and rewrote everything in Python from scratch. It was so much smoother, and honestly, it made me wonder why I hadn’t started there in the first place.
+
+### Code Base Breakdown
+
+```python
+import os
+import sys
+from pathlib import Path
+from datetime import datetime, timezone, date
+import yaml
+import re
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+BLOG_CONTENT_DIR = Path("src/content/blog")
+
+def extract_frontmatter(content: str, file_name: str):
+    """
+    Extracts YAML frontmatter from Markdown content.
+    Returns (metadata_dict, body_content, original_yaml_str) on success,
+    or (None, None, None) on failure. Logs warnings/errors.
+    """
+    match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
+    if not match:
+        logging.debug(f"No YAML frontmatter delimiters found in {file_name}")
+        return None, None, None
+
+    yaml_content_str = match.group(1)
+    body_content = content[match.end():]
+
+    try:
+        metadata = yaml.safe_load(yaml_content_str)
+        if isinstance(metadata, dict):
+            logging.debug(f"Successfully extracted metadata for {file_name}")
+            return metadata, body_content, yaml_content_str
+        else:
+            logging.warning(f"Frontmatter in {file_name} parsed but is not a dictionary (type: {type(metadata)}). Skipping file.")
+            return None, None, None
+    except yaml.YAMLError as e:
+        logging.error(f"Error parsing YAML frontmatter in {file_name}: {e}. Skipping file.")
+        return None, None, None
+    except Exception as e:
+        logging.error(f"Unexpected error parsing YAML in {file_name}: {e}. Skipping file.")
+        return None, None, None
+
+
+def publish_post_if_ready(file_path: Path):
+    """
+    Checks pubDate and updates draft status if needed for a single file.
+    Returns True if the file was updated, False otherwise.
+    Logs details, warnings, and errors encountered during processing.
+    """
+    made_change = False
+    file_name = file_path.name
+
+    try:
+        logging.debug(f"Processing file: {file_name}")
+        content = file_path.read_text(encoding='utf-8')
+
+        metadata, body, original_yaml = extract_frontmatter(content, file_name)
+
+        if metadata is None:
+            return False
+
+        is_draft = metadata.get('draft')
+        pub_date_value = metadata.get('pubDate')
+
+        logging.debug(f"File: {file_name}, Draft Status: {is_draft}, PubDate Value: {pub_date_value} (Type: {type(pub_date_value).__name__})")
+
+        if is_draft is True:
+            if pub_date_value is not None:
+                pub_date_dt = None
+                try:
+                    if isinstance(pub_date_value, datetime):
+                        logging.debug(f"Handing pubDate for {file_name} as datetime object.")
+                        pub_date_dt = pub_date_value
+                        if pub_date_dt.tzinfo is None or pub_date_dt.tzinfo.utcoffset(pub_date_dt) is None:
+                            logging.debug(f"Making naive datetime UTC for {file_name}")
+                            pub_date_dt = pub_date_dt.replace(tzinfo=timezone.utc)
+
+                    elif isinstance(pub_date_value, date) and not isinstance(pub_date_value, datetime):
+                         logging.debug(f"Handing pubDate for {file_name} as date object, converting to datetime.")
+                         pub_date_dt = datetime(pub_date_value.year, pub_date_value.month, pub_date_value.day, 0, 0, 0, tzinfo=timezone.utc)
+
+                    elif isinstance(pub_date_value, str):
+                        logging.debug(f"Handing pubDate for {file_name} as string, parsing.")
+                        parsed_date_str = pub_date_value.replace('Z', '+00:00')
+                        pub_date_dt = datetime.fromisoformat(parsed_date_str)
+                    else:
+                        logging.warning(f"Unexpected type for pubDate in {file_name}: {type(pub_date_value)}. Cannot compare date.")
+
+                    if pub_date_dt:
+                        now_utc = datetime.now(timezone.utc)
+                        logging.debug(f"Comparing pubDate {pub_date_dt} with current time {now_utc} for {file_name}")
+
+                        if pub_date_dt <= now_utc:
+                            logging.info(f"Publishing {file_name} (pubDate: {pub_date_value})")
+
+                            new_yaml = re.sub(r"^\s*draft:\s*true\s*$", "draft: false", original_yaml, flags=re.MULTILINE | re.IGNORECASE)
+
+                            if new_yaml == original_yaml:
+                                 logging.debug(f"Regex replacement failed for 'draft: true' in {file_name}, trying string replace.")
+                                 temp_yaml = original_yaml.replace('draft: true', 'draft: false', 1)
+                                 new_yaml = temp_yaml.replace('draft: True', 'draft: false', 1)
+
+
+                            if new_yaml != original_yaml:
+                                try:
+                                    new_content = f"---\n{new_yaml.strip()}\n---\n{body}"
+                                    file_path.write_text(new_content, encoding='utf-8')
+                                    logging.info(f"Successfully updated draft status to false in {file_name}")
+                                    made_change = True
+                                except IOError as write_err:
+                                     logging.error(f"Failed to write updated content to {file_name}: {write_err}")
+                                except Exception as write_ex:
+                                     logging.error(f"Unexpected error writing updated content to {file_name}: {write_ex}")
+                            else:
+                                 logging.warning(f"Could not find/replace 'draft: true' in {file_name}. Already false or formatted unusually?")
+                        else:
+                             logging.info(f"Skipping {file_name}: Publication date ({pub_date_value}) is in the future.")
+
+                except ValueError as e:
+                    logging.warning(f"Could not process pubDate value '{pub_date_value}' (type {type(pub_date_value).__name__}) in {file_name}: {e}. Skipping date check.")
+                except Exception as e:
+                    logging.error(f"Unexpected error during date processing for {file_name} with value '{pub_date_value}': {e} (Type: {type(e).__name__})")
+            else:
+                 logging.warning(f"Skipping {file_name}: Draft is true, but 'pubDate' key is missing.")
+        else:
+            logging.info(f"Skipping {file_name}: Draft status is not explicitly 'true' (current value: {is_draft}).")
+
+    except FileNotFoundError:
+        logging.error(f"File vanished before processing: {file_name}")
+    except PermissionError as pe:
+        logging.error(f"Permission error reading file {file_name}: {pe}")
+    except IOError as e:
+        logging.error(f"IOError reading file {file_name}: {e}")
+    except UnicodeDecodeError as ude:
+        logging.error(f"Encoding error reading file {file_name}. Ensure it's UTF-8: {ude}")
+    except Exception as e:
+        logging.exception(f"Unexpected error processing file {file_name}: {e}")
+
+    return made_change
+
+def main():
+    """Finds posts and attempts to publish them."""
+    logging.info("Starting auto-publish script...")
+    total_changes = 0
+
+    if not BLOG_CONTENT_DIR.is_dir():
+        resolved_path = BLOG_CONTENT_DIR.resolve()
+        cwd = Path.cwd()
+        logging.critical(f"Blog content directory not found at expected path: {BLOG_CONTENT_DIR}")
+        logging.critical(f"Resolved path attempted: {resolved_path}")
+        logging.critical(f"Current working directory: {cwd}")
+        logging.critical("Ensure the script is run from the repository root or BLOG_CONTENT_DIR is correct.")
+        sys.exit(1)
+
+    logging.info(f"Checking posts in directory: {BLOG_CONTENT_DIR}")
+
+    try:
+        files_to_check = list(BLOG_CONTENT_DIR.glob("*.md")) + list(BLOG_CONTENT_DIR.glob("*.mdx"))
+        logging.info(f"Found {len(files_to_check)} potential post files (.md, .mdx).")
+
+        processed_files = 0
+        for file_path in files_to_check:
+            if file_path.is_file():
+                if publish_post_if_ready(file_path):
+                    total_changes += 1
+                processed_files += 1
+            else:
+                 logging.warning(f"Path found by glob is not a file (skipped): {file_path}")
+
+        logging.info(f"Processed {processed_files} files.")
+
+    except Exception as e:
+        logging.exception(f"An unexpected error occurred during file processing loop: {e}")
+
+    logging.info("-" * 20)
+    if total_changes > 0:
+        logging.info(f"Script finished. {total_changes} post(s) were updated.")
+    else:
+        logging.info("Script finished. No posts needed publishing or updating.")
+    logging.info("-" * 20)
+
+if __name__ == "__main__":
+    main()
+```
+
+When I started writing the auto-publish script, my main goal was simple:\
+I wanted Markdown or MDX blog posts sitting in a `src/content/blog` directory to automatically "go live" when their scheduled `pubDate` arrived — without me having to manually change the `draft: true` status to `false`.
+
+To make that happen, I first set up a clean project structure.\
+Right at the top of the script, I imported essential libraries — `os`, `sys`, `pathlib` for file handling, `datetime` for managing dates, `yaml` for parsing the frontmatter metadata, and `logging` for capturing all sorts of useful debug and error messages.\
+I knew that proper logging was crucial, so I configured a basic logging setup early on, ensuring I could easily spot errors or track the script's behavior at different verbosity levels.
+
+Next, I defined a constant `BLOG_CONTENT_DIR`, which simply points to the folder where all my blog posts reside.\
+This would make it easy to adjust later if needed, instead of scattering the directory path all over the code.
+
+Then came the core functions.
+
+I started with `extract_frontmatter()`, which is responsible for pulling out the YAML block from the beginning of each Markdown file.\
+If the YAML frontmatter was missing or malformed, the function would return early — no point wasting time on a file that isn’t properly formatted.\
+Parsing the YAML safely with `PyYAML` was important here, and I made sure any strange issues were logged clearly so I wouldn’t be left guessing later.
+
+The real meat of the script was the `publish_post_if_ready()` function.\
+This part reads each file, grabs its metadata, and checks if the `draft` field is still `true`.\
+If it is, it then compares the `pubDate` value to the current time (UTC).\
+I made sure to handle a few tricky cases here:\
+Sometimes `pubDate` might be a full `datetime` object, sometimes just a `date`, and sometimes just a string in ISO format.\
+The script carefully parses each possibility, ensuring consistency before doing any comparison.
+
+If the current time was past the scheduled `pubDate`, the script would go ahead and update the `draft: true` in the frontmatter to `draft: false`, effectively publishing the post.\
+For the update, I tried a safe regular expression replacement first; if that failed (which could happen if the spacing was unusual), the script fell back to a simple string replace to make sure nothing got missed.
+
+To wrap everything up, the `main()` function orchestrated the whole process.\
+It scanned the blog directory for `.md` and `.mdx` files, tried to process each file individually, and kept track of how many posts it successfully updated.\
+Good error handling was important here — I made sure that even if one file threw an unexpected error, the script would keep running and processing the rest.
+
+Finally, if something went really wrong — like if the blog directory didn’t even exist — the script would log a critical error and exit gracefully.
+
+By the time the script finishes, I get a clean summary in the logs: how many posts were updated and any warnings or errors that popped up along the way.\
+This way, I can schedule posts ahead of time and trust that they'll automatically go live without lifting a finger.
