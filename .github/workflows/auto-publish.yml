@@ -2,7 +2,7 @@ name: Auto-Publish Astro Blog Posts
 
 on:
   schedule:
-    - cron: "0 * * * *" # Runs every hour at minute 0 (UTC)
+    - cron: "0 5 * * *" # Runs every hour at minute 0 (UTC)
   workflow_dispatch: {} # Allows manual triggering for testing
 
 jobs:
@@ -18,8 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10" # Choose a Python version
-          cache: "pip" # Cache dependencies
+          python-version: "3.13"
 
       - name: Install dependencies
         run: pip install PyYAML
