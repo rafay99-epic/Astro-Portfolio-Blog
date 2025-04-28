@@ -306,3 +306,90 @@ Finally, if something went really wrong — like if the blog directory didn’t 
 
 By the time the script finishes, I get a clean summary in the logs: how many posts were updated and any warnings or errors that popped up along the way.\
 This way, I can schedule posts ahead of time and trust that they'll automatically go live without lifting a finger.
+
+## GitHub Actions
+
+Now let's talk about GitHub Actions — because honestly, without this part, running the script manually every day would be rough.
+
+Here’s the deep dive:\
+I created a GitHub Action that sets up Node.js, clones the project, installs the Python dependencies, runs the auto-publish script, checks for any changes, pushes those changes back to the main branch, and finally does some cleanup. This workflow runs **every day** at a scheduled time.
+
+With the changes pushed to the main branch, Vercel automatically detects the updates and deploys the new blog posts on the correct date.\
+So, in short: automation magic.
+
+That’s the quick TL;DR of how the GitHub Action fits into this system.
+
+But if you want to go full nerd, here’s the actual GitHub Action:
+
+```yaml
+name: Auto-Publish Astro Blog Posts
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  publish-posts:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install PyYAML
+
+      - name: Run publish script
+        id: publish_script
+        run: python scripts/publish_posts.py
+
+      - name: Check for file changes
+        id: git_check
+        run: |
+          if git diff --quiet --exit-code --ignore-space-change ${{ github.workspace }}/src/content/blog; then
+            echo "No changes detected in blog posts."
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in blog posts."
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure Git user
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Stage, Commit, and Push changes
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: |
+          git add src/content/blog/
+          if ! git diff --staged --quiet; then
+            git commit -m "Auto-publish scheduled blog posts"
+            echo "Pushing changes..."
+            git push origin HEAD:${{ github.ref_name }}
+          else
+            echo "No effective changes staged after running script, skipping commit/push."
+          fi
+```
+
+***
+
+## Final Thoughts
+
+This little system saves me a lot of manual effort and just feels... clean.\
+Instead of worrying about whether I scheduled a blog correctly or remembering to manually publish it on the right day, I let a Python script and GitHub Actions handle everything while I sip my coffee.
+
+Sure, setting it all up took a bit of time — but now, it’s completely hands-off.\
+Write → Schedule → Done.
+
+Hope you found this useful! If you liked this deep dive (or if you have any cool automation ideas yourself), feel free to reach out.\
+Let's keep building nerdy, efficient systems.
