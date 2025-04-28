@@ -2,7 +2,8 @@ name: Auto-Publish Astro Blog Posts
 
 on:
   schedule:
-    - cron: "0 5 * * *" # Runs every hour at minute 0 (UTC)
+    # Runs daily at 07:00 UTC, which corresponds to 12:00 PM PKT (UTC+5)
+    - cron: "0 7 * * *"
   workflow_dispatch: {} # Allows manual triggering for testing
 
 jobs:
@@ -18,7 +19,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          # Using a known stable version is often safer than latest
+          python-version: "3.11" # Or stick with 3.10 if preferred
 
       - name: Install dependencies
         run: pip install PyYAML
@@ -32,7 +34,8 @@ jobs:
         id: git_check # Give the step an ID
         run: |
           # Check if there are any changes (staged or unstaged) in the blog directory
-          if git diff --quiet --exit-code ${{ github.workspace }}/src/content/blog; then
+          # Use --ignore-space-change to potentially avoid triggering on whitespace-only changes
+          if git diff --quiet --exit-code --ignore-space-change ${{ github.workspace }}/src/content/blog; then
             echo "No changes detected in blog posts."
             echo "changes_detected=false" >> $GITHUB_OUTPUT
           else
