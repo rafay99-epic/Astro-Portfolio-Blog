@@ -20,8 +20,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
   const [expanded, setExpanded] = useState(false);
 
   const blogContent = `Title: ${title}\nAuthor: ${author}\nDescription: ${description}\n\nContent:\n${content}`;
-  const cacheKey = `ai-summary-${title}`;
-
+  const cacheKey = `ai-summary-${title}-${author}`;
   useEffect(() => {
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
@@ -44,6 +43,18 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
 
         const data = await res.json();
         setSummary(data.summary);
+        try {
+          localStorage.setItem(
+            cacheKey,
+            JSON.stringify({
+              summary: data.summary,
+              timestamp: Date.now(),
+            })
+          );
+        } catch (e) {
+          console.warn("Could not save summary to localStorage:", e);
+        }
+
         localStorage.setItem(cacheKey, data.summary);
       } catch (err: any) {
         console.error(err);
@@ -61,79 +72,15 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
       <div
         onClick={() => setExpanded((prev) => !prev)}
         className="cursor-pointer flex justify-between items-center"
-        role="button"
-        aria-expanded={expanded}
-        aria-controls="ai-summary-content"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault()
-            setExpanded((prev) => !prev)
-          }
-        }}
       >
-        <h2 className="text-xl font-semibold" id="ai-summary-heading">
-          AI Summary
-        </h2>
+        <h2 className="text-xl font-semibold">AI Summary</h2>
         <motion.span
           animate={{ rotate: expanded ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          aria-hidden="true"
         >
           ▼
         </motion.span>
       </div>
-
-      <AnimatePresence initial={false}>
-        {expanded && (
-          <motion.div
-            key="summary"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="overflow-hidden mt-4"
-            id="ai-summary-content"
-            aria-labelledby="ai-summary-heading"
-          >
-            {/* ...summary content... */}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-        }}
-      >
-        <h2 className="text-xl font-semibold" id="ai-summary-heading">
-          AI Summary
-        </h2>
-        <motion.span
-          animate={{ rotate: expanded ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-          aria-hidden="true"
-        >
-          ▼
-        </motion.span>
-      </div>
-
-      <AnimatePresence initial={false}>
-        {expanded && (
-          <motion.div
-            key="summary"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="overflow-hidden mt-4"
-            id="ai-summary-content"
-            aria-labelledby="ai-summary-heading"
-          >
-            {/* ...summary content... */}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
 
       <AnimatePresence initial={false}>
         {expanded && (

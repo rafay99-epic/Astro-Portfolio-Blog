@@ -2,14 +2,24 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const googleAIModelAPIKey = process.env.GOOGLE_AI_API_KEY;
 
-const genAI = new GoogleGenerativeAI(googleAIModelAPIKey || "");
+const genAI = googleAIModelAPIKey
+  ? new GoogleGenerativeAI(googleAIModelAPIKey)
+  : null;
+
+if (!googleAIModelAPIKey) {
+  console.warn("GOOGLE_AI_API_KEY environment variable is not set.");
+}
 
 export async function POST({ request }: { request: Request }) {
   try {
-    if (!googleAIModelAPIKey) {
+    if (!genAI) {
+      console.error(
+        "Google AI API instance is not available due to missing API key."
+      );
       return new Response(
         JSON.stringify({
-          error: "Sorry, API key is unreachable. Please try again.",
+          error:
+            "Server configuration error: Google AI API key is missing or invalid. Check server logs.",
         }),
         {
           status: 500,
@@ -30,7 +40,8 @@ export async function POST({ request }: { request: Request }) {
     ) {
       return new Response(
         JSON.stringify({
-          error: "Invalid or empty content. Please provide valid content.",
+          error:
+            "Invalid or empty blogContent. Please provide valid string content.",
         }),
         {
           status: 400,
@@ -55,11 +66,13 @@ export async function POST({ request }: { request: Request }) {
         "Content-Type": "application/json",
       },
     });
-  } catch (err) {
-    console.error("Error:", err);
+  } catch (err: any) {
+    console.error("Error during Google AI API call:", err);
+
     return new Response(
       JSON.stringify({
-        error: "Something went wrong. Please try again later.",
+        error:
+          "Something went wrong processing the request. Please try again later.",
       }),
       {
         status: 500,
