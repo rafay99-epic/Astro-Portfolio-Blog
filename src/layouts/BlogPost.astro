@@ -11,6 +11,7 @@ import PostComment from "@astro/BlogComments/PostComment.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { getCollection } from "astro:content";
 import TextToSpeech from "@components/ReaactCompoents/TextSpeech/TextToSpeech";
+import AISummaryCard from "@react/SummaryCard/summary_blog";
 export const prerender = true;
 
 const pageUrl = Astro.url.href;
@@ -165,6 +166,15 @@ const {
             <hr class="mt-4" />
           </div>
           <div>
+            <AISummaryCard
+              client:load
+              title={title}
+              description={description}
+              author={authorName}
+              content={blogContent}
+            />
+          </div>>
+          <div>
             <slot />
           </div>
           <div class="my-8 text-center">
@@ -175,6 +185,6 @@ const {
       </article>
     </main>
     <Footer />
-  <script lang="js" is:inline src="/js/copy.js"></script>
+    <script lang="js" is:inline src="/js/copy.js"></script>
   </body>
 </html>

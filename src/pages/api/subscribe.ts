@@ -48,7 +48,6 @@ export const POST: APIRoute = async ({ request }) => {
       }),
     });
 
-    // Handle Brevo API response
     if (response.ok) {
       return new Response(
         JSON.stringify({
@@ -62,7 +61,6 @@ export const POST: APIRoute = async ({ request }) => {
       console.error("Brevo API error:", errorData);
       return new Response(
         JSON.stringify({
-          // error: errorData.message || "Unknown error occurred.",
           error: "An error occurred while processing your request.",
         }),
         { status: response.status }
