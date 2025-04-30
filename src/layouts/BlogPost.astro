@@ -11,6 +11,7 @@ import PostComment from "@astro/BlogComments/PostComment.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { getCollection } from "astro:content";
 import TextToSpeech from "@components/ReaactCompoents/TextSpeech/TextToSpeech";
+import AISummaryCard from "@react/SummaryCard/summary_blog";
 export const prerender = true;
 
 const pageUrl = Astro.url.href;
@@ -80,6 +81,24 @@ const {
   </head>
   <body>
     <Header />
+
+    <div
+      id="scroll-progress"
+      style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(to right, #7aa2f7, #a1c4fd);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.1s linear;
+    width: 100%;
+    z-index: 50;
+    pointer-events: none;
+  "
+    >
+    </div>
 
     <main class="w-full max-w-5xl mx-auto px-4 py-8">
       <article>
@@ -165,6 +184,15 @@ const {
             <hr class="mt-4" />
           </div>
           <div>
+            <AISummaryCard
+              client:load
+              title={title}
+              description={description}
+              author={authorName}
+              content={blogContent}
+            />
+          </div>
+          <div>
             <slot />
           </div>
           <div class="my-8 text-center">
@@ -174,7 +202,7 @@ const {
         </div>
       </article>
     </main>
+    <script lang="js" is:inline src="/js/progressbar.js"></script>
     <Footer />
-  <script lang="js" is:inline src="/js/copy.js"></script>
   </body>
 </html>

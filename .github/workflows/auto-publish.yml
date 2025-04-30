@@ -2,36 +2,33 @@ name: Auto-Publish Astro Blog Posts
 
 on:
   schedule:
-    # Runs daily at 07:00 UTC, which corresponds to 12:00 PM PKT (UTC+5)
     - cron: "0 7 * * *"
-  workflow_dispatch: {} # Allows manual triggering for testing
+  workflow_dispatch: {}
 
 jobs:
   publish-posts:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # VERY IMPORTANT: Allows the job to push changes
+      contents: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 # Use latest checkout action
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          # Using a known stable version is often safer than latest
-          python-version: "3.11" # Or stick with 3.10 if preferred
+          python-version: "3.11"
 
       - name: Install dependencies
         run: pip install PyYAML
 
       - name: Run publish script
-        id: publish_script # Give the step an ID
+        id: publish_script
         run: python scripts/publish_posts.py
 
-      # --- Git Operations (only if changes were made) ---
       - name: Check for file changes
-        id: git_check # Give the step an ID
+        id: git_check
         run: |
           # Check if there are any changes (staged or unstaged) in the blog directory
           # Use --ignore-space-change to potentially avoid triggering on whitespace-only changes
@@ -44,14 +41,12 @@ jobs:
           fi
 
       - name: Configure Git user
-        # Only run if changes were detected by the previous step
         if: steps.git_check.outputs.changes_detected == 'true'
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Stage, Commit, and Push changes
-        # Only run if changes were detected
         if: steps.git_check.outputs.changes_detected == 'true'
         run: |
           git add src/content/blog/ # Stage changes specifically in the blog dir

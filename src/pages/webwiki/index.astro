@@ -9,7 +9,6 @@ import WikiPost from "@react/WikiPost/WikiPost";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 const webwiki = await getCollection("webwiki");
 export const prerender = false;
-// change feature flag
 try {
   if (!featureFlags.showWiki) {
     return Astro.redirect("/access-denied");

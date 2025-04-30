@@ -14,7 +14,6 @@ import Greeting from "@react/HeroSection/Greeting";
 import ConnectButton from "@react/HeroSection/ConnectButton";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import ChangeLog from "@components/AstroCompoent/home/ChangeLog/ChangeLog.astro";
 
 export const prerender = true;
 const { name, jobTitle, position, picture } = authorConfig;
@@ -55,7 +54,7 @@ try {
               <ConnectButton />
             </div>
             <div class="right-container">
-              <ProfileImage client:load picture={picture} />
+              <ProfileImage client:visible picture={picture} />
             </div>
           </div>
         </div>
@@ -66,15 +65,13 @@ try {
       <section style="margin-block-start: 5rem;">
         {featureFlags.showBlog && <LatestPost />}
       </section>
-      <section style="margin-block-start: 5rem;">
-        {featureFlags.showWhatsNew && <ChangeLog />}
-      </section>
+
       <section style="margin-block-start: 5rem;">
         <h1 class="text-center text-6xl font-bold mb-6">Tool & Technology</h1>
         <p class="text-center text-lg font-bold mb-6">
           I have experience with these technologies
         </p>
-        <SkillsShowcase client:load />
+        <SkillsShowcase client:visible />
       </section>
       <ContactMap />
     </main>

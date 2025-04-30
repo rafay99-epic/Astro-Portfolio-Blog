@@ -38,9 +38,6 @@ const publishedNotes = await getCollection("ms_notes", ({ data }) => {
 const notes = publishedNotes.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-console.log(
-  `--- [subject].astro: Found ${notes.length} notes for subject ${subject} ---`
-);
 
 try {
   if (!featureFlags.showNotes) {

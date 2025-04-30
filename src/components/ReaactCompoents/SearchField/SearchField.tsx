@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import useSearch from "@react/SearchField/SearchLogic";
 import type { Post } from "types/articles";
 
@@ -6,45 +7,25 @@ interface SearchProps {
   posts: Post[];
 }
 
-const searchStyles = {
-  primary: "#7aa2f7",
-  text: "#F8F8F8",
-  background: "#1f2335",
-  border: "#7aa2f7",
-};
-
 const Search: React.FC<SearchProps> = ({ posts }) => {
   const { query, setQuery, results, searchCategory, setSearchCategory } =
     useSearch(posts);
 
   return (
-    <div className="p-4 text-white">
-      <div className="mb-4 flex gap-2 items-center">
+    <div className="p-6 bg-[var(--accent-dark)] text-[var(--text-light)] rounded-xl">
+      <div className="mb-6 flex flex-col md:flex-row gap-3 items-center">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search posts..."
-          className="w-full p-2 border-2 focus:outline-none"
-          style={{
-            backgroundColor: searchStyles.background,
-            color: searchStyles.text,
-            borderColor: searchStyles.border,
-            borderRadius: "8px",
-            fontFamily: "sans-serif",
-          }}
+          className="w-full md:w-2/3 p-3 rounded-lg border-2 focus:ring-2 outline-none transition-all bg-[var(--accent-dark)] text-[var(--text-light)] border-[var(--accent)] focus:ring-[var(--accent)]"
         />
 
         <select
           value={searchCategory}
           onChange={(e) => setSearchCategory(e.target.value)}
-          className="p-2 border-2"
-          style={{
-            backgroundColor: searchStyles.background,
-            color: searchStyles.text,
-            borderColor: searchStyles.border,
-            borderRadius: "8px",
-          }}
+          className="w-full md:w-1/3 p-3 rounded-lg border-2 bg-[var(--accent-dark)] text-[var(--text-light)] border-[var(--accent)] focus:outline-none"
         >
           <option value="title">Title</option>
           <option value="description">Description</option>
@@ -54,35 +35,36 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
         </select>
       </div>
 
-      {/* Display Results */}
-      <div className="space-y-4">
+      {/* Results */}
+      <div className="space-y-6">
         {results.length > 0
           ? results.map((post, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="p-4 border-2"
-                style={{
-                  borderColor: searchStyles.border,
-                  borderRadius: "8px",
-                }}
+                className="border border-[var(--accent)] rounded-lg p-5 bg-[#1a1b26] hover:shadow-lg transition-shadow"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
               >
-                <h2 className="text-xl" style={{ color: searchStyles.primary }}>
-                  <a
-                    href={`/blog/${post.slug}`}
-                    className="hover:underline"
-                    style={{ color: searchStyles.primary }}
-                  >
+                <h2 className="text-xl font-semibold mb-2 text-[var(--accent)]">
+                  <a href={`/blog/${post.slug}`} className="hover:underline">
                     {post.data.title}
                   </a>
                 </h2>
-                <p className="text-gray-300">{post.data.description}</p>
-                <p className="text-gray-500 text-sm">
+                <p className="text-sm opacity-80 mb-1">
+                  {post.data.description || "No description available"}
+                </p>
+                <p className="text-xs opacity-60">
                   By {post.data.authorName} |{" "}
                   {new Date(post.data.pubDate).toLocaleDateString()}
                 </p>
-              </div>
+              </motion.div>
             ))
-          : query && <p className="text-gray-400">No blog post was found.</p>}
+          : query && (
+              <p className="text-center text-gray-400">
+                No blog post was found.
+              </p>
+            )}
       </div>
     </div>
   );

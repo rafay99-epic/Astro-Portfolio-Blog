@@ -19,13 +19,8 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
         : projects;
 
       filtered = [...filtered].sort((a, b) => {
-        const rankingA = a.data.ProjectRanking
-          ? parseInt(a.data.ProjectRanking, 10)
-          : Infinity;
-        const rankingB = b.data.ProjectRanking
-          ? parseInt(b.data.ProjectRanking, 10)
-          : Infinity;
-
+        const rankingA = parseInt(a.data.ProjectRanking || "9999", 10);
+        const rankingB = parseInt(b.data.ProjectRanking || "9999", 10);
         return rankingA - rankingB;
       });
 
@@ -59,132 +54,128 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
 
   if (error) {
     return (
-      <div className="text-center text-red-500 font-semibold">{error}</div>
+      <div className="text-center text-red-500 font-semibold py-6">{error}</div>
     );
   }
 
   return (
-    <div>
-      <div className="flex justify-center space-x-4 mb-4">
-        <button
-          onClick={() => setSelectedTag(null)}
-          aria-label="Show all projects"
-          aria-pressed={selectedTag === null}
-          className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer
-      ${
-        selectedTag === null
-          ? "bg-[#7aa2f7] text-white scale-105"
-          : "bg-gray-600 text-gray-200 hover:bg-[#7aa2f7] hover:text-white hover:scale-105"
-      }`}
-        >
-          All
-        </button>
-        {uniqueTags.map((tag) => (
+    <section className="px-4 sm:px-6 lg:px-12 py-8">
+      <div>
+        <div className="overflow-x-auto whitespace-nowrap flex gap-2 py-4 px-2 sm:justify-center mb-6">
           <button
-            key={tag}
-            onClick={() => setSelectedTag(tag)}
-            aria-label={`Filter by ${tag}`}
-            aria-pressed={selectedTag === tag}
-            className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
-        ${
-          selectedTag === tag
-            ? "bg-[#7aa2f7] text-white scale-105"
-            : "bg-gray-600 text-gray-200 hover:bg-[#7aa2f7] hover:text-white hover:scale-105"
-        }`}
+            onClick={() => setSelectedTag(null)}
+            aria-pressed={selectedTag === null}
+            className={`flex-shrink-0 px-4 py-2 rounded-full transition-all duration-300 ${
+              selectedTag === null
+                ? "bg-[var(--accent)] text-[var(--text-light)]"
+                : "bg-gray-600 text-gray-200 hover:bg-[var(--accent)] hover:text-[var(--text-light)]"
+            }`}
           >
-            {tag}
+            All
           </button>
-        ))}
-      </div>
+          {uniqueTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => setSelectedTag(tag)}
+              aria-pressed={selectedTag === tag}
+              className={`flex-shrink-0 px-4 py-2 rounded-full transition-all duration-300 ${
+                selectedTag === tag
+                  ? "bg-[var(--accent)] text-[var(--text-light)]"
+                  : "bg-gray-600 text-gray-200 hover:bg-[var(--accent)] hover:text-[var(--text-light)]"
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-        {currentProjects.map((project) => (
-          <a
-            key={project.slug}
-            href={`/project/${project.slug}`}
-            className="project-card bg-[#1f2335] border border-[#4C506A40] rounded-[15px] overflow-hidden shadow-lg flex flex-col max-w-[400px] mx-auto transform transition-transform duration-300 hover:scale-105"
-            style={{
-              boxShadow: "var(--box-shadow)",
-              transition: "box-shadow 0.3s ease, transform 0.3s ease",
-            }}
-          >
-            {project.data.ProjectImage && (
-              <div className="image-container">
+        <div className="grid grid-cols-1 gap-6 px-4 sm:px-6 lg:px-8">
+          {currentProjects.map((project) => (
+            <a
+              key={project.slug}
+              href={`/project/${project.slug}`}
+              className="bg-[var(--accent-dark)] border border-[#4C506A40] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col sm:flex-row gap-4"
+              style={{ boxShadow: "var(--box-shadow)" }}
+            >
+              {project.data.ProjectImage && (
                 <img
                   src={project.data.ProjectImage}
                   alt={project.data.Projecttitle}
-                  className="w-full h-[200px] object-cover"
+                  className="w-full sm:w-1/3 h-60 object-cover"
                 />
-              </div>
-            )}
-            <div className="content p-4 text-[#f8f8f8]">
-              <h3 className="mt-0 text-[#7aa2f7] text-xl font-semibold">
-                {project.data.Projecttitle}
-              </h3>
-              <p className="text-gray-300 mb-3">
-                {project.data.ProjectDescription}
-              </p>
-              {project.data.ProjectTech && (
-                <div className="technologies flex flex-wrap">
-                  {project.data.ProjectTech.map((technology, index) => (
-                    <span
-                      key={index}
-                      className="technology-chip inline-block m-1 px-2 py-1 bg-[#3b4252] text-[#f8f8f8] rounded-lg text-sm"
-                    >
-                      {technology}
-                    </span>
-                  ))}
-                </div>
               )}
-              <div className="links mt-3 flex items-center">
-                {project.data.githubLink && (
-                  <a
-                    href={project.data.githubLink}
-                    target="_blank"
-                    aria-label="GitHub"
-                    rel="noopener noreferrer"
-                    className="inline-block mr-3 text-[#7aa2f7] hover:text-[#4c88f7]"
-                  >
-                    <i className="fab fa-github" />
-                  </a>
-                )}
-                {project.data.deployedLink && (
-                  <a
-                    href={project.data.deployedLink}
-                    target="_blank"
-                    aria-label="Deployed Project"
-                    rel="noopener noreferrer"
-                    className="inline-block text-[#7aa2f7] hover:text-[#4c88f7]"
-                  >
-                    <i className="fas fa-external-link-alt" />
-                  </a>
-                )}
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
 
-      <div className="pagination mt-4 flex justify-center items-center space-x-4">
-        <button
-          onClick={goToPrevPage}
-          disabled={currentPage === 1}
-          className="text-[#7aa2f7] hover:text-[#4c88f7] disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <span className="text-gray-300">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={goToNextPage}
-          disabled={currentPage === totalPages}
-          className="text-[#7aa2f7] hover:text-[#4c88f7] disabled:opacity-50"
-        >
-          Next
-        </button>
+              <div className="flex flex-col justify-between p-4 sm:w-2/3">
+                <div>
+                  <h3 className="text-[var(--accent)] text-2xl font-bold mb-2">
+                    {project.data.Projecttitle}
+                  </h3>
+                  <p className="text-gray-300 mb-4 text-sm leading-relaxed">
+                    {project.data.ProjectDescription}
+                  </p>
+                  {project.data.ProjectTech && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {project.data.ProjectTech.map((tech, index) => (
+                        <span
+                          key={index}
+                          className="bg-gray-700 text-[var(--text-light)] text-xs font-medium px-2 py-1 rounded-lg"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center gap-4 mt-4">
+                  {project.data.githubLink && (
+                    <a
+                      href={project.data.githubLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub"
+                      className="text-[var(--accent)] hover:text-blue-400 transition"
+                    >
+                      <i className="fab fa-github fa-lg" />
+                    </a>
+                  )}
+                  {project.data.deployedLink && (
+                    <a
+                      href={project.data.deployedLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Live Preview"
+                      className="text-[var(--accent)] hover:text-blue-400 transition"
+                    >
+                      <i className="fas fa-external-link-alt fa-lg" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div className="pagination mt-10 flex justify-center items-center space-x-6">
+          <button
+            onClick={goToPrevPage}
+            disabled={currentPage === 1}
+            className="text-[var(--accent)] hover:text-blue-400 disabled:opacity-40"
+          >
+            Previous
+          </button>
+          <span className="text-gray-300">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={goToNextPage}
+            disabled={currentPage === totalPages}
+            className="text-[var(--accent)] hover:text-blue-400 disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
