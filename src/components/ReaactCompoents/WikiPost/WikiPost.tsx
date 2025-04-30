@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from "react";
-import TagFilter from "./TagFilter";
 
 import type { Version, WikiPageProps } from "../../../types/wiki";
 
