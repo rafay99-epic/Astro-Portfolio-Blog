@@ -22,89 +22,88 @@ try {
     />
     <SpeedInsights />
   </head>
-  <body>
+  <body class="bg-gradient-to-r from-[#1e1e2f] to-[#1f2335] text-[#f8f8f8]">
     <Header />
-    <main>
-      <h1 class="text-5xl text-center font-bold mb-6">Let's Collaborate</h1>
 
-      <section class="flex justify-center items-center bg-[--accent-dark] px-4">
-        <div
-          class="w-full max-w-5xl bg-[--gray-gradient] p-10 rounded-2xl border border-[--gray] mt-6"
+    <main class="max-w-5xl mx-auto py-1 px-6 sm:px-8 lg:px-16">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-700 to-teal-600 mb-8">
+        Let's Collaborate
+      </h1>
+      <p class="text-center text-lg text-gray-300 mb-12">I'm eager to hear your thoughts, feedback, or ideas. Feel free to drop a message!</p>
+
+      <section class="bg-[#2a2e3e] p-8 rounded-xl shadow-xl border border-[#2e344e]">
+        <form
+          id="form"
+          class="space-y-6"
+          action="https://api.web3forms.com/submit"
         >
-          <form
-            class="space-y-4"
-            id="form"
-            action="https://api.web3forms.com/submit"
-          >
-            <div>
-              <input
-                type="hidden"
-                name="access_key"
-                value="29b18f36-e5a9-43e0-b896-79ccb8509f17"
-              />
-              <label class="block text-[--text-light] mb-1" for="name"
-                >Your Name</label
-              >
-              <input
-                type="text"
-                id="name"
-                name="name"
-                class="w-full p-3 rounded-lg bg-[--gray-dark] text-[--text-light] border border-[--gray] focus:outline-none focus:ring-2 focus:ring-[--accent]"
-                placeholder="John Doe"
-                required
-              />
-            </div>
+          <!-- Access Key -->
+          <input type="hidden" name="access_key" value="29b18f36-e5a9-43e0-b896-79ccb8509f17" />
 
-            <div>
-              <label class="block text-[--text-light] mb-1" for="email"
-                >Email</label
-              >
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="w-full p-3 rounded-lg bg-[--gray-dark] text-[--text-light] border border-[--gray] focus:outline-none focus:ring-2 focus:ring-[--accent]"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
+          <!-- Name -->
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-200 mb-2">Your Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="w-full p-4 rounded-lg bg-[#1e1e2f] text-white border border-[#444] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="John Doe"
+              required
+            />
+          </div>
 
-            <div>
-              <label class="block text-[--text-light] mb-1" for="message"
-                >Message</label
-              >
-              <textarea
-                id="message"
-                name="message"
-                class="w-full p-3 rounded-lg bg-[--gray-dark] text-[--text-light] border border-[--gray] focus:outline-none focus:ring-2 focus:ring-[--accent]"
-                rows="4"
-                placeholder="Write your message..."
-                required></textarea>
-            </div>
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-200 mb-2">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="w-full p-4 rounded-lg bg-[#1e1e2f] text-white border border-[#444] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
 
-            <div class="h-captcha" data-captcha="true"></div>
+          <!-- Message -->
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-200 mb-2">Your Message</label>
+            <textarea
+              id="message"
+              name="message"
+              class="w-full p-4 rounded-lg bg-[#1e1e2f] text-white border border-[#444] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="6"
+              placeholder="Write your message..."
+              required
+            ></textarea>
+          </div>
+
+          <!-- hCaptcha -->
+          <div class="h-captcha my-4" data-captcha="true"></div>
+
+          <!-- Submit Button -->
+          <div class="text-center">
             <button
               type="submit"
-              class="w-full p-3 bg-[--accent] text-[--text-light] rounded-lg hover:bg-opacity-90 transition"
+              class="w-full py-3 text-white bg-gradient-to-r from-blue-600 to-teal-500 rounded-lg hover:bg-opacity-80 transition"
             >
               Send Message
             </button>
-            <div id="result" class="hidden text-center p-3 mt-4 rounded-lg">
-            </div>
-          </form>
-        </div>
+          </div>
+
+          <!-- Result Message -->
+          <div id="result" class="hidden text-center p-4 mt-4 rounded-lg"></div>
+        </form>
       </section>
     </main>
 
-    <div>
-      <Footer class="mt-auto" />
-    </div>
+    <Footer class="mt-auto" />
 
+    <!-- Scripts -->
     <script lang="js" is:inline>
       document.getElementById("form").addEventListener("submit", function (e) {
-        const hcaptchaResponse = document.querySelector(
-          'textarea[name="h-captcha-response"]'
-        );
+        const hcaptchaResponse = document.querySelector('textarea[name="h-captcha-response"]');
         if (!hcaptchaResponse || hcaptchaResponse.value === "") {
           e.preventDefault();
           alert("Please complete the hCaptcha.");
@@ -112,63 +111,64 @@ try {
       });
     </script>
 
-    <script is:inline src="https://web3forms.com/client/script.js" async defer
-    ></script>
-  </body><script is:inline>
-    const form = document.getElementById("form");
-    const result = document.getElementById("result");
+    <script is:inline>
+      const form = document.getElementById("form");
+      const result = document.getElementById("result");
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-      const formData = new FormData(form);
-      const object = Object.fromEntries(formData);
-      const json = JSON.stringify(object);
+        const formData = new FormData(form);
+        const object = Object.fromEntries(formData);
+        const json = JSON.stringify(object);
 
-      result.className =
-        "block bg-gray-600 text-white text-center p-3 mt-4 rounded-lg";
-      result.innerHTML = "Please wait...";
+        result.className =
+          "block bg-gray-600 text-white text-center p-3 mt-4 rounded-lg";
+        result.innerHTML = "Please wait...";
 
-      fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: json,
-      })
-        .then(async (response) => {
-          let json = await response.json();
-          if (response.status == 200) {
-            result.className =
-              "block bg-green-600 text-white text-center p-3 mt-4 rounded-lg";
-            result.innerHTML = json.message;
-          } else {
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: json,
+        })
+          .then(async (response) => {
+            let json = await response.json();
+            if (response.status == 200) {
+              result.className =
+                "block bg-green-600 text-white text-center p-3 mt-4 rounded-lg";
+              result.innerHTML = json.message;
+            } else {
+              result.className =
+                "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
+              result.innerHTML = json.message;
+            }
+          })
+          .catch((error) => {
+            console.error(error);
             result.className =
               "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
-            result.innerHTML = json.message;
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          result.className =
-            "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
-          result.innerHTML = "Something went wrong!";
-        })
-        .then(() => {
-          form.reset();
-          setTimeout(() => {
-            result.classList.add(
-              "opacity-0",
-              "transition-opacity",
-              "duration-500"
-            );
+            result.innerHTML = "Something went wrong!";
+          })
+          .then(() => {
+            form.reset();
             setTimeout(() => {
-              result.classList.add("hidden");
-              result.classList.remove("opacity-0");
-            }, 500);
-          }, 3000);
-        });
-    });
-  </script>
+              result.classList.add(
+                "opacity-0",
+                "transition-opacity",
+                "duration-500"
+              );
+              setTimeout(() => {
+                result.classList.add("hidden");
+                result.classList.remove("opacity-0");
+              }, 500);
+            }, 3000);
+          });
+      });
+    </script>
+
+    <script is:inline src="https://web3forms.com/client/script.js" async defer></script>
+  </body>
 </html>
