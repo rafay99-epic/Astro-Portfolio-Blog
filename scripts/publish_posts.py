@@ -16,9 +16,9 @@ BLOG_CONTENT_DIR = Path("src/content/blog")
 
 def extract_frontmatter(content: str, file_name: str):
     """
-    Extracts YAML frontmatter from Markdown content.
-    Returns (metadata_dict, body_content, original_yaml_str) on success,
-    or (None, None, None) on failure. Logs warnings/errors.
+    Extracts YAML frontmatter metadata from Markdown content.
+    
+    Parses the YAML frontmatter at the beginning of the content and returns a tuple containing the metadata dictionary, the remaining body content, and the original YAML string. Returns (None, None, None) if extraction or parsing fails.
     """
     match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
     if not match:
@@ -46,9 +46,9 @@ def extract_frontmatter(content: str, file_name: str):
 
 def publish_post_if_ready(file_path: Path):
     """
-    Checks pubDate and updates draft status if needed for a single file.
-    Returns True if the file was updated, False otherwise.
-    Logs details, warnings, and errors encountered during processing.
+    Publishes a blog post by updating its draft status if its publication date has arrived.
+    
+    Checks the YAML frontmatter of a Markdown file to determine if the post is marked as a draft and has a publication date (`pubDate`) that is in the past or present. If so, updates the draft status to `false` and rewrites the file. Returns `True` if the file was updated, otherwise `False`.
     """
     made_change = False
     file_name = file_path.name
@@ -142,7 +142,11 @@ def publish_post_if_ready(file_path: Path):
     return made_change
 
 def main():
-    """Finds posts and attempts to publish them."""
+    """
+    Scans the blog content directory for Markdown files and publishes eligible draft posts.
+    
+    Checks each Markdown file for draft status and publication date, updating the draft flag if the post should be published. Logs the number of posts processed and updated. Exits with an error if the content directory is missing.
+    """
     logging.info("Starting auto-publish script...")
     total_changes = 0
 

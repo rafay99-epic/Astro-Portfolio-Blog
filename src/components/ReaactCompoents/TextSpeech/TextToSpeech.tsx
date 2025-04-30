@@ -49,6 +49,17 @@ interface TextToSpeechProps {
   lang?: string;
 }
 
+/**
+ * React component that provides accessible text-to-speech playback for given content using the Web Speech API.
+ *
+ * Displays a play/pause/resume button and a progress bar reflecting speech playback. Handles voice selection based on the specified language, manages playback state, and displays error messages for unsupported browsers or unavailable voices.
+ *
+ * @param content - The text to be spoken aloud.
+ * @param lang - Optional BCP 47 language code for voice selection (defaults to "en-US").
+ *
+ * @remark
+ * The component disables playback if the Speech Synthesis API is unsupported, no suitable voices are available, or the content is empty.
+ */
 function TextToSpeech({ content, lang = "en-US" }: TextToSpeechProps) {
   const [playbackState, setPlaybackState] = useState<PlaybackState>("idle");
   const [isSupported, setIsSupported] = useState(true);

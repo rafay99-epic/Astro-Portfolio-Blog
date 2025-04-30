@@ -10,6 +10,15 @@ if (!googleAIModelAPIKey) {
   console.warn("GOOGLE_AI_API_KEY environment variable is not set.");
 }
 
+/**
+ * Handles HTTP POST requests to generate a summary of provided blog content using the Google Generative AI service.
+ *
+ * Expects a JSON request body with a `blogContent` string. Returns a JSON response containing the generated summary or an error message if the input is invalid or the AI service is unavailable.
+ *
+ * @returns A `Response` object with a JSON payload containing either the summary or an error message.
+ *
+ * @remark Returns a 500 error if the Google AI API key is missing or invalid, or if an internal error occurs during processing. Returns a 400 error if `blogContent` is missing or not a valid non-empty string.
+ */
 export async function POST({ request }: { request: Request }) {
   try {
     if (!genAI) {

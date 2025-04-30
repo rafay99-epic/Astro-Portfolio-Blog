@@ -3,6 +3,11 @@ import experienceData from "@config/siteConfig/info.json";
 
 const workExperience = experienceData.workExperience;
 
+/**
+ * Renders an animated timeline section displaying job experiences.
+ *
+ * Each entry shows the job position, company, employment period, roles, and tools used, with alternating layout and animated appearance as the user scrolls.
+ */
 export default function ExperienceSideTimeline() {
   return (
     <section className="py-10 px-6">

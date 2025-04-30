@@ -42,6 +42,13 @@ const itemVariants: Variants = {
   },
 };
 
+/**
+ * Renders a responsive, animated grid of subject cards with interactive hover effects.
+ *
+ * Each card displays the subject name, an optional note count, and links to a subject-specific notes page. Cards feature animated transitions and decorative backgrounds for enhanced user interaction.
+ *
+ * @param subjects - Array of subject objects, each with a name and optional note count, to display in the grid.
+ */
 export default function SubjectGrid({ subjects }: SubjectGridProps) {
   return (
     <motion.section
