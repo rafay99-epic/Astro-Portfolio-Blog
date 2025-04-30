@@ -17,7 +17,7 @@
         "showWiki": true,
         "showNotes": true,
         "showWhatsNew": true,
-        "enableViewTransation": true
+        "enableViewTransation": false
     },
     "FeatureFlagsApi": {
         "enableauthorInfoAPI": true
