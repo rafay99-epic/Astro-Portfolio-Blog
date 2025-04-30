@@ -23,17 +23,20 @@ const TagFilter: React.FC<TagFilterProps> = ({ posts }) => {
   const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
   return (
-    <div className="p-4">
-      <div className="mb-4">
-        <div className="flex flex-wrap gap-2">
+    <div className="p-6 max-w-3xl mx-auto">
+      <div className="mb-6">
+        <h2 className="text-3xl font-semibold text-white mb-4">
+          Filter by Tags
+        </h2>
+        <div className="flex flex-wrap gap-3">
           {tags.map((tag) => (
             <button
               key={tag}
-              className={`rounded-lg py-2 px-3 transition duration-300 transform cursor-pointer 
+              className={`transition duration-300 transform rounded-full py-2 px-4 text-base font-medium 
                 ${
                   selectedTag === tag
-                    ? "bg-[#7aa2f7] text-white scale-105"
-                    : "bg-gray-600 text-gray-200 hover:bg-[#7aa2f7] hover:text-white hover:scale-105"
+                    ? "bg-blue-600 text-white shadow-lg scale-105"
+                    : "bg-gray-700 text-gray-300 hover:bg-blue-500 hover:text-white hover:scale-105"
                 }`}
               onClick={() => handleTagClick(tag)}
               aria-pressed={selectedTag === tag}
@@ -45,38 +48,40 @@ const TagFilter: React.FC<TagFilterProps> = ({ posts }) => {
       </div>
 
       <div>
-        <h2 className="font-bold text-3xl">Articles:</h2>
+        <h2 className="font-bold text-2xl text-white mb-4">Articles:</h2>
         <ul
           className={`transition-opacity duration-300 ${
             fade ? "opacity-0" : "opacity-100"
           }`}
         >
           {paginatedPosts.map((post) => (
-            <li key={post.slug} className="mt-2">
+            <li key={post.slug} className="mb-4">
               <a
                 href={`/blog/${post.slug}`}
-                className="text-white hover:underline"
+                className="text-base text-blue-400 hover:text-blue-600 transition-colors"
               >
                 {post.data.title}
               </a>
+              <p className="text-base text-gray-400">{post.data.description}</p>
             </li>
           ))}
         </ul>
 
-        {/* Pagination Controls */}
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center items-center mt-6">
           <button
             onClick={handlePrevPage}
             disabled={currentPage === 1}
-            className="px-4 py-2 mx-1 bg-gray-500 rounded text-white disabled:opacity-50"
+            className="px-6 py-2 mx-2 bg-gray-600 text-white rounded-lg transition hover:bg-gray-500 disabled:opacity-50"
           >
             Previous
           </button>
-          <span className="px-4 py-2">{`Page ${currentPage} of ${totalPages}`}</span>
+          <span className="px-4 py-2 text-base text-white">
+            Page {currentPage} of {totalPages}
+          </span>
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            className="px-4 py-2 mx-1 bg-gray-500 rounded text-white disabled:opacity-50"
+            className="px-6 py-2 mx-2 bg-gray-600 text-white rounded-lg transition hover:bg-gray-500 disabled:opacity-50"
           >
             Next
           </button>
