@@ -102,6 +102,38 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
       </AnimatePresence>
     </div>
   )
+        }}
+      >
+        <h2 className="text-xl font-semibold" id="ai-summary-heading">
+          AI Summary
+        </h2>
+        <motion.span
+          animate={{ rotate: expanded ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+          aria-hidden="true"
+        >
+          ▼
+        </motion.span>
+      </div>
+
+      <AnimatePresence initial={false}>
+        {expanded && (
+          <motion.div
+            key="summary"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="overflow-hidden mt-4"
+            id="ai-summary-content"
+            aria-labelledby="ai-summary-heading"
+          >
+            {/* ...summary content... */}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
 
       <AnimatePresence initial={false}>
         {expanded && (
