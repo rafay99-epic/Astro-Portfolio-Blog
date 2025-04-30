@@ -32,7 +32,6 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
   const sortedVersions = useMemo(() => {
     try {
       return mappedVersions.sort((a, b) => {
-        // Handle semantic versioning (e.g., "1.2.3")
         const parseVersion = (v: string) => {
           const parts = v.split(".").map(Number);
           if (parts.some(Number.isNaN)) {
@@ -78,7 +77,9 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
       const startIndex = (currentPage - 1) * versionsPerPage;
       const endIndex = startIndex + versionsPerPage;
       if (startIndex >= filteredVersions.length) {
-        setCurrentPage(Math.max(1, Math.ceil(filteredVersions.length / versionsPerPage)));
+        setCurrentPage(
+          Math.max(1, Math.ceil(filteredVersions.length / versionsPerPage))
+        );
         return [];
       }
       return filteredVersions.slice(startIndex, endIndex);
@@ -115,64 +116,75 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
   }
 
   return (
-    <div className="min-h-screen p-6">
-      {/* Tag Filter */}
-      <TagFilter
-        selectedTag={selectedTag}
-        onTagSelect={handleTagSelect}
-        uniqueTags={uniqueTags}
-      />
+    <div className="min-h-screen p-6 space-y-10  text-[var(--text-light)]">
+      <div className="max-w-5xl mx-auto">
+        <h3 className="text-xl font-semibold mb-4">Filter by Tags:</h3>
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => handleTagSelect(null)}
+            className={`px-4 py-2 rounded-full text-sm font-medium border transition ${
+              selectedTag === null
+                ? "bg-[var(--accent)] text-white border-transparent"
+                : "bg-transparent border-[var(--gray)] hover:bg-[var(--gray-dark)]"
+            }`}
+          >
+            All
+          </button>
+          {uniqueTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => handleTagSelect(tag)}
+              className={`px-4 py-2 rounded-full text-sm font-medium border transition ${
+                selectedTag === tag
+                  ? "bg-[var(--accent)] text-white border-transparent"
+                  : "bg-transparent border-[var(--gray)] hover:bg-[var(--gray-dark)]"
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
 
-      {/* Version List */}
-      <div className="space-y-8 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {paginatedVersions.map((version) => (
           <a
             key={version.slug}
             href={`/webwiki/${version.slug}`}
-            className="bg-[#1f2335] transform transition-transform duration-300 hover:scale-105 border border-[#4C506A40] overflow-hidden shadow-lg flex-col rounded-[15px] block p-6 bg-[var(--accent-dark)] shadow-[var(--box-shadow), 0 4px 6px rgba(0, 0, 0, 0.1)]"
-            style={{
-              boxShadow: "var(--box-shadow)",
-              transition: "box-shadow 0.3s ease, transform 0.3s ease",
-            }}
+            className="rounded-xl border border-[#4C506A40] bg-[#2b2d41] hover:bg-[#32344a] p-5 shadow-lg transition-transform transform hover:-translate-y-1"
             aria-label={`Version ${version.version}: ${version.title}`}
             role="Wiki Post Link"
           >
-            {/* Title */}
-            <h2 className="text-3xl font-bold text-[var(--text-light)] mb-2">
-              {version.title}
-            </h2>
-
-            {/* Metadata */}
-            <div className="text-sm text-[var(--gray)] space-y-1 mb-4">
+            <h2 className="text-xl font-bold mb-2">{version.title}</h2>
+            <div className="text-sm text-[var(--gray)] space-y-1 mb-3">
               <p>
-                <span className="font-medium text-[var(--text-light)]">
-                  Release Date:
-                </span>{" "}
-                {new Date(version.versionreleasedate).toLocaleDateString()}
+                <strong className="text-[var(--text-light)]">Version:</strong>{" "}
+                {version.version}
               </p>
               <p>
-                <span className="font-medium text-[var(--text-light)]">
-                  Version:
-                </span>{" "}
-                {version.version}
+                <strong className="text-[var(--text-light)]">
+                  Release Date:
+                </strong>{" "}
+                {new Date(version.versionreleasedate).toLocaleDateString()}
               </p>
               {version.pubDate && (
                 <p>
-                  <span className="font-medium text-[var(--text-light)]">
+                  <strong className="text-[var(--text-light)]">
                     Published:
-                  </span>{" "}
+                  </strong>{" "}
                   {new Date(version.pubDate).toLocaleDateString()}
                 </p>
               )}
             </div>
-
-            {/* Tags */}
-            {Array.isArray(version.tags) && version.tags.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
+            <p className="text-sm text-[var(--gray)] mb-4 line-clamp-3">
+              {version.description}
+            </p>
+            {version.tags?.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
                 {version.tags.map((tag, i) => (
                   <span
                     key={i}
-                    className="bg-[var(--gray-dark)] text-[var(--text-light)] text-xs font-semibold px-2 py-1 rounded-full border border-[var(--text-light)] shadow-md"
+                    className="bg-[#3b3d58] text-xs text-white px-3 py-1 rounded-full"
                   >
                     {tag}
                   </span>
@@ -183,26 +195,23 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
         ))}
       </div>
 
-      {/* Pagination */}
-      <div className="pagination mt-4 flex justify-center items-center space-x-4">
+      <div className="flex justify-center items-center space-x-6 mt-8">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          aria-label="Go to previous page"
-          className="text-[#7aa2f7] hover:text-[#4c88f7] disabled:opacity-50"
+          className="px-4 py-2 rounded border text-sm transition hover:bg-[#3c3f5c] disabled:opacity-40"
         >
           Previous
         </button>
-        <span className="text-gray-300" aria-live="polite" role="status">
-          Page {currentPage} of {totalPages}
+        <span className="text-sm">
+          Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
         </span>
         <button
           onClick={() =>
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          aria-label="Go to next page"
-          className="text-[#7aa2f7] hover:text-[#4c88f7] disabled:opacity-50"
+          className="px-4 py-2 rounded border text-sm transition hover:bg-[#3c3f5c] disabled:opacity-40"
         >
           Next
         </button>
