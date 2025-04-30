@@ -22,10 +22,14 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
   const blogContent = `Title: ${title}\nAuthor: ${author}\nDescription: ${description}\n\nContent:\n${content}`;
   const cacheKey = `ai-summary-${title}-${author}`;
   useEffect(() => {
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      setSummary(cached);
-      return;
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        setSummary(cached);
+        return;
+      }
+    } catch (e) {
+      console.warn("Could not retrieve summary from localStorage:", e);
     }
 
     const fetchSummary = async () => {
@@ -106,6 +110,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
                 animate={{ opacity: 1 }}
                 transition={{ staggerChildren: 0.015 }}
                 className="text-lg leading-relaxed bg-[#2e3440] p-4 rounded-lg"
+                aria-live="polite"
               >
                 {summary.split(" ").map((word, i) => (
                   <motion.span
