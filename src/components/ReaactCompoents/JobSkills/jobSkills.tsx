@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import "devicon/devicon.min.css";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import authorConfig from "@config/siteConfig/info.json";
 
 const techStack = authorConfig.techStack;
 
 const SkillsShowcase: React.FC = () => {
-  // Create a mapping of categories to tools from the JSON structure
   const categoryToolsMap = techStack.reduce(
     (acc, item) => {
       acc[item.category] = item.tools;
@@ -19,53 +18,55 @@ const SkillsShowcase: React.FC = () => {
 
   return (
     <div
-      className="py-12 px-6 md:px-12 bg-[var(--accent-dark)] rounded-lg shadow-lg"
+      className="bg-[var(--accent-dark)] rounded-2xl px-6 py-12 md:px-10 md:py-16 shadow-xl"
       style={{
-        boxShadow:
-          "0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33)",
+        boxShadow: "var(--box-shadow)",
       }}
     >
-      {/* Tab Navigation */}
-      <div className="flex flex-wrap justify-center gap-4 mb-8">
+      <div className="flex flex-wrap justify-center gap-3 mb-10">
         {Object.keys(categoryToolsMap).map((category) => (
           <button
             key={category}
             onClick={() => setActiveTab(category)}
-            className={`py-2 px-6 font-semibold rounded-full transition duration-300 text-sm md:text-base ${
-              activeTab === category
-                ? "bg-[var(--accent)] text-white shadow-md"
-                : "bg-transparent text-[var(--text-light)] hover:bg-gray-700 hover:text-[var(--accent)]"
-            }`}
+            className={`px-5 py-2.5 rounded-full font-medium transition duration-300 text-sm md:text-base border
+              ${
+                activeTab === category
+                  ? "bg-[var(--accent)] text-white border-transparent shadow-md"
+                  : "text-[var(--text-light)] border-[var(--gray)] hover:bg-[var(--gray-dark)] hover:border-[var(--accent)]"
+              }`}
           >
             {category}
           </button>
         ))}
       </div>
 
-      {/* Skills Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 10 }}
-        transition={{ duration: 0.3 }}
-      >
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6">
-          {categoryToolsMap[activeTab].map((skill) => (
-            <motion.div
-              key={skill}
-              whileHover={{ scale: 1.1 }}
-              className="flex flex-col items-center text-center"
-            >
-              <i
-                className={`devicon-${skill.toLowerCase()}-plain colored text-5xl`}
-              ></i>
-              <p className="mt-2 text-sm text-[var(--text-light)]">
-                {skill.charAt(0).toUpperCase() + skill.slice(1)}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 12 }}
+          transition={{ duration: 0.35 }}
+        >
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 sm:gap-8 px-4">
+            {categoryToolsMap[activeTab].map((skill) => (
+              <motion.div
+                key={skill}
+                whileHover={{ scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="flex flex-col items-center text-center bg-[var(--gray-dark)] p-4 rounded-xl shadow hover:shadow-lg transition"
+              >
+                <i
+                  className={`devicon-${skill.toLowerCase()}-plain colored text-4xl md:text-5xl`}
+                ></i>
+                <p className="mt-3 text-sm text-[var(--text-light)] font-medium">
+                  {skill.charAt(0).toUpperCase() + skill.slice(1)}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };
