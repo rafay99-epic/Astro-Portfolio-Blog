@@ -31,6 +31,7 @@ const BlogHeader: React.FC<BlogHeaderProps> = ({
       <motion.img
         src={coverImage}
         alt="Cover"
+        loading="eager"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.8 }}
         transition={{ duration: 1 }}
