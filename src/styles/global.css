@@ -611,29 +611,26 @@ iframe {
   display: block;
 }
 
-.copy-cnt {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.75rem;
-  z-index: 10;
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #7aa2f7 #1f2335;
 }
 
-.copy-btn {
-  background: transparent;
-  color: white;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem;
-  opacity: 0.6;
-  transition: opacity 0.2s ease-in-out;
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.copy-btn:hover {
-  opacity: 1;
+::-webkit-scrollbar-track {
+  background: #1f2335;
 }
 
-.copy-svg {
-  width: 1.25rem;
-  height: 1.25rem;
-  fill: var(--gray);
+::-webkit-scrollbar-thumb {
+  background-color: #7aa2f7;
+  border-radius: 10px;
+  border: 2px solid #1f2335;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a4c2fb;
 }

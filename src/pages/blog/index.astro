@@ -29,14 +29,14 @@ try {
       description={`Browse all articles on ${authorConfig.SiteName} and explore categorized content.`}
     />
   </head>
-  <body>
-    <Header />
+  <body class="flex flex-col min-h-screen m-0 p-0">
+    <Header class="mt-0 pt-0" />
     <SpeedInsights />
-    <section>
+    <section class="mt-0 pt-0">
       <BlogSection posts={posts} client:load />
     </section>
-    <section>
-      <Footer class="mt-auto" />
+    <section class="mt-auto">
+      <Footer />
     </section>
   </body>
 </html>

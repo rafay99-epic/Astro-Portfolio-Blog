@@ -3,15 +3,12 @@ import type { CollectionEntry } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import FormattedDate from "@components/FormattedDate.astro";
-import { Image } from "astro:assets";
-import ShareButtons from "@react/SocialButton/socialButton.tsx";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "@astro/BlogComments/PostComment.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { getCollection } from "astro:content";
-import TextToSpeech from "@components/ReaactCompoents/TextSpeech/TextToSpeech";
 import AISummaryCard from "@react/SummaryCard/summary_blog";
+import BlogHeader from "@components/ReaactCompoents/BlogPostLayout/BlogPostLayoutHeader";
 export const prerender = true;
 
 const pageUrl = Astro.url.href;
@@ -44,7 +41,6 @@ const {
   title,
   description,
   pubDate,
-  updatedDate,
   heroImage,
   authorName,
   authorAvatar,
@@ -58,150 +54,62 @@ const {
     <BaseHead title={title} description={description} />
     <SpeedInsights />
     <style>
-      .container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-      }
-
-      .item {
-        text-align: center;
+      #scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(to right, #7aa2f7, #a1c4fd);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.1s linear;
+        width: 100%;
+        z-index: 50;
+        pointer-events: none;
       }
     </style>
   </head>
   <body>
     <Header />
-
-    <div
-      id="scroll-progress"
-      style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 4px;
-    background: linear-gradient(to right, #7aa2f7, #a1c4fd);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.1s linear;
-    width: 100%;
-    z-index: 50;
-    pointer-events: none;
-  "
-    >
-    </div>
-
-    <main class="w-full max-w-5xl mx-auto px-4 py-8">
+    <div id="scroll-progress"></div>
+    <main class="w-full max-w-5xl mx-auto px-4 py-4 md:py-6">
       <article>
-        <div class="w-full mb-4">
-          {
-            heroImage && (
-              <Image
-                src={heroImage || ""}
-                alt="hero Image Blog"
-                format="avif"
-                width={1020}
-                height={510}
-              />
-            )
-          }
-        </div>
-        <div class="prose mx-auto text-gray-800 text-justify">
-          <div class="mb-8 text-center">
-            <div class="mb-2 text-white">
-              <FormattedDate date={pubDate} />
-              {
-                updatedDate && (
-                  <div class="italic">
-                    Last updated on <FormattedDate date={updatedDate} />
-                  </div>
-                )
-              }
-              {
-                readTime && (
-                  <p class="text-sm text-gray-500 italic">{readTime}</p>
-                )
-              }
-            </div>
-            <h1 class="text-3xl font-bold mb-4">{title}</h1>
-            <div class="mb-4 text-center">
-              <div class="flex flex-wrap justify-center mt-4 space-x-2">
-                {
-                  tags?.map((tag) => (
-                    <span class="technology-chip inline-block m-1 px-2 py-1 bg-[#3b4252] text-[#f8f8f8] rounded-lg text-base hover:bg-[#7aa2f7] ">
-                      {tag}
-                    </span>
-                  ))
-                }
-              </div>
-            </div>
-            <div
-              class="flex flex-col items-center justify-center mt-6 space-y-2"
-            >
-              <p class="text-gray-500 text-lg">Published by</p>
+        <section>
+          <BlogHeader
+            client:load
+            title={title ?? "Untitled"}
+            date={new Date(pubDate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+            authorName={authorName ?? "Anonymous"}
+            authorAvatar={authorAvatar ?? "/default-avatar.png"}
+            coverImage={heroImage ?? "/default-cover.jpg"}
+            tags={tags}
+            readtime={readTime}
+          />
+          <AISummaryCard
+            client:load
+            title={title}
+            description={description}
+            author={authorName}
+            content={blogContent}
+          />
+        </section>
 
-              {
-                authorAvatar && (
-                  <Image
-                    src={authorAvatar}
-                    alt="Author avatar"
-                    class="rounded-full w-28 h-28 object-cover border-4 border-gray-300 shadow-lg"
-                    width={24}
-                    height={24}
-                  />
-                )
-              }
-              <p class="text-lg font-semibold text-gray-100 space-y-2">
-                {authorName}
-              </p>
-            </div>
-            <hr class="mt-4" />
-            <div class="container">
-              <div
-                role="region"
-                aria-label="Text to speech controls"
-                class="item"
-              >
-                <TextToSpeech client:load content={blogContent} />
-              </div>
-              <div class="item">
-                <ShareButtons
-                  url={pageUrl}
-                  pagetitle="Blog Post"
-                  aria-label="Share this post"
-                />
-              </div>
-            </div>
-            <hr class="mt-4" />
-          </div>
-          <div>
-            <AISummaryCard
-              client:load
-              title={title}
-              description={description}
-              author={authorName}
-              content={blogContent}
-            />
-          </div>
-          <div>
-            <slot />
-          </div>
-          <div class="my-8 text-center">
-            <h2 class="text-2xl font-semibold mb-4">Comments</h2>
-            <PostComment />
-          </div>
-        </div>
+        <section class="text-justify mt-8">
+          <slot />
+        </section>
       </article>
+      <section>
+        <div class="my-8 text-center">
+          <h2 class="text-2xl font-semibold mb-4">Comments</h2>
+          <PostComment />
+        </div>
+      </section>
     </main>
+
     <script lang="js" is:inline src="/js/progressbar.js"></script>
     <Footer />
   </body>
