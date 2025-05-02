@@ -29,6 +29,7 @@
         "astro-opengraph-images": "^1.12.3",
         "astro-robots-txt": "^1.0.0",
         "astro-seo": "^0.8.4",
+        "astro-seo-metadata": "^0.6.0",
         "axios": "^1.7.7",
         "devicon": "^2.16.0",
         "dotenv": "^16.4.5",

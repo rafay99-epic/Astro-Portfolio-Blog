@@ -5,13 +5,10 @@ interface Props {
   description: string;
   image?: string;
 }
-
+import { SEOMetadata } from "astro-seo-metadata";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-
 const { title, description, image = "/Rafay99.webp" } = Astro.props;
-
 import { ClientRouter } from "astro:transitions";
-
 import FeatureFlage from "@config/featureFlag/featureFlag.json";
 ---
 
@@ -196,11 +193,29 @@ import FeatureFlage from "@config/featureFlag/featureFlag.json";
   content="yhlSscdVZmq_TymJP_qeDvw2R1HWYzPTQOoCTiA6jgA"
 />
 
+<SEOMetadata
+  siteName="Rafay99"
+  title={title}
+  description={description}
+  image={new URL(image, Astro.url).toString()}
+  favicon="/favicon.webp"
+  author="Abdul Rafay"
+  copyright="© Abdul Rafay"
+  astroSitemap={true}
+  canonicalUrl={canonicalURL.toString()}
+  type="website"
+  astroGenerator={true}
+/>
+
 <!-- Umami Analytics -->
 <!-- <script
   defer
   src="https://cloud.umami.is/script.js"
   data-website-id="a0bf9842-31b3-4e49-a961-cc27e2ab6920"></script> -->
+
+<meta name="author" content={Astro.site} />
+
+<meta name="copyright" content="ISC" />
 
 <!-- RSS Feed -->
 <link
