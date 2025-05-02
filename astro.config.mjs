@@ -49,7 +49,7 @@ export default defineConfig({
     mdx(),
     sitemap({
       xslURL: "/sitemap.xsl",
-      entryLimit: false,
+      entryLimit: Infinity, // This disables the pagination correctly
     }),
     react({
       include: ["**/react/*"],
@@ -57,7 +57,7 @@ export default defineConfig({
     tailwind(),
     robotsTxt({
       sitemap: true,
-      host: "https://www.rafay99.com",
+      host: "www.rafay99.com",
     }),
     opengraphImages({
       options: {

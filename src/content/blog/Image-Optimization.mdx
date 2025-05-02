@@ -3,7 +3,7 @@ title: Image Optimization
 description: Optimize Your Images for Better Performance
 pubDate: 2023-05-22T19:00:00.000Z
 draft: false
-heroImage: /BlogImages/iMAGE-opTIMIZATION.png
+heroImage: /BlogImages/iMAGE-opTIMIZATION.webp
 authorName: "Abdul Rafay "
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
@@ -90,7 +90,7 @@ WIDTH=800
 HEIGHT=600
 
 # Resize PNG or JPG to either height or width while maintaining proportions using Imagemagick
-find ${FOLDER} -iname '*.jpg' -o -iname '*.png' -exec convert \{} -verbose -resize $WIDTHx$HEIGHT\> \{} \;
+find ${FOLDER} -iname '*.jpg' -o -iname '*.webp' -exec convert \{} -verbose -resize $WIDTHx$HEIGHT\> \{} \;
 img-optimize --std --path "$(pwd)"
 ```
 
