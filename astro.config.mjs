@@ -54,10 +54,7 @@ export default defineConfig({
       include: ["**/react/*"],
     }),
     tailwind(),
-    robotsTxt({
-      sitemap: true,
-      host: "https://www.rafay99.com",
-    }),
+    robotsTxt(),
     opengraphImages({
       options: {
         fonts: [
