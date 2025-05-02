@@ -7,6 +7,7 @@ import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
 import robotsTxt from "astro-robots-txt";
 import opengraphImages, { presets } from "astro-opengraph-images";
+import fs from "fs";
 dotenv.config();
 
 export default defineConfig({
