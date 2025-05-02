@@ -60,6 +60,7 @@ export default defineConfig({
       host: "www.rafay99.com",
     }),
     opengraphImages({
+      format: "webp",
       options: {
         fonts: [
           {
