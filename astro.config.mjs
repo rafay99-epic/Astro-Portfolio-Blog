@@ -59,22 +59,22 @@ export default defineConfig({
       sitemap: true,
       host: "www.rafay99.com",
     }),
-    opengraphImages({
-      format: "webp",
-      options: {
-        fonts: [
-          {
-            name: "Poppins",
-            weight: 400,
-            style: "normal",
-            data: fs.readFileSync(
-              "node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff"
-            ),
-          },
-        ],
-      },
-      render: presets.brandedLogo,
-    }),
+    // opengraphImages({
+    //   format: "webp",
+    //   options: {
+    //     fonts: [
+    //       {
+    //         name: "Poppins",
+    //         weight: 400,
+    //         style: "normal",
+    //         data: fs.readFileSync(
+    //           "node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff"
+    //         ),
+    //       },
+    //     ],
+    //   },
+    //   render: presets.brandedLogo,
+    // }),
   ],
   adapter: vercel({
     webAnalytics: {
