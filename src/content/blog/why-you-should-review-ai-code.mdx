@@ -1,5 +1,5 @@
 ---
-title: 'Don’t Trust the Bot: Always Review Your Code'
+title: "Don’t Trust the Bot: Always Review Your Code"
 description: >-
   A candid look at how AI is changing code reviews, why tools like Code Rabbit
   help — and why you should still double-check everything.
@@ -13,7 +13,9 @@ tags:
   - Thought-Process
 ---
 
-I just got my first Job in year 2022 after my bachalor's degree, and I started my carrer as a Machine Learning Engineer and then the First AI boom hit, Chat gpt was realeased and chage the course of the history so much that I couldn't imangine, it was so grounding chnaging that I could not believe, Like I known AI was but the the entire AI changed and with soem time the era, *"The Era of AI"* was born.
+import ImageSlider from "../../components//ReaactCompoents/ImageSlider/imageSlider";
+
+I just got my first Job in year 2022 after my bachalor's degree, and I started my carrer as a Machine Learning Engineer and then the First AI boom hit, Chat gpt was realeased and chage the course of the history so much that I couldn't imangine, it was so grounding chnaging that I could not believe, Like I known AI was but the the entire AI changed and with soem time the era, _"The Era of AI"_ was born.
 
 With time different tools for differnt AI was born from coding to writing blogs to SEO and even for managing task as well. people where adding open AI APIs into their application and add warpper around them, like this is cool but one time that I want to talk about Code Review.
 
@@ -23,34 +25,40 @@ let's go back in time and let's talks about how code review was done. it was sim
 
 ## Ai Written Code
 
-AI has changed everything and now everyone was writing code using AI this was new and known as *"Vibe Code"* if you want to knwo what is vibe coding then checkout my pervious [blog Post](/blog/rise-of-vibe-coding/).
+AI has changed everything and now everyone was writing code using AI this was new and known as _"Vibe Code"_ if you want to knwo what is vibe coding then checkout my pervious [blog Post](/blog/rise-of-vibe-coding/).
 
-With Vibe Coding in place, everyone was writing code using AI their will be cases where AI writing code will have some downside for example, NO code optimzation, bugs and some time casuing alot of issue in the code base and even some time break the whole application as well. Not too long ago I can across a video on YouTube of Theo talks about a Twitter Post about where AI generate code Cause a company like *10 Thousand US Dollars* like this is crazy and Theo rais some solid points if you like to watch the vide then free will to check it out. It's Amazing YouTube Viddeo
+With Vibe Coding in place, everyone was writing code using AI their will be cases where AI writing code will have some downside for example, NO code optimzation, bugs and some time casuing alot of issue in the code base and even some time break the whole application as well. Not too long ago I can across a video on YouTube of Theo talks about a Twitter Post about where AI generate code Cause a company like _10 Thousand US Dollars_ like this is crazy and Theo rais some solid points if you like to watch the vide then free will to check it out. It's Amazing YouTube Viddeo
 
 [YouTubeVide](https://www.youtube.com/embed/BnVY1NDn4Mg?si=CVHeQgKhvi3I207w)
 
 ## Code Rabbit
 
-Let’s be real — **everyone’s using AI** these days to handle the boring parts: styling, boilerplate, repeated tasks... even I do it! I’ll be honest, I’m *not great at design* or picking the right color palette, so I use AI for that too. No shame.
+Let’s be real — **everyone’s using AI** these days to handle the boring parts: styling, boilerplate, repeated tasks... even I do it! I’ll be honest, I’m _not great at design_ or picking the right color palette, so I use AI for that too. No shame.
 
-But here’s the thing — with all this AI-generated code, **you *have* to review it**. And that’s exactly where **[Code Rabbit](https://www.coderabbit.ai/)** comes in.
+But here’s the thing — with all this AI-generated code, **you _have_ to review it**. And that’s exactly where **[Code Rabbit](https://www.coderabbit.ai/)** comes in.
 
 Basically, Code Rabbit reviews all your pull requests and suggests changes — and not just generic ones. It understands your codebase context too. And the best part? **It’s totally free** for all public repos. For this blog post, I went ahead and enabled Code Rabbit on all my projects.
 
 And holy moly… **it’s actually good.**
-Like 90% of the time, it gives solid suggestions to improve my *questionably written* code 😅.
+Like 90% of the time, it gives solid suggestions to improve my _questionably written_ code 😅.
 
 ### Here's the proof:
 
-![](/BlogImages/pull_request_1.webp)
-![](/BlogImages/pull_request_2.webp)
-![](/BlogImages/pull_request_3.webp)
+<ImageSlider
+  images={[
+    "/BlogImages/pull_request_1.webp",
+    "/BlogImages/pull_request_2.webp",
+    "/BlogImages/pull_request_3.webp",
+
+]}
+client:load
+/>
 
 Pretty impressive, right?
 
 Code Rabbit doesn’t just point out little things — it’ll flag **error handling**, suggest **accessibility improvements**, and yeah... even **remind you to remove your API keys** if you accidentally commit them. (Been there.)
 
-I remember one time I was building a **Text-to-Speech API in the browser**, and it was *rough* getting it to work. Locally and in preview deployments, everything looked fine. But when I pushed the code, **Code Rabbit found a bug** I totally missed. I fixed it based on its suggestion, and boom — it actually solved the issue.
+I remember one time I was building a **Text-to-Speech API in the browser**, and it was _rough_ getting it to work. Locally and in preview deployments, everything looked fine. But when I pushed the code, **Code Rabbit found a bug** I totally missed. I fixed it based on its suggestion, and boom — it actually solved the issue.
 
 > ⚠️ One small disclaimer:
 > I **don’t make direct commits** from GitHub based on Code Rabbit suggestions.
@@ -68,8 +76,8 @@ Check this out:
 
 When you click that commit button from the GitHub UI, Code Rabbit sometimes tries to **replace entire functions**, even if the fix was just about changing one or two lines. And it does that without fully understanding the rest of the codebase — so yeah, it ends up **breaking stuff**.
 
-This happened to me *a lot* when I first started using it. After a few broken commits, I figured out my own flow:
-I still let it review my code, but I **copy the suggested changes**, run them locally, and if it works — *then* I push it. Never blindly commit from GitHub anymore.
+This happened to me _a lot_ when I first started using it. After a few broken commits, I figured out my own flow:
+I still let it review my code, but I **copy the suggested changes**, run them locally, and if it works — _then_ I push it. Never blindly commit from GitHub anymore.
 
 Now, another thing that didn’t quite work for me is this new feature called **Code Docs**. When you make a pull request, it tries to automatically generate comments and document your code by summarizing it.
 
@@ -80,7 +88,7 @@ I turned it off the same day I tried it. It’s just not there yet — feels hal
 ## Final Thoughts
 
 So yeah — **Code Rabbit is actually really good**.
-It’s helped me *a lot*, and honestly, I’ve learned so much just by reading its suggestions. It feels like having a senior dev review your PRs every time… and it never gets tired.
+It’s helped me _a lot_, and honestly, I’ve learned so much just by reading its suggestions. It feels like having a senior dev review your PRs every time… and it never gets tired.
 
 But — and this is important — **don’t turn your brain off**.
 
@@ -92,12 +100,12 @@ There’ve been times when I pushed some code, and later someone asked me,
 
 So here’s what I’ve learned:
 
-* **Know your codebase**, even if you’re working on just one part of it.
-* **Always review everything** — read the suggestions, run them locally, test them, and make sure it actually works when deployed.
-* Write tests. Please write tests.
-* And yeah — performance? AI doesn’t care. It just wants to get the job done. You have to be the one to **optimize, clean up**, and make sure it won’t eat up all your memory.
+- **Know your codebase**, even if you’re working on just one part of it.
+- **Always review everything** — read the suggestions, run them locally, test them, and make sure it actually works when deployed.
+- Write tests. Please write tests.
+- And yeah — performance? AI doesn’t care. It just wants to get the job done. You have to be the one to **optimize, clean up**, and make sure it won’t eat up all your memory.
 
 In the end, tools like Code Rabbit are here to help — not replace thinking.
-Use it, learn from it, don’t rely on it blindly… and most importantly, **have fun**. Whether you’re writing real code or just *vibe coding*, building cool stuff is what it’s all about.
+Use it, learn from it, don’t rely on it blindly… and most importantly, **have fun**. Whether you’re writing real code or just _vibe coding_, building cool stuff is what it’s all about.
 
 Until then, peace out, nerds. 👓
