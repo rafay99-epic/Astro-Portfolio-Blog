@@ -5,7 +5,8 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
-
+import robotsTxt from "astro-robots-txt";
+import opengraphImages, { presets } from "astro-opengraph-images";
 dotenv.config();
 
 export default defineConfig({
@@ -45,11 +46,33 @@ export default defineConfig({
   },
   integrations: [
     mdx(),
-    sitemap(),
+    sitemap({
+      xslURL: "/sitemap.xsl",
+      entryLimit: false,
+    }),
     react({
       include: ["**/react/*"],
     }),
     tailwind(),
+    robotsTxt({
+      sitemap: true,
+      host: "https://www.rafay99.com",
+    }),
+    opengraphImages({
+      options: {
+        fonts: [
+          {
+            name: "Poppins",
+            weight: 400,
+            style: "normal",
+            data: fs.readFileSync(
+              "node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff"
+            ),
+          },
+        ],
+      },
+      render: presets.brandedLogo,
+    }),
   ],
   adapter: vercel({
     webAnalytics: {
