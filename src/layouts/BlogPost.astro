@@ -10,6 +10,11 @@ import { getCollection } from "astro:content";
 import AISummaryCard from "@react/SummaryCard/summary_blog";
 import BlogHeader from "@components/ReaactCompoents/BlogPostLayout/BlogPostLayoutHeader";
 export const prerender = true;
+import { SEO } from "astro-seo";
+import { getImagePath } from "astro-opengraph-images";
+
+const { url, site } = Astro;
+const openGraphImageUrl = getImagePath({ url, site });
 
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"];
@@ -68,6 +73,23 @@ const {
         pointer-events: none;
       }
     </style>
+
+    <SEO
+      title={title}
+      description={description}
+      openGraph={{
+        basic: {
+          title: title,
+          type: "article",
+          image: openGraphImageUrl,
+          url: pageUrl,
+        },
+        optional: {
+          description: description,
+          locale: "en_US",
+        },
+      }}
+    />
   </head>
   <body>
     <Header />

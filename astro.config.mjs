@@ -5,7 +5,7 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
-
+import robotsTxt from "astro-robots-txt";
 dotenv.config();
 
 export default defineConfig({
@@ -45,11 +45,18 @@ export default defineConfig({
   },
   integrations: [
     mdx(),
-    sitemap(),
+    sitemap({
+      xslURL: "/sitemap.xsl",
+      entryLimit: Infinity, // This disables the pagination correctly
+    }),
     react({
       include: ["**/react/*"],
     }),
     tailwind(),
+    robotsTxt({
+      sitemap: true,
+      host: "www.rafay99.com",
+    }),
   ],
   adapter: vercel({
     webAnalytics: {

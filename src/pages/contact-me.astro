@@ -5,6 +5,7 @@ import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
+export const prerender = false;
 try {
   if (!featureFlags.showContact) {
     return Astro.redirect("/access-denied");
@@ -26,23 +27,38 @@ try {
     <Header />
 
     <main class="max-w-5xl mx-auto py-1 px-6 sm:px-8 lg:px-16">
-      <h1 class="text-4xl sm:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-700 to-teal-600 mb-8">
+      <h1
+        class="text-4xl sm:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-700 to-teal-600 mb-8"
+      >
         Let's Collaborate
       </h1>
-      <p class="text-center text-lg text-gray-300 mb-12">I'm eager to hear your thoughts, feedback, or ideas. Feel free to drop a message!</p>
+      <p class="text-center text-lg text-gray-300 mb-12">
+        I'm eager to hear your thoughts, feedback, or ideas. Feel free to drop a
+        message!
+      </p>
 
-      <section class="bg-[#2a2e3e] p-8 rounded-xl shadow-xl border border-[#2e344e]">
+      <section
+        class="bg-[#2a2e3e] p-8 rounded-xl shadow-xl border border-[#2e344e]"
+      >
         <form
           id="form"
           class="space-y-6"
           action="https://api.web3forms.com/submit"
         >
           <!-- Access Key -->
-          <input type="hidden" name="access_key" value="29b18f36-e5a9-43e0-b896-79ccb8509f17" />
+          <input
+            type="hidden"
+            name="access_key"
+            value="29b18f36-e5a9-43e0-b896-79ccb8509f17"
+          />
 
           <!-- Name -->
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-200 mb-2">Your Name</label>
+            <label
+              for="name"
+              class="block text-sm font-medium text-gray-200 mb-2"
+              >Your Name</label
+            >
             <input
               type="text"
               id="name"
@@ -55,7 +71,11 @@ try {
 
           <!-- Email -->
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-200 mb-2">Email Address</label>
+            <label
+              for="email"
+              class="block text-sm font-medium text-gray-200 mb-2"
+              >Email Address</label
+            >
             <input
               type="email"
               id="email"
@@ -68,15 +88,18 @@ try {
 
           <!-- Message -->
           <div>
-            <label for="message" class="block text-sm font-medium text-gray-200 mb-2">Your Message</label>
+            <label
+              for="message"
+              class="block text-sm font-medium text-gray-200 mb-2"
+              >Your Message</label
+            >
             <textarea
               id="message"
               name="message"
               class="w-full p-4 rounded-lg bg-[#1e1e2f] text-white border border-[#444] focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows="6"
               placeholder="Write your message..."
-              required
-            ></textarea>
+              required></textarea>
           </div>
 
           <!-- hCaptcha -->
@@ -103,7 +126,9 @@ try {
     <!-- Scripts -->
     <script lang="js" is:inline>
       document.getElementById("form").addEventListener("submit", function (e) {
-        const hcaptchaResponse = document.querySelector('textarea[name="h-captcha-response"]');
+        const hcaptchaResponse = document.querySelector(
+          'textarea[name="h-captcha-response"]'
+        );
         if (!hcaptchaResponse || hcaptchaResponse.value === "") {
           e.preventDefault();
           alert("Please complete the hCaptcha.");
@@ -169,6 +194,7 @@ try {
       });
     </script>
 
-    <script is:inline src="https://web3forms.com/client/script.js" async defer></script>
+    <script is:inline src="https://web3forms.com/client/script.js" async defer
+    ></script>
   </body>
 </html>
