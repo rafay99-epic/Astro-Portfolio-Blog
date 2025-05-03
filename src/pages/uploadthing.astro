@@ -1,0 +1,36 @@
+---
+import UploadThing from "@react/UploadThing/uploadthing";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import "@styles/home/home-page.css";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import authorConfig from "@config/siteConfig/info.json";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
+    />
+  </head>
+  <body class="min-h-screen flex flex-col text-[var(--text-light)]">
+    <Header />
+    <SpeedInsights />
+
+    <main
+      class="flex-grow flex flex-col items-center justify-center text-center px-4"
+    >
+      <h1 class="text-5xl font-bold text-[var(--text-light)] mb-6">
+        Uploadload Thing: Upload Image for Blog Post
+      </h1>
+      <section>
+        <UploadThing client:load />
+      </section>
+    </main>
+
+    <Footer class="mt-auto" />
+  </body>
+</html>
