@@ -1,7 +1,7 @@
 ---
 Projecttitle: "Future Insight Website"
 ProjectDescription: Explore cutting-edge insights on the 'Future Insight' Blog. Crafted with Node.js, Hugo, and deployed on Netlify for a seamless experience.
-ProjectImage: "/ProjectImages/future-insight.png"
+ProjectImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJz7CgMIZB7pQ0TRPA9NYOdUsXcZvWxnjer5yg"
 draft: false
 ProjectTech:
   [
@@ -16,6 +16,7 @@ ProjectTech:
     "SEO Optimization",
   ]
 ProjectCategory: ["Web Apps"]
+ranking:
 ---
 
 Future Insight’s blog site is your go-to destination for understanding the latest advancements and emerging trends in technology. This site offers an in-depth view into fields like artificial intelligence, machine learning, and web development. Developed using **Hugo**, **Node.js**, **CSS**, **JavaScript**, and **Firebase**, Future Insight is crafted to provide a streamlined and interactive experience, making complex tech topics accessible and engaging for everyone.

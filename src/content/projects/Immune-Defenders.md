@@ -2,7 +2,7 @@
 Projecttitle: "Immune Defenders"
 ProjectDescription: >-
   Immune Defenders: A Fast-Paced Obstacle-Dodging Game Developed with Unity and C#
-ProjectImage: /ProjectImages/Immune Defenders.png
+ProjectImage: https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJQpuDKjFgn1yhkSGRDC7A9coMEHbvUd3KfpeY
 draft: false
 ProjectTech:
   - Animation

@@ -4,7 +4,7 @@ ProjectDescription: >-
   Floaty Astronaut is a fast-paced space adventure game where you guide a lost
   astronaut through obstacles, dodging deadly spikes to survive and reach your
   spaceship.
-ProjectImage: /ProjectImages/Floaty Astronaut A Pixel-Perfect Space Adventure!.png
+ProjectImage: https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJUrZF28xZdb0IOL1s3KJqktcxwpW9faXP2muE
 draft: false
 ProjectTech:
   - Animation

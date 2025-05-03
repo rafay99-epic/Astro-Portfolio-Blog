@@ -1,7 +1,7 @@
 ---
 Projecttitle: "Flutter Blog Site"
 ProjectDescription: "This is my Portfolio website and Android Application, both developed using Flutter. 🚀"
-ProjectImage: /ProjectImages/blogSiteFlutter.png
+ProjectImage: https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJwH3SWMvrbLARgzFVBUGZoxsDQ9n2NSdXYJKO
 draft: false
 ProjectTech:
   [
