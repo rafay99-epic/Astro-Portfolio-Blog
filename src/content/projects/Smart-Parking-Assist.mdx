@@ -1,0 +1,181 @@
+---
+Projecttitle: "Parking Assistant"
+ProjectDescription: "An IoT-based parking management system that detects available parking spots using Arduino and IR sensors, provides real-time updates, and allows reservations through a web interface."
+ProjectImage: https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJVowuYBhLpNfDlGtag3IM2qo1QCHSWJuVyn47
+draft: false
+ProjectTech:
+  [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Bootstrap",
+    "Node.js",
+    "Socket.io",
+    "Arduino",
+    "MySQL",
+    "XAMPP",
+    "SerialPort",
+  ]
+ProjectCategory: ["IoT Projects", "Web Development"]
+ProjectGithubLink: "https://github.com/rafay99-epic/Parking-Assistant"
+ProjectRanking: "11"
+---
+
+# Smart Parking Assistant — A Real-Time IoT-Based Parking Management System 🚗📡
+
+In today’s urban landscape, parking remains a major headache for both drivers and city administrators. From wasting time circling for spots to inefficient use of available space, the problem demands a smart solution. That’s where **Parking Assistant**, an IoT-powered project developed by me, steps in.
+
+This blog post will walk you through what the project is, what problem it solves, how it's built, and how you can run it yourself.
+
+---
+
+## 🚘 What is Parking Assistant?
+
+**Parking Assistant** is a smart system designed to **detect real-time parking availability** using IR sensors, and visualize it through a responsive web interface. It not only detects vacant or occupied spots but also includes a **reservation system**, giving users the ability to book their parking in advance.
+
+The system consists of:
+
+- **A user-friendly website** for drivers.
+- **A manager/admin dashboard** to monitor and manage parking data.
+- **Hardware sensors** connected to an Arduino UNO to detect car presence.
+- **A Node.js backend** to bridge the communication between hardware and website using serial communication.
+
+---
+
+## 🎯 The Problem We’re Solving
+
+In congested cities, drivers spend up to **30% of their driving time** looking for parking. This results in:
+
+- Wasted time and fuel.
+- Increased traffic congestion.
+- CO2 emissions.
+
+Traditional parking systems are either manual or rely on expensive smart meters. **Parking Assistant provides a low-cost, scalable solution** using simple IR sensors and open-source technologies.
+
+---
+
+## 🔧 Tech Stack Used
+
+### 🌐 Frontend
+
+- HTML
+- CSS
+- JavaScript
+- Bootstrap
+
+### 🖥️ Backend & Server
+
+- Node.js
+- Express.js
+- Socket.IO (for real-time communication)
+- serialport (for Arduino communication)
+
+### ⚙️ Hardware
+
+- Arduino UNO Board
+- Breadboard
+- IR Sensors (x4)
+- USB Type B cable
+- Jumper wires
+
+---
+
+## 💻 Software Prerequisites
+
+To run the project, install the following:
+
+1. [XAMPP](https://www.ionos.com/digitalguide/server/tools/xampp-tutorial-create-your-own-local-test-server/)
+2. [Node.js](https://treehouse.github.io/installation-guides/windows/node-windows.html)
+3. [VS Code](https://medium.com/nerd-for-tech/install-visual-studio-code-fe3908c5cf15)
+4. [Arduino IDE](https://www.tutorialspoint.com/arduino/arduino_installation.htm)
+
+---
+
+## 🛠️ Setting Up the Hardware
+
+You’ll need to wire up the sensors as follows:
+
+- Each IR sensor has **three pins**: VCC (Power), GND (Ground), OUT (Data).
+- Connect them to the Arduino UNO using jumper wires and a breadboard.
+- Use the **5V pin** from Arduino to power the sensors.
+- Connect the Arduino to your PC via USB and upload the sensor code from the repo.
+
+The IR sensors will then detect whether a car is present or not and send that signal through the serial port to the Node.js server.
+
+---
+
+## 🌐 Connecting Hardware to Web Interface
+
+Arduino alone cannot talk to a website, so we built a **Node.js server** that:
+
+- Listens to serial data from Arduino.
+- Uses **Socket.IO** to send that data in real-time to the web client.
+- The server runs on port **3000**.
+
+---
+
+## 🗃️ Setting Up the Database
+
+1. Open XAMPP Control Panel and start **Apache** and **MySQL**.
+2. Navigate to `localhost/phpmyadmin`.
+3. Create a database named `parking_data`.
+4. Import the SQL file found in the repo at `Manager-Website/database/parking_data.sql`.
+
+Default Admin Login:
+
+- **Email:** [99marafay@gmail.com](mailto:99marafay@gmail.com)
+- **Password:** 19march1999
+
+Default User Login:
+
+- **Email:** [mike.ross123@gmail.com](mailto:mike.ross123@gmail.com)
+- **Password:** mikeross
+
+---
+
+## 🚀 How to Run the Project
+
+### Step-by-step:
+
+1. Clone the GitHub repository.
+2. Open the folder in **VS Code**.
+3. Run the following commands in the terminal:
+
+   ```bash
+   npm install
+   npm start
+   ```
+
+4. Visit `localhost:5000` to view the website.
+5. Make sure the Arduino is connected and sending data.
+
+> ⚠️ Note: The app will crash if hardware is not connected. Ensure the correct serial port is defined in `app.js`.
+
+Also, install the [CORS Unblock extension](https://microsoftedge.microsoft.com/addons/detail/cors-unblock/hkjklmhkbkdhlgnnfbbcihcajofmjgbh) for Edge to avoid CORS issues during development.
+
+---
+
+## 📍 Real-Time Updates
+
+Once the setup is complete, the system will:
+
+- Detect available or occupied parking spaces via IR sensors.
+- Display the real-time status on the web interface.
+- Allow users to reserve spots ahead of time.
+
+---
+
+## 📞 Contact Me
+
+If you’re facing any issues or want to collaborate:
+
+**Author:** Mohammad Abdul Rafay
+**Email:** [99marafay@gmail.com](mailto:99marafay@gmail.com)
+
+---
+
+## 🎯 Final Thoughts
+
+**Parking Assistant** is a practical demonstration of combining **IoT with web development** to solve real-world problems. It’s a great project for learning how hardware communicates with software and how real-time data can be visualized effectively on the web.
+
+Whether you're a developer, student, or urban planner, this project is a great starting point for building smarter cities.

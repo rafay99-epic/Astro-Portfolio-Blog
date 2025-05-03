@@ -1,0 +1,48 @@
+---
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import "@styles/home/home-page.css";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import UploadThing from "@react/UploadThing/uploadthing";
+import authorConfig from "@config/siteConfig/info.json";
+
+const url = new URL(Astro.request.url);
+const key = url.searchParams.get("key");
+const secret = import.meta.env.UPLOAD_PAGE_KEY;
+
+const isAllowed = key === secret;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={authorConfig?.SiteName ?? ""}
+      description={authorConfig?.SiteDescription ?? ""}
+    />
+  </head>
+  <body class="min-h-screen flex flex-col text-[var(--text-light)]">
+    <Header />
+    <SpeedInsights />
+
+    <main
+      class="flex-grow flex flex-col items-center justify-center text-center px-4"
+    >
+      {
+        isAllowed ? (
+          <>
+            <h1 class="text-5xl font-bold mb-6">Upload Thing</h1>
+            <section>
+              <UploadThing client:load />
+            </section>
+          </>
+        ) : (
+          <p class="text-xl text-red-500">Access Denied</p>
+        )
+      }
+    </main>
+
+    <Footer class="mt-auto" />
+  </body>
+</html>

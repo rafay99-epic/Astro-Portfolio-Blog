@@ -1,7 +1,7 @@
 ---
 Projecttitle: "Simple Thread"
 ProjectDescription: "Simple Thread is a simple communication application developed using Flutter and Firebase."
-ProjectImage: "/ProjectImages/SimpleThread.png"
+ProjectImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJoRAXE8f5cFEHfqaQ1VpPtBs7YTRm3hZlNOAy"
 draft: false
 ProjectTech:
   [

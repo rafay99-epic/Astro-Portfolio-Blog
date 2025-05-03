@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       animation: {
-        fadeSlideIn: "fadeSlideIn 1s forwards",
+        fadeSlideIn: "fadeSlideIn 0.8s ease-out forwards",
       },
       screens: {
         mobile: { max: "767px" },
@@ -15,7 +15,6 @@ export default {
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
-      fontFamily: { sans: ["Atkinson", "sans-serif"] },
       boxShadow: {
         custom:
           "0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33)",
