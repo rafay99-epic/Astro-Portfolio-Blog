@@ -85,7 +85,7 @@ const MenuIcon = () => (
 
 const NavLink: React.FC<{
   href: string;
-  children: React.ReactNode;
+  children?: React.ReactNode; // Now optional
   icon?: React.ReactNode;
   className?: string;
 }> = ({ href, children, icon, className = "" }) => (
@@ -147,18 +147,10 @@ const Header: React.FC = () => {
               <NavLink href="/project">Projects</NavLink>
             )}
             {featureFlags.showTags && (
-              <NavLink
-                href="/tag"
-                icon={<TagIcon />}
-                children={undefined}
-              ></NavLink>
+              <NavLink href="/tag" icon={<TagIcon />}></NavLink>
             )}
             {featureFlags.showSearch && (
-              <NavLink
-                href="/search"
-                icon={<SearchIcon />}
-                children={undefined}
-              ></NavLink>
+              <NavLink href="/search" icon={<SearchIcon />}></NavLink>
             )}
 
             {/* Dropdown Menu */}
