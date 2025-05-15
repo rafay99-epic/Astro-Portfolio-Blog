@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type SummaryCardProps = {
@@ -6,6 +6,12 @@ type SummaryCardProps = {
   description: string;
   author: string;
   content: string;
+};
+
+type ErrorState = {
+  message: string;
+  code: string;
+  retryable: boolean;
 };
 
 const SummaryCard: React.FC<SummaryCardProps> = ({
@@ -16,25 +22,59 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
 }) => {
   const [summary, setSummary] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorState | null>(null);
   const [expanded, setExpanded] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const blogContent = `Title: ${title}\nAuthor: ${author}\nDescription: ${description}\n\nContent:\n${content}`;
-  const cacheKey = `ai-summary-${title}-${author}`;
-  useEffect(() => {
-    try {
-      const cached = localStorage.getItem(cacheKey);
-      if (cached) {
-        setSummary(cached);
-        return;
-      }
-    } catch (e) {
-      console.warn("Could not retrieve summary from localStorage:", e);
+  const cacheKey = `ai-summary-${title}-${author}-${description.substring(0, 20)}`;
+
+  const handleError = useCallback((err: any) => {
+    const errorState: ErrorState = {
+      message: "Failed to generate summary",
+      code: "UNKNOWN_ERROR",
+      retryable: true,
+    };
+
+    if (err.code === "RATE_LIMIT_EXCEEDED") {
+      errorState.message = "Too many requests. Please try again in a minute.";
+      errorState.code = err.code;
+      errorState.retryable = true;
+    } else if (err.code === "QUOTA_EXCEEDED") {
+      errorState.message = "AI service quota exceeded. Please try again later.";
+      errorState.code = err.code;
+      errorState.retryable = false;
+    } else if (err.code === "AUTH_ERROR") {
+      errorState.message = "Authentication error. Please contact support.";
+      errorState.code = err.code;
+      errorState.retryable = false;
     }
 
-    const fetchSummary = async () => {
-      setLoading(true);
+    setError(errorState);
+    setLoading(false);
+  }, []);
+
+  const fetchSummary = useCallback(
+    async (forceRefresh = false) => {
+      if (loading) return;
+
       try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached && !forceRefresh) {
+          try {
+            const parsedCache = JSON.parse(cached);
+            if (Date.now() - parsedCache.timestamp < 24 * 60 * 60 * 1000) {
+              setSummary(parsedCache.summary);
+              return;
+            }
+          } catch (e) {
+            console.warn("Could not parse cached summary:", e);
+          }
+        }
+
+        setLoading(true);
+        setError(null);
+
         const res = await fetch("/api/ai_summary", {
           method: "POST",
           headers: {
@@ -43,9 +83,12 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
           body: JSON.stringify({ blogContent }),
         });
 
-        if (!res.ok) throw new Error("Failed to fetch summary");
-
         const data = await res.json();
+
+        if (!res.ok) {
+          throw { code: data.code, message: data.error };
+        }
+
         setSummary(data.summary);
         try {
           localStorage.setItem(
@@ -53,23 +96,29 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             JSON.stringify({
               summary: data.summary,
               timestamp: Date.now(),
+              metadata: data.metadata,
             })
           );
         } catch (e) {
           console.warn("Could not save summary to localStorage:", e);
         }
-
-        localStorage.setItem(cacheKey, data.summary);
       } catch (err: any) {
-        console.error(err);
-        setError("Error fetching summary");
+        handleError(err);
       } finally {
         setLoading(false);
       }
-    };
+    },
+    [blogContent, cacheKey, loading, handleError]
+  );
 
+  useEffect(() => {
     fetchSummary();
-  }, [blogContent, cacheKey]);
+  }, [fetchSummary]);
+
+  const handleRetry = () => {
+    setRetryCount((prev) => prev + 1);
+    fetchSummary(true);
+  };
 
   return (
     <div className="bg-[#1f2335] text-white p-4 rounded-2xl border border-[#3b4252] my-6 transition-all">
@@ -97,14 +146,28 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             className="overflow-hidden mt-4"
           >
             {loading && (
-              <p className="text-sm text-[#a9b1d6] italic animate-pulse">
-                Generating summary...
-              </p>
+              <div className="flex flex-col items-center justify-center py-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#7aa2f7] mb-2"></div>
+                <p className="text-sm text-[#a9b1d6]">Generating summary...</p>
+              </div>
             )}
 
-            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+            {error && (
+              <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 mt-2">
+                <p className="text-red-400 text-sm mb-2">{error.message}</p>
+                {error.retryable && (
+                  <button
+                    onClick={handleRetry}
+                    className="text-sm text-[#7aa2f7] hover:text-[#a1c4fd] transition-colors"
+                    disabled={loading}
+                  >
+                    Try Again
+                  </button>
+                )}
+              </div>
+            )}
 
-            {summary && (
+            {summary && !loading && !error && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
