@@ -1,8 +1,14 @@
 import { createUploadthing, type FileRouter } from "uploadthing/server";
+import { FeatureFlagsApi } from "../config/featureFlag/featureFlag.json";
 
 const f = createUploadthing();
 
 const auth = (req: Request) => ({ id: "fakeId" }); // Fake auth function
+
+// Check if uploadthing is enabled
+const isUploadThingEnabled = () => {
+  return FeatureFlagsApi.enableUploadThing;
+};
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
@@ -19,6 +25,11 @@ export const ourFileRouter = {
   })
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
+      // Check if feature is enabled
+      if (!isUploadThingEnabled()) {
+        throw new Error("File upload feature is currently disabled");
+      }
+
       // This code runs on your server before upload
       const user = await auth(req);
 
@@ -29,6 +40,11 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
+      // Check if feature is enabled
+      if (!isUploadThingEnabled()) {
+        throw new Error("File upload feature is currently disabled");
+      }
+
       // This code RUNS ON YOUR SERVER after upload
       console.log("Upload complete for userId:", metadata.userId);
 

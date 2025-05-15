@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FeatureFlagsApi } from "../../../config/featureFlag/featureFlag.json";
 
 type SummaryCardProps = {
   title: string;
@@ -36,7 +37,11 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
       retryable: true,
     };
 
-    if (err.code === "RATE_LIMIT_EXCEEDED") {
+    if (err.code === "FEATURE_DISABLED") {
+      errorState.message = "AI Summary feature is coming soon!";
+      errorState.code = err.code;
+      errorState.retryable = false;
+    } else if (err.code === "RATE_LIMIT_EXCEEDED") {
       errorState.message = "Too many requests. Please try again in a minute.";
       errorState.code = err.code;
       errorState.retryable = true;
@@ -112,7 +117,15 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
   );
 
   useEffect(() => {
-    fetchSummary();
+    if (FeatureFlagsApi.enableAI_Summary) {
+      fetchSummary();
+    } else {
+      setError({
+        message: "AI Summary feature is coming soon!",
+        code: "FEATURE_DISABLED",
+        retryable: false,
+      });
+    }
   }, [fetchSummary]);
 
   const handleRetry = () => {
@@ -153,8 +166,22 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             )}
 
             {error && (
-              <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 mt-2">
-                <p className="text-red-400 text-sm mb-2">{error.message}</p>
+              <div
+                className={`p-4 rounded-lg mt-2 ${
+                  error.code === "FEATURE_DISABLED"
+                    ? "bg-[#2e3440] border border-[#7aa2f7]"
+                    : "bg-red-900/20 border border-red-500"
+                }`}
+              >
+                <p
+                  className={`text-sm mb-2 ${
+                    error.code === "FEATURE_DISABLED"
+                      ? "text-[#7aa2f7]"
+                      : "text-red-400"
+                  }`}
+                >
+                  {error.message}
+                </p>
                 {error.retryable && (
                   <button
                     onClick={handleRetry}

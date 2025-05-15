@@ -6,12 +6,20 @@ import "@styles/home/home-page.css";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import UploadThing from "@react/UploadThing/uploadthing";
 import authorConfig from "@config/siteConfig/info.json";
+import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 
 const url = new URL(Astro.request.url);
 const key = url.searchParams.get("key");
 const secret = import.meta.env.UPLOAD_PAGE_KEY;
 
 const isAllowed = key === secret;
+try {
+  if (!FeatureFlagsApi.enableUploadThing) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
 <!doctype html>

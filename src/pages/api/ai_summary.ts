@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { FeatureFlagsApi } from "../../config/featureFlag/featureFlag.json";
 
 const googleAIModelAPIKey = process.env.GOOGLE_AI_API_KEY;
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
@@ -41,6 +42,22 @@ export async function POST({ request }: { request: Request }) {
   const clientIP = request.headers.get("x-forwarded-for") || "unknown";
 
   try {
+    // Check if AI Summary feature is enabled
+    if (!FeatureFlagsApi.enableAI_Summary) {
+      return new Response(
+        JSON.stringify({
+          error: "AI Summary feature is currently under development",
+          code: "FEATURE_DISABLED",
+        }),
+        {
+          status: 403,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
     if (!genAI) {
       console.error(
         "Google AI API instance is not available due to missing API key."
