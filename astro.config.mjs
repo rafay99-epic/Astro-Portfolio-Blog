@@ -18,7 +18,7 @@ export default defineConfig({
     prefetchAll: true,
   },
   experimental: {
-    svg: true,
+    // svg: true,
   },
   markdown: {
     shikiConfig: {
