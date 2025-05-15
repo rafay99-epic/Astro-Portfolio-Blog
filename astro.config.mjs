@@ -47,7 +47,7 @@ export default defineConfig({
     mdx(),
     sitemap({
       xslURL: "/sitemap.xsl",
-      entryLimit: Infinity, // This disables the pagination correctly
+      entryLimit: Infinity,
     }),
     react({
       include: ["**/react/*"],
@@ -72,8 +72,8 @@ export default defineConfig({
       alias: {
         "@assets": "/src/assets",
         "@components": "/src/components",
-        "@astro": "/src/components/AstroCompoent",
-        "@react": "/src/components/ReaactCompoents",
+        "@astro": "/src/components/AstroComponent",
+        "@react": "/src/components/ReactComponent",
         "@content": "/src/content",
         "@layouts": "/src/layouts",
         "@pages": "/src/pages",
@@ -81,28 +81,8 @@ export default defineConfig({
         "@types": "/src/types",
         "@util": "/src/util",
         "@config": "/src/config",
-      },
-      resolve: {
-        alias: {
-          "@assets": "/src/assets",
-          "@components": "/src/components",
-          "@astro": "/src/components/AstroCompoent",
-          "@react": "/src/components/ReaactCompoents",
-          "@content": "/src/content",
-          "@layouts": "/src/layouts",
-          "@pages": "/src/pages",
-          "@styles": "/src/styles",
-          "@types": "/src/types",
-          "@util": "/src/util",
-          "@config": "/src/config",
-        },
-      },
-      optimizeDeps: {
-        include: ["react-icons/fa"],
+        "@server": "/src/server",
       },
     },
   },
 });
-
-// Worst Performance  Link
-//  https://pagespeed.web.dev/analysis/https-rafay99-com/4535jegvpv?form_factor=desktop

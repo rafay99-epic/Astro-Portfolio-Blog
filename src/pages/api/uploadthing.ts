@@ -1,6 +1,6 @@
 import { createRouteHandler } from "uploadthing/server";
-import { ourFileRouter } from "../../server/uploadthing";
-import { FeatureFlagsApi } from "../../config/featureFlag/featureFlag.json";
+import { ourFileRouter } from "@server/uploadthing";
+import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 
 // Check if uploadthing is enabled
 const isUploadThingEnabled = () => {

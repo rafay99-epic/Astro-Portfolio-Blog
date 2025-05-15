@@ -2,9 +2,9 @@
 import popularBlogsData from "@config/popularBlogs/traffic.json";
 import { getCollection } from "astro:content";
 import type { CombinedPost } from "types/popular_post";
-import Footer from "@components/AstroCompoent/footer/Footer.astro";
-import BaseHead from "@components/AstroCompoent/base/BaseHead.astro";
-import Header from "@components/AstroCompoent/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import authorConfig from "@config/siteConfig/info.json";
 export const prerender = true;

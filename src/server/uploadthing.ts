@@ -1,5 +1,5 @@
 import { createUploadthing, type FileRouter } from "uploadthing/server";
-import { FeatureFlagsApi } from "../config/featureFlag/featureFlag.json";
+import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 
 const f = createUploadthing();
 

@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { FeatureFlagsApi } from "../../config/featureFlag/featureFlag.json";
+import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 
 const googleAIModelAPIKey = process.env.GOOGLE_AI_API_KEY;
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute

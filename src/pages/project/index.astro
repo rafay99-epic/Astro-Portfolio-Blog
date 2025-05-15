@@ -5,7 +5,7 @@ import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import ProjectList from "@react/ProjectList/Projectlist.tsx";
+import ProjectList from "@react/personal/ProjectList/Projectlist";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 const projects = await getCollection("projects");
 export const prerender = true;
