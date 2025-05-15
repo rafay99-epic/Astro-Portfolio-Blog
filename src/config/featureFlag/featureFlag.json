@@ -20,6 +20,8 @@
         "enableViewTransation": false
     },
     "FeatureFlagsApi": {
-        "enableauthorInfoAPI": true
+        "enableauthorInfoAPI": true,
+        "enableUploadThing": false,
+        "enableAI_Summary": true
     }
 }

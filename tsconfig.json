@@ -6,15 +6,16 @@
     "paths": {
       "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
-      "@astro/*": ["components/AstroCompoent/*"],
-      "@react/*": ["components/ReaactCompoents/*"],
+      "@astro/*": ["components/AstroComponent/*"],
+      "@react/*": ["components/ReactComponent/*"],
       "@content/*": ["content/*"],
       "@layouts/*": ["layouts/*"],
       "@pages/*": ["pages/*"],
       "@styles/*": ["styles/*"],
       "@types/*": ["types/*"],
       "@util/*": ["util/*"],
-      "@config/*": ["config/*"]
+      "@config/*": ["config/*"],
+      "@server/*": ["server/*"]
     },
     "strictNullChecks": true,
     "jsx": "react-jsx",

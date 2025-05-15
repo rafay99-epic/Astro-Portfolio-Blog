@@ -2,12 +2,9 @@
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-
 import SpeedInsights from "@vercel/speed-insights/astro";
-
 import PostComment from "@astro/BlogComments/PostComment.astro";
-import ShareButtons from "@react/SocialButton/socialButton";
-
+import ShareButtons from "@react/blog/interactions/socialButton";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 const pageUrl = Astro.url.href;
 export const prerender = true;
