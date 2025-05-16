@@ -1,0 +1,48 @@
+---
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+
+const headings = content
+  .split("\n")
+  .filter((line) => {
+    if (line.trim().startsWith("```")) return false;
+    return line.trim().match(/^#{1,2}\s/);
+  })
+  .map((heading) => {
+    const level = heading.trim().startsWith("##") ? 2 : 1;
+    const text = heading.replace(/^#+\s/, "").trim();
+    const id = text
+      .toLowerCase()
+      .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035'"`]/g, "")
+      .replace(/[\(\)\[\]\{\}]/g, "")
+      .replace(/[\s\u2013\u2014\u2012\u2010\-]+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    return { level, text, id };
+  });
+---
+
+<nav class="space-y-2">
+  {
+    headings.map((heading) => (
+      <div
+        class={`block text-base text-[var(--text-light)] hover:text-[var(--accent)] transition-colors relative pl-4 cursor-pointer ${
+          heading.level === 1 ? "font-bold" : "ml-4 opacity-80"
+        }`}
+      >
+        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[var(--accent)] opacity-0 transition-opacity" />
+        {heading.text}
+      </div>
+    ))
+  }
+</nav>
+
+<style>
+  nav a:hover span {
+    opacity: 0.5;
+  }
+</style>

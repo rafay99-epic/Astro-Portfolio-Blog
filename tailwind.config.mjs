@@ -9,6 +9,9 @@ export default {
       screens: {
         mobile: { max: "767px" },
       },
+      maxWidth: {
+        "7.5xl": "85rem",
+      },
       keyframes: {
         fadeSlideIn: {
           "0%": { opacity: "0", transform: "translateY(20px)" },
