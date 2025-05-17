@@ -6,6 +6,7 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
 import robotsTxt from "astro-robots-txt";
+import partytown from "@astrojs/partytown";
 dotenv.config();
 
 export default defineConfig({
@@ -45,10 +46,7 @@ export default defineConfig({
   },
   integrations: [
     mdx(),
-    sitemap({
-      xslURL: "/sitemap.xsl",
-      entryLimit: Infinity,
-    }),
+    sitemap({}),
     react({
       include: ["**/react/*"],
     }),
@@ -56,6 +54,12 @@ export default defineConfig({
     robotsTxt({
       sitemap: true,
       host: "www.rafay99.com",
+    }),
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+        debug: false,
+      },
     }),
   ],
   adapter: vercel({
