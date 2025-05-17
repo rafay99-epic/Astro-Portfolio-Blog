@@ -4,12 +4,12 @@ import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import PostComment from "@astro/BlogComments/PostComment.astro";
+import PostComment from "@astro/blog/comments/PostComment.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { getCollection } from "astro:content";
 import AISummaryCard from "@react/blog/enhancements/summary-card/summary_blog";
 import BlogHeader from "@react/blog/layout/BlogPostLayout/BlogPostLayoutHeader";
-import BlogTOC from "@astro/blog/BlogTOC.astro";
+import BlogTOC from "@astro/blog/toc/BlogTOC.astro";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -42,6 +42,25 @@ if (!currentBlog) {
 }
 
 const blogContent = currentBlog.body;
+const headings = blogContent
+  .split("\n")
+  .filter((line) => line.trim().match(/^#{1,2}\s/))
+  .map((line) => {
+    const text = line.replace(/^#+\s/, "").trim();
+    const slug = text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+      .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+      .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
+    return {
+      depth: line.trim().startsWith("##") ? 2 : 1,
+      text,
+      slug,
+    };
+  });
 
 const {
   title,
@@ -73,49 +92,7 @@ const {
         z-index: 50;
         pointer-events: none;
       }
-      .blog-grid {
-        display: grid;
-        grid-template-columns: 1fr 320px;
-        gap: 3rem;
-        align-items: start;
-        max-width: 1200px;
-        margin: 0 auto;
-        width: 100%;
-      }
-      .prose {
-        width: 100%;
-        max-width: none;
-        margin: 0;
-        padding: 0;
-      }
-      .prose img {
-        max-width: 100%;
-        height: auto;
-      }
-      .prose pre {
-        max-width: 100%;
-        overflow-x: auto;
-      }
-      .prose code {
-        word-break: break-word;
-      }
-      @media (max-width: 1024px) {
-        .blog-grid {
-          grid-template-columns: 1fr;
-          gap: 2rem;
-          max-width: 100%;
-        }
-        aside {
-          margin-top: 2rem;
-        }
-        .prose {
-          max-width: 100%;
-        }
-      }
       @media (max-width: 600px) {
-        .prose {
-          padding: 0 0.5rem;
-        }
         main {
           padding: 0.5rem !important;
         }
@@ -194,7 +171,7 @@ const {
             <h3 class="text-lg font-semibold mb-4 text-[var(--text-light)]">
               Table of Contents
             </h3>
-            <BlogTOC content={blogContent} />
+            <BlogTOC headings={headings} />
           </div>
           <hr class="my-4" />
           <div class="rounded-2xl p-4 s">
