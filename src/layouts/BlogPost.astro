@@ -78,6 +78,13 @@ const {
   <head>
     <BaseHead title={title} description={description} />
     <SpeedInsights />
+    <script
+      type="text/partytown"
+      lang="js"
+      is:inline
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
+      crossorigin="anonymous"></script>
     <style>
       #scroll-progress {
         position: fixed;
@@ -181,12 +188,6 @@ const {
             <div
               class="aspect-[1/2] rounded-lg flex items-center justify-center bg-[rgb(var(--gray-dark))]"
             >
-              <script
-                lang="js"
-                is:inline
-                async
-                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
-                crossorigin="anonymous"></script>
               <ins
                 class="adsbygoogle"
                 style="display:block; text-align:center;"
@@ -211,7 +212,7 @@ const {
       </div>
     </main>
 
-    <script type="text/javascript" is:inline src="/js/progressbar.js"></script>
+    <script type="text/partytown" is:inline src="/js/progressbar.js"></script>
     <Footer />
   </body>
 </html>
