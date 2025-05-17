@@ -46,10 +46,7 @@ export default defineConfig({
   },
   integrations: [
     mdx(),
-    sitemap({
-      xslURL: "/sitemap.xsl",
-      entryLimit: Infinity,
-    }),
+    sitemap({}),
     react({
       include: ["**/react/*"],
     }),
