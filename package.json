@@ -55,9 +55,6 @@
     "optionalDependencies": {
         "@resvg/resvg-js-linux-x64-gnu": "3.0.0",
         "@resvg/resvg-js-linux-x64-musl": "3.0.0",
-        "@resvg/resvg-js-darwin-x64": "3.0.0",
-        "@resvg/resvg-js-darwin-arm64": "3.0.0",
-        "@resvg/resvg-js-win32-x64-msvc": "3.0.0",
         "@rollup/rollup-linux-x64-gnu": "4.6.1"
     }
 }
