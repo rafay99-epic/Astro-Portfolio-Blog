@@ -6,7 +6,7 @@ lecture_description: This lecture equips students with the skills to master
   impactful research papers.
 pubDate: 2025-03-05
 lecture_draft: false
-lectureNumber: "05"
+lectureNumber: "06"
 subject: Research Methods
 ---
 ## Citation Styles
@@ -229,7 +229,6 @@ Let's say you're citing a paper with the following authors:
 **In-text citation (APA):**
 
 *   (Smith et al., 2023)
-    
 
 **Reference List entry (APA):**
 
@@ -260,12 +259,10 @@ Here's a more detailed explanation:
 *   **Correct Sentence Construction:** As you noted, the structure is generally:
     
     *   \[Underlined text = your paragraph\]\_\_\_\_\_ \[citation\].
-        
     
     or
     
     *   \[Underlined text = your paragraph\]\_\_\_\_\_ (citation).
-        
     
     followed by the full stop.
     
@@ -279,13 +276,11 @@ Here's a more detailed explanation:
     "Smith (2023) argues that efficient algorithms are essential for processing large datasets."
     
     *   Here, the author's name is part of the sentence's structure, so the date follows immediately.
-        
 *   **Example (Potentially in ACM/IEEE, though less common):**
     
     "As shown by Knuth \[1\], efficient algorithms are crucial for large datasets."
     
     *   Again, the author and citation are a natural part of the sentence.
-        
 
 **3\. Multiple Citations**
 
@@ -311,12 +306,10 @@ Here's a more detailed explanation:
 **5\. Subsequent Sentences from the Same Source:**
 
 *   If the following sentence _continues_ to draw directly from the _same_ source, you generally do _not_ need to repeat the citation immediately. However, be careful! If you introduce new information or move on to a different idea, you _must_ provide a new citation, even if it's the same source. If there's any ambiguity, it's always best to err on the side of providing a citation.
-    
 
 **6\. Starting a New Paragraph After the Citation**
 
 *   As you mentioned, after the period, you can confidently begin a new paragraph, drawing on a different source or continuing with your own analysis. The period signifies the end of the ideas/information that are being attributed to the previous citation.
-    
 
 **7\. When to Cite at the Beginning of the Sentence**
 
@@ -387,7 +380,6 @@ Here's a more detailed breakdown of the elements you outlined, focusing on creat
 1.  **Write the Paper First (Then the Introduction):**
     
     *   This is _excellent_ advice. Writing the introduction last allows you to fully understand the scope of your work, your key findings, and the specific contributions you are making. You'll know exactly what you're introducing.
-        
 2.  **Tone and Flow:**
     
     *   **Professional Tone:** Maintain a formal and objective tone. Avoid overly casual language or personal opinions.
@@ -397,7 +389,6 @@ Here's a more detailed breakdown of the elements you outlined, focusing on creat
 3.  **The "Storytelling" Approach:**
     
     *   The introduction should tell a story – a narrative that captures the reader's interest and explains the _why_ behind your research.
-        
 4.  **Key Elements of a Strong Introduction:**
     
     *   **A. Application, Problem, Importance (Start with the "Why"):**
@@ -411,11 +402,9 @@ Here's a more detailed breakdown of the elements you outlined, focusing on creat
     *   **B. Motivating Examples:**
         
         *   Provide concrete examples or scenarios that illustrate the problem and its impact. This helps the reader connect with the issue on a personal level.
-            
     *   **C. Challenges:**
         
         *   Acknowledge the challenges or complexities associated with addressing the problem. This shows that you understand the difficulty of the task.
-            
     *   **D. Limitations of the State of the Art:**
         
         *   Critically evaluate existing approaches. What are their shortcomings? What limitations prevent them from fully solving the problem?
