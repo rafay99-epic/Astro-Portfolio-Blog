@@ -4,7 +4,7 @@ lecture_description: "In this lecture, I will discuss how to write a good
   research paper and what matters in a research paper. "
 pubDate: 2025-03-26
 lecture_draft: false
-lectureNumber: "06"
+lectureNumber: "05"
 subject: Research Methods
 ---
 Simon Peyton Jones kicks off by promising seven simple, actionable suggestions that will genuinely make your research papers better. This isn't just about ticking boxes; it's about fundamentally changing how you approach the act of writing in a research context.
@@ -121,7 +121,7 @@ This is all about being incredibly clear about what _you_ are bringing to the ta
 
 _Use an_ example\* to introduce the problem. This makes it concrete and relatable.
 
-\* He cautions against "Molehills not mountains." Don't start with overly broad, generic statements like "Computer programs often have bugs. It is very important to eliminate these bugs..." (Yawn!). Instead, be specific: "Consider this program, which has an interesting bug. <brief description>. We will show an automatic technique for identifying and removing such bugs." (Cool!).
+\* He cautions against "Molehills not mountains." Don't start with overly broad, generic statements like "Computer programs often have bugs. It is very important to eliminate these bugs..." (Yawn!). Instead, be specific: "Consider this program, which has an interesting bug. . We will show an automatic technique for identifying and removing such bugs." (Cool!).
 
 \* **Stating your contributions:**
 
