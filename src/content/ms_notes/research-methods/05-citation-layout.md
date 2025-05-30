@@ -1,6 +1,6 @@
 ---
-lecture_title: "Research Paper Essentials: Citation Styles, Paragraph Structure,
-  and Compelling Introductions"
+lecture_title: "Research Paper Essentials: LR  & Citation Styles, Paragraph
+  Structure, and Compelling Introductions"
 lecture_description: This lecture equips students with the skills to master
   citation styles, build strong paragraphs, and craft engaging introductions for
   impactful research papers.
@@ -9,6 +9,150 @@ lecture_draft: false
 lectureNumber: "06"
 subject: Research Methods
 ---
+In the previous lecture, we covered a lot — how to search for a research paper, how to read it effectively, and how to write a solid abstract. We even discussed how to identify the difference between a good abstract and a weak one, which helps in deciding whether a paper is worth your time or not.
+
+But let’s take things a step further.
+
+Suppose you’ve selected a paper based on the abstract, and the topic seems relevant to your interest or research goals. Now what? What do you actually do once the paper is in your hands?
+
+This is where the **second and third phases of reading a paper** come in — going deep into the content, understanding the methodology, the logic behind the research, the results, and how everything connects. And more importantly, how you can **critically evaluate** the paper, which brings us to today’s focus: the **Review Process**.
+
+* * *
+
+### What is a Review Article?
+
+A **review article** is a type of **secondary literature**. Unlike research articles that present new experiments or data, review articles summarize, compare, and evaluate findings from multiple previously published research papers.
+
+In simpler terms:
+
+> “A review article gives a bird’s eye view of existing research in a particular area. It highlights what’s already known, what problems or gaps still exist, and offers a critical analysis of the progress made so far.”
+
+These articles are **super useful** because they save you time — instead of reading 20 different research papers, you can read one well-written review and understand the bigger picture. They’re especially helpful when you're starting a new research topic and need a **strong foundational understanding**.
+
+## Why Is Reviewing Important?
+
+Whether you're reading a review article or reviewing a research paper yourself, the skill of **critical analysis** is key. Here’s why:
+
+*   It helps you identify flaws, limitations, or biases in research.
+    
+*   You get better at spotting what makes a study trustworthy and impactful.
+    
+*   It sharpens your own research thinking — which helps when you’re planning your own study or writing your paper.
+    
+
+## What’s Next?
+
+In this lecture, we’ll walk through how to **review a research paper properly** — not just skim it, but actually break it down piece by piece. You’ll learn how to:
+
+*   Understand the structure and intent of each section.
+    
+*   Evaluate the quality of the research.
+    
+*   Question the methods, logic, and conclusions.
+    
+*   Write a proper **review summary or critique**.
+    
+
+By the end, you'll not only be better at reading research — you'll be able to **judge** it, challenge it, and maybe even build on it in your own work.
+
+Let’s dive in.
+
+## Literature Review
+
+**Literature Review**, also known as **LR**, is a critical summary of the published works on a particular topic. In this process, you analyze specific issues, identify strengths, trends, and weaknesses of a research paper.
+
+This is how things will flow: when you are reading through the paper — the **introduction**, **related work**, **citations**, **methodology**, and more — you will start to understand how things are laid out by the author and what the author is trying to explain.
+
+With all that, you’ll begin to notice some things the author may have missed or not explored in detail. These observations will come as you read through the paper two or three times.
+
+This is natural — as human beings, we begin to identify patterns and gaps the more we engage with the content. And this entire process is what we call **Literature Review**
+
+## Two Main Methods of Writing a Literature Review
+
+When writing a Literature Review, you can organize your content in different ways depending on what makes the most sense for your topic. Two of the most commonly used structures are:
+
+## 1\. Chronological Approach
+
+### What is it?
+
+The **chronological approach** organizes the literature **by time** — in the order things happened or were published. This helps show how **research has developed over time**, how ideas evolved, and what trends or shifts occurred in the field.
+
+### When to Use:
+
+*   When your topic has **clear historical development**.
+    
+*   When you want to **highlight progression**, changes in theories, or improvements in methods over time.
+    
+*   When showing the **timeline** of how a problem emerged or was studied.
+    
+
+### How to Write Using Chronological Approach:
+
+*   **Start from the earliest works** related to your topic.
+    
+*   Show how each study **built upon** the previous one.
+    
+*   Mention **key breakthroughs** or turning points.
+    
+*   End with the **most recent** work and current state of the field.
+    
+
+> 📝 Example:  
+> "In the early 2000s, Smith (2001) introduced X. A few years later, Lee (2007) improved upon this method by introducing Y. Recently, Kumar (2022) has developed a new model that integrates both approaches."
+
+* * *
+
+## 2\. Thematic Approach
+
+### What is it?
+
+The **thematic approach** organizes the literature **by themes, topics, or concepts**, rather than by time. This helps you **group studies** that focus on similar issues, even if they were published years apart.
+
+* * *
+
+### When to Use:
+
+*   When your topic has **multiple angles**, theories, or perspectives.
+    
+*   When different authors **talk about the same issue** but in **different ways**.
+    
+*   When you want to show how **different themes** connect, overlap, or conflict.
+    
+
+### How to Write Using Thematic Approach:
+
+*   Identify the **key themes** in the literature (e.g., theory A, method B, challenge C).
+    
+*   Group studies that deal with each theme **together**.
+    
+*   Compare and contrast what different researchers say **within each theme**.
+    
+*   Conclude each theme with your own insight or transition to the next theme.
+    
+
+> 📝 Example:  
+> "Several studies focus on the psychological impact of social media (e.g., Smith, 2019; Zhao, 2021), while others highlight the role of algorithms in shaping content (e.g., Chen, 2020; Nguyen, 2022). Still, a third group explores user behavior and engagement patterns (e.g., Ali, 2018; Raj, 2023)."
+
+* * *
+
+### Key Differences Between the Two:
+
+| Feature | Chronological Approach | Thematic Approach |
+| --- | --- | --- |
+| **Organized by** | Time / Publication Year | Theme / Concept |
+| **Focus** | How the research evolved over time | How different themes relate to the topic |
+| **Useful for** | Showing progress or development | Comparing viewpoints, grouping ideas |
+| **Example structure** | 2000 → 2005 → 2010 → Present | Theme A → Theme B → Theme C |
+
+* * *
+
+### Which One Should You Use?
+
+*   **Use Chronological** if your topic has **clear historical development** or if you want to show **evolution over time**.
+    
+*   **Use Thematic** if your topic is **broad, multi-dimensional**, or if you want to **compare different ideas** across time.
+    
+
 ## Citation Styles
 
 In academic writing, especially in a rigorous field like computer science, proper citation is _essential_. It serves several crucial purposes:
@@ -229,6 +373,7 @@ Let's say you're citing a paper with the following authors:
 **In-text citation (APA):**
 
 *   (Smith et al., 2023)
+    
 
 **Reference List entry (APA):**
 
@@ -259,10 +404,12 @@ Here's a more detailed explanation:
 *   **Correct Sentence Construction:** As you noted, the structure is generally:
     
     *   \[Underlined text = your paragraph\]\_\_\_\_\_ \[citation\].
+        
     
     or
     
     *   \[Underlined text = your paragraph\]\_\_\_\_\_ (citation).
+        
     
     followed by the full stop.
     
@@ -276,11 +423,13 @@ Here's a more detailed explanation:
     "Smith (2023) argues that efficient algorithms are essential for processing large datasets."
     
     *   Here, the author's name is part of the sentence's structure, so the date follows immediately.
+        
 *   **Example (Potentially in ACM/IEEE, though less common):**
     
     "As shown by Knuth \[1\], efficient algorithms are crucial for large datasets."
     
     *   Again, the author and citation are a natural part of the sentence.
+        
 
 **3\. Multiple Citations**
 
@@ -306,10 +455,12 @@ Here's a more detailed explanation:
 **5\. Subsequent Sentences from the Same Source:**
 
 *   If the following sentence _continues_ to draw directly from the _same_ source, you generally do _not_ need to repeat the citation immediately. However, be careful! If you introduce new information or move on to a different idea, you _must_ provide a new citation, even if it's the same source. If there's any ambiguity, it's always best to err on the side of providing a citation.
+    
 
 **6\. Starting a New Paragraph After the Citation**
 
 *   As you mentioned, after the period, you can confidently begin a new paragraph, drawing on a different source or continuing with your own analysis. The period signifies the end of the ideas/information that are being attributed to the previous citation.
+    
 
 **7\. When to Cite at the Beginning of the Sentence**
 
@@ -380,6 +531,7 @@ Here's a more detailed breakdown of the elements you outlined, focusing on creat
 1.  **Write the Paper First (Then the Introduction):**
     
     *   This is _excellent_ advice. Writing the introduction last allows you to fully understand the scope of your work, your key findings, and the specific contributions you are making. You'll know exactly what you're introducing.
+        
 2.  **Tone and Flow:**
     
     *   **Professional Tone:** Maintain a formal and objective tone. Avoid overly casual language or personal opinions.
@@ -389,6 +541,7 @@ Here's a more detailed breakdown of the elements you outlined, focusing on creat
 3.  **The "Storytelling" Approach:**
     
     *   The introduction should tell a story – a narrative that captures the reader's interest and explains the _why_ behind your research.
+        
 4.  **Key Elements of a Strong Introduction:**
     
     *   **A. Application, Problem, Importance (Start with the "Why"):**
@@ -402,9 +555,11 @@ Here's a more detailed breakdown of the elements you outlined, focusing on creat
     *   **B. Motivating Examples:**
         
         *   Provide concrete examples or scenarios that illustrate the problem and its impact. This helps the reader connect with the issue on a personal level.
+            
     *   **C. Challenges:**
         
         *   Acknowledge the challenges or complexities associated with addressing the problem. This shows that you understand the difficulty of the task.
+            
     *   **D. Limitations of the State of the Art:**
         
         *   Critically evaluate existing approaches. What are their shortcomings? What limitations prevent them from fully solving the problem?
