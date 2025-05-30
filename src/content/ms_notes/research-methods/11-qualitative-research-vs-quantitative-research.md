@@ -5,7 +5,7 @@ lecture_description: >
   quantitative data, and how to assess the adequacy and reliability of your
   research findings.
 pubDate: 2025-04-23
-lecture_draft: true
+lecture_draft: false
 lectureNumber: "11"
 subject: Research Methods
 ---
@@ -327,7 +327,6 @@ Each member of the population has a known, non-zero chance of being selected.
 #### b. **Systematic Sampling**
 
 *   Every _k-th_ member is selected from a list after a random start.
-    
 
 ✅ _Example:_ Selecting every 10th visitor to a website.
 
@@ -358,28 +357,24 @@ Not every individual has a known or equal chance of being selected. Often used w
 #### a. **Convenience Sampling**
 
 *   Samples are taken from a group that is easy to access.
-    
 
 ✅ _Example:_ Asking friends and classmates to fill out a survey.
 
 #### b. **Purposive (Judgmental) Sampling**
 
 *   The researcher selects individuals intentionally based on characteristics relevant to the study.
-    
 
 ✅ _Example:_ Choosing experienced developers to study debugging habits.
 
 #### c. **Snowball Sampling**
 
 *   Existing participants recruit future subjects among their acquaintances.
-    
 
 ✅ _Example:_ Finding niche community members by referral, like open-source maintainers.
 
 #### d. **Quota Sampling**
 
 *   The population is divided into groups, and the researcher selects a fixed number from each group non-randomly.
-    
 
 ✅ _Example:_ Interviewing 10 male and 10 female employees, selected by availability.
 
