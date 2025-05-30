@@ -120,20 +120,106 @@ All of these are called **research literature** because they are part of what’
 
 * * *
 
-## Quick Summary – Lecture 3: Reading and Understanding a Research Paper
+## How to Write a Research Paper
 
-*   **Reading research papers** is a critical skill that can be challenging for students.
+In the field of research, there are many ways to write a research paper. Every field has its own style and structure — for example, **Computer Science** follows a different format compared to **Social Sciences**, and so on.
+
+However, in this lecture, I will break down the **basic structure** for writing a simple research paper. In the upcoming lectures, we will also explore how to write papers for **different domains**.
+
+### Getting Ready with Data
+
+Before starting the writing process, it's important to gather and organize all your data properly. You should:
+
+*   Collect all the key **data**, **analyses**, **plots**, and **tables** relevant to your research.
     
-*   The **Three-Pass Approach** helps break down the reading process:
+*   Understand the **flow** of your work — how each part connects and builds on the other.
     
-    1.  **First Pass** – Get a quick overview (title, abstract, headings, conclusion).
-        
-    2.  **Second Pass** – Understand the paper’s main ideas without deep technical details.
-        
-    3.  **Third Pass** – Dive deep into the content, analyze methods, proofs, and connect with related works.
-        
-*   Use tools like **Zotero, Mendeley, Connected Papers, Semantic Scholar,** and **Notion** to manage and understand papers efficiently.
+*   Analyze and visualize your data using **charts** and **graphs**.
     
-*   When **selecting a base paper**, know your topic well, read multiple times, get slides or notes from the author, and understand any code or tech stack used.
+*   Organize your results in a **logical sequence** so they tell a clear and consistent story.
     
-*   **Research literature** is everything already written or studied on your topic—books, articles, reports, etc.
+*   Consolidate your data plots and prepare **well-labeled figures** that can be directly used in your manuscript.
+    
+
+By preparing your data in this structured way, your final report or research paper will be much easier to write and much clearer to read
+
+## Structure of a Scientific Paper
+
+### Title
+
+The title is the first impression of your paper and should accurately reflect the content. It should not only describe the core subject of your research but also help differentiate it from other work in the field. A good title grabs attention, is easy to remember, and aligns well with search queries to increase discoverability. Using acronyms or smart phrasing can make your title stick with readers. For example, if you're introducing a new technique, you can name it in the title for recognition.
+
+**Examples:**
+
+*   _Probabilistic Pathfinding: Beyond Deterministic Methods for Navigation in Rough Terrain_
+    
+*   _GRAMMPS: A Generalized Mission Planner for Multiple Mobile Robots in Unstructured Environments_
+    
+
+### Abstract
+
+The abstract is a concise summary of your entire research. It is usually 100–250 words long and highlights the purpose, methods, results, and conclusions. Think of it as a "preview" — it should provide enough information for readers to quickly understand what your paper is about and decide whether they want to read the full version.
+
+Avoid technical jargon, abbreviations, or references in the abstract. It should be self-contained and understandable without external context. Start by writing a longer summary and then refine it by cutting unnecessary words while preserving the key information.
+
+### Introduction
+
+The introduction sets the stage for your paper. It explains the research question you are addressing and why it matters. It should provide enough background for readers to understand the context and relevance of your work. You should also summarize related studies to show what has already been done and how your research adds to it. The introduction usually ends by stating the specific question or hypothesis you will explore.
+
+### Related Work
+
+This section reviews the existing literature that is relevant to your research. The goal is to position your work within the broader field. It helps the reader see what has been done, what the gaps are, and how your research contributes something new. You don’t need to cover every paper in the field — just the most important and directly related work.
+
+### Methodology / Materials and Methods
+
+This section details how you conducted your research. It should include all procedures, tools, techniques, and conditions used in your experiment or analysis. The goal is to provide enough information so that another researcher can replicate your work.
+
+If your method is complex, use tables, diagrams, or flowcharts for clarity. Don’t include results here. However, you can mention pilot studies that helped you refine your methods. Also, if human or animal subjects were involved, include ethical considerations — such as informed consent or steps taken to minimize harm.
+
+* * *
+
+### Experimental Section
+
+This may sometimes be combined with the methods section but can be separate in more technical fields. It contains step-by-step experimental details, often in a more practical format. It’s typically used in engineering or chemistry papers where methods require more technical elaboration.
+
+### Results
+
+Here, you present the data you collected. Use figures, charts, and tables to visualize your findings. Accompany these visuals with short descriptions that highlight key outcomes. Avoid interpreting or analyzing the data here — simply report what you observed.
+
+Not all data needs to be included, only what's relevant to your conclusions. Don’t manipulate or overstate your findings. Your results should be accurate, transparent, and honestly presented.
+
+* * *
+
+### Discussion
+
+This is where you explain and interpret your findings. You should discuss how your results answer the original research question and whether they support your hypothesis. Compare your results with those from previous research — are they consistent or different?
+
+If something unexpected happened, try to provide a logical explanation. Discuss alternative interpretations and acknowledge any limitations. Conclude by placing your findings into a larger context and suggesting future research directions.
+
+### Conclusions
+
+The conclusion gives you the final word. It summarizes the key points of your research and restates the significance of your findings. This is your opportunity to leave a lasting impression and emphasize the value of your work.
+
+Good conclusions don’t just restate what’s already been said. They often connect to broader questions, future possibilities, or applications in real-world contexts. A strong conclusion makes readers feel that their time was well spent.
+
+* * *
+
+### Acknowledgments
+
+This section is optional but important. Thank those who helped you with your research, whether they provided technical support, funding, or mentorship. Be clear and professional.
+
+### References
+
+Proper referencing is essential. Citations recognize others' work, give credit where it’s due, and strengthen the credibility of your research. They also guide interested readers to further information.
+
+Use consistent formatting and only cite credible sources. References should support your claims, show awareness of previous work, and help readers follow the development of your ideas.
+
+* * *
+
+### Supporting Information
+
+This includes any extra data, appendices, or supplementary material that supports your research but is not essential to the main paper. It can be additional figures, raw datasets, or experimental details. These are usually provided in separate files or appendices.
+
+# Final Thoughts
+
+Writing a research paper is a complex process, and this is just the beginning. With this overview, you now have a clear idea of how to structure a research paper. In the upcoming lectures, we will break down each part of the paper in detail and explore how to develop each section effectively. As we dive deeper into reading techniques and paper structure, things will start to come together more clearly.
