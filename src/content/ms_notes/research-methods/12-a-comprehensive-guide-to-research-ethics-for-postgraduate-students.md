@@ -4,7 +4,7 @@ lecture_description: "In this lecture 12, Learn everything about Ethic in Resear
 pubDate: 2025-05-09
 lecture_draft: false
 lectureNumber: "12"
-subject: Research Method
+subject: Research Methods
 ---
 ## Understanding Ethics and Research Ethics
 
