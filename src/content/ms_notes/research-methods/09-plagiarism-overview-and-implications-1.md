@@ -9,223 +9,188 @@ lecture_draft: false
 lectureNumber: "09"
 subject: Research Methods
 ---
-### **What is Plagiarism?**
+Plagiarism is when you take someone else’s words, ideas, images, sounds, or any creative content and present it as your own — without giving credit. This is considered a serious academic offense because it violates the principles of honesty and integrity. It doesn't matter if the act was intentional or accidental — if you use someone’s work without proper acknowledgment, it counts as plagiarism.
 
-Plagiarism is the act of using someone else’s words, ideas, images, sounds, or creative work without proper acknowledgment, presenting them as your own.
+## How Serious is the Problem?
 
-* * *
+Plagiarism is more common than most students think. A study done with over 4,500 students across 25 schools found that:
 
-### **Why is Plagiarism a Serious Issue?**
-
-A major study by Donald L. McCabe (Rutgers University) involving nearly 4,500 students across 25 schools revealed:
-
-*   **74%** admitted to **serious cheating on tests**
+*   74% admitted to cheating on tests.
     
-*   **72%** admitted to **serious cheating on written assignments**
+*   72% admitted to serious cheating on written assignments.
     
-*   **Over 50%** admitted to **plagiarizing content from the Internet**
+*   Over 50% admitted to plagiarism on written work using the internet.
     
 
-(Source: Center for Academic Integrity, Duke University)
+These numbers show how widespread the issue is, especially with easy access to online content.
 
-* * *
+## Have You Plagiarized Without Knowing?
 
-### **How to Know if You’re Plagiarizing**
+Sometimes, students plagiarize without realizing it. If you’ve ever:
 
-Ask yourself:
-
-*   Have I used someone else's ideas or words without citing them?
+*   Used someone’s ideas or sentences without citing them.
     
-*   Did I receive unauthorized help on this assignment?
+*   Got help from someone that you wouldn’t mention to your teacher.
     
 
-If yes, you may have committed plagiarism—intentionally or not.
+Then it’s likely that you’ve unintentionally plagiarized. This is why understanding how to use and cite sources properly is so important.
 
-* * *
+## Types of Plagiarism
 
-### **Types of Plagiarism**
+There are **two main types of plagiarism**:
 
-#### **Intentional Plagiarism**
-
-*   Copying another student’s work
+1.  **Intentional Plagiarism** – This includes directly copying someone else’s work, buying or borrowing essays, copying and pasting text without citation, or using media content without permission.
     
-*   Buying or borrowing papers
-    
-*   Copying and pasting from online sources without citation
-    
-*   Using media without permission or credit
-    
-*   Republishing content online without rights
+2.  **Unintentional Plagiarism** – This happens when students paraphrase poorly, forget to cite, overuse quotations, or fail to present ideas in their own voice.
     
 
-#### **Unintentional Plagiarism**
+Both types are treated seriously in academic settings.
 
-*   Poor paraphrasing
-    
-*   Inadequate or missing citations
-    
-*   Over-reliance on quotations
-    
-*   Failing to express ideas in your own voice
-    
+## Common Student Excuses for Plagiarism
 
-* * *
+Students often justify plagiarism with excuses like:
 
-### **Common Excuses for Plagiarism**
-
-*   "It’s okay if I don’t get caught!"
+*   “I didn’t have time to finish.”
     
-*   "I had no time—too much homework!"
+*   “This topic was boring.”
     
-*   "My teachers assign too much!"
+*   “Everyone else is doing it.”
     
-*   "I need straight A's to get into college!"
+*   “I need an A to please my parents.”
     
-*   "Everyone else does it!"
+*   “My teacher expects too much.”
     
-*   "This assignment was boring!"
+*   “I won’t get caught.”
     
 
-These justifications do not lessen the consequences or ethical implications.
+These excuses may sound common, but none of them are valid reasons to plagiarize. The consequences far outweigh the short-term benefits.
 
-* * *
+## Why Academic Integrity Matters
 
-### **Why Academic Integrity Matters**
+Plagiarism doesn’t just affect grades. It affects your learning, your credibility, and your future.
 
-*   **Learning**: Cheating undermines your own education.
+*   When you copy, you cheat yourself. You don’t develop your own thinking.
     
-*   **Respect**: Crediting sources is a matter of fairness.
+*   Giving credit to authors is a matter of respect and ethics.
     
-*   **Credibility**: Citing adds authority and trust to your work.
+*   Citing sources adds strength to your arguments and helps others trace your research path.
     
-*   **Reputation**: Academic dishonesty damages personal and institutional trust.
+*   Education is not about competing; it’s about learning and growing.
     
-*   **Ethics**: Integrity is essential in both academic and professional life.
-    
-
-* * *
-
-### **Real-World Examples of Plagiarism Consequences**
-
-*   **Stephen Ambrose & Doris Kearns Goodwin**: Reputational damage and job resignations.
-    
-*   **Senator Joe Biden**: Withdrew from the 1987 presidential race due to plagiarism allegations.
-    
-*   **Mike Barnicle (Boston Globe)**: Resigned over plagiarized columns.
-    
-*   **Jayson Blair (New York Times)**: Resigned after multiple articles were found to be plagiarized or fabricated.
-    
-*   **NJ Valedictorian**: Lost a seat at Harvard for plagiarizing a published article.
-    
-*   **University of Virginia Case**: 45 students expelled, 3 graduate degrees revoked.
+*   Once you lose academic trust, it's very hard to earn it back.
     
 
-* * *
+## Real-Life Consequences of Plagiarism
 
-### **Possible Academic Consequences**
+Plagiarism doesn’t only damage school records — it has ruined real careers:
 
-*   A zero grade on the assignment
+*   Historians **Stephen Ambrose** and **Doris Kearns Goodwin** faced public backlash for plagiarism.
     
-*   Notification of parents/guardians
+*   **Senator Joe Biden** had to drop out of the 1987 presidential race because of past plagiarism.
     
-*   Referral to administration
+*   Journalist **Mike Barnicle** was forced to resign for copying content in his columns.
     
-*   Suspension from sports or extracurriculars
+*   A **New Jersey valedictorian** lost her seat at Harvard after being caught plagiarizing in a local newspaper.
     
-*   Academic record marks
-    
-*   Damaged standing in the school community
+*   Reporter **Jayson Blair** from _The New York Times_ resigned after 36 of his 73 articles were found to contain plagiarism or fabricated information.
     
 
-* * *
+These examples show that plagiarism can damage even well-established reputations permanently.
 
-### **Plagiarism in the Professional World**
+## Academic Consequences in School
 
-Would you trust a:
+If caught plagiarizing in school, the consequences can include:
 
-*   **Lawyer** who cheated on the bar exam?
+*   Receiving a zero on the assignment.
     
-*   **Architect** who plagiarized their coursework?
+*   Parent or guardian notification.
     
-*   **Accountant** who had others do their work?
+*   Referral to the administration.
     
-
-Professional integrity is built on academic honesty.
-
-* * *
-
-### **When is Citation Required?**
-
-You **must cite** when:
-
-*   Using direct quotes
+*   Suspension or exclusion from school activities.
     
-*   Paraphrasing or summarizing others' ideas
+*   A permanent note on your academic record.
     
-*   Referring to data or facts not considered common knowledge
+*   Loss of trust within the school community.
     
 
-#### **What is Common Knowledge?**
+Once again, it raises the question — is it worth the risk?
 
-Facts widely known or easily verified (e.g., "Water freezes at 0°C") do **not** require citation.
+## Why Is It Such a Big Deal?
 
-> **Tip**: If a fact appears in three or more credible sources and is generally known, it’s likely common knowledge.
+Plagiarism doesn’t just break school rules; it can affect real-life outcomes. Think about this:
 
-* * *
-
-### **How to Use Sources Responsibly**
-
-#### **1\. Quoting**
-
-Use exact words from a source. Best used for powerful statements or precise definitions. Must be cited.
-
-#### **2\. Paraphrasing**
-
-Rewriting ideas in your own words and sentence structure. Still requires citation.
-
-#### **3\. Summarizing**
-
-Condensing the main ideas of a larger text in your own words. Also must be cited.
-
-* * *
-
-### **Smart Note-Taking Tips**
-
-*   Use quotation marks or a **"Q"** for direct quotes
+*   Would you trust an **architect** who cheated through math class?
     
-*   Mark paraphrased ideas with a **"P"**
+*   Would you hire a **lawyer** who bought their way through exams?
     
-*   Always include source details and page numbers
+*   Would you feel safe with an **accountant** who had others do their academic work?
     
 
-* * *
+Plagiarism means someone might have a degree or title — without the actual knowledge. That’s dangerous.
 
-### **In-Text and MLA Documentation**
+## When Do You NOT Have to Cite?
 
-*   Use **MLA style** for citing sources:
+Not everything needs to be cited. You can skip citation when:
+
+*   The fact is common knowledge (e.g., "The sun rises in the east").
     
-    *   (Author Last Name Page Number) — e.g., (Smith 203)
-        
-    *   If no author: use a shortened title — e.g., (“Plagiarism and the Web”)
-        
-*   In-text citations must correspond with full entries in your **Works Cited** list
+*   You’ve seen the same information in at least 3 different sources and know the audience likely knows it.
     
-
-#### **Example**:
-
-> “Slightly more than 73% of Happy High School students reported plagiarizing papers” (Smith 203).
-
-* * *
-
-### **Key Takeaways**
-
-*   Plagiarism is a serious ethical and academic offense
-    
-*   Proper citation respects the original creator and supports your credibility
-    
-*   Always blend quotes, paraphrases, and summaries thoughtfully
-    
-*   When in doubt—**Cite!**
+*   You are using your own experiences or results from your own research.
     
 
-* * *
+Still, if you're unsure — cite it just to be safe.
+
+### How to Use Others’ Work Without Plagiarizing
+
+Using others’ work is allowed — if done correctly. There are three main ways to include sources ethically:
+
+1.  **Quoting** – Using the author’s exact words with quotation marks and a proper citation. Best for powerful or unique language.
+    
+2.  **Paraphrasing** – Rewriting the author’s ideas in your own words and sentence structure. Even if you paraphrase, you must cite the source.
+    
+3.  **Summarizing** – Giving a short overview of the main points. It's much shorter than the original and still needs citation.
+    
+
+### Tips While Taking Notes
+
+While researching or reading sources, keep track of:
+
+*   Direct quotes: Mark them clearly and note the speaker or writer.
+    
+*   Paraphrases: Mark with a “P” and include the original author’s name.
+    
+*   Always include page numbers or URLs to easily find the source again.
+    
+
+### In-Text (MLA) Documentation
+
+MLA in-text citations help readers identify where your information comes from without breaking the flow of your writing. This is a core part of academic writing. Inaccurate or missing citations are taken just as seriously as not citing at all.
+
+## When to Use In-Text Citations
+
+You must cite when:
+
+*   Using someone’s original idea.
+    
+*   Quoting or paraphrasing from a source.
+    
+*   Using facts that aren’t common knowledge.
+    
+*   Mentioning dates or disputed facts.
+    
+
+## How to Cite in MLA Style
+
+In-text citations usually appear at the end of a sentence, before the period.
+
+*   Format: **(Author’s Last Name Page Number)** — for example: _(Smith 203)_
+    
+*   If there's no author, use a short version of the source title.
+    
+*   If you’ve already mentioned the author in your sentence, only include the page number in parentheses.
+    
+
+For **web sources** with no page numbers, just use the author’s name or the article title:  
+_(Valenza)_ or _("Plagiarism and the Web")_
