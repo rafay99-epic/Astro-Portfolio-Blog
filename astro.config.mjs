@@ -57,8 +57,16 @@ export default defineConfig({
     }),
     partytown({
       config: {
-        forward: ["dataLayer.push"],
-        debug: false,
+        forward: ["dataLayer.push", "adsbygoogle"],
+        debug: true,
+        resolveUrl: (url) => {
+          if (url.hostname.includes("google")) {
+            const proxyUrl = new URL(url);
+            proxyUrl.hostname = "pagead2.googlesyndication.com";
+            return proxyUrl;
+          }
+          return url;
+        },
       },
     }),
   ],

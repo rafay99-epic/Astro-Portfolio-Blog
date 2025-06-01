@@ -10,6 +10,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = "/Rafay99.webp" } = Astro.props;
 import { ClientRouter } from "astro:transitions";
 import FeatureFlage from "@config/featureFlag/featureFlag.json";
+
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
+}
 ---
 
 <!-- Global Metadata -->
@@ -232,6 +238,5 @@ import FeatureFlage from "@config/featureFlag/featureFlag.json";
 <!-- Google Ads -->
 <script
   async
-  type="text/partytown"
   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
   crossorigin="anonymous"></script>
