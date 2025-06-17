@@ -12,13 +12,13 @@ tags:
 
 import CodeTabsWrapper from "../../components/ReactComponent/blog/enhancements/code-campare/code-campre";
 
-While... While what? Today, we have a new AI model going wild on the internet, and it's called **Deepseak**—the new **thinking AI model** that’s set to change everything! Will it take our jobs? Just kidding. But the future is here, and these new thinking models are truly fascinating. The ability to **think independently** is incredible.
+While... While what? Today, we have a new AI model going wild on the internet, and it's called **Deepseak**—the new **thinking AI model** that's set to change everything! Will it take our jobs? Just kidding. But the future is here, and these new thinking models are truly fascinating. The ability to **think independently** is incredible.
 
-But we’re here for something else—**which one is better?** By now, we’ve all seen the benchmarks, and they point to **Deepseak (R1)** outperforming **ChatGPT (O1)**. But how much of a difference does this improvement make for us **developers**? And more importantly, how can we **make money** from it? (Because that’s what capitalists do—but that’s a topic for another day.)
+But we're here for something else—**which one is better?** By now, we've all seen the benchmarks, and they point to **Deepseak (R1)** outperforming **ChatGPT (O1)**. But how much of a difference does this improvement make for us **developers**? And more importantly, how can we **make money** from it? (Because that's what capitalists do—but that's a topic for another day.)
 
 For now, let's talk about **AI**.
 
-If you haven’t seen the benchmarks yet, check out the image below:\
+If you haven't seen the benchmarks yet, check out the image below:\
 ![image](/BlogImages/deepseak_benchmark.jpg "Benchmark Result")
 
 ## So, which AI is better for developers?
@@ -32,181 +32,19 @@ So, this is the test. I am working on an app called **Meaning Mate**, which has 
 Here in the Tab form, both the UI are provided, The first one is the UI that is codede by me and the other one is the UI that chatgpt provided.
 
 <CodeTabsWrapper
-language1="dart"
-file1Title="Orginal UI"
-file2Title="ChatGPT UI"
-language2="dart"
-code1={`
-import 'package:flutter/material.dart';
-
-class Quizui extends StatelessWidget {
-final String question;
-final List<String> options;
-final void Function(String) onOptionSelected;
-
-const Quizui({
-super.key,
-required this.question,
-required this.options,
-required this.onOptionSelected,
-});
-
-@override
-Widget build(BuildContext context) {
-return Padding(
-padding: const EdgeInsets.all(16.0),
-child: Column(
-crossAxisAlignment: CrossAxisAlignment.center,
-children: [
-Text(
-question,
-style: TextStyle(
-fontSize: 20,
-fontWeight: FontWeight.bold,
-color: Theme.of(context).colorScheme.onSurface,
-),
-),
-const SizedBox(height: 16),
-...options.map(
-(option) => Padding(
-padding: const EdgeInsets.symmetric(vertical: 8.0),
-child: SizedBox(
-width: double.infinity,
-child: ElevatedButton(
-style: ElevatedButton.styleFrom(
-foregroundColor: Theme.of(context).colorScheme.surface,
-backgroundColor: Theme.of(context).colorScheme.primary,
-padding: const EdgeInsets.symmetric(vertical: 14),
-textStyle: TextStyle(
-fontSize: 16,
-color: Theme.of(context).colorScheme.primary,
-),
-elevation: 8,
-shadowColor: Colors.black.withOpacity(0.3),
-shape: RoundedRectangleBorder(
-borderRadius: BorderRadius.circular(6),
-),
-),
-onPressed: () => onOptionSelected(option),
-child: Text(
-option,
-textAlign: TextAlign.center,
-overflow: TextOverflow.ellipsis,
-),
-),
-),
-),
-),
-],
-),
-);
-}
-}
-`}
-
-code2={`
-import 'package:flutter/material.dart';
-
-class Quizui extends StatelessWidget {
-final String question;
-final List<String> options;
-final void Function(String) onOptionSelected;
-
-const Quizui({
-super.key,
-required this.question,
-required this.options,
-required this.onOptionSelected,
-});
-
-@override
-Widget build(BuildContext context) {
-return Scaffold(
-appBar: AppBar(
-title: const Text("Quiz Time!"),
-centerTitle: true,
-),
-body: Padding(
-padding: const EdgeInsets.all(16.0),
-child: Card(
-elevation: 6,
-shape: RoundedRectangleBorder(
-borderRadius: BorderRadius.circular(16),
-),
-child: Padding(
-padding: const EdgeInsets.all(16.0),
-child: Column(
-crossAxisAlignment: CrossAxisAlignment.center,
-children: [
-Text(
-question,
-style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-fontWeight: FontWeight.bold,
-color: Theme.of(context).colorScheme.onSurface,
-),
-textAlign: TextAlign.center,
-),
-const SizedBox(height: 24),
-...options.map(
-(option) => Padding(
-padding: const EdgeInsets.symmetric(vertical: 8.0),
-child: GestureDetector(
-onTap: () => onOptionSelected(option),
-child: Container(
-decoration: BoxDecoration(
-color: Theme.of(context).colorScheme.primary,
-borderRadius: BorderRadius.circular(12),
-boxShadow: [
-BoxShadow(
-color: Colors.black.withOpacity(0.1),
-blurRadius: 6,
-offset: const Offset(0, 3),
-)
-],
-),
-padding: const EdgeInsets.symmetric(
-vertical: 16,
-horizontal: 24,
-),
-child: Row(
-mainAxisAlignment: MainAxisAlignment.spaceBetween,
-children: [
-Expanded(
-child: Text(
-option,
-style: Theme.of(context)
-.textTheme
-.bodyLarge!
-.copyWith(
-color: Theme.of(context)
-.colorScheme
-.onPrimary,
-),
-textAlign: TextAlign.left,
-overflow: TextOverflow.ellipsis,
-),
-),
-const Icon(
-Icons.arrow_forward_ios_rounded,
-color: Colors.white,
-size: 18,
-),
-],
-),
-),
-),
-),
-),
-],
-),
-),
-),
-),
-);
-}
-}
-`}
-client:load
+  code1={{
+    filePath: "/blog_code/deep_vs_chatgpt/chatgpt/chatgpt_orginal.dart",
+    language: "dart",
+  }}
+  code2={{
+    filePath: "/blog_code/deep_vs_chatgpt/chatgpt/chatgpt_modified_code.dart",
+    language: "dart",
+  }}
+  file1Title="Original UI"
+  file2Title="ChatGPT UI"
+  showLineNumbers={false}
+  showCopyButton={false}
+  client:load
 />
 
 #### Screenshot
@@ -243,261 +81,23 @@ Moreover, I don't see the need for a big box in the UI, especially since the ori
 Here is the **Quiz UI code** that I wrote:
 
 <CodeTabsWrapper
-language1="dart"
 file1Title="Orginal UI"
-file2Title="Deep  Seak UI"
-language2="dart"
-code1={`
-import 'package:flutter/material.dart';
-
-class Quizui extends StatelessWidget {
-final String question;
-final List<String> options;
-final void Function(String) onOptionSelected;
-
-const Quizui({
-super.key,
-required this.question,
-required this.options,
-required this.onOptionSelected,
-});
-
-@override
-Widget build(BuildContext context) {
-return Padding(
-padding: const EdgeInsets.all(16.0),
-child: Column(
-crossAxisAlignment: CrossAxisAlignment.center,
-children: [
-Text(
-question,
-style: TextStyle(
-fontSize: 20,
-fontWeight: FontWeight.bold,
-color: Theme.of(context).colorScheme.onSurface,
-),
-),
-const SizedBox(height: 16),
-...options.map(
-(option) => Padding(
-padding: const EdgeInsets.symmetric(vertical: 8.0),
-child: SizedBox(
-width: double.infinity,
-child: ElevatedButton(
-style: ElevatedButton.styleFrom(
-foregroundColor: Theme.of(context).colorScheme.surface,
-backgroundColor: Theme.of(context).colorScheme.primary,
-padding: const EdgeInsets.symmetric(vertical: 14),
-textStyle: TextStyle(
-fontSize: 16,
-color: Theme.of(context).colorScheme.primary,
-),
-elevation: 8,
-shadowColor: Colors.black.withOpacity(0.3),
-shape: RoundedRectangleBorder(
-borderRadius: BorderRadius.circular(6),
-),
-),
-onPressed: () => onOptionSelected(option),
-child: Text(
-option,
-textAlign: TextAlign.center,
-overflow: TextOverflow.ellipsis,
-),
-),
-),
-),
-),
-],
-),
-);
-}
-}
-`}
-
-code2={`
-import 'package:flutter/material.dart';
-
-class Quizui extends StatelessWidget {
-final String question;
-final List<String> options;
-final void Function(String) onOptionSelected;
-
-const Quizui({
-super.key,
-required this.question,
-required this.options,
-required this.onOptionSelected,
-});
-
-@override
-Widget build(BuildContext context) {
-return Scaffold(
-body: Container(
-decoration: BoxDecoration(
-gradient: LinearGradient(
-colors: [
-Theme.of(context).colorScheme.primary.withOpacity(0.8),
-Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-],
-begin: Alignment.topLeft,
-end: Alignment.bottomRight,
-),
-),
-child: Padding(
-padding: const EdgeInsets.all(16.0),
-child: Column(
-crossAxisAlignment: CrossAxisAlignment.center,
-children: [
-const SizedBox(height: 40),
-Hero(
-tag: 'question',
-child: Material(
-color: Colors.transparent,
-child: Text(
-question,
-style: TextStyle(
-fontSize: 24,
-fontWeight: FontWeight.bold,
-color: Theme.of(context).colorScheme.onSurface,
-shadows: [
-Shadow(
-color: Colors.black.withOpacity(0.3),
-blurRadius: 4,
-offset: const Offset(2, 2),
-),
-],
-),
-textAlign: TextAlign.center,
-),
-),
-),
-const SizedBox(height: 32),
-...options.map(
-(option) => AnimatedButton(
-option: option,
-onPressed: () => onOptionSelected(option),
-),
-),
-const Spacer(),
-LinearProgressIndicator(
-value: 0.5, // Replace with actual progress
-backgroundColor: Colors.grey[300],
-valueColor: AlwaysStoppedAnimation<Color>(
-Theme.of(context).colorScheme.primary,
-),
-),
-const SizedBox(height: 16),
-],
-),
-),
-),
-);
+file2Title="Deep Seak UI"
+showLineNumbers={false}
+showCopyButton={false}
+code1={
+{
+filePath: "/blog_code/deep_vs_chatgpt/deepseak/orginal.dart",
+language: "dart",
 }
 }
 
-class AnimatedButton extends StatefulWidget {
-final String option;
-final VoidCallback onPressed;
-
-const AnimatedButton({
-super.key,
-required this.option,
-required this.onPressed,
-});
-
-@override
-\_AnimatedButtonState createState() => \_AnimatedButtonState();
-}
-
-class \_AnimatedButtonState extends State<AnimatedButton>
-with SingleTickerProviderStateMixin {
-late AnimationController \_controller;
-late Animation<double> \_scaleAnimation;
-
-@override
-void initState() {
-super.initState();
-\_controller = AnimationController(
-vsync: this,
-duration: const Duration(milliseconds: 200),
-);
-\_scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-CurvedAnimation(parent: \_controller, curve: Curves.easeInOut),
-);
-}
-
-@override
-void dispose() {
-\_controller.dispose();
-super.dispose();
-}
-
-void \_onTapDown(TapDownDetails details) {
-\_controller.forward();
-}
-
-void \_onTapUp(TapUpDetails details) {
-\_controller.reverse();
-widget.onPressed();
-}
-
-@override
-Widget build(BuildContext context) {
-return GestureDetector(
-onTapDown: \_onTapDown,
-onTapUp: \_onTapUp,
-child: ScaleTransition(
-scale: \_scaleAnimation,
-child: Padding(
-padding: const EdgeInsets.symmetric(vertical: 8.0),
-child: Container(
-width: double.infinity,
-decoration: BoxDecoration(
-gradient: LinearGradient(
-colors: [
-Theme.of(context).colorScheme.primary,
-Theme.of(context).colorScheme.secondary,
-],
-begin: Alignment.topLeft,
-end: Alignment.bottomRight,
-),
-borderRadius: BorderRadius.circular(12),
-boxShadow: [
-BoxShadow(
-color: Colors.black.withOpacity(0.3),
-blurRadius: 8,
-offset: const Offset(2, 2),
-),
-],
-),
-child: ElevatedButton(
-style: ElevatedButton.styleFrom(
-foregroundColor: Theme.of(context).colorScheme.onPrimary,
-backgroundColor: Colors.transparent,
-shadowColor: Colors.transparent,
-padding: const EdgeInsets.symmetric(vertical: 16),
-shape: RoundedRectangleBorder(
-borderRadius: BorderRadius.circular(12),
-),
-),
-onPressed: widget.onPressed,
-child: Text(
-widget.option,
-textAlign: TextAlign.center,
-style: const TextStyle(
-fontSize: 18,
-fontWeight: FontWeight.bold,
-),
-),
-),
-),
-),
-),
-);
+code2={
+{
+filePath: "/blog_code/deep_vs_chatgpt/deepseak/modified_code.dart",
+language: "dart",
 }
 }
-`}
 client:load
 />
 
