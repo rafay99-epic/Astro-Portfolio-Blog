@@ -55,20 +55,7 @@ export default defineConfig({
       sitemap: true,
       host: "www.rafay99.com",
     }),
-    partytown({
-      // config: {
-      //   forward: ["dataLayer.push", "adsbygoogle"],
-      //   debug: true,
-      //   resolveUrl: (url) => {
-      //     if (url.hostname.includes("google")) {
-      //       const proxyUrl = new URL(url);
-      //       proxyUrl.hostname = "pagead2.googlesyndication.com";
-      //       return proxyUrl;
-      //     }
-      //     return url;
-      //   },
-      // },
-    }),
+    partytown({}),
   ],
   adapter: vercel({
     webAnalytics: {

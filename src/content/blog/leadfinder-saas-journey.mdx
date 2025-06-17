@@ -1,11 +1,18 @@
 ---
-title: 'Lead Finde: New Startup'
-description: 'So this is my journey of coding my own startup '
+title: "Lead Finder: New Startup Journey"
+description: "So this is my journey of coding my own startup "
 pubDate: 2025-06-17T19:00:00.000Z
 draft: true
 authorName: Abdul Rafay
+heroImage: /BlogImages/leadfinder.webp
 authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - Web Development
+  - AI
+  - Startup
 ---
+
+import ImageSlider from "../../components/ReactComponent/blog/enhancements/image-slider/image-slider";
 
 If you work in any field, everyone eventually dreams of owning their own business. If you’re a lawyer, you want your own law firm; if you’re a dentist, your own clinic. As software engineers, we’re no different—we’ll all want to build our own SaaS (Software as a Service) at some point. Believe me, I’ve done it twice already. I’ll build something, code for months… and then realize marketing is the less-colorful side of the party.
 
@@ -31,7 +38,7 @@ The back story is very simple, I am a free lancer most of the time and I want to
 
 When I started coding this project, it was just a super simple one-page app using React and Vite. I integrated an API into a form, displayed the results, and then exported them into a basic CSV file. Straightforward stuff.
 
-But then a thought hit me—*what if I turn this into a SaaS?* If I was facing this issue, chances are others were too. So I started thinking: what would the core features look like? I asked ChatGPT (of course), and after a long discussion, we agreed—yep, this is a real problem, and yep, it could become a real product.
+But then a thought hit me—_what if I turn this into a SaaS?_ If I was facing this issue, chances are others were too. So I started thinking: what would the core features look like? I asked ChatGPT (of course), and after a long discussion, we agreed—yep, this is a real problem, and yep, it could become a real product.
 
 After reflecting on everything, I came up with 7 key things I needed to build:
 
@@ -58,11 +65,11 @@ Once the features were locked in, it was time to decide the tech stack. And if y
 5. Convex
 6. UI built with Redux + Shadcn
 
-When I was building the project, I thought the stack was solid—and honestly, it still is. Sure, there were moments when I considered switching to a full framework like Next.js. But even without it, this stack is doing wonders. It’s fast, I have full control, and I can do *a lot*. It’s not perfect, but some things are just great—like blazing fast build times, everything is dynamic (no static content), and I can manage feature flags, blogs, and edge cases all in one flow.
+When I was building the project, I thought the stack was solid—and honestly, it still is. Sure, there were moments when I considered switching to a full framework like Next.js. But even without it, this stack is doing wonders. It’s fast, I have full control, and I can do _a lot_. It’s not perfect, but some things are just great—like blazing fast build times, everything is dynamic (no static content), and I can manage feature flags, blogs, and edge cases all in one flow.
 
 ## Why I Didn’t Go with a Framework
 
-When I first started building *LeadFinder*, it was just a single API call and some simple integrations. But as I added more features—routes, a blog, a more complex admin panel, feature flags, Convex data migration—I realized maybe I should’ve gone with a proper framework.
+When I first started building _LeadFinder_, it was just a single API call and some simple integrations. But as I added more features—routes, a blog, a more complex admin panel, feature flags, Convex data migration—I realized maybe I should’ve gone with a proper framework.
 
 But by that time, I had already written over 20,000 lines of TypeScript and JavaScript. Rewriting the whole thing, swapping out Clerk, reworking Convex setup for dev and prod... nah, not worth it.
 
@@ -72,7 +79,7 @@ And honestly? It’s working perfectly. With Vercel, the whole thing runs smooth
 
 ## Pricing & Thought Process
 
-After a long thinking session (and way too many coffee-fueled nights), I couldn’t decide on the price point. Initially, I thought $8/month for the Pro plan and $0 for the Free plan. But even then, I wasn’t fully convinced the value was *there*. So, I decided to add more features—stuff that would *actually* make it feel like a full platform, not just another lead scraper.
+After a long thinking session (and way too many coffee-fueled nights), I couldn’t decide on the price point. Initially, I thought $8/month for the Pro plan and $0 for the Free plan. But even then, I wasn’t fully convinced the value was _there_. So, I decided to add more features—stuff that would _actually_ make it feel like a full platform, not just another lead scraper.
 
 The idea? A one-tab solution.
 Search leads? Same tab.
@@ -96,8 +103,8 @@ These felt like solid features that actually brought value—and yeah, now I was
 
 What really costs me isn’t just time—it’s API usage.
 
-* Google Maps API for finding leads? Not cheap.
-* AI integration using Gemini + OpenAI? Prices are *through the roof*.
+- Google Maps API for finding leads? Not cheap.
+- AI integration using Gemini + OpenAI? Prices are _through the roof_.
 
 So to balance it out, I stuck with the $8/month Pro plan. Right now, there are **no API call limits** for Pro users. Go wild—scrape and search all you want.
 
@@ -113,12 +120,57 @@ Here’s what’s on the roadmap:
 2. Expand the admin panel (more control, more clarity)
 3. Add more AI models and prompts
 4. New lead-finder services like:
-   * **LinkedIn** lead search
-   * **Facebook** lead lookup
-   * A Google scraping service to extract leads from search results
+   - **LinkedIn** lead search
+   - **Facebook** lead lookup
+   - A Google scraping service to extract leads from search results
 5. Clean up the codebase—make it more readable, scalable, and properly documented
 6. Monitoring: I want to build an all-in-one logging & error handling setup inside the admin panel, so I’m not flying blind when stuff breaks
 
 ## UI and Design
 
-Alright with all that it's time to see the UI and see how things are going on.
+Alright—with all the features in place, let’s finally take a look at the UI and see how it’s all shaping up.
+
+<ImageSlider
+  images={[
+    "/BlogImages/leadfinder/Lead-Finder-(7).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(8).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(1).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(2).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(3).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(4).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(5).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(6).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(9).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(10).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(11).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(12).webp",
+    "/BlogImages/leadfinder/Lead-Finder-(13).webp",
+  ]}
+  client:load
+  layout="modern"
+/>
+
+As you can see, the UI runs in dark mode by default—but yeah, there’s a light mode too, with multiple accent color choices. You’ve got:
+
+- A clean landing page
+- A functional dashboard where users can connect Gmail
+- An email module to send messages directly to leads
+- A "Leads & AI" section where users can save leads and let the AI generate emails for them
+
+Don’t know what to write? AI’s got your back—generate a cold email, tweak it if needed, and send it straight from the app. No switching tabs, no guessing what to say. It’s all there.
+
+## Coming Blog Posts
+
+In the upcoming blog posts, I’ll break down everything—code structure, how I organized things, and even the parts where I hardcoded stuff that later came back to haunt me. 😅
+
+To deal with those issues, I had to write a bunch of migration logic that works across both the dev and production environments. It wasn’t clean, but it worked—and I’ll share the exact thought process and trade-offs I made along the way.
+
+Stay tuned if you're interested in the messy reality behind building and shipping something solo.
+
+## Conclusion
+
+This project has taught me a _lot_. From managing APIs to building out a scalable system, to realizing just how far I can push a simple Vite + React app—it’s been a ride.
+
+And honestly, I’m super excited to see where this goes next.
+
+This is just the beginning. 🚀
