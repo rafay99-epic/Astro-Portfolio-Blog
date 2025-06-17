@@ -1,6 +1,6 @@
 ---
-title: 'Lead Finde: New Startup'
-description: 'So this is my journey of coding my own startup '
+title: "Lead Finde: New Startup"
+description: "So this is my journey of coding my own startup "
 pubDate: 2025-06-17T19:00:00.000Z
 draft: true
 authorName: Abdul Rafay
@@ -27,35 +27,96 @@ You need a service that keeps things moving and surfaces the best leads for your
 
 The back story is very simple, I am a free lancer most of the time and I want to find lead using the internet, it was hard, going to different ites, search the thing, wrote down all the email, phone numbers and other into a excel sheet and then few time later all the data is out data so I though why not just I buid this stuff. it won't tak that long, so I made quick react project, install the depiedences and then make basic UI and then I intergrated the api, I added the export all the data into a simple excel sheet and then bam, i have all the data, it was so simple and clean but then a thought hit my mind, If i am having this issue then other might be facing the same thing so I asked around in my community and I found out yeah, this is a problem and where their a problem, I have a solution and I asked chatgpt about this and he helped me push thing much better as well.
 
-## The Begining
+## The Beginning
 
-When I start coding this project, I was using way simple one page application with react and vite, I intergrated api into a form and then idplay all the results then export the result into a simple csv file, simple but then a though hit my head I though what if I turn this into a SAS, If I was having this issue other might be as well so what could be the features so I asked chat gpt and after along dissucess we came up that is a problem and we can turn this into a real product nad this is can beb solved,
+When I started coding this project, it was just a super simple one-page app using React and Vite. I integrated an API into a form, displayed the results, and then exported them into a basic CSV file. Straightforward stuff.
 
-So I asked after reflecting my thoughs  I have 7 things, I need to do.
+But then a thought hit me—_what if I turn this into a SaaS?_ If I was facing this issue, chances are others were too. So I started thinking: what would the core features look like? I asked ChatGPT (of course), and after a long discussion, we agreed—yep, this is a real problem, and yep, it could become a real product.
 
-1. Get Leads
-2. Export Lead into excel sheet
-3. Payment Gateway (Free & Pro Tier)
-4. Auth System
-5. Set up a backend for managing everything
-6. Simple Admin Panel for me
-7. Set Limits on API
+After reflecting on everything, I came up with 7 key things I needed to build:
 
-and with that racing were on.
+1. Get leads
+2. Export leads into an Excel sheet
+3. Payment gateway (Free & Pro tiers)
+4. Auth system
+5. Backend to manage everything
+6. Simple admin panel (for me)
+7. Set API usage limits
 
-I started coding and taking down feature after feature as well, plus I added feature flags into this so that it is easy for me to update and make sure that everything is better.
+And just like that, the race was on.
+
+I started coding and ticking off features one by one. I also added feature flags so I could update things easily and keep everything flexible and future-proof.
 
 ## Tech Stack
 
-So now all the features are decided it's time for tech stack and here is thing if you are looking for somthing out of this world, it's pretty simple
+Once the features were locked in, it was time to decide the tech stack. And if you're expecting some wild fancy stack—nah, it’s pretty simple:
 
-1. vite
+1. Vite
 2. React
 3. Tailwind CSS
 4. Clerk
 5. Convex
-6. Redux UI with Shadcn as well.
+6. UI built with Redux + Shadcn
 
-when I was bulding this Project I though, the text stack would be fine at there are few things that let me think that I should have choose a framework like NextJS or something else but this current stack is doing worderfull, it's fast and I have full control and I can do alot, it's not perfect but still something are great for example build times are way faster, there is no static cotent, all dynamic content, from feature flags to blog content and from blog content to handling edge cases all these things
+When I was building the project, I thought the stack was solid—and honestly, it still is. Sure, there were moments when I considered switching to a full framework like Next.js. But even without it, this stack is doing wonders. It’s fast, I have full control, and I can do _a lot_. It’s not perfect, but some things are just great—like blazing fast build times, everything is dynamic (no static content), and I can manage feature flags, blogs, and edge cases all in one flow.
 
-## Resason not going a framework
+## Why I Didn’t Go with a Framework
+
+When I first started building _LeadFinder_, it was just a single API call and some simple integrations. But as I added more features—routes, a blog, a more complex admin panel, feature flags, Convex data migration—I realized maybe I should’ve gone with a proper framework.
+
+But by that time, I had already written over 20,000 lines of TypeScript and JavaScript. Rewriting the whole thing, swapping out Clerk, reworking Convex setup for dev and prod... nah, not worth it.
+
+So I stuck with what I had.
+
+And honestly? It’s working perfectly. With Vercel, the whole thing runs smooth. If I ever want to expand or refactor later, I will—but for now, this single-page app is getting the job done.
+
+## Pricing & Thought Process
+
+After a long thinking session (and way too many coffee-fueled nights), I couldn’t decide on the price point. Initially, I thought \$8/month for the Pro plan and \$0 for the Free plan. But even then, I wasn’t fully convinced the value was _there_. So, I decided to add more features—stuff that would _actually_ make it feel like a full platform, not just another lead scraper.
+
+The idea? A one-tab solution.
+Search leads? Same tab.
+Save them? Same tab.
+Need help? AI’s right there.
+Want to reach out to the lead? Yup, same tab.
+No more hopping between 3 services or 10 open browser tabs.
+
+## Decided Features
+
+With that in mind, here are the features I committed to:
+
+1. AI integration (Gemini & OpenAI)
+2. Email integration
+3. In-app communication with leads
+4. Full CRUD operations for both leads and emails
+
+These felt like solid features that actually brought value—and yeah, now I was confident: \$8/month Pro, \$0 Free. Done.
+
+## The Real Cost
+
+What really costs me isn’t just time—it’s API usage.
+
+- Google Maps API for finding leads? Not cheap.
+- AI integration using Gemini + OpenAI? Prices are _through the roof_.
+
+So to balance it out, I stuck with the \$8/month Pro plan. Right now, there are **no API call limits** for Pro users. Go wild—scrape and search all you want.
+
+In the future, I might introduce more tiers or set some soft limits. But for now, this setup works.
+
+## The Future
+
+Oh yeah—I’ve got plans. Big ones.
+
+Here’s what’s on the roadmap:
+
+1. Add more lead-finding APIs
+2. Expand the admin panel (more control, more clarity)
+3. Add more AI models and prompts
+4. New lead-finder services like:
+
+   - **LinkedIn** lead search
+   - **Facebook** lead lookup
+   - A Google scraping service to extract leads from search results
+
+5. Clean up the codebase—make it more readable, scalable, and properly documented
+6. Monitoring: I want to build an all-in-one logging & error handling setup inside the admin panel, so I’m not flying blind when stuff breaks
