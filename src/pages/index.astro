@@ -8,6 +8,7 @@ import FeaturedPost from "@astro/home/FeaturePost/featurePost.astro";
 import LatestPost from "@astro/home/LatestPost/LatestPost.astro";
 import SkillsShowcase from "@react/personal/JobSkills/jobSkills";
 import ContactMap from "@astro/home/ContactMap/ContactMap.astro";
+import CustomGitHubStats from "@react/personal/GitHubStats/CustomGitHubStats";
 import authorConfig from "@config/siteConfig/info.json";
 import ProfileImage from "@react/layout/HeroSection/ProfileImage";
 import Greeting from "@react/layout/HeroSection/Greeting";
@@ -59,11 +60,12 @@ try {
           </div>
         </div>
       </section>
+
       <section style="margin-block-start: 12rem;">
         {featureFlags.showBlog && <FeaturedPost />}
       </section>
       <section style="margin-block-start: 5rem;">
-        {featureFlags.showBlog && <LatestPost />}
+        {featureFlags.showGitHubStats && <CustomGitHubStats client:visible />}
       </section>
 
       <section style="margin-block-start: 5rem;">

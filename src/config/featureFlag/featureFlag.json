@@ -18,7 +18,8 @@
         "showNotes": true,
         "showWhatsNew": true,
         "showQASection": true,
-        "enableViewTransation": false
+        "enableViewTransation": false,
+        "showGitHubStats": true
     },
     "FeatureFlagsApi": {
         "enableauthorInfoAPI": true,
