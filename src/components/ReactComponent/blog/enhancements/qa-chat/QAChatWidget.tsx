@@ -54,18 +54,23 @@ export default function QAChatWidget({
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={toggleChat}
-          className={`relative w-12 h-12 rounded-full shadow-md transition-all duration-200 hover:scale-105 ${
+          className={`relative w-16 h-16 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-3xl ${
             isOpen
-              ? "bg-gray-600 hover:bg-gray-700"
-              : "bg-gray-500 hover:bg-gray-600"
-          } border border-gray-400/30 backdrop-blur-sm opacity-75 hover:opacity-90`}
-          title={isOpen ? "Close Q&A" : "Ask Questions"}
+              ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-red-500/25"
+              : "bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)] hover:from-[var(--primary-600)] hover:to-[var(--primary-700)] shadow-[var(--primary-500)]/25"
+          } border-2 border-white/20 backdrop-blur-sm`}
+          title={isOpen ? "Close Q&A Chat" : "Open Q&A Chat"}
+          style={{
+            boxShadow: isOpen
+              ? "0 25px 50px -12px rgba(239, 68, 68, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)"
+              : "0 25px 50px -12px rgba(59, 130, 246, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+          }}
         >
           {/* Icon */}
           <div className="flex items-center justify-center w-full h-full text-white">
             {isOpen ? (
               <svg
-                className="w-4 h-4"
+                className="w-6 h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -79,7 +84,7 @@ export default function QAChatWidget({
               </svg>
             ) : (
               <svg
-                className="w-4 h-4"
+                className="w-6 h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -96,14 +101,14 @@ export default function QAChatWidget({
 
           {/* Notification Badge */}
           {hasNewMessage && !isOpen && (
-            <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-blue-500 rounded-full border border-white" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse" />
           )}
         </button>
       </div>
 
       {/* Chat Panel */}
       {isOpen && (
-        <div className="fixed bottom-16 right-6 w-80 max-w-[calc(100vw-3rem)] z-40">
+        <div className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] z-40">
           <QAChatUI {...qaLogic} onClose={() => setIsOpen(false)} />
         </div>
       )}

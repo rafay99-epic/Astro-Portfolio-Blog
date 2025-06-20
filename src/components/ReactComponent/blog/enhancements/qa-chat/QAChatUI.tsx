@@ -70,11 +70,11 @@ export function QAChatUI({
   return (
     <div className="bg-gradient-to-br from-[var(--glass-bg)] to-[var(--glass-bg-secondary)] border border-[var(--glass-border)] backdrop-blur-md shadow-[var(--glass-shadow)] rounded-2xl overflow-hidden">
       {/* Header */}
-      <div className="bg-gray-600 px-3 py-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+      <div className="bg-gradient-to-r from-[var(--primary-500)] to-[var(--primary-600)] px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
             <svg
-              className="w-3 h-3 text-white"
+              className="w-4 h-4 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -88,20 +88,21 @@ export function QAChatUI({
             </svg>
           </div>
           <div>
-            <h3 className="text-white font-medium text-xs">Q&A Helper</h3>
+            <h3 className="text-white font-medium text-sm">Blog Q&A</h3>
+            <p className="text-white/80 text-xs">Ask about this post</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           {hasGenerated && messages.length > 0 && (
             <>
               <button
                 onClick={handleCopy}
-                className="w-6 h-6 bg-white/20 hover:bg-white/30 rounded flex items-center justify-center transition-colors"
-                title="Copy"
+                className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors"
+                title="Copy all Q&A"
               >
                 <svg
-                  className="w-3 h-3 text-white"
+                  className="w-4 h-4 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -117,12 +118,12 @@ export function QAChatUI({
 
               <button
                 onClick={regenerate}
-                className="w-6 h-6 bg-white/20 hover:bg-white/30 rounded flex items-center justify-center transition-colors"
-                title="Refresh"
+                className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors"
+                title="Regenerate Q&A"
                 disabled={isLoading}
               >
                 <svg
-                  className="w-3 h-3 text-white"
+                  className="w-4 h-4 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -140,11 +141,11 @@ export function QAChatUI({
 
           <button
             onClick={onClose}
-            className="w-6 h-6 bg-white/20 hover:bg-white/30 rounded flex items-center justify-center transition-colors"
-            title="Close"
+            className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors"
+            title="Close chat"
           >
             <svg
-              className="w-3 h-3 text-white"
+              className="w-4 h-4 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -161,12 +162,12 @@ export function QAChatUI({
       </div>
 
       {/* Messages Container */}
-      <div className="h-64 overflow-y-auto p-3 space-y-3">
+      <div className="h-96 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && !isLoading && (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <div className="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center mb-3">
+            <div className="w-16 h-16 bg-gradient-to-br from-[var(--primary-400)] to-[var(--primary-600)] rounded-full flex items-center justify-center mb-4">
               <svg
-                className="w-5 h-5 text-white"
+                className="w-8 h-8 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -179,11 +180,12 @@ export function QAChatUI({
                 />
               </svg>
             </div>
-            <h4 className="text-[var(--text-light)] font-medium mb-1 text-sm">
-              Q&A Helper
+            <h4 className="text-[var(--text-light)] font-medium mb-2">
+              Welcome to Blog Q&A!
             </h4>
-            <p className="text-[var(--text-secondary)] text-xs">
-              Auto-generated questions about this post
+            <p className="text-[var(--text-secondary)] text-sm">
+              Questions and answers about this blog post will appear here
+              automatically.
             </p>
           </div>
         )}
