@@ -29,12 +29,21 @@ const NewsletterList: React.FC<NewsletterListProps> = ({ newsletters }) => {
 
   return (
     <NewsletterListLogic newsletters={newsletters}>
-      {(currentNewsletters, totalPages, currentPage, handlePageChange) => (
+      {(
+        currentNewsletters,
+        totalPages,
+        currentPage,
+        handlePageChange,
+        isLoading,
+        error
+      ) => (
         <NewsletterListUI
           currentNewsletters={currentNewsletters}
           totalPages={totalPages}
           currentPage={currentPage}
           handlePageChange={handlePageChange}
+          isLoading={isLoading}
+          error={error}
         />
       )}
     </NewsletterListLogic>
