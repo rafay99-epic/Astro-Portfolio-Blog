@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import {
   MAX_CONTENT_LENGTH,
   MAX_REQUESTS_PER_WINDOW,
@@ -156,9 +156,9 @@ export async function POST({ request }: { request: Request }) {
   const clientIP = request.headers.get("x-forwarded-for") || "unknown";
 
   try {
-    if (!FeatureFlagsApi.enableAI_Summary) {
+    if (!featureFlags.showQASection) {
       return createErrorResponse(
-        "Q&A generation feature is currently under development",
+        "Q&A generation feature is currently disabled",
         "FEATURE_DISABLED",
         403
       );

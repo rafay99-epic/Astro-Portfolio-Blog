@@ -17,11 +17,11 @@
         "showWiki": true,
         "showNotes": true,
         "showWhatsNew": true,
+        "showQASection": true,
         "enableViewTransation": false
     },
     "FeatureFlagsApi": {
         "enableauthorInfoAPI": true,
-        "enableUploadThing": false,
         "enableAI_Summary": true
     }
 }

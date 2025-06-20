@@ -212,14 +212,17 @@ const {
       </div>
     </main>
 
-    <!-- Floating Q&A Chat Widget -->
-    <QAChatWidget
-      client:load
-      title={title}
-      description={description}
-      author={authorName}
-      content={blogContent}
-    />
+    {
+      featureFlags.showQASection && (
+        <QAChatWidget
+          client:load
+          title={title}
+          description={description}
+          author={authorName}
+          content={blogContent}
+        />
+      )
+    }
 
     <script type="text/partytown" is:inline src="/js/progressbar.js"></script>
     <Footer />
