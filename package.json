@@ -1,7 +1,7 @@
 {
     "name": "rafay99.com",
     "type": "module",
-    "version": "7.7.0",
+    "version": "8.0.0",
     "scripts": {
         "dev": "astro dev",
         "start": "astro dev",

@@ -1,9 +1,22 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import type { Version, WikiPageProps } from "../../../types/wiki";
 
 const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const mappedVersions: Version[] = useMemo(() => {
     try {
@@ -26,7 +39,7 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
 
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const versionsPerPage = 6;
+  const versionsPerPage = isMobile ? 4 : 6;
 
   const sortedVersions = useMemo(() => {
     try {
@@ -100,120 +113,292 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
 
   if (error) {
     return (
-      <div className="min-h-screen p-6 flex justify-center items-center text-red-500">
-        <p>{error}</p>
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="backdrop-blur-xl bg-red-500/10 border border-red-500/20 rounded-2xl p-8 text-center max-w-md"
+        >
+          <div className="text-4xl mb-4">⚠️</div>
+          <h3 className="text-lg font-semibold text-red-400 mb-2">
+            Error Occurred
+          </h3>
+          <p className="text-red-300 text-sm">{error}</p>
+        </motion.div>
       </div>
     );
   }
 
   if (filteredVersions.length === 0) {
     return (
-      <div className="min-h-screen p-6 flex justify-center items-center text-[var(--text-light)]">
-        <p>Sorry, no versions released yet.</p>
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl p-8 text-center max-w-md"
+        >
+          <div className="text-4xl mb-4">📚</div>
+          <h3 className="text-lg font-semibold text-[#c0caf5] mb-2">
+            No Versions Yet
+          </h3>
+          <p className="text-[#a9b1d6] text-sm">
+            Wiki versions will appear here once they're published.
+          </p>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen p-6 space-y-10  text-[var(--text-light)]">
-      <div className="max-w-5xl mx-auto">
-        <h3 className="text-xl font-semibold mb-4">Filter by Tags:</h3>
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={() => handleTagSelect(null)}
-            className={`px-4 py-2 rounded-full text-sm font-medium border transition ${
-              selectedTag === null
-                ? "bg-[var(--accent)] text-white border-transparent"
-                : "bg-transparent border-[var(--gray)] hover:bg-[var(--gray-dark)]"
+    <div className="relative min-h-screen py-8 px-4">
+      {/* Background Elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/6 w-96 h-96 bg-[#7aa2f7]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/6 w-80 h-80 bg-[#bb9af7]/5 rounded-full blur-3xl" />
+        <div className="absolute top-2/3 left-1/2 w-64 h-64 bg-[#9ece6a]/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto max-w-7xl relative z-10">
+        {/* Header Section */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent">
+              📚 Wiki Versions
+            </span>
+          </h1>
+          <p className="text-[#a9b1d6] text-sm md:text-base max-w-2xl mx-auto">
+            Explore different versions of our documentation and development
+            history
+          </p>
+        </motion.div>
+
+        {/* Filter Tags Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl p-6 mb-8"
+        >
+          <h3 className="text-lg font-semibold text-[#c0caf5] mb-4 text-center md:text-left">
+            🏷️ Filter by Tags
+          </h3>
+
+          {isMobile ? (
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleTagSelect(null)}
+                className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-300 whitespace-nowrap ${
+                  selectedTag === null
+                    ? "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white border-transparent shadow-lg shadow-[#7aa2f7]/25"
+                    : "bg-[#1a1b26]/60 border-[#565f89]/40 text-[#a9b1d6] hover:bg-[#24283b]/60 hover:border-[#565f89]/60"
+                }`}
+              >
+                All
+              </motion.button>
+              {uniqueTags.map((tag) => (
+                <motion.button
+                  key={tag}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleTagSelect(tag)}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-300 whitespace-nowrap ${
+                    selectedTag === tag
+                      ? "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white border-transparent shadow-lg shadow-[#7aa2f7]/25"
+                      : "bg-[#1a1b26]/60 border-[#565f89]/40 text-[#a9b1d6] hover:bg-[#24283b]/60 hover:border-[#565f89]/60"
+                  }`}
+                >
+                  {tag}
+                </motion.button>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-3 justify-center">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleTagSelect(null)}
+                className={`px-5 py-2.5 rounded-xl text-sm font-medium border transition-all duration-300 ${
+                  selectedTag === null
+                    ? "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white border-transparent shadow-lg shadow-[#7aa2f7]/25"
+                    : "bg-[#1a1b26]/60 border-[#565f89]/40 text-[#a9b1d6] hover:bg-[#24283b]/60 hover:border-[#565f89]/60"
+                }`}
+              >
+                All
+              </motion.button>
+              {uniqueTags.map((tag) => (
+                <motion.button
+                  key={tag}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleTagSelect(tag)}
+                  className={`px-5 py-2.5 rounded-xl text-sm font-medium border transition-all duration-300 ${
+                    selectedTag === tag
+                      ? "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white border-transparent shadow-lg shadow-[#7aa2f7]/25"
+                      : "bg-[#1a1b26]/60 border-[#565f89]/40 text-[#a9b1d6] hover:bg-[#24283b]/60 hover:border-[#565f89]/60"
+                  }`}
+                >
+                  {tag}
+                </motion.button>
+              ))}
+            </div>
+          )}
+        </motion.div>
+
+        {/* Versions Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentPage}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className={`grid gap-6 ${
+              isMobile
+                ? "grid-cols-1"
+                : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
             }`}
           >
-            All
-          </button>
-          {uniqueTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => handleTagSelect(tag)}
-              className={`px-4 py-2 rounded-full text-sm font-medium border transition ${
-                selectedTag === tag
-                  ? "bg-[var(--accent)] text-white border-transparent"
-                  : "bg-transparent border-[var(--gray)] hover:bg-[var(--gray-dark)]"
-              }`}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        {paginatedVersions.map((version) => (
-          <a
-            key={version.slug}
-            href={`/webwiki/${version.slug}`}
-            className="rounded-xl border border-[#4C506A40] bg-[#2b2d41] hover:bg-[#32344a] p-5 shadow-lg transition-transform transform hover:-translate-y-1"
-            aria-label={`Version ${version.version}: ${version.title}`}
-            role="Wiki Post Link"
-          >
-            <h2 className="text-xl font-bold mb-2">{version.title}</h2>
-            <div className="text-sm text-[var(--gray)] space-y-1 mb-3">
-              <p>
-                <strong className="text-[var(--text-light)]">Version:</strong>{" "}
-                {version.version}
-              </p>
-              <p>
-                <strong className="text-[var(--text-light)]">
-                  Release Date:
-                </strong>{" "}
-                {new Date(version.versionreleasedate).toLocaleDateString()}
-              </p>
-              {version.pubDate && (
-                <p>
-                  <strong className="text-[var(--text-light)]">
-                    Published:
-                  </strong>{" "}
-                  {new Date(version.pubDate).toLocaleDateString()}
-                </p>
-              )}
-            </div>
-            <p className="text-sm text-[var(--gray)] mb-4 line-clamp-3">
-              {version.description}
-            </p>
-            {version.tags?.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {version.tags.map((tag, i) => (
-                  <span
-                    key={i}
-                    className="bg-[#3b3d58] text-xs text-white px-3 py-1 rounded-full"
-                  >
-                    {tag}
+            {paginatedVersions.map((version, index) => (
+              <motion.a
+                key={version.slug}
+                href={`/webwiki/${version.slug}`}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{
+                  y: -8,
+                  transition: { duration: 0.2 },
+                }}
+                className="group relative backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl p-6 hover:bg-[#2d3142]/60 hover:border-[#7aa2f7]/40 transition-all duration-300 hover:shadow-2xl hover:shadow-[#7aa2f7]/10"
+                aria-label={`Version ${version.version}: ${version.title}`}
+              >
+                {/* Version Badge */}
+                <div className="absolute top-4 right-4">
+                  <span className="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white text-xs font-bold px-3 py-1 rounded-full">
+                    v{version.version}
                   </span>
-                ))}
-              </div>
-            )}
-          </a>
-        ))}
-      </div>
+                </div>
 
-      <div className="flex justify-center items-center space-x-6 mt-8">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 rounded border text-sm transition hover:bg-[#3c3f5c] disabled:opacity-40"
-        >
-          Previous
-        </button>
-        <span className="text-sm">
-          Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
-        </span>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 rounded border text-sm transition hover:bg-[#3c3f5c] disabled:opacity-40"
-        >
-          Next
-        </button>
+                {/* Content */}
+                <div className="space-y-4">
+                  <h2 className="text-xl font-bold text-[#c0caf5] group-hover:text-[#7aa2f7] transition-colors duration-300 pr-16">
+                    {version.title}
+                  </h2>
+
+                  {/* Metadata */}
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2 text-[#a9b1d6]">
+                      <span className="text-[#9ece6a]">📅</span>
+                      <span className="font-medium">Release:</span>
+                      <span>
+                        {new Date(
+                          version.versionreleasedate
+                        ).toLocaleDateString()}
+                      </span>
+                    </div>
+                    {version.pubDate && (
+                      <div className="flex items-center gap-2 text-[#a9b1d6]">
+                        <span className="text-[#bb9af7]">📝</span>
+                        <span className="font-medium">Published:</span>
+                        <span>
+                          {new Date(version.pubDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-[#a9b1d6] text-sm leading-relaxed line-clamp-3">
+                    {version.description}
+                  </p>
+
+                  {/* Tags */}
+                  {version.tags?.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {version.tags.slice(0, isMobile ? 2 : 3).map((tag, i) => (
+                        <span
+                          key={i}
+                          className="bg-[#1a1b26]/60 border border-[#565f89]/40 text-[#7aa2f7] text-xs px-2.5 py-1 rounded-lg"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {version.tags.length > (isMobile ? 2 : 3) && (
+                        <span className="bg-[#1a1b26]/60 border border-[#565f89]/40 text-[#a9b1d6] text-xs px-2.5 py-1 rounded-lg">
+                          +{version.tags.length - (isMobile ? 2 : 3)}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Read More Arrow */}
+                  <div className="flex items-center justify-end pt-2">
+                    <div className="flex items-center gap-2 text-[#7aa2f7] text-sm font-medium group-hover:gap-3 transition-all duration-300">
+                      <span>Read More</span>
+                      <span className="transform group-hover:translate-x-1 transition-transform duration-300">
+                        →
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </motion.a>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-12 flex justify-center"
+          >
+            <div className="backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl p-2">
+              <div className="flex items-center gap-2">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-xl text-sm font-medium border border-[#565f89]/40 text-[#a9b1d6] hover:bg-[#2d3142]/60 hover:border-[#7aa2f7]/40 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300"
+                >
+                  {isMobile ? "←" : "← Previous"}
+                </motion.button>
+
+                <div className="flex items-center gap-2 px-4 py-2">
+                  <span className="text-[#a9b1d6] text-sm">
+                    <span className="font-bold text-[#c0caf5]">
+                      {currentPage}
+                    </span>
+                    <span className="mx-1">of</span>
+                    <span className="font-bold text-[#c0caf5]">
+                      {totalPages}
+                    </span>
+                  </span>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 rounded-xl text-sm font-medium border border-[#565f89]/40 text-[#a9b1d6] hover:bg-[#2d3142]/60 hover:border-[#7aa2f7]/40 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300"
+                >
+                  {isMobile ? "→" : "Next →"}
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
