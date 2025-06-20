@@ -10,6 +10,7 @@ import { getCollection } from "astro:content";
 import AISummaryCard from "@react/blog/enhancements/summary-card/summary_blog";
 import BlogHeader from "@react/blog/layout/BlogPostLayout/BlogPostLayoutHeader";
 import BlogTOC from "@astro/blog/toc/BlogTOC.astro";
+import QAChatWidget from "@react/blog/enhancements/qa-chat/QAChatWidget";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -185,7 +186,7 @@ const {
               Advertisement
             </h3>
             <div
-              class="aspect-[1/2] rounded-lg flex items-center justify-center bg-[rgb(var(--gray-dark))]"
+              class="aspect-[1/2] rounded-lg flex items-center justify-center"
             >
               <ins
                 class="adsbygoogle"
@@ -210,6 +211,15 @@ const {
         <PostComment />
       </div>
     </main>
+
+    <!-- Floating Q&A Chat Widget -->
+    <QAChatWidget
+      client:load
+      title={title}
+      description={description}
+      author={authorName}
+      content={blogContent}
+    />
 
     <script type="text/partytown" is:inline src="/js/progressbar.js"></script>
     <Footer />
