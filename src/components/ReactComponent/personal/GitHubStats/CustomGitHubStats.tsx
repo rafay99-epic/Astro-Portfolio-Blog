@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 interface GitHubStats {
   name: string;
@@ -21,6 +21,8 @@ const CustomGitHubStats: React.FC = () => {
   const [stats, setStats] = useState<GitHubStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -208,12 +210,36 @@ const CustomGitHubStats: React.FC = () => {
   }
 
   return (
-    <section className="github-stats-section relative overflow-hidden py-16">
+    <section
+      ref={ref}
+      className="github-stats-section relative overflow-hidden py-16"
+    >
       {/* Animated Background */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-[#7aa2f7]/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#bb9af7]/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#9ece6a]/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-72 h-72 bg-[#7aa2f7]/10 rounded-full blur-3xl"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={
+            isInView ? { scale: 1, opacity: 0.3 } : { scale: 0, opacity: 0 }
+          }
+          transition={{ duration: 1, delay: 0.2 }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#bb9af7]/10 rounded-full blur-3xl"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={
+            isInView ? { scale: 1, opacity: 0.3 } : { scale: 0, opacity: 0 }
+          }
+          transition={{ duration: 1, delay: 0.4 }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#9ece6a]/5 rounded-full blur-3xl"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={
+            isInView ? { scale: 1, opacity: 0.2 } : { scale: 0, opacity: 0 }
+          }
+          transition={{ duration: 1, delay: 0.6 }}
+        />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -226,16 +252,31 @@ const CustomGitHubStats: React.FC = () => {
           <motion.h2
             className="text-6xl font-bold mb-6 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
             style={{ backgroundSize: "200% 100%" }}
+            initial={{ scale: 0.8, opacity: 0 }}
             animate={{
-              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              scale: 1,
+              opacity: 1,
             }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "linear",
-            }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Daily Coding Activity
+            <motion.span
+              animate={
+                isInView
+                  ? {
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    }
+                  : {}
+              }
+              transition={{
+                duration: 5,
+                repeat: isInView ? Infinity : 0,
+                ease: "linear",
+              }}
+              style={{ backgroundSize: "200% 100%" }}
+              className="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+            >
+              Daily Coding Activity
+            </motion.span>
           </motion.h2>
           <motion.p
             className="text-xl mb-8 max-w-2xl mx-auto"
