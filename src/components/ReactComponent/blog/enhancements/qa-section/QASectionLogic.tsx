@@ -36,25 +36,35 @@ export function QASectionLogic({
   });
 
   const abortControllerRef = useRef<AbortController | null>(null);
+  const contentHashRef = useRef<string>("");
   const cacheKeyRef = useRef<string>("");
 
-  // Generate cache key based on content
-  const generateCacheKey = (content: string): string => {
+  // Single hash generation utility
+  const generateHash = (input: string): string => {
     const encoder = new TextEncoder();
-    const data = encoder.encode(content);
+    const data = encoder.encode(input);
     let hash = 0;
     for (let i = 0; i < data.length; i++) {
       const char = data[i];
       hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
-    return `qa_${Math.abs(hash).toString(36)}`;
+    return Math.abs(hash).toString(36);
+  };
+
+  // Initialize hashes once
+  const initializeHashes = (): void => {
+    if (!contentHashRef.current) {
+      contentHashRef.current = generateHash(content.slice(0, 1000)); // Use first 1000 chars
+      cacheKeyRef.current = `qa_${contentHashRef.current}`;
+    }
   };
 
   // Check if cached Q&A exists and is valid
-  const getCachedQA = (cacheKey: string): QAItem[] | null => {
+  const getCachedQA = (): QAItem[] | null => {
     try {
-      const cached = localStorage.getItem(cacheKey);
+      initializeHashes();
+      const cached = localStorage.getItem(cacheKeyRef.current);
       if (!cached) return null;
 
       const parsedCache = JSON.parse(cached);
@@ -63,13 +73,13 @@ export function QASectionLogic({
       const maxAge = 24 * 60 * 60; // 24 hours
 
       if (cacheAge > maxAge) {
-        localStorage.removeItem(cacheKey);
+        localStorage.removeItem(cacheKeyRef.current);
         return null;
       }
 
       // Validate cached content belongs to current blog
-      if (parsedCache.contentHash !== generateContentHash(content)) {
-        localStorage.removeItem(cacheKey);
+      if (parsedCache.contentHash !== contentHashRef.current) {
+        localStorage.removeItem(cacheKeyRef.current);
         return null;
       }
 
@@ -80,28 +90,16 @@ export function QASectionLogic({
     }
   };
 
-  // Generate content hash for validation
-  const generateContentHash = (content: string): string => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(content.slice(0, 1000)); // Use first 1000 chars for hash
-    let hash = 0;
-    for (let i = 0; i < data.length; i++) {
-      const char = data[i];
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash;
-    }
-    return Math.abs(hash).toString(36);
-  };
-
   // Cache Q&A items
-  const cacheQAItems = (cacheKey: string, qaItems: QAItem[]): void => {
+  const cacheQAItems = (qaItems: QAItem[]): void => {
     try {
+      initializeHashes();
       const cacheData = {
         qaItems,
         timestamp: Math.floor(Date.now() / 1000),
-        contentHash: generateContentHash(content),
+        contentHash: contentHashRef.current,
       };
-      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+      localStorage.setItem(cacheKeyRef.current, JSON.stringify(cacheData));
     } catch (error) {
       console.error("Error caching Q&A:", error);
     }
@@ -113,11 +111,10 @@ export function QASectionLogic({
       return;
     }
 
-    const cacheKey = generateCacheKey(content);
-    cacheKeyRef.current = cacheKey;
+    initializeHashes();
 
     // Check cache first
-    const cachedQA = getCachedQA(cacheKey);
+    const cachedQA = getCachedQA();
     if (cachedQA && cachedQA.length > 0) {
       setState((prev) => ({
         ...prev,
@@ -156,7 +153,7 @@ export function QASectionLogic({
 
         if (response.status === 500) {
           // Clear potentially corrupted cache
-          localStorage.removeItem(cacheKey);
+          localStorage.removeItem(cacheKeyRef.current);
           throw new Error(
             errorData.message || "Server error occurred. Please try again."
           );
@@ -174,7 +171,7 @@ export function QASectionLogic({
       }
 
       const qaItems = data.qaItems;
-      cacheQAItems(cacheKey, qaItems);
+      cacheQAItems(qaItems);
 
       setState((prev) => ({
         ...prev,
