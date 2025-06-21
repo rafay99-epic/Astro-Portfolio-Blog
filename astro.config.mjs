@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import robotsTxt from "astro-robots-txt";
 import partytown from "@astrojs/partytown";
 dotenv.config();
+import rehypeMermaid from "rehype-mermaid";
 
 export default defineConfig({
   site: "https://www.rafay99.com",
@@ -22,6 +23,65 @@ export default defineConfig({
     // svg: true,
   },
   markdown: {
+    syntaxHighlight: {
+      excludeLangs: ["mermaid"],
+    },
+    rehypePlugins: [
+      [
+        rehypeMermaid,
+        {
+          strategy: "img-svg",
+          mermaidConfig: {
+            theme: "base",
+            themeVariables: {
+              primaryColor: "#24283b",
+              primaryTextColor: "#c0caf5",
+              primaryBorderColor: "#7aa2f7",
+              lineColor: "#7aa2f7",
+              secondaryColor: "#414868",
+              tertiaryColor: "#565f89",
+              background: "#1a1b26",
+              mainBkg: "#24283b",
+              secondaryBkg: "#414868",
+              tertiaryBkg: "#565f89",
+              primaryTextColor: "#c0caf5",
+              secondaryTextColor: "#a9b1d6",
+              tertiaryTextColor: "#9aa5ce",
+              primaryBorderColor: "#7aa2f7",
+              secondaryBorderColor: "#bb9af7",
+              tertiaryBorderColor: "#9ece6a",
+              noteBkgColor: "#24283b",
+              noteTextColor: "#c0caf5",
+              noteBorderColor: "#7aa2f7",
+              darkMode: true,
+              fontFamily: "Poppins, sans-serif",
+              fontSize: "22px",
+              cScale0: "#c0caf5",
+              cScale1: "#a9b1d6",
+              cScale2: "#9aa5ce",
+              cScale3: "#7aa2f7",
+              cScale4: "#bb9af7",
+              cScale5: "#9ece6a",
+              cScale6: "#f7768e",
+              cScale7: "#ff9e64",
+              cScale8: "#e0af68",
+              cScale9: "#73daca",
+              cScale10: "#24283b",
+              cScale11: "#414868",
+            },
+            flowchart: {
+              nodeTextSize: 18,
+              htmlLabels: true,
+              curve: "basis",
+            },
+            sequence: {
+              noteFontSize: 18,
+              messageFontSize: 18,
+            },
+          },
+        },
+      ],
+    ],
     shikiConfig: {
       theme: "tokyo-night",
       defaultColor: false,
@@ -45,7 +105,64 @@ export default defineConfig({
     checkOrigin: true,
   },
   integrations: [
-    mdx(),
+    mdx({
+      rehypePlugins: [
+        [
+          rehypeMermaid,
+          {
+            strategy: "img-svg",
+            mermaidConfig: {
+              theme: "base",
+              themeVariables: {
+                primaryColor: "#24283b",
+                primaryTextColor: "#c0caf5",
+                primaryBorderColor: "#7aa2f7",
+                lineColor: "#7aa2f7",
+                secondaryColor: "#414868",
+                tertiaryColor: "#565f89",
+                background: "#1a1b26",
+                mainBkg: "#24283b",
+                secondaryBkg: "#414868",
+                tertiaryBkg: "#565f89",
+                primaryTextColor: "#c0caf5",
+                secondaryTextColor: "#a9b1d6",
+                tertiaryTextColor: "#9aa5ce",
+                primaryBorderColor: "#7aa2f7",
+                secondaryBorderColor: "#bb9af7",
+                tertiaryBorderColor: "#9ece6a",
+                noteBkgColor: "#24283b",
+                noteTextColor: "#c0caf5",
+                noteBorderColor: "#7aa2f7",
+                darkMode: true,
+                fontFamily: "Poppins, sans-serif",
+                fontSize: "22px",
+                cScale0: "#c0caf5",
+                cScale1: "#a9b1d6",
+                cScale2: "#9aa5ce",
+                cScale3: "#7aa2f7",
+                cScale4: "#bb9af7",
+                cScale5: "#9ece6a",
+                cScale6: "#f7768e",
+                cScale7: "#ff9e64",
+                cScale8: "#e0af68",
+                cScale9: "#73daca",
+                cScale10: "#24283b",
+                cScale11: "#414868",
+              },
+              flowchart: {
+                nodeTextSize: 18,
+                htmlLabels: true,
+                curve: "basis",
+              },
+              sequence: {
+                noteFontSize: 18,
+                messageFontSize: 18,
+              },
+            },
+          },
+        ],
+      ],
+    }),
     sitemap({}),
     react({
       include: ["**/react/*"],
