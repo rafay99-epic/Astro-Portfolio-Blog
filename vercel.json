@@ -1,5 +1,20 @@
 {
-    "version": 2,
-    "installCommand": "npm install && npx playwright install && npx playwright install-deps",
-    "buildCommand": "npm run build"
+    "version": 3,
+    "installCommand": "npm ci",
+    "buildCommand": "npx playwright install chromium && npm run build",
+    "cache": {
+        "paths": [
+            "node_modules/.cache/ms-playwright"
+        ]
+    },
+    "routes": [
+        {
+            "src": "/snaprescue.sh",
+            "dest": "/snaprescue.sh"
+        },
+        {
+            "src": "/Meaning-Mate-APK",
+            "dest": "/Meaning-Mate-APK.apk"
+        }
+    ]
 }
