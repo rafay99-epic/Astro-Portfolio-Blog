@@ -106,6 +106,15 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
   .footer-section:nth-child(3) {
     animation-delay: 0.5s;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-fade-in-up,
+    .animate-pulse-slow,
+    .shimmer-text,
+    .gradient-border {
+      animation: none;
+    }
+  }
 </style>
 
 <footer class="py-8 px-4 border-t border-[#565f89]/20">

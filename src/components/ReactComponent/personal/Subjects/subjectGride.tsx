@@ -9,7 +9,11 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 type SubjectGridProps = {
-  subjects: { name: string; noteCount?: number }[];
+  subjects: {
+    name: string;
+    noteCount?: number;
+    totalExpectedNotes?: number;
+  }[];
 };
 
 const subjectIcons = [FaBookOpen, FaGraduationCap, FaPenFancy, FaLightbulb];
@@ -87,10 +91,18 @@ export default function SubjectGrid({ subjects }: SubjectGridProps) {
           {subjects.map((subject, idx) => {
             const IconComponent = subjectIcons[idx % subjectIcons.length];
 
+            // Calculate meaningful progress
+            const progress =
+              subject.totalExpectedNotes && subject.noteCount
+                ? Math.round(
+                    (subject.noteCount / subject.totalExpectedNotes) * 100
+                  )
+                : null;
+
             return (
               <motion.a
                 key={subject.name}
-                href={`/ms_notes/${subject.name}`}
+                href={`/ms_notes/${encodeURIComponent(subject.name)}`}
                 className="group relative block"
                 variants={itemVariants}
                 whileHover={{
@@ -123,26 +135,57 @@ export default function SubjectGrid({ subjects }: SubjectGridProps) {
                         {subject.noteCount !== undefined
                           ? `${subject.noteCount} ${subject.noteCount === 1 ? "note" : "notes"}`
                           : "Explore content"}
+                        {subject.totalExpectedNotes && (
+                          <span className="text-[#565f89]">
+                            {" "}
+                            / {subject.totalExpectedNotes}
+                          </span>
+                        )}
                       </span>
                     </div>
 
-                    {/* Progress Indicator */}
-                    {subject.noteCount && subject.noteCount > 0 && (
+                    {/* Progress Indicator - Only show if we have meaningful progress data */}
+                    {progress !== null && (
                       <div className="space-y-2">
                         <div className="flex justify-between items-center text-xs text-[#565f89]">
-                          <span>Progress</span>
-                          <span>{Math.min(100, subject.noteCount * 10)}%</span>
+                          <span>Course Progress</span>
+                          <span>{progress}%</span>
                         </div>
                         <div className="w-full bg-[#1a1b26]/60 rounded-full h-1.5">
                           <div
-                            className="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] h-1.5 rounded-full transition-all duration-500"
-                            style={{
-                              width: `${Math.min(100, subject.noteCount * 10)}%`,
-                            }}
+                            className={`h-1.5 rounded-full transition-all duration-500 ${
+                              progress >= 80
+                                ? "bg-gradient-to-r from-[#9ece6a] to-[#73daca]"
+                                : progress >= 50
+                                  ? "bg-gradient-to-r from-[#bb9af7] to-[#7aa2f7]"
+                                  : "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]"
+                            }`}
+                            style={{ width: `${Math.min(100, progress)}%` }}
                           />
+                        </div>
+                        <div className="text-xs text-[#565f89]">
+                          {progress >= 80
+                            ? "🎉 Almost complete!"
+                            : progress >= 50
+                              ? "📚 Making good progress"
+                              : progress > 0
+                                ? "🚀 Getting started"
+                                : "📝 Ready to begin"}
                         </div>
                       </div>
                     )}
+
+                    {/* Show note count indicator even without progress */}
+                    {progress === null &&
+                      subject.noteCount &&
+                      subject.noteCount > 0 && (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 text-xs text-[#565f89]">
+                            <span className="text-[#9ece6a]">✨</span>
+                            <span>Content available</span>
+                          </div>
+                        </div>
+                      )}
 
                     {/* Action Indicator */}
                     <div className="flex items-center justify-between pt-2">
@@ -198,13 +241,25 @@ export default function SubjectGrid({ subjects }: SubjectGridProps) {
                 <div className="text-center">
                   <div className="text-lg font-bold text-[#9ece6a] mb-1">
                     {Math.round(
-                      subjects.reduce(
-                        (total, subject) => total + (subject.noteCount || 0),
-                        0
-                      ) / subjects.length
-                    ) || 0}
+                      subjects
+                        .filter((s) => s.totalExpectedNotes && s.noteCount)
+                        .reduce((avg, subject) => {
+                          const progress =
+                            subject.totalExpectedNotes && subject.noteCount
+                              ? (subject.noteCount /
+                                  subject.totalExpectedNotes) *
+                                100
+                              : 0;
+                          return avg + progress;
+                        }, 0) /
+                        Math.max(
+                          1,
+                          subjects.filter((s) => s.totalExpectedNotes).length
+                        )
+                    )}
+                    %
                   </div>
-                  <div className="text-[#a9b1d6]">Avg/Subject</div>
+                  <div className="text-[#a9b1d6]">Avg Progress</div>
                 </div>
               </div>
             </div>

@@ -25,7 +25,6 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
-  const [designChoice, setDesignChoice] = useState(1);
 
   const handleCopySummary = async () => {
     if (!summary) return;
@@ -41,34 +40,34 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
   const getStatusIndicator = () => {
     if (loading) {
       return (
-        <div
-          className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"
-          title="Loading summary..."
-        />
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-[#9ece6a] rounded-full animate-pulse" />
+          <span className="text-xs text-[#a9b1d6]">Generating...</span>
+        </div>
       );
     }
     if (error) {
       if (error.code === "FEATURE_DISABLED") {
         return (
-          <div
-            className="w-2 h-2 bg-gray-400 rounded-full"
-            title="Feature disabled"
-          />
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-[#565f89] rounded-full" />
+            <span className="text-xs text-[#565f89]">Disabled</span>
+          </div>
         );
       }
       return (
-        <div
-          className="w-2 h-2 bg-red-400 rounded-full animate-pulse"
-          title="Error occurred"
-        />
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-[#f7768e] rounded-full animate-pulse" />
+          <span className="text-xs text-[#f7768e]">Error</span>
+        </div>
       );
     }
     if (summary) {
       return (
-        <div
-          className="w-2 h-2 bg-green-400 rounded-full animate-pulse"
-          title="Summary loaded successfully"
-        />
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-[#9ece6a] rounded-full" />
+          <span className="text-xs text-[#a9b1d6]">Ready</span>
+        </div>
       );
     }
     return null;
@@ -77,44 +76,44 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
   const LoadingSpinner = () => (
     <div className="flex flex-col items-center justify-center py-8">
       <div className="relative">
-        <div className="w-12 h-12 border-4 border-white/20 rounded-full"></div>
-        <div className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+        <div className="w-12 h-12 border-4 border-[#565f89]/30 rounded-full"></div>
+        <div className="w-12 h-12 border-4 border-[#7aa2f7] border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
       </div>
-      <p className="text-sm text-white/80 mt-4 font-medium">
-        Generating AI summary...
+      <p className="text-sm text-[#c0caf5] mt-4 font-medium">
+        🤖 AI is analyzing your content...
       </p>
-      <p className="text-xs text-white/60 mt-1">This may take a few seconds</p>
+      <p className="text-xs text-[#a9b1d6] mt-1">This may take a few seconds</p>
     </div>
   );
 
   const ErrorDisplay = () => (
     <div
-      className={`p-5 rounded-xl mt-4 border transition-all duration-300 backdrop-blur-md ${
+      className={`p-4 rounded-xl mt-4 border backdrop-blur-xl transition-all duration-300 ${
         error?.code === "FEATURE_DISABLED"
-          ? "bg-blue-500/10 border-[var(--accent)]/30 shadow-lg shadow-[var(--accent)]/5"
-          : "bg-red-500/10 border-red-500/30 shadow-lg shadow-red-500/5"
+          ? "bg-[#24283b]/40 border-[#565f89]/30"
+          : "bg-[#24283b]/40 border-[#f7768e]/30"
       }`}
     >
       <div className="flex items-start space-x-3">
         <div
-          className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5 ${
+          className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
             error?.code === "FEATURE_DISABLED"
-              ? "bg-[var(--accent)]/20"
-              : "bg-red-500/20"
+              ? "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]"
+              : "bg-gradient-to-r from-[#f7768e] to-[#ff9e64]"
           }`}
         >
           {error?.code === "FEATURE_DISABLED" ? (
-            <span className="text-[var(--accent)] text-sm">ℹ</span>
+            <span className="text-white text-sm">ℹ️</span>
           ) : (
-            <span className="text-red-400 text-sm">⚠</span>
+            <span className="text-white text-sm">⚠️</span>
           )}
         </div>
         <div className="flex-1">
           <p
             className={`text-sm font-medium mb-2 ${
               error?.code === "FEATURE_DISABLED"
-                ? "text-[var(--accent)]"
-                : "text-red-400"
+                ? "text-[#7aa2f7]"
+                : "text-[#f7768e]"
             }`}
           >
             {error?.message}
@@ -124,15 +123,15 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
               <button
                 onClick={onRetry}
                 disabled={loading}
-                className="px-4 py-2 text-sm bg-[var(--accent)]/80 backdrop-blur-sm text-white rounded-lg 
-                         hover:bg-[var(--accent)] transition-all duration-200 disabled:opacity-50 
-                         disabled:cursor-not-allowed font-medium shadow-md 
-                         border border-[var(--accent)]/30"
+                className="px-4 py-2 text-sm bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white rounded-lg 
+                         hover:from-[#6a8ef7] hover:to-[#ab8af7] transition-all duration-200 disabled:opacity-50 
+                         disabled:cursor-not-allowed font-medium shadow-lg
+                         border border-[#7aa2f7]/30"
               >
                 {loading ? "Retrying..." : "Try Again"}
               </button>
               {retryCount > 0 && (
-                <span className="text-xs text-white/60">
+                <span className="text-xs text-[#a9b1d6]">
                   Attempt {retryCount + 1}
                 </span>
               )}
@@ -149,22 +148,31 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
-      className="mt-2 backdrop-blur-md bg-white/5 rounded-lg border border-white/10 
-                 shadow-lg shadow-black/10 overflow-hidden"
+      className="mt-4 backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl 
+                 shadow-lg overflow-hidden"
     >
-      <div className="bg-gradient-to-r from-[var(--accent)]/20 to-purple-500/20 px-4 py-2 border-b border-white/10">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 px-4 py-3 border-b border-[#565f89]/20">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></div>
-            <span className="text-xs font-medium text-[var(--accent)] uppercase tracking-wide">
-              AI Generated Summary
-            </span>
+          <div className="flex items-center space-x-3">
+            <div className="w-6 h-6 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-lg flex items-center justify-center">
+              <span className="text-white text-xs">🤖</span>
+            </div>
+            <div>
+              <span className="text-sm font-semibold bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+                AI Generated Summary
+              </span>
+              <div className="flex items-center gap-1 mt-0.5">
+                <div className="w-1 h-1 bg-[#9ece6a] rounded-full animate-pulse"></div>
+                <span className="text-xs text-[#a9b1d6]">Powered by AI</span>
+              </div>
+            </div>
           </div>
           <button
             onClick={handleCopySummary}
             disabled={!summary}
-            className="flex items-center space-x-1.5 px-2 py-1 bg-white/10 hover:bg-white/20 
-                     border border-white/20 rounded-md transition-all duration-200 
+            className="flex items-center space-x-2 px-3 py-1.5 bg-[#2d3142]/60 hover:bg-[#2d3142] 
+                     border border-[#565f89]/30 rounded-lg transition-all duration-200 
                      disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm
                      group text-xs font-medium"
             title="Copy summary to clipboard"
@@ -172,7 +180,7 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
             {copySuccess ? (
               <>
                 <svg
-                  className="w-3 h-3 text-green-400"
+                  className="w-3.5 h-3.5 text-[#9ece6a]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -184,12 +192,12 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
                     d="M5 13l4 4L19 7"
                   />
                 </svg>
-                <span className="text-green-400">Copied!</span>
+                <span className="text-[#9ece6a]">Copied!</span>
               </>
             ) : (
               <>
                 <svg
-                  className="w-3 h-3 text-white/70 group-hover:text-white transition-colors"
+                  className="w-3.5 h-3.5 text-[#a9b1d6] group-hover:text-[#c0caf5] transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -201,7 +209,7 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
                     d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                   />
                 </svg>
-                <span className="text-white/70 group-hover:text-white transition-colors">
+                <span className="text-[#a9b1d6] group-hover:text-[#c0caf5] transition-colors">
                   Copy
                 </span>
               </>
@@ -210,77 +218,80 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
         </div>
       </div>
 
-      <div className="p-4">
+      {/* Content */}
+      <div className="p-6">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className="text-base leading-relaxed text-white/90 prose prose-invert prose-base max-w-none"
+          className="text-base leading-relaxed text-[#c0caf5] prose prose-invert prose-base max-w-none"
           aria-live="polite"
         >
           <ReactMarkdown
             components={{
               p: ({ children }) => (
-                <p className="mb-4 text-white/90 leading-relaxed text-base">
+                <p className="mb-4 text-[#c0caf5] leading-relaxed text-base">
                   {children}
                 </p>
               ),
               strong: ({ children }) => (
-                <strong className="font-semibold text-[var(--accent)]">
+                <strong className="font-semibold text-[#7aa2f7]">
                   {children}
                 </strong>
               ),
               em: ({ children }) => (
-                <em className="italic text-white/95">{children}</em>
+                <em className="italic text-[#bb9af7]">{children}</em>
               ),
               code: ({ children }) => (
-                <code className="px-1.5 py-0.5 bg-white/10 rounded text-sm font-mono text-[var(--accent)]">
+                <code className="px-2 py-1 bg-[#2d3142]/60 border border-[#565f89]/30 rounded text-sm font-mono text-[#9ece6a]">
                   {children}
                 </code>
               ),
               pre: ({ children }) => (
-                <pre className="bg-white/5 border border-white/10 rounded-lg p-4 overflow-x-auto">
+                <pre className="bg-[#1a1b26] border border-[#565f89]/30 rounded-lg p-4 overflow-x-auto">
                   {children}
                 </pre>
               ),
               h1: ({ children }) => (
-                <h1 className="text-2xl font-bold text-white mb-4">
+                <h1 className="text-2xl font-bold text-[#c0caf5] mb-4">
                   {children}
                 </h1>
               ),
               h2: ({ children }) => (
-                <h2 className="text-xl font-semibold text-white mb-3">
+                <h2 className="text-xl font-semibold text-[#c0caf5] mb-3">
                   {children}
                 </h2>
               ),
               h3: ({ children }) => (
-                <h3 className="text-lg font-medium text-white mb-2">
+                <h3 className="text-lg font-medium text-[#c0caf5] mb-2">
                   {children}
                 </h3>
               ),
               ul: ({ children }) => (
-                <ul className="list-disc list-inside space-y-1 text-white/90 mb-4">
+                <ul className="list-disc list-inside space-y-1 text-[#c0caf5] mb-4 ml-4">
                   {children}
                 </ul>
               ),
               ol: ({ children }) => (
-                <ol className="list-decimal list-inside space-y-1 text-white/90 mb-4">
+                <ol className="list-decimal list-inside space-y-1 text-[#c0caf5] mb-4 ml-4">
                   {children}
                 </ol>
               ),
               li: ({ children }) => (
-                <li className="text-white/90">{children}</li>
+                <li className="text-[#c0caf5] marker:text-[#7aa2f7]">
+                  {children}
+                </li>
               ),
               blockquote: ({ children }) => (
-                <blockquote className="border-l-4 border-[var(--accent)]/50 pl-4 italic text-white/80 bg-white/5 py-2 rounded-r">
+                <blockquote className="border-l-4 border-[#7aa2f7]/50 pl-4 italic text-[#a9b1d6] bg-[#2d3142]/30 py-3 rounded-r-lg my-4">
                   {children}
                 </blockquote>
               ),
               a: ({ children, href }) => (
                 <a
                   href={href}
-                  className="text-[var(--accent)] hover:text-[var(--accent)]/80 underline"
+                  className="text-[#7aa2f7] hover:text-[#bb9af7] underline transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -293,47 +304,81 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
           </ReactMarkdown>
         </motion.div>
 
-        <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/10">
-          <div className="flex items-center space-x-1.5 text-xs text-white/60">
-            <span className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></span>
-            <span>Powered by AI</span>
+        {/* Footer */}
+        <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#565f89]/20">
+          <div className="flex items-center space-x-2 text-xs text-[#a9b1d6]">
+            <div className="w-1.5 h-1.5 bg-[#9ece6a] rounded-full animate-pulse"></div>
+            <span>Generated with AI technology</span>
           </div>
-          <span className="text-xs text-white/40">Summary cached for 24h</span>
+          <span className="text-xs text-[#565f89]">Summary cached for 24h</span>
         </div>
       </div>
     </motion.div>
   );
 
-  const Option1 = () => (
-    <div className="my-4">
+  const MainComponent = () => (
+    <div className="my-6">
       <div
         onClick={() => setExpanded(!expanded)}
-        className="backdrop-blur-md bg-white/3 rounded-lg border border-white/8 
-                   shadow-lg shadow-black/10 cursor-pointer transition-all duration-300
-                   hover:bg-white/5 group"
+        className="backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl 
+                   shadow-lg cursor-pointer transition-all duration-300
+                   hover:bg-[#24283b]/60 hover:border-[#7aa2f7]/30 group"
       >
-        <div className="flex items-center justify-between px-4 py-5">
-          <div className="flex items-center space-x-3">
-            {getStatusIndicator()}
-            <span className="text-sm text-white/80 group-hover:text-white">
-              AI Summary
-            </span>
+        <div className="flex items-center justify-between px-6 py-4">
+          <div className="flex items-center space-x-4">
+            <div className="w-8 h-8 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-xl flex items-center justify-center flex-shrink-0">
+              <span className="text-white text-sm">📝</span>
+            </div>
+            <div>
+              <h3 className="text-base font-semibold">
+                <span className="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+                  AI Article Summary
+                </span>
+              </h3>
+              <div className="flex items-center mt-1">
+                {getStatusIndicator()}
+              </div>
+            </div>
           </div>
-          <motion.div
-            animate={{ rotate: expanded ? 180 : 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="text-white/60 group-hover:text-white/80"
-          >
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </motion.div>
+          <div className="flex items-center space-x-3">
+            {summary && !loading && (
+              <div className="flex items-center space-x-1 text-xs text-[#9ece6a]">
+                <svg
+                  className="w-3 h-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span>Ready</span>
+              </div>
+            )}
+            <motion.div
+              animate={{ rotate: expanded ? 180 : 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="text-[#a9b1d6] group-hover:text-[#7aa2f7] transition-colors"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </motion.div>
+          </div>
         </div>
       </div>
+
       <AnimatePresence>
         {expanded && (
           <motion.div
@@ -356,5 +401,5 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
     </div>
   );
 
-  return <Option1 />;
+  return <MainComponent />;
 };
