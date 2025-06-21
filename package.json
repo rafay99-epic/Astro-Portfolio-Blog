@@ -7,9 +7,7 @@
         "start": "astro dev",
         "build": "tinacms build && astro build",
         "preview": "astro preview",
-        "astro": "astro",
-        "postinstall": "npx playwright install",
-        "vercel-build": "npx playwright install  && astro build"
+        "astro": "astro"
     },
     "dependencies": {
         "@astrojs/mdx": "^4.3.0",

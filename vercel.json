@@ -1,6 +1,6 @@
 {
-    "installCommand": "npm ci",
-    "buildCommand": "npx playwright install chromium && npm run build",
+    "installCommand": "npm ci && npx playwright install chromium",
+    "buildCommand": "npm run build",
     "routes": [
         {
             "src": "/snaprescue.sh",
