@@ -1,5 +1,15 @@
 {
     "version": 2,
+    "buildCommand": "npm run build",
+    "installCommand": "npm install && npx playwright install chromium",
+    "functions": {
+        "src/pages/api/**/*.ts": {
+            "runtime": "nodejs22.x"
+        }
+    },
+    "env": {
+        "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "false"
+    },
     "routes": [
         {
             "src": "/snaprescue.sh",
