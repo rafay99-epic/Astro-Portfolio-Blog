@@ -297,82 +297,91 @@ export function QASectionUI({
                             </span>
                           </div>
                           <div className="flex-1 prose prose-sm max-w-none dark:prose-invert">
-                            <ReactMarkdown
-                              components={{
-                                h1: ({ children }) => (
-                                  <h1 className="text-xl font-bold text-[#c0caf5] mb-4">
-                                    {children}
-                                  </h1>
-                                ),
-                                h2: ({ children }) => (
-                                  <h2 className="text-lg font-semibold text-[#c0caf5] mb-3">
-                                    {children}
-                                  </h2>
-                                ),
-                                h3: ({ children }) => (
-                                  <h3 className="text-base font-medium text-[#c0caf5] mb-2">
-                                    {children}
-                                  </h3>
-                                ),
-                                p: ({ children }) => (
-                                  <p className="text-[#c0caf5] mb-3 leading-relaxed text-sm">
-                                    {children}
-                                  </p>
-                                ),
-                                strong: ({ children }) => (
-                                  <strong className="font-semibold text-[#7aa2f7]">
-                                    {children}
-                                  </strong>
-                                ),
-                                em: ({ children }) => (
-                                  <em className="italic text-[#bb9af7]">
-                                    {children}
-                                  </em>
-                                ),
-                                code: ({ children }) => (
-                                  <code className="px-2 py-1 bg-[#1a1b26] border border-[#565f89]/30 rounded text-sm font-mono text-[#9ece6a]">
-                                    {children}
-                                  </code>
-                                ),
-                                pre: ({ children }) => (
-                                  <pre className="bg-[#1a1b26] border border-[#565f89]/30 rounded-lg p-4 overflow-x-auto">
-                                    {children}
-                                  </pre>
-                                ),
-                                ul: ({ children }) => (
-                                  <ul className="list-disc list-inside space-y-1 text-[#c0caf5] mb-3 ml-4">
-                                    {children}
-                                  </ul>
-                                ),
-                                ol: ({ children }) => (
-                                  <ol className="list-decimal list-inside space-y-1 text-[#c0caf5] mb-3 ml-4">
-                                    {children}
-                                  </ol>
-                                ),
-                                li: ({ children }) => (
-                                  <li className="text-[#c0caf5] marker:text-[#7aa2f7] text-sm">
-                                    {children}
-                                  </li>
-                                ),
-                                blockquote: ({ children }) => (
-                                  <blockquote className="border-l-4 border-[#7aa2f7]/50 pl-4 italic text-[#a9b1d6] bg-[#1a1b26]/50 py-3 rounded-r-lg my-4">
-                                    {children}
-                                  </blockquote>
-                                ),
-                                a: ({ href, children }) => (
-                                  <a
-                                    href={href}
-                                    className="text-[#7aa2f7] hover:text-[#bb9af7] underline transition-colors duration-200"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    {children}
-                                  </a>
-                                ),
-                              }}
-                            >
-                              {item.answer}
-                            </ReactMarkdown>
+                            try{" "}
+                            {
+                              <ReactMarkdown
+                                components={{
+                                  h1: ({ children }) => (
+                                    <h1 className="text-xl font-bold text-[#c0caf5] mb-4">
+                                      {children}
+                                    </h1>
+                                  ),
+                                  h2: ({ children }) => (
+                                    <h2 className="text-lg font-semibold text-[#c0caf5] mb-3">
+                                      {children}
+                                    </h2>
+                                  ),
+                                  h3: ({ children }) => (
+                                    <h3 className="text-base font-medium text-[#c0caf5] mb-2">
+                                      {children}
+                                    </h3>
+                                  ),
+                                  p: ({ children }) => (
+                                    <p className="text-[#c0caf5] mb-3 leading-relaxed text-sm">
+                                      {children}
+                                    </p>
+                                  ),
+                                  strong: ({ children }) => (
+                                    <strong className="font-semibold text-[#7aa2f7]">
+                                      {children}
+                                    </strong>
+                                  ),
+                                  em: ({ children }) => (
+                                    <em className="italic text-[#bb9af7]">
+                                      {children}
+                                    </em>
+                                  ),
+                                  code: ({ children }) => (
+                                    <code className="px-2 py-1 bg-[#1a1b26] border border-[#565f89]/30 rounded text-sm font-mono text-[#9ece6a]">
+                                      {children}
+                                    </code>
+                                  ),
+                                  pre: ({ children }) => (
+                                    <pre className="bg-[#1a1b26] border border-[#565f89]/30 rounded-lg p-4 overflow-x-auto">
+                                      {children}
+                                    </pre>
+                                  ),
+                                  ul: ({ children }) => (
+                                    <ul className="list-disc list-inside space-y-1 text-[#c0caf5] mb-3 ml-4">
+                                      {children}
+                                    </ul>
+                                  ),
+                                  ol: ({ children }) => (
+                                    <ol className="list-decimal list-inside space-y-1 text-[#c0caf5] mb-3 ml-4">
+                                      {children}
+                                    </ol>
+                                  ),
+                                  li: ({ children }) => (
+                                    <li className="text-[#c0caf5] marker:text-[#7aa2f7] text-sm">
+                                      {children}
+                                    </li>
+                                  ),
+                                  blockquote: ({ children }) => (
+                                    <blockquote className="border-l-4 border-[#7aa2f7]/50 pl-4 italic text-[#a9b1d6] bg-[#1a1b26]/50 py-3 rounded-r-lg my-4">
+                                      {children}
+                                    </blockquote>
+                                  ),
+                                  a: ({ href, children }) => (
+                                    <a
+                                      href={href}
+                                      className="text-[#7aa2f7] hover:text-[#bb9af7] underline transition-colors duration-200"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {children}
+                                    </a>
+                                  ),
+                                }}
+                              >
+                                {item.answer}
+                              </ReactMarkdown>
+                            }{" "}
+                            catch (error){" "}
+                            {
+                              <p className="text-[#f7768e] text-sm">
+                                Error rendering answer content
+                              </p>
+                            }
                           </div>
                         </div>
                       </div>

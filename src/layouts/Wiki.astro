@@ -33,7 +33,7 @@ const { title, description, pubDate, readTime, tags } = Astro.props;
     <Header />
     
     <main class="relative min-h-screen pt-0 mt-0">
-      <div class="container mx-auto px-4 py-8 max-w-5xl">
+      <div class="container mx-auto px-6 py-8 max-w-7xl">
         <ArticleHeader
           title={title}
           description={description}
@@ -71,7 +71,7 @@ const { title, description, pubDate, readTime, tags } = Astro.props;
 
         <!-- Content -->
         <ContentContainer>
-          <div class="wiki-content">
+          <div class="wiki-content prose prose-lg max-w-none">
             <slot />
           </div>
         </ContentContainer>

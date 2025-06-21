@@ -1,10 +1,12 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@hooks/useIsMobile";
+import { useThemeColors } from "@hooks/useTheme";
 
 export default function AboutSection({ authorConfig }: { authorConfig: any }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const colors = useThemeColors();
 
   // State for read more/less functionality
   const [expandedCards, setExpandedCards] = useState<{
@@ -80,8 +82,14 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
     <section ref={ref} className="relative overflow-hidden py-6">
       {/* Simplified mobile background */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-1/4 left-1/4 w-48 h-48 bg-[#7aa2f7]/10 rounded-full blur-2xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-[#bb9af7]/10 rounded-full blur-2xl" />
+        <div
+          className="absolute top-1/4 left-1/4 w-48 h-48 rounded-full blur-2xl"
+          style={{ backgroundColor: `${colors.primary}10` }}
+        />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-40 h-40 rounded-full blur-2xl"
+          style={{ backgroundColor: `${colors.secondary}10` }}
+        />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -93,7 +101,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
           transition={{ duration: 0.5 }}
         >
           <motion.h2
-            className="text-3xl font-bold mb-2 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+            className="text-3xl font-bold mb-2 text-gradient-accent"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={
               isInView ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }
@@ -103,7 +111,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
             About Me
           </motion.h2>
           <motion.p
-            className="text-sm text-[#a9b1d6] max-w-xs mx-auto"
+            className="text-sm text-theme-text-secondary max-w-xs mx-auto"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -122,7 +130,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
         >
           <div className="relative max-w-[200px] mx-auto">
             <motion.div
-              className="relative overflow-hidden rounded-2xl shadow-lg border border-[#565f89]/30"
+              className="relative overflow-hidden rounded-2xl shadow-lg border border-theme-border-secondary"
               variants={imageVariants}
               whileHover={{ scale: 1.02 }}
             >
@@ -136,18 +144,26 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
               />
 
               {/* Mobile gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5"></div>
+              <div
+                className="absolute inset-0 opacity-5"
+                style={{
+                  background: `linear-gradient(to bottom right, ${colors.primary}, transparent, ${colors.secondary})`,
+                }}
+              />
             </motion.div>
 
             {/* Mobile status indicator */}
             <motion.div
-              className="absolute -bottom-1 -right-1 bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] p-1.5 rounded-lg shadow-md backdrop-blur-sm border border-[#565f89]/30"
+              className="absolute -bottom-1 -right-1 p-1.5 rounded-lg shadow-md backdrop-blur-sm border border-theme-border-secondary bg-gradient-primary"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.6, type: "spring" }}
             >
               <div className="flex items-center space-x-1">
-                <div className="w-1.5 h-1.5 bg-[#9ece6a] rounded-full animate-pulse"></div>
+                <div
+                  className="w-1.5 h-1.5 rounded-full animate-pulse"
+                  style={{ backgroundColor: colors.status.success }}
+                />
                 <span className="text-white text-xs font-medium">
                   Available
                 </span>
@@ -163,15 +179,15 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent">
+          <h3 className="text-2xl font-bold mb-2 text-gradient-secondary">
             So, who am I?
           </h3>
           <motion.div
-            className="mx-auto h-0.5 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-full"
+            className="mx-auto h-0.5 bg-gradient-primary rounded-full"
             initial={{ width: 0 }}
             animate={isInView ? { width: "60px" } : { width: 0 }}
             transition={{ delay: 0.6, duration: 0.5 }}
-          ></motion.div>
+          />
         </motion.div>
 
         {/* Mobile Content Cards - Stack Vertically */}
@@ -184,28 +200,31 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
           {[
             {
               title: "Who Am I?",
-              content: authorConfig?.about?.whoAmI ?? "",
+              content:
+                authorConfig?.about?.whoAmI ??
+                "A passionate developer creating amazing digital experiences.",
               icon: "👨‍💻",
-              gradient: "from-[#7aa2f7]/20 to-[#bb9af7]/20",
               delay: 0.5,
             },
             {
               title: "Life Beyond Code",
-              content: authorConfig?.about?.lifeBeyondCode ?? "",
+              content:
+                authorConfig?.about?.lifeBeyondCode ??
+                "When I'm not coding, you'll find me exploring new technologies and learning new skills.",
               icon: "🌟",
-              gradient: "from-[#bb9af7]/20 to-[#9ece6a]/20",
               delay: 0.6,
             },
             {
               title: "Continuous Learning",
-              content: authorConfig?.about?.continuousLearning ?? "",
+              content:
+                authorConfig?.about?.continuousLearning ??
+                "Always eager to learn and grow, staying updated with the latest trends in technology.",
               icon: "📚",
-              gradient: "from-[#9ece6a]/20 to-[#7aa2f7]/20",
               delay: 0.7,
             },
           ].map((item, index) => {
             const isExpanded = expandedCards[index];
-            const shouldShowToggle = item.content.length > 100; // Shorter for mobile
+            const shouldShowToggle = item.content.length > 100;
             const displayContent = isExpanded
               ? item.content
               : getShortDescription(item.content, 100);
@@ -222,12 +241,12 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                 transition={{ delay: item.delay, duration: 0.4 }}
               >
                 {/* Mobile Card */}
-                <div className="relative backdrop-blur-sm bg-[#24283b]/60 border border-[#565f89]/30 rounded-xl p-4 shadow-md">
+                <div className="relative backdrop-blur-sm bg-theme-card border border-theme-border-secondary rounded-xl p-4 shadow-md">
                   {/* Content */}
                   <div className="relative z-10">
                     <div className="flex items-center space-x-2 mb-3">
                       <span className="text-xl">{item.icon}</span>
-                      <h4 className="text-base font-semibold text-[#c0caf5]">
+                      <h4 className="text-base font-semibold text-theme-text-primary">
                         {item.title}
                       </h4>
                     </div>
@@ -236,7 +255,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                     <AnimatePresence mode="wait">
                       <motion.p
                         key={isExpanded ? "expanded" : "collapsed"}
-                        className="text-sm text-[#a9b1d6] leading-relaxed mb-3"
+                        className="text-sm text-theme-text-secondary leading-relaxed mb-3"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -250,7 +269,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                     {shouldShowToggle && (
                       <motion.button
                         onClick={() => toggleReadMore(index)}
-                        className="w-full text-center py-2 text-xs font-medium text-[#7aa2f7] bg-[#1a1b26]/50 rounded-lg border border-[#565f89]/30 transition-colors duration-300"
+                        className="w-full text-center py-2 text-xs font-medium text-theme-accent bg-theme-bg-secondary rounded-lg border border-theme-border-secondary transition-colors duration-300"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -268,7 +287,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                   </div>
 
                   {/* Mobile hover accent */}
-                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#7aa2f7] to-[#bb9af7] rounded-l-xl opacity-30"></div>
+                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-primary rounded-l-xl opacity-30" />
                 </div>
               </motion.div>
             );
@@ -283,7 +302,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
           transition={{ delay: 1, duration: 0.5 }}
         >
           <motion.div
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-xl text-white font-semibold shadow-lg text-sm"
+            className="inline-flex items-center px-6 py-3 bg-gradient-primary rounded-xl text-white font-semibold shadow-lg text-sm"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -300,17 +319,23 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
     </section>
   );
 
-  // Desktop Layout Component (existing layout)
+  // Desktop Layout Component
   const DesktopLayout = () => (
     <section ref={ref} className="relative overflow-hidden py-8">
-      {/* Simplified background */}
+      {/* Background with theme colors */}
       <div className="absolute inset-0 opacity-15">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7aa2f7]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-56 h-56 bg-[#bb9af7]/10 rounded-full blur-3xl" />
+        <div
+          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl"
+          style={{ backgroundColor: `${colors.primary}10` }}
+        />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-56 h-56 rounded-full blur-3xl"
+          style={{ backgroundColor: `${colors.secondary}10` }}
+        />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Compact Header */}
+        {/* Header */}
         <motion.div
           className="text-center mb-8"
           initial={{ opacity: 0, y: -20 }}
@@ -318,7 +343,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <motion.h2
-            className="text-4xl lg:text-5xl font-bold mb-3 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+            className="text-4xl lg:text-5xl font-bold mb-3 text-gradient-accent"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={
               isInView ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }
@@ -328,7 +353,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
             About Me
           </motion.h2>
           <motion.p
-            className="text-lg text-[#a9b1d6] max-w-xl mx-auto"
+            className="text-lg text-theme-text-secondary max-w-xl mx-auto"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
@@ -337,35 +362,46 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
           </motion.p>
         </motion.div>
 
-        {/* Main Content - More Compact */}
+        {/* Main Content */}
         <motion.div
           className="max-w-6xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {/* Glassmorphism Container - Reduced Padding */}
-          <div className="relative backdrop-blur-xl bg-[#24283b]/50 border border-[#565f89]/30 rounded-3xl p-6 md:p-8 shadow-2xl">
-            {/* Floating decorative elements */}
-            <div className="absolute top-4 right-4 w-2 h-2 bg-[#7aa2f7] rounded-full opacity-60 animate-pulse"></div>
+          {/* Glassmorphism Container */}
+          <div className="relative backdrop-blur-xl bg-theme-card border border-theme-border-secondary rounded-3xl p-6 md:p-8 shadow-2xl">
+            {/* Decorative elements */}
             <div
-              className="absolute bottom-6 left-6 w-1.5 h-1.5 bg-[#bb9af7] rounded-full opacity-40 animate-pulse"
-              style={{ animationDelay: "1s" }}
-            ></div>
+              className="absolute top-4 right-4 w-2 h-2 rounded-full opacity-60 animate-pulse"
+              style={{ backgroundColor: colors.primary }}
+            />
+            <div
+              className="absolute bottom-6 left-6 w-1.5 h-1.5 rounded-full opacity-40 animate-pulse"
+              style={{
+                backgroundColor: colors.secondary,
+                animationDelay: "1s",
+              }}
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-              {/* Profile Image Section - Moved Up */}
+              {/* Profile Image Section */}
               <motion.div
                 className="relative order-2 lg:order-1"
                 variants={itemVariants}
               >
                 <div className="relative group max-w-sm mx-auto">
                   {/* Image glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/20 via-[#bb9af7]/20 to-[#9ece6a]/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-105"></div>
+                  <div
+                    className="absolute inset-0 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-105"
+                    style={{
+                      background: `linear-gradient(to right, ${colors.primary}20, ${colors.secondary}20, ${colors.accent}20)`,
+                    }}
+                  />
 
-                  {/* Main image container - Reduced size */}
+                  {/* Main image container */}
                   <motion.div
-                    className="relative overflow-hidden rounded-2xl shadow-xl border-2 border-[#565f89]/50 group-hover:border-[#7aa2f7]/50 transition-all duration-500"
+                    className="relative overflow-hidden rounded-2xl shadow-xl border-2 border-theme-border-primary group-hover:border-theme-accent transition-all duration-500"
                     variants={imageVariants}
                     whileHover={{
                       scale: 1.03,
@@ -374,7 +410,12 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                     }}
                   >
                     {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/10 via-transparent to-[#bb9af7]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
+                      style={{
+                        background: `linear-gradient(to bottom right, ${colors.primary}10, transparent, ${colors.secondary}10)`,
+                      }}
+                    />
 
                     <motion.img
                       src={authorConfig?.picture ?? ""}
@@ -386,20 +427,29 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                     />
 
                     {/* Corner accents */}
-                    <div className="absolute top-3 left-3 w-4 h-4 border-l-2 border-t-2 border-[#7aa2f7] opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-                    <div className="absolute bottom-3 right-3 w-4 h-4 border-r-2 border-b-2 border-[#bb9af7] opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div
+                      className="absolute top-3 left-3 w-4 h-4 border-l-2 border-t-2 opacity-0 group-hover:opacity-100 transition-all duration-500"
+                      style={{ borderColor: colors.primary }}
+                    />
+                    <div
+                      className="absolute bottom-3 right-3 w-4 h-4 border-r-2 border-b-2 opacity-0 group-hover:opacity-100 transition-all duration-500"
+                      style={{ borderColor: colors.secondary }}
+                    />
                   </motion.div>
 
-                  {/* Floating status indicator - Smaller */}
+                  {/* Status indicator */}
                   <motion.div
-                    className="absolute -bottom-1 -right-1 bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] p-2 rounded-xl shadow-lg backdrop-blur-sm border border-[#565f89]/30"
+                    className="absolute -bottom-1 -right-1 bg-gradient-primary p-2 rounded-xl shadow-lg backdrop-blur-sm border border-theme-border-secondary"
                     initial={{ scale: 0, rotate: -90 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
                     whileHover={{ scale: 1.05 }}
                   >
                     <div className="flex items-center space-x-1.5">
-                      <div className="w-2 h-2 bg-[#9ece6a] rounded-full animate-pulse"></div>
+                      <div
+                        className="w-2 h-2 rounded-full animate-pulse"
+                        style={{ backgroundColor: colors.status.success }}
+                      />
                       <span className="text-white text-xs font-semibold">
                         Available
                       </span>
@@ -408,57 +458,57 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                 </div>
               </motion.div>
 
-              {/* Content Section - Moved Up, Condensed */}
+              {/* Content Section */}
               <motion.div
                 className="space-y-6 order-1 lg:order-2"
                 variants={itemVariants}
               >
-                {/* Main Title - Smaller */}
+                {/* Main Title */}
                 <motion.div className="relative" variants={itemVariants}>
                   <motion.h3
-                    className="text-3xl md:text-4xl font-bold mb-3 relative"
+                    className="text-3xl md:text-4xl font-bold mb-3 relative text-gradient-secondary"
                     initial={{ opacity: 0, x: -15 }}
                     animate={
                       isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -15 }
                     }
                     transition={{ delay: 0.4, duration: 0.6 }}
                   >
-                    <span className="bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent">
-                      So, who am I?
-                    </span>
-
+                    So, who am I?
                     {/* Decorative line */}
                     <motion.div
-                      className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-full"
+                      className="absolute -bottom-1 left-0 h-0.5 bg-gradient-primary rounded-full"
                       initial={{ width: 0 }}
                       animate={isInView ? { width: "50%" } : { width: 0 }}
                       transition={{ delay: 0.8, duration: 0.6 }}
-                    ></motion.div>
+                    />
                   </motion.h3>
                 </motion.div>
 
-                {/* Content Cards with Read More/Less */}
+                {/* Content Cards */}
                 <div className="space-y-4">
                   {[
                     {
                       title: "Who Am I?",
-                      content: authorConfig?.about?.whoAmI ?? "",
+                      content:
+                        authorConfig?.about?.whoAmI ??
+                        "A passionate developer creating amazing digital experiences.",
                       icon: "👨‍💻",
-                      gradient: "from-[#7aa2f7]/20 to-[#bb9af7]/20",
                       delay: 0.5,
                     },
                     {
                       title: "Life Beyond Code",
-                      content: authorConfig?.about?.lifeBeyondCode ?? "",
+                      content:
+                        authorConfig?.about?.lifeBeyondCode ??
+                        "When I'm not coding, you'll find me exploring new technologies and learning new skills.",
                       icon: "🌟",
-                      gradient: "from-[#bb9af7]/20 to-[#9ece6a]/20",
                       delay: 0.6,
                     },
                     {
                       title: "Continuous Learning",
-                      content: authorConfig?.about?.continuousLearning ?? "",
+                      content:
+                        authorConfig?.about?.continuousLearning ??
+                        "Always eager to learn and grow, staying updated with the latest trends in technology.",
                       icon: "📚",
-                      gradient: "from-[#9ece6a]/20 to-[#7aa2f7]/20",
                       delay: 0.7,
                     },
                   ].map((item, index) => {
@@ -482,18 +532,13 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                         transition={{ delay: item.delay, duration: 0.5 }}
                         whileHover={{ x: 5 }}
                       >
-                        {/* Card Background - Reduced padding */}
-                        <div className="relative backdrop-blur-sm bg-[#1a1b26]/60 border border-[#565f89]/40 rounded-xl p-4 transition-all duration-300 group-hover:border-[#7aa2f7]/50 group-hover:shadow-md group-hover:shadow-[#7aa2f7]/10">
-                          {/* Hover glow */}
-                          <div
-                            className={`absolute inset-0 bg-gradient-to-r ${item.gradient} rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm`}
-                          ></div>
-
+                        {/* Card Background */}
+                        <div className="relative backdrop-blur-sm bg-theme-bg-secondary border border-theme-border-secondary rounded-xl p-4 transition-all duration-300 group-hover:border-theme-accent group-hover:shadow-md">
                           {/* Content */}
                           <div className="relative z-10">
                             <div className="flex items-center space-x-2 mb-2">
                               <span className="text-lg">{item.icon}</span>
-                              <h4 className="text-base font-semibold text-[#c0caf5] group-hover:text-white transition-colors duration-300">
+                              <h4 className="text-base font-semibold text-theme-text-primary group-hover:text-white transition-colors duration-300">
                                 {item.title}
                               </h4>
                             </div>
@@ -502,7 +547,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                             <AnimatePresence mode="wait">
                               <motion.p
                                 key={isExpanded ? "expanded" : "collapsed"}
-                                className="text-sm text-[#a9b1d6] leading-relaxed group-hover:text-[#c0caf5] transition-colors duration-300"
+                                className="text-sm text-theme-text-secondary leading-relaxed group-hover:text-theme-text-primary transition-colors duration-300"
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
@@ -516,7 +561,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                             {shouldShowToggle && (
                               <motion.button
                                 onClick={() => toggleReadMore(index)}
-                                className="mt-2 text-xs font-medium text-[#7aa2f7] hover:text-[#bb9af7] transition-colors duration-300 flex items-center space-x-1"
+                                className="mt-2 text-xs font-medium text-theme-accent hover:text-theme-secondary transition-colors duration-300 flex items-center space-x-1"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                               >
@@ -534,14 +579,14 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                           </div>
 
                           {/* Side accent */}
-                          <div className="absolute left-0 top-3 bottom-3 w-0.5 bg-gradient-to-b from-[#7aa2f7] to-[#bb9af7] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute left-0 top-3 bottom-3 w-0.5 bg-gradient-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
                       </motion.div>
                     );
                   })}
                 </div>
 
-                {/* Call to Action - Smaller */}
+                {/* Call to Action */}
                 <motion.div
                   className="pt-4"
                   variants={itemVariants}
@@ -552,10 +597,9 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
                   transition={{ delay: 1, duration: 0.5 }}
                 >
                   <motion.div
-                    className="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-xl text-white font-semibold shadow-lg shadow-[#7aa2f7]/25 cursor-pointer text-sm"
+                    className="inline-flex items-center px-5 py-2.5 bg-gradient-primary rounded-xl text-white font-semibold shadow-lg cursor-pointer text-sm"
                     whileHover={{
                       scale: 1.03,
-                      boxShadow: "0 15px 30px rgba(122, 162, 247, 0.3)",
                     }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -571,24 +615,33 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
               </motion.div>
             </div>
 
-            {/* Bottom decorative line - Smaller */}
+            {/* Bottom decorative line */}
             <motion.div
-              className="mt-8 pt-4 border-t border-[#565f89]/30"
+              className="mt-8 pt-4 border-t border-theme-border-secondary"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ delay: 1.2, duration: 0.5 }}
             >
               <div className="flex justify-center">
                 <div className="flex items-center space-x-1.5">
-                  <div className="w-1.5 h-1.5 bg-[#7aa2f7] rounded-full animate-pulse"></div>
                   <div
-                    className="w-1.5 h-1.5 bg-[#bb9af7] rounded-full animate-pulse"
-                    style={{ animationDelay: "0.5s" }}
-                  ></div>
+                    className="w-1.5 h-1.5 rounded-full animate-pulse"
+                    style={{ backgroundColor: colors.primary }}
+                  />
                   <div
-                    className="w-1.5 h-1.5 bg-[#9ece6a] rounded-full animate-pulse"
-                    style={{ animationDelay: "1s" }}
-                  ></div>
+                    className="w-1.5 h-1.5 rounded-full animate-pulse"
+                    style={{
+                      backgroundColor: colors.secondary,
+                      animationDelay: "0.5s",
+                    }}
+                  />
+                  <div
+                    className="w-1.5 h-1.5 rounded-full animate-pulse"
+                    style={{
+                      backgroundColor: colors.accent,
+                      animationDelay: "1s",
+                    }}
+                  />
                 </div>
               </div>
             </motion.div>
