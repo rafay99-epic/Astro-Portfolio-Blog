@@ -1,0 +1,177 @@
+---
+import FormattedDate from "@components/FormattedDate.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  pubDate: Date;
+  readTime?: string;
+  badge?: {
+    text: string;
+    icon: string;
+  };
+  subject?: string;
+  type?: "notes" | "newsletter" | "blog" | "project" | "wiki";
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  readTime,
+  badge,
+  subject,
+  type = "blog",
+} = Astro.props;
+---
+
+<style>
+  .article-header {
+    background: linear-gradient(
+      135deg,
+      rgba(122, 162, 247, 0.1) 0%,
+      rgba(187, 154, 247, 0.1) 100%
+    );
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(122, 162, 247, 0.2);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .article-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(122, 162, 247, 0.5),
+      transparent
+    );
+  }
+
+  .article-badge {
+    background: linear-gradient(135deg, #7aa2f7, #bb9af7);
+    border-radius: 12px;
+    padding: 8px 16px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(122, 162, 247, 0.3);
+  }
+
+  .subject-tag {
+    background: rgba(158, 206, 106, 0.1);
+    border: 1px solid rgba(158, 206, 106, 0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    color: #9ece6a;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .meta-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #a9b1d6;
+    font-size: 14px;
+  }
+
+  .meta-icon {
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #7aa2f7, #bb9af7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .meta-info {
+      gap: 12px;
+    }
+
+    .meta-item {
+      font-size: 13px;
+    }
+  }
+</style>
+
+<div class="article-header p-8 mb-8">
+  <div class="text-center">
+    {/* Badge Section */}
+    {
+      badge && (
+        <div class="flex justify-center mb-6">
+          <div class="article-badge">
+            <span>{badge.icon}</span>
+            {badge.text}
+          </div>
+        </div>
+      )
+    }
+
+    {/* Title */}
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+      <span
+        class="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+      >
+        {title}
+      </span>
+    </h1>
+
+    {/* Description */}
+    {
+      description && (
+        <p class="text-lg text-[#a9b1d6] mb-6 max-w-3xl mx-auto leading-relaxed">
+          {description}
+        </p>
+      )
+    }
+
+    {/* Meta Information */}
+    <div class="meta-info">
+      <div class="meta-item">
+        <div class="meta-icon">📅</div>
+        <FormattedDate date={pubDate} />
+      </div>
+
+      {
+        readTime && (
+          <div class="meta-item">
+            <div class="meta-icon">⏱️</div>
+            <span>{readTime}</span>
+          </div>
+        )
+      }
+
+      {
+        subject && (
+          <div class="subject-tag">
+            <span>📖</span>
+            {subject}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</div>

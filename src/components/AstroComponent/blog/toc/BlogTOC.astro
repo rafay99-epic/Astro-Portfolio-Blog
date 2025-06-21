@@ -10,42 +10,123 @@ interface Props {
 const { headings } = Astro.props;
 ---
 
-<nav
-  class="space-y-2 sticky top-20 max-h-[calc(100vh-5rem)] overflow-y-auto pr-2 custom-scroll"
->
-  {
-    headings.length > 0 ? (
-      headings.map((heading) => (
-        <a
-          href={`#${heading.slug}`}
-          class={`block group transition-all duration-200 rounded-md px-1 py-1.5 ${
-            heading.depth === 1
-              ? "font-semibold text-base text-[var(--text-light)]"
-              : "ml-2 text-sm text-[var(--text-light)]/80"
-          } hover:bg-[var(--accent)]/10 hover:text-[var(--accent)]`}
-        >
-          <div class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)] opacity-0 group-hover:opacity-100 transition-all duration-200" />
-            <span class="group-hover:translate-x-1 transition-transform duration-200">
-              {heading.text}
-            </span>
+<div class="toc-container backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl p-4 md:p-6 sticky top-20">
+  <!-- Header -->
+  <div class="flex items-center gap-3 mb-4 md:mb-6 pb-3 md:pb-4 border-b border-[#565f89]/20">
+    <div class="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-lg flex items-center justify-center">
+      <span class="text-white text-xs md:text-sm">📋</span>
+    </div>
+    <h3 class="text-base md:text-lg font-semibold">
+      <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+        Table of Contents
+      </span>
+    </h3>
+  </div>
+
+  <!-- Navigation -->
+  <nav class={`space-y-1 custom-scroll ${
+    headings.length > 8 
+      ? 'max-h-[60vh] overflow-y-auto' 
+      : headings.length > 4 
+        ? 'max-h-[40vh] overflow-y-auto' 
+        : headings.length === 0
+          ? 'min-h-[120px]'
+          : 'max-h-fit'
+  }`}>
+    {
+      headings.length > 0 ? (
+        headings.map((heading, index) => (
+          <a
+            href={`#${heading.slug}`}
+            class={`toc-link group relative block transition-all duration-300 rounded-xl px-3 md:px-4 py-2 md:py-3 ${
+              heading.depth === 1
+                ? "toc-h1 font-semibold text-sm md:text-base text-[#c0caf5]"
+                : heading.depth === 2
+                ? "toc-h2 ml-3 md:ml-4 font-medium text-xs md:text-sm text-[#a9b1d6]"
+                : "toc-h3 ml-6 md:ml-8 text-xs md:text-sm text-[#565f89]"
+            } hover:bg-[#2d3142]/60 hover:border-[#7aa2f7]/40 border border-transparent`}
+            data-toc-index={index}
+          >
+            <!-- Depth indicator line -->
+            <div class={`absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#7aa2f7] to-[#bb9af7] opacity-0 group-hover:opacity-100 transition-all duration-300 ${
+              heading.depth === 1 ? "rounded-r-full" : ""
+            }`} />
+            
+            <!-- Content -->
+            <div class="flex items-center gap-2 md:gap-3">
+              <!-- Bullet indicator -->
+              <div class={`flex-shrink-0 transition-all duration-300 ${
+                heading.depth === 1
+                  ? "w-1.5 h-1.5 md:w-2 md:h-2 bg-[#7aa2f7] rounded-full group-hover:scale-125"
+                  : heading.depth === 2
+                  ? "w-1 h-1 md:w-1.5 md:h-1.5 bg-[#bb9af7] rounded-full group-hover:scale-125"
+                  : "w-0.5 h-0.5 md:w-1 md:h-1 bg-[#9ece6a] rounded-full group-hover:scale-125"
+              }`} />
+              
+              <!-- Text -->
+              <span class="group-hover:translate-x-1 transition-transform duration-300 leading-tight text-left break-words hyphens-auto">
+                {heading.text}
+              </span>
+            </div>
+
+            <!-- Hover effect overlay -->
+            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-xl">
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10 rounded-full blur-xl" />
+            </div>
+          </a>
+        ))
+      ) : (
+        <div class="empty-state text-center py-6 md:py-8">
+          <div class="w-10 h-10 md:w-12 md:h-12 bg-[#2d3142]/60 rounded-xl flex items-center justify-center mx-auto mb-3">
+            <span class="text-[#565f89] text-base md:text-lg">📄</span>
           </div>
-        </a>
-      ))
-    ) : (
-      <div class="text-sm text-[var(--text-light)]/60">No sections</div>
-    )
-  }
-</nav>
+          <p class="text-xs md:text-sm text-[#565f89] mb-2">No sections found</p>
+          <p class="text-xs text-[#565f89]/60">Headings will appear here automatically</p>
+        </div>
+      )
+    }
+  </nav>
+
+  <!-- Progress indicator - only show if there are headings -->
+  {headings.length > 0 && (
+    <div class="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-[#565f89]/20">
+      <div class="flex items-center justify-between text-xs text-[#565f89] mb-2">
+        <span>Reading Progress</span>
+        <span id="toc-progress">0%</span>
+      </div>
+      <div class="w-full bg-[#1a1b26]/60 rounded-full h-1 md:h-1.5">
+        <div 
+          id="toc-progress-bar"
+          class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] h-1 md:h-1.5 rounded-full transition-all duration-300"
+          style="width: 0%"
+        />
+      </div>
+    </div>
+  )}
+
+  <!-- Scroll indicators for long content -->
+  {headings.length > 8 && (
+    <div class="absolute top-2 right-2 text-xs text-[#565f89]/60 bg-[#1a1b26]/80 px-2 py-1 rounded-md">
+      {headings.length} sections
+    </div>
+  )}
+</div>
 
 <style>
+  .toc-container {
+    min-width: 200px;
+    max-width: 280px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
   .custom-scroll {
     scrollbar-width: thin;
-    scrollbar-color: var(--accent) transparent;
+    scrollbar-color: #7aa2f7 transparent;
   }
 
   .custom-scroll::-webkit-scrollbar {
-    width: 4px;
+    width: 3px;
   }
 
   .custom-scroll::-webkit-scrollbar-track {
@@ -53,7 +134,220 @@ const { headings } = Astro.props;
   }
 
   .custom-scroll::-webkit-scrollbar-thumb {
-    background-color: var(--accent);
+    background: linear-gradient(to bottom, #7aa2f7, #bb9af7);
     border-radius: 8px;
   }
+
+  .custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #6a8ef7, #ab8af7);
+  }
+
+  /* Active state styling */
+  .toc-link.active {
+    background: rgba(122, 162, 247, 0.15);
+    border-color: rgba(122, 162, 247, 0.5);
+  }
+
+  .toc-link.active .text-\[\#c0caf5\],
+  .toc-link.active .text-\[\#a9b1d6\],
+  .toc-link.active .text-\[\#565f89\] {
+    color: #7aa2f7 !important;
+  }
+
+  .toc-link.active .w-0\.5 {
+    opacity: 1;
+  }
+
+  /* Smooth animations */
+  .toc-link {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toc-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(122, 162, 247, 0.1), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .toc-link:hover::before {
+    left: 100%;
+  }
+
+  /* Long text handling */
+  .toc-link span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    .toc-container {
+      min-width: 180px;
+      max-width: 240px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .toc-container {
+      min-width: 160px;
+      max-width: 200px;
+      padding: 0.75rem;
+      position: relative;
+      top: 0;
+      margin-bottom: 1rem;
+    }
+
+    .custom-scroll {
+      max-height: 50vh !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .toc-container {
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  /* Fade effect for scrollable content */
+  .custom-scroll.max-h-\[60vh\]::after,
+  .custom-scroll.max-h-\[40vh\]::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(transparent, rgba(36, 40, 59, 0.8));
+    pointer-events: none;
+    border-radius: 0 0 1rem 1rem;
+  }
 </style>
+
+<script>
+  // Enhanced TOC functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const tocContainer = document.querySelector('.toc-container') as HTMLElement;
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const progressBar = document.getElementById('toc-progress-bar') as HTMLElement;
+    const progressText = document.getElementById('toc-progress') as HTMLElement;
+    
+    if (!tocLinks.length) return;
+
+    // Get all heading elements
+    const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+      .filter(h => h.id) as HTMLElement[];
+
+    // Adaptive height based on content
+    function adjustTocHeight() {
+      if (!tocContainer) return;
+      
+      const viewportHeight = window.innerHeight;
+      const tocTop = tocContainer.getBoundingClientRect().top;
+      const maxHeight = Math.min(viewportHeight - tocTop - 100, viewportHeight * 0.7);
+      
+      const nav = tocContainer.querySelector('nav');
+      if (nav && headings.length > 6) {
+        nav.style.maxHeight = `${maxHeight}px`;
+      }
+    }
+
+    // Active section tracking
+    function updateActiveSection() {
+      const scrollPosition = window.scrollY + 120;
+      let activeIndex = -1;
+
+      headings.forEach((heading, index) => {
+        if (heading.offsetTop <= scrollPosition) {
+          activeIndex = index;
+        }
+      });
+
+      // Update active states
+      tocLinks.forEach((link, index) => {
+        const isActive = index === activeIndex;
+        link.classList.toggle('active', isActive);
+        
+        // Scroll active item into view if needed
+        if (isActive && link.closest('.custom-scroll')) {
+          const scrollContainer = link.closest('.custom-scroll') as HTMLElement;
+          const linkElement = link as HTMLElement;
+          
+          if (scrollContainer && linkElement) {
+            const containerTop = scrollContainer.scrollTop;
+            const containerBottom = containerTop + scrollContainer.clientHeight;
+            const linkTop = linkElement.offsetTop;
+            const linkBottom = linkTop + linkElement.clientHeight;
+            
+            if (linkTop < containerTop || linkBottom > containerBottom) {
+              linkElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'nearest' 
+              });
+            }
+          }
+        }
+      });
+
+      // Update progress
+      if (progressBar && progressText && headings.length > 0) {
+        const firstHeading = headings[0];
+        const lastHeading = headings[headings.length - 1];
+        const totalHeight = lastHeading.offsetTop - firstHeading.offsetTop + lastHeading.offsetHeight;
+        const currentProgress = Math.max(0, scrollPosition - firstHeading.offsetTop);
+        const progress = Math.min(100, Math.max(0, (currentProgress / totalHeight) * 100));
+        
+        progressBar.style.width = `${progress}%`;
+        progressText.textContent = `${Math.round(progress)}%`;
+      }
+    }
+
+    // Smooth scrolling for TOC links
+    tocLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href')?.substring(1);
+        const targetElement = targetId ? document.getElementById(targetId) as HTMLElement : null;
+        
+        if (targetElement) {
+          const offsetTop = targetElement.offsetTop - 100;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+          
+          // Update URL without triggering scroll
+          history.pushState(null, '', `#${targetId}`);
+        }
+      });
+    });
+
+    // Throttled scroll listener
+    let ticking = false;
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveSection();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    // Event listeners
+    window.addEventListener('scroll', requestTick);
+    window.addEventListener('resize', adjustTocHeight);
+    
+    // Initial calls
+    adjustTocHeight();
+    updateActiveSection();
+  });
+</script>

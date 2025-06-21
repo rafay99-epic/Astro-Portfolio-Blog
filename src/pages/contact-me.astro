@@ -22,24 +22,192 @@ try {
       description={`Contact me and get in touch with me.`}
     />
     <SpeedInsights />
+    <style>
+      .contact-container {
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .form-container {
+        background: rgba(36, 40, 59, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(122, 162, 247, 0.2);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .input-field {
+        background: rgba(26, 27, 38, 0.8);
+        border: 1px solid rgba(86, 95, 137, 0.3);
+        color: #c0caf5;
+        transition: all 0.3s ease;
+      }
+
+      .input-field:focus {
+        outline: none;
+        border-color: #7aa2f7;
+        box-shadow: 0 0 0 3px rgba(122, 162, 247, 0.1);
+        background: rgba(26, 27, 38, 0.9);
+      }
+
+      .input-field::placeholder {
+        color: #565f89;
+      }
+
+      .submit-btn {
+        background: linear-gradient(
+          135deg,
+          #7aa2f7 0%,
+          #bb9af7 50%,
+          #9ece6a 100%
+        );
+        border: none;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(122, 162, 247, 0.3);
+      }
+
+      .submit-btn:active {
+        transform: translateY(0);
+      }
+
+      .submit-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      .submit-btn:hover::before {
+        left: 100%;
+      }
+
+      .contact-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .contact-title {
+        font-size: 3.5rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #7aa2f7, #bb9af7, #9ece6a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .contact-subtitle {
+        color: #a9b1d6;
+        font-size: 1.2rem;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+      }
+
+      .form-group {
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        color: #c0caf5;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.95rem;
+      }
+
+      .success-message {
+        background: rgba(158, 206, 106, 0.2);
+        border: 1px solid rgba(158, 206, 106, 0.4);
+        color: #9ece6a;
+      }
+
+      .error-message {
+        background: rgba(247, 118, 142, 0.2);
+        border: 1px solid rgba(247, 118, 142, 0.4);
+        color: #f7768e;
+      }
+
+      .loading-message {
+        background: rgba(122, 162, 247, 0.2);
+        border: 1px solid rgba(122, 162, 247, 0.4);
+        color: #7aa2f7;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      .form-container {
+        animation: fadeInUp 0.8s ease-out 0.4s both;
+      }
+
+      @media (max-width: 768px) {
+        .contact-title {
+          font-size: 2.5rem;
+        }
+
+        .contact-subtitle {
+          font-size: 1rem;
+        }
+
+        .form-container {
+          margin: 1rem;
+          padding: 1.5rem;
+        }
+      }
+    </style>
   </head>
-  <body class="bg-gradient-to-r from-[#1e1e2f] to-[#1f2335] text-[#f8f8f8]">
+  <body class="contact-container">
     <Header />
 
-    <main class="max-w-5xl mx-auto py-1 px-6 sm:px-8 lg:px-16">
-      <h1
-        class="text-4xl sm:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-700 to-teal-600 mb-8"
-      >
-        Let's Collaborate
-      </h1>
-      <p class="text-center text-lg text-gray-300 mb-12">
-        I'm eager to hear your thoughts, feedback, or ideas. Feel free to drop a
-        message!
-      </p>
+    <main class="max-w-4xl mx-auto py-12 px-6 sm:px-8 lg:px-16 relative z-10">
+      <div class="contact-header">
+        <h1 class="contact-title">Let's Collaborate</h1>
+        <p class="contact-subtitle">
+          I'm eager to hear your thoughts, feedback, or ideas. Feel free to drop
+          a message!
+        </p>
+      </div>
 
-      <section
-        class="bg-[#2a2e3e] p-8 rounded-xl shadow-xl border border-[#2e344e]"
-      >
+      <section class="form-container p-8 md:p-12 relative z-10">
         <form
           id="form"
           class="space-y-6"
@@ -53,70 +221,58 @@ try {
           />
 
           <!-- Name -->
-          <div>
-            <label
-              for="name"
-              class="block text-sm font-medium text-gray-200 mb-2"
-              >Your Name</label
-            >
+          <div class="form-group">
+            <label for="name" class="form-label"> Your Name </label>
             <input
               type="text"
               id="name"
               name="name"
-              class="w-full p-4 rounded-lg bg-[#1e1e2f] text-white border border-[#444] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="input-field w-full p-4 rounded-xl text-base"
               placeholder="John Doe"
               required
             />
           </div>
 
           <!-- Email -->
-          <div>
-            <label
-              for="email"
-              class="block text-sm font-medium text-gray-200 mb-2"
-              >Email Address</label
-            >
+          <div class="form-group">
+            <label for="email" class="form-label"> Email Address </label>
             <input
               type="email"
               id="email"
               name="email"
-              class="w-full p-4 rounded-lg bg-[#1e1e2f] text-white border border-[#444] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="input-field w-full p-4 rounded-xl text-base"
               placeholder="you@example.com"
               required
             />
           </div>
 
           <!-- Message -->
-          <div>
-            <label
-              for="message"
-              class="block text-sm font-medium text-gray-200 mb-2"
-              >Your Message</label
-            >
+          <div class="form-group">
+            <label for="message" class="form-label"> Your Message </label>
             <textarea
               id="message"
               name="message"
-              class="w-full p-4 rounded-lg bg-[#1e1e2f] text-white border border-[#444] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="input-field w-full p-4 rounded-xl text-base resize-none"
               rows="6"
               placeholder="Write your message..."
               required></textarea>
           </div>
 
           <!-- hCaptcha -->
-          <div class="h-captcha my-4" data-captcha="true"></div>
+          <div class="h-captcha my-6" data-captcha="true"></div>
 
           <!-- Submit Button -->
           <div class="text-center">
             <button
               type="submit"
-              class="w-full py-3 text-white bg-gradient-to-r from-blue-600 to-teal-500 rounded-lg hover:bg-opacity-80 transition"
+              class="submit-btn w-full py-4 px-8 rounded-xl text-lg font-semibold relative overflow-hidden"
             >
-              Send Message
+              <span class="relative z-10">Send Message</span>
             </button>
           </div>
 
           <!-- Result Message -->
-          <div id="result" class="hidden text-center p-4 mt-4 rounded-lg"></div>
+          <div id="result" class="hidden text-center p-4 mt-6 rounded-xl"></div>
         </form>
       </section>
     </main>
@@ -148,8 +304,8 @@ try {
         const json = JSON.stringify(object);
 
         result.className =
-          "block bg-gray-600 text-white text-center p-3 mt-4 rounded-lg";
-        result.innerHTML = "Please wait...";
+          "block loading-message text-center p-4 mt-6 rounded-xl";
+        result.innerHTML = "Sending your message...";
 
         fetch("https://api.web3forms.com/submit", {
           method: "POST",
@@ -163,33 +319,30 @@ try {
             let json = await response.json();
             if (response.status == 200) {
               result.className =
-                "block bg-green-600 text-white text-center p-3 mt-4 rounded-lg";
-              result.innerHTML = json.message;
+                "block success-message text-center p-4 mt-6 rounded-xl";
+              result.innerHTML = "✅ " + json.message;
             } else {
               result.className =
-                "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
-              result.innerHTML = json.message;
+                "block error-message text-center p-4 mt-6 rounded-xl";
+              result.innerHTML = "❌ " + json.message;
             }
           })
           .catch((error) => {
             console.error(error);
             result.className =
-              "block bg-red-600 text-white text-center p-3 mt-4 rounded-lg";
-            result.innerHTML = "Something went wrong!";
+              "block error-message text-center p-4 mt-6 rounded-xl";
+            result.innerHTML = "❌ Something went wrong! Please try again.";
           })
           .then(() => {
             form.reset();
             setTimeout(() => {
-              result.classList.add(
-                "opacity-0",
-                "transition-opacity",
-                "duration-500"
-              );
+              result.style.opacity = "0";
+              result.style.transition = "opacity 0.5s ease";
               setTimeout(() => {
                 result.classList.add("hidden");
-                result.classList.remove("opacity-0");
+                result.style.opacity = "1";
               }, 500);
-            }, 3000);
+            }, 4000);
           });
       });
     </script>

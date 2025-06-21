@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
+import ContentContainer from "@astro/blog/ContentContainer.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "@astro/blog/comments/PostComment.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
@@ -86,22 +87,209 @@ const {
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
       crossorigin="anonymous"></script>
     <style>
+      .blog-container {
+        min-height: 100vh;
+        position: relative;
+      }
+
       #scroll-progress {
         position: fixed;
         top: 0;
         left: 0;
         height: 4px;
-        background: linear-gradient(to right, #7aa2f7, #a1c4fd);
+        background: linear-gradient(
+          90deg,
+          #7aa2f7 0%,
+          #bb9af7 50%,
+          #9ece6a 100%
+        );
         transform: scaleX(0);
         transform-origin: left;
         transition: transform 0.1s linear;
         width: 100%;
         z-index: 50;
         pointer-events: none;
+        box-shadow: 0 2px 12px rgba(122, 162, 247, 0.4);
       }
+
+      #scroll-progress::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(122, 162, 247, 0.8) 0%,
+          rgba(187, 154, 247, 0.8) 50%,
+          rgba(158, 206, 106, 0.8) 100%
+        );
+        filter: blur(2px);
+        z-index: -1;
+      }
+
+      .main-content {
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .share-section {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+        animation: fadeIn 1s ease-out 0.3s both;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .comments-section {
+        animation: slideInUp 0.8s ease-out 0.5s both;
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .comments-container {
+        background: rgba(26, 27, 38, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(86, 95, 137, 0.2);
+        border-radius: 20px;
+        padding: 32px;
+        margin-top: 32px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .comments-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(122, 162, 247, 0.03) 0%,
+          rgba(187, 154, 247, 0.03) 100%
+        );
+        pointer-events: none;
+      }
+
+      .comments-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .comments-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #7aa2f7, #bb9af7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Enhanced Typography for Blog Content */
+      .blog-typography {
+        line-height: 1.8;
+        font-size: 1.1rem;
+      }
+
+      .blog-typography h1,
+      .blog-typography h2,
+      .blog-typography h3,
+      .blog-typography h4,
+      .blog-typography h5,
+      .blog-typography h6 {
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        scroll-margin-top: 100px;
+      }
+
+      .blog-typography h2 {
+        border-left: 4px solid #7aa2f7;
+        padding-left: 1rem;
+        background: rgba(122, 162, 247, 0.05);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+      }
+
+      .blog-typography h3 {
+        color: #bb9af7;
+        position: relative;
+      }
+
+      .blog-typography h3::before {
+        content: "📝";
+        margin-right: 0.5rem;
+      }
+
+      .blog-typography blockquote {
+        background: rgba(122, 162, 247, 0.1);
+        border-left: 4px solid #7aa2f7;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .blog-typography ul li::marker {
+        color: #7aa2f7;
+      }
+
+      .blog-typography ol li::marker {
+        color: #bb9af7;
+        font-weight: bold;
+      }
+
       @media (max-width: 600px) {
-        main {
+        .main-content {
           padding: 0.5rem !important;
+        }
+
+        .blog-typography {
+          font-size: 1rem;
+          line-height: 1.7;
+        }
+
+        .comments-container {
+          padding: 24px;
+        }
+
+        .comments-title {
+          font-size: 2rem;
+        }
+
+        #scroll-progress {
+          height: 3px;
         }
       }
     </style>
@@ -123,12 +311,12 @@ const {
       }}
     />
   </head>
-  <body>
+  <body class="blog-container">
     <Header />
     <div id="scroll-progress"></div>
 
     <main
-      class="max-w-7.5xl mx-auto w-full px-4 py-8 md:py-12 overflow-x-hidden"
+      class="max-w-7.5xl mx-auto w-full px-4 py-8 md:py-12 overflow-x-hidden main-content"
     >
       <!-- Header Section - Aligned with Content -->
       <section class="mb-12">
@@ -161,13 +349,9 @@ const {
       <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_300px] gap-8">
         <!-- Main Content -->
         <div class="w-10xl break-words pr-0 md:pr-8">
-          <article class="p-6 md:p-8">
-            <div class="text-justify">
-              <div>
-                <slot />
-              </div>
-            </div>
-          </article>
+          <ContentContainer withBackground={false} class="blog-typography">
+            <slot />
+          </ContentContainer>
         </div>
 
         <aside
@@ -202,13 +386,18 @@ const {
           </div>
         </aside>
       </div>
-      <div class="mt-12 rounded-2xl p-6 md:p-8">
-        <h2
-          class="text-5xl text-center font-bold mb-6 text-[var(--text-light)]"
-        >
-          Join the Discussion
-        </h2>
-        <PostComment />
+      <div class="comments-section">
+        <div class="comments-container">
+          <div class="comments-header">
+            <h2 class="comments-title">💬 Join the Discussion</h2>
+            <p class="text-[#a9b1d6] text-sm">
+              Share your thoughts and engage with the community
+            </p>
+          </div>
+          <div class="relative z-1">
+            <PostComment />
+          </div>
+        </div>
       </div>
     </main>
 
@@ -241,13 +430,14 @@ const {
         top: 0;
         left: 0;
         height: 4px;
-        background: linear-gradient(to right, #7aa2f7, #a1c4fd);
+        background: linear-gradient(90deg, #7aa2f7 0%, #bb9af7 50%, #9ece6a 100%);
         transform: scaleX(0);
         transform-origin: left;
         transition: transform 0.1s linear;
         width: 100%;
         z-index: 50;
         pointer-events: none;
+        box-shadow: 0 2px 12px rgba(122, 162, 247, 0.4);
       }
     </style>
 
