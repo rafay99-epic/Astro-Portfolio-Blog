@@ -10,7 +10,7 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { getCollection } from "astro:content";
 import AISummaryCard from "@react/blog/enhancements/summary-card/summary_blog";
 import BlogHeader from "@react/blog/layout/BlogPostLayout/BlogPostLayoutHeader";
-import BlogTOC from "@astro/blog/toc/BlogTOC.astro";
+import BlogTOCReact from "@react/blog/metadata/BlogTOC/BlogTOC";
 import QAChatWidget from "@react/blog/enhancements/qa-chat/QAChatWidget";
 export const prerender = true;
 import { SEO } from "astro-seo";
@@ -80,9 +80,8 @@ const {
   <head>
     <BaseHead title={title} description={description} />
     <SpeedInsights />
+    <!-- Google AdSense Script - Must be in head -->
     <script
-      lang="js"
-      is:inline
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
       crossorigin="anonymous"></script>
@@ -130,49 +129,18 @@ const {
       }
 
       .main-content {
-        animation: fadeInUp 0.8s ease-out;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        opacity: 1;
       }
 
       .share-section {
         display: flex;
         justify-content: center;
         margin: 2rem 0;
-        animation: fadeIn 1s ease-out 0.3s both;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+        opacity: 1;
       }
 
       .comments-section {
-        animation: slideInUp 0.8s ease-out 0.5s both;
-      }
-
-      @keyframes slideInUp {
-        from {
-          opacity: 0;
-          transform: translateY(40px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        opacity: 1;
       }
 
       .comments-container {
@@ -218,7 +186,6 @@ const {
         margin-bottom: 0.5rem;
       }
 
-      /* Enhanced Typography for Blog Content */
       .blog-typography {
         line-height: 1.8;
         font-size: 1.1rem;
@@ -270,6 +237,85 @@ const {
         font-weight: bold;
       }
 
+      /* Advertisement Section Styling */
+      .ad-container {
+        background: rgba(26, 27, 38, 0.4);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(86, 95, 137, 0.3);
+        border-radius: 16px;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+        margin-top: 3rem;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .ad-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(122, 162, 247, 0.02) 0%,
+          rgba(187, 154, 247, 0.02) 100%
+        );
+        pointer-events: none;
+      }
+
+      .ad-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        position: relative;
+        z-index: 1;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(86, 95, 137, 0.2);
+      }
+
+      .ad-icon {
+        width: 22px;
+        height: 22px;
+        background: linear-gradient(135deg, #7aa2f7, #bb9af7);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      .ad-title {
+        font-size: 15px;
+        font-weight: 600;
+        background: linear-gradient(135deg, #7aa2f7, #bb9af7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .ad-content {
+        position: relative;
+        z-index: 1;
+        min-height: 250px;
+        width: 100%;
+        border-radius: 12px;
+        background: rgba(36, 40, 59, 0.3);
+        border: 1px solid rgba(86, 95, 137, 0.2);
+        overflow: hidden;
+        margin-top: 12px;
+      }
+
+      .ad-content .adsbygoogle {
+        width: 100% !important;
+        height: 250px !important;
+        display: block !important;
+      }
+
       @media (max-width: 600px) {
         .main-content {
           padding: 0.5rem !important;
@@ -291,6 +337,41 @@ const {
         #scroll-progress {
           height: 3px;
         }
+
+        .ad-container {
+          padding: 16px;
+          margin-top: 2rem;
+        }
+
+        .ad-content {
+          min-height: 200px;
+        }
+
+        .ad-content .adsbygoogle {
+          height: 200px !important;
+        }
+
+        /* Mobile sidebar adjustments */
+        aside {
+          display: block !important;
+          width: 100% !important;
+          padding: 0 !important;
+          margin-top: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        /* Tablet adjustments */
+        .ad-container {
+          margin-top: 2.5rem;
+        }
+      }
+
+      @media (min-width: 769px) {
+        /* Desktop - keep sidebar behavior */
+        aside {
+          display: block !important;
+        }
       }
     </style>
 
@@ -311,14 +392,13 @@ const {
       }}
     />
   </head>
-  <body class="blog-container">
+  <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
     <div id="scroll-progress"></div>
 
     <main
       class="max-w-7.5xl mx-auto w-full px-4 py-8 md:py-12 overflow-x-hidden main-content"
     >
-      <!-- Header Section - Aligned with Content -->
       <section class="mb-12">
         <BlogHeader
           client:load
@@ -354,38 +434,57 @@ const {
           </ContentContainer>
         </div>
 
-        <aside
-          class="hidden md:block space-y-8 w-full md:w-[300px] pl-0 md:pl-4"
-        >
+        <aside class="hidden md:block w-full md:w-[300px] pl-0 md:pl-4">
           <!-- Table of Contents -->
-          <div class="rounded-2xl p-4">
-            <h3 class="text-lg font-semibold mb-4 text-[var(--text-light)]">
-              Table of Contents
-            </h3>
-            <BlogTOC headings={headings} />
+          <div class="w-full">
+            <BlogTOCReact client:load headings={headings} />
           </div>
-          <hr class="my-4" />
-          <div class="rounded-2xl p-4 s">
-            <h3 class="text-lg font-semibold mb-4 text-[var(--text-light)]">
-              Advertisement
-            </h3>
-            <div
-              class="aspect-[1/2] rounded-lg flex items-center justify-center"
-            >
-              <ins
-                class="adsbygoogle"
-                style="display:block; text-align:center;"
-                data-ad-layout="in-article"
-                data-ad-format="fluid"
-                data-ad-client="ca-pub-2480387803052595"
-                data-ad-slot="3470204621"></ins>
-              <script lang="js" is:inline>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-              </script>
+
+          <!-- Subtle Separator (only shows when TOC has content) -->
+          {
+            headings.length > 0 && (
+              <div class="w-full h-px bg-gradient-to-r from-transparent via-[#565f89]/20 to-transparent mb-4" />
+            )
+          }
+
+          <!-- Advertisement Section -->
+          <div class="ad-container">
+            <div class="ad-header">
+              <div class="ad-icon">
+                <span class="text-white">📢</span>
+              </div>
+              <h3 class="ad-title">Sponsored Content</h3>
             </div>
+            <ins
+              class="adsbygoogle ad-content"
+              style="display:block; width: 100%; height: 250px;"
+              data-ad-client="ca-pub-2480387803052595"
+              data-ad-slot="3470204621"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
           </div>
         </aside>
       </div>
+
+      <!-- Mobile Advertisement Section -->
+      <div class="block md:hidden mt-8 px-4">
+        <div class="ad-container">
+          <div class="ad-header">
+            <div class="ad-icon">
+              <span class="text-white">📢</span>
+            </div>
+            <h3 class="ad-title">Sponsored Content</h3>
+          </div>
+          <ins
+            class="adsbygoogle ad-content"
+            style="display:block; width: 100%; height: 200px;"
+            data-ad-client="ca-pub-2480387803052595"
+            data-ad-slot="3470204621"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        </div>
+      </div>
+
       <div class="comments-section">
         <div class="comments-container">
           <div class="comments-header">
@@ -413,6 +512,32 @@ const {
       )
     }
 
+    <script is:inline>
+      // Prevent auto-scroll restoration and conflicts
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+
+      // Prevent initial scroll jumping
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+        }, 0);
+      });
+
+      // Initialize AdSense ads
+      document.addEventListener("DOMContentLoaded", function () {
+        try {
+          // Initialize all AdSense ads on the page
+          const ads = document.querySelectorAll(".adsbygoogle");
+          ads.forEach((ad) => {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          });
+        } catch (e) {
+          console.log("AdSense initialization error:", e);
+        }
+      });
+    </script>
     <script type="text/partytown" is:inline src="/js/progressbar.js"></script>
     <Footer />
   </body>

@@ -41,53 +41,22 @@ try {
       }
 
       .main-content {
-        animation: fadeInUp 0.8s ease-out;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        opacity: 1;
       }
 
       .share-section {
         display: flex;
         justify-content: center;
         margin: 2rem 0;
-        animation: fadeIn 1s ease-out 0.3s both;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+        opacity: 1;
       }
 
       .content-section {
-        animation: slideInUp 0.8s ease-out 0.5s both;
-      }
-
-      @keyframes slideInUp {
-        from {
-          opacity: 0;
-          transform: translateY(40px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        opacity: 1;
       }
 
       .comments-section {
-        animation: slideInUp 0.8s ease-out 0.7s both;
+        opacity: 1;
       }
 
       /* Enhanced Typography for Newsletter Content */
@@ -203,7 +172,10 @@ try {
     </style>
   </head>
 
-  <body class="newsletter-container">
+  <body
+    class="newsletter-container"
+    style="overflow-x: hidden; overflow-y: auto;"
+  >
     <Header />
 
     <main class="w-full max-w-6xl mx-auto px-4 py-12 main-content">

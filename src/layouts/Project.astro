@@ -42,22 +42,11 @@ try {
       }
 
       .main-content {
-        animation: fadeInUp 0.8s ease-out;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        opacity: 1;
       }
 
       .project-image-section {
-        animation: fadeIn 1s ease-out 0.2s both;
+        opacity: 1;
         margin-bottom: 2rem;
       }
 
@@ -90,20 +79,11 @@ try {
         display: flex;
         justify-content: center;
         margin: 2rem 0;
-        animation: fadeIn 1s ease-out 0.4s both;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+        opacity: 1;
       }
 
       .tech-section {
-        animation: slideInUp 0.8s ease-out 0.6s both;
+        opacity: 1;
         margin: 2rem 0;
       }
 
@@ -203,18 +183,7 @@ try {
       }
 
       .content-section {
-        animation: slideInUp 0.8s ease-out 0.8s both;
-      }
-
-      @keyframes slideInUp {
-        from {
-          opacity: 0;
-          transform: translateY(40px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        opacity: 1;
       }
 
       /* Enhanced Typography for Project Content */
@@ -240,17 +209,33 @@ try {
         background: rgba(122, 162, 247, 0.05);
         padding: 0.5rem 1rem;
         border-radius: 8px;
-        color: #7aa2f7;
       }
 
       .project-typography h3 {
-        color: #9ece6a;
+        color: #bb9af7;
         position: relative;
       }
 
       .project-typography h3::before {
         content: "🚀";
         margin-right: 0.5rem;
+      }
+
+      .project-typography blockquote {
+        background: rgba(122, 162, 247, 0.1);
+        border-left: 4px solid #7aa2f7;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .project-typography ul li::marker {
+        color: #7aa2f7;
+      }
+
+      .project-typography ol li::marker {
+        color: #bb9af7;
+        font-weight: bold;
       }
 
       @media (max-width: 768px) {
@@ -267,19 +252,15 @@ try {
           font-size: 1.5rem;
         }
 
-        .tech-grid {
-          gap: 8px;
-        }
-
         .tech-chip {
-          font-size: 13px;
+          font-size: 12px;
           padding: 6px 12px;
         }
       }
     </style>
   </head>
 
-  <body class="project-container">
+  <body class="project-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
 
     <main class="w-full max-w-6xl mx-auto px-4 py-12 main-content">

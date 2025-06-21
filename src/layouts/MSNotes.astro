@@ -50,45 +50,13 @@ try {
       }
 
       .main-content {
-        animation: fadeInUp 0.8s ease-out;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+        opacity: 1;
       }
 
       .content-section {
-        animation: slideInUp 0.8s ease-out 0.5s both;
+        opacity: 1;
       }
 
-      @keyframes slideInUp {
-        from {
-          opacity: 0;
-          transform: translateY(40px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* Reading Progress Bar */
       .progress-bar {
         position: fixed;
         top: 0;
@@ -99,8 +67,6 @@ try {
         z-index: 1000;
         transition: width 0.1s ease-out;
       }
-
-      /* Enhanced Typography for Notes Content */
       .notes-typography {
         line-height: 1.8;
         font-size: 1.1rem;
@@ -181,15 +147,13 @@ try {
       }
     </style>
   </head>
-  <body class="notes-container">
-    <!-- Reading Progress Bar -->
+  <body class="notes-container" style="overflow-x: hidden; overflow-y: auto;">
     <div class="progress-bar" id="progress-bar"></div>
 
     <Header />
 
     <main class="w-full max-w-6xl mx-auto px-4 py-12 pt-0 main-content">
       <article>
-        {/* Article Header */}
         <ArticleHeader
           title={lecture_title}
           description={lecture_description}
@@ -202,13 +166,9 @@ try {
           }}
           type="notes"
         />
-
-        {/* Share Section */}
         <div>
           <ShareButtons url={pageUrl} pagetitle="Notes" client:load />
         </div>
-
-        {/* Content Section */}
         <div class="content-section">
           <ContentContainer withBackground={true} class="notes-typography">
             <slot />
@@ -219,8 +179,9 @@ try {
 
     <Footer />
 
-    <!-- Reading Progress Script -->
     <script>
+      let ticking = false;
+
       function updateProgress() {
         const progressBar = document.getElementById("progress-bar");
         if (!progressBar) return;
@@ -234,17 +195,21 @@ try {
         const scrollPercent = scrollTop / (docHeight - winHeight);
         const scrollPercentRounded = Math.round(scrollPercent * 100);
 
-        progressBar.style.width = Math.min(scrollPercentRounded, 100) + "%";
+        progressBar.style.width =
+          Math.min(Math.max(scrollPercentRounded, 0), 100) + "%";
+        ticking = false;
       }
 
-      // Update progress on scroll
-      window.addEventListener("scroll", updateProgress);
+      function requestTick() {
+        if (!ticking) {
+          requestAnimationFrame(updateProgress);
+          ticking = true;
+        }
+      }
 
-      // Update progress on load
-      window.addEventListener("load", updateProgress);
-
-      // Update progress on resize
-      window.addEventListener("resize", updateProgress);
+      window.addEventListener("scroll", requestTick, { passive: true });
+      window.addEventListener("load", updateProgress, { passive: true });
+      window.addEventListener("resize", updateProgress, { passive: true });
     </script>
   </body>
 </html>
