@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTagFilter } from "@react/blog/metadata/Tags/useTagFilter";
+import { useIsMobile } from "../../../../../hooks/useIsMobile";
 import type { Post } from "types/articles";
 
 interface TagFilterProps {
@@ -19,18 +20,7 @@ const TagFilter: React.FC<TagFilterProps> = ({ posts }) => {
     setCurrentPage,
   } = useTagFilter(posts);
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   const handleNextPage = () =>
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));

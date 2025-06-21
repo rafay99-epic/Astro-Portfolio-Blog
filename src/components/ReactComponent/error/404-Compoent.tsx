@@ -10,9 +10,7 @@ const NotFoundPage: React.FC = () => {
         transition={{ duration: 0.6 }}
         className="max-w-2xl w-full text-center"
       >
-        {/* Main Error Container */}
         <div className="backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-3xl p-8 md:p-12">
-          {/* Animated 404 Display */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -20,10 +18,8 @@ const NotFoundPage: React.FC = () => {
             className="mb-8"
           >
             <div className="relative">
-              {/* Background Glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 rounded-2xl blur-2xl"></div>
 
-              {/* Code Block Style 404 */}
               <div className="relative bg-[#1a1b26]/80 border border-[#565f89]/40 rounded-2xl p-8 font-mono">
                 <div className="flex items-center justify-center gap-4 text-4xl md:text-5xl lg:text-6xl font-bold">
                   <motion.span
@@ -73,7 +69,6 @@ const NotFoundPage: React.FC = () => {
                   </motion.span>
                 </div>
 
-                {/* Error Message in Code Style */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -87,7 +82,6 @@ const NotFoundPage: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Title */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -99,7 +93,6 @@ const NotFoundPage: React.FC = () => {
             </span>
           </motion.h1>
 
-          {/* Description */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -110,7 +103,6 @@ const NotFoundPage: React.FC = () => {
             page you're looking for doesn't exist in this repository.
           </motion.p>
 
-          {/* Action Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -148,7 +140,6 @@ const NotFoundPage: React.FC = () => {
             </motion.a>
           </motion.div>
 
-          {/* Bottom Decorative Elements */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -173,7 +164,6 @@ const NotFoundPage: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Fun Coding Elements */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

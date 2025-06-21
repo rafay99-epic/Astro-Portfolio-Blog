@@ -15,17 +15,14 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
   const [isSticky, setIsSticky] = useState(false);
   const tocRef = useRef<HTMLDivElement>(null);
 
-  // Memoized heading elements to avoid repeated DOM queries
   const headingElements = useRef<HTMLElement[]>([]);
 
-  // Initialize heading elements once
   useEffect(() => {
     headingElements.current = headings
       .map((heading) => document.getElementById(heading.slug))
       .filter(Boolean) as HTMLElement[];
   }, [headings]);
 
-  // Optimized scroll handler with throttling
   const updateActiveSection = useCallback(() => {
     if (headingElements.current.length === 0) return;
 
@@ -42,7 +39,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
     setActiveIndex((prev) => (prev !== newActiveIndex ? newActiveIndex : prev));
   }, []);
 
-  // Improved sticky check without causing reflows
   const updateStickyState = useCallback(() => {
     if (!tocRef.current) return;
 
@@ -52,7 +48,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
     setIsSticky((prev) => (prev !== shouldBeSticky ? shouldBeSticky : prev));
   }, []);
 
-  // Throttled scroll listener with better performance
   useEffect(() => {
     let ticking = false;
     let lastScrollY = 0;
@@ -60,7 +55,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Only process if scroll position actually changed
       if (Math.abs(currentScrollY - lastScrollY) < 1) return;
       lastScrollY = currentScrollY;
 
@@ -74,13 +68,11 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
       }
     };
 
-    // Use passive listeners for better performance
     window.addEventListener("scroll", handleScroll, {
       passive: true,
       capture: false,
     });
 
-    // Initial check with delay to avoid conflicts
     const timer = setTimeout(() => {
       updateActiveSection();
       updateStickyState();
@@ -92,11 +84,9 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
     };
   }, [updateActiveSection, updateStickyState]);
 
-  // Smooth scroll to heading without causing glitches
   const scrollToHeading = useCallback((slug: string) => {
     const element = document.getElementById(slug);
     if (element) {
-      // Temporarily disable the scroll listener to prevent conflicts
       const offsetTop = element.offsetTop - 100;
 
       window.scrollTo({
@@ -104,12 +94,10 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
         behavior: "smooth",
       });
 
-      // Update URL without triggering scroll
       history.pushState(null, "", `#${slug}`);
     }
   }, []);
 
-  // Determine container height based on content
   const getNavClassName = () => {
     const baseClasses = "space-y-1 overflow-x-hidden blog-toc-nav";
 
@@ -124,7 +112,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
     }
   };
 
-  // Render empty state
   const renderEmptyState = () => (
     <div className="empty-state text-center py-4 md:py-6">
       <div className="w-8 h-8 md:w-10 md:h-10 bg-[#2d3142]/60 rounded-xl flex items-center justify-center mx-auto mb-2">
@@ -137,7 +124,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
     </div>
   );
 
-  // Render heading link
   const renderHeadingLink = (heading: Heading, index: number) => {
     const isActive = index === activeIndex;
     const depthClasses = {
@@ -167,7 +153,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
           border border-transparent focus:outline-none focus:ring-1 focus:ring-[#7aa2f7]/50
         `}
       >
-        {/* Depth indicator line */}
         <div
           className={`
           absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#7aa2f7] to-[#bb9af7] 
@@ -177,9 +162,7 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
         `}
         />
 
-        {/* Content */}
         <div className="flex items-center gap-1.5 md:gap-2">
-          {/* Bullet indicator */}
           <div
             className={`
             flex-shrink-0 transition-all duration-300 group-hover:scale-125
@@ -188,13 +171,11 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
           `}
           />
 
-          {/* Text */}
           <span className="group-hover:translate-x-0.5 transition-transform duration-300 leading-tight break-words hyphens-auto overflow-hidden text-left">
             {heading.text}
           </span>
         </div>
 
-        {/* Hover effect overlay */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-lg">
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10 rounded-full blur-lg" />
         </div>
@@ -202,27 +183,24 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
     );
   };
 
-  // Dynamic spacing based on content
   const getContainerClassName = () => {
     let baseClasses = `
       toc-container backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl p-3 md:p-4
       w-full will-change-transform
     `;
 
-    // Apply sticky positioning more carefully
     if (isSticky) {
       baseClasses += " sticky top-20 z-10";
     }
 
-    // Add dynamic spacing based on content
     if (headings.length === 0) {
-      baseClasses += " mb-4"; // Less spacing for empty TOC
+      baseClasses += " mb-4";
     } else if (headings.length <= 4) {
-      baseClasses += " mb-6"; // Normal spacing for short TOC
+      baseClasses += " mb-6";
     } else if (headings.length <= 8) {
-      baseClasses += " mb-8"; // More spacing for medium TOC
+      baseClasses += " mb-8";
     } else {
-      baseClasses += " mb-10"; // Maximum spacing for long TOC
+      baseClasses += " mb-10";
     }
 
     return baseClasses;
@@ -238,7 +216,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
           position: "relative",
         }}
       >
-        {/* Header */}
         <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[#565f89]/20">
           <div className="w-5 h-5 md:w-6 md:h-6 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-lg flex items-center justify-center flex-shrink-0">
             <span className="text-white text-xs">📋</span>
@@ -250,7 +227,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
           </h3>
         </div>
 
-        {/* Navigation */}
         <nav className={getNavClassName()}>
           {headings.length > 0
             ? headings.map((heading, index) =>
@@ -259,7 +235,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
             : renderEmptyState()}
         </nav>
 
-        {/* Scroll indicators for long content */}
         {headings.length > 8 && (
           <div className="absolute top-1 right-1 text-xs text-[#565f89]/60 bg-[#1a1b26]/80 px-1.5 py-0.5 rounded-md">
             {headings.length}

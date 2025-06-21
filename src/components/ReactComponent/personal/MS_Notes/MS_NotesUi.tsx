@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaFileAlt,
@@ -7,6 +7,7 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 import type { Note } from "types/notes";
+import { useIsMobile } from "@hooks/useIsMobile";
 
 interface NotesGridUIProps {
   allTags: string[];
@@ -27,17 +28,7 @@ const NotesGridUI: React.FC<NotesGridUIProps> = ({
   totalPages,
   paginatedNotes,
 }) => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   const containerVariants = {
     hidden: { opacity: 0 },

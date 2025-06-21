@@ -109,7 +109,6 @@ export function QASectionUI({
 
   return (
     <div className="backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl shadow-lg p-6 my-6">
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
           <div className="w-8 h-8 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-xl flex items-center justify-center flex-shrink-0">
@@ -185,7 +184,6 @@ export function QASectionUI({
         )}
       </div>
 
-      {/* Loading State */}
       {isLoading && (
         <div className="flex flex-col items-center justify-center py-8">
           <div className="relative">
@@ -201,7 +199,6 @@ export function QASectionUI({
         </div>
       )}
 
-      {/* Error State */}
       {error && (
         <div className="bg-[#24283b]/40 border border-[#f7768e]/30 rounded-xl p-4 backdrop-blur-xl">
           <div className="flex items-start space-x-3">
@@ -223,7 +220,6 @@ export function QASectionUI({
         </div>
       )}
 
-      {/* Q&A Content */}
       {hasGenerated && qaItems.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-4">

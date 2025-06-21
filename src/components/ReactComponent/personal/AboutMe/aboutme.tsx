@@ -1,5 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@hooks/useIsMobile";
 
 export default function AboutSection({ authorConfig }: { authorConfig: any }) {
   const ref = useRef(null);
@@ -10,18 +11,7 @@ export default function AboutSection({ authorConfig }: { authorConfig: any }) {
     [key: number]: boolean;
   }>({});
 
-  // Mobile detection
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   const containerVariants = {
     hidden: { opacity: 0 },

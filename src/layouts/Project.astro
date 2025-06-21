@@ -2,10 +2,9 @@
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import ArticleHeader from "@astro/blog/ArticleHeader.astro";
-import ContentContainer from "@astro/blog/ContentContainer.astro";
+import ArticleHeader from "@astro/blog/layout/ArticleHeader.astro";
+import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
 import ShareButtons from "@react/blog/interactions/socialButton";
-import authorConfig from "@config/siteConfig/info.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
@@ -277,7 +276,6 @@ try {
           type="project"
         />
 
-        {/* Project Image Section */}
         {
           ProjectImage && (
             <div class="project-image-section">
@@ -294,12 +292,10 @@ try {
           )
         }
 
-        {/* Share Section */}
         <div>
           <ShareButtons url={pageUrl} pagetitle="Project" client:load />
         </div>
 
-        {/* Technology Section */}
         {
           ProjectTech && ProjectTech.length > 0 && (
             <div class="tech-section">

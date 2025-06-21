@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import type { Post } from "types/articles";
+import { useIsMobile } from "@hooks/useIsMobile";
 
 interface BlogSectionUIProps {
   currentPosts: Post[];
@@ -18,18 +19,7 @@ const BlogSectionUI: React.FC<BlogSectionUIProps> = ({
   handlePageChange,
 }) => {
   const [currentView, setCurrentView] = useState<ViewType>("grid");
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   // Animation variants
   const containerVariants = {

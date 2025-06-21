@@ -81,6 +81,7 @@ export default defineConfig({
         "@util": "/src/util",
         "@config": "/src/config",
         "@server": "/src/server",
+        "@hooks": "/src/hooks",
       },
     },
   },

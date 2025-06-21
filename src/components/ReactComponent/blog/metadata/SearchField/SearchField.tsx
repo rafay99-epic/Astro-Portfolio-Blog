@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import useSearch from "@react/blog/metadata/SearchField/SearchLogic";
+import useSearch from "./SearchLogic";
+import { useIsMobile } from "@hooks/useIsMobile";
 import type { Post } from "types/articles";
 
 interface SearchProps {
@@ -11,21 +12,9 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
   const { query, setQuery, results, searchCategory, setSearchCategory } =
     useSearch(posts);
 
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useIsMobile();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -59,7 +48,6 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
 
   return (
     <section className="relative overflow-hidden py-8 px-4">
-      {/* Background Elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7aa2f7] rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#bb9af7] rounded-full blur-3xl" />
@@ -67,7 +55,6 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
       </div>
 
       <div className="container mx-auto relative z-10 max-w-6xl">
-        {/* Header Section */}
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
@@ -488,7 +475,6 @@ const Search: React.FC<SearchProps> = ({ posts }) => {
           )}
         </AnimatePresence>
 
-        {/* Empty state when no query */}
         {!query && (
           <motion.div
             className="text-center py-16"

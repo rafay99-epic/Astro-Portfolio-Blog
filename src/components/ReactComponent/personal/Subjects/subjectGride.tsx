@@ -5,7 +5,7 @@ import {
   FaPenFancy,
   FaLightbulb,
 } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useIsMobile } from "@hooks/useIsMobile";
 import clsx from "clsx";
 
 type SubjectGridProps = {
@@ -45,17 +45,7 @@ const itemVariants: Variants = {
 };
 
 export default function SubjectGrid({ subjects }: SubjectGridProps) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   return (
     <div className="py-12 px-4">

@@ -2,77 +2,10 @@
 const today = new Date();
 import SocialLinks from "@astro/SocialMedia/SocialMedia.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import packageJson from "../../../../package.json";
 ---
 
 <style>
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 0.3;
-    }
-    50% {
-      opacity: 0.8;
-    }
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: -200% 0;
-    }
-    100% {
-      background-position: 200% 0;
-    }
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-fade-in-up {
-    animation: fadeInUp 0.8s ease-out forwards;
-  }
-
-  .animate-pulse-slow {
-    animation: pulse 4s ease-in-out infinite;
-  }
-
-  .shimmer-text {
-    background: linear-gradient(
-      90deg,
-      #7aa2f7,
-      #bb9af7,
-      #9ece6a,
-      #bb9af7,
-      #7aa2f7
-    );
-    background-size: 200% auto;
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    animation: shimmer 3s linear infinite;
-  }
-
   .footer-link {
     transition: all 0.2s ease;
   }
@@ -89,39 +22,13 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
   .astro-badge:hover {
     opacity: 1;
   }
-
-  .gradient-border {
-    background: linear-gradient(90deg, transparent, #7aa2f7, transparent);
-    height: 1px;
-    animation: pulse 3s ease-in-out infinite;
-  }
-
-  /* Stagger animation delays */
-  .footer-section:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-  .footer-section:nth-child(2) {
-    animation-delay: 0.3s;
-  }
-  .footer-section:nth-child(3) {
-    animation-delay: 0.5s;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .animate-float,
-    .animate-fade-in-up,
-    .animate-pulse-slow,
-    .shimmer-text,
-    .gradient-border {
-      animation: none;
-    }
-  }
 </style>
 
-<footer class="py-8 px-4 border-t border-[#565f89]/20">
+<footer class="py-2 px-4 border-t border-[#565f89]/20">
   <div class="container mx-auto max-w-6xl">
     <!-- Main Footer Content -->
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-6 mb-6"
+      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4"
     >
       <!-- Left: Social Links -->
       <div class="flex items-center gap-4">
@@ -186,7 +93,7 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
     <!-- Bottom: Copyright -->
     <div
-      class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-[#565f89]/10"
+      class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-3 border-t border-[#565f89]/10"
     >
       <div class="text-center sm:text-left">
         <p class="text-[#565f89] text-sm">
@@ -197,7 +104,7 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
       <div class="flex items-center gap-3 text-xs text-[#565f89]">
         <div class="flex items-center gap-1">
           <div class="w-1.5 h-1.5 bg-[#9ece6a] rounded-full"></div>
-          <span>v8.0</span>
+          <span>v{packageJson.version}</span>
         </div>
         <span>•</span>
         <span>{today.toLocaleDateString()}</span>

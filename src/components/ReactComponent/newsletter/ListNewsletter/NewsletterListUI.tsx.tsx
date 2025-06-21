@@ -1,5 +1,6 @@
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useIsMobile } from "@hooks/useIsMobile";
 import type { Newsletter } from "types/newsletter_types.ts";
 
 interface NewsletterListUIProps {
@@ -19,20 +20,9 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
   isLoading,
   error,
 }) => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -92,7 +82,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
 
   return (
     <section className="relative overflow-hidden py-8 px-4">
-      {/* Background Elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7aa2f7] rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#bb9af7] rounded-full blur-3xl" />
@@ -100,7 +89,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
       </div>
 
       <div className="container mx-auto relative z-10 max-w-6xl">
-        {/* Header Section */}
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
@@ -129,7 +117,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
             perspectives
           </motion.p>
 
-          {/* Decorative line */}
           <motion.div
             className="mx-auto mt-6 h-0.5 bg-gradient-to-r from-transparent via-[#7aa2f7] to-transparent rounded-full"
             initial={{ width: 0 }}
@@ -138,7 +125,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
           />
         </motion.div>
 
-        {/* Newsletter Grid */}
         <AnimatePresence mode="wait">
           <motion.div
             key={currentPage}
@@ -163,10 +149,8 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                   className="block relative overflow-hidden rounded-2xl backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 shadow-xl hover:shadow-2xl hover:shadow-[#7aa2f7]/10 transition-all duration-500"
                 >
                   <div className={`p-6 ${isMobile ? "p-4" : "p-8"}`}>
-                    {/* Newsletter Header */}
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                       <div className="flex-1">
-                        {/* Title */}
                         <motion.h2
                           className={`font-bold mb-3 bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent group-hover:from-[#7aa2f7] group-hover:to-[#bb9af7] transition-all duration-300 ${
                             isMobile ? "text-xl" : "text-2xl lg:text-3xl"
@@ -176,7 +160,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                           {newsletter.data.title}
                         </motion.h2>
 
-                        {/* Meta information */}
                         <div className="flex flex-wrap items-center gap-4 mb-4">
                           <div className="flex items-center gap-2 text-[#a9b1d6] text-sm">
                             <span className="text-lg">📅</span>
@@ -196,7 +179,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                             </div>
                           )}
 
-                          {/* Newsletter badge */}
                           <div className="flex items-center gap-2">
                             <span className="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white text-xs font-bold px-3 py-1 rounded-lg shadow-lg">
                               Newsletter
@@ -205,7 +187,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                         </div>
                       </div>
 
-                      {/* Newsletter number/issue */}
                       <div className="flex-shrink-0 mt-4 md:mt-0 md:ml-6">
                         <div className="relative">
                           <div className="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/20 to-[#bb9af7]/20 rounded-xl blur-sm"></div>
@@ -221,7 +202,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                       </div>
                     </div>
 
-                    {/* Summary */}
                     {newsletter.data.summary && (
                       <motion.p
                         className={`text-[#a9b1d6] leading-relaxed group-hover:text-[#c0caf5] transition-colors duration-300 ${
@@ -236,7 +216,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                       </motion.p>
                     )}
 
-                    {/* Read More CTA */}
                     <div className="flex items-center justify-between mt-6">
                       <div className="flex items-center gap-2 text-[#7aa2f7] font-medium text-sm group-hover:text-[#bb9af7] transition-colors duration-300">
                         <span className={isMobile ? "hidden" : "block"}>
@@ -250,7 +229,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                         </motion.span>
                       </div>
 
-                      {/* Reading progress indicator */}
                       <div className="flex items-center gap-1">
                         <div className="w-1.5 h-1.5 bg-[#7aa2f7] rounded-full opacity-60"></div>
                         <div className="w-1.5 h-1.5 bg-[#bb9af7] rounded-full opacity-40"></div>
@@ -259,10 +237,8 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                     </div>
                   </div>
 
-                  {/* Hover effects */}
                   <div className="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                  {/* Bottom accent line */}
                   <div className="h-1 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </a>
               </motion.article>
@@ -270,7 +246,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
           </motion.div>
         </AnimatePresence>
 
-        {/* Loading State */}
         {isLoading && (
           <motion.div
             className="flex justify-center items-center py-8"
@@ -287,7 +262,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
           </motion.div>
         )}
 
-        {/* Pagination */}
         {totalPages > 1 && !isLoading && (
           <motion.div
             className="flex justify-center items-center mt-12"
@@ -297,7 +271,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
           >
             <div className="backdrop-blur-xl bg-[#24283b]/50 border border-[#565f89]/30 rounded-2xl p-4 shadow-xl">
               <div className="flex items-center gap-3">
-                {/* Previous button */}
                 <motion.button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
@@ -313,7 +286,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                   {!isMobile && <span>Previous</span>}
                 </motion.button>
 
-                {/* Page numbers */}
                 <div className="flex items-center gap-2">
                   {[...Array(totalPages)].map((_, index) => {
                     const pageNum = index + 1;
@@ -335,7 +307,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
                   })}
                 </div>
 
-                {/* Next button */}
                 <motion.button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}

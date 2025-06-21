@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNewsletter } from "@react/newsletter/SubNewsletter/useNewletter";
+import { useIsMobile } from "@hooks/useIsMobile";
 
 const Newsletter: React.FC = () => {
   const {
@@ -13,20 +14,8 @@ const Newsletter: React.FC = () => {
     handleSubmit,
   } = useNewsletter();
 
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useIsMobile();
 
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -67,7 +56,6 @@ const Newsletter: React.FC = () => {
 
   return (
     <section className="relative overflow-hidden py-12 px-4">
-      {/* Background Elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7aa2f7] rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#bb9af7] rounded-full blur-3xl" />
@@ -75,7 +63,6 @@ const Newsletter: React.FC = () => {
       </div>
 
       <div className="container mx-auto relative z-10 max-w-7xl">
-        {/* Main Container */}
         <motion.div
           className="backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 rounded-3xl shadow-2xl overflow-hidden"
           variants={containerVariants}
@@ -85,17 +72,14 @@ const Newsletter: React.FC = () => {
           <div
             className={`flex ${isMobile ? "flex-col" : "flex-col lg:flex-row"} items-center`}
           >
-            {/* Image Section */}
             {!isMobile && (
               <motion.div
                 className="lg:w-1/2 flex justify-center items-center p-8 lg:p-12"
                 variants={imageVariants}
               >
                 <div className="relative group">
-                  {/* Image glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/20 via-[#bb9af7]/20 to-[#9ece6a]/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-110"></div>
 
-                  {/* Main image container */}
                   <motion.div
                     className="relative overflow-hidden rounded-3xl border-2 border-[#565f89]/30 group-hover:border-[#7aa2f7]/50 transition-all duration-500"
                     whileHover={{
@@ -113,11 +97,9 @@ const Newsletter: React.FC = () => {
                       transition={{ duration: 0.8 }}
                     />
 
-                    {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </motion.div>
 
-                  {/* Floating decorative elements */}
                   <div className="absolute -top-2 -right-2 w-4 h-4 bg-[#7aa2f7] rounded-full opacity-60 animate-pulse"></div>
                   <div
                     className="absolute -bottom-2 -left-2 w-3 h-3 bg-[#bb9af7] rounded-full opacity-40 animate-pulse"
@@ -127,12 +109,10 @@ const Newsletter: React.FC = () => {
               </motion.div>
             )}
 
-            {/* Content Section */}
             <motion.div
               className={`${isMobile ? "w-full p-6" : "lg:w-1/2 p-8 lg:p-12"} flex flex-col justify-center`}
               variants={itemVariants}
             >
-              {/* Header */}
               <motion.div className="mb-8" variants={itemVariants}>
                 <motion.div
                   className="inline-block mb-3"
@@ -162,7 +142,6 @@ const Newsletter: React.FC = () => {
                   delivered straight to your inbox.
                 </motion.p>
 
-                {/* Decorative line */}
                 <motion.div
                   className="mt-4 h-0.5 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-transparent rounded-full"
                   initial={{ width: 0 }}
@@ -171,13 +150,11 @@ const Newsletter: React.FC = () => {
                 />
               </motion.div>
 
-              {/* Form */}
               <motion.form
                 onSubmit={handleSubmit}
                 className="space-y-6"
                 variants={itemVariants}
               >
-                {/* Email Input */}
                 <motion.div variants={itemVariants}>
                   <label
                     htmlFor="email"
@@ -200,12 +177,10 @@ const Newsletter: React.FC = () => {
                       required
                       whileFocus={{ scale: 1.01 }}
                     />
-                    {/* Input accent */}
                     <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/5 to-[#bb9af7]/5 rounded-xl opacity-0 pointer-events-none transition-opacity duration-300 hover:opacity-100"></div>
                   </div>
                 </motion.div>
 
-                {/* Checkbox */}
                 <motion.div
                   className="flex items-start space-x-3"
                   variants={itemVariants}
@@ -220,7 +195,6 @@ const Newsletter: React.FC = () => {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                     />
-                    {/* Checkbox glow */}
                     {isAgreed && (
                       <div className="absolute inset-0 bg-[#7aa2f7]/20 rounded blur-sm"></div>
                     )}
@@ -239,7 +213,6 @@ const Newsletter: React.FC = () => {
                   </label>
                 </motion.div>
 
-                {/* Status Message */}
                 {statusMessage && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -254,7 +227,6 @@ const Newsletter: React.FC = () => {
                   </motion.div>
                 )}
 
-                {/* Submit Button */}
                 <motion.div variants={itemVariants}>
                   <motion.button
                     type="submit"
@@ -279,7 +251,6 @@ const Newsletter: React.FC = () => {
                   </motion.button>
                 </motion.div>
 
-                {/* Additional Info */}
                 <motion.div className="text-center" variants={itemVariants}>
                   <p
                     className={`text-[#565f89] ${isMobile ? "text-xs" : "text-sm"}`}
@@ -289,7 +260,6 @@ const Newsletter: React.FC = () => {
                     developers who trust our content
                   </p>
 
-                  {/* Trust indicators */}
                   <div className="flex justify-center items-center mt-3 space-x-4">
                     <div className="flex items-center space-x-1">
                       <div className="w-2 h-2 bg-[#9ece6a] rounded-full animate-pulse"></div>
@@ -316,7 +286,6 @@ const Newsletter: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Bottom decorative line */}
           <motion.div
             className="h-1 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a]"
             initial={{ scaleX: 0 }}
@@ -325,7 +294,6 @@ const Newsletter: React.FC = () => {
           />
         </motion.div>
 
-        {/* Floating background decorations */}
         <div className="absolute -top-4 -left-4 w-8 h-8 bg-[#7aa2f7]/10 rounded-full blur-sm animate-pulse"></div>
         <div
           className="absolute -bottom-4 -right-4 w-6 h-6 bg-[#bb9af7]/10 rounded-full blur-sm animate-pulse"

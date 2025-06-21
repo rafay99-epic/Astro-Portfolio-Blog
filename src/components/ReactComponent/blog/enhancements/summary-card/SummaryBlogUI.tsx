@@ -151,7 +151,6 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
       className="mt-4 backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl 
                  shadow-lg overflow-hidden"
     >
-      {/* Header */}
       <div className="bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 px-4 py-3 border-b border-[#565f89]/20">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -218,7 +217,6 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
         </div>
       </div>
 
-      {/* Content */}
       <div className="p-6">
         <motion.div
           initial={{ opacity: 0 }}
@@ -304,7 +302,6 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
           </ReactMarkdown>
         </motion.div>
 
-        {/* Footer */}
         <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#565f89]/20">
           <div className="flex items-center space-x-2 text-xs text-[#a9b1d6]">
             <div className="w-1.5 h-1.5 bg-[#9ece6a] rounded-full animate-pulse"></div>

@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaBriefcase,
   FaCalendarAlt,
@@ -7,21 +7,15 @@ import {
   FaTools,
 } from "react-icons/fa";
 import experienceData from "@config/siteConfig/info.json";
+import { useIsMobile } from "@hooks/useIsMobile";
 
 const workExperience = experienceData.workExperience;
 
 export default function ExperienceSideTimeline() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const [selectedExperience, setSelectedExperience] = useState<number | null>(
+    null
+  );
+  const isMobile = useIsMobile();
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -1,27 +1,17 @@
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Project } from "types/ProjectTypes";
 import { usePaginatedProjects } from "@react/personal/ProjectList/usePaginatedProjects";
+import { useIsMobile } from "@hooks/useIsMobile";
 
 interface ProjectListProps {
   projects: Project[];
 }
 
 const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
+  const isMobile = useIsMobile();
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   const filteredAndSortedProjects = useMemo(() => {
     try {
@@ -65,7 +55,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
     );
   }, [projects]);
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -122,7 +111,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
 
   return (
     <section className="relative overflow-hidden py-8 px-4">
-      {/* Background Elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7aa2f7] rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#bb9af7] rounded-full blur-3xl" />
@@ -130,7 +118,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
       </div>
 
       <div className="container mx-auto relative z-10">
-        {/* Header Section */}
         <motion.div
           className="text-center mb-8"
           initial={{ opacity: 0, y: -20 }}
@@ -158,7 +145,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
             Explore my portfolio of innovative solutions and creative projects
           </motion.p>
 
-          {/* Decorative line */}
           <motion.div
             className="mx-auto mt-4 h-0.5 bg-gradient-to-r from-transparent via-[#7aa2f7] to-transparent rounded-full"
             initial={{ width: 0 }}
@@ -167,7 +153,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
           />
         </motion.div>
 
-        {/* Filter Tags */}
         <motion.div
           className={`mb-8 ${isMobile ? "px-2" : "px-4"}`}
           initial={{ opacity: 0, y: 20 }}
@@ -215,7 +200,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
           </div>
         </motion.div>
 
-        {/* Projects Grid */}
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedTag || "all"}
@@ -241,7 +225,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                   href={`/project/${project.slug}`}
                   className="block relative overflow-hidden rounded-2xl backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 shadow-xl hover:shadow-2xl hover:shadow-[#7aa2f7]/10 transition-all duration-500"
                 >
-                  {/* Project Image */}
                   {project.data.ProjectImage && (
                     <div
                       className={`relative overflow-hidden ${
@@ -257,13 +240,10 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                         transition={{ duration: 0.8 }}
                       />
 
-                      {/* Image overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-[#1a1b26]/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
 
-                      {/* Hover overlay */}
                       <div className="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/20 via-transparent to-[#bb9af7]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                      {/* Project ranking badge */}
                       {project.data.ProjectRanking && (
                         <div className="absolute top-4 right-4 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white text-xs font-bold px-2 py-1 rounded-lg shadow-lg">
                           #{project.data.ProjectRanking}
@@ -272,9 +252,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                     </div>
                   )}
 
-                  {/* Project Content */}
                   <div className={`p-6 ${isMobile ? "p-4" : "p-6"}`}>
-                    {/* Project Title */}
                     <motion.h3
                       className={`font-bold mb-3 bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent group-hover:from-[#7aa2f7] group-hover:to-[#bb9af7] transition-all duration-300 ${
                         isMobile ? "text-xl" : "text-2xl"
@@ -284,7 +262,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                       {project.data.Projecttitle}
                     </motion.h3>
 
-                    {/* Project Description */}
                     <p
                       className={`text-[#a9b1d6] mb-4 leading-relaxed group-hover:text-[#c0caf5] transition-colors duration-300 ${
                         isMobile
@@ -295,7 +272,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                       {project.data.ProjectDescription}
                     </p>
 
-                    {/* Tech Stack */}
                     {project.data.ProjectTech && (
                       <div className="flex flex-wrap gap-2 mb-4">
                         {project.data.ProjectTech.slice(
@@ -322,7 +298,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                       </div>
                     )}
 
-                    {/* Project Links */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         {project.data.githubLink && (
@@ -359,7 +334,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                         )}
                       </div>
 
-                      {/* View Project Arrow */}
                       <motion.div
                         className="flex items-center gap-2 text-[#7aa2f7] font-medium text-sm group-hover:text-[#bb9af7] transition-colors duration-300"
                         whileHover={{ x: 5 }}
@@ -377,7 +351,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                     </div>
                   </div>
 
-                  {/* Bottom accent line */}
                   <div className="h-1 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </a>
               </motion.div>
@@ -385,7 +358,6 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <motion.div
             className="flex justify-center items-center mt-12"
@@ -416,9 +388,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                     return (
                       <motion.button
                         key={pageNum}
-                        onClick={() => {
-                          // You might want to add a goToPage function to your hook
-                        }}
+                        onClick={() => {}}
                         className={`w-8 h-8 rounded-lg font-semibold transition-all duration-300 ${
                           currentPage === pageNum
                             ? "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white shadow-lg"

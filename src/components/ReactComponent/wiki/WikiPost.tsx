@@ -2,21 +2,11 @@ import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import type { Version, WikiPageProps } from "../../../types/wiki";
+import { useIsMobile } from "@hooks/useIsMobile";
 
 const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
   const [error, setError] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   const mappedVersions: Version[] = useMemo(() => {
     try {
@@ -151,13 +141,6 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
 
   return (
     <div className="relative min-h-screen py-8 px-4">
-      {/* Background Elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 left-1/6 w-96 h-96 bg-[#7aa2f7]/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/6 w-80 h-80 bg-[#bb9af7]/5 rounded-full blur-3xl" />
-        <div className="absolute top-2/3 left-1/2 w-64 h-64 bg-[#9ece6a]/5 rounded-full blur-3xl" />
-      </div>
-
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Header Section */}
         <motion.div
