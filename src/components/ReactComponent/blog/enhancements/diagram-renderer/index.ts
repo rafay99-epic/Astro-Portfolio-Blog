@@ -1,2 +1,2 @@
-export { DiagramEnhancer } from "./DiagramEnhancer";
-export { MermaidWrapper } from "./MermaidWrapper";
+// export { DiagramEnhancer } from "./DiagramEnhancer";
+// export { MermaidWrapper } from "./MermaidWrapper";

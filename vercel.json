@@ -1,14 +1,1 @@
-{
-    "installCommand": "npm install && npx playwright install chromium",
-    "buildCommand": "npm run build",
-    "routes": [
-        {
-            "src": "/snaprescue.sh",
-            "dest": "/snaprescue.sh"
-        },
-        {
-            "src": "/Meaning-Mate-APK",
-            "dest": "/Meaning-Mate-APK.apk"
-        }
-    ]
-}
+{}

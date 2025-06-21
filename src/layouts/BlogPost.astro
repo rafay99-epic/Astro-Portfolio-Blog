@@ -12,7 +12,7 @@ import AISummaryCard from "@react/blog/enhancements/summary-card/summary_blog";
 import BlogHeader from "@react/blog/layout/BlogPostLayout/BlogPostLayoutHeader";
 import BlogTOCReact from "@react/blog/metadata/BlogTOC/BlogTOC";
 import QAChatWidget from "@react/blog/enhancements/qa-chat/QAChatWidget";
-import { DiagramEnhancer } from "@react/blog/enhancements/diagram-renderer/DiagramEnhancer";
+// import { DiagramEnhancer } from "@react/blog/enhancements/diagram-renderer/DiagramEnhancer";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -486,8 +486,7 @@ const {
         </div>
       </div>
 
-      <!-- Diagram Enhancer for Mermaid diagrams -->
-      <DiagramEnhancer client:load />
+      <!-- {featureFlags.enableAstroDiagrams && <DiagramEnhancer client:load />} -->
 
       <div class="comments-section">
         <div class="comments-container">
