@@ -2,21 +2,19 @@
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import SocialLinks from "@astro/SocialMedia/SocialMedia.astro";
 import "@styles/home/home-page.css";
 import FeaturedPost from "@astro/home/FeaturePost/featurePost.astro";
 import LatestPost from "@astro/home/LatestPost/LatestPost.astro";
 import SkillsShowcase from "@react/personal/JobSkills/jobSkills";
 import ContactMap from "@astro/home/ContactMap/ContactMap.astro";
+import CustomGitHubStats from "@react/personal/GitHubStats/CustomGitHubStats";
 import authorConfig from "@config/siteConfig/info.json";
-import ProfileImage from "@react/layout/HeroSection/ProfileImage";
-import Greeting from "@react/layout/HeroSection/Greeting";
-import ConnectButton from "@react/layout/HeroSection/ConnectButton";
+import HeroSection from "@react/layout/HeroSection/heroSection";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 export const prerender = true;
-const { name, jobTitle, position, picture } = authorConfig;
+const { name, jobTitle, position, picture, socialLinks } = authorConfig;
 try {
   if (!featureFlags.showIndex) {
     return Astro.redirect("/access-denied");
@@ -37,40 +35,24 @@ try {
   <body>
     <Header />
     <SpeedInsights />
-    <main>
+    <main class="pt-0 mt-0">
+      <HeroSection
+        client:load
+        name={name}
+        jobTitle={jobTitle}
+        position={position}
+        picture={picture}
+        socialLinks={socialLinks}
+      />
+
       <section>
-        <div class="main-container">
-          <div class="side-by-side-containers">
-            <div class="left-container">
-              <Greeting
-                client:load
-                name={name}
-                jobTitle={jobTitle}
-                position={position}
-              />
-              <div class="animated-text fade-slide-in social-links-container">
-                <SocialLinks />
-              </div>
-              <ConnectButton />
-            </div>
-            <div class="right-container">
-              <ProfileImage client:visible picture={picture} />
-            </div>
-          </div>
-        </div>
-      </section>
-      <section style="margin-block-start: 12rem;">
         {featureFlags.showBlog && <FeaturedPost />}
       </section>
-      <section style="margin-block-start: 5rem;">
-        {featureFlags.showBlog && <LatestPost />}
+      <section>
+        {featureFlags.showGitHubStats && <CustomGitHubStats client:visible />}
       </section>
 
-      <section style="margin-block-start: 5rem;">
-        <h1 class="text-center text-6xl font-bold mb-6">Tool & Technology</h1>
-        <p class="text-center text-lg font-bold mb-6">
-          I have experience with these technologies
-        </p>
+      <section>
         <SkillsShowcase client:visible />
       </section>
       <section style="margin-block-start: 5rem;">

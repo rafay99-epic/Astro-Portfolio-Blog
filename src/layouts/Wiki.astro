@@ -4,8 +4,10 @@ import type { CollectionEntry } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import FormattedDate from "@components/FormattedDate.astro";
+import ArticleHeader from "@astro/blog/layout/ArticleHeader.astro";
+import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
 import ShareButtons from "@react/blog/interactions/socialButton";
+// import { DiagramEnhancer } from "@react/blog/enhancements/diagram-renderer/DiagramEnhancer";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
@@ -30,41 +32,61 @@ const { title, description, pubDate, readTime, tags } = Astro.props;
   </head>
   <body>
     <Header />
-    <main class="w-full max-w-5xl mx-auto px-4 py-8">
-      <article>
-        <div class="prose mx-auto text-gray-800 text-justify">
+    
+    <main class="relative min-h-screen pt-0 mt-0">
+      <div class="container mx-auto px-6 py-8 max-w-7xl">
+        <ArticleHeader
+          title={title}
+          description={description}
+          pubDate={pubDate}
+          readTime={readTime}
+          badge={{
+            text: "Wiki Documentation",
+            icon: "📚"
+          }}
+          type="wiki"
+        />
+
+        <!-- Tags Section -->
+        {tags && tags.length > 0 && (
           <div class="mb-8 text-center">
-            <h1 class="text-6xl font-bold mb-4">{title}</h1>
-            <div class="mb-2 text-white">
-              <FormattedDate date={pubDate} />
-              {
-                readTime && (
-                  <p class="text-sm text-gray-500 italic">{readTime}</p>
-                )
-              }
-            </div>
-            <div class="mb-4 text-center">
-              <div class="flex flex-wrap justify-center mt-4 space-x-2">
-                {
-                  tags?.map((tag) => (
-                    <span class="technology-chip inline-block m-1 px-2 py-1 bg-[#3b4252] text-[#f8f8f8] rounded-lg text-base hover:bg-[#7aa2f7] ">
+            <div class="flex flex-wrap justify-center gap-2">
+              {tags.map((tag) => (
+                <span class="group relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 cursor-default">
+                  <!-- Tag Background -->
+                  <div class="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div class="absolute inset-0 border border-[#7aa2f7]/30 rounded-xl group-hover:border-[#7aa2f7]/50 transition-colors duration-300"></div>
+                  
+                  <!-- Tag Content -->
+                  <div class="relative flex items-center gap-2">
+                    <div class="w-2 h-2 bg-[#7aa2f7] rounded-full group-hover:bg-[#bb9af7] transition-colors duration-300"></div>
+                    <span class="text-[#c0caf5] group-hover:text-white transition-colors duration-300">
                       {tag}
                     </span>
-                  ))
-                }
-              </div>
+                  </div>
+                </span>
+              ))}
             </div>
-            <div>
-              <ShareButtons url={pageUrl} pagetitle="Web Wiki" />
-            </div>
-            <hr class="mt-4" />
           </div>
-          <div>
+        )}
+
+        <!-- Content -->
+        <ContentContainer>
+          <div class="wiki-content prose prose-lg max-w-none">
             <slot />
           </div>
+        </ContentContainer>
+
+        <!-- Share Section -->
+        <div class="mt-16">
+          <ShareButtons url={pageUrl} pagetitle="Web Wiki" />
         </div>
-      </article>
+
+        <!-- {featureFlags.enableAstroDiagrams && <DiagramEnhancer client:load />} -->
+      </div>
     </main>
-    <Footer />
+    <div class="mt-auto">
+      <Footer />
+    </div>
   </body>
 </html>

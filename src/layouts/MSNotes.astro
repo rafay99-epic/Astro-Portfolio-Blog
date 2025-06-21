@@ -2,7 +2,8 @@
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import FormattedDate from "@components/FormattedDate.astro";
+import ArticleHeader from "@astro/blog/layout/ArticleHeader.astro";
+import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
 import ShareButtons from "@react/blog/interactions/socialButton";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
@@ -42,52 +43,173 @@ try {
   <head>
     <BaseHead title={lecture_title} description={lecture_description} />
     <SpeedInsights />
-    <style></style>
+    <style>
+      .notes-container {
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .main-content {
+        opacity: 1;
+      }
+
+      .content-section {
+        opacity: 1;
+      }
+
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, #7aa2f7, #bb9af7, #9ece6a);
+        z-index: 1000;
+        transition: width 0.1s ease-out;
+      }
+      .notes-typography {
+        line-height: 1.8;
+        font-size: 1.1rem;
+      }
+
+      .notes-typography h1,
+      .notes-typography h2,
+      .notes-typography h3,
+      .notes-typography h4,
+      .notes-typography h5,
+      .notes-typography h6 {
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        scroll-margin-top: 100px;
+      }
+
+      .notes-typography h1 {
+        border-bottom: 2px solid rgba(122, 162, 247, 0.3);
+        padding-bottom: 0.5rem;
+      }
+
+      .notes-typography h2 {
+        border-left: 4px solid #7aa2f7;
+        padding-left: 1rem;
+        background: rgba(122, 162, 247, 0.05);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+      }
+
+      .notes-typography h3 {
+        color: #bb9af7;
+        position: relative;
+      }
+
+      .notes-typography h3::before {
+        content: "▶";
+        color: #9ece6a;
+        margin-right: 0.5rem;
+      }
+
+      .notes-typography blockquote {
+        background: rgba(122, 162, 247, 0.1);
+        border-left: 4px solid #7aa2f7;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .notes-typography ul,
+      .notes-typography ol {
+        padding-left: 2rem;
+        margin: 1.5rem 0;
+      }
+
+      .notes-typography li {
+        margin-bottom: 0.5rem;
+        position: relative;
+      }
+
+      .notes-typography ul li::marker {
+        color: #9ece6a;
+      }
+
+      .notes-typography ol li::marker {
+        color: #bb9af7;
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
+        .notes-typography {
+          font-size: 1rem;
+          line-height: 1.7;
+        }
+
+        .notes-typography h2 {
+          padding: 0.4rem 0.8rem;
+        }
+      }
+    </style>
   </head>
-  <body>
+  <body class="notes-container" style="overflow-x: hidden; overflow-y: auto;">
+    <div class="progress-bar" id="progress-bar"></div>
+
     <Header />
-    <main class="w-full max-w-5xl mx-auto px-4 py-8">
+
+    <main class="w-full max-w-7xl mx-auto px-6 py-12 pt-0 main-content">
       <article>
-        <div class="prose mx-auto text-gray-800 text-justify">
-          <div class="mb-12">
-            <header class="text-center mb-6">
-              <h1
-                class="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-2"
-              >
-                {lecture_title}
-              </h1>
-              <div
-                class="flex justify-center flex-wrap items-center gap-x-4 text-sm text-gray-400"
-              >
-                <FormattedDate date={pubDate} />
-                <span>Lecture {lectureNumber}</span>
-                {readTime && <span>{readTime}</span>}
-              </div>
-              {
-                subject && (
-                  <p class="text-base italic text-gray-500 mt-2">{subject}</p>
-                )
-              }
-            </header>
-
-            <div class="flex justify-center">
-              <ShareButtons
-                url={pageUrl}
-                pagetitle="Notes"
-                aria-label="Share this post"
-              />
-            </div>
-
-            <hr class="mt-8 border-gray-600" />
-          </div>
-
-          <div>
+        <ArticleHeader
+          title={lecture_title}
+          description={lecture_description}
+          pubDate={pubDate}
+          readTime={readTime}
+          subject={subject}
+          badge={{
+            text: `Lecture ${lectureNumber}`,
+            icon: "📚",
+          }}
+          type="notes"
+        />
+        <div>
+          <ShareButtons url={pageUrl} pagetitle="Notes" client:load />
+        </div>
+        <div class="content-section">
+          <ContentContainer withBackground={true} class="notes-typography">
             <slot />
-          </div>
+          </ContentContainer>
         </div>
       </article>
     </main>
 
     <Footer />
+
+    <script>
+      let ticking = false;
+
+      function updateProgress() {
+        const progressBar = document.getElementById("progress-bar");
+        if (!progressBar) return;
+
+        const article = document.querySelector("article");
+        if (!article) return;
+
+        const scrollTop = window.pageYOffset;
+        const docHeight = article.offsetHeight;
+        const winHeight = window.innerHeight;
+        const scrollPercent = scrollTop / (docHeight - winHeight);
+        const scrollPercentRounded = Math.round(scrollPercent * 100);
+
+        progressBar.style.width =
+          Math.min(Math.max(scrollPercentRounded, 0), 100) + "%";
+        ticking = false;
+      }
+
+      function requestTick() {
+        if (!ticking) {
+          requestAnimationFrame(updateProgress);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener("scroll", requestTick, { passive: true });
+      window.addEventListener("load", updateProgress, { passive: true });
+      window.addEventListener("resize", updateProgress, { passive: true });
+    </script>
   </body>
 </html>

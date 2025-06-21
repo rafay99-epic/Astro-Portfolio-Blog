@@ -2,12 +2,15 @@
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
+import ArticleHeader from "@astro/blog/layout/ArticleHeader.astro";
+import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
 import ShareButtons from "@react/blog/interactions/socialButton";
-import authorConfig from "@config/siteConfig/info.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+
 const pageUrl = Astro.url.href;
 export const prerender = true;
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
+
 type Props = {
   Projecttitle: string;
   ProjectDescription: string;
@@ -29,88 +32,299 @@ try {
 
 <html lang="en">
   <head>
-    <BaseHead
-      title={authorConfig?.SiteName ?? ""}
-      description={authorConfig?.SiteDescription ?? ""}
-    />
+    <BaseHead title={Projecttitle} description={ProjectDescription} />
+    <SpeedInsights />
     <style>
-      .project-tech li {
-        @apply bg-[#3b4252] text-[#f8f8f8] px-3 py-1 rounded-lg text-sm;
+      .project-container {
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .main-content {
+        opacity: 1;
+      }
+
+      .project-image-section {
+        opacity: 1;
+        margin-bottom: 2rem;
+      }
+
+      .project-image {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(122, 162, 247, 0.2);
+        position: relative;
+        background: linear-gradient(
+          135deg,
+          rgba(26, 27, 38, 0.6),
+          rgba(36, 40, 59, 0.6)
+        );
+        backdrop-filter: blur(20px);
+      }
+
+      .project-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+
+      .project-image:hover img {
+        transform: scale(1.02);
+      }
+
+      .share-section {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+        opacity: 1;
+      }
+
+      .tech-section {
+        opacity: 1;
+        margin: 2rem 0;
+      }
+
+      .tech-container {
+        background: rgba(26, 27, 38, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(86, 95, 137, 0.2);
+        border-radius: 20px;
+        padding: 32px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tech-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(122, 162, 247, 0.03) 0%,
+          rgba(158, 206, 106, 0.03) 100%
+        );
+        pointer-events: none;
+      }
+
+      .tech-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .tech-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #7aa2f7, #9ece6a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      .tech-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .tech-chip {
+        background: linear-gradient(
+          135deg,
+          rgba(122, 162, 247, 0.2),
+          rgba(187, 154, 247, 0.2)
+        );
+        border: 1px solid rgba(122, 162, 247, 0.3);
+        color: #c0caf5;
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tech-chip::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      .tech-chip:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(122, 162, 247, 0.3);
+        border-color: rgba(122, 162, 247, 0.5);
+      }
+
+      .tech-chip:hover::before {
+        left: 100%;
+      }
+
+      .content-section {
+        opacity: 1;
+      }
+
+      /* Enhanced Typography for Project Content */
+      .project-typography {
+        line-height: 1.8;
+        font-size: 1.1rem;
+      }
+
+      .project-typography h1,
+      .project-typography h2,
+      .project-typography h3,
+      .project-typography h4,
+      .project-typography h5,
+      .project-typography h6 {
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        scroll-margin-top: 100px;
+      }
+
+      .project-typography h2 {
+        border-left: 4px solid #7aa2f7;
+        padding-left: 1rem;
+        background: rgba(122, 162, 247, 0.05);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+      }
+
+      .project-typography h3 {
+        color: #bb9af7;
+        position: relative;
+      }
+
+      .project-typography h3::before {
+        content: "🚀";
+        margin-right: 0.5rem;
+      }
+
+      .project-typography blockquote {
+        background: rgba(122, 162, 247, 0.1);
+        border-left: 4px solid #7aa2f7;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .project-typography ul li::marker {
+        color: #7aa2f7;
+      }
+
+      .project-typography ol li::marker {
+        color: #bb9af7;
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
+        .project-typography {
+          font-size: 1rem;
+          line-height: 1.7;
+        }
+
+        .tech-container {
+          padding: 24px;
+        }
+
+        .tech-title {
+          font-size: 1.5rem;
+        }
+
+        .tech-chip {
+          font-size: 12px;
+          padding: 6px 12px;
+        }
       }
     </style>
   </head>
 
-  <body>
+  <body class="project-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
-    <SpeedInsights />
-    <main class="w-full max-w-5xl mx-auto px-4 py-8">
-      <article class="text-align-justify">
+
+    <main class="w-full max-w-7xl mx-auto px-6 py-12 main-content">
+      <article>
+        {/* Article Header */}
+        <ArticleHeader
+          title={Projecttitle}
+          description={ProjectDescription}
+          pubDate={new Date()}
+          badge={{
+            text: "Project",
+            icon: "🚀",
+          }}
+          type="project"
+        />
+
+        {
+          ProjectImage && (
+            <div class="project-image-section">
+              <div class="project-image">
+                <img
+                  src={ProjectImage}
+                  alt={Projecttitle}
+                  width="1020"
+                  height="510"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          )
+        }
+
         <div>
-          <div class="w-full mb-4">
-            {
-              ProjectImage && (
-                <figure class="mb-4">
-                  <img
-                    src={ProjectImage}
-                    alt={Projecttitle}
-                    width="1020"
-                    height="510"
-                  />
-                </figure>
-              )
-            }
-          </div>
+          <ShareButtons url={pageUrl} pagetitle="Project" client:load />
+        </div>
 
-          <div class="my-8 prose mx-auto text-justify">
-            <div class="flex flex-col items-center">
-              <h1
-                class="mt-6 text-4xl sm:text-5xl lg:text-5xl font-extrabold text-center text-gray-800 dark:text-gray-100 leading-tight mb-6"
-              >
-                {Projecttitle}
-              </h1>
-            </div>
-
-            <div class="mb-4 text-gray-300">
-              <p>
-                <span class="text-2xl font-bold">Description: </span>{
-                  ProjectDescription
-                }
-              </p>
-            </div>
-            <div>
-              <ShareButtons url={pageUrl} pagetitle="Project" />
-            </div>
-            <hr class="mt-4" />
-            <div>
-              <div class="">
-                <h2
-                  class="text-2xl font-semibold text-[#f8f8f8] mt-4 mb-4 text-center"
-                >
-                  Technologies Used:
-                </h2>
-              </div>
-              <div class="flex justify-center">
-                {
-                  ProjectTech && (
-                    <ul class="flex gap-2 flex-wrap list-none justify-center">
-                      {ProjectTech.map((tech) => (
-                        <li class="bg-[#3b4252] text-[#f8f8f8] px-3 py-1 rounded-lg text-base">
-                          {tech}
-                        </li>
-                      ))}
-                    </ul>
-                  )
-                }
+        {
+          ProjectTech && ProjectTech.length > 0 && (
+            <div class="tech-section">
+              <div class="tech-container">
+                <div class="tech-header">
+                  <h2 class="tech-title">🛠️ Technologies Used</h2>
+                  <p class="text-[#a9b1d6] text-sm">
+                    Built with modern tools and frameworks
+                  </p>
+                </div>
+                <div class="tech-grid">
+                  {ProjectTech.map((tech) => (
+                    <span class="tech-chip">{tech}</span>
+                  ))}
+                </div>
               </div>
             </div>
+          )
+        }
 
-            <div>
-              <slot />
-            </div>
-          </div>
+        {/* Content Section */}
+        <div class="content-section">
+          <ContentContainer withBackground={true} class="project-typography">
+            <slot />
+          </ContentContainer>
         </div>
       </article>
     </main>
+
     <Footer />
   </body>
 </html>

@@ -2,74 +2,112 @@
 const today = new Date();
 import SocialLinks from "@astro/SocialMedia/SocialMedia.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import packageJson from "../../../../package.json";
 ---
 
-<footer class="text-white py-8">
-  <div
-    class="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0"
-  >
-    <div class="flex justify-center space-x-4">
-      <SocialLinks class="space-x-4" />
+<style>
+  .footer-link {
+    transition: all 0.2s ease;
+  }
+
+  .footer-link:hover {
+    color: #7aa2f7;
+  }
+
+  .astro-badge {
+    transition: all 0.2s ease;
+    opacity: 0.7;
+  }
+
+  .astro-badge:hover {
+    opacity: 1;
+  }
+</style>
+
+<footer class="py-2 px-4 border-t border-[#565f89]/20">
+  <div class="container mx-auto max-w-6xl">
+    <!-- Main Footer Content -->
+    <div
+      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4"
+    >
+      <!-- Left: Social Links -->
+      <div class="flex items-center gap-4">
+        <SocialLinks class="flex gap-3" />
+      </div>
+
+      <!-- Center: Navigation Links -->
+      <nav class="flex flex-wrap justify-center gap-4 text-sm">
+        {
+          featureFlags.showAbout && (
+            <a
+              href="/about"
+              class="footer-link text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200"
+            >
+              About
+            </a>
+          )
+        }
+        {
+          featureFlags.showContact && (
+            <a
+              href="/contact-me"
+              class="footer-link text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200"
+            >
+              Contact
+            </a>
+          )
+        }
+        {
+          featureFlags.showPrivacyPolicy && (
+            <a
+              href="/privacy-policy"
+              class="footer-link text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200"
+            >
+              Privacy
+            </a>
+          )
+        }
+        {
+          featureFlags.showWiki && (
+            <a
+              href="/webwiki"
+              class="footer-link text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200"
+            >
+              Wiki
+            </a>
+          )
+        }
+      </nav>
+
+      <!-- Right: Branding -->
+      <div class="flex items-center gap-4">
+        <a href="https://astro.build" class="astro-badge">
+          <img
+            src="https://astro.badg.es/v2/built-with-astro/small.svg"
+            alt="Built with Astro"
+            class="h-6 w-auto"
+          />
+        </a>
+      </div>
     </div>
 
-    <nav class="flex flex-wrap justify-center gap-4 text-sm">
-      {
-        featureFlags.showPrivacyPolicy && (
-          <a
-            href="/privacy-policy"
-            class="text-accent hover:text-gray-300 transition"
-          >
-            Privacy Policy
-          </a>
-        )
-      }
-      {
-        featureFlags.showTermsandConditions && (
-          <a
-            href="/terms-and-conditions"
-            class="text-accent hover:text-gray-300 transition"
-          >
-            Terms & Conditions
-          </a>
-        )
-      }
-      {
-        featureFlags.showWiki && (
-          <a href="/webwiki" class="text-accent hover:text-gray-300 transition">
-            Wiki
-          </a>
-        )
-      }
-      {
-        featureFlags.showAbout && (
-          <a href="/about" class="text-accent hover:text-gray-300 transition">
-            About Us
-          </a>
-        )
-      }
-      {
-        featureFlags.showContact && (
-          <a
-            href="/contact-me"
-            class="text-accent hover:text-gray-300 transition"
-          >
-            Contact
-          </a>
-        )
-      }
-    </nav>
+    <!-- Bottom: Copyright -->
+    <div
+      class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-3 border-t border-[#565f89]/10"
+    >
+      <div class="text-center sm:text-left">
+        <p class="text-[#565f89] text-sm">
+          &copy; {new Date().getFullYear()} Abdul Rafay. All rights reserved.
+        </p>
+      </div>
 
-    <!-- Branding Section -->
-    <div class="flex flex-col items-center space-y-2">
-      <a href="https://astro.build" class="transition hover:opacity-80">
-        <img
-          src="https://astro.badg.es/v2/built-with-astro/small.svg"
-          alt="Built with Astro"
-          class="w-48 h-8"
-        />
-      </a>
-      <div class="text-gray-400 text-xs text-center">
-        &copy; {new Date().getFullYear()} Abdul Rafay. All rights reserved.
+      <div class="flex items-center gap-3 text-xs text-[#565f89]">
+        <div class="flex items-center gap-1">
+          <div class="w-1.5 h-1.5 bg-[#9ece6a] rounded-full"></div>
+          <span>v{packageJson.version}</span>
+        </div>
+        <span>•</span>
+        <span>{today.toLocaleDateString()}</span>
       </div>
     </div>
   </div>

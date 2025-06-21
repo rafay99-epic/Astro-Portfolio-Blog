@@ -15,7 +15,8 @@
       "@types/*": ["types/*"],
       "@util/*": ["util/*"],
       "@config/*": ["config/*"],
-      "@server/*": ["server/*"]
+      "@server/*": ["server/*"],
+      "@hooks/*": ["hooks/*"]
     },
     "strictNullChecks": true,
     "jsx": "react-jsx",

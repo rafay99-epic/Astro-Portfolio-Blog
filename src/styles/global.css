@@ -1,12 +1,13 @@
 :root {
-  --accent: #7aa2f7;
-  --accent-dark: #1f2335;
+  /* Legacy variables for backward compatibility - will be migrated gradually */
+  --accent: var(--color-primary, #7aa2f7);
+  --accent-dark: var(--color-bg-secondary, #1f2335);
   --black: 8, 12, 17;
   --gray: 76, 80, 106;
   --gray-light: 59, 66, 82;
-  --text-light: #f8f8f8;
+  --text-light: var(--color-text-primary, #f8f8f8);
   --gray-dark: 31, 34, 40;
-  --gray-gradient: linear-gradient(135deg, #1a1b26 0%, #414868 100%);
+  --gray-gradient: var(--gradient-primary, linear-gradient(135deg, #1a1b26 0%, #414868 100%));
   --box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25),
     0 8px 24px rgba(76, 80, 106, 0.33), 0 16px 32px rgba(76, 80, 106, 0.33);
   --copy-btn-margin: 10px;
@@ -167,11 +168,11 @@ body {
   margin: 0;
   padding: 0;
   text-align: left;
-  background-color: var(--accent-dark);
+  background-color: var(--color-bg-primary, var(--accent-dark));
   background-size: 100% 600px;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  color: var(--text-light);
+  color: var(--color-text-primary, var(--text-light));
   font-size: 20px;
   line-height: 1.7;
 }
@@ -193,7 +194,7 @@ h5,
 h6 {
   font-family: "Poppins", sans-serif;
   margin: 0 0 0.5em 0;
-  color: var(--text-light);
+  color: var(--color-text-primary, var(--text-light));
   line-height: 1.2;
   font-weight: 700;
 

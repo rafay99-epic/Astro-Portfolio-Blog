@@ -2,12 +2,16 @@
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
+import ArticleHeader from "@astro/blog/layout/ArticleHeader.astro";
+import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "@astro/blog/comments/PostComment.astro";
 import ShareButtons from "@react/blog/interactions/socialButton";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+
 const pageUrl = Astro.url.href;
 export const prerender = true;
+
 type Props = {
   title: string;
   pubDate: Date;
@@ -16,6 +20,7 @@ type Props = {
 };
 
 const { title, pubDate, summary } = Astro.props;
+
 try {
   if (!featureFlags.showNewsletter) {
     return Astro.redirect("/access-denied");
@@ -28,54 +33,194 @@ try {
 <html lang="en">
   <head>
     <BaseHead title={title} description={summary} />
+    <SpeedInsights />
     <style>
-      .ad-container {
-        margin: 2em 0;
-        text-align: center;
+      .newsletter-container {
+        min-height: 100vh;
+        position: relative;
       }
-      #ad-blocker-message {
-        display: none;
-        color: red;
+
+      .main-content {
+        opacity: 1;
+      }
+
+      .share-section {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+        opacity: 1;
+      }
+
+      .content-section {
+        opacity: 1;
+      }
+
+      .comments-section {
+        opacity: 1;
+      }
+
+      /* Enhanced Typography for Newsletter Content */
+      .newsletter-typography {
+        line-height: 1.8;
+        font-size: 1.1rem;
+      }
+
+      .newsletter-typography h1,
+      .newsletter-typography h2,
+      .newsletter-typography h3,
+      .newsletter-typography h4,
+      .newsletter-typography h5,
+      .newsletter-typography h6 {
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        scroll-margin-top: 100px;
+      }
+
+      .newsletter-typography h2 {
+        border-left: 4px solid #9ece6a;
+        padding-left: 1rem;
+        background: rgba(158, 206, 106, 0.05);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        color: #9ece6a;
+      }
+
+      .newsletter-typography h3 {
+        color: #bb9af7;
+        position: relative;
+      }
+
+      .newsletter-typography h3::before {
+        content: "📧";
+        margin-right: 0.5rem;
+      }
+
+      .newsletter-typography blockquote {
+        background: rgba(158, 206, 106, 0.1);
+        border-left: 4px solid #9ece6a;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .newsletter-typography ul li::marker {
+        color: #9ece6a;
+      }
+
+      .newsletter-typography ol li::marker {
+        color: #bb9af7;
         font-weight: bold;
+      }
+
+      .comments-container {
+        background: rgba(26, 27, 38, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(86, 95, 137, 0.2);
+        border-radius: 20px;
+        padding: 32px;
+        margin-top: 32px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .comments-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(158, 206, 106, 0.03) 0%,
+          rgba(187, 154, 247, 0.03) 100%
+        );
+        pointer-events: none;
+      }
+
+      .comments-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .comments-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #9ece6a, #bb9af7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      @media (max-width: 768px) {
+        .newsletter-typography {
+          font-size: 1rem;
+          line-height: 1.7;
+        }
+
+        .comments-container {
+          padding: 24px;
+        }
+
+        .comments-title {
+          font-size: 1.5rem;
+        }
       }
     </style>
   </head>
 
-  <body>
+  <body
+    class="newsletter-container"
+    style="overflow-x: hidden; overflow-y: auto;"
+  >
     <Header />
-    <SpeedInsights />
-    <main class="w-full max-w-5xl mx-auto px-4 py-8">
-      <article class="newsletter">
-        <h1
-          class="text-4xl sm:text-5xl lg:text-5xl font-extrabold text-center text-gray-800 dark:text-gray-100 leading-tight mb-6"
-        >
-          {title}
-        </h1>
 
-        <p>
-          <span class="font-bold">Date: </span>{pubDate.toLocaleDateString()}
-        </p>
-        {
-          summary && (
-            <p>
-              <span class="font-bold">Summary: </span>
-              {summary}
-            </p>
-          )
-        }
+    <main class="w-full max-w-7xl mx-auto px-6 py-12 main-content">
+      <article>
+        {/* Article Header */}
+        <ArticleHeader
+          title={title}
+          description={summary}
+          pubDate={pubDate}
+          badge={{
+            text: "Newsletter",
+            icon: "📧",
+          }}
+          type="newsletter"
+        />
+
+        {/* Share Section */}
         <div>
-          <ShareButtons url={pageUrl} pagetitle="Newsletter" />
+          <ShareButtons url={pageUrl} pagetitle="Newsletter" client:load />
         </div>
-        <hr class="mt-4" />
-        <div class="my-8 prose mx-auto text-justify">
-          <slot />
+
+        {/* Content Section */}
+        <div class="content-section">
+          <ContentContainer withBackground={true} class="newsletter-typography">
+            <slot />
+          </ContentContainer>
         </div>
-        <div class="my-8 text-center">
-          <h2 class="text-2xl font-semibold mb-4">Comments</h2>
-          <PostComment />
+
+        {/* Comments Section */}
+        <div class="comments-section">
+          <div class="comments-container">
+            <div class="comments-header">
+              <h2 class="comments-title">💬 Join the Discussion</h2>
+              <p class="text-[#a9b1d6] text-sm">
+                Share your thoughts and engage with the community
+              </p>
+            </div>
+            <div class="relative z-1">
+              <PostComment />
+            </div>
+          </div>
         </div>
       </article>
     </main>
+
     <Footer />
   </body>
 </html>

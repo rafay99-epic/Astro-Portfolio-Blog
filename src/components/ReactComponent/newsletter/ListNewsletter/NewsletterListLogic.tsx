@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { Newsletter } from "types/newsletter_types.ts";
 
 interface NewsletterLogicProps {
@@ -7,8 +7,10 @@ interface NewsletterLogicProps {
     currentNewsletters: Newsletter[],
     totalPages: number,
     currentPage: number,
-    handlePageChange: (page: number) => void
-  ) => JSX.Element;
+    handlePageChange: (page: number) => void,
+    isLoading: boolean,
+    error: string | null
+  ) => React.ReactElement;
 }
 
 const NewsletterListLogic: React.FC<NewsletterLogicProps> = ({
@@ -17,27 +19,59 @@ const NewsletterListLogic: React.FC<NewsletterLogicProps> = ({
 }) => {
   const newslettersPerPage = 5; // Adjust as needed
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const totalNewsletters = newsletters.sort(
-    (a, b) =>
-      new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
-  );
+  // Memoized sorted newsletters for better performance
+  const sortedNewsletters = useMemo(() => {
+    try {
+      return [...newsletters].sort((a, b) => {
+        const dateA = new Date(a.data.pubDate).getTime();
+        const dateB = new Date(b.data.pubDate).getTime();
+        return dateB - dateA; // Most recent first
+      });
+    } catch (err) {
+      setError("Failed to sort newsletters. Please try again.");
+      return newsletters;
+    }
+  }, [newsletters]);
 
-  const totalPages = Math.ceil(totalNewsletters.length / newslettersPerPage);
+  const totalPages = Math.ceil(sortedNewsletters.length / newslettersPerPage);
 
-  const startIndex = (currentPage - 1) * newslettersPerPage;
-  const currentNewsletters = totalNewsletters.slice(
-    startIndex,
-    startIndex + newslettersPerPage
-  );
+  // Memoized current newsletters for better performance
+  const currentNewsletters = useMemo(() => {
+    const startIndex = (currentPage - 1) * newslettersPerPage;
+    return sortedNewsletters.slice(startIndex, startIndex + newslettersPerPage);
+  }, [sortedNewsletters, currentPage, newslettersPerPage]);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  const handlePageChange = async (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      // Simulate brief loading for smooth UX (can be removed if not needed)
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
+      setCurrentPage(page);
+    } catch (err) {
+      setError("Failed to change page. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <>
-      {children(currentNewsletters, totalPages, currentPage, handlePageChange)}
+      {children(
+        currentNewsletters,
+        totalPages,
+        currentPage,
+        handlePageChange,
+        isLoading,
+        error
+      )}
     </>
   );
 };

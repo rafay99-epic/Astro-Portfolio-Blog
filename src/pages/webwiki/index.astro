@@ -29,11 +29,8 @@ try {
 
   <body>
     <Header />
-    <main>
-      <h1 class="text-6xl font-bold text-center mb-8">
-        All Releases of the Website
-      </h1>
-      <div class="wiki-container">
+    <main class="pt-0 mt-0">
+      <div>
         <WikiPost versions={webwiki} client:load />
       </div>
       <Footer />

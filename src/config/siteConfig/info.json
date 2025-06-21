@@ -7,11 +7,11 @@
     "picture": "/author.webp",
     "avator": "/favicon.png",
     "socialLinks": {
-        "twitter": "https://twitter.com/future_insight9",
+        "twitter": "https://x.com/abdul_rafay99",
         "linkedin": "abdul-rafay1999",
         "github": "https://github.com/rafay99-epic",
         "upwork": "https://www.upwork.com/freelancers/~018c78c37a53bf3cac",
-        "youtube": "https://www.youtube.com/@BinaryBridgeHQ",
+        "youtube": "https://www.youtube.com/@buildwithrafay",
         "whatsNumber": "+923035650798"
     },
     "about": {
@@ -29,7 +29,8 @@
                 "androidstudio",
                 "xcode",
                 "vscode",
-                "intellij"
+                "intellij",
+                "dart"
             ]
         },
         {
@@ -57,7 +58,14 @@
                 "fastapi",
                 "graphql",
                 "sqlite",
-                "realm"
+                "realm",
+                "azure",
+                "supabase",
+                "postgresql",
+                "express",
+                "nextjs",
+                "prisma",
+                "Convex"
             ]
         },
         {

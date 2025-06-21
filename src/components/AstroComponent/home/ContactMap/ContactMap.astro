@@ -1,7 +1,11 @@
 <section class="my-20 px-4 sm:px-8 lg:px-16">
-  <h1 class="text-4xl sm:text-5xl font-extrabold text-center text-[#c0caf5] leading-tight mb-4">
+  <h1
+    class="text-4xl sm:text-5xl font-extrabold text-center text-[#c0caf5] leading-tight mb-4"
+  >
     I'D BE HAPPY TO CONNECT
-    <span class="bg-gradient-to-r from-blue-500 via-blue-700 to-teal-600 text-transparent bg-clip-text">
+    <span
+      class="bg-gradient-to-r from-blue-500 via-blue-700 to-teal-600 text-transparent bg-clip-text"
+    >
       WITH YOU
     </span>
   </h1>
@@ -11,11 +15,22 @@
 
   <div class="flex flex-col lg:flex-row gap-8 items-stretch w-full">
     <!-- Contact Form -->
-    <div class="w-full lg:w-1/2 bg-[#1e1e2f] rounded-2xl p-8 shadow-xl border border-[#2e344e]/30 backdrop-blur-sm">
-      <form id="form" class="flex flex-col gap-5" action="https://api.web3forms.com/submit" method="POST">
+    <div
+      class="w-full lg:w-1/2 bg-[#1e1e2f] rounded-2xl p-8 shadow-xl border border-[#2e344e]/30 backdrop-blur-sm"
+    >
+      <form
+        id="form"
+        class="flex flex-col gap-5"
+        action="https://api.web3forms.com/submit"
+        method="POST"
+      >
         <!-- Add the access_key hidden input field -->
-        <input type="hidden" name="access_key" value="29b18f36-e5a9-43e0-b896-79ccb8509f17" />
-        
+        <input
+          type="hidden"
+          name="access_key"
+          value="29b18f36-e5a9-43e0-b896-79ccb8509f17"
+        />
+
         <input
           type="text"
           name="name"
@@ -35,23 +50,25 @@
           placeholder="Your Message"
           class="p-4 rounded-lg bg-[#2a2e3e] text-white placeholder-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition min-h-[150px] resize-none"
           required></textarea>
-        
+
         <!-- Captcha widget -->
         <div class="h-captcha self-start" data-captcha="true"></div>
-        
+
         <button
           type="submit"
           class="bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold py-3 rounded-lg hover:opacity-90 transition shadow-lg"
         >
           Send Message
         </button>
-        
+
         <div id="result" class="hidden text-center p-3 mt-4 rounded-lg"></div>
       </form>
     </div>
 
     <!-- Google Map -->
-    <div class="w-full lg:w-1/2 overflow-hidden rounded-2xl shadow-xl border border-[#2e344e]/30">
+    <div
+      class="w-full lg:w-1/2 overflow-hidden rounded-2xl shadow-xl border border-[#2e344e]/30"
+    >
       <iframe
         title="Google Map"
         class="w-full h-full min-h-[400px] border-none"
@@ -77,7 +94,7 @@
 
   window.addEventListener("resize", setEqualHeight);
   window.addEventListener("load", setEqualHeight);
-</script> 
+</script>
 
 <script is:inline>
   const form = document.getElementById("form");
@@ -137,4 +154,5 @@
   });
 </script>
 
-<script is:inline src="https://web3forms.com/client/script.js" async defer></script>
+<script is:inline src="https://web3forms.com/client/script.js" async defer
+></script>
