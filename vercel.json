@@ -1,9 +1,12 @@
 {
     "version": 2,
-    "buildCommand": "npm run build",
-    "installCommand": "npm install && npx playwright install",
-    "env": {
-        "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "false"
+    "build": {
+        "command": "npm run vercel-build",
+        "cache": {
+            "paths": [
+                "node_modules/.playwright"
+            ]
+        }
     },
     "routes": [
         {
