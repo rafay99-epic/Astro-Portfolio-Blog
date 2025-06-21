@@ -1,14 +1,5 @@
 {
     "version": 2,
-    "installCommand": "npm install && npx playwright install && astro build",
-    "routes": [
-        {
-            "src": "/snaprescue.sh",
-            "dest": "/snaprescue.sh"
-        },
-        {
-            "src": "/Meaning-Mate-APK",
-            "dest": "/Meaning-Mate-APK.apk"
-        }
-    ]
+    "installCommand": "npm install && npx playwright install && npx playwright install-deps",
+    "buildCommand": "npm run build"
 }
