@@ -1,5 +1,4 @@
 {
-    "version": 3,
     "installCommand": "npm ci",
     "buildCommand": "npx playwright install chromium && npm run build",
     "routes": [
