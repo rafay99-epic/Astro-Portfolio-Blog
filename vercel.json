@@ -1,7 +1,6 @@
 {
     "version": 2,
     "build": {
-        "command": "npm run vercel-build",
         "cache": {
             "paths": [
                 "node_modules/.playwright"
