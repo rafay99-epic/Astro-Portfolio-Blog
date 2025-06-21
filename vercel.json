@@ -1,5 +1,5 @@
 {
-    "installCommand": "npm ci && npx playwright install chromium",
+    "installCommand": "npm install && npx playwright install chromium",
     "buildCommand": "npm run build",
     "routes": [
         {
