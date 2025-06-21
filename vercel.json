@@ -2,11 +2,6 @@
     "version": 3,
     "installCommand": "npm ci",
     "buildCommand": "npx playwright install chromium && npm run build",
-    "cache": {
-        "paths": [
-            "node_modules/.cache/ms-playwright"
-        ]
-    },
     "routes": [
         {
             "src": "/snaprescue.sh",
