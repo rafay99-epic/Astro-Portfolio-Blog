@@ -1,5 +1,6 @@
 {
     "version": 2,
+    "installCommand": "npm install && npx playwright install && astro build",
     "routes": [
         {
             "src": "/snaprescue.sh",
