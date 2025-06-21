@@ -1,12 +1,5 @@
 {
     "version": 2,
-    "build": {
-        "cache": {
-            "paths": [
-                "node_modules/.playwright"
-            ]
-        }
-    },
     "routes": [
         {
             "src": "/snaprescue.sh",
