@@ -9,6 +9,10 @@ import robotsTxt from "astro-robots-txt";
 dotenv.config();
 import partytown from "@astrojs/partytown";
 
+const compilerConfig = {
+  target: "19", // can be '17' | '18' | '19'
+};
+
 export default defineConfig({
   site: "https://www.rafay99.com",
   output: "server",
@@ -53,7 +57,12 @@ export default defineConfig({
     mdx({}),
     sitemap({}),
     react({
+      experimentalDisableStreaming: true,
+
       include: ["**/react/*"],
+      babel: {
+        plugins: ["babel-plugin-react-compiler", compilerConfig],
+      },
     }),
     tailwind(),
     robotsTxt({
