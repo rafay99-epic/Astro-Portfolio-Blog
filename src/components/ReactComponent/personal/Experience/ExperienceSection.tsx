@@ -1,17 +1,13 @@
 import React, { useState } from "react";
+import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FaBriefcase,
-  FaCalendarAlt,
-  FaMapMarkerAlt,
-  FaTools,
-} from "react-icons/fa";
+import { FaBriefcase, FaCalendarAlt, FaTools } from "react-icons/fa";
 import experienceData from "@config/siteConfig/info.json";
 import { useIsMobile } from "@hooks/useIsMobile";
 
 const workExperience = experienceData.workExperience;
 
-export default function ExperienceSideTimeline() {
+const ExperienceSideTimeline = memo(function ExperienceSideTimeline() {
   const [selectedExperience, setSelectedExperience] = useState<number | null>(
     null
   );
@@ -46,7 +42,6 @@ export default function ExperienceSideTimeline() {
   return (
     <div className="py-12 px-4">
       <div className="container mx-auto max-w-6xl">
-        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -63,24 +58,20 @@ export default function ExperienceSideTimeline() {
           </p>
         </motion.div>
 
-        {/* Timeline Container */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="relative"
         >
-          {/* Timeline Line - Hidden on Mobile */}
           {!isMobile && (
             <div className="absolute left-1/2 transform -translate-x-0.5 h-full w-0.5 bg-gradient-to-b from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] opacity-30" />
           )}
 
-          {/* Mobile Timeline Line */}
           {isMobile && (
             <div className="absolute left-6 top-0 h-full w-0.5 bg-gradient-to-b from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] opacity-30" />
           )}
 
-          {/* Experience Items */}
           {workExperience.map((job, i) => (
             <motion.div
               key={i}
@@ -91,7 +82,6 @@ export default function ExperienceSideTimeline() {
                   : `flex ${i % 2 === 0 ? "flex-row" : "flex-row-reverse"} items-center gap-8`
               }`}
             >
-              {/* Timeline Dot */}
               <div
                 className={`absolute ${
                   isMobile
@@ -100,7 +90,6 @@ export default function ExperienceSideTimeline() {
                 } w-4 h-4 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-full shadow-lg shadow-[#7aa2f7]/50 z-10`}
               />
 
-              {/* Experience Card */}
               <motion.div
                 whileHover={{
                   y: -8,
@@ -110,10 +99,8 @@ export default function ExperienceSideTimeline() {
                   isMobile ? "w-full" : "w-full md:w-[calc(50%-2rem)]"
                 }`}
               >
-                {/* Corner Accent */}
                 <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-[#7aa2f7]/20 to-transparent rounded-bl-3xl rounded-tr-2xl" />
 
-                {/* Header */}
                 <div className="relative z-10 mb-4">
                   <div className="flex items-start gap-3 mb-3">
                     <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -129,7 +116,6 @@ export default function ExperienceSideTimeline() {
                     </div>
                   </div>
 
-                  {/* Metadata */}
                   <div className="flex flex-wrap gap-4 text-sm text-[#a9b1d6] mb-4">
                     <div className="flex items-center gap-2">
                       <FaCalendarAlt className="text-[#9ece6a] text-xs" />
@@ -138,7 +124,6 @@ export default function ExperienceSideTimeline() {
                   </div>
                 </div>
 
-                {/* Roles/Responsibilities */}
                 <div className="relative z-10 mb-6">
                   <h4 className="text-sm font-semibold text-[#c0caf5] mb-3 flex items-center gap-2">
                     <span className="text-[#7aa2f7]">📋</span>
@@ -157,7 +142,6 @@ export default function ExperienceSideTimeline() {
                   </ul>
                 </div>
 
-                {/* Technologies */}
                 <div className="relative z-10">
                   <h4 className="text-sm font-semibold text-[#c0caf5] mb-3 flex items-center gap-2">
                     <FaTools className="text-[#bb9af7] text-xs" />
@@ -177,16 +161,13 @@ export default function ExperienceSideTimeline() {
                   </div>
                 </div>
 
-                {/* Hover Effect Overlay */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl">
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10 rounded-full blur-2xl" />
                 </div>
 
-                {/* Bottom Accent Line */}
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] group-hover:w-full transition-all duration-500 ease-out rounded-b-2xl" />
               </motion.div>
 
-              {/* Timeline Connection Arrow - Desktop Only */}
               {!isMobile && (
                 <div
                   className={`hidden md:block absolute top-1/2 transform -translate-y-1/2 ${
@@ -204,7 +185,6 @@ export default function ExperienceSideTimeline() {
           ))}
         </motion.div>
 
-        {/* Summary Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -240,4 +220,6 @@ export default function ExperienceSideTimeline() {
       </div>
     </div>
   );
-}
+});
+
+export default ExperienceSideTimeline;
