@@ -256,6 +256,7 @@ const MermaidRenderer = memo(function MermaidRenderer() {
           }, 2000);
         } catch (fallbackErr) {
           console.error("Fallback copy also failed:", fallbackErr);
+          alert("Failed to copy SVG to clipboard. Please try again.");
         }
       }
     },
