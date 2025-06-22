@@ -7,6 +7,7 @@ import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
 import ShareButtons from "@react/blog/interactions/socialButton";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
 
 const pageUrl = Astro.url.href;
 export const prerender = true;
@@ -323,6 +324,7 @@ try {
           </ContentContainer>
         </div>
       </article>
+      <CodeCopySimple client:load />
     </main>
 
     <Footer />

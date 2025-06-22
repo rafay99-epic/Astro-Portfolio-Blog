@@ -355,6 +355,45 @@ pre {
   overflow-x: auto;
   margin: 2em 0;
   font-size: 0.9em;
+  position: relative;
+}
+
+/* Code copy button styling */
+.code-copy-button-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+}
+
+/* Ensure copy buttons work with different code block themes */
+pre[data-copy-enhanced="true"] {
+  padding-top: 2.5rem;
+  /* Give extra space for the copy button */
+}
+
+/* Mobile responsiveness for copy buttons */
+@media (max-width: 640px) {
+  pre[data-copy-enhanced="true"] {
+    padding-top: 3rem;
+    /* Extra space on mobile */
+  }
+
+  .code-copy-button-container {
+    top: 0.5rem;
+    right: 0.5rem;
+    gap: 0.25rem;
+  }
+
+  .code-copy-button-container span {
+    font-size: 0.625rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .code-copy-button-container button {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
 }
 
 pre::-webkit-scrollbar {
