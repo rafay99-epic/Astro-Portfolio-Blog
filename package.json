@@ -8,7 +8,7 @@
         "build": "tinacms build && astro build",
         "preview": "astro preview",
         "astro": "astro",
-        "scan": "bun run dev && npx react-scan@latest http://localhost:4321"
+        "scan": "npx react-scan@latest http://localhost:4321"
     },
     "dependencies": {
         "@astrojs/mdx": "^4.3.0",
