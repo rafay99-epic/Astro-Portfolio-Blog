@@ -38,6 +38,7 @@
         "framer-motion": "^11.11.4",
         "fuse.js": "^7.0.0",
         "highlight.js": "^11.11.1",
+        "mermaid": "^11.7.0",
         "prettier": "^3.3.3",
         "prettier-plugin-astro": "^0.14.1",
         "react": "19.1.0",

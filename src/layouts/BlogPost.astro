@@ -13,6 +13,7 @@ import BlogHeader from "@react/blog/layout/BlogPostLayout/BlogPostLayoutHeader";
 import BlogTOCReact from "@react/blog/metadata/BlogTOC/BlogTOC";
 import QAChatWidget from "@react/blog/enhancements/qa-chat/QAChatWidget";
 import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
+import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 // import { DiagramEnhancer } from "@react/blog/enhancements/diagram-renderer/DiagramEnhancer";
 export const prerender = true;
 import { SEO } from "astro-seo";
@@ -487,7 +488,8 @@ const {
         </div>
       </div>
 
-      <!-- {featureFlags.enableAstroDiagrams && <DiagramEnhancer client:load />} -->
+      <!-- Mermaid Diagram Renderer -->
+      <MermaidRenderer client:load />
 
       <!-- Code Copy Enhancement -->
       <CodeCopySimple client:load />
