@@ -7,6 +7,9 @@ description: >-
   using React and Mermaid.js.
 pubDate: 2025-06-26T19:00:00.000Z
 draft: true
+heroImage: >-
+  /BlogImages/The Phantom Diagrams How I Ditched Server-Side Headaches for
+  Client-Side Magic.webp
 authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
@@ -24,13 +27,7 @@ My initial approach for generating these diagrams was to use Playwright on the s
 
 But deployment logs quickly showed this was a no-go:
 
-```
-[23:20:48.171] > rafay99.com@8.0.0 postinstall
-[23:20:48.171] > npx playwright install
-// ... (Playwright trying to get its house in order) ...
-[23:21:07.099] sh: line 1: apt-get: command not found
-[23:21:07.106] Failed to install browser dependencies
-[23:21:07.107] Error: Installation process exited with code: 127
+```javascript
 ```
 
 Playwright needs underlying system libraries (like `libnspr4`, `libnss3`, `libgbm1`) for its headless browsers. My `postinstall` script, running in a somewhat isolated context on Vercel, just couldn't execute `apt-get` with the necessary privileges. "Command not found," it would shout, halting the entire build.
@@ -58,116 +55,6 @@ I set out to build a React component, `MermaidRenderer`, that would:
 Here’s a simplified look at the core of my `MermaidRenderer` component:
 
 ```javascript
-// src/components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer.tsx
-import React, { useEffect, useState, useCallback, memo } from "react";
-// ... (Your memoized icon and button components)
-
-const MermaidRenderer = memo(function MermaidRenderer() {
-  const [mermaidInitialized, setMermaidInitialized] = useState(false);
-  const [copiedStates, setCopiedStates] = useState(new Map());
-  const [fullscreenDiagram, setFullscreenDiagram] = useState(null);
-
-  // Utility to determine diagram type (flowchart, sequence, etc.) for better UX
-  const extractDiagramType = useCallback((mermaidCode: string): string => { /* ... */ }, []);
-
-  // Function to copy the rendered SVG to clipboard
-  const copyToClipboard = useCallback(async (svgElement: SVGElement, diagramId: string) => { /* ... */ }, []);
-
-  // Initialize Mermaid library only once (and lazy load it!)
-  useEffect(() => {
-    const initMermaid = async () => {
-      try {
-        const mermaid = (await import("mermaid")).default; // This is key for performance!
-        mermaid.initialize({
-          theme: "base",
-          themeVariables: { /* ... my Tokyo Night theme config ... */ },
-          startOnLoad: false, // We'll manually render
-          flowchart: { htmlLabels: true, curve: "basis" },
-        });
-        setMermaidInitialized(true);
-      } catch (error) { console.error("Failed to initialize Mermaid:", error); }
-    };
-    initMermaid();
-  }, []);
-
-  // The core rendering logic: Watches for new Mermaid code blocks and renders them
-  useEffect(() => {
-    if (!mermaidInitialized) return;
-
-    const renderDiagrams = async () => {
-      const mermaid = (await import("mermaid")).default;
-      const mermaidBlocks = document.querySelectorAll(
-        "pre code.language-mermaid:not([data-mermaid-rendered])"
-      );
-
-      for (let i = 0; i < mermaidBlocks.length; i++) {
-        const codeElement = mermaidBlocks[i] as HTMLElement;
-        const preElement = codeElement.parentElement as HTMLElement;
-        const mermaidCode = codeElement.textContent?.trim();
-
-        // ... logic to create a new container for the diagram ...
-        const diagramId = `mermaid-diagram-${i}-${Date.now()}`;
-        const renderResult = await mermaid.render(diagramId, mermaidCode);
-        const svg = typeof renderResult === "string" ? renderResult : (renderResult as any).svg;
-
-        const svgWrapper = document.createElement("div");
-        svgWrapper.innerHTML = svg; // Inject the rendered SVG
-        
-        // ... append the SVG, replace the original <pre><code> block ...
-        preElement.parentNode?.replaceChild(container, preElement);
-        codeElement.setAttribute("data-mermaid-rendered", "true"); // Mark as rendered
-
-        // Use ReactDOM.createRoot to render React buttons (copy/fullscreen) directly into the new container
-        import("react-dom/client").then(({ createRoot }) => {
-          const root = createRoot(buttonContainer);
-          root.render(
-            <DiagramButtons
-              onCopy={() => copyToClipboard(svgWrapper.querySelector("svg"), diagramId)}
-              onFullscreen={() => setFullscreenDiagram({ element: svgWrapper, type: extractDiagramType(mermaidCode), id: diagramId })}
-              copied={copiedStates.get(diagramId) || false}
-              diagramType={extractDiagramType(mermaidCode)}
-            />
-          );
-        });
-      }
-    };
-
-    renderDiagrams(); // Initial render on component mount
-
-    // Use MutationObserver to detect if new Mermaid blocks appear later (e.g., lazy loaded content)
-    const observer = new MutationObserver((mutations) => {
-      let hasNewMermaid = false;
-      mutations.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            const element = node as Element;
-            if (element.querySelector?.("code.language-mermaid:not([data-mermaid-rendered])")) {
-              hasNewMermaid = true;
-            }
-          }
-        });
-      });
-      if (hasNewMermaid) { setTimeout(renderDiagrams, 100); } // Render new ones
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect(); // Cleanup
-  }, [mermaidInitialized, extractDiagramType, copyToClipboard]);
-
-  // ... (Other useEffects for ESC key, handling copy button state updates) ...
-
-  return (
-    // The FullscreenModal component is rendered here
-    <FullscreenModal
-      isOpen={!!fullscreenDiagram}
-      onClose={() => setFullscreenDiagram(null)}
-      // ... (props for copy, diagram type) ...
-    >
-      {/* Renders the SVG content inside the modal */}
-    </FullscreenModal>
-  );
-});
-
-export default MermaidRenderer;
 ```
 
 This component is now imported into all my Astro templates that might contain diagrams. It automatically detects, renders, and makes them interactive.
