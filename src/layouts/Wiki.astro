@@ -7,9 +7,11 @@ import Footer from "@astro/footer/Footer.astro";
 import ArticleHeader from "@astro/blog/layout/ArticleHeader.astro";
 import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
 import ShareButtons from "@react/blog/interactions/socialButton";
-// import { DiagramEnhancer } from "@react/blog/enhancements/diagram-renderer/DiagramEnhancer";
+import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
+
 export const prerender = true;
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"webwiki">["data"];
@@ -81,8 +83,9 @@ const { title, description, pubDate, readTime, tags } = Astro.props;
         <div class="mt-16">
           <ShareButtons url={pageUrl} pagetitle="Web Wiki" />
         </div>
+        <MermaidRenderer client:load />
+        <CodeCopySimple client:load />
 
-        <!-- {featureFlags.enableAstroDiagrams && <DiagramEnhancer client:load />} -->
       </div>
     </main>
     <div class="mt-auto">

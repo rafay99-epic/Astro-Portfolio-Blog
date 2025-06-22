@@ -8,6 +8,8 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "@astro/blog/comments/PostComment.astro";
 import ShareButtons from "@react/blog/interactions/socialButton";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
+import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 
 const pageUrl = Astro.url.href;
 export const prerender = true;
@@ -219,6 +221,8 @@ try {
           </div>
         </div>
       </article>
+      <MermaidRenderer client:load />
+      <CodeCopySimple client:load />
     </main>
 
     <Footer />
