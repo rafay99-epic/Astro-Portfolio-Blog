@@ -1,0 +1,188 @@
+---
+title: >-
+  The Phantom Diagrams: How I Ditched Server-Side Headaches for Client-Side
+  Magic
+description: >-
+  How I turned a server-side deployment nightmare into a sleek client-side win
+  using React and Mermaid.js.
+pubDate: 2025-06-26T19:00:00.000Z
+draft: true
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - Though-Process
+  - WebDevelopment
+---
+
+You know that feeling when you build something cool, everything works locally, and you're just itching to deploy? That was me, recently. My Astro-powered portfolio and blog has this awesome feature: dynamic diagram rendering using Mermaid.js. Think beautiful flowcharts and sequence diagrams generated directly from code blocks. Locally? Smooth as butter. Deployment to Vercel? Well, that's where the butter turned into a brick wall. A really, *really* stubborn brick wall.
+
+What ensued was weeks of head-scratching, log-diving, and more attempts than I care to count. And the solution? A complete pivot, turning what I thought was a server-side problem into a client-side victory.
+
+## The Problem: When Server-Side Diagrams Met a Stubborn Build Environment
+
+My initial approach for generating these diagrams was to use Playwright on the server during the Astro build process. The idea was to convert the Mermaid code blocks into SVG images right there on the Vercel build machine. It seemed straightforward enough. My `package.json` had Playwright as a dependency, and a `postinstall` script was meant to ensure its browsers were ready.
+
+But deployment logs quickly showed this was a no-go:
+
+```
+[23:20:48.171] > rafay99.com@8.0.0 postinstall
+[23:20:48.171] > npx playwright install
+// ... (Playwright trying to get its house in order) ...
+[23:21:07.099] sh: line 1: apt-get: command not found
+[23:21:07.106] Failed to install browser dependencies
+[23:21:07.107] Error: Installation process exited with code: 127
+```
+
+Playwright needs underlying system libraries (like `libnspr4`, `libnss3`, `libgbm1`) for its headless browsers. My `postinstall` script, running in a somewhat isolated context on Vercel, just couldn't execute `apt-get` with the necessary privileges. "Command not found," it would shout, halting the entire build.
+
+I tried taking more control, moving `npx playwright install chromium` directly into Vercel's `installCommand` in `vercel.json`. This at least got the browser *downloaded*. But then, during the actual `npm run build` step, when my code tried to *launch* Playwright, the same error returned: "Host system is missing dependencies to run browsers." Even using Vercel's official `INSTALL_PLAYWRIGHT_DEPS=1` environment variable, which is supposed to handle these system dependencies, didn't seem to resolve the runtime issue for Playwright in this specific scenario.
+
+It was a dead end. Fighting Vercel's build environment for this server-side rendering was, frankly, a losing battle. The diagrams were important, but not worth endless build failures. I briefly resorted to a feature flag, disabling the whole thing just to get deployments working.
+
+## The "Aha!" Moment: If the Server Can't Do It, The Client Can!
+
+Staring at the wall, it suddenly hit me: why was I so fixated on server-side rendering for these diagrams? What if I didn't *fight* the environment, but *bypassed* it entirely?
+
+This led me to a radical pivot: render the diagrams directly in the user's browser, on the client-side. No Playwright needed on the server, no `apt-get` struggles, no Vercel build woes. Just pure, unadulterated client-side React magic.
+
+## My Solution: React to the Rescue
+
+I set out to build a React component, `MermaidRenderer`, that would:
+
+1. Scan the page for `mermaid` code blocks.
+2. Dynamically load the Mermaid.js library (to keep initial page load light).
+3. Render the Mermaid code into beautiful SVGs.
+4. Replace the original code block with the new diagram.
+5. Add some sweet interactive features.
+
+Here’s a simplified look at the core of my `MermaidRenderer` component:
+
+```javascript
+// src/components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer.tsx
+import React, { useEffect, useState, useCallback, memo } from "react";
+// ... (Your memoized icon and button components)
+
+const MermaidRenderer = memo(function MermaidRenderer() {
+  const [mermaidInitialized, setMermaidInitialized] = useState(false);
+  const [copiedStates, setCopiedStates] = useState(new Map());
+  const [fullscreenDiagram, setFullscreenDiagram] = useState(null);
+
+  // Utility to determine diagram type (flowchart, sequence, etc.) for better UX
+  const extractDiagramType = useCallback((mermaidCode: string): string => { /* ... */ }, []);
+
+  // Function to copy the rendered SVG to clipboard
+  const copyToClipboard = useCallback(async (svgElement: SVGElement, diagramId: string) => { /* ... */ }, []);
+
+  // Initialize Mermaid library only once (and lazy load it!)
+  useEffect(() => {
+    const initMermaid = async () => {
+      try {
+        const mermaid = (await import("mermaid")).default; // This is key for performance!
+        mermaid.initialize({
+          theme: "base",
+          themeVariables: { /* ... my Tokyo Night theme config ... */ },
+          startOnLoad: false, // We'll manually render
+          flowchart: { htmlLabels: true, curve: "basis" },
+        });
+        setMermaidInitialized(true);
+      } catch (error) { console.error("Failed to initialize Mermaid:", error); }
+    };
+    initMermaid();
+  }, []);
+
+  // The core rendering logic: Watches for new Mermaid code blocks and renders them
+  useEffect(() => {
+    if (!mermaidInitialized) return;
+
+    const renderDiagrams = async () => {
+      const mermaid = (await import("mermaid")).default;
+      const mermaidBlocks = document.querySelectorAll(
+        "pre code.language-mermaid:not([data-mermaid-rendered])"
+      );
+
+      for (let i = 0; i < mermaidBlocks.length; i++) {
+        const codeElement = mermaidBlocks[i] as HTMLElement;
+        const preElement = codeElement.parentElement as HTMLElement;
+        const mermaidCode = codeElement.textContent?.trim();
+
+        // ... logic to create a new container for the diagram ...
+        const diagramId = `mermaid-diagram-${i}-${Date.now()}`;
+        const renderResult = await mermaid.render(diagramId, mermaidCode);
+        const svg = typeof renderResult === "string" ? renderResult : (renderResult as any).svg;
+
+        const svgWrapper = document.createElement("div");
+        svgWrapper.innerHTML = svg; // Inject the rendered SVG
+        
+        // ... append the SVG, replace the original <pre><code> block ...
+        preElement.parentNode?.replaceChild(container, preElement);
+        codeElement.setAttribute("data-mermaid-rendered", "true"); // Mark as rendered
+
+        // Use ReactDOM.createRoot to render React buttons (copy/fullscreen) directly into the new container
+        import("react-dom/client").then(({ createRoot }) => {
+          const root = createRoot(buttonContainer);
+          root.render(
+            <DiagramButtons
+              onCopy={() => copyToClipboard(svgWrapper.querySelector("svg"), diagramId)}
+              onFullscreen={() => setFullscreenDiagram({ element: svgWrapper, type: extractDiagramType(mermaidCode), id: diagramId })}
+              copied={copiedStates.get(diagramId) || false}
+              diagramType={extractDiagramType(mermaidCode)}
+            />
+          );
+        });
+      }
+    };
+
+    renderDiagrams(); // Initial render on component mount
+
+    // Use MutationObserver to detect if new Mermaid blocks appear later (e.g., lazy loaded content)
+    const observer = new MutationObserver((mutations) => {
+      let hasNewMermaid = false;
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node as Element;
+            if (element.querySelector?.("code.language-mermaid:not([data-mermaid-rendered])")) {
+              hasNewMermaid = true;
+            }
+          }
+        });
+      });
+      if (hasNewMermaid) { setTimeout(renderDiagrams, 100); } // Render new ones
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect(); // Cleanup
+  }, [mermaidInitialized, extractDiagramType, copyToClipboard]);
+
+  // ... (Other useEffects for ESC key, handling copy button state updates) ...
+
+  return (
+    // The FullscreenModal component is rendered here
+    <FullscreenModal
+      isOpen={!!fullscreenDiagram}
+      onClose={() => setFullscreenDiagram(null)}
+      // ... (props for copy, diagram type) ...
+    >
+      {/* Renders the SVG content inside the modal */}
+    </FullscreenModal>
+  );
+});
+
+export default MermaidRenderer;
+```
+
+This component is now imported into all my Astro templates that might contain diagrams. It automatically detects, renders, and makes them interactive.
+
+## The Mic Drop Moment & What It Means
+
+This felt like a genuine breakthrough. My "mic drop" moment came when I saw Vercel deployments *fly* through the build process, unhindered by Playwright's system dependency woes.
+
+Here's why this client-side pivot is a game-changer:
+
+1. **Deployment Success:** Vercel builds are now lightning fast and stable. No more `apt-get` issues, no more fighting a headless browser on a server environment. The server-side build now focuses purely on generating static HTML.
+2. **Rich User Experience:** Users get interactive diagrams! They can copy the SVG code directly (super handy for quick sharing) or view complex diagrams in a sleek, full-screen modal, enhancing readability.
+3. **Client-Side Performance:** Mermaid.js is lazy-loaded, meaning its potentially large bundle is only fetched when the `MermaidRenderer` component mounts. Diagrams are rendered dynamically, only when they're ready, and new ones are picked up by the `MutationObserver`.
+4. **React Compiler Ready:** I'm using React 19 with the new React Compiler beta. This client-side component benefits directly from its automatic optimizations, even with my existing `memo` and `useCallback` calls. The code feels clean, and the performance is snappy.
+
+This whole saga hammered home a crucial lesson: sometimes, the most elegant solution isn't to brute-force a problem where it doesn't fit. Instead of endlessly fighting a server-side environment for a task it resists, the answer was to completely change my approach. Understanding the capabilities of the client-side, especially with modern React and powerful libraries like Mermaid.js, opened up a more robust, user-friendly, and ultimately, saner path forward. It was frustrating, but transforming that frustration into a genuinely better solution feels like a real win.
+
+So, if you're ever stuck wrestling a server-side dependency that just won't behave, ask yourself: "Can the client do this better?" You might just have your own mic-drop moment waiting.
