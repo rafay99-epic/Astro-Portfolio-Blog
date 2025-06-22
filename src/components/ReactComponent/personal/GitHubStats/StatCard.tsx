@@ -12,17 +12,15 @@ interface StatCardProps {
 
 const cardVariants = {
   hidden: {
-    y: 30,
+    y: 20,
     opacity: 0,
   },
   visible: {
     y: 0,
     opacity: 1,
     transition: {
-      type: "spring",
-      damping: 25,
-      stiffness: 120,
-      duration: 0.4,
+      duration: 0.3,
+      ease: "easeOut",
     },
   },
 };
@@ -39,41 +37,37 @@ const StatCard = memo(function StatCard({
       variants={cardVariants}
       className="relative group"
       whileHover={{
-        scale: 1.02,
-        transition: { duration: 0.2, ease: "easeOut" },
+        scale: 1.01,
+        transition: { duration: 0.15 },
       }}
     >
       <div
-        className={`absolute inset-0 bg-gradient-to-br ${gradient} rounded-2xl blur opacity-0 group-hover:opacity-75 transition-opacity duration-300`}
+        className={`absolute inset-0 bg-gradient-to-br ${gradient} rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-200`}
       />
       <div
-        className="relative rounded-2xl p-6 shadow-lg backdrop-blur-sm overflow-hidden border will-change-transform"
+        className="relative rounded-2xl p-4 lg:p-6 shadow-lg backdrop-blur-sm overflow-hidden border"
         style={{
           backgroundColor: "#24283b",
           borderColor: "#565f89",
         }}
       >
-        <div className="flex items-center space-x-3">
-          <div className="text-[#7aa2f7] text-2xl flex-shrink-0">{icon}</div>
+        <div className="flex items-center space-x-2 lg:space-x-3">
+          <div className="text-[#7aa2f7] text-xl lg:text-2xl flex-shrink-0">
+            {icon}
+          </div>
           <div className="min-w-0">
-            <motion.p
-              className="text-sm truncate"
+            <p
+              className="text-xs lg:text-sm truncate"
               style={{ color: "#a9b1d6" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: delay + 0.2, duration: 0.3 }}
             >
               {title}
-            </motion.p>
-            <motion.p
-              className="text-2xl font-bold"
+            </p>
+            <p
+              className="text-lg lg:text-2xl font-bold"
               style={{ color: "#c0caf5" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: delay + 0.3, duration: 0.3 }}
             >
               {value.toLocaleString()}
-            </motion.p>
+            </p>
           </div>
         </div>
       </div>
