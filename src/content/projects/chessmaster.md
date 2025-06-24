@@ -6,14 +6,14 @@ draft: false
 ProjectTech:
   ["Flutter", "Firebase", "Dart", "Postman", "Test Magic", "Git", "GitHub"]
 ProjectCategory: ["Mobile Apps"]
-ProjectRanking: "10"
+ProjectRanking: "9"
 ---
 
 Are you ready to elevate your chess game? ChessMaster is a Flutter-based app that transforms your device into a competitive chess arena! Designed for both rookies and grandmasters, ChessMaster lets you challenge friends or outwit AI opponents with seamless gameplay and a beautiful UI.
 
 ## Why ChessMasters?
 
-ChessMasters goes beyond the basics to provide a chess game that’s visually engaging and deeply strategic. Offering both single and multiplayer options, it allows players to compete with friends or test their skills against various AI levels.
+ChessMasters goes beyond the basics to provide a chess game that's visually engaging and deeply strategic. Offering both single and multiplayer options, it allows players to compete with friends or test their skills against various AI levels.
 
 ### Key Features:
 
@@ -25,7 +25,7 @@ ChessMasters goes beyond the basics to provide a chess game that’s visually en
 
 ## Getting Started with ChessMasters
 
-Want to dive in? Here’s how you can get started on ChessMasters:
+Want to dive in? Here's how you can get started on ChessMasters:
 
 1. **Clone the Repo**: `git clone https://github.com/rafay99-epic/ChessMaster.git`
 2. **Navigate to Directory**: `cd ChessMasters`

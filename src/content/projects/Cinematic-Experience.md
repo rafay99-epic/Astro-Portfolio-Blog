@@ -15,11 +15,11 @@ ProjectCategory: ["Web Apps"]
 ProjectRanking: "5"
 ---
 
-In my latest project, **Cinematic Experience**, I’ve crafted a platform dedicated to exploring the world of movies, TV shows, and entertainment. This project blends my love for film with my technical skills, resulting in a space where thoughtful reviews and engaging content take center stage. Let me walk you through the details of how I built it, the challenges I faced, and the technology that powers it.
+In my latest project, **Cinematic Experience**, I've crafted a platform dedicated to exploring the world of movies, TV shows, and entertainment. This project blends my love for film with my technical skills, resulting in a space where thoughtful reviews and engaging content take center stage. Let me walk you through the details of how I built it, the challenges I faced, and the technology that powers it.
 
 ## 🎥 What is Cinematic Experience?
 
-**Cinematic Experience** is a content-driven website that hosts blog posts, reviews, and opinion pieces about movies and TV shows. Whether you’re looking for an in-depth analysis of a recent blockbuster or insights into storytelling trends, this platform has something for every cinephile.
+**Cinematic Experience** is a content-driven website that hosts blog posts, reviews, and opinion pieces about movies and TV shows. Whether you're looking for an in-depth analysis of a recent blockbuster or insights into storytelling trends, this platform has something for every cinephile.
 
 ## 💻 Tech Stack
 
@@ -33,7 +33,7 @@ Building a content-focused platform required choosing the right tools to manage 
 
 ## 🗂️ Project Structure
 
-The project’s folder structure is organized for scalability and maintainability:
+The project's folder structure is organized for scalability and maintainability:
 
 ```
 ├───.astro
@@ -75,7 +75,7 @@ The project’s folder structure is organized for scalability and maintainabilit
 
 ## 🏃‍♂️ Running the Project
 
-If you’re interested in running this project locally, follow these steps:
+If you're interested in running this project locally, follow these steps:
 
 1. **Fork and clone the repository**:
    ```bash
@@ -109,7 +109,7 @@ Throughout this project, I learned:
 
 ## 🌟 Conclusion
 
-**Cinematic Experience** is more than just a blog; it’s a passion project that merges my love for storytelling with technology. Whether you’re here to read reviews or contribute to the content, I hope this platform offers value to all movie lovers.
+**Cinematic Experience** is more than just a blog; it's a passion project that merges my love for storytelling with technology. Whether you're here to read reviews or contribute to the content, I hope this platform offers value to all movie lovers.
 
 If you're interested in the code or want to contribute, check out the GitHub repository [here](https://github.com/rafay99-epic/Cinematic-Experience).
 

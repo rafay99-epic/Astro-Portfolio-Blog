@@ -21,11 +21,11 @@ ProjectTech:
     "SEO Optimization",
     "Dart Testing",
   ]
-ProjectRanking: "4"
+ProjectRanking: "11"
 ProjectCategory: ["Web Apps"]
 ---
 
-Welcome to **Rafay's Portfolio**, a dynamic platform designed to showcase a variety of web development projects. Hosted on Netlify, this site serves as a playground for experimentation, featuring an array of applications built with cutting-edge technologies like **Flutter**, **React**, and more. Let’s take a closer look at what this portfolio offers, the technologies utilized, and the design philosophy behind it.
+Welcome to **Rafay's Portfolio**, a dynamic platform designed to showcase a variety of web development projects. Hosted on Netlify, this site serves as a playground for experimentation, featuring an array of applications built with cutting-edge technologies like **Flutter**, **React**, and more. Let's take a closer look at what this portfolio offers, the technologies utilized, and the design philosophy behind it.
 
 ## Overview of the Site
 
@@ -37,7 +37,7 @@ The main objective of Rafay's Portfolio is to demonstrate practical skills and s
 
 2. **Project Showcase**: Visitors can explore a variety of projects that highlight different skills, including web development, mobile app development, and UI/UX design. Each project is presented with a brief description, allowing potential clients and employers to understand the scope and purpose of the work.
 
-3. **Interactive Elements**: The portfolio includes interactive features that engage users, allowing them to experience the functionality of the projects firsthand. This interactivity not only enhances user engagement but also showcases Rafay’s proficiency in implementing dynamic content.
+3. **Interactive Elements**: The portfolio includes interactive features that engage users, allowing them to experience the functionality of the projects firsthand. This interactivity not only enhances user engagement but also showcases Rafay's proficiency in implementing dynamic content.
 
 4. **Code Samples**: For those interested in the technical details, the site provides links to GitHub repositories for many projects. This transparency allows visitors to dive deeper into the code, reinforcing the open-source nature of Rafay's work.
 

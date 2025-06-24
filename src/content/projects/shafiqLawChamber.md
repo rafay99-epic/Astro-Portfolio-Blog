@@ -1,7 +1,7 @@
 ---
 Projecttitle: "Shafiq Law Chamber"
 ProjectDescription: "Explore Shafiq Law Chamber's expertise on our seamlessly crafted website. Powered by Hugo and Node.js, it ensures a professional and user-friendly online presence."
-ProjectImage: "/ProjectImages/shafiqLawChamber.png"
+ProjectImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJjnXPRn7o0V9P4TshizbmuY6NGtQZAdgDOBnK"
 draft: false
 ProjectTech:
   [
@@ -15,15 +15,15 @@ ProjectTech:
     "Playwrite",
     "SEO Optimization",
   ]
-ProjectRanking: "8"
+ProjectRanking: "10"
 ProjectCategory: ["Web Apps"]
 ---
 
-**Shafiq Law Chamber** is a leading law firm based in Pakistan, dedicated to providing top-tier legal services with a client-centered approach. This project, developed by **Future Insight**, aimed to create a professional and user-friendly website showcasing the firm’s expertise, services, and commitment to client success. The website not only highlights the firm’s reputation but also provides an accessible resource for individuals seeking legal guidance in Pakistan. This blog post delves into the design, features, and technical aspects that make the Shafiq Law Chamber website a powerful digital presence for the law firm.
+**Shafiq Law Chamber** is a leading law firm based in Pakistan, dedicated to providing top-tier legal services with a client-centered approach. This project, developed by **Future Insight**, aimed to create a professional and user-friendly website showcasing the firm's expertise, services, and commitment to client success. The website not only highlights the firm's reputation but also provides an accessible resource for individuals seeking legal guidance in Pakistan. This blog post delves into the design, features, and technical aspects that make the Shafiq Law Chamber website a powerful digital presence for the law firm.
 
 ### Project Overview
 
-The primary objective of this website project was to create an intuitive online platform that aligns with Shafiq Law Chamber's values of reliability, professionalism, and accessibility. The website is structured to introduce visitors to the law firm’s legal services and practice areas, connect them with experienced attorneys, and offer resources for those looking to understand legal concepts relevant to their cases.
+The primary objective of this website project was to create an intuitive online platform that aligns with Shafiq Law Chamber's values of reliability, professionalism, and accessibility. The website is structured to introduce visitors to the law firm's legal services and practice areas, connect them with experienced attorneys, and offer resources for those looking to understand legal concepts relevant to their cases.
 
 **Live Site:** [Shafiq Law Chamber](https://shafiqlawchamber.com/)  
 **GitHub Repository:** [Shafiq Law Chamber on GitHub](https://github.com/FutureInsightTech/Shafiq-Law-Chamber)
@@ -39,7 +39,7 @@ The website incorporates a range of features tailored to enhance user experience
    Each attorney profile on the site includes their qualifications, areas of specialization, and professional experience. This allows visitors to get acquainted with the legal team, find an attorney that best fits their needs, and establish trust before the initial consultation.
 
 3. **Case Studies and Success Stories**  
-   To demonstrate the firm’s track record, the website includes compelling case studies and success stories. These examples illustrate the firm’s problem-solving abilities, commitment to clients, and success in achieving favorable outcomes, helping potential clients see the impact Shafiq Law Chamber can make.
+   To demonstrate the firm's track record, the website includes compelling case studies and success stories. These examples illustrate the firm's problem-solving abilities, commitment to clients, and success in achieving favorable outcomes, helping potential clients see the impact Shafiq Law Chamber can make.
 
 4. **Contact Information and Consultation Requests**  
    The website ensures that contacting the firm is straightforward. Prominent display of contact information, including phone number, email, and address, makes it easy for visitors to get in touch. Additionally, an integrated consultation request feature simplifies the process of booking an appointment or requesting initial legal advice.
@@ -58,7 +58,7 @@ The Shafiq Law Chamber website was developed with a robust technology stack and 
 - **Deployment**: The live site is hosted on **Netlify**, a leading platform for hosting static websites, providing fast load times and high availability.
 - **CMS Integration**: The team integrated **TinaCMS**, an intuitive content management system, enabling easy updates to site content without needing extensive technical knowledge.
 
-For more details, you can view the project’s repository on GitHub: [Shafiq Law Chamber GitHub Repository](https://github.com/FutureInsightTech/Shafiq-Law-Chamber).
+For more details, you can view the project's repository on GitHub: [Shafiq Law Chamber GitHub Repository](https://github.com/FutureInsightTech/Shafiq-Law-Chamber).
 
 ### Acknowledgments
 

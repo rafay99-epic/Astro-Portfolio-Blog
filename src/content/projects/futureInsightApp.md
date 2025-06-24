@@ -16,10 +16,10 @@ ProjectTech:
     "Test Magic",
   ]
 ProjectCategory: ["Mobile Apps"]
-ProjectRanking: "9"
+ProjectRanking: "3"
 ---
 
-The Future Insight Android Application is your gateway to understanding, exploring, and engaging with the latest advancements in technology. Designed to inspire users and provide in-depth information, the app covers various fields from artificial intelligence and machine learning to web and mobile development. Here’s a breakdown of its impressive features and how each one enhances the user experience.
+The Future Insight Android Application is your gateway to understanding, exploring, and engaging with the latest advancements in technology. Designed to inspire users and provide in-depth information, the app covers various fields from artificial intelligence and machine learning to web and mobile development. Here's a breakdown of its impressive features and how each one enhances the user experience.
 
 ## Key Features
 
@@ -53,7 +53,7 @@ Through interviews, guest articles, and webinars, users get access to insights f
 
 ## Getting Started
 
-Future Insight is designed with an easy setup process, enabling users to quickly access the app’s rich content and begin their journey into the world of future technologies.
+Future Insight is designed with an easy setup process, enabling users to quickly access the app's rich content and begin their journey into the world of future technologies.
 
 ### Prerequisites
 
@@ -94,7 +94,7 @@ Follow these steps to install Future Insight on your system:
 
 ## In-App Experience
 
-After installation, users can dive right into the Future Insight experience. Here’s what to expect:
+After installation, users can dive right into the Future Insight experience. Here's what to expect:
 
 - **Browsing Technology Topics**
   From AI to mobile development, users can explore technology topics through a well-structured, visually engaging interface. Each topic features a curated collection of articles, media, and case studies, allowing users to explore fields of interest in-depth.

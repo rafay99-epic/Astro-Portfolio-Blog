@@ -14,11 +14,11 @@ ProjectTech:
     "Postman",
     "Test Magic",
   ]
-ProjectRanking: "3"
+ProjectRanking: "7"
 ProjectCategory: ["Mobile Apps"]
 ---
 
-**Simple Thread** is a powerful yet straightforward chat application that leverages **Flutter** for a clean, cross-platform user interface and **Firebase** for secure, real-time data management. This open-source app focuses on offering an efficient and user-friendly messaging experience. Let’s dive into the key features, functionality, and the development process behind Simple Thread, and explore how you can get started with it.
+**Simple Thread** is a powerful yet straightforward chat application that leverages **Flutter** for a clean, cross-platform user interface and **Firebase** for secure, real-time data management. This open-source app focuses on offering an efficient and user-friendly messaging experience. Let's dive into the key features, functionality, and the development process behind Simple Thread, and explore how you can get started with it.
 
 ### Key Features of Simple Thread
 
@@ -32,7 +32,7 @@ The Simple Thread chat app comes packed with essential features to enhance the m
 
 4. **🚀 Full-Stack Architecture**: Although primarily a Flutter/Firebase app, the back end can be complemented by Node.js and Express, offering flexibility for scaling the app as a larger solution.
 
-5. **🛡️ Security & Privacy**: Firebase’s authentication protocols ensure secure data handling, while privacy-compliant practices keep user information protected.
+5. **🛡️ Security & Privacy**: Firebase's authentication protocols ensure secure data handling, while privacy-compliant practices keep user information protected.
 
 6. **💻 User Experience (UX) Design**: The app is designed to be responsive, accessible, and aesthetically pleasing, ensuring a seamless user experience on various devices.
 
@@ -46,7 +46,7 @@ The Simple Thread chat app comes packed with essential features to enhance the m
 
 ### How to Run Simple Thread Locally
 
-If you’re interested in exploring Simple Thread’s capabilities on your own device, follow these steps:
+If you're interested in exploring Simple Thread's capabilities on your own device, follow these steps:
 
 #### Requirements
 
@@ -71,24 +71,24 @@ Before running the application, ensure you have **Flutter** and **Git** installe
    flutter run
    ```
 
-After completing these steps, you’ll have Simple Thread up and running on your local machine, ready for testing or further customization.
+After completing these steps, you'll have Simple Thread up and running on your local machine, ready for testing or further customization.
 
 ### Development Insights: Technologies and Approach
 
 Simple Thread combines the strengths of several popular technologies to deliver a robust and user-friendly messaging experience:
 
 - **Flutter**: As a cross-platform framework, Flutter allows Simple Thread to maintain a consistent UI across Android and iOS, enabling users to enjoy a unified experience.
-- **Firebase**: Firebase’s real-time database and authentication services offer secure, reliable data management for Simple Thread, ensuring quick access to messages and user profiles.
+- **Firebase**: Firebase's real-time database and authentication services offer secure, reliable data management for Simple Thread, ensuring quick access to messages and user profiles.
 
 - **Node.js and Express (Optional)**: The back end can be extended using Node.js and Express for additional features like advanced API handling, which can support more extensive functionality as the app scales.
 
-- **CI/CD Integration**: With integrated testing and a CI/CD pipeline, Simple Thread maintains code quality through automated testing, ensuring that new updates don’t disrupt the user experience.
+- **CI/CD Integration**: With integrated testing and a CI/CD pipeline, Simple Thread maintains code quality through automated testing, ensuring that new updates don't disrupt the user experience.
 
 ### Design and UX Considerations
 
 The user experience is a focal point for Simple Thread, with the following design principles guiding its development:
 
-- **Responsive Layouts**: Flutter’s UI widgets allow Simple Thread to adapt seamlessly to various screen sizes, maintaining readability and usability.
+- **Responsive Layouts**: Flutter's UI widgets allow Simple Thread to adapt seamlessly to various screen sizes, maintaining readability and usability.
 
 - **Dark Mode Toggle**: A dark mode toggle provides a better viewing experience in low-light settings, offering users the flexibility to personalize the app.
 
@@ -100,6 +100,6 @@ A special mention goes out to [@Smalick0478](https://github.com/Smalick0478) for
 
 ### Join the Simple Thread Community
 
-Simple Thread is an open-source project, and contributions from the community are always welcome! Whether it’s a new feature idea, bug fix, or documentation improvement, every input is valuable in making Simple Thread better.
+Simple Thread is an open-source project, and contributions from the community are always welcome! Whether it's a new feature idea, bug fix, or documentation improvement, every input is valuable in making Simple Thread better.
 
 Explore the [GitHub repository](https://github.com/rafay99-epic/SimpleThread) and get involved in this exciting project. Together, we can enhance Simple Thread and create a robust, community-driven chat application that meets the needs of users everywhere.

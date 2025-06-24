@@ -9,16 +9,16 @@ ProjectTech:
   - C#
   - unity2D
 ProjectCategory: ["Games"]
-ProjectRanking: "7"
+ProjectRanking: "12"
 ---
 
 I'm excited to share with you my game **Immune Defenders**, a fast-paced, obstacle-dodging experience where you control a character navigating a virus-infested world. The goal? Dodge the viruses and reach the endpoint without touching any of the obstacles. With its engaging gameplay, cool music, and a challenging design, this game is built to test your reflexes and keep you hooked for hours.
 
-In this post, I’ll walk you through the game, its features, the technologies behind it, and how you can get started by playing or contributing to the project.
+In this post, I'll walk you through the game, its features, the technologies behind it, and how you can get started by playing or contributing to the project.
 
 ### 🕹️ Game Overview
 
-**Immune Defenders** is a **2D obstacle-dodging game** built using **Unity** and **C#**. The concept is simple but thrilling: as the player, you control a character that must dodge viruses and other obstacles, aiming to reach a specific endpoint. However, if you collide with a virus, it’s game over! The gameplay is designed to be fast-paced, testing your reflexes and precision as you avoid increasingly difficult obstacles.
+**Immune Defenders** is a **2D obstacle-dodging game** built using **Unity** and **C#**. The concept is simple but thrilling: as the player, you control a character that must dodge viruses and other obstacles, aiming to reach a specific endpoint. However, if you collide with a virus, it's game over! The gameplay is designed to be fast-paced, testing your reflexes and precision as you avoid increasingly difficult obstacles.
 
 ### 🎮 Features
 
@@ -27,14 +27,14 @@ Here are some key features of **Immune Defenders** that make it an exciting game
 - **Genre**: Dodge obstacle game
 - **Fast-Paced Gameplay**: The game challenges your reflexes with quick, action-packed gameplay.
 - **Engaging Soundtrack**: The game is accompanied by an exciting soundtrack that complements the pace and keeps you immersed.
-- **Unity 2D**: The game is built using Unity’s 2D engine, providing smooth and responsive gameplay.
+- **Unity 2D**: The game is built using Unity's 2D engine, providing smooth and responsive gameplay.
 - **C# Programming Language**: All the game mechanics are written in **C#**, showcasing the power of the language in game development.
 
 ### 🛠️ Tech Stack
 
 The game was built using the following technologies:
 
-- **Unity 2D**: Unity’s 2D engine provides the flexibility needed for building fast-paced games with excellent performance.
+- **Unity 2D**: Unity's 2D engine provides the flexibility needed for building fast-paced games with excellent performance.
 - **C#**: The primary programming language used to develop the game mechanics and logic, taking advantage of C#'s robust features for game development.
 
 ### 🚀 Getting Started
@@ -74,7 +74,7 @@ This project is licensed under the **MIT License**, which allows you to use, mod
 
 ## 🎮 Play the Game Now!
 
-You can download and play **Immune Defenders** by visiting the GitHub repository below. It’s a fun, challenging game that’s perfect for testing your reflexes and having a blast while doing it.
+You can download and play **Immune Defenders** by visiting the GitHub repository below. It's a fun, challenging game that's perfect for testing your reflexes and having a blast while doing it.
 
 [Play Immune Defenders on GitHub](https://github.com/rafay99-epic/Immune-Defenders)
 
