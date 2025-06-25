@@ -13,20 +13,6 @@ dotenv.config();
 export default defineConfig({
   site: "https://www.rafay99.com",
   output: "server",
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-    speedInsights: {
-      enabled: true,
-    },
-    imageService: true,
-    devImageService: "sharp",
-    imagesConfig: {
-      sizes: [640, 750, 828, 1080, 1200, 1920],
-      formats: ["image/webp", "image/avif"],
-    },
-  }),
   build: {
     format: "file",
     inlineStylesheets: "auto",
@@ -99,6 +85,20 @@ export default defineConfig({
       Logger: 1,
     }),
   ],
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+    speedInsights: {
+      enabled: true,
+    },
+    imageService: true,
+    devImageService: "sharp",
+    imagesConfig: {
+      sizes: [640, 750, 828, 1080, 1200, 1920],
+      formats: ["image/webp", "image/avif"],
+    },
+  }),
   vite: {
     build: {
       cssMinify: true,
