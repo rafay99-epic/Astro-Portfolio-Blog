@@ -20,6 +20,8 @@ export default defineConfig({
     server: "./server",
     splitting: true,
     prebuild: true,
+    workers: true,
+    concurrent: true,
   },
   vite: {
     build: {
@@ -29,12 +31,21 @@ export default defineConfig({
         compress: {
           drop_console: true,
           drop_debugger: true,
+          passes: 3,
+        },
+        mangle: {
+          toplevel: true,
         },
       },
       rollupOptions: {
         output: {
           manualChunks: {
             "react-vendor": ["react", "react-dom"],
+            "ui-components": [
+              "@headlessui/react",
+              "@heroicons/react",
+              "framer-motion",
+            ],
           },
         },
       },
@@ -48,7 +59,7 @@ export default defineConfig({
   },
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: "hover",
+    defaultStrategy: "viewport",
   },
   experimental: {
     // optimizeHoistedScript: true,

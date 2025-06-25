@@ -433,6 +433,18 @@ const {
         contain: layout;
         content-visibility: auto;
       }
+
+      /* Optimize for mobile performance */
+      @media (max-width: 768px) {
+        .blog-content {
+          contain: content;
+          content-visibility: auto;
+        }
+
+        .blog-image {
+          aspect-ratio: attr(width) / attr(height);
+        }
+      }
     </style>
 
     <SEO
@@ -619,6 +631,35 @@ const {
           console.log("AdSense initialization error:", e);
         }
       });
+
+      // Use Intersection Observer for lazy loading
+      const lazyLoadObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const element = entry.target as HTMLElement;
+              if (element.dataset.loading === "lazy") {
+                element.dataset.loading = "loaded";
+                // Initialize components when visible
+                if (element.classList.contains("comments-section")) {
+                  // Dynamic import of comments functionality
+                  const event = new CustomEvent("comments:load");
+                  document.dispatchEvent(event);
+                }
+              }
+            }
+          });
+        },
+        {
+          rootMargin: "50px 0px",
+          threshold: 0.1,
+        }
+      );
+
+      // Observe lazy-loaded sections
+      document
+        .querySelectorAll('[data-loading="lazy"]')
+        .forEach((el) => lazyLoadObserver.observe(el));
     </script>
     <script type="text/partytown" is:inline src="/js/progressbar.js"></script>
     <Footer />
