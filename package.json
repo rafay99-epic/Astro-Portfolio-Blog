@@ -3,9 +3,10 @@
     "type": "module",
     "version": "8.2.0",
     "scripts": {
-        "dev": "astro dev",
+        "dev": "tinacms dev -c \"astro dev\"",
         "start": "astro dev",
-        "build": " astro build",
+        "build": "tinacms build && astro build",
+        "preview-build": "astro build",
         "preview": "astro preview",
         "astro": "astro",
         "scan": "npx react-scan@latest http://localhost:4321"
