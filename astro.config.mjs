@@ -14,14 +14,10 @@ export default defineConfig({
   site: "https://www.rafay99.com",
   output: "server",
   build: {
-    format: "file",
+    format: "directory",
     inlineStylesheets: "auto",
     assets: "assets",
-    server: "./server",
     splitting: true,
-    prebuild: true,
-    workers: true,
-    concurrent: true,
   },
   vite: {
     resolve: {
@@ -78,14 +74,10 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: "viewport",
   },
-  experimental: {
-    // optimizeHoistedScript: true,
-  },
   markdown: {
     syntaxHighlight: {
       excludeLangs: ["mermaid"],
     },
-
     shikiConfig: {
       theme: "tokyo-night",
       defaultColor: false,
