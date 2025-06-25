@@ -47,13 +47,14 @@ declare global {
 <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
 <!-- Resource Hints -->
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
 <style is:inline>
   :root {
     --content-width: 1200px;
     --header-height: 70px;
+    --scroll-margin-top: 5rem;
   }
 
   /* Optimize CLS */
@@ -71,6 +72,9 @@ declare global {
   body {
     opacity: 0;
     animation: fadeIn 0.2s ease-in forwards;
+    margin: 0;
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
 
   @keyframes fadeIn {
@@ -230,3 +234,17 @@ declare global {
     font-family: "Poppins", var(--font-fallback);
   }
 </style>
+
+<!-- Performance Monitoring -->
+<script type="module">
+  // Only run in production
+  if (window.location.hostname !== "localhost") {
+    // Load web-vitals only in production
+    import("web-vitals").then(({ onCLS, onFID, onLCP }) => {
+      [onCLS, onFID, onLCP].forEach((fn) => fn(console.log));
+    });
+  }
+</script>
+
+<!-- Preload critical assets -->
+<link rel="preload" as="image" href="/author.webp" fetchpriority="high" />

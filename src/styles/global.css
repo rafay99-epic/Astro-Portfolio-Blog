@@ -21,7 +21,7 @@
   font-display: swap;
 }
 
-@font-face {
+/* @font-face {
   font-family: "Poppins";
   src: url("/fonts/Poppins/Poppins-BlackItalic.ttf") format("truetype");
   font-weight: 900;
@@ -155,7 +155,7 @@
   font-weight: 100;
   font-style: italic;
   font-display: swap;
-}
+} */
 
 
 html {

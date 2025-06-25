@@ -15,7 +15,7 @@ export default defineConfig({
   output: "server",
   build: {
     format: "file",
-    inlineStylesheets: "always",
+    inlineStylesheets: "auto",
     assets: "assets",
     server: "./server",
     splitting: true,
@@ -39,22 +39,22 @@ export default defineConfig({
       },
       rollupOptions: {
         output: {
-          manualChunks: {
-            "react-vendor": ["react", "react-dom"],
-            "ui-components": [
-              "@headlessui/react",
-              "@heroicons/react",
-              "framer-motion",
-            ],
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              if (id.includes("react")) return "react-vendor";
+              if (id.includes("@astro")) return "astro-vendor";
+              return "vendor";
+            }
           },
         },
       },
     },
     ssr: {
-      noExternal: ["@astrojs/*"],
+      noExternal: ["@astrojs/*", "react-icons"],
     },
     optimizeDeps: {
-      exclude: ["@astrojs/image", "sharp"],
+      include: ["react", "react-dom"],
+      exclude: ["@astrojs/image"],
     },
   },
   prefetch: {
