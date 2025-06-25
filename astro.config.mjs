@@ -7,22 +7,37 @@ import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
 import robotsTxt from "astro-robots-txt";
 import compress from "astro-compress";
-dotenv.config();
 import partytown from "@astrojs/partytown";
+dotenv.config();
 
 export default defineConfig({
   site: "https://www.rafay99.com",
   output: "server",
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+    speedInsights: {
+      enabled: true,
+    },
+    imageService: true,
+    devImageService: "sharp",
+    imagesConfig: {
+      sizes: [640, 750, 828, 1080, 1200, 1920],
+      formats: ["image/webp", "image/avif"],
+    },
+  }),
   build: {
-    format: "directory",
+    format: "file",
     inlineStylesheets: "auto",
+    server: "./server",
   },
   prefetch: {
     prefetchAll: true,
     defaultStrategy: "hover",
   },
   experimental: {
-    optimizeHoistedScript: true,
+    // optimizeHoistedScript: true,
   },
   markdown: {
     syntaxHighlight: {
@@ -84,21 +99,6 @@ export default defineConfig({
       Logger: 1,
     }),
   ],
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-    maxDuration: 3,
-    imageService: true,
-    devImageService: "sharp",
-    isr: true,
-    imagesConfig: {
-      domains: ["www.rafay99.com"],
-      formats: ["avif", "webp"],
-      sizes: [640, 768, 1024, 1280],
-      minimumCacheTTL: 60,
-    },
-  }),
   vite: {
     build: {
       cssMinify: true,

@@ -1,11 +1,11 @@
 {
     "name": "rafay99.com",
     "type": "module",
-    "version": "8.1.0",
+    "version": "8.2.0",
     "scripts": {
         "dev": "astro dev",
         "start": "astro dev",
-        "build": "tinacms build && astro build",
+        "build": " astro build",
         "preview": "astro preview",
         "astro": "astro",
         "scan": "npx react-scan@latest http://localhost:4321"
