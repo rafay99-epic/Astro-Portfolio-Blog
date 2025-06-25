@@ -3,7 +3,7 @@
     "type": "module",
     "version": "8.2.0",
     "scripts": {
-        "dev": "tinacms dev -c \"astro dev\"",
+        "dev": "astro dev",
         "start": "astro dev",
         "build": "tinacms build && astro build",
         "preview-build": "astro build",

@@ -402,9 +402,35 @@ const {
         transform: translateY(0);
       }
 
-      /* Optimize mobile ad container */
       .ad-container {
         contain: content;
+        content-visibility: auto;
+      }
+
+      .blog-image {
+        aspect-ratio: attr(width) / attr(height);
+        background-color: #f0f0f0;
+      }
+      .progressive-image {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .progressive-image img {
+        transition: filter 0.3s ease-out;
+      }
+
+      .progressive-image img.blur {
+        filter: blur(10px);
+        transform: scale(1.1);
+      }
+
+      .progressive-image img.sharp {
+        filter: blur(0);
+        transform: scale(1);
+      }
+      .layout-shift-guard {
+        contain: layout;
         content-visibility: auto;
       }
     </style>
@@ -518,10 +544,10 @@ const {
       </div>
 
       <!-- Mermaid Diagram Renderer -->
-      <MermaidRenderer client:visible />
+      <MermaidRenderer client:load />
 
       <!-- Code Copy Enhancement -->
-      <CodeCopySimple client:visible />
+      <CodeCopySimple client:load />
 
       <div class="comments-section lazy-load">
         <div class="comments-container">

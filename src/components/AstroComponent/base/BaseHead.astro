@@ -25,14 +25,60 @@ declare global {
 <link rel="icon" type="image/svg+xml" href="/favicon.webp" />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Resource Hints -->
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+<!-- Preload Critical Resources -->
+<link rel="preload" as="image" href={image} fetchpriority="high" />
 <link
-  rel="preconnect"
-  href="https://pagead2.googlesyndication.com"
+  rel="preload"
+  href="/fonts/atkinson-regular.woff"
+  as="font"
+  type="font/woff"
   crossorigin
 />
+<link
+  rel="preload"
+  href="/fonts/atkinson-bold.woff"
+  as="font"
+  type="font/woff"
+  crossorigin
+/>
+
+<!-- DNS Prefetch -->
+<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+<link rel="dns-prefetch" href="https://www.google-analytics.com" />
+
+<!-- Resource Hints -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<style is:inline>
+  :root {
+    --content-width: 1200px;
+    --header-height: 70px;
+  }
+
+  /* Optimize CLS */
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Prevent FOUT */
+  body {
+    opacity: 0;
+    animation: fadeIn 0.2s ease-in forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+</style>
 
 <!-- Critical Fonts -->
 <link
@@ -48,71 +94,6 @@ declare global {
   as="font"
   type="font/ttf"
   crossorigin="anonymous"
-/>
-
-<!-- Deferred Non-Critical Fonts -->
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Black.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-  media="print"
-  onload="this.media='all'"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-BlackItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-  media="print"
-  onload="this.media='all'"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-BoldItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-  media="print"
-  onload="this.media='all'"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-ExtraBold.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-  media="print"
-  onload="this.media='all'"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-ExtraBoldItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-  media="print"
-  onload="this.media='all'"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-ExtraLight.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-  media="print"
-  onload="this.media='all'"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-ExtraLightItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-  media="print"
-  onload="this.media='all'"
 />
 
 <!-- Canonical URL -->
@@ -200,7 +181,6 @@ declare global {
 
 <!-- Google Ads -->
 <script
-  type="text/partytown"
   async
   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
   crossorigin="anonymous"></script>

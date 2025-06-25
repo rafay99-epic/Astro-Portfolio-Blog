@@ -15,8 +15,36 @@ export default defineConfig({
   output: "server",
   build: {
     format: "file",
-    inlineStylesheets: "auto",
+    inlineStylesheets: "always",
+    assets: "assets",
     server: "./server",
+    splitting: true,
+    prebuild: true,
+  },
+  vite: {
+    build: {
+      cssMinify: true,
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            "react-vendor": ["react", "react-dom"],
+          },
+        },
+      },
+    },
+    ssr: {
+      noExternal: ["@astrojs/*"],
+    },
+    optimizeDeps: {
+      exclude: ["@astrojs/image", "sharp"],
+    },
   },
   prefetch: {
     prefetchAll: true,
@@ -63,7 +91,6 @@ export default defineConfig({
     sitemap({}),
     react({
       experimentalDisableStreaming: true,
-
       include: ["**/react/*"],
       babel: {
         plugins: ["babel-plugin-react-compiler"],
@@ -78,8 +105,20 @@ export default defineConfig({
       CSS: true,
       HTML: {
         removeAttributeQuotes: false,
+        collapseWhitespace: true,
+        removeComments: true,
       },
-      Image: false,
+      Image: {
+        quality: 80,
+        avif: {
+          quality: 80,
+          effort: 7,
+        },
+        webp: {
+          quality: 80,
+          effort: 5,
+        },
+      },
       JavaScript: true,
       SVG: true,
       Logger: 1,
@@ -94,33 +133,10 @@ export default defineConfig({
     },
     imageService: true,
     devImageService: "sharp",
+    imagesConfig: {
+      formats: ["avif", "webp"],
+      deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+      minimumCacheTTL: 60,
+    },
   }),
-  vite: {
-    build: {
-      cssMinify: true,
-      minify: "terser",
-      terserOptions: {
-        compress: {
-          drop_console: true,
-        },
-      },
-    },
-    resolve: {
-      alias: {
-        "@assets": "/src/assets",
-        "@components": "/src/components",
-        "@astro": "/src/components/AstroComponent",
-        "@react": "/src/components/ReactComponent",
-        "@content": "/src/content",
-        "@layouts": "/src/layouts",
-        "@pages": "/src/pages",
-        "@styles": "/src/styles",
-        "@types": "/src/types",
-        "@util": "/src/util",
-        "@config": "/src/config",
-        "@server": "/src/server",
-        "@hooks": "/src/hooks",
-      },
-    },
-  },
 });
