@@ -25,17 +25,19 @@ declare global {
 <link rel="icon" type="image/svg+xml" href="/favicon.webp" />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Preload Poppins Fonts -->
+<!-- Resource Hints -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
 <link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Black.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
+  rel="preconnect"
+  href="https://pagead2.googlesyndication.com"
+  crossorigin
 />
+
+<!-- Critical Fonts -->
 <link
   rel="preload"
-  href="/fonts/Poppins/Poppins-BlackItalic.ttf"
+  href="/fonts/Poppins/Poppins-Regular.ttf"
   as="font"
   type="font/ttf"
   crossorigin="anonymous"
@@ -47,12 +49,34 @@ declare global {
   type="font/ttf"
   crossorigin="anonymous"
 />
+
+<!-- Deferred Non-Critical Fonts -->
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-Black.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+  media="print"
+  onload="this.media='all'"
+/>
+<link
+  rel="preload"
+  href="/fonts/Poppins/Poppins-BlackItalic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin="anonymous"
+  media="print"
+  onload="this.media='all'"
+/>
 <link
   rel="preload"
   href="/fonts/Poppins/Poppins-BoldItalic.ttf"
   as="font"
   type="font/ttf"
   crossorigin="anonymous"
+  media="print"
+  onload="this.media='all'"
 />
 <link
   rel="preload"
@@ -60,6 +84,8 @@ declare global {
   as="font"
   type="font/ttf"
   crossorigin="anonymous"
+  media="print"
+  onload="this.media='all'"
 />
 <link
   rel="preload"
@@ -67,6 +93,8 @@ declare global {
   as="font"
   type="font/ttf"
   crossorigin="anonymous"
+  media="print"
+  onload="this.media='all'"
 />
 <link
   rel="preload"
@@ -74,6 +102,8 @@ declare global {
   as="font"
   type="font/ttf"
   crossorigin="anonymous"
+  media="print"
+  onload="this.media='all'"
 />
 <link
   rel="preload"
@@ -81,76 +111,8 @@ declare global {
   as="font"
   type="font/ttf"
   crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Italic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Light.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-LightItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Medium.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-MediumItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Regular.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-SemiBold.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-SemiBoldItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Thin.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-ThinItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
+  media="print"
+  onload="this.media='all'"
 />
 
 <!-- Canonical URL -->
@@ -238,6 +200,53 @@ declare global {
 
 <!-- Google Ads -->
 <script
+  type="text/partytown"
   async
   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
   crossorigin="anonymous"></script>
+
+<!-- Performance Optimizations -->
+<script>
+  // Optimize font loading
+  if ("fonts" in document) {
+    Promise.all([
+      document.fonts.load("1em Poppins"),
+      document.fonts.load("bold 1em Poppins"),
+    ]).then(() => {
+      document.documentElement.classList.add("fonts-loaded");
+    });
+  }
+
+  // Optimize third-party script loading
+  window.addEventListener("load", () => {
+    requestIdleCallback(() => {
+      // Load non-critical scripts when browser is idle
+      const deferredScripts = document.querySelectorAll("script[data-defer]");
+      deferredScripts.forEach((script) => {
+        if (script.parentNode) {
+          const newScript = document.createElement("script");
+          Array.from(script.attributes).forEach((attr) => {
+            if (attr.name !== "data-defer") {
+              newScript.setAttribute(attr.name, attr.value);
+            }
+          });
+          script.parentNode.replaceChild(newScript, script);
+        }
+      });
+    });
+  });
+</script>
+
+<style is:inline>
+  /* Critical CSS */
+  :root {
+    --font-fallback:
+      -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
+  }
+  body {
+    font-family: "Poppins", var(--font-fallback);
+  }
+  .fonts-loaded body {
+    font-family: "Poppins", var(--font-fallback);
+  }
+</style>

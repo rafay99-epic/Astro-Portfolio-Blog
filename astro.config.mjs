@@ -6,6 +6,7 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import dotenv from "dotenv";
 import robotsTxt from "astro-robots-txt";
+import compress from "astro-compress";
 dotenv.config();
 import partytown from "@astrojs/partytown";
 
@@ -14,12 +15,14 @@ export default defineConfig({
   output: "server",
   build: {
     format: "directory",
+    inlineStylesheets: "auto",
   },
   prefetch: {
     prefetchAll: true,
+    defaultStrategy: "hover",
   },
   experimental: {
-    // svg: true,
+    optimizeHoistedScript: true,
   },
   markdown: {
     syntaxHighlight: {
@@ -49,7 +52,12 @@ export default defineConfig({
     checkOrigin: true,
   },
   integrations: [
-    partytown({}),
+    partytown({
+      config: {
+        forward: ["dataLayer.push", "gtag"],
+        debug: false,
+      },
+    }),
     mdx({}),
     sitemap({}),
     react({
@@ -65,6 +73,16 @@ export default defineConfig({
       sitemap: true,
       host: "www.rafay99.com",
     }),
+    compress({
+      CSS: true,
+      HTML: {
+        removeAttributeQuotes: false,
+      },
+      Image: false,
+      JavaScript: true,
+      SVG: true,
+      Logger: 1,
+    }),
   ],
   adapter: vercel({
     webAnalytics: {
@@ -74,8 +92,23 @@ export default defineConfig({
     imageService: true,
     devImageService: "sharp",
     isr: true,
+    imagesConfig: {
+      domains: ["www.rafay99.com"],
+      formats: ["avif", "webp"],
+      sizes: [640, 768, 1024, 1280],
+      minimumCacheTTL: 60,
+    },
   }),
   vite: {
+    build: {
+      cssMinify: true,
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          drop_console: true,
+        },
+      },
+    },
     resolve: {
       alias: {
         "@assets": "/src/assets",

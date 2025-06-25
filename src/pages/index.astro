@@ -36,7 +36,7 @@ try {
     <SpeedInsights />
     <main class="pt-0 mt-0">
       <HeroSection
-        client:load
+        client:idle
         name={name}
         jobTitle={jobTitle}
         position={position}
@@ -60,5 +60,28 @@ try {
     </main>
 
     <Footer class="mt-auto" />
+
+    <script>
+      // Optimize loading of below-the-fold content
+      document.addEventListener("DOMContentLoaded", () => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("loaded");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            rootMargin: "50px",
+          }
+        );
+
+        document.querySelectorAll("section").forEach((section) => {
+          observer.observe(section);
+        });
+      });
+    </script>
   </body>
 </html>

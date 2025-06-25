@@ -19,6 +19,12 @@ export default {
         fadeSlideIn: "fadeSlideIn 0.8s ease-out forwards",
       },
       screens: {
+        xs: "320px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
         mobile: { max: "767px" },
       },
       maxWidth: {
@@ -35,5 +41,12 @@ export default {
           "0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33)",
       },
     },
+  },
+  plugins: [require("@tailwindcss/typography")],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
+  experimental: {
+    optimizeUniversalDefaults: true,
   },
 };
