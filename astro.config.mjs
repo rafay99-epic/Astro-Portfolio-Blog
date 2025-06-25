@@ -24,6 +24,23 @@ export default defineConfig({
     concurrent: true,
   },
   vite: {
+    resolve: {
+      alias: {
+        "@assets": "/src/assets",
+        "@components": "/src/components",
+        "@astro": "/src/components/AstroComponent",
+        "@react": "/src/components/ReactComponent",
+        "@content": "/src/content",
+        "@layouts": "/src/layouts",
+        "@pages": "/src/pages",
+        "@styles": "/src/styles",
+        "@types": "/src/types",
+        "@util": "/src/util",
+        "@config": "/src/config",
+        "@server": "/src/server",
+        "@hooks": "/src/hooks",
+      },
+    },
     build: {
       cssMinify: true,
       minify: "terser",

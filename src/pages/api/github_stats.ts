@@ -1,107 +1,116 @@
 import type { APIRoute } from "astro";
-
-interface GitHubStats {
-  name: string;
-  login: string;
-  public_repos: number;
-  followers: number;
-  following: number;
-  total_stars: number;
-  total_commits: number;
-  contributions_current_year: number;
-  top_languages: Array<{
-    name: string;
-    percentage: number;
-    color: string;
-  }>;
-}
-
-interface GitHubRepo {
-  name: string;
-  stargazers_count: number;
-  language: string;
-  size: number;
-}
+import { LRUCache } from "lru-cache";
+import type { GitHubStats, GitHubRepo } from "types/github";
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_USERNAME = "rafay99-epic";
+const CACHE_DURATION = 3600; // 1 hour in seconds
 
-async function fetchWithAuth(url: string) {
+// Use LRU cache to prevent memory leaks
+const statsCache = new LRUCache<string, GitHubStats>({
+  max: 1, // Only store one item
+  ttl: CACHE_DURATION * 1000, // Convert to milliseconds
+  updateAgeOnGet: true, // Reset TTL on access
+  allowStale: true, // Allow returning stale items while fetching new ones
+});
+
+// Language colors map for better memory usage
+const languageColors = new Map([
+  ["JavaScript", "#f1e05a"],
+  ["TypeScript", "#2b7489"],
+  ["Python", "#3572A5"],
+  ["Java", "#b07219"],
+  ["HTML", "#e34c26"],
+  ["CSS", "#563d7c"],
+  ["Dart", "#00B4AB"],
+  ["C++", "#f34b7d"],
+  ["C", "#555555"],
+  ["Shell", "#89e051"],
+  ["Dockerfile", "#384d54"],
+  ["Vue", "#41b883"],
+  ["React", "#61dafb"],
+  ["Go", "#00ADD8"],
+  ["Rust", "#dea584"],
+  ["PHP", "#4F5D95"],
+]);
+
+async function fetchWithAuth(url: string, signal?: AbortSignal) {
   const headers: HeadersInit = {
     Accept: "application/vnd.github.v3+json",
     "User-Agent": "GitHub-Stats-App",
   };
 
   if (GITHUB_TOKEN) {
-    headers["Authorization"] = `token ${GITHUB_TOKEN}`;
+    headers["Authorization"] = `Bearer ${GITHUB_TOKEN}`;
   }
 
-  const response = await fetch(url, { headers });
+  const response = await fetch(url, {
+    headers,
+    signal,
+    // Add cache control
+    cache: "force-cache",
+  });
 
   if (!response.ok) {
-    throw new Error(`GitHub API error: ${response.status}`);
+    throw new Error(
+      `GitHub API error: ${response.status} - ${await response.text()}`
+    );
   }
 
   return response.json();
 }
 
-async function getGitHubStats(): Promise<GitHubStats> {
+async function getGitHubStats(signal?: AbortSignal): Promise<GitHubStats> {
+  // Check cache first
+  const cachedStats = statsCache.get("stats");
+  if (cachedStats) {
+    return cachedStats;
+  }
+
   try {
-    // Get user info
-    const user = await fetchWithAuth(
-      `https://api.github.com/users/${GITHUB_USERNAME}`
-    );
+    // Fetch data in parallel with timeout
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
-    // Get repositories
-    const repos: GitHubRepo[] = await fetchWithAuth(
-      `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`
-    );
+    const [user, repos] = await Promise.all([
+      fetchWithAuth(
+        `https://api.github.com/users/${GITHUB_USERNAME}`,
+        signal || controller.signal
+      ),
+      fetchWithAuth(
+        `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`,
+        signal || controller.signal
+      ),
+    ]).finally(() => clearTimeout(timeout));
 
-    // Calculate total stars
+    // Calculate stats efficiently
     const totalStars = repos.reduce(
-      (sum, repo) => sum + repo.stargazers_count,
+      (sum: number, repo: GitHubRepo) => sum + repo.stargazers_count,
       0
     );
 
-    // Calculate language statistics
-    const languageStats: { [key: string]: { size: number; color: string } } =
-      {};
-    const languageColors: { [key: string]: string } = {
-      JavaScript: "#f1e05a",
-      TypeScript: "#2b7489",
-      Python: "#3572A5",
-      Java: "#b07219",
-      HTML: "#e34c26",
-      CSS: "#563d7c",
-      Dart: "#00B4AB",
-      "C++": "#f34b7d",
-      C: "#555555",
-      Shell: "#89e051",
-      Dockerfile: "#384d54",
-      Vue: "#41b883",
-      React: "#61dafb",
-      Go: "#00ADD8",
-      Rust: "#dea584",
-      PHP: "#4F5D95",
-    };
+    // Use Map for better memory efficiency
+    const languageStats = new Map<string, { size: number; color: string }>();
+    let totalSize = 0;
 
-    repos.forEach((repo) => {
-      if (repo.language && repo.size > 0) {
-        if (!languageStats[repo.language]) {
-          languageStats[repo.language] = {
+    // Process repos in chunks to prevent memory spikes
+    const chunkSize = 20;
+    for (let i = 0; i < repos.length; i += chunkSize) {
+      const chunk = repos.slice(i, i + chunkSize);
+      for (const repo of chunk) {
+        if (repo.language && repo.size > 0) {
+          const existing = languageStats.get(repo.language) || {
             size: 0,
-            color: languageColors[repo.language] || "#586069",
+            color: languageColors.get(repo.language) || "#586069",
           };
+          existing.size += repo.size;
+          languageStats.set(repo.language, existing);
+          totalSize += repo.size;
         }
-        languageStats[repo.language].size += repo.size;
       }
-    });
+    }
 
-    const totalSize = Object.values(languageStats).reduce(
-      (sum, lang) => sum + lang.size,
-      0
-    );
-    const topLanguages = Object.entries(languageStats)
+    const topLanguages = Array.from(languageStats.entries())
       .map(([name, data]) => ({
         name,
         percentage: Math.round((data.size / totalSize) * 100),
@@ -110,16 +119,15 @@ async function getGitHubStats(): Promise<GitHubStats> {
       .sort((a, b) => b.percentage - a.percentage)
       .slice(0, 8);
 
-    // Try to get contribution data (this requires authentication or scraping)
+    // Get contribution data if token available
     let contributionsCurrentYear = 0;
     let totalCommits = 0;
 
-    // If we have a token, we can get more detailed stats
     if (GITHUB_TOKEN) {
       try {
-        // Get events (limited but gives us some activity data)
         const events = await fetchWithAuth(
-          `https://api.github.com/users/${GITHUB_USERNAME}/events?per_page=100`
+          `https://api.github.com/users/${GITHUB_USERNAME}/events?per_page=100`,
+          signal || controller.signal
         );
 
         const currentYear = new Date().getFullYear();
@@ -147,7 +155,7 @@ async function getGitHubStats(): Promise<GitHubStats> {
       }
     }
 
-    return {
+    const stats: GitHubStats = {
       name: user.name || user.login,
       login: user.login,
       public_repos: user.public_repos,
@@ -158,21 +166,41 @@ async function getGitHubStats(): Promise<GitHubStats> {
       contributions_current_year: contributionsCurrentYear,
       top_languages: topLanguages,
     };
+
+    // Update cache
+    statsCache.set("stats", stats);
+
+    return stats;
   } catch (error) {
     console.error("Error fetching GitHub stats:", error);
     throw error;
   }
 }
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ request }) => {
   try {
-    const stats = await getGitHubStats();
+    const signal = new AbortController().signal;
+    const stats = await getGitHubStats(signal);
+    const etag = `W/"${Buffer.from(JSON.stringify(stats)).toString("base64")}"`;
+
+    // Check if-none-match header
+    const ifNoneMatch = request.headers.get("if-none-match");
+    if (ifNoneMatch === etag) {
+      return new Response(null, {
+        status: 304,
+        headers: {
+          ETag: etag,
+          "Cache-Control": `public, max-age=${CACHE_DURATION}`,
+        },
+      });
+    }
 
     return new Response(JSON.stringify(stats), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=3600", // Cache for 1 hour
+        "Cache-Control": `public, max-age=${CACHE_DURATION}`,
+        ETag: etag,
       },
     });
   } catch (error) {
