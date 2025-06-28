@@ -38,3 +38,12 @@ export interface StatCardProps {
 export interface ErrorStateProps {
   error: string;
 }
+
+export type ViewMode = "classic" | "minimal" | "dashboard" | "terminal";
+
+export interface ViewOption {
+  id: ViewMode;
+  label: string;
+  icon: ReactNode;
+  description: string;
+}
