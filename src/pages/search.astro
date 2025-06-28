@@ -4,7 +4,7 @@ import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
 import { getCollection } from "astro:content";
 import authorConfig from "@config/siteConfig/info.json";
-import SearchReactCompoent from "@react/blog/metadata/SearchField/SearchField";
+import SearchReactComponent from "@react/blog/metadata/SearchField/SearchField";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
 const posts = featureFlags.showBlog
@@ -40,7 +40,7 @@ try {
     <Header />
     <main class="flex-grow mx-auto py-8 mt-0 pt-0">
       <div>
-        <SearchReactCompoent client:visible posts={posts} />
+        <SearchReactComponent client:visible posts={posts} />
       </div>
     </main>
     <Footer class="mt-auto" />
