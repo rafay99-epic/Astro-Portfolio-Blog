@@ -29,7 +29,7 @@ export const mermaidConfig = {
     fontSize: "14px",
   },
   startOnLoad: true,
-  securityLevel: "loose" as const,
+  securityLevel: "strict" as const,
   flowchart: {
     htmlLabels: true,
     curve: "basis" as const,
