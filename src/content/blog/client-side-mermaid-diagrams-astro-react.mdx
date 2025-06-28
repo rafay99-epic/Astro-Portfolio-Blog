@@ -16,59 +16,157 @@ tags:
   - Though-Process
   - WebDevelopment
 ---
-You know that feeling when you build something cool, everything works locally, and you're just itching to deploy? That was me, recently. My Astro-powered portfolio and blog has this awesome feature: dynamic diagram rendering using Mermaid.js. Think beautiful flowcharts and sequence diagrams generated directly from code blocks. Locally? Smooth as butter. Deployment to Vercel? Well, that's where the butter turned into a brick wall. A really, *really* stubborn brick wall.
 
-What ensued was weeks of head-scratching, log-diving, and more attempts than I care to count. And the solution? A complete pivot, turning what I thought was a server-side problem into a client-side victory.
+You know that moment. You’ve spent weeks building a blog or a portfolio you’re genuinely proud of. You test it locally, and everything looks perfect — animations, diagrams, responsiveness, all silky smooth. You deploy, expecting applause. But instead, you get build logs filled with cryptic errors and dependency hell. That’s exactly what happened to me when I decided to add **dynamic Mermaid.js diagrams** to my Astro-powered portfolio and blog.
 
-## The Problem: When Server-Side Diagrams Met a Stubborn Build Environment
+Locally, it was a dream. Beautiful flowcharts and sequence diagrams rendered straight from fenced code blocks like ` ```mermaid ` — all converted into SVGs during the build process using Playwright.
 
-My initial approach for generating these diagrams was to use Playwright on the server during the Astro build process. The idea was to convert the Mermaid code blocks into SVG images right there on the Vercel build machine. It seemed straightforward enough. My `package.json` had Playwright as a dependency, and a `postinstall` script was meant to ensure its browsers were ready.
+But the second I hit deploy on Vercel?
 
-But deployment logs quickly showed this was a no-go:
+> The dream turned into dependency purgatory.
 
-```javascript
+## The Original Idea: Server-Side Rendering with Playwright
+
+The concept was straightforward (in theory):
+Use [Playwright](https://playwright.dev/) during the build step to convert Mermaid code blocks into static SVGs. This would mean:
+
+- **No Mermaid.js bundle on the client**
+- **Diagrams pre-rendered into the final HTML**
+- **No runtime dependency for rendering**
+
+So I added Playwright as a dependency, included a `postinstall` script to install the necessary browsers, and wrote a script that would scan Markdown content during the Astro build and render diagrams.
+
+```json
+"scripts": {
+  "postinstall": "npx playwright install"
+}
 ```
 
-Playwright needs underlying system libraries (like `libnspr4`, `libnss3`, `libgbm1`) for its headless browsers. My `postinstall` script, running in a somewhat isolated context on Vercel, just couldn't execute `apt-get` with the necessary privileges. "Command not found," it would shout, halting the entire build.
+This works great on your machine where `apt-get` exists and dependencies like `libnss3` and `libx11` are just a `sudo` away. But then Vercel laughed.
 
-I tried taking more control, moving `npx playwright install chromium` directly into Vercel's `installCommand` in `vercel.json`. This at least got the browser *downloaded*. But then, during the actual `npm run build` step, when my code tried to *launch* Playwright, the same error returned: "Host system is missing dependencies to run browsers." Even using Vercel's official `INSTALL_PLAYWRIGHT_DEPS=1` environment variable, which is supposed to handle these system dependencies, didn't seem to resolve the runtime issue for Playwright in this specific scenario.
+## The Error Logs That Broke My Soul
 
-It was a dead end. Fighting Vercel's build environment for this server-side rendering was, frankly, a losing battle. The diagrams were important, but not worth endless build failures. I briefly resorted to a feature flag, disabling the whole thing just to get deployments working.
+Here’s what greeted me on deploy:
 
-## The "Aha!" Moment: If the Server Can't Do It, The Client Can!
-
-Staring at the wall, it suddenly hit me: why was I so fixated on server-side rendering for these diagrams? What if I didn't *fight* the environment, but *bypassed* it entirely?
-
-This led me to a radical pivot: render the diagrams directly in the user's browser, on the client-side. No Playwright needed on the server, no `apt-get` struggles, no Vercel build woes. Just pure, unadulterated client-side React magic.
-
-## My Solution: React to the Rescue
-
-I set out to build a React component, `MermaidRenderer`, that would:
-
-1. Scan the page for `mermaid` code blocks.
-2. Dynamically load the Mermaid.js library (to keep initial page load light).
-3. Render the Mermaid code into beautiful SVGs.
-4. Replace the original code block with the new diagram.
-5. Add some sweet interactive features.
-
-Here’s a simplified look at the core of my `MermaidRenderer` component:
-
-```javascript
+```bash
+[23:21:07.099] sh: line 1: apt-get: command not found
+[23:21:07.106] Failed to install browser dependencies
+[23:21:07.107] Error: Installation process exited with code: 127
 ```
 
-This component is now imported into all my Astro templates that might contain diagrams. It automatically detects, renders, and makes them interactive.
+No `apt-get`, no system libraries, and absolutely no way for Playwright to run in the sandboxed Vercel environment. I even tried moving things into `vercel.json`:
 
-## The Mic Drop Moment & What It Means
+```json
+{
+  "build": {
+    "env": {
+      "INSTALL_PLAYWRIGHT_DEPS": "1"
+    },
+    "installCommand": "npx playwright install chromium"
+  }
+}
+```
 
-This felt like a genuine breakthrough. My "mic drop" moment came when I saw Vercel deployments *fly* through the build process, unhindered by Playwright's system dependency woes.
+Still, the build failed during the actual execution — Playwright couldn’t launch its headless browser.
 
-Here's why this client-side pivot is a game-changer:
+## Temporary Fix: The Feature Flag Nobody Talks About
 
-1. **Deployment Success:** Vercel builds are now lightning fast and stable. No more `apt-get` issues, no more fighting a headless browser on a server environment. The server-side build now focuses purely on generating static HTML.
-2. **Rich User Experience:** Users get interactive diagrams! They can copy the SVG code directly (super handy for quick sharing) or view complex diagrams in a sleek, full-screen modal, enhancing readability.
-3. **Client-Side Performance:** Mermaid.js is lazy-loaded, meaning its potentially large bundle is only fetched when the `MermaidRenderer` component mounts. Diagrams are rendered dynamically, only when they're ready, and new ones are picked up by the `MutationObserver`.
-4. **React Compiler Ready:** I'm using React 19 with the new React Compiler beta. This client-side component benefits directly from its automatic optimizations, even with my existing `memo` and `useCallback` calls. The code feels clean, and the performance is snappy.
+I hated doing this — but I disabled the diagram rendering altogether behind a feature flag just to get the blog live. That was my lowest point.
 
-This whole saga hammered home a crucial lesson: sometimes, the most elegant solution isn't to brute-force a problem where it doesn't fit. Instead of endlessly fighting a server-side environment for a task it resists, the answer was to completely change my approach. Understanding the capabilities of the client-side, especially with modern React and powerful libraries like Mermaid.js, opened up a more robust, user-friendly, and ultimately, saner path forward. It was frustrating, but transforming that frustration into a genuinely better solution feels like a real win.
+I had the content. I had the code. I had the visuals. But I couldn’t get them past the build system.
 
-So, if you're ever stuck wrestling a server-side dependency that just won't behave, ask yourself: "Can the client do this better?" You might just have your own mic-drop moment waiting.
+So I stopped trying to force it.
+
+## The Turning Point: What If the Client Did the Work?
+
+Here’s the shift in mindset:
+
+> _Why am I bending over backwards trying to make the server render something the client is fully capable of doing?_
+
+That’s when I decided to flip the architecture entirely.
+
+Instead of generating diagrams on the server, I’d render them **dynamically in the browser using React**. And honestly? It worked better than I expected.
+
+## Building the `MermaidRenderer` React Component
+
+I rewrote the logic as a proper `MermaidRenderer.tsx` component. The component does the following:
+
+1. **Watches for code blocks** with `language-mermaid` class.
+2. **Dynamically imports Mermaid.js** to keep the bundle size lean.
+3. **Renders diagrams** using `mermaid.render`.
+4. **Injects React buttons** into each diagram (copy to clipboard, fullscreen view).
+5. **Listens for DOM changes** using `MutationObserver` to handle lazy-loaded content or content rendered later.
+
+Here’s the rough structure:
+
+```tsx
+useEffect(() => {
+  if (!mermaidInitialized) return;
+
+  const renderDiagrams = async () => {
+    const mermaid = (await import("mermaid")).default;
+    const blocks = document.querySelectorAll(
+      "pre code.language-mermaid:not([data-mermaid-rendered])"
+    );
+
+    for (let i = 0; i < blocks.length; i++) {
+      const code = blocks[i].textContent;
+      const svg = await mermaid.render(`diagram-${i}`, code);
+
+      // Replace <pre><code> with the new SVG and inject buttons
+      // ...
+    }
+  };
+
+  renderDiagrams();
+
+  const observer = new MutationObserver(/* watch for new content */);
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  return () => observer.disconnect();
+}, [mermaidInitialized]);
+```
+
+I also used `ReactDOM.createRoot` to inject the diagram buttons into each SVG block — buttons for fullscreen mode and clipboard copy.
+
+And yes, the Mermaid theme is styled with my Tokyo Night color palette. 😎
+
+---
+
+## The UX Wins
+
+Switching to client-side rendering gave me more than just a successful deployment:
+
+- **No More Build Failures:** Vercel now builds flawlessly. My `npm run build` is back to being boring, as it should be.
+- **User Interactivity:** I added features like full-screen viewing and instant SVG copy. This would’ve been painful with server-rendered diagrams.
+- **Performance:** Mermaid.js is lazy-loaded. The script doesn’t even load unless there’s a Mermaid diagram present.
+- **Future-Proofing:** With React 19 and its new compiler optimizations, performance is only getting better. This setup already benefits from hooks like `useCallback` and `memo`.
+
+---
+
+## The Architecture in Practice
+
+Now, whenever a blog post has Mermaid code blocks, the following happens:
+
+1. The `MermaidRenderer` component activates on the client.
+2. It lazy-loads Mermaid.js.
+3. It parses the DOM for unrendered Mermaid blocks.
+4. It renders them into SVGs.
+5. React buttons (copy, fullscreen) are injected into each SVG container.
+6. The entire process runs _after_ the page has loaded, without blocking the initial render.
+
+---
+
+## Final Thoughts: When to Stop Fighting the Build System
+
+This whole experience taught me a valuable lesson:
+
+> If your server-side setup is fragile, and the browser can handle it — let the browser do it.
+
+Instead of brute-forcing headless rendering with Playwright, I leaned into the strengths of client-side React. Not only did it solve the problem, it made the solution better, faster, and more interactive.
+
+So next time you're debugging a server-side issue and nothing seems to work, ask yourself:
+
+**"Is this really the server’s job?"**
+
+You might find your answer — and your sanity — on the client side.
