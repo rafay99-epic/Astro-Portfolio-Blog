@@ -10,68 +10,261 @@ try {
 }
 
 export const prerender = true;
+const { theme = "dark" } = Astro.props;
 ---
 
-<section class="giscus mx-auto mt-10 w-full">
-  <div id="giscus-container" class="min-h-[200px]">
+<section class="giscus-wrapper mx-auto mt-10 w-full">
+  <div
+    id="giscus-container"
+    class="min-h-[200px] relative bg-[var(--background-light)]/10 rounded-lg p-6"
+  >
     <div class="flex items-center justify-center h-full">
-      <div class="animate-pulse text-[var(--text-light)]/60">
-        Loading comments...
+      <div
+        class="animate-pulse text-[var(--text-light)]/60 flex flex-col items-center"
+      >
+        <div class="loading-spinner mb-4"></div>
+        <span>Loading comments...</span>
       </div>
     </div>
   </div>
 
-  <script>
-    const loadGiscus = () => {
-      const container = document.getElementById("giscus-container");
-      if (!container) return;
+  <script define:vars={{ theme }}>
+    class GiscusManager {
+      constructor() {
+        this.container = document.getElementById("giscus-container");
+        this.theme = theme;
+        this.isLoaded = false;
+        this.retryCount = 0;
+        this.maxRetries = 3;
+        this.retryDelay = 2000;
+      }
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const script = document.createElement("script");
-              script.src = "https://giscus.app/client.js";
-              script.setAttribute(
-                "data-repo",
-                "rafay99-epic/Astro-Portfolio-Blog"
-              );
-              script.setAttribute("data-repo-id", "R_kgDOMZI1RA");
-              script.setAttribute("data-category", "Q&A");
-              script.setAttribute("data-category-id", "DIC_kwDOMZI1RM4ChJFB");
-              script.setAttribute("data-mapping", "title");
-              script.setAttribute("data-strict", "0");
-              script.setAttribute("data-reactions-enabled", "1");
-              script.setAttribute("data-emit-metadata", "1");
-              script.setAttribute("data-input-position", "top");
-              script.setAttribute(
-                "data-theme",
-                "https://raw.githubusercontent.com/rafay99-epic/Astro-Portfolio-Blog/refs/heads/main/src/styles/global.css"
-              );
-              script.setAttribute("data-lang", "en");
-              script.setAttribute("data-loading", "lazy");
-              script.setAttribute("crossorigin", "anonymous");
-              script.async = true;
-              container.appendChild(script);
+      init() {
+        if (!this.container) return;
 
-              observer.disconnect();
-            }
-          });
-        },
-        {
-          rootMargin: "200px 0px",
-          threshold: 0,
+        this.setLoadingState();
+
+        this.loadingTimeout = setTimeout(() => {
+          if (!this.isLoaded) {
+            this.handleTimeout();
+          }
+        }, 10000);
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", () =>
+            this.setupGiscus()
+          );
+        } else {
+          this.setupGiscus();
         }
-      );
 
-      observer.observe(container);
-    };
+        window.addEventListener("theme-change", (e) => {
+          this.updateTheme(e.detail.theme);
+        });
+      }
 
-    // Initialize when DOM is ready
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", loadGiscus);
-    } else {
-      loadGiscus();
+      setLoadingState() {
+        this.container.innerHTML = `
+          <div class="flex items-center justify-center h-full">
+            <div class="animate-pulse text-[var(--text-light)]/60 flex flex-col items-center">
+              <div class="loading-spinner mb-4"></div>
+              <span>Loading comments...</span>
+              <span class="text-sm mt-2">This might take a few seconds</span>
+            </div>
+          </div>
+        `;
+      }
+
+      handleTimeout() {
+        if (!this.isLoaded) {
+          this.handleError("Loading timed out");
+        }
+      }
+
+      setupGiscus() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && !this.isLoaded) {
+                this.loadGiscus();
+              }
+            });
+          },
+          {
+            rootMargin: "100px 0px",
+            threshold: 0.1,
+          }
+        );
+
+        observer.observe(this.container);
+      }
+
+      async loadGiscus() {
+        try {
+          const script = document.createElement("script");
+          script.src = "https://giscus.app/client.js";
+
+          const config = {
+            "data-repo": "rafay99-epic/Astro-Portfolio-Blog",
+            "data-repo-id": "R_kgDOMZI1RA",
+            "data-category": "Q&A",
+            "data-category-id": "DIC_kwDOMZI1RM4ChJFB",
+            "data-mapping": "pathname",
+            "data-strict": "0",
+            "data-reactions-enabled": "1",
+            "data-emit-metadata": "0",
+            "data-input-position": "top",
+            "data-theme": this.getThemeUrl(),
+            "data-lang": "en",
+            "data-loading": "eager",
+            crossorigin: "anonymous",
+          };
+
+          Object.entries(config).forEach(([key, value]) => {
+            script.setAttribute(key, value);
+          });
+
+          script.async = true;
+
+          script.onerror = () =>
+            this.handleError("Failed to load Giscus script");
+          script.onload = () => {
+            this.isLoaded = true;
+            clearTimeout(this.loadingTimeout);
+            this.container.classList.add("giscus-loaded");
+          };
+
+          this.container.innerHTML = "";
+          this.container.appendChild(script);
+
+          window.addEventListener(
+            "error",
+            (event) => {
+              if (
+                event.target?.tagName === "SCRIPT" &&
+                event.target?.src.includes("giscus.app")
+              ) {
+                this.handleError("Script loading error");
+              }
+            },
+            true
+          );
+        } catch (error) {
+          this.handleError("Error initializing comments");
+        }
+      }
+
+      handleError(message = "Failed to load comments") {
+        console.error("Giscus error:", message);
+
+        if (this.retryCount < this.maxRetries) {
+          this.retryCount++;
+          this.showRetryMessage();
+          setTimeout(
+            () => this.loadGiscus(),
+            this.retryDelay * this.retryCount
+          );
+        } else {
+          this.showErrorMessage();
+        }
+      }
+
+      showRetryMessage() {
+        if (!this.container) return;
+
+        this.container.innerHTML = `
+          <div class="flex flex-col items-center justify-center p-6 text-[var(--text-light)]/60">
+            <svg class="w-10 h-10 mb-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-center mb-2">Attempting to reload comments...</p>
+            <p class="text-sm">Retry ${this.retryCount} of ${this.maxRetries}</p>
+          </div>
+        `;
+      }
+
+      showErrorMessage() {
+        if (!this.container) return;
+
+        this.container.innerHTML = `
+          <div class="flex flex-col items-center justify-center p-6">
+            <svg class="w-12 h-12 mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="text-lg font-semibold text-red-500 mb-2">Unable to Load Comments</h3>
+            <p class="text-center text-[var(--text-light)]/60 mb-4">Please check your connection and try again.</p>
+            <button 
+              onclick="window.location.reload()" 
+              class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+            >
+              Retry
+            </button>
+          </div>
+        `;
+      }
+
+      getThemeUrl() {
+        return this.theme === "dark"
+          ? "https://giscus.app/themes/transparent_dark"
+          : "https://giscus.app/themes/light";
+      }
+
+      updateTheme(newTheme) {
+        this.theme = newTheme;
+        const iframe = document.querySelector(".giscus-frame");
+        if (iframe) {
+          const message = {
+            giscus: {
+              setConfig: {
+                theme: this.getThemeUrl(),
+              },
+            },
+          };
+          iframe.contentWindow.postMessage(message, "https://giscus.app");
+        }
+      }
     }
+
+    const giscusManager = new GiscusManager();
+    giscusManager.init();
   </script>
+
+  <style>
+    .giscus-wrapper {
+      transition: all 0.3s ease-in-out;
+    }
+
+    .giscus-loaded {
+      opacity: 1;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--text-light);
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
 </section>

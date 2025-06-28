@@ -294,10 +294,6 @@ try {
           )
         }
 
-        <div>
-          <ShareButtons url={pageUrl} pagetitle="Project" client:visible />
-        </div>
-
         {
           ProjectTech && ProjectTech.length > 0 && (
             <div class="tech-section">
@@ -323,6 +319,9 @@ try {
           <ContentContainer withBackground={true} class="project-typography">
             <slot />
           </ContentContainer>
+          <div>
+            <ShareButtons url={pageUrl} pagetitle="Project" client:visible />
+          </div>
         </div>
       </article>
       <MermaidRenderer client:load />
