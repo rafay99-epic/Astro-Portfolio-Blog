@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface Language {
   name: string;
   percentage: number;
@@ -23,6 +25,14 @@ export interface GitHubStatsUIProps {
 
 export interface LanguageBarProps {
   languages: Language[];
+}
+
+export interface StatCardProps {
+  title: string;
+  value: number;
+  icon: ReactNode;
+  gradient: string;
+  delay?: number;
 }
 
 export interface ErrorStateProps {
