@@ -3,12 +3,7 @@ import { memo } from "react";
 import { motion, useInView } from "framer-motion";
 import StatCard from "./StatCard";
 import LanguageBar from "./LanguageBar";
-import type { GitHubStats } from "./useGitHubStats";
-
-interface GitHubStatsUIProps {
-  stats: GitHubStats | null;
-  error?: string | null;
-}
+import type { GitHubStats, GitHubStatsUIProps } from "types/githubStatis";
 
 const demoStats: GitHubStats = {
   name: "Demo User",

@@ -1,9 +1,6 @@
 import React from "react";
 import { memo } from "react";
-
-interface ErrorStateProps {
-  error: string;
-}
+import type { ErrorStateProps } from "types/githubStatis";
 
 const ErrorState = memo(function ErrorState({ error }: ErrorStateProps) {
   return (

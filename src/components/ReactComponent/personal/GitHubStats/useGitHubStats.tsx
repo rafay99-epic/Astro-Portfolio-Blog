@@ -1,20 +1,5 @@
 import { useState, useEffect } from "react";
-
-export interface GitHubStats {
-  name: string;
-  login: string;
-  public_repos: number;
-  followers: number;
-  following: number;
-  total_stars: number;
-  total_commits: number;
-  contributions_current_year: number;
-  top_languages: Array<{
-    name: string;
-    percentage: number;
-    color: string;
-  }>;
-}
+import type { GitHubStats } from "types/githubStatis";
 
 export const useGitHubStats = () => {
   const [stats, setStats] = useState<GitHubStats | null>(null);

@@ -1,16 +1,7 @@
 import React, { useMemo } from "react";
 import { memo } from "react";
 import { motion } from "framer-motion";
-
-interface Language {
-  name: string;
-  percentage: number;
-  color: string;
-}
-
-interface LanguageBarProps {
-  languages: Language[];
-}
+import type { LanguageBarProps } from "types/githubStatis";
 
 const LanguageBar = memo(function LanguageBar({ languages }: LanguageBarProps) {
   const displayLanguages = useMemo(() => languages.slice(0, 6), [languages]);
