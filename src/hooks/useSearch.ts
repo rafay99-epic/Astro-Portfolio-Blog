@@ -1,34 +1,16 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import Fuse from "fuse.js";
 import type { Post } from "types/articles";
+import type { SearchState, SearchCache } from "types/search";
 
-interface UseSearchResult {
-  query: string;
-  setQuery: (value: string) => void;
-  results: Post[];
-  searchStats: {
-    totalResults: number;
-    searchTime: number;
-    relevanceScore: number;
-    matchedFields: string[];
-  };
-  searchHistory: string[];
-  clearHistory: () => void;
-}
+// Cache for search results
+const searchCache = new Map<string, SearchCache>();
 
-const searchCache = new Map<
-  string,
-  {
-    results: Post[];
-    stats: UseSearchResult["searchStats"];
-    timestamp: number;
-  }
->();
-
-const CACHE_DURATION = 5 * 60 * 1000;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const MAX_HISTORY_ITEMS = 10;
 const SEARCH_HISTORY_KEY = "search_history";
 
+// Load search history from localStorage
 const loadSearchHistory = (): string[] => {
   try {
     const history = localStorage.getItem(SEARCH_HISTORY_KEY);
@@ -38,12 +20,16 @@ const loadSearchHistory = (): string[] => {
   }
 };
 
+// Save search history to localStorage
 const saveSearchHistory = (history: string[]) => {
   try {
     localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
-  } catch {}
+  } catch {
+    // Handle storage errors silently
+  }
 };
 
+// Enhanced relevance calculation
 const calculateRelevance = (
   result: { score?: number; item: Post },
   searchIntent: ReturnType<typeof detectSearchIntent>
@@ -53,16 +39,17 @@ const calculateRelevance = (
   const freshness =
     (Date.now() - new Date(result.item.data.pubDate).getTime()) /
     (1000 * 60 * 60 * 24 * 365);
-  const freshnessBoost = Math.min(0.2, 1 / (1 + freshness));
+  const freshnessBoost = Math.min(0.2, 1 / (1 + freshness)); // Boost newer content
 
   return baseScore + intentBonus + freshnessBoost;
 };
 
+// Unified search configuration with field-specific weights and thresholds
 const UNIFIED_SEARCH_CONFIG = {
   keys: [
     {
       name: "data.title",
-      weight: 2.0,
+      weight: 2.0, // Highest priority
     },
     {
       name: "data.description",
@@ -101,6 +88,7 @@ const UNIFIED_SEARCH_CONFIG = {
   shouldSort: true,
 };
 
+// Helper function to detect search intent
 const detectSearchIntent = (query: string) => {
   const patterns = {
     date: /^(date:|on:)?\s*(\d{4}(-\d{2})?(-\d{2})?|yesterday|today|last\s+week|last\s+month|this\s+month)/i,
@@ -120,7 +108,7 @@ const detectSearchIntent = (query: string) => {
   return { type: "general", weight: 1.0 };
 };
 
-const useSearch = (posts: Post[]): UseSearchResult => {
+const useSearch = (posts: Post[]): SearchState => {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<Post[]>([]);
   const [searchStats, setSearchStats] = useState({
@@ -133,11 +121,13 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     loadSearchHistory()
   );
 
+  // Clear search history
   const clearHistory = useCallback(() => {
     setSearchHistory([]);
     saveSearchHistory([]);
   }, []);
 
+  // Update search history
   const updateSearchHistory = useCallback((newQuery: string) => {
     if (!newQuery.trim()) return;
 
@@ -152,6 +142,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     });
   }, []);
 
+  // Check cache for existing results
   const checkCache = useCallback((searchQuery: string) => {
     const cached = searchCache.get(searchQuery);
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
@@ -160,11 +151,12 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     return null;
   }, []);
 
+  // Update cache with new results
   const updateCache = useCallback(
     (
       searchQuery: string,
       results: Post[],
-      stats: UseSearchResult["searchStats"]
+      stats: SearchState["searchStats"]
     ) => {
       searchCache.set(searchQuery, {
         results,
@@ -175,16 +167,19 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     []
   );
 
+  // Memoize filtered posts
   const filteredPosts = useMemo(
     () => posts.filter((post) => !post.data.draft),
     [posts]
   );
 
+  // Memoize Fuse instance with unified configuration
   const fuse = useMemo(
     () => new Fuse(filteredPosts, UNIFIED_SEARCH_CONFIG),
     [filteredPosts]
   );
 
+  // Enhanced search function
   const performSearch = useCallback(
     (searchQuery: string) => {
       if (!searchQuery.trim()) {
@@ -198,6 +193,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
         return;
       }
 
+      // Check cache first
       const cached = checkCache(searchQuery);
       if (cached) {
         setResults(cached.results);
@@ -208,6 +204,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
       const startTime = performance.now();
       const searchIntent = detectSearchIntent(searchQuery);
 
+      // Process query based on detected intent
       let processedQuery = searchQuery;
       if (searchIntent.type !== "general") {
         processedQuery = searchQuery.replace(
@@ -216,21 +213,24 @@ const useSearch = (posts: Post[]): UseSearchResult => {
         );
       }
 
+      // Handle special search operators
       const terms = processedQuery.split(" ").map((term) => {
         if (term.startsWith('"') && term.endsWith('"')) {
-          return `=${term.slice(1, -1)}`;
+          return `=${term.slice(1, -1)}`; // Exact match
         }
         if (term.startsWith("-")) {
-          return `!${term.slice(1)}`;
+          return `!${term.slice(1)}`; // Exclude term
         }
         if (term.startsWith("+")) {
-          return `'${term.slice(1)}`;
+          return `'${term.slice(1)}`; // Must include term
         }
         return term;
       });
 
+      // Perform search with processed query
       const searchResults = fuse.search(terms.join(" "));
 
+      // Enhanced results processing with better relevance scoring
       const enhancedResults = searchResults
         .filter((result) => result.score && result.score < 0.6)
         .map((result) => {
@@ -274,6 +274,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
         ),
       };
 
+      // Update results and cache
       setResults(enhancedResults);
       setSearchStats(stats);
       updateCache(searchQuery, enhancedResults, stats);
@@ -282,6 +283,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     [checkCache, updateCache, updateSearchHistory, fuse]
   );
 
+  // Debounced search effect
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       performSearch(query);

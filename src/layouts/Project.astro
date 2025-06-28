@@ -295,7 +295,7 @@ try {
         }
 
         <div>
-          <ShareButtons url={pageUrl} pagetitle="Project" client:load />
+          <ShareButtons url={pageUrl} pagetitle="Project" client:visible />
         </div>
 
         {
@@ -325,8 +325,8 @@ try {
           </ContentContainer>
         </div>
       </article>
-      <MermaidRenderer client:load />
-      <CodeCopySimple client:load />
+      <MermaidRenderer client:visible />
+      <CodeCopySimple client:visible />
     </main>
 
     <Footer />

@@ -81,10 +81,10 @@ const { title, description, pubDate, readTime, tags } = Astro.props;
 
         <!-- Share Section -->
         <div class="mt-16">
-          <ShareButtons url={pageUrl} pagetitle="Web Wiki" />
+          <ShareButtons url={pageUrl} pagetitle="Web Wiki" client:visible />
         </div>
-        <MermaidRenderer client:load />
-        <CodeCopySimple client:load />
+        <MermaidRenderer client:visible />
+        <CodeCopySimple client:visible />
 
       </div>
     </main>

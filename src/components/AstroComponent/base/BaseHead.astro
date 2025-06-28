@@ -9,8 +9,6 @@ interface Props {
 import { SEOMetadata } from "astro-seo-metadata";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = "/Rafay99.webp" } = Astro.props;
-import { ClientRouter } from "astro:transitions";
-import FeatureFlage from "@config/featureFlag/featureFlag.json";
 
 declare global {
   interface Window {
@@ -33,72 +31,10 @@ declare global {
   type="font/ttf"
   crossorigin="anonymous"
 />
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-BlackItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Bold.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-BoldItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-ExtraBold.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-ExtraBoldItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-ExtraLight.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
+
 <link
   rel="preload"
   href="/fonts/Poppins/Poppins-ExtraLightItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Italic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Light.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-LightItalic.ttf"
   as="font"
   type="font/ttf"
   crossorigin="anonymous"
@@ -110,44 +46,10 @@ declare global {
   type="font/ttf"
   crossorigin="anonymous"
 />
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-MediumItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
+
 <link
   rel="preload"
   href="/fonts/Poppins/Poppins-Regular.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-SemiBold.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-SemiBoldItalic.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-Thin.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="/fonts/Poppins/Poppins-ThinItalic.ttf"
   as="font"
   type="font/ttf"
   crossorigin="anonymous"
@@ -186,9 +88,6 @@ declare global {
 <meta name="description" content={description} />
 <meta name="image" content={new URL(image, Astro.url)} />
 
-<!-- View Transitions -->
-{FeatureFlage.featureFlags.enableViewTransation && <ClientRouter />}
-
 <!-- Good Indexing Search Console  for future Insight-->
 <meta
   name="google-site-verification"
@@ -217,7 +116,6 @@ declare global {
 <!-- Umami Analytics -->
 <script
   defer
-  type="text/partytown"
   src="https://cloud.umami.is/script.js"
   data-website-id="a0bf9842-31b3-4e49-a961-cc27e2ab6920"></script>
 

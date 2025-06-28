@@ -1,13 +1,14 @@
 {
     "name": "rafay99.com",
     "type": "module",
-    "version": "8.1.0",
+    "version": "8.2.0",
     "scripts": {
         "dev": "astro dev",
         "start": "astro dev",
         "build": "tinacms build && astro build",
         "preview": "astro preview",
         "astro": "astro",
+        "preview-build": "astro build",
         "scan": "npx react-scan@latest http://localhost:4321"
     },
     "dependencies": {
@@ -55,6 +56,7 @@
         "@gsap/react": "^2.1.1",
         "@tinacms/cli": "^1.9.7",
         "@types/node": "^22.15.18",
+        "astro-compress": "2.3.8",
         "babel-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
         "eslint-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
         "react-scan": "^0.3.4"
