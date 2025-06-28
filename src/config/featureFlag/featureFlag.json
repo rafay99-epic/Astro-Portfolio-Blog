@@ -14,7 +14,7 @@
         "showTrendingPosts": true,
         "showTermsandConditions": true,
         "showPrivacyPolicy": true,
-        "showWiki": true,
+        "showWiki": false,
         "showNotes": true,
         "showWhatsNew": true,
         "showQASection": true,

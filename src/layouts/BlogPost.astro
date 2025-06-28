@@ -404,7 +404,7 @@ const {
     >
       <section class="mb-12">
         <BlogHeader
-          client:load
+          client:visible
           title={title ?? "Untitled"}
           date={new Date(pubDate).toLocaleDateString("en-US", {
             year: "numeric",
@@ -440,7 +440,7 @@ const {
         <aside class="hidden md:block w-full md:w-[300px] pl-0 md:pl-4">
           <!-- Table of Contents -->
           <div class="w-full">
-            <BlogTOCReact client:load headings={headings} />
+            <BlogTOCReact client:visible headings={headings} />
           </div>
 
           <!-- Subtle Separator (only shows when TOC has content) -->
@@ -489,10 +489,10 @@ const {
       </div>
 
       <!-- Mermaid Diagram Renderer -->
-      <MermaidRenderer client:load />
+      <MermaidRenderer client:visible />
 
       <!-- Code Copy Enhancement -->
-      <CodeCopySimple client:load />
+      <CodeCopySimple client:visible />
 
       <div class="comments-section">
         <div class="comments-container">
@@ -512,7 +512,7 @@ const {
     {
       featureFlags.showQASection && (
         <QAChatWidget
-          client:load
+          client:visible
           title={title}
           description={description}
           author={authorName}

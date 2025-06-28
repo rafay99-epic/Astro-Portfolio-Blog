@@ -31,7 +31,7 @@ const newsletters = await getCollection("newsletter");
   <body>
     <Header />
     <SpeedInsights />
-    <Newsletter newsletters={newsletters} client:load />
+    <Newsletter newsletters={newsletters} client:visible />
 
     <Footer />
   </body>

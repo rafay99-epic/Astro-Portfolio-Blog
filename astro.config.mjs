@@ -8,11 +8,13 @@ import dotenv from "dotenv";
 import robotsTxt from "astro-robots-txt";
 dotenv.config();
 import partytown from "@astrojs/partytown";
+import compress from "astro-compress";
 
 export default defineConfig({
   site: "https://www.rafay99.com",
   output: "server",
   build: {
+    concurrency: 10,
     format: "directory",
   },
   prefetch: {
@@ -37,6 +39,7 @@ export default defineConfig({
       transformers: [],
     },
   },
+
   redirects: {
     "/snaprescue.sh": "/downloads/scripts/snaprescue.sh",
     "/Meaning-Mate-APK": "/downloads/app/meaning_mate/Meaning-Mate-APK.apk",
@@ -49,6 +52,28 @@ export default defineConfig({
     checkOrigin: true,
   },
   integrations: [
+    compress({
+      CSS: true,
+      HTML: {
+        removeAttributeQuotes: false,
+        collapseWhitespace: true,
+        removeComments: true,
+      },
+      Image: {
+        quality: 80,
+        avif: {
+          quality: 80,
+          effort: 7,
+        },
+        webp: {
+          quality: 80,
+          effort: 5,
+        },
+      },
+      JavaScript: true,
+      SVG: true,
+      Logger: 1,
+    }),
     partytown({}),
     mdx({}),
     sitemap({}),
@@ -76,6 +101,38 @@ export default defineConfig({
     isr: true,
   }),
   vite: {
+    build: {
+      cssMinify: true,
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          passes: 3,
+        },
+        mangle: {
+          toplevel: true,
+        },
+      },
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            "react-vendor": ["react", "react-dom"],
+            "ui-components": [
+              "@headlessui/react",
+              "@heroicons/react",
+              "framer-motion",
+            ],
+          },
+        },
+      },
+    },
+    ssr: {
+      noExternal: ["@astrojs/*"],
+    },
+    optimizeDeps: {
+      exclude: ["@astrojs/image", "sharp"],
+    },
     resolve: {
       alias: {
         "@assets": "/src/assets",

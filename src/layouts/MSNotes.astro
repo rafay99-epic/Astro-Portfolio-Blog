@@ -169,7 +169,7 @@ try {
           type="notes"
         />
         <div>
-          <ShareButtons url={pageUrl} pagetitle="Notes" client:load />
+          <ShareButtons url={pageUrl} pagetitle="Notes" client:visible />
         </div>
         <div class="content-section">
           <ContentContainer withBackground={true} class="notes-typography">
@@ -177,8 +177,8 @@ try {
           </ContentContainer>
         </div>
       </article>
-      <MermaidRenderer client:load />
-      <CodeCopySimple client:load />
+      <MermaidRenderer client:visible />
+      <CodeCopySimple client:visible />
     </main>
 
     <Footer />

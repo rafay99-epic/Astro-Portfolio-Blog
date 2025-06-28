@@ -269,18 +269,20 @@ const Header: React.FC = () => {
                               →
                             </span>
                           </motion.a>
-                          <motion.a
-                            href="/webwiki"
-                            className="flex items-center gap-3 py-3 px-4 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-xl transition-all duration-300 group"
-                            whileHover={{ x: 5 }}
-                          >
-                            <span className="text-lg">📚</span>
-                            <span className="font-medium">Website Wiki</span>
-                            <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              →
-                            </span>
-                          </motion.a>
                         </>
+                      )}
+                      {featureFlags.showWiki && (
+                        <motion.a
+                          href="/webwiki"
+                          className="flex items-center gap-3 py-3 px-4 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-xl transition-all duration-300 group"
+                          whileHover={{ x: 5 }}
+                        >
+                          <span className="text-lg">📚</span>
+                          <span className="font-medium">Website Wiki</span>
+                          <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            →
+                          </span>
+                        </motion.a>
                       )}
                     </div>
                   </motion.div>
