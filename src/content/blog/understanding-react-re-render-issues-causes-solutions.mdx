@@ -1,5 +1,5 @@
 ---
-title: 'Understanding React Re-render Issues: Causes and Solutions'
+title: "Understanding React Re-render Issues: Causes and Solutions"
 description: >-
   Explore the intricacies of React re-render issues in this comprehensive guide.
   Learn about the common causes of unnecessary re-renders, their impact on
@@ -9,8 +9,126 @@ description: >-
   your coding practices.
 pubDate: 2025-07-14T19:00:00.000Z
 draft: true
-heroImage: /comingsoon.png
-authorName: Abdul Rafay
-authorAvatar: /abdul_rafay.webp
+heroImage: /BlogImages/react-render.webp
+authorName: "Abdul Rafay "
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - WebDevelopment
+  - Thought-Process
 ---
 
+import VideoEmbed from "../../components/ReactComponent/blog/enhancements/video-embed/VideoEmbed";
+
+## The Beginning: My React + Astro Dream Combo
+
+React has always had a soft spot in my dev toolkit. It’s that reliable companion you keep going back to—versatile, powerful, and just fun to work with. Big names like [GitHub](https://github.com), [Netflix](https://netflix.com), and [Meta](https://meta.com) agree, and chances are, if you’ve built something cool lately, React was part of it.
+
+So, when I decided to rebuild my personal site, I knew I wanted the best of both worlds—React’s flexibility with Astro’s insane performance. The result? A site that felt buttery smooth, snappy, and downright slick. Animations glided, the UI was crisp, and everything just... worked. You can check it out here: [rafay99.com](https://rafay99.com)
+
+## But Then... Mobile Happened
+
+On desktop, everything was 💯. But then I tried to show off my site on my phone and—ugh. Animations stuttered. Load times lagged. Something was... off. It wasn’t the masterpiece I had tested and polished for weeks.
+
+I dove straight into dev mode: opened dev tools, replicated the bug, and started slicing through code like a chef on a deadline. My first guess? "Too much JavaScript." So I trimmed, refactored, and optimized the heck out of it. Things improved, yeah—but not enough. There was still this weird sluggishness, like a shadow lurking in the performance.
+
+## The Turning Point: Theo, React-Scan & That 🔥 Video
+
+Stuck in optimization limbo, I turned to the holy land: YouTube. That’s when I stumbled on a video by Theo (yep, [T3.gg](https://t3.gg/)). And man, it cracked the code for me—**React re-render issues**.
+
+Seriously, if you're debugging weird slowdowns in React, just pause and watch this video. It opened my eyes:
+
+<VideoEmbed
+  src="https://www.youtube.com/embed/INLq9RPAYUw?si=FQw3NjB1J6imqTnV"
+  title="Unnecessary Re-renders and What to Do About Them - Theo (T3.gg)"
+/>
+
+That led me to a gem of a tool called **React-Scan**—a visual debugger that literally highlights re-renders on your screen. You can check it out here: [react-scan.com](https://react-scan.com/). It’s one of those “see it to believe it” tools.
+
+## Wait… What Even _Are_ Re-render Issues?
+
+Let’s simplify this. A **re-render** in React is React’s way of keeping the UI in sync with your state or props. That’s normal. But the problem starts when components **re-render unnecessarily**—basically doing work they don’t need to.
+
+You update a tiny bit of state at the top level, and suddenly your whole component tree starts flashing like a Christmas tree. Why? Because React by default will re-render everything downstream.
+
+Here are some common re-render traps:
+
+- **Parent State Changes**: When state changes in a parent, all children re-render—even if they don’t care.
+- **Props Identity Changes**: If you're passing down objects or functions inline (like `onClick={() => doThing()}`), React sees a _new_ prop every time. Boom—re-render.
+- **Context Updates**: Even a tiny change in context will trigger re-renders in _every_ consuming component.
+- **New References**: Arrays, objects, functions—if they’re freshly created in each render, React treats them as “new” even if their values are the same.
+
+And here’s where **React-Scan** blew my mind. Look at this actual screen from my site, showing how many components were re-rendering for no reason:
+
+<VideoEmbed
+  src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ7kCSbsT6vFktEwxg4XaRbJnYSicA0qh5r93B"
+  title="React-Scan Visualization of Re-render Issues on my Website"
+/>
+
+Wild, right? No wonder mobile was lagging.
+
+## Fixing It: Memoization to the Rescue
+
+Once I pinpointed the issue, it was time to fight back. The quickest win? **`React.memo`**.
+
+It’s a simple wrapper for your components that tells React, “Only re-render this if the props actually change.” Here’s the difference:
+
+### Before Optimization
+
+```jsx
+const ParentComponent = () => {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("Hello");
+
+  return (
+    <div>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <ChildComponentA text={text} />
+      <ChildComponentB count={count} />
+    </div>
+  );
+};
+```
+
+Even changing just the count will re-render both children. Not good.
+
+### After Adding `React.memo`
+
+```jsx
+const ChildComponentA = React.memo(({ text }) => {
+  console.log("ChildComponentA rendered");
+  return <h2>{text}</h2>;
+});
+
+const ChildComponentB = React.memo(({ count }) => {
+  console.log("ChildComponentB rendered");
+  return <h2>Counter: {count}</h2>;
+});
+```
+
+Now, each child only re-renders if **its** prop changes. Massive improvement.
+
+But keep in mind: `React.memo` only does a shallow comparison. If you're passing objects/functions, use `useMemo` and `useCallback` to keep the reference the same across renders.
+
+## The Future Is Brighter with React 19
+
+React 19 is coming in hot—and it’s fixing a lot of this stuff _for you_. Here’s what’s exciting:
+
+- **Automatic Batching**: React groups multiple state updates into one render. Less waste.
+- **Better Memo Defaults**: They're improving how components are memoized behind the scenes.
+- **The React Compiler (React Forget)**: This is the real game-changer. It adds memoization at **compile time**. No more wrapping every component in `React.memo` or manually optimizing props. Just write normal code—React will handle the rest.
+
+It’s like having a built-in performance engineer watching your code and doing the hard work for you.
+
+## Wrapping Up: Lessons Learned
+
+This whole journey—from perfect desktop performance to janky mobile issues—was a wake-up call. React performance isn’t just about using fewer libraries or trimming JS. Sometimes, it’s about what’s happening _under the hood_.
+
+What I learned:
+
+- Use tools like **React-Scan** to visualize re-renders.
+- Apply `React.memo` smartly.
+- Lean on `useMemo` and `useCallback` for reference stability.
+- Keep an eye on **React 19**—it’s going to automate a lot of these pain points.
+
+And most importantly? **Test on mobile early.** That’s where performance issues hit hardest.
