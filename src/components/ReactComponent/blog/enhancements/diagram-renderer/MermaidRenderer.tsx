@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { memo } from "react";
-import { useMermaidRenderer } from "./hooks/useMermaidRenderer";
-import { useDiagramRenderer } from "./hooks/useDiagramRenderer";
-import FullscreenModal from "./components/FullscreenModal";
+import { useMermaidRenderer } from "@hooks/useMermaidRenderer";
+import { useDiagramRenderer } from "@hooks/useDiagramRenderer";
+import FullscreenModal from "@components/ReactComponent/blog/enhancements/diagram-renderer/components/FullscreenModal";
 
 const MermaidRenderer = memo(function MermaidRenderer() {
   const {

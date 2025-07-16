@@ -4,11 +4,11 @@ import Header from "@astro/header/Header.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import Footer from "@astro/footer/Footer.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import AboutSection from "@react/personal/AboutMe/aboutme";
+import ExperienceSection from "@react/personal/Experience/ExperienceSection";
 import SpeedInsights from "@vercel/speed-insights/astro";
 export const prerender = true;
 try {
-  if (!featureFlags.showAbout) {
+  if (!featureFlags.showExperience) {
     return Astro.redirect("/access-denied");
   }
 } catch (error) {
@@ -20,17 +20,15 @@ try {
 <html lang="en">
   <head>
     <BaseHead
-      title={`About Me | ${authorConfig.SiteName}`}
-      description={`Learn more about me and my journey.`}
+      title={`Experience | ${authorConfig.SiteName}`}
+      description={`Learn more about my experience.`}
     />
   </head>
   <body class="mt-0 pt-0">
     <Header />
     <SpeedInsights />
     <main class="mt-0 pt-0">
-      <section>
-        <AboutSection client:load authorConfig={authorConfig} />
-      </section>
+      <ExperienceSection client:load />
     </main>
     <Footer class="mt-auto" />
   </body>

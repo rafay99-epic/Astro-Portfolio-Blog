@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { motion } from "framer-motion";
 import useSearch from "@hooks/useSearch";
 import { useIsMobile } from "@hooks/useIsMobile";

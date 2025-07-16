@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -17,7 +17,7 @@ interface QASectionUIProps {
   copyToClipboard: () => Promise<boolean>;
 }
 
-export function QASectionUI({
+export const QASectionUI = memo(function QASectionUI({
   qaItems,
   isLoading,
   error,
@@ -406,4 +406,4 @@ export function QASectionUI({
       )}
     </div>
   );
-}
+});

@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 interface GreetingProps {
@@ -7,7 +7,11 @@ interface GreetingProps {
   position: string;
 }
 
-const Greeting: React.FC<GreetingProps> = ({ name, jobTitle, position }) => {
+const Greeting = memo(function Greeting({
+  name,
+  jobTitle,
+  position,
+}: GreetingProps) {
   return (
     <motion.div
       className="relative"
@@ -93,6 +97,6 @@ const Greeting: React.FC<GreetingProps> = ({ name, jobTitle, position }) => {
       </div>
     </motion.div>
   );
-};
+});
 
 export default Greeting;

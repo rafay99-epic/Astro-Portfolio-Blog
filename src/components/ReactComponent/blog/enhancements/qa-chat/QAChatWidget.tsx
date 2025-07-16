@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { QAChatLogic } from "./QAChatLogic";
 import { QAChatUI } from "./QAChatUI";
 
@@ -9,7 +9,7 @@ interface QAChatWidgetProps {
   content: string;
 }
 
-export default function QAChatWidget({
+export const QAChatWidget = memo(function QAChatWidget({
   title,
   description,
   author,
@@ -114,4 +114,4 @@ export default function QAChatWidget({
       )}
     </>
   );
-}
+});

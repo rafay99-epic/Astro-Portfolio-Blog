@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaFileAlt,
@@ -19,7 +19,7 @@ interface NotesGridUIProps {
   paginatedNotes: Note[];
 }
 
-const NotesGridUI: React.FC<NotesGridUIProps> = ({
+const NotesGridUI = memo(function NotesGridUI({
   allTags,
   selectedTag,
   setSelectedTag,
@@ -27,7 +27,7 @@ const NotesGridUI: React.FC<NotesGridUIProps> = ({
   setCurrentPage,
   totalPages,
   paginatedNotes,
-}) => {
+}: NotesGridUIProps) {
   const isMobile = useIsMobile();
 
   const containerVariants = {
@@ -319,6 +319,6 @@ const NotesGridUI: React.FC<NotesGridUIProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default NotesGridUI;

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { useTheme } from "../../../../hooks/useTheme";
 import type { ThemeName } from "../../../../config/theme/colors";
+import { withTheme } from "./withTheme";
 
 interface ThemeManagerProps {
   className?: string;
@@ -30,7 +31,7 @@ const themeOptions: { value: ThemeName; label: string; preview: string[] }[] = [
   },
 ];
 
-export default function ThemeManager({
+const ThemeManager = memo(function ThemeManager({
   className = "",
   showLabel = true,
 }: ThemeManagerProps) {
@@ -215,4 +216,7 @@ export default function ThemeManager({
       )}
     </div>
   );
-}
+});
+
+// Export the theme-wrapped component
+export default withTheme(ThemeManager);

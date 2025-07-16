@@ -1,7 +1,7 @@
-import React from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 
-const NotFoundPage: React.FC = () => {
+const NotFoundPage = memo(function NotFoundPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
       <motion.div
@@ -180,6 +180,6 @@ const NotFoundPage: React.FC = () => {
       </motion.div>
     </div>
   );
-};
+});
 
 export default NotFoundPage;

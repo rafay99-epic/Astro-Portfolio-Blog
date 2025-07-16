@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ImageSliderProps } from "types/image_slider";
-import { useImageSlider } from "../hooks/useImageSlider";
-import { useSliderStyles } from "../hooks/useSliderStyles";
+import { useImageSlider } from "@hooks/useImageSlider";
+import { useSliderStyles } from "@hooks/useSliderStyles";
 import { NavigationButton } from "./NavigationButton";
 import { Thumbnail } from "./Thumbnail";
 

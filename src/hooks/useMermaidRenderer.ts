@@ -1,5 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
-import { mermaidConfig, DIAGRAM_TYPES } from "../config/styles";
+import {
+  mermaidConfig,
+  DIAGRAM_TYPES,
+} from "@react/blog/enhancements/diagram-renderer/config/styles";
 
 export interface UseMermaidRendererResult {
   mermaidInitialized: boolean;

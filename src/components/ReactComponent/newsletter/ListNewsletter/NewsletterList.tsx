@@ -1,12 +1,14 @@
 import NewsletterListLogic from "@react/newsletter/ListNewsletter/NewsletterListLogic";
 import NewsletterListUI from "@react/newsletter/ListNewsletter/NewsletterListUI.tsx";
 import type { Newsletter } from "types/newsletter_types";
-
+import { memo } from "react";
 interface NewsletterListProps {
   newsletters: Newsletter[];
 }
 
-const NewsletterList: React.FC<NewsletterListProps> = ({ newsletters }) => {
+const NewsletterList = memo(function NewsletterList({
+  newsletters,
+}: NewsletterListProps) {
   if (newsletters.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center mt-[-10vh] space-y-6 p-8 ">
@@ -48,6 +50,6 @@ const NewsletterList: React.FC<NewsletterListProps> = ({ newsletters }) => {
       )}
     </NewsletterListLogic>
   );
-};
+});
 
 export default NewsletterList;

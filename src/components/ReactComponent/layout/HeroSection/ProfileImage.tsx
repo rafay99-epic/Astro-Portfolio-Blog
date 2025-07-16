@@ -1,11 +1,13 @@
-import React from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 interface ProfileImageProps {
   picture: string;
 }
 
-const ProfileImage: React.FC<ProfileImageProps> = ({ picture }) => {
+const ProfileImage = memo(function ProfileImage({
+  picture,
+}: ProfileImageProps) {
   return (
     <motion.div
       className="relative flex items-center justify-center w-full max-w-md mx-auto"
@@ -60,6 +62,6 @@ const ProfileImage: React.FC<ProfileImageProps> = ({ picture }) => {
       </motion.div>
     </motion.div>
   );
-};
+});
 
 export default ProfileImage;

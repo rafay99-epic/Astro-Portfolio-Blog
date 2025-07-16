@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 interface SocialLinksProps {
@@ -12,7 +12,9 @@ interface SocialLinksProps {
   };
 }
 
-const SocialLinks: React.FC<SocialLinksProps> = ({ socialLinks }) => {
+const SocialLinks = memo(function SocialLinks({
+  socialLinks,
+}: SocialLinksProps) {
   const socialPlatforms = [
     {
       name: "Twitter",
@@ -124,6 +126,6 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ socialLinks }) => {
       </div>
     </motion.div>
   );
-};
+});
 
 export default SocialLinks;

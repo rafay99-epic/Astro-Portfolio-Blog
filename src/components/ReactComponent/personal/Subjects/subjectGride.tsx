@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion, type Variants } from "framer-motion";
 import {
   FaBookOpen,
@@ -44,7 +45,7 @@ const itemVariants: Variants = {
   },
 };
 
-export default function SubjectGrid({ subjects }: SubjectGridProps) {
+const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
   const isMobile = useIsMobile();
 
   return (
@@ -258,4 +259,6 @@ export default function SubjectGrid({ subjects }: SubjectGridProps) {
       </div>
     </div>
   );
-}
+});
+
+export default SubjectGrid;

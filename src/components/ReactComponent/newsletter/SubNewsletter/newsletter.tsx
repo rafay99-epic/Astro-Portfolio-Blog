@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { useNewsletter } from "@react/newsletter/SubNewsletter/useNewletter";
 import { useIsMobile } from "@hooks/useIsMobile";
 
-const Newsletter: React.FC = () => {
+const Newsletter = memo(function Newsletter() {
   const {
     email,
     setEmail,
@@ -302,6 +302,6 @@ const Newsletter: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 export default Newsletter;

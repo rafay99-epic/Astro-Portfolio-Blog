@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 
 interface BlogHeaderProps {
@@ -11,7 +11,7 @@ interface BlogHeaderProps {
   readtime?: string;
 }
 
-const BlogHeader: React.FC<BlogHeaderProps> = ({
+const BlogHeader = memo(function BlogHeader({
   title,
   date,
   authorName,
@@ -19,7 +19,7 @@ const BlogHeader: React.FC<BlogHeaderProps> = ({
   coverImage,
   tags = [],
   readtime,
-}) => {
+}: BlogHeaderProps) {
   const formattedDate = new Date(date).toLocaleDateString(undefined, {
     year: "numeric",
     month: "short",
@@ -112,49 +112,6 @@ const BlogHeader: React.FC<BlogHeaderProps> = ({
       </motion.div>
     </section>
   );
-};
+});
 
 export default BlogHeader;
-
-// Alternative Design
-
-// side by side design
-
-// V3 side the image and blog inof Not bad
-// <section className="w-full max-w-6xl mx-auto px-4 py-12 flex flex-col md:flex-row gap-6 items-center text-white">
-//   {/* Cover Image */}
-//   <div className="w-full md:w-1/2">
-//     <img
-//       src={coverImage}
-//       alt="Cover"
-//       className="rounded-xl w-full h-auto object-cover shadow-lg"
-//     />
-//   </div>
-
-//   {/* Content */}
-//   <div className="w-full md:w-1/2 text-left">
-//     <div className="flex flex-wrap gap-2 mb-4">
-//       {tags.map((tag, i) => (
-//         <span
-//           key={i}
-//           className="px-3 py-1 text-sm rounded-full border border-white text-white bg-transparent"
-//         >
-//           #{tag}
-//         </span>
-//       ))}
-//     </div>
-
-//     <h1 className="text-4xl md:text-5xl font-bold mb-4">{title}</h1>
-
-//     <div className="flex items-center gap-3 text-gray-300">
-//       <img
-//         src={authorAvatar}
-//         alt={authorName}
-//         className="w-10 h-10 rounded-full border border-white"
-//       />
-//       <span className="text-white font-medium">{authorName}</span>
-//       <span>•</span>
-//       <span>{new Date(date).toLocaleDateString()}</span>
-//     </div>
-//   </div>
-// </section>

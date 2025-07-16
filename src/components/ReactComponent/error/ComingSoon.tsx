@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 interface ComingSoonProps {
@@ -42,7 +42,7 @@ const iconVariants = {
   },
 };
 
-const ComingSoon: React.FC<ComingSoonProps> = ({ featureName }) => {
+const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
   return (
     <div
       className="min-h-screen flex flex-col justify-center items-center  text-[#c0caf5] p-6 relative overflow-hidden"
@@ -195,6 +195,6 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ featureName }) => {
       </motion.div>
     </div>
   );
-};
+});
 
 export default ComingSoon;

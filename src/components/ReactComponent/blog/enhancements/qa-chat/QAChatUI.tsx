@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, memo } from "react";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -21,7 +21,7 @@ interface QAChatUIProps {
   onClose: () => void;
 }
 
-export function QAChatUI({
+export const QAChatUI = memo(function QAChatUI({
   messages,
   isLoading,
   error,
@@ -443,4 +443,4 @@ export function QAChatUI({
       </AnimatePresence>
     </div>
   );
-}
+});

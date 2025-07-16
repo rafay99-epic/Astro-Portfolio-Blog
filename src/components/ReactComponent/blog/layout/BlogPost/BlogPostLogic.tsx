@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import type { Post } from "types/articles";
 
 interface BlogSectionLogicProps {
@@ -8,13 +8,13 @@ interface BlogSectionLogicProps {
     totalPages: number,
     currentPage: number,
     handlePageChange: (page: number) => void
-  ) => JSX.Element;
+  ) => React.ReactNode;
 }
 
-const BlogSectionLogic: React.FC<BlogSectionLogicProps> = ({
+const BlogSectionLogic = memo(function BlogSectionLogic({
   posts,
   children,
-}) => {
+}: BlogSectionLogicProps) {
   const postsPerPage = 6;
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -40,6 +40,6 @@ const BlogSectionLogic: React.FC<BlogSectionLogicProps> = ({
   return (
     <>{children(currentPosts, totalPages, currentPage, handlePageChange)}</>
   );
-};
+});
 
 export default BlogSectionLogic;
