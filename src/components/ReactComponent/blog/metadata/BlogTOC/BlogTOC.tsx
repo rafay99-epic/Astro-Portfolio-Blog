@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 
 interface Heading {
   depth: number;
@@ -10,7 +10,7 @@ interface BlogTOCProps {
   headings: Heading[];
 }
 
-const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
+const BlogTOC = memo(function BlogTOC({ headings }: BlogTOCProps) {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isSticky, setIsSticky] = useState(false);
   const tocRef = useRef<HTMLDivElement>(null);
@@ -322,6 +322,6 @@ const BlogTOC: React.FC<BlogTOCProps> = ({ headings }) => {
       `}</style>
     </>
   );
-};
+});
 
 export default BlogTOC;

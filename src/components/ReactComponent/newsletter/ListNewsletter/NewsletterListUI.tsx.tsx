@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@hooks/useIsMobile";
 import type { Newsletter } from "types/newsletter_types.ts";
@@ -12,14 +12,14 @@ interface NewsletterListUIProps {
   error: string | null;
 }
 
-const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
+const NewsletterListUI = memo(function NewsletterListUI({
   currentNewsletters,
   totalPages,
   currentPage,
   handlePageChange,
   isLoading,
   error,
-}) => {
+}: NewsletterListUIProps) {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
@@ -328,6 +328,6 @@ const NewsletterListUI: React.FC<NewsletterListUIProps> = ({
       </div>
     </section>
   );
-};
+});
 
 export default NewsletterListUI;

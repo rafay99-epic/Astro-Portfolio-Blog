@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { FaWhatsapp, FaTwitter, FaFacebook, FaLinkedin } from "react-icons/fa";
 import { generateShareUrls } from "types/shareUtils";
 
@@ -34,7 +34,10 @@ const sharePlatforms = [
   },
 ];
 
-const ShareButtons: React.FC<ShareButtonsProps> = ({ url, pagetitle }) => {
+const ShareButtons = memo(function ShareButtons({
+  url,
+  pagetitle,
+}: ShareButtonsProps) {
   const shareUrls = generateShareUrls(url);
 
   return (
@@ -114,6 +117,6 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ url, pagetitle }) => {
       </div>
     </div>
   );
-};
+});
 
 export default ShareButtons;

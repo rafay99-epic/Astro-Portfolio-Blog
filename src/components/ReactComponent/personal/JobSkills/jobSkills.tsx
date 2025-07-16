@@ -1,191 +1,319 @@
-import React, { useState, useRef } from "react";
+import React, {
+  useState,
+  useRef,
+  memo,
+  useMemo,
+  useEffect,
+  useCallback,
+} from "react";
 import "devicon/devicon.min.css";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import authorConfig from "@config/siteConfig/info.json";
 
 const techStack = authorConfig.techStack;
 
-const SkillsShowcase: React.FC = () => {
+const SkillsShowcase = memo(function SkillsShowcase() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
-  const categoryToolsMap = techStack.reduce(
-    (acc, item) => {
-      acc[item.category] = item.tools;
-      return acc;
-    },
-    {} as Record<string, string[]>
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || "ontouchstart" in window);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const categoryToolsMap = useMemo(
+    () =>
+      techStack.reduce(
+        (acc, item) => {
+          acc[item.category] = item.tools;
+          return acc;
+        },
+        {} as Record<string, string[]>
+      ),
+    []
   );
 
-  const [activeTab, setActiveTab] = useState(Object.keys(categoryToolsMap)[0]);
+  const [activeTab, setActiveTab] = useState(
+    () => Object.keys(categoryToolsMap)[0]
+  );
 
-  // Category icons mapping
-  const categoryIcons: Record<string, string> = {
-    Frontend: "🎨",
-    Backend: "⚡",
-    Database: "🗄️",
-    DevOps: "🚀",
-    Mobile: "📱",
-    Tools: "🛠️",
-    Languages: "💻",
-    Framework: "🏗️",
-    Cloud: "☁️",
-    Design: "🎯",
-  };
+  const categoryIcons: Record<string, string> = useMemo(
+    () => ({
+      Frontend: "🎨",
+      Backend: "⚡",
+      Database: "🗄️",
+      DevOps: "🚀",
+      Mobile: "📱",
+      Tools: "🛠️",
+      Languages: "💻",
+      Framework: "🏗️",
+      Cloud: "☁️",
+      Design: "🎯",
+    }),
+    []
+  );
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.2,
-        staggerChildren: 0.1,
+  const containerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          delayChildren: isMobile ? 0.1 : 0.2,
+          staggerChildren: isMobile ? 0.03 : 0.1,
+          ease: "easeOut",
+        },
       },
-    },
-  };
+    }),
+    [isMobile]
+  );
 
-  const cardVariants = {
-    hidden: {
-      y: 30,
-      opacity: 0,
-      scale: 0.9,
-    },
-    visible: {
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        damping: 20,
-        stiffness: 100,
+  const cardVariants = useMemo(
+    () => ({
+      hidden: {
+        y: isMobile ? 20 : 30,
+        opacity: 0,
+        scale: isMobile ? 0.95 : 0.9,
       },
-    },
-  };
+      visible: {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        transition: {
+          type: "tween",
+          duration: isMobile ? 0.3 : 0.5,
+          ease: "easeOut",
+        },
+      },
+    }),
+    [isMobile]
+  );
 
-  const skillCardVariants = {
-    hidden: {
-      y: 20,
-      opacity: 0,
-      rotateY: -15,
-    },
-    visible: {
-      y: 0,
-      opacity: 1,
-      rotateY: 0,
-      transition: {
-        type: "spring",
-        damping: 15,
-        stiffness: 120,
+  const skillCardVariants = useMemo(
+    () => ({
+      hidden: {
+        y: isMobile ? 15 : 20,
+        opacity: 0,
+        rotateY: isMobile ? -8 : -15,
       },
-    },
+      visible: {
+        y: 0,
+        opacity: 1,
+        rotateY: 0,
+        transition: {
+          type: "tween",
+          duration: isMobile ? 0.25 : 0.4,
+          ease: "easeOut",
+        },
+      },
+    }),
+    [isMobile]
+  );
+
+  const handleTabChange = useCallback((category: string) => {
+    setActiveTab(category);
+  }, []);
+
+  const getOptimizedStyle = (isAnimated = false, isHover = false) => ({
+    willChange: isAnimated
+      ? isMobile
+        ? "transform"
+        : "transform, opacity"
+      : "auto",
+    transform: "translate3d(0, 0, 0)",
+    ...(isMobile && {
+      backfaceVisibility: "hidden" as const,
+      perspective: isHover ? 1000 : "none",
+    }),
+  });
+
+  const getHoverAnimation = (isCard = false) => {
+    if (isMobile) {
+      return isCard
+        ? { scale: 1.03, transition: { duration: 0.15, ease: "easeOut" } }
+        : { scale: 1.02, transition: { duration: 0.15, ease: "easeOut" } };
+    }
+    return isCard
+      ? {
+          scale: 1.08,
+          rotateY: 10,
+          z: 50,
+          transition: { duration: 0.3, ease: "easeOut" },
+        }
+      : { scale: 1.05, transition: { duration: 0.2, ease: "easeOut" } };
   };
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-16">
-      {/* Animated Background */}
-      <div className="absolute inset-0 opacity-20">
+    <section
+      ref={ref}
+      className="relative overflow-hidden py-16"
+      style={getOptimizedStyle()}
+    >
+      <div className="absolute inset-0 opacity-20" style={getOptimizedStyle()}>
         <motion.div
-          className="absolute top-1/4 left-1/6 w-96 h-96 bg-[#7aa2f7]/10 rounded-full blur-3xl"
+          className={`absolute top-1/4 left-1/6 bg-[#7aa2f7]/10 rounded-full blur-3xl ${
+            isMobile ? "w-64 h-64" : "w-96 h-96"
+          }`}
           initial={{ scale: 0, opacity: 0 }}
           animate={
             isInView ? { scale: 1, opacity: 0.3 } : { scale: 0, opacity: 0 }
           }
-          transition={{ duration: 1.5, delay: 0.2 }}
+          transition={{
+            duration: isMobile ? 1 : 1.5,
+            delay: 0.2,
+            ease: "easeOut",
+          }}
+          style={getOptimizedStyle(true)}
         />
         <motion.div
-          className="absolute bottom-1/4 right-1/6 w-80 h-80 bg-[#bb9af7]/10 rounded-full blur-3xl"
+          className={`absolute bottom-1/4 right-1/6 bg-[#bb9af7]/10 rounded-full blur-3xl ${
+            isMobile ? "w-48 h-48" : "w-80 h-80"
+          }`}
           initial={{ scale: 0, opacity: 0 }}
           animate={
             isInView ? { scale: 1, opacity: 0.3 } : { scale: 0, opacity: 0 }
           }
-          transition={{ duration: 1.5, delay: 0.4 }}
+          transition={{
+            duration: isMobile ? 1 : 1.5,
+            delay: 0.4,
+            ease: "easeOut",
+          }}
+          style={getOptimizedStyle(true)}
         />
         <motion.div
-          className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#9ece6a]/8 rounded-full blur-3xl"
+          className={`absolute top-1/2 left-1/2 bg-[#9ece6a]/8 rounded-full blur-3xl ${
+            isMobile ? "w-32 h-32" : "w-64 h-64"
+          }`}
           initial={{ scale: 0, opacity: 0 }}
           animate={
             isInView ? { scale: 1, opacity: 0.2 } : { scale: 0, opacity: 0 }
           }
-          transition={{ duration: 1.5, delay: 0.6 }}
+          transition={{
+            duration: isMobile ? 1 : 1.5,
+            delay: 0.6,
+            ease: "easeOut",
+          }}
+          style={getOptimizedStyle(true)}
         />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Header Section */}
+      <div
+        className="container mx-auto px-6 relative z-10"
+        style={getOptimizedStyle()}
+      >
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: -30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial={{ opacity: 0, y: isMobile ? -20 : -30 }}
+          animate={
+            isInView
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: isMobile ? -20 : -30 }
+          }
+          transition={{ duration: isMobile ? 0.6 : 0.8, ease: "easeOut" }}
+          style={getOptimizedStyle(true)}
         >
           <motion.h2
-            className="text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+            className={`font-bold mb-6 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent ${
+              isMobile ? "text-4xl lg:text-5xl" : "text-5xl lg:text-6xl"
+            }`}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={
               isInView ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }
             }
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{
+              duration: isMobile ? 0.6 : 0.8,
+              delay: 0.2,
+              ease: "easeOut",
+            }}
+            style={getOptimizedStyle(true)}
           >
             Tech Arsenal
           </motion.h2>
           <motion.p
-            className="text-xl text-[#a9b1d6] max-w-2xl mx-auto"
+            className={`text-[#a9b1d6] max-w-2xl mx-auto ${
+              isMobile ? "text-lg" : "text-xl"
+            }`}
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
+            transition={{
+              delay: 0.5,
+              duration: isMobile ? 0.6 : 0.8,
+              ease: "easeOut",
+            }}
+            style={getOptimizedStyle(true)}
           >
             My collection of technologies, frameworks, and tools that power
             modern development
           </motion.p>
         </motion.div>
 
-        {/* Skills Container */}
         <motion.div
           className="relative max-w-7xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
+          style={getOptimizedStyle(true)}
         >
-          {/* Glassmorphism Container */}
-          <div className="relative backdrop-blur-xl bg-[#24283b]/50 border border-[#565f89]/30 rounded-3xl p-8 shadow-2xl">
-            {/* Floating decorative elements */}
-            <div className="absolute top-4 right-4 w-2 h-2 bg-[#7aa2f7] rounded-full opacity-60 animate-pulse"></div>
+          <div
+            className="relative backdrop-blur-xl bg-[#24283b]/50 border border-[#565f89]/30 rounded-3xl p-8 shadow-2xl"
+            style={getOptimizedStyle()}
+          >
+            <div
+              className="absolute top-4 right-4 w-2 h-2 bg-[#7aa2f7] rounded-full opacity-60 animate-pulse"
+              style={getOptimizedStyle()}
+            />
             <div
               className="absolute bottom-6 left-6 w-3 h-3 bg-[#bb9af7] rounded-full opacity-40 animate-pulse"
-              style={{ animationDelay: "1s" }}
-            ></div>
+              style={{ ...getOptimizedStyle(), animationDelay: "1s" }}
+            />
             <div
               className="absolute top-1/2 right-8 w-1.5 h-1.5 bg-[#9ece6a] rounded-full opacity-50 animate-pulse"
-              style={{ animationDelay: "2s" }}
-            ></div>
+              style={{ ...getOptimizedStyle(), animationDelay: "2s" }}
+            />
 
-            {/* Category Tabs */}
             <motion.div
               className="flex flex-wrap justify-center gap-3 mb-12"
               variants={cardVariants}
+              style={getOptimizedStyle(true)}
             >
               {Object.keys(categoryToolsMap).map((category, index) => (
                 <motion.button
                   key={category}
-                  onClick={() => setActiveTab(category)}
-                  className={`group relative px-6 py-3 rounded-2xl font-semibold transition-all duration-300 text-sm md:text-base border backdrop-blur-sm overflow-hidden ${
+                  onClick={() => handleTabChange(category)}
+                  className={`group relative px-6 py-3 rounded-2xl font-semibold transition-all backdrop-blur-sm overflow-hidden ${
+                    isMobile
+                      ? "duration-200 text-sm"
+                      : "duration-300 text-sm md:text-base"
+                  } border ${
                     activeTab === category
                       ? "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white border-transparent shadow-lg shadow-[#7aa2f7]/25"
                       : "text-[#a9b1d6] border-[#565f89]/50 bg-[#1a1b26]/50 hover:bg-[#24283b]/80 hover:border-[#7aa2f7]/50 hover:text-[#c0caf5]"
                   }`}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={getHoverAnimation()}
                   whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: isMobile ? 15 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 + 0.3 }}
+                  transition={{
+                    delay: index * 0.1 + 0.3,
+                    duration: isMobile ? 0.3 : 0.4,
+                    ease: "easeOut",
+                  }}
+                  style={getOptimizedStyle(true)}
                 >
-                  {/* Active tab gradient overlay */}
                   {activeTab === category && (
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-[#bb9af7]/20 to-[#9ece6a]/20 rounded-2xl"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      style={getOptimizedStyle(true)}
                     />
                   )}
 
@@ -196,86 +324,132 @@ const SkillsShowcase: React.FC = () => {
                     <span>{category}</span>
                   </div>
 
-                  {/* Hover glow effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10" />
+                  <div
+                    className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10 ${
+                      isMobile ? "duration-200" : "duration-300"
+                    }`}
+                    style={getOptimizedStyle(true)}
+                  />
                 </motion.button>
               ))}
             </motion.div>
 
-            {/* Skills Grid */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: isMobile ? 15 : 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
+                exit={{ opacity: 0, y: isMobile ? -15 : -20 }}
+                transition={{ duration: isMobile ? 0.3 : 0.4, ease: "easeOut" }}
+                style={getOptimizedStyle(true)}
               >
                 <motion.div
-                  className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 md:gap-6"
+                  className={`grid gap-4 md:gap-6 ${
+                    isMobile
+                      ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+                      : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8"
+                  }`}
                   variants={containerVariants}
                   initial="hidden"
                   animate="visible"
+                  style={getOptimizedStyle(true)}
                 >
                   {categoryToolsMap[activeTab].map((skill, index) => (
                     <motion.div
                       key={skill}
                       variants={skillCardVariants}
                       className="group relative"
-                      whileHover={{
-                        scale: 1.08,
-                        rotateY: 10,
-                        z: 50,
-                      }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 20,
-                      }}
+                      whileHover={getHoverAnimation(true)}
+                      whileTap={isMobile ? { scale: 0.95 } : undefined}
+                      style={getOptimizedStyle(true, true)}
                     >
-                      {/* Card Background with Glassmorphism */}
-                      <div className="relative backdrop-blur-sm bg-[#1a1b26]/60 border border-[#565f89]/40 p-4 md:p-6 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 h-full flex flex-col items-center justify-center min-h-[120px] md:min-h-[140px]">
-                        {/* Hover glow effect */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-2xl bg-gradient-to-br from-[#7aa2f7]/20 via-[#bb9af7]/10 to-[#9ece6a]/20 blur-sm transform scale-105" />
+                      <div
+                        className={`relative backdrop-blur-sm bg-[#1a1b26]/60 border border-[#565f89]/40 p-4 md:p-6 rounded-2xl shadow-lg group-hover:shadow-xl transition-all h-full flex flex-col items-center justify-center ${
+                          isMobile
+                            ? "duration-200 min-h-[100px] md:min-h-[120px]"
+                            : "duration-300 min-h-[120px] md:min-h-[140px]"
+                        }`}
+                        style={getOptimizedStyle(true)}
+                      >
+                        <div
+                          className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-all rounded-2xl bg-gradient-to-br from-[#7aa2f7]/20 via-[#bb9af7]/10 to-[#9ece6a]/20 blur-sm transform scale-105 ${
+                            isMobile ? "duration-200" : "duration-300"
+                          }`}
+                          style={getOptimizedStyle(true)}
+                        />
 
-                        {/* Content */}
-                        <div className="relative z-10 flex flex-col items-center text-center space-y-3">
-                          {/* Skill Icon */}
+                        <div
+                          className="relative z-10 flex flex-col items-center text-center space-y-3"
+                          style={getOptimizedStyle()}
+                        >
                           <motion.div
                             className="relative"
-                            whileHover={{ rotate: [0, -10, 10, 0] }}
+                            whileHover={
+                              !isMobile
+                                ? { rotate: [0, -10, 10, 0] }
+                                : undefined
+                            }
                             transition={{ duration: 0.5 }}
+                            style={getOptimizedStyle(true)}
                           >
                             <i
-                              className={`devicon-${skill.toLowerCase()}-plain colored text-3xl md:text-4xl transition-all duration-300 group-hover:scale-110 group-hover:brightness-110`}
+                              className={`devicon-${skill.toLowerCase()}-plain colored transition-all group-hover:scale-110 group-hover:brightness-110 ${
+                                isMobile
+                                  ? "text-2xl md:text-3xl duration-200"
+                                  : "text-3xl md:text-4xl duration-300"
+                              }`}
+                              style={getOptimizedStyle(true)}
                             />
 
-                            {/* Icon glow effect */}
-                            <div className="absolute inset-0 opacity-0 group-hover:opacity-60 transition-opacity duration-300">
+                            <div
+                              className={`absolute inset-0 opacity-0 group-hover:opacity-60 transition-opacity ${
+                                isMobile ? "duration-200" : "duration-300"
+                              }`}
+                              style={getOptimizedStyle(true)}
+                            >
                               <i
-                                className={`devicon-${skill.toLowerCase()}-plain text-3xl md:text-4xl text-[#7aa2f7] blur-sm`}
+                                className={`devicon-${skill.toLowerCase()}-plain text-[#7aa2f7] blur-sm ${
+                                  isMobile
+                                    ? "text-2xl md:text-3xl"
+                                    : "text-3xl md:text-4xl"
+                                }`}
                               />
                             </div>
                           </motion.div>
 
-                          {/* Skill Name */}
                           <motion.p
-                            className="text-xs md:text-sm font-semibold text-[#a9b1d6] group-hover:text-[#c0caf5] transition-colors duration-300"
+                            className={`font-semibold text-[#a9b1d6] group-hover:text-[#c0caf5] transition-colors ${
+                              isMobile
+                                ? "text-xs md:text-sm duration-200"
+                                : "text-xs md:text-sm duration-300"
+                            }`}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: index * 0.05 + 0.2 }}
+                            transition={{
+                              delay: index * 0.05 + 0.2,
+                              ease: "easeOut",
+                            }}
+                            style={getOptimizedStyle(true)}
                           >
                             {skill.charAt(0).toUpperCase() + skill.slice(1)}
                           </motion.p>
                         </div>
 
-                        {/* Corner accent */}
-                        <div className="absolute top-2 right-2 w-1 h-1 bg-[#7aa2f7] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#bb9af7] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div
+                          className={`absolute top-2 right-2 w-1 h-1 bg-[#7aa2f7] rounded-full opacity-0 group-hover:opacity-100 transition-opacity ${
+                            isMobile ? "duration-200" : "duration-300"
+                          }`}
+                          style={getOptimizedStyle(true)}
+                        />
+                        <div
+                          className={`absolute bottom-2 left-2 w-1 h-1 bg-[#bb9af7] rounded-full opacity-0 group-hover:opacity-100 transition-opacity ${
+                            isMobile ? "duration-200" : "duration-300"
+                          }`}
+                          style={getOptimizedStyle(true)}
+                        />
                       </div>
 
-                      {/* Floating animation for random cards */}
-                      {index % 3 === 0 && (
+                      {!isMobile && index % 3 === 0 && (
                         <motion.div
                           className="absolute inset-0 pointer-events-none"
                           animate={{
@@ -287,6 +461,7 @@ const SkillsShowcase: React.FC = () => {
                             delay: index * 0.2,
                             ease: "easeInOut",
                           }}
+                          style={getOptimizedStyle(true)}
                         />
                       )}
                     </motion.div>
@@ -295,16 +470,27 @@ const SkillsShowcase: React.FC = () => {
               </motion.div>
             </AnimatePresence>
 
-            {/* Bottom Stats Bar */}
             <motion.div
               className="mt-12 pt-8 border-t border-[#565f89]/30"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ delay: 1, duration: 0.6 }}
+              initial={{ opacity: 0, y: isMobile ? 15 : 20 }}
+              animate={
+                isInView
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 0, y: isMobile ? 15 : 20 }
+              }
+              transition={{
+                delay: 1,
+                duration: isMobile ? 0.4 : 0.6,
+                ease: "easeOut",
+              }}
+              style={getOptimizedStyle(true)}
             >
               <div className="flex flex-wrap justify-center items-center gap-8 text-center">
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-[#7aa2f7] rounded-full animate-pulse" />
+                  <div
+                    className="w-3 h-3 bg-[#7aa2f7] rounded-full animate-pulse"
+                    style={getOptimizedStyle()}
+                  />
                   <span className="text-[#a9b1d6] text-sm">
                     <span className="text-[#c0caf5] font-bold">
                       {Object.keys(categoryToolsMap).length}
@@ -315,7 +501,7 @@ const SkillsShowcase: React.FC = () => {
                 <div className="flex items-center space-x-2">
                   <div
                     className="w-3 h-3 bg-[#bb9af7] rounded-full animate-pulse"
-                    style={{ animationDelay: "0.5s" }}
+                    style={{ ...getOptimizedStyle(), animationDelay: "0.5s" }}
                   />
                   <span className="text-[#a9b1d6] text-sm">
                     <span className="text-[#c0caf5] font-bold">
@@ -330,7 +516,7 @@ const SkillsShowcase: React.FC = () => {
                 <div className="flex items-center space-x-2">
                   <div
                     className="w-3 h-3 bg-[#9ece6a] rounded-full animate-pulse"
-                    style={{ animationDelay: "1s" }}
+                    style={{ ...getOptimizedStyle(), animationDelay: "1s" }}
                   />
                   <span className="text-[#a9b1d6] text-sm">
                     <span className="text-[#c0caf5] font-bold">
@@ -346,6 +532,6 @@ const SkillsShowcase: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 export default SkillsShowcase;

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, createElement } from "react";
-import { containerStyles } from "../config/styles";
-import type { UseMermaidRendererResult } from "./useMermaidRenderer";
+import { containerStyles } from "@components/ReactComponent/blog/enhancements/diagram-renderer/config/styles";
+import type { UseMermaidRendererResult } from "@hooks/useMermaidRenderer";
 
 interface UseDiagramRendererProps
   extends Pick<
@@ -60,7 +60,7 @@ export function useDiagramRenderer({
           const root = createRoot(buttonContainer);
 
           const { default: DiagramButtons } = await import(
-            "../components/DiagramButtons"
+            "../components/ReactComponent/blog/enhancements/diagram-renderer/components/DiagramButtons"
           );
           const element = createElement(DiagramButtons, {
             onCopy: () => copyToClipboard(svgElement, diagramId),

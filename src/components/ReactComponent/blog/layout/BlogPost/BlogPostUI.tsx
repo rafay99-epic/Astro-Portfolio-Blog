@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import type { Post } from "types/articles";
 import { useIsMobile } from "@hooks/useIsMobile";
 
@@ -12,12 +12,12 @@ interface BlogSectionUIProps {
 
 type ViewType = "grid" | "list" | "compact";
 
-const BlogSectionUI: React.FC<BlogSectionUIProps> = ({
+const BlogSectionUI = memo(function BlogSectionUI({
   currentPosts,
   totalPages,
   currentPage,
   handlePageChange,
-}) => {
+}: BlogSectionUIProps) {
   const [currentView, setCurrentView] = useState<ViewType>("grid");
   const isMobile = useIsMobile();
 
@@ -559,6 +559,6 @@ const BlogSectionUI: React.FC<BlogSectionUIProps> = ({
       </div>
     </section>
   );
-};
+});
 
 export default BlogSectionUI;

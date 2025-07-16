@@ -100,9 +100,59 @@
     ],
     "workExperience": [
         {
+            "companyName": "Future Tech Technologies",
+            "position": "Senior Software Engineer & Team Lead",
+            "employmentTime": "2nd June, 2025 - Present",
+            "roles": [
+                "Building Stunning looking Web Applications using Astro, React, Nodejs,NextJs, and Tailwindcss",
+                "Testing Multiple Applications",
+                "Making sure the production does not go down",
+                "Building Stunning looking Web Applications using Astro, React, Nodejs,NextJs, and Tailwindcss",
+                "Testing Multiple Applications",
+                "Making sure the production does not go down",
+                "Building full backend using Nodejs, Express, and SQL with Prisma",
+                "Managing a team of 5+ developers and full UI and UX of the application"
+            ],
+            "toolsUsed": [
+                "Astro",
+                "React",
+                "Nodejs",
+                "NextJs",
+                "Tailwindcss",
+                "Prisma",
+                "SQL"
+            ]
+        },
+        {
+            "companyName": "Freelancer",
+            "position": "Full Stack Developer",
+            "employmentTime": "1st April, 2024 - 1st June, 2025",
+            "roles": [
+                "Building Stunning looking Web Applications using Astro, React, Nodejs,NextJs, and Tailwindcss",
+                "Managing Projects and Clients",
+                "Hiring and Training New Developers",
+                "Testing and Deploying Applications for Clients and in free lancer platform"
+            ],
+            "toolsUsed": [
+                "Flutter",
+                "Dart",
+                "Firebase",
+                "Superbase",
+                "MongoDB",
+                "Convex",
+                "SQL",
+                "Prisma",
+                "Nodejs",
+                "Express",
+                "Astro",
+                "React",
+                "Tailwindcss"
+            ]
+        },
+        {
             "companyName": "Daxno Technology",
-            "position": "Flutter Developer & Team Lead",
-            "employmentTime": "2nd Feb, 2024 - Present",
+            "position": "Flutter Developer",
+            "employmentTime": "1st December, 2023 - 1st  April, 2024",
             "roles": [
                 "Building Stunning looking Android Applications",
                 "Testing Multiple Applications",

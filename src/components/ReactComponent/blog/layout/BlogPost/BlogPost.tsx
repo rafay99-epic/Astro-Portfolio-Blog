@@ -1,14 +1,14 @@
 import BlogSectionLogic from "@react/blog/layout/BlogPost/BlogPostLogic";
 import BlogSectionUI from "@react/blog/layout/BlogPost/BlogPostUI";
 import type { Post } from "types/articles";
-
+import { memo } from "react";
 import { AnimatePresence } from "framer-motion";
 
 interface BlogSectionProps {
   posts: Post[];
 }
 
-const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
+const BlogSection = memo(function BlogSection({ posts }: BlogSectionProps) {
   if (posts.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center mt-[-10vh] space-y-6 p-8 ">
@@ -43,6 +43,6 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
       </BlogSectionLogic>
     </AnimatePresence>
   );
-};
+});
 
 export default BlogSection;

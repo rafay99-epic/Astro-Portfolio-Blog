@@ -1,10 +1,10 @@
-import React, { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import type { Version, WikiPageProps } from "../../../types/wiki";
+import type { Version, WikiPageProps } from "types/wiki";
 import { useIsMobile } from "@hooks/useIsMobile";
 
-const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
+const WikiPage = memo(function WikiPage({ versions }: WikiPageProps) {
   const [error, setError] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
@@ -385,6 +385,6 @@ const WikiPage: React.FC<WikiPageProps> = ({ versions }) => {
       </div>
     </div>
   );
-};
+});
 
 export default WikiPage;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 
@@ -16,13 +16,13 @@ type SummaryBlogUIProps = {
   onRetry: () => void;
 };
 
-export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
+export const SummaryBlogUI = memo(function SummaryBlogUI({
   summary,
   loading,
   error,
   retryCount,
   onRetry,
-}) => {
+}: SummaryBlogUIProps) {
   const [expanded, setExpanded] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -399,4 +399,4 @@ export const SummaryBlogUI: React.FC<SummaryBlogUIProps> = ({
   );
 
   return <MainComponent />;
-};
+});

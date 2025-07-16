@@ -1,9 +1,9 @@
 ---
 title: Is Your Editor Ready for a New Competitor? My First Dive into Amazon's Kiro!
-description: 'New player in Town '
+description: "New player in Town "
 pubDate: 2025-07-15T19:00:00.000Z
 draft: true
-heroImage: /BlogImages/Untitled%20design.png
+heroImage: /BlogImages/kiro.webp
 authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
@@ -11,37 +11,115 @@ tags:
   - WebDevelopment
 ---
 
-Just when you thought your `node_modules` folder couldn't get any bigger, or your `.dotfiles` couldn't get any more complex, Amazon drops a new challenger into the code editor arena: meet **Kiro**! My immediate thought? "Do I *really* need another editor?" (Spoiler: For a software engineer, the answer is almost always a resounding "yes, just to try it!")
+**Is Your Editor Ready for a New Competitor? My First Dive into Amazon's Kiro!**
 
-It was yesterday, or perhaps the day before (time flies when you're debugging!), when a tweet `console.log()`-ed itself directly into my feed: Amazon had launched a brand-new code editor. And the name? **Kiro**. Seriously, how cool is that? It just *sounds* like it belongs in your dev environment.
+Just when you thought your `node_modules` folder couldn't get any bigger, or your `.dotfiles` couldn't get any more complex, Amazon drops a new challenger into the code editor arena: meet **Kiro**! My immediate thought? "Do I _really_ need another editor?" (Spoiler: For a software engineer, the answer is almost always a resounding "yes, just to try it!")
 
-At the time, I was happily neck-deep in a Next.js application, implementing a full-blown blog system for a client using my trusty Cursor. My dev flow was smooth, components were rendering, and life was good. But as any curious engineer knows, a new tool on the block is like an unmerged `feature` branch – you just *have* to check it out.
+It was yesterday, or perhaps the day before (time flies when you're debugging!), when a tweet `console.log()`-ed itself directly into my feed: Amazon had launched a brand-new code editor. And the name? **Kiro**. Seriously, how cool is that? It just _sounds_ like it belongs in your dev environment.
+
+At the time, I was happily neck-deep in a Next.js application, implementing a full-blown blog system for a client using my trusty Cursor. My dev flow was smooth, components were rendering, and life was good. But as any curious engineer knows, a new tool on the block is like an unmerged `feature` branch – you just _have_ to check it out.
 
 So, I did what any self-respecting tech enthusiast would do: I paused my current task (because, priorities!), closed Cursor, and fired up my browser. A quick Google search for "Amazon code editor" and boom, the first result was the official link. The best part? It's free to download, and available for Mac, Windows, and Linux! As a Windows user, I was thrilled; new toys to play with and, of course, fresh content ideas to spark!
 
 Installation was a breeze. Upon launching Kiro, it smoothly prompted me to sign in with GitHub, followed by an option to import settings from VS Code. This, my friend, was a `git merge` I didn't know I needed! I hit "confirm," and Kiro started pulling in all my beloved config, extensions, and aesthetic preferences.
 
-Now, I won't lie, the transfer felt like compiling `node_modules` from scratch – it took a *while*. But hey, good things come to those who wait (or whose `package.json` resolves successfully!). Once it was done, I reopened my Next.js project in Kiro, and everything just… clicked. It looked familiar, yet somehow, it felt refreshed. All my preferred settings were there, making the transition feel less like a context switch and more like an optimized `hot-reload`.
+Now, I won't lie, the transfer felt like compiling `node_modules` from scratch – it took a _while_. But hey, good things come to those who wait (or whose `package.json` resolves successfully!). Once it was done, I reopened my Next.js project in Kiro, and everything just… clicked. It looked familiar, yet somehow, it felt refreshed. All my preferred settings were there, making the transition feel less like a context switch and more like an optimized `hot-reload`.
 
 But here's the kicker, the `if/else` statement that truly defines Kiro: While it has that comforting VS Code vibe, there are some distinct differences that set it apart. And that, my fellow coders, is where the real fun begins.
 
-## Two Mode
+## Two Modes, One Editor: Kiro's AI Architecture
 
-Kira has two modes when you launch a project
+Now, let's talk about the differentiating factor, the core architectural decision that sets Kiro apart from your standard text editor: its **Two Distinct AI-Powered Modes**. When you first launch a project in Kiro, you're presented with a choice, like a `switch` statement deciding your coding flow:
 
-1. Vibe Coding Mode
-2. Sepc Mode
+1.  **Vibe Coding Mode**
+2.  **Spec Mode**
 
-Both modes are so different and yet so similar here what it look like when you open a project in **Kiro.**
+They might seem like two sides of the same algorithmic coin, distinct yet surprisingly complementary. Here's a glimpse of the initial UI, offering that crucial decision point:
 
- ![](/BlogImages/kiro_interface.webp)Now the UI shows use which mode to show but with this, let me talk about the coding experience with these new modes. 
+![](/BlogImages/kiro_interface.webp)
 
-## Vibe Coding Mode
+This choice isn't just cosmetic; it deeply influences your interaction model with Kiro's integrated AI. Let's `await` a deeper dive into each.
 
-Form their names, you can guess what these this will take input from the user, index the code base and make the changes to the code base as well. and then let user know about the changes if approve then it will set all the changes, It will create a seperate Review screen something like this ![](/BlogImages/review_screen.webp)
+### Vibe Coding Mode: Your Pair Programmer on Steroids
 
-Now you can see I am doing some testing and it will create demo file and the code and then you approve and then it will make the changes to the file, I really like the porcess of revert in the chatbot, this was look so if something  I don't like then I can just get rid all of the changes 
+True to its name, 'Vibe Coding Mode' feels like having an intelligent pair programmer right inside your editor. You provide input – perhaps a comment, a natural language instruction, or a code snippet – and Kiro's AI kicks in. It `indexes` your codebase (a recurring theme, as we'll discuss later) and proposes changes directly within your files.
 
-## Spec Mode
+The coolest part? It doesn't just `push` changes blindly. Kiro presents a dedicated 'Review Screen,' a kind of built-in `pull request` interface for AI-generated code. This is a game-changer!
 
-So this mode is very different, what this model really 
+![](/BlogImages/review_screen.webp)
+
+As you can see from my testing, Kiro generated a demo file and some code. The power here lies in the control. You can examine every line, understand the proposed `delta`, and then explicitly approve the changes. Even better, if the AI veers off-track or introduces something you don't like, the `revert` process is incredibly smooth, right within the chat interface. It's like having an `undo` button for your AI's suggestions – a feature I absolutely `love`!
+
+### Spec Mode: Engineering Beyond the Code
+
+If 'Vibe Coding Mode' is your direct coding assistant, 'Spec Mode' is your full-stack project manager. This mode is a fascinating departure, aiming to tackle features from a higher altitude. You feed it a high-level requirement, and Kiro aims to:
+
+- **Understand the input**
+- **Generate a comprehensive plan**
+- **Create design documentation**
+- **Develop a detailed to-do list**
+- **Formulate a step-by-step coding plan**
+
+Only once you approve this entire `blueprint` does it even touch your codebase. I'm currently putting 'Spec Mode' through its paces by attempting to add a significant new feature to my application – something entirely outside my current skillset: **internationalization (i18n)**.
+
+My `prompt` to Kiro was quite detailed, outlining a real-world scenario:
+
+```
+In this application, user language and country are stored in Convex. I want you to
+retrieve the country and language, then use Google Translate with Next.js to
+translate the entire application with the user's preferred language. Additionally,
+provide the user with a choice in the user dashboard's settings section to switch
+languages. This app will be launched globally (Europe, Asia, US, and other
+regions), so I need this to be dynamic and ensure translation covers the dashboard,
+admin panel, landing page, blog site, and everything in between.
+```
+
+The initial `parse` phase was genuinely impressive. Kiro indexed my entire codebase and generated incredibly detailed documentation based on my prompt. I was genuinely `shocked` by its ability to comprehend the existing project structure and produce such relevant `specs`. It felt like it was truly _understanding_ my code, not just pattern-matching. That, for a moment, made me believe this was the future!
+
+However, the `implementation` phase has been… a journey. I kicked off the coding process hours ago. As I'm writing this, Kiro is _still_ `compiling` (or perhaps `transpiling`? I'm not sure what it's doing back there!) the translation functionality. It's been well over 30 minutes, and the progress bar seems stuck in a perpetual `pending` state. This brings us to some `runtime errors` in the Kiro experience.
+
+## The Bugs and Bottlenecks: Where Kiro Needs a Patch
+
+During my intensive testing, I've stumbled upon a few performance and stability issues that feel like unexpected `throw` statements in my otherwise smooth dev flow.
+
+### 1. The Latency Lag: Slow Response Times
+
+This is perhaps the most glaring issue. Whether I'm in Vibe Coding Mode waiting for a simple code change or in Spec Mode attempting a major feature, the response time is just… slow. Painfully slow. It often feels like the app has hung, entering a perpetual `await` state, and not loading extensions at all. The 30+ minute wait for my translation feature in Spec Mode is a testament to this, as I'm almost done writing this blog post, and the functionality isn't even close to being added!
+
+### 2. Indexing Overload: The Perpetual `scan()`
+
+Kiro seems to have a bit of an indexing obsession. After every major task initiation or perhaps even minor tweaks, it triggers another full codebase index. This constant re-indexing leads directly back to our first problem: more waiting. It's like a database performing a full table scan repeatedly, slowing down every subsequent `query`.
+
+### 3. Extension Incompatibility: Missing `devDependencies`?
+
+This one is truly bizarre. I rely on extensions like "Better Comments" for my code readability, and while they work perfectly in Cursor and VS Code, Kiro disables them, citing version number issues. This suggests a lack of robust extension compatibility or perhaps some underlying API differences that need to be addressed. It's a clear signal that Kiro still has some `dependencies` to resolve and `bugs` to squash before it feels truly production-ready.
+
+## Kiro's Shining Features: The `pros` that Keep Me Hooked
+
+It's not all `syntax errors` and `segmentation faults`! Despite the current challenges, Kiro definitely has some redeeming qualities that make it a compelling tool.
+
+- **Seamless Migration:** The effortless import of settings from VS Code was a godsend. It made the initial transition incredibly smooth, preserving my preferred themes and configurations, which often don't translate well between other editors (looking at you, Cursor!).
+- **Intelligent Error Handling:** Kiro does a decent job of flagging errors within the generated code and providing guidance. It's not a magical `debugger` that fixes everything, but it offers enough insights to make manual corrections a few clicks away.
+- **The Power of AI (When It Works):** When Kiro's AI isn't bogged down by latency or indexing, the core concepts of Vibe Coding and Spec Mode are genuinely powerful. The idea of an AI understanding your project and generating plans or code suggestions with a review process is a `paradigm shift`.
+
+Overall, despite its current performance quirks, the underlying experience and the direction Kiro is heading are promising.
+
+## The Elephant in the Server Room: Pricing & Models
+
+Here's the crucial `config` detail:
+
+### Pricing
+
+Currently, Kiro is operating under a glorious `free tier`. There are no costs associated with using it, which makes trying it out a no-brainer. However, like any good beta, a `pricing plan` is slated for the future. So, enjoy the free computation while it lasts!
+
+### Models
+
+For its powerful AI capabilities, Kiro is powered by **Claude 4** and **Claude 3.5**. These models are known for their advanced reasoning and code generation abilities. Their strong `tool-calling` features are undoubtedly what enable Kiro's impressive code understanding and generation. Use them while they're on the house!
+
+## Final `return` Statement: My Kiro Verdict
+
+So, where do I stand on Amazon's new challenger? I've been happily `coding` in Cursor for a while, but Kiro offered a genuinely fresh experience. While it certainly has its growing pains – particularly around performance and extension compatibility – the core AI features, especially the ambitious Spec Mode, demonstrate incredible potential.
+
+Will Kiro replace my primary daily driver? Not for my day job, not yet. The current performance issues are too significant for mission-critical development. However, for my **side projects** where I can `experiment`, embrace longer iteration cycles, and _really_ push the boundaries of AI-assisted coding, Kiro has absolutely earned its spot as my go-to **second code editor**. It's a fascinating `beta` that every curious developer should `fork` and try out!
+
+Untill then nerds and coders, enjoy the new Kiro experience!

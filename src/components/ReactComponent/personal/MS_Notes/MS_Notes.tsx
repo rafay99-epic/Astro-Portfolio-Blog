@@ -1,14 +1,15 @@
-import React from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 import type { Note } from "types/notes";
 import { useNotesGrid } from "@react/personal/MS_Notes/MS_NotesLogic";
 import NotesGridUI from "@react/personal/MS_Notes/MS_NotesUi";
+import { withTheme } from "@components/ReactComponent/layout/ThemeManager/withTheme";
 
 interface NotesGridProps {
   notes: Note[];
 }
 
-const NotesGrid: React.FC<NotesGridProps> = ({ notes }) => {
+const NotesGrid = memo(function NotesGrid({ notes }: NotesGridProps) {
   const {
     selectedTag,
     setSelectedTag,
@@ -139,6 +140,6 @@ const NotesGrid: React.FC<NotesGridProps> = ({ notes }) => {
       paginatedNotes={paginatedNotes}
     />
   );
-};
+});
 
 export default NotesGrid;

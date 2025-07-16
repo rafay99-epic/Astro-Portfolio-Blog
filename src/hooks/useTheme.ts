@@ -1,4 +1,13 @@
-import { useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+  type ReactNode,
+} from "react";
 import {
   colors,
   getThemeColors,
@@ -12,155 +21,263 @@ export interface UseThemeReturn {
   switchTheme: (theme: ThemeName) => void;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
+  isInitialized: boolean;
 }
 
+interface ThemeContextType extends UseThemeReturn {}
+
+export const ThemeContext = createContext<ThemeContextType | undefined>(
+  undefined
+);
+
 /**
- * Custom hook for theme management
- * Provides access to current theme colors and switching capabilities
+ * Optimized Theme Hook with centralized state management
+ * Prevents multiple localStorage reads and unnecessary re-renders
  */
-export function useTheme(): UseThemeReturn {
+export function useThemeProvider() {
   const [currentTheme, setCurrentTheme] = useState<ThemeName>("tokyo-night");
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const updateTimeoutRef = useRef<number | undefined>(undefined);
 
-  // Initialize theme from localStorage or system preference
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as ThemeName;
-    const savedDarkMode = localStorage.getItem("darkMode");
+  // Memoized theme colors to prevent recalculation on every render
+  const colors = useMemo(() => getThemeColors(currentTheme), [currentTheme]);
 
-    if (savedTheme) {
-      setCurrentTheme(savedTheme);
+  // Debounced CSS variable update function
+  const updateCSSVariables = useCallback((palette: ColorPalette) => {
+    // Clear any pending updates
+    if (updateTimeoutRef.current) {
+      clearTimeout(updateTimeoutRef.current);
     }
 
-    if (savedDarkMode !== null) {
-      setIsDarkMode(JSON.parse(savedDarkMode));
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      setIsDarkMode(prefersDark);
-    }
+    // Batch CSS updates using requestAnimationFrame for better performance
+    updateTimeoutRef.current = window.setTimeout(() => {
+      requestAnimationFrame(() => {
+        const root = document.documentElement;
+        const updates: [string, string][] = [
+          // Primary Colors
+          ["--color-primary", palette.primary],
+          ["--color-secondary", palette.secondary],
+          ["--color-accent", palette.accent],
+
+          // Background Colors
+          ["--color-bg-primary", palette.background.primary],
+          ["--color-bg-secondary", palette.background.secondary],
+          ["--color-bg-tertiary", palette.background.tertiary],
+          ["--color-bg-card", palette.background.card],
+          ["--color-bg-overlay", palette.background.overlay],
+
+          // Text Colors
+          ["--color-text-primary", palette.text.primary],
+          ["--color-text-secondary", palette.text.secondary],
+          ["--color-text-muted", palette.text.muted],
+          ["--color-text-accent", palette.text.accent],
+          ["--color-text-inverse", palette.text.inverse],
+
+          // Border Colors
+          ["--color-border-primary", palette.border.primary],
+          ["--color-border-secondary", palette.border.secondary],
+          ["--color-border-accent", palette.border.accent],
+          ["--color-border-hover", palette.border.hover],
+
+          // Status Colors
+          ["--color-success", palette.status.success],
+          ["--color-warning", palette.status.warning],
+          ["--color-error", palette.status.error],
+          ["--color-info", palette.status.info],
+
+          // Interactive Colors
+          ["--color-hover", palette.interactive.hover],
+          ["--color-focus", palette.interactive.focus],
+          ["--color-active", palette.interactive.active],
+          ["--color-disabled", palette.interactive.disabled],
+
+          // Gradients
+          ["--gradient-primary", palette.gradients.primary],
+          ["--gradient-secondary", palette.gradients.secondary],
+          ["--gradient-accent", palette.gradients.accent],
+          ["--gradient-rainbow", palette.gradients.rainbow],
+
+          // Social Colors
+          ["--color-twitter", palette.social.twitter],
+          ["--color-facebook", palette.social.facebook],
+          ["--color-linkedin", palette.social.linkedin],
+          ["--color-whatsapp", palette.social.whatsapp],
+          ["--color-github", palette.social.github],
+          ["--color-youtube", palette.social.youtube],
+          ["--color-upwork", palette.social.upwork],
+        ];
+
+        // Batch apply all CSS custom properties
+        updates.forEach(([property, value]) => {
+          root.style.setProperty(property, value);
+        });
+      });
+    }, 16); // 60fps = ~16ms
   }, []);
 
-  // Update CSS variables when theme changes
+  // Initialize theme from localStorage or system preference (only once)
   useEffect(() => {
-    const themeColors = getThemeColors(currentTheme);
-    updateCSSVariables(themeColors);
+    let mounted = true;
 
-    // Save to localStorage
-    localStorage.setItem("theme", currentTheme);
-    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
-  }, [currentTheme, isDarkMode]);
+    // Use requestIdleCallback for non-critical initialization
+    const initializeTheme = () => {
+      try {
+        const savedTheme = localStorage.getItem("theme") as ThemeName;
+        const savedDarkMode = localStorage.getItem("darkMode");
 
-  const switchTheme = (theme: ThemeName) => {
+        if (mounted) {
+          if (
+            savedTheme &&
+            ["tokyo-night", "cyberpunk", "ocean", "forest"].includes(savedTheme)
+          ) {
+            setCurrentTheme(savedTheme);
+          }
+
+          if (savedDarkMode !== null) {
+            setIsDarkMode(JSON.parse(savedDarkMode));
+          } else {
+            // Check system preference
+            const prefersDark = window.matchMedia(
+              "(prefers-color-scheme: dark)"
+            ).matches;
+            setIsDarkMode(prefersDark);
+          }
+
+          setIsInitialized(true);
+        }
+      } catch (error) {
+        console.warn("Failed to initialize theme from localStorage:", error);
+        if (mounted) {
+          setIsInitialized(true);
+        }
+      }
+    };
+
+    // Use requestIdleCallback if available, otherwise use setTimeout
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      (window as any).requestIdleCallback(initializeTheme);
+    } else {
+      setTimeout(initializeTheme, 0);
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Update CSS variables when theme changes (debounced)
+  useEffect(() => {
+    if (isInitialized) {
+      updateCSSVariables(colors);
+    }
+  }, [colors, updateCSSVariables, isInitialized]);
+
+  // Save to localStorage (debounced)
+  useEffect(() => {
+    if (isInitialized) {
+      const saveTimeout = setTimeout(() => {
+        try {
+          localStorage.setItem("theme", currentTheme);
+          localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+        } catch (error) {
+          console.warn("Failed to save theme to localStorage:", error);
+        }
+      }, 100); // Debounce localStorage writes
+
+      return () => clearTimeout(saveTimeout);
+    }
+  }, [currentTheme, isDarkMode, isInitialized]);
+
+  // Memoized switch theme function
+  const switchTheme = useCallback((theme: ThemeName) => {
     setCurrentTheme(theme);
-  };
+  }, []);
 
-  const toggleDarkMode = () => {
+  // Memoized toggle dark mode function
+  const toggleDarkMode = useCallback(() => {
     setIsDarkMode((prev) => !prev);
-  };
+  }, []);
 
-  return {
-    currentTheme,
-    colors: getThemeColors(currentTheme),
-    switchTheme,
-    isDarkMode,
-    toggleDarkMode,
-  };
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Return memoized theme state
+  return useMemo(
+    () => ({
+      currentTheme,
+      colors,
+      switchTheme,
+      isDarkMode,
+      toggleDarkMode,
+      isInitialized,
+    }),
+    [
+      currentTheme,
+      colors,
+      switchTheme,
+      isDarkMode,
+      toggleDarkMode,
+      isInitialized,
+    ]
+  );
 }
 
 /**
- * Update CSS custom properties with theme colors
+ * Optimized hook for theme management
+ * Uses centralized context instead of individual state instances
  */
-function updateCSSVariables(palette: ColorPalette) {
-  const root = document.documentElement;
+export function useTheme(): UseThemeReturn {
+  const context = useContext(ThemeContext);
 
-  // Primary Colors
-  root.style.setProperty("--color-primary", palette.primary);
-  root.style.setProperty("--color-secondary", palette.secondary);
-  root.style.setProperty("--color-accent", palette.accent);
+  if (context === undefined) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
 
-  // Background Colors
-  root.style.setProperty("--color-bg-primary", palette.background.primary);
-  root.style.setProperty("--color-bg-secondary", palette.background.secondary);
-  root.style.setProperty("--color-bg-tertiary", palette.background.tertiary);
-  root.style.setProperty("--color-bg-card", palette.background.card);
-  root.style.setProperty("--color-bg-overlay", palette.background.overlay);
-
-  // Text Colors
-  root.style.setProperty("--color-text-primary", palette.text.primary);
-  root.style.setProperty("--color-text-secondary", palette.text.secondary);
-  root.style.setProperty("--color-text-muted", palette.text.muted);
-  root.style.setProperty("--color-text-accent", palette.text.accent);
-  root.style.setProperty("--color-text-inverse", palette.text.inverse);
-
-  // Border Colors
-  root.style.setProperty("--color-border-primary", palette.border.primary);
-  root.style.setProperty("--color-border-secondary", palette.border.secondary);
-  root.style.setProperty("--color-border-accent", palette.border.accent);
-  root.style.setProperty("--color-border-hover", palette.border.hover);
-
-  // Status Colors
-  root.style.setProperty("--color-success", palette.status.success);
-  root.style.setProperty("--color-warning", palette.status.warning);
-  root.style.setProperty("--color-error", palette.status.error);
-  root.style.setProperty("--color-info", palette.status.info);
-
-  // Interactive Colors
-  root.style.setProperty("--color-hover", palette.interactive.hover);
-  root.style.setProperty("--color-focus", palette.interactive.focus);
-  root.style.setProperty("--color-active", palette.interactive.active);
-  root.style.setProperty("--color-disabled", palette.interactive.disabled);
-
-  // Gradients
-  root.style.setProperty("--gradient-primary", palette.gradients.primary);
-  root.style.setProperty("--gradient-secondary", palette.gradients.secondary);
-  root.style.setProperty("--gradient-accent", palette.gradients.accent);
-  root.style.setProperty("--gradient-rainbow", palette.gradients.rainbow);
-
-  // Social Colors
-  root.style.setProperty("--color-twitter", palette.social.twitter);
-  root.style.setProperty("--color-facebook", palette.social.facebook);
-  root.style.setProperty("--color-linkedin", palette.social.linkedin);
-  root.style.setProperty("--color-whatsapp", palette.social.whatsapp);
-  root.style.setProperty("--color-github", palette.social.github);
-  root.style.setProperty("--color-youtube", palette.social.youtube);
-  root.style.setProperty("--color-upwork", palette.social.upwork);
+  return context;
 }
 
 /**
- * Hook to get specific color values
- * Useful for inline styles or JS-based styling
+ * Optimized hook to get specific color values
+ * Memoized to prevent unnecessary recalculations
  */
 export function useThemeColors() {
   const { colors } = useTheme();
 
-  return {
-    // Quick access to commonly used colors (aliased for convenience)
-    bgPrimary: colors.background.primary,
-    bgSecondary: colors.background.secondary,
-    bgCard: colors.background.card,
+  return useMemo(
+    () => ({
+      // Quick access to commonly used colors (aliased for convenience)
+      bgPrimary: colors.background.primary,
+      bgSecondary: colors.background.secondary,
+      bgCard: colors.background.card,
 
-    // Text colors (aliased for convenience)
-    textPrimary: colors.text.primary,
-    textSecondary: colors.text.secondary,
-    textMuted: colors.text.muted,
+      // Text colors (aliased for convenience)
+      textPrimary: colors.text.primary,
+      textSecondary: colors.text.secondary,
+      textMuted: colors.text.muted,
 
-    // All colors (includes primary, secondary, accent, etc.)
-    ...colors,
-  };
+      // All colors (includes primary, secondary, accent, etc.)
+      ...colors,
+    }),
+    [colors]
+  );
 }
 
 /**
- * Hook for theme-aware styling
- * Returns className helpers and inline style functions
+ * Optimized hook for theme-aware styling
+ * Memoized style functions and class helpers
  */
 export function useThemeStyles() {
   const { colors, isDarkMode } = useTheme();
 
-  return {
-    // CSS class helpers
-    classes: {
+  const classes = useMemo(
+    () => ({
       card: "bg-theme-card border-theme-secondary backdrop-blur-md",
       button: {
         primary:
@@ -174,10 +291,12 @@ export function useThemeStyles() {
         muted: "text-theme-muted",
         accent: "text-theme-accent",
       },
-    },
+    }),
+    []
+  );
 
-    // Inline style functions
-    styles: {
+  const styles = useMemo(
+    () => ({
       card: (opacity = 0.4) => ({
         background: `${colors.background.card}${Math.round(opacity * 255)
           .toString(16)
@@ -197,9 +316,16 @@ export function useThemeStyles() {
         backdropFilter: "blur(20px) saturate(180%)",
         border: `1px solid ${colors.border.secondary}`,
       }),
-    },
+    }),
+    [colors]
+  );
 
-    // Theme state
-    isDarkMode,
-  };
+  return useMemo(
+    () => ({
+      classes,
+      styles,
+      isDarkMode,
+    }),
+    [classes, styles, isDarkMode]
+  );
 }

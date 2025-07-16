@@ -1,7 +1,7 @@
-import React from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 
-const ConnectButton: React.FC = () => {
+const ConnectButton = memo(function ConnectButton() {
   return (
     <motion.div
       className="mt-6"
@@ -64,6 +64,6 @@ const ConnectButton: React.FC = () => {
       </motion.p>
     </motion.div>
   );
-};
+});
 
 export default ConnectButton;
