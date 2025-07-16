@@ -97,7 +97,6 @@ export default defineConfig({
     },
     maxDuration: 3,
     imageService: true,
-    devImageService: "sharp",
     isr: true,
   }),
   vite: {
