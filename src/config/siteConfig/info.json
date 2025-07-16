@@ -146,11 +146,7 @@
                 "Express",
                 "Astro",
                 "React",
-                "Nodejs",
-                "NextJs",
-                "Tailwindcss",
-                "Prisma",
-                "SQL"
+                "Tailwindcss"
             ]
         },
         {
