@@ -1,6 +1,8 @@
 ---
-title: Problem With Convex
-description: My deep Drive into convex
+title: 'Stop the Presses: Convex Is Here… And So Are the Growing Pains'
+description: >-
+  A wild journey into building with Convex, where backend magic meets real-world
+  scaling headaches.
 pubDate: 2025-07-25T19:00:00.000Z
 draft: true
 authorName: Abdul Rafay
@@ -9,19 +11,243 @@ tags:
   - Thought-Process
 ---
 
-Stop the presses: Convex is here, and apparently it’s the backend equivalent of sliced bread. You’ve seen the fanfare—YouTube tutorials swooning, X threads declaring it the One True BaaS for web and AI alike, blog posts extolling its virtues like a tech messiah. Naturally, when I snagged a new gig as a Full-Stack Software Engineer and got handed the “oh-so-simple” task of building an onboarding flow, I thought, Why not lean into the hype? So I spun up Next.js for the frontend, plugged in Convex for the backend, enlisted Clerk for authentication and let my trusty AI copilots do the heavy lifting. A few caffeine-fueled hours later, I had a codebase so pristine it could’ve been displayed in a museum: every mutation living in its own file, UI calls clicking away at endpoints like clockwork. Piece of cake… right? HAHAHA.
+**Ah yes, Convex.** The backend equivalent of sliced bread—at least according to the tech hype machine. You’ve seen it. YouTube tutorials swooning. X (formerly Twitter) threads declaring it the One True BaaS™ for web and AI alike. Blog posts throwing around words like *"game-changer"* and *"magic"*. So, naturally, when I landed a shiny new gig as a Full-Stack Software Engineer and got the task of building an onboarding flow, I thought: **"Why not lean into the hype?"**
 
-While Not So much, I showed the applications to the manager and everything was wow, this is great, Everyione loved the app and the dashboard and they want to make some changes but not that much and then the day of deployment came,  it was the 20th July 2025 at 12 am the application was deployed and for few days everything was working and everything was fine but then came the traffic. my Company have already have signed up 200 people in the last 12 hours, I was seeing the data comming in and I was amazied and that's the happy story, Seeing so many user signed Up for the up comming application is totally Amazing. \
-\
-But this is where the happy end story has to stop.
+So I did.
 
-Now comes the tier, After few days, there where totally about 500 User online at a time alot of people where facing Client Side Issues application was breaking and the performance was bad, I was getting these broken issue from all over the world, but in the logs, I could not see any thing, everything was so perfect but No, It was not so I did some meeting with some people and found out some key important bugs and issues, and then I added error handelling for client side and I aslo added some more logging and after more code bugging, I came across something worst, and that was my cache was hitting Max all the time, which was causing alot of issue and causing the web to slow down.
+I spun up a nice little Next.js frontend, connected it with Convex for the backend, tossed Clerk into the mix for authentication, and let my AI copilots help with the heavy lifting. Fast-forward a few hours and a few too many coffees, and what I had was a codebase so pristine it could hang in a modern art museum. Every mutation lived in its own file. The UI clicked at endpoints like clockwork.
 
-and Now now the debugging or fixing the code , So first I split the api call and adding chucks so that data is comming continiouly, but still nothing, and then I disable some api end point and that do me some good but not any more, the issue was still there when cache was 100 percent the it was causing the issue \
-\
-as you can see in this screen shot![](</BlogImages/Screenshot 2025-07-25 at 10.04.56 PM.png>)
+**Piece of cake, right?**
 
-This is a massive Problem and I was no war away and then I asked only did some research and no word or docs realated to how to increase this cache  or how can I fix this issue so I ased some chat gpt 40-mini, I provided the code and content but it reocmmanded alot of changes to my code base which was not to use colllect in the code base and alot of changes, I will share the code base here is the simple leader board function that was causing the issue 
+**HAHAHA.**
+(*Cue the screaming.*)
 
-```javascript
+## The Calm Before the Storm
+
+I presented the app to my manager. The response? “Wow, this is great!”
+Everyone loved the sleek dashboard and smooth UX. We made a few tweaks, but nothing major. The vibe was optimistic.
+
+Then came **July 20th, 2025 at 12 AM**—deployment time. And you know what? Everything actually worked. For a few days.
+
+In just 12 hours, **200 users signed up.**
+I watched the data stream in, jaw on the floor. It was like watching fireworks on New Year’s—except these fireworks were my backend APIs exploding in real-time.
+
+## The Happy Story Ends
+
+Traffic kept climbing. 500+ users online at once.
+And then… the issues began.
+
+### The Problem:
+
+Client-side errors. Performance drops. Broken components.
+
+But here's the kicker:
+**No errors in the logs. Zero. Nada.**
+The system *looked* fine, but it was slowly dying inside.
+
+So, I did what any engineer would do—meetings, debugging, late-night Slack rants, and more debugging.
+
+Eventually, the culprit revealed itself:
+
+> **Convex cache was hitting max capacity. Constantly.**
+> And once it hit 100%, the application just... broke.
+
+## The Original Code: What Went Wrong?
+
+Here’s the original `getLeaderboard` function that led us down this rabbit hole:
+
+```ts
+export const getLeaderboard = query({
+  args: {
+    limit: v.number(),
+    skip: v.number(),
+    country: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const maxProcessLimit = 1000;
+    const processingLimit = Math.min(args.limit + args.skip + 100, maxProcessLimit);
+
+    let query = ctx.db.query("users");
+
+    if (args.country) {
+      query = query.filter((q) => q.eq(q.field("country"), args.country));
+    }
+
+    const users = await query.take(processingLimit);
+
+    const sortedUsers = users
+      .map((user) => ({
+        userId: user.userId,
+        name: user.name,
+        profileImage: user.profileImage,
+        country: user.country,
+        totalPoints: Object.values(user.pointsBreakdown).reduce((a, b) => a + b, 0),
+        directReferralCount: user.directReferralCount,
+      }))
+      .sort(
+        (a, b) =>
+          b.totalPoints - a.totalPoints ||
+          b.directReferralCount - a.directReferralCount
+      )
+      .slice(args.skip, args.skip + args.limit);
+
+    const totalUsers = await ctx.db.query("users").collect();
+    const totalCount = args.country
+      ? totalUsers.filter(u => u.country === args.country).length
+      : totalUsers.length;
+
+    return {
+      leaderboard: sortedUsers,
+      total: Math.min(totalCount, maxProcessLimit),
+      hasMore: args.skip + args.limit < Math.min(totalCount, maxProcessLimit),
+      pagination: {
+        limit: args.limit,
+        skip: args.skip,
+        nextSkip: args.skip + args.limit < totalCount ? args.skip + args.limit : null,
+      },
+    };
+  },
+});
 ```
+
+This code worked beautifully—for a demo. But in production, with real traffic? Not so much.
+
+### Why it failed:
+
+* **`collect()` pulls *everything* into memory.** That’s like trying to drink from a firehose because you're a little thirsty.
+* **No pagination safeguards.**
+* **Heavy client-side computation.**
+* **No caching optimization.**
+
+## The Rewrite: Optimized and Cache-Friendly
+
+So I rewrote the function. Introducing the **new and improved** `getLeaderboard`:
+
+```ts
+export const getLeaderboard = query({
+  args: {
+    limit: v.number(),
+    skip: v.number(),
+    country: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const safeLimit = Math.min(args.limit, 50);
+    const safeSkip = Math.max(0, args.skip);
+
+    // Try to get precomputed leaderboard first
+    const precomputed = await ctx.db
+      .query("precomputedStats")
+      .withIndex("by_type_country", (q) =>
+        q.eq("statType", "leaderboard").eq("country", args.country || "global")
+      )
+      .first();
+
+    if (precomputed && Date.now() - precomputed.updatedAt < 300000) {
+      const data = precomputed.data as any[];
+      const sliced = data.slice(safeSkip, safeSkip + safeLimit);
+
+      return {
+        leaderboard: sliced,
+        total: data.length,
+        hasMore: safeSkip + safeLimit < data.length,
+        pagination: {
+          limit: safeLimit,
+          skip: safeSkip,
+          nextSkip: safeSkip + safeLimit < data.length ? safeSkip + safeLimit : null,
+        },
+        fromCache: true,
+      };
+    }
+
+    // Fallback: Live DB fetch with index
+    let query = ctx.db.query("users").withIndex("by_createdAt");
+
+    if (args.country) {
+      query = query.filter((q) => q.eq(q.field("country"), args.country));
+    }
+
+    const fetchLimit = Math.min(safeLimit + safeSkip + 20, 100);
+    const users = await query.take(fetchLimit);
+
+    const processedUsers = users
+      .filter(user => !user.email.startsWith("DEACTIVATED_"))
+      .map((user) => ({
+        userId: user.userId,
+        name: user.name,
+        profileImage: user.profileImage,
+        country: user.country,
+        totalPoints: Object.values(user.pointsBreakdown).reduce((a, b) => a + b, 0),
+        directReferralCount: user.directReferralCount,
+      }))
+      .sort((a, b) => b.totalPoints - a.totalPoints || b.directReferralCount - a.directReferralCount);
+
+    const sliced = processedUsers.slice(safeSkip, safeSkip + safeLimit);
+
+    return {
+      leaderboard: sliced,
+      total: processedUsers.length,
+      hasMore: safeSkip + safeLimit < processedUsers.length,
+      pagination: {
+        limit: safeLimit,
+        skip: safeSkip,
+        nextSkip: safeSkip + safeLimit < processedUsers.length ? safeSkip + safeLimit : null,
+      },
+      fromCache: false,
+    };
+  },
+});
+```
+
+## Why This Works Better:
+
+✅ **Safe pagination with hard limits**
+✅ **Precomputed leaderboard support (with 5-minute TTL)**
+✅ **No `collect()`—goodbye memory blowups**
+✅ **Index-based querying**
+✅ **Filters deactivated users**
+✅ **Graceful fallback logic**
+
+But even with all these improvements… the question remains:
+
+> **How much can you actually cache before you need to refresh it?**
+
+Spoiler: A *lot*, but not everything. And certainly not forever.
+
+## The Real Pain
+
+This was *one* function.
+I’ve got dozens more: `completeMiniGame`, `getAllUsers`, etc.—all screaming for optimization and cache sanity.
+
+And the worst part? **Support is… nonexistent.**
+I’ve reached out on Discord. Sent emails. Nothing. I’m hoping someone from the Convex team sees this before I end up migrating the entire backend to something else.
+
+## In Conclusion…
+
+I’m still grinding away at this.
+Still caching. Still querying. Still debugging.
+
+But here’s the thing:
+
+**Convex *is* good.**
+The folks who built it? Yeah, they helped scale Discord. That’s no small feat.
+This isn’t some random weekend project—it’s a serious, ambitious backend platform designed for modern apps.
+
+But here’s the catch:
+
+> It *looks* simple. It *feels* magical. But **it’s not easy.**
+
+If you're going to build with Convex, **you need to understand how it works under the hood.**
+One wrong use of `collect()`, a careless `args{}` structure, or an unoptimized query—and boom, you're stuck in debug purgatory like I was.
+
+So, here’s my warning wrapped in love:
+
+> **Convex is amazing—but not for noobs.**
+
+It’s a journey. One that rewards performance-focused devs who care about architecture.
+And if you're coming from the land of classic SQL with **PlanetScale** or **Microsoft SQL Server**, you’ll feel the difference. Those platforms are built like tanks. Convex is more like a spaceship—you need to know what every button does before you launch.
+
+So yes—use Convex. But use it wisely.
+
+Until then...
+
+**Keep coding, nerds. Optimize everything. And may your cache never overflow.**
