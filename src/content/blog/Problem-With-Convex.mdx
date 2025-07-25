@@ -1,0 +1,25 @@
+---
+title: Problem With Convex
+description: My deep Drive into convex
+pubDate: 2025-07-25T19:00:00.000Z
+draft: true
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - Thought-Process
+---
+
+Stop the presses: Convex is here, and apparently it’s the backend equivalent of sliced bread. You’ve seen the fanfare—YouTube tutorials swooning, X threads declaring it the One True BaaS for web and AI alike, blog posts extolling its virtues like a tech messiah. Naturally, when I snagged a new gig as a Full-Stack Software Engineer and got handed the “oh-so-simple” task of building an onboarding flow, I thought, Why not lean into the hype? So I spun up Next.js for the frontend, plugged in Convex for the backend, enlisted Clerk for authentication and let my trusty AI copilots do the heavy lifting. A few caffeine-fueled hours later, I had a codebase so pristine it could’ve been displayed in a museum: every mutation living in its own file, UI calls clicking away at endpoints like clockwork. Piece of cake… right? HAHAHA.
+
+While Not So much, I showed the applications to the manager and everything was wow, this is great, Everyione loved the app and the dashboard and they want to make some changes but not that much and then the day of deployment came,  it was the 20th July 2025 at 12 am the application was deployed and for few days everything was working and everything was fine but then came the traffic. my Company have already have signed up 200 people in the last 12 hours, I was seeing the data comming in and I was amazied and that's the happy story, Seeing so many user signed Up for the up comming application is totally Amazing. \
+\
+But this is where the happy end story has to stop. 
+
+Now comes the tier, After few days, there where totally about 500 User online at a time alot of people where facing Client Side Issues application was breaking and the performance was bad, I was getting these broken issue from all over the world, but in the logs, I could not see any thing, everything was so perfect but No, It was not so I did some meeting with some people and found out some key important bugs and issues, and then I added error handelling for client side and I aslo added some more logging and after more code bugging, I came across something worst, and that was my cache was hitting Max all the time, which was causing alot of issue and causing the web to slow down. 
+
+and Now now the debugging or fixing the code , So first I split the api call and adding chucks so that data is comming continiouly, but still nothing, and then I disable some api end point and that do me some good but not any more, the issue was still there when cache was 100 percent the it was causing the issue \
+\
+as you can see in this screen shot 
+
+\
+\
