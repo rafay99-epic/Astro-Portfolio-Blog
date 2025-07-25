@@ -1,128 +1,58 @@
 import React, { useState, useEffect, useRef, memo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import authorConfig from "@config/siteConfig/info.json";
+import { featureFlags } from "../../../../config/featureFlag/featureFlag.json";
+import authorConfig from "../../../../config/siteConfig/info.json";
+import {
+  LuMenu as Menu,
+  LuX as X,
+  LuSearch as Search,
+  LuTag as Tag,
+  LuEllipsis as MoreHorizontal,
+  LuHouse as Home,
+  LuBookOpen as BookOpen,
+  LuMail as Mail,
+  LuUser as User,
+  LuBriefcase as Briefcase,
+  LuRocket as Rocket,
+  LuNewspaper as Newspaper,
+  LuTrendingUp as TrendingUp,
+  LuStickyNote as StickyNote,
+  LuBookMarked as BookMarked,
+  LuChevronDown as ChevronDown,
+  LuExternalLink as ExternalLink
+} from "react-icons/lu";
 
-const TagIcon = memo(() => (
-  <motion.svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    whileHover={{ scale: 1.1, rotateZ: 5 }}
-    transition={{ duration: 0.2, ease: "easeOut" }}
-    style={{ willChange: "transform" }}
-  >
-    <path
-      d="M7.0498 7.0498H7.0598M10.5118 3H7.8C6.11984 3 5.27976 3 4.63803 3.32698C4.07354 3.6146 3.6146 4.07354 3.32698 4.63803C3 5.27976 3 6.11984 3 7.8V10.5118C3 11.2455 3 11.6124 3.08289 11.9577C3.15638 12.2638 3.27759 12.5564 3.44208 12.8249C3.6276 13.1276 3.88703 13.387 4.40589 13.9059L9.10589 18.6059C10.2939 19.7939 10.888 20.388 11.5729 20.6105C12.1755 20.8063 12.8245 20.8063 13.4271 20.6105C14.112 20.388 14.7061 19.7939 15.8941 18.6059L18.6059 15.8941C19.7939 14.7061 20.388 14.112 20.6105 13.4271C20.8063 12.8245 20.8063 12.1755 20.6105 11.5729C20.388 10.888 19.7939 10.2939 18.6059 9.10589L13.9059 4.40589C13.387 3.88703 13.1276 3.6276 12.8249 3.44208C12.5564 3.27759 12.2638 3.15638 11.9577 3.08289C11.6124 3 11.2455 3 10.5118 3ZM7.5498 7.0498C7.5498 7.32595 7.32595 7.5498 7.0498 7.5498C6.77366 7.5498 6.5498 7.32595 6.5498 7.0498C6.5498 6.77366 6.77366 6.5498 7.0498 6.5498C7.32595 6.5498 7.5498 6.77366 7.5498 7.0498Z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </motion.svg>
-));
-
-const SearchIcon = memo(() => (
-  <motion.svg
-    className="w-6 h-6"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    whileHover={{ scale: 1.1, rotateZ: 10 }}
-    transition={{ duration: 0.2, ease: "easeOut" }}
-    style={{ willChange: "transform" }}
-  >
-    <path
-      d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </motion.svg>
-));
-
-const MoreIcon = memo(() => (
-  <motion.svg
-    className="w-6 h-6"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    whileHover={{ scale: 1.1 }}
-    transition={{ duration: 0.2, ease: "easeOut" }}
-    style={{ willChange: "transform" }}
-  >
-    <path
-      d="M12 5V5.01M12 12V12.01M12 19V19.01M12 6C11.4477 6 11 5.55228 11 5C11 4.44772 11.4477 4 12 4C12.5523 4 13 4.44772 13 5C13 5.55228 12.5523 6 12 6ZM12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12C13 12.5523 12.5523 13 12 13ZM12 20C11.4477 20 11 19.5523 11 19C11 18.4477 11.4477 18 12 18C12.5523 18 13 18.4477 13 19C13 19.5523 12.5523 20 12 20Z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </motion.svg>
-));
-
-const MenuIcon = memo(({ isOpen }: { isOpen: boolean }) => (
-  <motion.div
-    className="w-6 h-6 flex flex-col justify-center items-center cursor-pointer"
-    animate={isOpen ? "open" : "closed"}
-    style={{ willChange: "transform" }}
-  >
-    <motion.span
-      className="w-6 h-0.5 bg-current mb-1 rounded-full"
-      variants={{
-        closed: { rotateZ: 0, y: 0 },
-        open: { rotateZ: 45, y: 6 },
-      }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      style={{ willChange: "transform" }}
-    />
-    <motion.span
-      className="w-6 h-0.5 bg-current mb-1 rounded-full"
-      variants={{
-        closed: { opacity: 1, scaleX: 1 },
-        open: { opacity: 0, scaleX: 0 },
-      }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      style={{ willChange: "transform, opacity" }}
-    />
-    <motion.span
-      className="w-6 h-0.5 bg-current rounded-full"
-      variants={{
-        closed: { rotateZ: 0, y: 0 },
-        open: { rotateZ: -45, y: -6 },
-      }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      style={{ willChange: "transform" }}
-    />
-  </motion.div>
-));
-
-const NavLink = memo<{
+interface NavLinkProps {
   href: string;
   children?: React.ReactNode;
   icon?: React.ReactNode;
   className?: string;
   isMobile?: boolean;
-}>(({ href, children, icon, className = "", isMobile = false }) => (
+  onClick?: () => void;
+}
+
+const NavLink = memo<NavLinkProps>(({ 
+  href, 
+  children, 
+  icon, 
+  className = "", 
+  isMobile = false,
+  onClick 
+}) => (
   <motion.a
     href={href}
+    onClick={onClick}
     className={`group flex items-center transition-all duration-300 ${
       isMobile
-        ? "text-[#c0caf5] hover:text-[#7aa2f7] py-3 px-4 rounded-xl hover:bg-[#24283b]/60 backdrop-blur-sm"
-        : "text-[#c0caf5] hover:text-[#7aa2f7]"
+        ? "text-[#c0caf5] hover:text-[#7aa2f7] py-3 px-4 rounded-lg hover:bg-[#24283b]/80 border border-transparent hover:border-[#565f89]/30"
+        : "text-[#c0caf5] hover:text-[#7aa2f7] px-3 py-2 rounded-lg hover:bg-[#24283b]/50"
     } ${className}`}
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
     transition={{ duration: 0.15, ease: "easeOut" }}
-    style={{ willChange: "transform" }}
   >
     {icon && (
-      <span
-        className={`${children ? "mr-3" : ""} text-[#7aa2f7] group-hover:text-[#bb9af7] transition-colors duration-300`}
-      >
+      <span className={`${children ? "mr-3" : ""} text-[#7aa2f7] group-hover:text-[#bb9af7] transition-colors duration-300`}>
         {icon}
       </span>
     )}
@@ -131,442 +61,531 @@ const NavLink = memo<{
         {children}
       </span>
     )}
+    {isMobile && (
+      <ExternalLink className="ml-auto w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    )}
   </motion.a>
 ));
 
 const Header = memo(function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsDropdownOpen(false);
     }
   }, []);
 
   useEffect(() => {
+    setIsMounted(true);
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [handleClickOutside]);
 
-  const toggleMobileMenu = useCallback(
-    () => setIsMobileMenuOpen(!isMobileMenuOpen),
-    [isMobileMenuOpen]
-  );
-  const toggleDropdown = useCallback(
-    () => setIsDropdownOpen(!isDropdownOpen),
-    [isDropdownOpen]
-  );
-  const toggleMobileMore = useCallback(
-    () => setIsMobileMoreOpen(!isMobileMoreOpen),
-    [isMobileMoreOpen]
-  );
+  // Reset mobile menu on page change
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsMobileMenuOpen(false);
+      setIsDropdownOpen(false);
+    };
 
+    // Close mobile menu on window resize
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("popstate", handleRouteChange);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("popstate", handleRouteChange);
+    };
+  }, []);
+
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  }, [isMobileMenuOpen]);
+
+  const closeMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(false);
+  }, []);
+
+  const toggleDropdown = useCallback(() => {
+    setIsDropdownOpen(!isDropdownOpen);
+  }, [isDropdownOpen]);
+
+  // Animation variants
   const dropdownVariants = {
     hidden: {
       opacity: 0,
       y: -10,
       scale: 0.95,
-      rotateX: -10,
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      rotateX: 0,
     },
   };
 
   const mobileMenuVariants = {
     hidden: {
       opacity: 0,
-      height: 0,
-      scaleY: 0.8,
+      x: "100%",
     },
     visible: {
       opacity: 1,
-      height: "auto",
-      scaleY: 1,
+      x: 0,
     },
   };
 
-  const slideInVariants = {
-    hidden: { x: -20, opacity: 0 },
-    visible: { x: 0, opacity: 1 },
+  const mobileMenuItemVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
   };
 
   return (
-    <motion.header
-      className="relative z-50 transition-all duration-500"
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      style={{ willChange: "transform" }}
-    >
-      <div className="absolute inset-0 pointer-events-none" />
+    <>
+      {/* Header */}
+      <motion.header
+        className="sticky top-0 z-50 backdrop-blur-xl bg-[#1a1b26]/80"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex justify-between items-center py-4">
+            {/* Logo */}
+            <motion.a
+              href="/"
+              className="flex items-center group"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+            >
+              <div className="relative">
+                <motion.img
+                  src={authorConfig.avator}
+                  alt="Author Avatar"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-[#7aa2f7]/30 group-hover:border-[#7aa2f7] transition-all duration-300"
+                  whileHover={{ rotateZ: 5 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+              </div>
+              <div className="ml-3 hidden sm:block">
+                <motion.h1
+                  className="text-lg font-bold bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                >
+                  {authorConfig.SiteName}
+                </motion.h1>
+                <p className="text-xs text-[#a9b1d6]">Developer & Creator</p>
+              </div>
+            </motion.a>
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="flex justify-between items-center py-4">
-          <motion.a
-            href="/"
-            className="flex items-center group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
-            style={{ willChange: "transform" }}
-          >
-            <div className="relative">
-              <motion.img
-                src={authorConfig.avator}
-                alt="Author Avatar"
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-[#7aa2f7]/30 group-hover:border-[#7aa2f7] transition-all duration-300"
-                whileHover={{ rotateZ: 5 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                style={{ willChange: "transform" }}
-              />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
-            </div>
-            <div className="ml-3 hidden sm:block">
-              <motion.h1
-                className="text-lg font-bold bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.15, ease: "easeOut" }}
-                style={{ willChange: "transform" }}
-              >
-                {authorConfig.SiteName}
-              </motion.h1>
-              <p className="text-xs text-[#a9b1d6]">Developer & Creator</p>
-            </div>
-          </motion.a>
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-2">
+              {featureFlags.showBlog && (
+                <NavLink href="/blog" icon={<BookOpen className="w-4 h-4" />}>
+                  Articles
+                </NavLink>
+              )}
+              {featureFlags.showNewsletter && (
+                <NavLink href="/newsletter-subscribe" icon={<Mail className="w-4 h-4" />}>
+                  Newsletter
+                </NavLink>
+              )}
+              {featureFlags.showAbout && (
+                <NavLink href="/about" icon={<User className="w-4 h-4" />}>
+                  About
+                </NavLink>
+              )}
+              {featureFlags.showExperience && (
+                <NavLink href="/experience" icon={<Briefcase className="w-4 h-4" />}>
+                  Experience
+                </NavLink>
+              )}
+              {featureFlags.showProjects && (
+                <NavLink href="/project" icon={<Rocket className="w-4 h-4" />}>
+                  Projects
+                </NavLink>
+              )}
+              {featureFlags.showTags && (
+                <NavLink href="/tag" icon={<Tag className="w-4 h-4" />} />
+              )}
+              {featureFlags.showSearch && (
+                <NavLink href="/search" icon={<Search className="w-4 h-4" />} />
+              )}
 
-          <nav className="hidden lg:flex items-center space-x-8">
-            {featureFlags.showBlog && <NavLink href="/blog">Articles</NavLink>}
-            {featureFlags.showNewsletter && (
-              <NavLink href="/newsletter-subscribe">Newsletter</NavLink>
-            )}
-            {featureFlags.showAbout && <NavLink href="/about">About</NavLink>}
-            {featureFlags.showExperience && (
-              <NavLink href="/experience">Experience</NavLink>
-            )}
-            {featureFlags.showProjects && (
-              <NavLink href="/project">Projects</NavLink>
-            )}
-            {featureFlags.showTags && (
-              <NavLink href="/tag" icon={<TagIcon />} />
-            )}
-            {featureFlags.showSearch && (
-              <NavLink href="/search" icon={<SearchIcon />} />
-            )}
+              {/* More Dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <motion.button
+                  onClick={toggleDropdown}
+                  className="flex items-center text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-[#24283b]/50"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  aria-expanded={isDropdownOpen}
+                >
+                  <MoreHorizontal className="w-4 h-4" />
+                  <ChevronDown 
+                    className={`w-3 h-3 ml-1 transition-transform duration-300 ${
+                      isDropdownOpen ? "rotate-180" : ""
+                    }`} 
+                  />
+                </motion.button>
 
-            <div className="relative" ref={dropdownRef}>
-              <motion.button
-                onClick={toggleDropdown}
-                className="flex items-center text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 p-2 rounded-xl hover:bg-[#24283b]/60 backdrop-blur-sm"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.15, ease: "easeOut" }}
-                style={{ willChange: "transform" }}
-                aria-expanded={isDropdownOpen}
-              >
-                <MoreIcon />
-              </motion.button>
-
-              <AnimatePresence mode="wait">
-                {isDropdownOpen && (
-                  <motion.div
-                    variants={dropdownVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="absolute right-0 mt-2 w-64 backdrop-blur-xl bg-[#24283b]/90 border border-[#565f89]/30 rounded-2xl shadow-2xl py-2 z-50"
-                    style={{
-                      willChange: "transform, opacity",
-                      transformStyle: "preserve-3d",
-                    }}
-                  >
-                    <div className="px-2">
-                      {featureFlags.showNewsletter && (
-                        <motion.a
-                          href="/newsletter"
-                          className="flex items-center gap-3 py-3 px-4 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-xl transition-all duration-300 group"
-                          whileHover={{ x: 5 }}
-                          transition={{ duration: 0.15, ease: "easeOut" }}
-                          style={{ willChange: "transform" }}
-                        >
-                          <span className="text-lg">📰</span>
-                          <span className="font-medium">
-                            Newsletter Archive
-                          </span>
-                          <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            →
-                          </span>
-                        </motion.a>
-                      )}
-                      {featureFlags.showTrendingPosts && (
-                        <motion.a
-                          href="/trending"
-                          className="flex items-center gap-3 py-3 px-4 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-xl transition-all duration-300 group"
-                          whileHover={{ x: 5 }}
-                          transition={{ duration: 0.15, ease: "easeOut" }}
-                          style={{ willChange: "transform" }}
-                        >
-                          <span className="text-lg">🔥</span>
-                          <span className="font-medium">Trending Articles</span>
-                          <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            →
-                          </span>
-                        </motion.a>
-                      )}
-                      {featureFlags.showNotes && (
-                        <>
+                <AnimatePresence>
+                  {isDropdownOpen && (
+                    <motion.div
+                      variants={dropdownVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="absolute right-0 mt-2 w-56 backdrop-blur-xl bg-[#24283b]/95 border border-[#565f89]/30 rounded-xl shadow-2xl py-2 z-50"
+                    >
+                      <div className="px-2 space-y-1">
+                        {featureFlags.showNewsletter && (
                           <motion.a
-                            href="/ms_notes"
-                            className="flex items-center gap-3 py-3 px-4 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-xl transition-all duration-300 group"
+                            href="/newsletter"
+                            className="flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
                             whileHover={{ x: 5 }}
                             transition={{ duration: 0.15, ease: "easeOut" }}
-                            style={{ willChange: "transform" }}
                           >
-                            <span className="text-lg">📝</span>
-                            <span className="font-medium">MS Notes</span>
-                            <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              →
-                            </span>
+                            <Newspaper className="w-4 h-4 text-[#7aa2f7]" />
+                            <span className="font-medium">Newsletter Archive</span>
+                            <ExternalLink className="ml-auto w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                           </motion.a>
-                        </>
-                      )}
-                      {featureFlags.showWiki && (
-                        <motion.a
-                          href="/webwiki"
-                          className="flex items-center gap-3 py-3 px-4 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-xl transition-all duration-300 group"
-                          whileHover={{ x: 5 }}
-                          transition={{ duration: 0.15, ease: "easeOut" }}
-                          style={{ willChange: "transform" }}
-                        >
-                          <span className="text-lg">📚</span>
-                          <span className="font-medium">Website Wiki</span>
-                          <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            →
-                          </span>
-                        </motion.a>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </nav>
+                        )}
+                        {featureFlags.showTrendingPosts && (
+                          <motion.a
+                            href="/trending"
+                            className="flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                            whileHover={{ x: 5 }}
+                            transition={{ duration: 0.15, ease: "easeOut" }}
+                          >
+                            <TrendingUp className="w-4 h-4 text-[#f7768e]" />
+                            <span className="font-medium">Trending Articles</span>
+                            <ExternalLink className="ml-auto w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          </motion.a>
+                        )}
+                        {featureFlags.showNotes && (
+                          <>
+                            <motion.a
+                              href="/ms_notes"
+                              className="flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                              whileHover={{ x: 5 }}
+                              transition={{ duration: 0.15, ease: "easeOut" }}
+                            >
+                              <StickyNote className="w-4 h-4 text-[#e0af68]" />
+                              <span className="font-medium">MS Notes</span>
+                              <ExternalLink className="ml-auto w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            </motion.a>
+                          </>
+                        )}
+                        {featureFlags.showWiki && (
+                          <motion.a
+                            href="/webwiki"
+                            className="flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                            whileHover={{ x: 5 }}
+                            transition={{ duration: 0.15, ease: "easeOut" }}
+                          >
+                            <BookMarked className="w-4 h-4 text-[#9ece6a]" />
+                            <span className="font-medium">Website Wiki</span>
+                            <ExternalLink className="ml-auto w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          </motion.a>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </nav>
 
-          <motion.button
-            onClick={toggleMobileMenu}
-            className="lg:hidden text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 p-2 rounded-xl hover:bg-[#24283b]/60 backdrop-blur-sm"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
-            style={{ willChange: "transform" }}
-            aria-label="Toggle menu"
-          >
-            <MenuIcon isOpen={isMobileMenuOpen} />
-          </motion.button>
+            {/* Mobile Menu Button */}
+            <motion.button
+              onClick={toggleMobileMenu}
+              className="lg:hidden text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 p-2 rounded-lg hover:bg-[#24283b]/50"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </motion.button>
+          </div>
         </div>
+      </motion.header>
 
-        <AnimatePresence mode="wait">
-          {isMobileMenuOpen && (
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMounted && isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+              onClick={closeMobileMenu}
+            />
+
+            {/* Mobile Menu */}
             <motion.nav
               variants={mobileMenuVariants}
               initial="hidden"
               animate="visible"
               exit="hidden"
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="lg:hidden overflow-hidden"
-              style={{
-                willChange: "transform, opacity",
-                transformOrigin: "top",
-              }}
+              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-[#1a1b26]/95 backdrop-blur-xl border-l border-[#565f89]/30 z-50 lg:hidden overflow-y-auto"
             >
-              <motion.div
-                className="py-4 space-y-2 backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 rounded-2xl mt-4 mb-4"
-                variants={slideInVariants}
-                initial="hidden"
-                animate="visible"
-                transition={{ delay: 0.1, duration: 0.2, ease: "easeOut" }}
-                style={{ willChange: "transform, opacity" }}
-              >
-                <NavLink
-                  href="/"
-                  className="flex items-center gap-3"
-                  isMobile={true}
+              {/* Mobile Menu Header */}
+              <div className="flex items-center justify-between p-6 border-b border-[#565f89]/20">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={authorConfig.avator}
+                    alt="Author Avatar"
+                    className="w-10 h-10 rounded-full border-2 border-[#7aa2f7]/30"
+                  />
+                  <div>
+                    <h2 className="text-lg font-bold bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent">
+                      {authorConfig.SiteName}
+                    </h2>
+                    <p className="text-xs text-[#a9b1d6]">Developer & Creator</p>
+                  </div>
+                </div>
+                <motion.button
+                  onClick={closeMobileMenu}
+                  className="text-[#c0caf5] hover:text-[#7aa2f7] p-2 rounded-lg hover:bg-[#24283b]/50 transition-colors duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <span className="text-lg">🏠</span>
-                  Home
-                </NavLink>
+                  <X className="w-5 h-5" />
+                </motion.button>
+              </div>
+
+              {/* Mobile Menu Items */}
+              <div className="p-6 space-y-2">
+                <motion.div
+                  variants={mobileMenuItemVariants}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ delay: 0.1, duration: 0.3 }}
+                >
+                  <NavLink
+                    href="/"
+                    icon={<Home className="w-5 h-5" />}
+                    isMobile={true}
+                    onClick={closeMobileMenu}
+                  >
+                    Home
+                  </NavLink>
+                </motion.div>
+
                 {featureFlags.showBlog && (
-                  <NavLink
-                    href="/blog"
-                    className="flex items-center gap-3"
-                    isMobile={true}
+                  <motion.div
+                    variants={mobileMenuItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: 0.15, duration: 0.3 }}
                   >
-                    <span className="text-lg">📚</span>
-                    Articles
-                  </NavLink>
-                )}
-                {featureFlags.showNewsletter && (
-                  <NavLink
-                    href="/newsletter-subscribe"
-                    className="flex items-center gap-3"
-                    isMobile={true}
-                  >
-                    <span className="text-lg">📧</span>
-                    Newsletter
-                  </NavLink>
-                )}
-                {featureFlags.showAbout && (
-                  <NavLink
-                    href="/about"
-                    className="flex items-center gap-3"
-                    isMobile={true}
-                  >
-                    <span className="text-lg">👤</span>
-                    About
-                  </NavLink>
-                )}
-                {featureFlags.showExperience && (
-                  <NavLink
-                    href="/experience"
-                    className="flex items-center gap-3"
-                    isMobile={true}
-                  >
-                    <span className="text-lg">💼</span>
-                    Experience
-                  </NavLink>
-                )}
-                {featureFlags.showProjects && (
-                  <NavLink
-                    href="/project"
-                    className="flex items-center gap-3"
-                    isMobile={true}
-                  >
-                    <span className="text-lg">🚀</span>
-                    Projects
-                  </NavLink>
-                )}
-                {featureFlags.showTags && (
-                  <NavLink
-                    href="/tag"
-                    className="flex items-center gap-3"
-                    isMobile={true}
-                  >
-                    <span className="text-lg">🏷️</span>
-                    Tags
-                  </NavLink>
-                )}
-                {featureFlags.showSearch && (
-                  <NavLink
-                    href="/search"
-                    className="flex items-center gap-3"
-                    isMobile={true}
-                  >
-                    <span className="text-lg">🔍</span>
-                    Search
-                  </NavLink>
-                )}
-
-                {(featureFlags.showNewsletter ||
-                  featureFlags.showTrendingPosts ||
-                  featureFlags.showNotes) && (
-                  <div className="border-t border-[#565f89]/20 pt-2 mt-2">
-                    <motion.button
-                      onClick={toggleMobileMore}
-                      className="w-full flex items-center justify-between py-3 px-4 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#24283b]/60 rounded-xl transition-all duration-300"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ duration: 0.15, ease: "easeOut" }}
-                      style={{ willChange: "transform" }}
+                    <NavLink
+                      href="/blog"
+                      icon={<BookOpen className="w-5 h-5" />}
+                      isMobile={true}
+                      onClick={closeMobileMenu}
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="text-lg">⚡</span>
-                        <span className="font-medium">More</span>
-                      </div>
-                      <motion.span
-                        animate={{ rotateZ: isMobileMoreOpen ? 180 : 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="text-[#7aa2f7]"
-                        style={{ willChange: "transform" }}
-                      >
-                        ▼
-                      </motion.span>
-                    </motion.button>
+                      Articles
+                    </NavLink>
+                  </motion.div>
+                )}
 
-                    <AnimatePresence mode="wait">
-                      {isMobileMoreOpen && (
-                        <motion.div
-                          variants={mobileMenuVariants}
-                          initial="hidden"
-                          animate="visible"
-                          exit="hidden"
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                          className="overflow-hidden pl-4 space-y-2 mt-2"
-                          style={{
-                            willChange: "transform, opacity",
-                            transformOrigin: "top",
-                          }}
-                        >
+                {featureFlags.showNewsletter && (
+                  <motion.div
+                    variants={mobileMenuItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: 0.2, duration: 0.3 }}
+                  >
+                    <NavLink
+                      href="/newsletter-subscribe"
+                      icon={<Mail className="w-5 h-5" />}
+                      isMobile={true}
+                      onClick={closeMobileMenu}
+                    >
+                      Newsletter
+                    </NavLink>
+                  </motion.div>
+                )}
+
+                {featureFlags.showAbout && (
+                  <motion.div
+                    variants={mobileMenuItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: 0.25, duration: 0.3 }}
+                  >
+                    <NavLink
+                      href="/about"
+                      icon={<User className="w-5 h-5" />}
+                      isMobile={true}
+                      onClick={closeMobileMenu}
+                    >
+                      About
+                    </NavLink>
+                  </motion.div>
+                )}
+
+                {featureFlags.showExperience && (
+                  <motion.div
+                    variants={mobileMenuItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: 0.3, duration: 0.3 }}
+                  >
+                    <NavLink
+                      href="/experience"
+                      icon={<Briefcase className="w-5 h-5" />}
+                      isMobile={true}
+                      onClick={closeMobileMenu}
+                    >
+                      Experience
+                    </NavLink>
+                  </motion.div>
+                )}
+
+                {featureFlags.showProjects && (
+                  <motion.div
+                    variants={mobileMenuItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: 0.35, duration: 0.3 }}
+                  >
+                    <NavLink
+                      href="/project"
+                      icon={<Rocket className="w-5 h-5" />}
+                      isMobile={true}
+                      onClick={closeMobileMenu}
+                    >
+                      Projects
+                    </NavLink>
+                  </motion.div>
+                )}
+
+                {featureFlags.showTags && (
+                  <motion.div
+                    variants={mobileMenuItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: 0.4, duration: 0.3 }}
+                  >
+                    <NavLink
+                      href="/tag"
+                      icon={<Tag className="w-5 h-5" />}
+                      isMobile={true}
+                      onClick={closeMobileMenu}
+                    >
+                      Tags
+                    </NavLink>
+                  </motion.div>
+                )}
+
+                {featureFlags.showSearch && (
+                  <motion.div
+                    variants={mobileMenuItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: 0.45, duration: 0.3 }}
+                  >
+                    <NavLink
+                      href="/search"
+                      icon={<Search className="w-5 h-5" />}
+                      isMobile={true}
+                      onClick={closeMobileMenu}
+                    >
+                      Search
+                    </NavLink>
+                  </motion.div>
+                )}
+
+                {/* Additional Links Section */}
+                {(featureFlags.showNewsletter || featureFlags.showTrendingPosts || featureFlags.showNotes || featureFlags.showWiki) && (
+                  <>
+                    <motion.div
+                      variants={mobileMenuItemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      transition={{ delay: 0.5, duration: 0.3 }}
+                      className="pt-4"
+                    >
+                      <div className="border-t border-[#565f89]/20 pt-4">
+                        <h3 className="text-sm font-semibold text-[#a9b1d6] mb-3 px-4">More</h3>
+                        <div className="space-y-2">
                           {featureFlags.showNewsletter && (
                             <NavLink
                               href="/newsletter"
-                              className="flex items-center gap-3"
+                              icon={<Newspaper className="w-5 h-5" />}
                               isMobile={true}
+                              onClick={closeMobileMenu}
                             >
-                              <span className="text-lg">📰</span>
                               Newsletter Archive
                             </NavLink>
                           )}
                           {featureFlags.showTrendingPosts && (
                             <NavLink
                               href="/trending"
-                              className="flex items-center gap-3"
+                              icon={<TrendingUp className="w-5 h-5" />}
                               isMobile={true}
+                              onClick={closeMobileMenu}
                             >
-                              <span className="text-lg">🔥</span>
                               Trending Articles
                             </NavLink>
                           )}
                           {featureFlags.showNotes && (
-                            <>
-                              <NavLink
-                                href="/ms_notes"
-                                className="flex items-center gap-3"
-                                isMobile={true}
-                              >
-                                <span className="text-lg">📝</span>
-                                MS Notes
-                              </NavLink>
-                              <NavLink
-                                href="/webwiki"
-                                className="flex items-center gap-3"
-                                isMobile={true}
-                              >
-                                <span className="text-lg">📚</span>
-                                Website Wiki
-                              </NavLink>
-                            </>
+                            <NavLink
+                              href="/ms_notes"
+                              icon={<StickyNote className="w-5 h-5" />}
+                              isMobile={true}
+                              onClick={closeMobileMenu}
+                            >
+                              MS Notes
+                            </NavLink>
                           )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+                          {featureFlags.showWiki && (
+                            <NavLink
+                              href="/webwiki"
+                              icon={<BookMarked className="w-5 h-5" />}
+                              isMobile={true}
+                              onClick={closeMobileMenu}
+                            >
+                              Website Wiki
+                            </NavLink>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </>
                 )}
-              </motion.div>
+              </div>
             </motion.nav>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.header>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 });
 
