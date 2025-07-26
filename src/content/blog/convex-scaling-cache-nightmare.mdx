@@ -5,8 +5,8 @@ description: >-
   scaling headaches.
 pubDate: 2025-07-25T19:00:00.000Z
 draft: false
-authorName: Abdul Rafay
 heroImage: /BlogImages/convex-cache-thubnail.webp
+authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
   - Thought-Process
@@ -59,7 +59,7 @@ Eventually, the culprit revealed itself:
 
 Here’s the original `getLeaderboard` function that led us down this rabbit hole:
 
-```ts
+```typescript
 export const getLeaderboard = query({
   args: {
     limit: v.number(),
@@ -126,7 +126,7 @@ This code worked beautifully—for a demo. But in production, with real traffic?
 
 So I rewrote the function. Introducing the **new and improved** `getLeaderboard`:
 
-```ts
+```typescript
 export const getLeaderboard = query({
   args: {
     limit: v.number(),
@@ -203,12 +203,12 @@ export const getLeaderboard = query({
 
 ## Why This Works Better:
 
-✅ **Safe pagination with hard limits**
-✅ **Precomputed leaderboard support (with 5-minute TTL)**
-✅ **No `collect()`—goodbye memory blowups**
-✅ **Index-based querying**
-✅ **Filters deactivated users**
-✅ **Graceful fallback logic**
+✅ Safe pagination with hard limits
+✅ Precomputed leaderboard support (with 5-minute TTL)
+✅ No `collect()`—goodbye memory blowups
+✅ Index-based querying
+✅ Filters deactivated users
+✅ Graceful fallback logic
 
 But even with all these improvements… the question remains:
 
