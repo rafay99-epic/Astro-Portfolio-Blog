@@ -21,11 +21,15 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install PyYAML
+        run: |
+          pip install PyYAML
+          pip install typing-extensions
 
-      - name: Run publish script
+      - name: Run enhanced publish script
         id: publish_script
-        run: python scripts/publish_posts.py
+        run: |
+          echo "Running enhanced auto-publish script with SEO optimization and alt text generation..."
+          python scripts/publish_posts.py
 
       - name: Check for file changes
         id: git_check
@@ -52,7 +56,7 @@ jobs:
           git add src/content/blog/ # Stage changes specifically in the blog dir
           # Check if staging resulted in actual changes to commit
           if ! git diff --staged --quiet; then
-             git commit -m "Auto-publish scheduled blog posts"
+             git commit -m "Auto-publish scheduled blog posts with SEO enhancements and alt text"
              echo "Pushing changes..."
              git push origin HEAD:${{ github.ref_name }} # Push to the branch the workflow ran on
           else

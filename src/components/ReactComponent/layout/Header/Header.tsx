@@ -172,7 +172,6 @@ const Header = memo(function Header() {
               <div className="relative">
                 <motion.img
                   src={authorConfig.avator}
-                  alt="Author Avatar"
                   className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-[#7aa2f7]/30 group-hover:border-[#7aa2f7] transition-all duration-300"
                   whileHover={{ rotateZ: 5 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
