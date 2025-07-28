@@ -30,14 +30,6 @@ export async function GET(context) {
       author: authorConfig.name,
       site: context.site,
     },
-    {
-      title: "WebWiki",
-      description: "website development wiki.",
-      pubDate: new Date(),
-      link: "/webwiki/",
-      author: authorConfig.name,
-      site: context.site,
-    },
   ];
 
   return rss({

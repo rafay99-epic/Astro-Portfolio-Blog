@@ -9,9 +9,9 @@ import BlogSection from "@react/blog/layout/BlogPost/BlogPost";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-);
+const posts = (await getCollection("blog"))
+  .filter(post => !post.data.draft) // Only published posts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()); // Newest first
 
 try {
   if (!featureFlags.showBlog) {
@@ -28,11 +28,62 @@ try {
       title={`Articles | ${authorConfig.SiteName}`}
       description={`Browse all articles on ${authorConfig.SiteName} and explore categorized content.`}
     />
+    
+    <!-- Structured Data for Blog Listing -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": `${authorConfig.SiteName} Blog`,
+      "description": `Browse all articles on ${authorConfig.SiteName} and explore categorized content.`,
+      "url": "https://rafay99.com/blog",
+      "publisher": {
+        "@type": "Organization",
+        "name": authorConfig.SiteName,
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://rafay99.com/favicon.webp"
+        }
+      },
+      "blogPost": posts.map(post => ({
+        "@type": "BlogPosting",
+        "headline": post.data.title,
+        "description": post.data.description,
+        "author": {
+          "@type": "Person",
+          "name": post.data.authorName
+        },
+        "datePublished": post.data.pubDate.toISOString(),
+        "url": `https://rafay99.com/blog/${post.slug}`,
+        "keywords": post.data.tags?.join(", ") || "blog, technology"
+      }))
+    })} />
   </head>
   <body class="flex flex-col min-h-screen m-0 p-0">
     <Header class="mt-0 pt-0" />
     <SpeedInsights />
     <section class="mt-0 pt-0">
+      <!-- Server-side rendered content for SEO -->
+      <div class="sr-only">
+        <h1>Blog Posts - {authorConfig.SiteName}</h1>
+        <p>Browse all published articles and blog posts on {authorConfig.SiteName}</p>
+        
+        {posts.map((post) => (
+          <article>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.description}</p>
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString()}
+            </time>
+            <p>Author: {post.data.authorName}</p>
+            {post.data.tags && (
+              <p>Tags: {post.data.tags.join(', ')}</p>
+            )}
+            <a href={`/blog/${post.slug}`}>Read more</a>
+          </article>
+        ))}
+      </div>
+      
+      <!-- React component for UI -->
       <BlogSection posts={posts} client:visible />
     </section>
     <section class="mt-auto">

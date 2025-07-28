@@ -13,6 +13,7 @@ import BlogHeader from "../components/ReactComponent/blog/layout/BlogPostLayout/
 import { QAChatWidget } from "../components/ReactComponent/blog/enhancements/qa-chat/QAChatWidget";
 import CodeCopySimple from "../components/ReactComponent/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "../components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer";
+import ImageCaptionRenderer from "../components/ReactComponent/blog/enhancements/image-caption-renderer/ImageCaptionRenderer";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -32,9 +33,9 @@ try {
 }
 
 const BlogPosts = featureFlags.showBlog
-  ? (await getCollection("blog")).sort(
-      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-    )
+  ? (await getCollection("blog"))
+      .filter(post => !post.data.draft) // Only published posts
+      .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
   : [];
 
 const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
@@ -55,12 +56,18 @@ const {
   authorAvatar,
   tags,
   readTime,
+  keywords,
+  canonicalUrl,
+  featured,
+  excerpt,
 } = Astro.props;
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} 
+    image={heroImage}
+    />
     <SpeedInsights />
     <style>
       .blog-container {
@@ -229,6 +236,192 @@ const {
           height: 3px;
         }
       }
+
+      /* Unified Section Styles */
+      .unified-section {
+        background: linear-gradient(135deg, rgba(26, 27, 38, 0.8) 0%, rgba(26, 27, 38, 0.6) 100%);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(86, 95, 137, 0.2);
+        border-radius: 20px;
+        padding: 32px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .unified-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(122, 162, 247, 0.03) 0%, rgba(187, 154, 247, 0.03) 100%);
+        pointer-events: none;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #a9b1d6;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0;
+      }
+
+      .section-icon {
+        width: 20px;
+        height: 20px;
+        color: #7aa2f7;
+      }
+
+      .section-badge {
+        font-size: 0.75rem;
+        color: #565f89;
+        background: rgba(26, 27, 38, 0.6);
+        padding: 4px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(86, 95, 137, 0.2);
+      }
+
+      .section-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: 1fr;
+        position: relative;
+        z-index: 1;
+      }
+
+      @media (min-width: 768px) {
+        .section-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .section-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .section-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+        background: rgba(26, 27, 38, 0.4);
+        border: 1px solid rgba(86, 95, 137, 0.1);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .section-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(122, 162, 247, 0.05) 0%, rgba(187, 154, 247, 0.05) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .section-item:hover {
+        border-color: rgba(122, 162, 247, 0.3);
+        background: rgba(26, 27, 38, 0.6);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(122, 162, 247, 0.15);
+      }
+
+      .section-item:hover::before {
+        opacity: 1;
+      }
+
+      .item-number {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #7aa2f7;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        background: rgba(122, 162, 247, 0.1);
+        padding: 4px 8px;
+        border-radius: 6px;
+        min-width: 32px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .item-text {
+        color: #a9b1d6;
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.4;
+        position: relative;
+        z-index: 1;
+        flex: 1;
+      }
+
+      .item-content {
+        flex: 1;
+        position: relative;
+        z-index: 1;
+      }
+
+      .item-title {
+        color: #a9b1d6;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.4;
+        margin: 0 0 8px 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .item-description {
+        color: #565f89;
+        font-size: 0.75rem;
+        line-height: 1.5;
+        margin: 0 0 12px 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .item-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.625rem;
+        color: #565f89;
+      }
+
+      .section-footer {
+        text-align: center;
+        margin-top: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .footer-text {
+        font-size: 0.75rem;
+        color: #565f89;
+      }
     </style>
 
     <SEO
@@ -238,15 +431,172 @@ const {
         basic: {
           title: title,
           type: "article",
-          image: openGraphImageUrl,
+          image: heroImage ? new URL(heroImage, Astro.url).toString() : openGraphImageUrl,
           url: pageUrl,
         },
         optional: {
           description: description,
           locale: "en_US",
+          siteName: "Rafay99",
         },
       }}
+      twitter={{
+        card: "summary_large_image",
+        site: "@rafay99",
+        creator: "@rafay99",
+      }}
     />
+
+    <!-- Structured Data for Blog Post -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": title,
+      "description": description,
+      "image": heroImage ? new URL(heroImage, Astro.url).toString() : new URL("/Rafay99.webp", Astro.url).toString(),
+      "author": {
+        "@type": "Person",
+        "name": authorName,
+        "image": authorAvatar ? new URL(authorAvatar, Astro.url).toString() : new URL("/author.jpg", Astro.url).toString(),
+        "url": "https://rafay99.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Rafay99",
+        "logo": {
+          "@type": "ImageObject",
+          "url": new URL("/favicon.webp", Astro.url).toString()
+        }
+      },
+      "datePublished": pubDate.toISOString(),
+      "dateModified": currentBlog.data.updatedDate?.toISOString() || pubDate.toISOString(),
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": pageUrl
+      },
+      "keywords": tags?.join(", ") || "blog, technology, programming",
+      "articleSection": tags?.[0] || "Technology",
+      "wordCount": blogContent.length,
+      "timeRequired": readTime || "5 min read"
+    })} />
+
+    <!-- Breadcrumb Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://rafay99.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://rafay99.com/blog"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": title,
+          "item": pageUrl
+        }
+      ]
+    })} />
+
+    <!-- FAQ Schema for Better Search Visibility -->
+    {(() => {
+      const faqMatches = blogContent.match(/^#{2,6}\s+(.+)$/gm);
+      if (!faqMatches || faqMatches.length < 3) return null;
+      
+      const faqItems = faqMatches.slice(0, 5).map((heading, index) => {
+        const text = heading.replace(/^#{2,6}\s+/, '');
+        return {
+          "@type": "Question",
+          "name": text,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `This section covers ${text.toLowerCase()}. Read the full article for detailed information.`
+          }
+        };
+      });
+      
+      return (
+        <script type="application/ld+json" set:html={JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqItems
+        })} />
+      );
+    })()}
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="author" content={authorName} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
+    <meta name="copyright" content="© 2025 Abdul Rafay">
+    <meta name="keywords" content={keywords?.join(", ") || tags?.join(", ") || "blog, technology, programming"} />
+    <meta name="article:published_time" content={pubDate.toISOString()} />
+    {currentBlog.data.updatedDate && (
+      <meta name="article:modified_time" content={currentBlog.data.updatedDate.toISOString()} />
+    )}
+    <meta name="article:author" content={authorName} />
+    {tags?.map(tag => (
+      <meta name="article:tag" content={tag} />
+    ))}
+    <meta name="article:section" content={tags?.[0] || "Technology"} />
+    {featured && <meta name="article:featured" content="true" />}
+    {excerpt && <meta name="description" content={excerpt} />}
+    
+    <!-- Preload hero image for better performance -->
+    {heroImage && (
+      <link rel="preload" as="image" href={heroImage} />
+    )}
+
+    <!-- Enhanced SEO Meta Tags -->
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+    <meta name="distribution" content="global" />
+    <meta name="coverage" content="worldwide" />
+    <meta name="target" content="all" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Social Media Enhanced Meta Tags -->
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Rafay99" />
+    <meta property="og:published_time" content={pubDate.toISOString()} />
+    {currentBlog.data.updatedDate && (
+      <meta property="og:modified_time" content={currentBlog.data.updatedDate.toISOString()} />
+    )}
+    {tags?.map(tag => (
+      <meta property="og:tag" content={tag} />
+    ))}
+    
+    <!-- Twitter Enhanced Meta Tags -->
+    <meta name="twitter:label1" content="Reading time" />
+    <meta name="twitter:data1" content={readTime || "5 min read"} />
+    <meta name="twitter:label2" content="Category" />
+    <meta name="twitter:data2" content={tags?.[0] || "Technology"} />
+    
+    <!-- Canonical URL -->
+    {canonicalUrl ? (
+      <link rel="canonical" href={canonicalUrl} />
+    ) : (
+      <link rel="canonical" href={pageUrl} />
+    )}
+    
+    <!-- Language and Region -->
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="United States" />
+    
+    <!-- Content Security Policy for better security -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
   </head>
   <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
@@ -288,8 +638,146 @@ const {
         </ContentContainer>
       </div>
 
+      <!-- Smart Table of Contents (appears after content hook) -->
+      {(() => {
+        const headings = blogContent.match(/^#{2,6}\s+(.+)$/gm) || [];
+        if (headings.length < 3) return null;
+        
+        return (
+          <div class="smart-toc my-12" id="smart-toc">
+            <div class="unified-section">
+              <div class="section-header">
+                <h3 class="section-title">
+                  <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                  </svg>
+                  What's in this article?
+                </h3>
+                <span class="section-badge">
+                  {headings.length} sections
+                </span>
+              </div>
+              
+              <div class="section-grid">
+                {headings.slice(0, 9).map((heading, index) => {
+                  const level = heading.indexOf(' ');
+                  const text = heading.substring(level + 1);
+                  const id = text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+                  
+                  return (
+                    <a
+                      href={`#${id}`}
+                      class="section-item"
+                    >
+                      <span class="item-number">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span class="item-text">
+                        {text}
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+              
+              {headings.length > 9 && (
+                <div class="section-footer">
+                  <span class="footer-text">
+                    +{headings.length - 9} more sections
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      <!-- Related Posts Section -->
+      <div class="related-posts-section my-12">
+        <div class="unified-section">
+          <div class="section-header">
+            <h3 class="section-title">
+              <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+              You Might Also Like
+            </h3>
+            <span class="section-badge">
+              {(() => {
+                const currentTags = tags || [];
+                const relatedPosts = BlogPosts
+                  .filter(post => post.slug !== currentSlug)
+                  .map(post => {
+                    const postTags = post.data.tags || [];
+                    let score = 0;
+                    currentTags.forEach(tag => {
+                      if (postTags.includes(tag)) score += 3;
+                    });
+                    return { post, score };
+                  })
+                  .filter(item => item.score > 0);
+                return `${relatedPosts.length} related posts`;
+              })()}
+            </span>
+          </div>
+          
+          <div class="section-grid">
+            {(() => {
+              const currentTags = tags || [];
+              const relatedPosts = BlogPosts
+                .filter(post => post.slug !== currentSlug)
+                .map(post => {
+                  const postTags = post.data.tags || [];
+                  let score = 0;
+                  
+                  // Calculate relevance based on tags
+                  currentTags.forEach(tag => {
+                    if (postTags.includes(tag)) score += 3;
+                  });
+                  
+                  return { post, score };
+                })
+                .filter(item => item.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 3)
+                .map(item => item.post);
+              
+              return relatedPosts.map((post, index) => (
+                <a
+                  href={`/blog/${post.slug}`}
+                  class="section-item"
+                  title={`Read: ${post.data.title}`}
+                  rel="related"
+                >
+                  <span class="item-number">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div class="item-content">
+                    <h4 class="item-title">
+                      {post.data.title}
+                    </h4>
+                    <p class="item-description">
+                      {post.data.description}
+                    </p>
+                    <div class="item-meta">
+                      <span>{new Date(post.data.pubDate).toLocaleDateString()}</span>
+                      {post.data.readTime && (
+                        <span>• {post.data.readTime}</span>
+                      )}
+                    </div>
+                  </div>
+                </a>
+              ));
+            })()}
+          </div>
+        </div>
+      </div>
+
       <!-- Mermaid Diagram Renderer -->
       <MermaidRenderer client:load />
+
+      <!-- Image Caption Renderer -->
+      <ImageCaptionRenderer client:load />
 
       <!-- Code Copy Enhancement -->
       <CodeCopySimple client:load />
@@ -332,6 +820,31 @@ const {
         setTimeout(() => {
           window.scrollTo(0, 0);
         }, 0);
+      });
+
+      // Smart Table of Contents - appears after user is hooked
+      document.addEventListener("DOMContentLoaded", function () {
+        const toc = document.getElementById('smart-toc');
+        if (!toc) return;
+
+        // Initially hide the TOC
+        toc.style.opacity = '0';
+        toc.style.transform = 'translateY(20px)';
+        toc.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+
+        // Show TOC after user scrolls and gets hooked
+        const showTOC = () => {
+          const scrollPosition = window.scrollY;
+          const triggerPosition = 600; // Show after scrolling 600px (after hook)
+          
+          if (scrollPosition > triggerPosition) {
+            toc.style.opacity = '1';
+            toc.style.transform = 'translateY(0)';
+            window.removeEventListener('scroll', showTOC);
+          }
+        };
+
+        window.addEventListener('scroll', showTOC);
       });
     </script>
     <script type="text/partytown" is:inline src="/js/progressbar.js"></script>

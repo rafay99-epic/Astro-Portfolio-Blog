@@ -83,6 +83,41 @@ export default defineConfig({
               component: "tags",
             },
           },
+          {
+            type: "string",
+            name: "keywords",
+            label: "SEO Keywords",
+            list: true,
+            required: false,
+            description: "Keywords for better search engine optimization (optional)",
+            ui: {
+              component: "tags",
+            },
+          },
+          {
+            type: "string",
+            name: "canonicalUrl",
+            label: "Canonical URL",
+            required: false,
+            description: "Custom canonical URL (only needed for content migration or cross-domain)",
+          },
+          {
+            type: "boolean",
+            name: "featured",
+            label: "Featured Post",
+            required: false,
+            description: "Mark this post as featured/highlighted",
+          },
+          {
+            type: "string",
+            name: "excerpt",
+            label: "SEO Excerpt",
+            required: false,
+            description: "Custom meta description for search engines (150-160 characters recommended)",
+            ui: {
+              component: "textarea",
+            },
+          },
         ],
       },
       {
