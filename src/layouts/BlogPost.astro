@@ -13,6 +13,7 @@ import BlogHeader from "../components/ReactComponent/blog/layout/BlogPostLayout/
 import { QAChatWidget } from "../components/ReactComponent/blog/enhancements/qa-chat/QAChatWidget";
 import CodeCopySimple from "../components/ReactComponent/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "../components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer";
+import ImageCaptionRenderer from "../components/ReactComponent/blog/enhancements/image-caption-renderer/ImageCaptionRenderer";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -630,8 +631,6 @@ const {
         </div>
       </section>
 
-
-
       <!-- Main Content -->
       <div class="w-full">
         <ContentContainer withBackground={false} class="blog-typography">
@@ -776,6 +775,9 @@ const {
 
       <!-- Mermaid Diagram Renderer -->
       <MermaidRenderer client:load />
+
+      <!-- Image Caption Renderer -->
+      <ImageCaptionRenderer client:load />
 
       <!-- Code Copy Enhancement -->
       <CodeCopySimple client:load />
