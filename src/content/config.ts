@@ -49,20 +49,6 @@ const projects = defineCollection({
 });
 
 // Website Wiki Collection
-const webwiki = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    pubDate: z.coerce.date(),
-    version: z.string(),
-    draft: z.boolean().default(true),
-    versionreleasedate: z.coerce.date(),
-    readTime: z.string().optional(),
-    tags: z.array(z.string()).default(["wiki"]),
-  }),
-});
-
 const ms_notes = defineCollection({
   type: "content",
   schema: z.object({
@@ -81,6 +67,5 @@ export const collections = {
   blog: blog,
   newsletter: newsletter,
   projects: projects,
-  webwiki: webwiki,
   ms_notes: ms_notes,
 };

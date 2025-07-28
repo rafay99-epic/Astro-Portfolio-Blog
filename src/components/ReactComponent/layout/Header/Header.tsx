@@ -293,7 +293,9 @@ const Header = memo(function Header() {
                         )}
                         {featureFlags.showWiki && (
                           <motion.a
-                            href="/webwiki"
+                            href="https://rafay99-docs.vercel.app/"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
                             whileHover={{ x: 5 }}
                             transition={{ duration: 0.15, ease: "easeOut" }}
@@ -566,7 +568,7 @@ const Header = memo(function Header() {
                           )}
                           {featureFlags.showWiki && (
                             <NavLink
-                              href="/webwiki"
+                              href="https://rafay99-docs.vercel.app/"
                               icon={<BookMarked className="w-5 h-5" />}
                               isMobile={true}
                               onClick={closeMobileMenu}

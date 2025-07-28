@@ -47,7 +47,9 @@ export default defineConfig({
     "/MSBridge-beta": "/downloads/app/msbridge/beta/app-release.apk",
     "/SimpleThread-APK": "/downloads/app/SimpleThread/simple_thread.apk",
     "/MeetTime-APK": "/downloads/app/meet_time/MeetTime.apk",
+    "/webwiki": "https://rafay99-docs.vercel.app/",
   },
+  
   security: {
     checkOrigin: true,
   },
