@@ -32,9 +32,9 @@ try {
 }
 
 const BlogPosts = featureFlags.showBlog
-  ? (await getCollection("blog")).sort(
-      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-    )
+  ? (await getCollection("blog"))
+      .filter(post => !post.data.draft) // Only published posts
+      .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
   : [];
 
 const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
@@ -55,12 +55,18 @@ const {
   authorAvatar,
   tags,
   readTime,
+  keywords,
+  canonicalUrl,
+  featured,
+  excerpt,
 } = Astro.props;
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} 
+    image={heroImage}
+    />
     <SpeedInsights />
     <style>
       .blog-container {
@@ -238,15 +244,101 @@ const {
         basic: {
           title: title,
           type: "article",
-          image: openGraphImageUrl,
+          image: heroImage ? new URL(heroImage, Astro.url).toString() : openGraphImageUrl,
           url: pageUrl,
         },
         optional: {
           description: description,
           locale: "en_US",
+          siteName: "Rafay99",
         },
       }}
+      twitter={{
+        card: "summary_large_image",
+        site: "@rafay99",
+        creator: "@rafay99",
+      }}
     />
+
+    <!-- Structured Data for Blog Post -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": title,
+      "description": description,
+      "image": heroImage ? new URL(heroImage, Astro.url).toString() : new URL("/Rafay99.webp", Astro.url).toString(),
+      "author": {
+        "@type": "Person",
+        "name": authorName,
+        "image": authorAvatar ? new URL(authorAvatar, Astro.url).toString() : new URL("/author.jpg", Astro.url).toString(),
+        "url": "https://rafay99.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Rafay99",
+        "logo": {
+          "@type": "ImageObject",
+          "url": new URL("/favicon.webp", Astro.url).toString()
+        }
+      },
+      "datePublished": pubDate.toISOString(),
+      "dateModified": currentBlog.data.updatedDate?.toISOString() || pubDate.toISOString(),
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": pageUrl
+      },
+      "keywords": tags?.join(", ") || "blog, technology, programming",
+      "articleSection": tags?.[0] || "Technology",
+      "wordCount": blogContent.length,
+      "timeRequired": readTime || "5 min read"
+    })} />
+
+    <!-- Breadcrumb Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://rafay99.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://rafay99.com/blog"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": title,
+          "item": pageUrl
+        }
+      ]
+    })} />
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="author" content={authorName} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="keywords" content={keywords?.join(", ") || tags?.join(", ") || "blog, technology, programming"} />
+    <meta name="article:published_time" content={pubDate.toISOString()} />
+    {currentBlog.data.updatedDate && (
+      <meta name="article:modified_time" content={currentBlog.data.updatedDate.toISOString()} />
+    )}
+    <meta name="article:author" content={authorName} />
+    {tags?.map(tag => (
+      <meta name="article:tag" content={tag} />
+    ))}
+    <meta name="article:section" content={tags?.[0] || "Technology"} />
+    {featured && <meta name="article:featured" content="true" />}
+    {excerpt && <meta name="description" content={excerpt} />}
+    
+    <!-- Preload hero image for better performance -->
+    {heroImage && (
+      <link rel="preload" as="image" href={heroImage} />
+    )}
   </head>
   <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
@@ -286,6 +378,51 @@ const {
         <ContentContainer withBackground={false} class="blog-typography">
           <slot />
         </ContentContainer>
+      </div>
+
+      <!-- Blog Post Navigation -->
+      <div class="blog-navigation my-12">
+        <div class="text-center mb-6">
+          <h3 class="text-lg font-semibold text-[#a9b1d6] mb-2">Related Content</h3>
+          <div class="w-16 h-0.5 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] mx-auto"></div>
+        </div>
+        <div class="flex justify-between items-center">
+          {(() => {
+            const currentIndex = BlogPosts.findIndex(post => post.slug === currentSlug);
+            const prevPost = currentIndex > 0 ? BlogPosts[currentIndex - 1] : null;
+            const nextPost = currentIndex < BlogPosts.length - 1 ? BlogPosts[currentIndex + 1] : null;
+            
+            return (
+              <>
+                {prevPost && (
+                  <a 
+                    href={`/blog/${prevPost.slug}`}
+                    class="flex items-center gap-2 text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 group"
+                  >
+                    <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    <span class="text-sm">Previous Post</span>
+                  </a>
+                )}
+                {!prevPost && <div></div>}
+                
+                {nextPost && (
+                  <a 
+                    href={`/blog/${nextPost.slug}`}
+                    class="flex items-center gap-2 text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 group"
+                  >
+                    <span class="text-sm">Next Post</span>
+                    <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                )}
+                {!nextPost && <div></div>}
+              </>
+            );
+          })()}
+        </div>
       </div>
 
       <!-- Mermaid Diagram Renderer -->

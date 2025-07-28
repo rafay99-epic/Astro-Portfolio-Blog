@@ -14,6 +14,11 @@ const blog = defineCollection({
     authorAvatar: z.string().optional(),
     tags: z.array(z.string()).default(["blog"]),
     readTime: z.string().optional(),
+    // SEO enhancements
+    keywords: z.array(z.string()).optional(),
+    canonicalUrl: z.string().optional(),
+    featured: z.boolean().default(false),
+    excerpt: z.string().optional(),
   }),
 });
 // NewsLetter Collection

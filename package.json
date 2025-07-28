@@ -1,9 +1,9 @@
 {
     "name": "rafay99.com",
     "type": "module",
-    "version": "8.4.0",
+    "version": "8.5.0",
     "scripts": {
-        "dev": "astro dev",
+        "dev": "tinacms dev -c \"astro dev\"",
         "start": "astro dev",
         "build": "tinacms build && astro build",
         "preview": "astro preview",
