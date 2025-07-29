@@ -15,7 +15,7 @@ ProjectTech:
     "Playwrite",
     "SEO Optimization",
   ]
-ProjectRanking: "10"
+ProjectRanking: "8"
 ProjectCategory: ["Web Apps"]
 ---
 

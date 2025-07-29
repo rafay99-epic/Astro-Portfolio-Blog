@@ -16,7 +16,7 @@ ProjectTech:
     "Test Magic",
   ]
 ProjectCategory: ["Mobile Apps"]
-ProjectRanking: "3"
+ProjectRanking: "9"
 ---
 
 The Future Insight Android Application is your gateway to understanding, exploring, and engaging with the latest advancements in technology. Designed to inspire users and provide in-depth information, the app covers various fields from artificial intelligence and machine learning to web and mobile development. Here's a breakdown of its impressive features and how each one enhances the user experience.
