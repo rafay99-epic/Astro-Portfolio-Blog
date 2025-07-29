@@ -446,7 +446,15 @@ const {
         creator: "@rafay99",
       }}
     />
+        <!-- Google tag (gtag.js) -->
+    <script  type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-DKPL4VGM52"></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
+      gtag('config', 'G-DKPL4VGM52');
+    </script>
     <!-- Structured Data for Blog Post -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",

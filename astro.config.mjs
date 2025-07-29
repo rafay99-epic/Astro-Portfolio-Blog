@@ -76,7 +76,11 @@ export default defineConfig({
       SVG: true,
       Logger: 1,
     }),
-    partytown({}),
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
+    }),
     mdx({}),
     sitemap({}),
     react({
