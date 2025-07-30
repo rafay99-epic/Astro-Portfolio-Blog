@@ -1,4 +1,4 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 
 interface ProfileImageProps {
@@ -16,7 +16,7 @@ const ProfileImage = memo(function ProfileImage({
       transition={{ duration: 0.8, delay: 0.3 }}
     >
       {/* Simple background glow */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/20 to-transparent rounded-full blur-3xl scale-110" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/20 to-transparent rounded-full blur-3xl scale-110" />
 
       {/* Main image container */}
       <motion.div
@@ -27,14 +27,14 @@ const ProfileImage = memo(function ProfileImage({
         {/* Single rotating ring */}
         <div className="absolute inset-0 -m-4">
           <motion.div
-            className="w-full h-full rounded-full border-2 border-dashed border-[var(--accent)]/30"
+            className="w-full h-full rounded-full border-2 border-dashed border-[#7aa2f7]/30"
             animate={{ rotate: 360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           />
         </div>
 
         {/* Image frame */}
-        <div className="relative rounded-full overflow-hidden border-4 border-[var(--accent)]/40 shadow-2xl bg-gradient-to-br from-[var(--accent-dark)]/20 to-transparent">
+        <div className="relative rounded-full overflow-hidden border-4 border-[#7aa2f7]/40 shadow-2xl bg-gradient-to-br from-[#1a1b26]/20 to-transparent">
           <img
             src={picture}
             alt="Profile Image"
@@ -42,19 +42,19 @@ const ProfileImage = memo(function ProfileImage({
           />
 
           {/* Simple overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--accent)]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#bb9af7]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
 
         {/* Status indicator */}
         <motion.div
-          className="absolute -bottom-4 -left-4 bg-[var(--accent-dark)]/90 backdrop-blur-sm border border-[var(--accent)]/30 rounded-xl px-3 py-2 shadow-lg"
+          className="absolute -bottom-4 -left-4 bg-[#1a1b26]/90 backdrop-blur-sm border border-[#7aa2f7]/30 rounded-xl px-3 py-2 shadow-lg"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.6 }}
         >
           <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-[var(--accent)] rounded-full animate-pulse" />
-            <span className="text-xs font-medium text-[var(--text-light)]">
+            <div className="w-2 h-2 bg-[#7aa2f7] rounded-full animate-pulse" />
+            <span className="text-xs font-medium text-[#c0caf5]">
               Creating
             </span>
           </div>
