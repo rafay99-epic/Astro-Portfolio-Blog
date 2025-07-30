@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import "devicon/devicon.min.css";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import authorConfig from "@config/siteConfig/info.json";
+import authorConfig from "../../../../config/siteConfig/info.json";
 
 const techStack = authorConfig.techStack;
 
@@ -44,18 +44,42 @@ const SkillsShowcase = memo(function SkillsShowcase() {
     () => Object.keys(categoryToolsMap)[0]
   );
 
-  const categoryIcons: Record<string, string> = useMemo(
+  const categoryIcons: Record<string, React.ReactElement> = useMemo(
     () => ({
-      Frontend: "🎨",
-      Backend: "⚡",
-      Database: "🗄️",
-      DevOps: "🚀",
-      Mobile: "📱",
-      Tools: "🛠️",
-      Languages: "💻",
-      Framework: "🏗️",
-      Cloud: "☁️",
-      Design: "🎯",
+      "App Development": (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17 2H7C5.9 2 5 2.9 5 4V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V4C19 2.9 18.1 2 17 2ZM17 20H7V4H17V20Z"/>
+          <path d="M12 18C12.83 18 13.5 17.33 13.5 16.5S12.83 15 12 15S10.5 15.67 10.5 16.5S11.17 18 12 18Z"/>
+        </svg>
+      ),
+      "Frontend Development": (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22S22 17.52 22 12S17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12S7.59 4 12 4S20 7.59 20 12S16.41 20 12 20Z"/>
+          <path d="M12 6C8.69 6 6 8.69 6 12S8.69 18 12 18S18 15.31 18 12S15.31 6 12 6ZM12 16C9.79 16 8 14.21 8 12S9.79 8 12 8S16 9.79 16 12S14.21 16 12 16Z"/>
+        </svg>
+      ),
+      "Backend Development": (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 3H21V5H3V3ZM3 7H21V9H3V7ZM3 11H21V13H3V11ZM3 15H21V17H3V15ZM3 19H21V21H3V19Z"/>
+        </svg>
+      ),
+      "Cloud Computing": (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04ZM19 18H6C3.79 18 2 16.21 2 14C2 11.79 3.79 10 6 10H7.13C7.68 7.69 9.67 6 12 6C14.33 6 16.32 7.69 16.87 10H19C20.66 10 22 11.34 22 13C22 14.66 20.66 16 19 16V18Z"/>
+        </svg>
+      ),
+      "Essential": (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+          <path d="M2 17L12 22L22 17"/>
+          <path d="M2 12L12 17L22 12"/>
+        </svg>
+      ),
+      "Scripting": (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14.23,12.004a2.236,2.236,0,0,1-2.235,2.236,2.236,2.236,0,0,1-2.236-2.236,2.236,2.236,0,0,1,2.235-2.236A2.236,2.236,0,0,1,14.23,12.004ZM11.995,24c-.263,0-.527-.027-.789-.077a12.044,12.044,0,0,1-9.46-9.461A11.87,11.87,0,0,1,1.5,12.005a11.87,11.87,0,0,1,.246-2.457,12.044,12.044,0,0,1,9.46-9.46A11.87,11.87,0,0,1,12.005,0a11.87,11.87,0,0,1,2.457.246,12.044,12.044,0,0,1,9.46,9.46,11.87,11.87,0,0,1,.246,2.457,11.87,11.87,0,0,1-.246,2.457,12.044,12.044,0,0,1-9.46,9.46A11.87,11.87,0,0,1,11.995,24ZM3.609,12.005a8.386,8.386,0,0,0,8.386,8.386,8.386,8.386,0,0,0,8.386-8.386,8.386,8.386,0,0,0-8.386-8.386A8.386,8.386,0,0,0,3.609,12.005Z"/>
+        </svg>
+      ),
     }),
     []
   );
@@ -318,9 +342,14 @@ const SkillsShowcase = memo(function SkillsShowcase() {
                   )}
 
                   <div className="relative flex items-center space-x-2">
-                    <span className="text-lg">
-                      {categoryIcons[category] || "💡"}
-                    </span>
+                    <div className="flex items-center justify-center">
+                      {categoryIcons[category] || (
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22S22 17.52 22 12S17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12S7.59 4 12 4S20 7.59 20 12S16.41 20 12 20Z"/>
+                          <path d="M9 11H7V13H9V11ZM13 11H11V13H13V11ZM17 11H15V13H17V11Z"/>
+                        </svg>
+                      )}
+                    </div>
                     <span>{category}</span>
                   </div>
 
@@ -505,7 +534,7 @@ const SkillsShowcase = memo(function SkillsShowcase() {
                   />
                   <span className="text-[#a9b1d6] text-sm">
                     <span className="text-[#c0caf5] font-bold">
-                      {Object.values(categoryToolsMap).reduce(
+                      {(Object.values(categoryToolsMap) as string[][]).reduce(
                         (total, tools) => total + tools.length,
                         0
                       )}

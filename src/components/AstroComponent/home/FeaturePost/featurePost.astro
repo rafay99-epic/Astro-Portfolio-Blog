@@ -1,8 +1,8 @@
 ---
-import popularBlogsData from "@config/popularBlogs/traffic.json";
+import popularBlogsData from "../../../../config/popularBlogs/traffic.json";
 import { getCollection } from "astro:content";
-import type { CombinedPost } from "types/popular_post";
-import FeaturedContent from "@react/blog/metadata/FeaturedContent/featureContent";
+import type { CombinedPost } from "../../../../types/popular_post";
+import FeaturedContent from "../../../../components/ReactComponent/blog/metadata/FeaturedContent/featureContent";
 
 const allPosts = await getCollection("blog");
 const publishedPosts = allPosts.filter((post) => !post.data.draft);
