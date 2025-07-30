@@ -17,7 +17,7 @@ import {
   LuNewspaper as Newspaper,
   LuTrendingUp as TrendingUp,
   LuStickyNote as StickyNote,
-  LuBookMarked as BookMarked,
+  LuGlobe as Globe,
   LuChevronDown as ChevronDown,
   LuExternalLink as ExternalLink
 } from "react-icons/lu";
@@ -300,7 +300,7 @@ const Header = memo(function Header() {
                             whileHover={{ x: 5 }}
                             transition={{ duration: 0.15, ease: "easeOut" }}
                           >
-                            <BookMarked className="w-4 h-4 text-[#9ece6a]" />
+                            <Globe className="w-4 h-4 text-[#9ece6a]" />
                             <span className="font-medium">Website Wiki</span>
                             <ExternalLink className="ml-auto w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                           </motion.a>
@@ -569,7 +569,7 @@ const Header = memo(function Header() {
                           {featureFlags.showWiki && (
                             <NavLink
                               href="https://rafay99-docs.vercel.app/"
-                              icon={<BookMarked className="w-5 h-5" />}
+                              icon={<Globe className="w-5 h-5" />}
                               isMobile={true}
                               onClick={closeMobileMenu}
                             >
