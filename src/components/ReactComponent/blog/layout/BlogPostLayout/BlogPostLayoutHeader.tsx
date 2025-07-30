@@ -30,7 +30,6 @@ const BlogHeader = memo(function BlogHeader({
     <section className="relative w-full h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden">
       <motion.img
         src={coverImage}
-        alt="Cover"
         loading="eager"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.8 }}
@@ -87,7 +86,6 @@ const BlogHeader = memo(function BlogHeader({
           <div className="flex items-center gap-3 mb-1">
             <img
               src={authorAvatar}
-              alt={authorName}
               className="w-8 h-8 rounded-full object-cover border-2 border-[#7aa2f7]/50"
             />
             <span className="font-medium text-[#c0caf5]">{authorName}</span>
