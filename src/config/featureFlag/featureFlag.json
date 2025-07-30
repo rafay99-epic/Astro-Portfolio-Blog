@@ -24,7 +24,7 @@
         "enableCoreServices": true,
         "enableProcessShowcase": true,
         "enablePortfolioSection": true,
-        "enableTestimonialsSection": true,
+        "enableTestimonialsSection": false,
         "enableSkillsShowcase": true,
         "enableContactMap": true
         
