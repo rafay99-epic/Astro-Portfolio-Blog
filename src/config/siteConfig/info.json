@@ -6,6 +6,7 @@
     "position": "Full Stack Developer",
     "picture": "/author.webp",
     "avator": "/favicon.png",
+    "tag_line": "I build high-performance web & mobile apps that scale.",
     "socialLinks": {
         "twitter": "https://x.com/abdul_rafay99",
         "linkedin": "abdul-rafay1999",
@@ -222,6 +223,110 @@
                 "Firebase",
                 "SQL Lite"
             ]
+        }
+    ],
+    "testimonials": [
+        {
+            "id": 1,
+            "name": "Sarah Johnson",
+            "position": "CEO",
+            "company": "TechStart Inc.",
+            "avatar": "/api/placeholder/80/80",
+            "rating": 5,
+            "testimonial": "Working with this developer was an absolute game-changer for our startup. They delivered a robust, scalable solution that exceeded our expectations. The attention to detail and technical expertise is unmatched.",
+            "project": "E-commerce Platform",
+            "technologies": ["React", "Node.js", "MongoDB"]
+        },
+        {
+            "id": 2,
+            "name": "Michael Chen",
+            "position": "CTO",
+            "company": "Digital Solutions Ltd.",
+            "avatar": "/api/placeholder/80/80",
+            "rating": 5,
+            "testimonial": "Exceptional work on our enterprise application. The code quality is outstanding, and the project was delivered on time and within budget. Communication throughout the process was excellent.",
+            "project": "Enterprise Dashboard",
+            "technologies": ["Vue.js", "Python", "PostgreSQL"]
+        },
+        {
+            "id": 3,
+            "name": "Emily Rodriguez",
+            "position": "Product Manager",
+            "company": "InnovateCorp",
+            "avatar": "/api/placeholder/80/80",
+            "rating": 5,
+            "testimonial": "From concept to deployment, the entire experience was seamless. They understood our vision perfectly and brought it to life with modern, efficient code. Highly recommend for any serious project.",
+            "project": "Mobile App Backend",
+            "technologies": ["React Native", "Express.js", "AWS"]
+        },
+        {
+            "id": 4,
+            "name": "David Thompson",
+            "position": "Founder",
+            "company": "StartupHub",
+            "avatar": "/api/placeholder/80/80",
+            "rating": 5,
+            "testimonial": "Outstanding technical skills combined with great communication. They helped us scale our platform to handle thousands of users. The performance improvements were remarkable.",
+            "project": "Platform Optimization",
+            "technologies": ["Next.js", "Redis", "Docker"]
+        }
+    ],
+    "services": [
+        {
+            "title": "Mobile App Development",
+            "description": "Building native and cross-platform mobile applications with Flutter and React Native. From concept to deployment, I create intuitive, high-performance apps for iOS and Android.",
+            "icon": "📱",
+            "features": [
+                "Cross-platform development with Flutter",
+                "Native Android development",
+                "UI/UX design implementation",
+                "App store deployment",
+                "Performance optimization",
+                "Real-time data integration"
+            ],
+            "technologies": ["Flutter", "Dart", "Android Studio", "Firebase", "Supabase"]
+        },
+        {
+            "title": "Web Development",
+            "description": "Creating modern, responsive web applications using cutting-edge technologies. From simple landing pages to complex web applications with full-stack capabilities.",
+            "icon": "🌐",
+            "features": [
+                "Frontend development with React & Astro",
+                "Backend API development",
+                "Database design and optimization",
+                "Cloud deployment and hosting",
+                "Performance optimization",
+                "SEO and accessibility"
+            ],
+            "technologies": ["React", "Astro", "Node.js", "TypeScript", "Tailwind CSS", "Next.js"]
+        },
+        {
+            "title": "Full-Stack Solutions",
+            "description": "End-to-end development services from database design to user interface. Complete solutions that scale with your business needs.",
+            "icon": "⚡",
+            "features": [
+                "Complete application architecture",
+                "Database design and management",
+                "API development and integration",
+                "Authentication and security",
+                "Cloud infrastructure setup",
+                "DevOps and deployment"
+            ],
+            "technologies": ["Node.js", "Express", "MongoDB", "PostgreSQL", "AWS", "Docker"]
+        },
+        {
+            "title": "Cloud & DevOps",
+            "description": "Setting up scalable cloud infrastructure and implementing CI/CD pipelines for reliable, automated deployments.",
+            "icon": "☁️",
+            "features": [
+                "Cloud infrastructure setup",
+                "CI/CD pipeline implementation",
+                "Container orchestration",
+                "Monitoring and logging",
+                "Security best practices",
+                "Cost optimization"
+            ],
+            "technologies": ["AWS", "Google Cloud", "Docker", "Vercel", "Netlify", "GitHub Actions"]
         }
     ]
 }

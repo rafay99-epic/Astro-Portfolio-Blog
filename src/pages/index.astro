@@ -1,18 +1,19 @@
 ---
-import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
-import Footer from "@astro/footer/Footer.astro";
+import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
+import Header from "../components/AstroComponent/header/Header.astro";
+import Footer from "../components/AstroComponent/footer/Footer.astro";
 import "@styles/home/home-page.css";
-import FeaturedPost from "@astro/home/FeaturePost/featurePost.astro";
-import SkillsShowcase from "@react/personal/JobSkills/jobSkills";
-import ContactMap from "@astro/home/ContactMap/ContactMap.astro";
-import CustomGitHubStats from "@react/personal/GitHubStats/GitHubStats";
-import authorConfig from "@config/siteConfig/info.json";
-import HeroSection from "@react/layout/HeroSection/heroSection";
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import SkillsShowcase from "../components/ReactComponent/personal/JobSkills/jobSkills";
+import ContactMap from "../components/AstroComponent/home/ContactMap/ContactMap.astro";
+import CoreServices from "../components/AstroComponent/home/core-service/core_service.astro";
+import PortfolioSection from "../components/AstroComponent/home/portfolio/portfolio.astro";
+import TestimonialsSection from "../components/AstroComponent/home/testimonials/testimonials.astro";
+import authorConfig from "../config/siteConfig/info.json";
+import HeroSection from "../components/ReactComponent/layout/HeroSection/heroSection";
+import { featureFlags } from "../config/featureFlag/featureFlag.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
-
 export const prerender = true;
+import ProcessShowcase from "../components/ReactComponent/personal/process/process";
 const { name, jobTitle, position, picture, socialLinks } = authorConfig;
 try {
   if (!featureFlags.showIndex) {
@@ -35,7 +36,8 @@ try {
     <Header />
     <SpeedInsights />
     <main class="pt-0 mt-0">
-      <HeroSection
+      <div class="flex items-center justify-center mt-0 pt-0">
+        <HeroSection
         client:load
         name={name}
         jobTitle={jobTitle}
@@ -44,18 +46,26 @@ try {
         socialLinks={socialLinks}
       />
 
+      </div>
+      <section> 
+        {featureFlags.enableCoreServices && <CoreServices />}
+      </section>
+    
       <section>
-        {featureFlags.showBlog && <FeaturedPost />}
+      {featureFlags.enableProcessShowcase && <ProcessShowcase client:visible />}
       </section>
       <section>
-        {featureFlags.showGitHubStats && <CustomGitHubStats client:visible />}
+        {featureFlags.enablePortfolioSection && <PortfolioSection />}
       </section>
-
       <section>
-        <SkillsShowcase client:visible />
+        {featureFlags.enableTestimonialsSection && <TestimonialsSection />}
       </section>
-      <section style="margin-block-start: 5rem;">
-        <ContactMap />
+      <section>
+        {featureFlags.enableSkillsShowcase && <SkillsShowcase client:visible />}
+      </section>
+      <section>
+      <section id="contact-section">
+        {featureFlags.enableContactMap && <ContactMap />}
       </section>
     </main>
 

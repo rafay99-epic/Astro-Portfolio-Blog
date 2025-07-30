@@ -1,11 +1,13 @@
 ---
-import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
-import Footer from "@astro/footer/Footer.astro";
-import authorConfig from "@config/siteConfig/info.json";
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
+import Header from "../components/AstroComponent/header/Header.astro";
+import Footer from "../components/AstroComponent/footer/Footer.astro";
+import authorConfig from "../config/siteConfig/info.json";
+import { featureFlags } from "../config/featureFlag/featureFlag.json";
 import SpeedInsights from "@vercel/speed-insights/astro";
+
 export const prerender = false;
+
 try {
   if (!featureFlags.showContact) {
     return Astro.redirect("/access-denied");
@@ -19,337 +21,345 @@ try {
   <head>
     <BaseHead
       title={`Contact Me | ${authorConfig.SiteName}`}
-      description={`Contact me and get in touch with me.`}
+      description={`Get in touch with me for collaborations, projects, or just to say hello. I'm always excited to hear from fellow developers and potential clients.`}
     />
     <SpeedInsights />
-    <style>
-      .contact-container {
-        min-height: 100vh;
-        position: relative;
-      }
-
-      .form-container {
-        background: rgba(36, 40, 59, 0.6);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(122, 162, 247, 0.2);
-        border-radius: 24px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .input-field {
-        background: rgba(26, 27, 38, 0.8);
-        border: 1px solid rgba(86, 95, 137, 0.3);
-        color: #c0caf5;
-        transition: all 0.3s ease;
-      }
-
-      .input-field:focus {
-        outline: none;
-        border-color: #7aa2f7;
-        box-shadow: 0 0 0 3px rgba(122, 162, 247, 0.1);
-        background: rgba(26, 27, 38, 0.9);
-      }
-
-      .input-field::placeholder {
-        color: #565f89;
-      }
-
-      .submit-btn {
-        background: linear-gradient(
-          135deg,
-          #7aa2f7 0%,
-          #bb9af7 50%,
-          #9ece6a 100%
-        );
-        border: none;
-        color: white;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(122, 162, 247, 0.3);
-      }
-
-      .submit-btn:active {
-        transform: translateY(0);
-      }
-
-      .submit-btn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
-        transition: left 0.5s ease;
-      }
-
-      .submit-btn:hover::before {
-        left: 100%;
-      }
-
-      .contact-header {
-        text-align: center;
-        margin-bottom: 3rem;
-        position: relative;
-        z-index: 1;
-      }
-
-      .contact-title {
-        font-size: 3.5rem;
-        font-weight: bold;
-        background: linear-gradient(135deg, #7aa2f7, #bb9af7, #9ece6a);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 1rem;
-        animation: fadeInUp 0.8s ease-out;
-      }
-
-      .contact-subtitle {
-        color: #a9b1d6;
-        font-size: 1.2rem;
-        animation: fadeInUp 0.8s ease-out 0.2s both;
-      }
-
-      .form-group {
-        position: relative;
-        margin-bottom: 1.5rem;
-      }
-
-      .form-label {
-        color: #c0caf5;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-        display: block;
-        font-size: 0.95rem;
-      }
-
-      .success-message {
-        background: rgba(158, 206, 106, 0.2);
-        border: 1px solid rgba(158, 206, 106, 0.4);
-        color: #9ece6a;
-      }
-
-      .error-message {
-        background: rgba(247, 118, 142, 0.2);
-        border: 1px solid rgba(247, 118, 142, 0.4);
-        color: #f7768e;
-      }
-
-      .loading-message {
-        background: rgba(122, 162, 247, 0.2);
-        border: 1px solid rgba(122, 162, 247, 0.4);
-        color: #7aa2f7;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.7;
-        }
-      }
-
-      .form-container {
-        animation: fadeInUp 0.8s ease-out 0.4s both;
-      }
-
-      @media (max-width: 768px) {
-        .contact-title {
-          font-size: 2.5rem;
-        }
-
-        .contact-subtitle {
-          font-size: 1rem;
-        }
-
-        .form-container {
-          margin: 1rem;
-          padding: 1.5rem;
-        }
-      }
-    </style>
   </head>
-  <body class="contact-container">
+  
+  <body class="bg-[#1a1b26] text-[#c0caf5] min-h-screen">
     <Header />
 
-    <main
-      class="max-w-4xl mx-auto py-12 px-6 sm:px-8 lg:px-16 relative z-10 pt-0 mt-0"
-    >
-      <div class="contact-header">
-        <h1 class="contact-title">Let's Collaborate</h1>
-        <p class="contact-subtitle">
-          I'm eager to hear your thoughts, feedback, or ideas. Feel free to drop
-          a message!
-        </p>
-      </div>
+    <main class="relative mt-0 pt-0" >
+      <!-- Hero Section -->
+      <section class="text-center py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent leading-tight">
+            Let's Build Something Amazing
+          </h1>
+          <p class="text-lg sm:text-xl text-[#a9b1d6] max-w-2xl mx-auto leading-relaxed">
+            Ready to bring your ideas to life? Let's discuss your project and create something extraordinary together.
+          </p>
+        </div>
+      </section>
 
-      <section class="form-container p-8 md:p-12 relative z-10">
-        <form
-          id="form"
-          class="space-y-6"
-          action="https://api.web3forms.com/submit"
-        >
-          <!-- Access Key -->
-          <input
-            type="hidden"
-            name="access_key"
-            value="29b18f36-e5a9-43e0-b896-79ccb8509f17"
-          />
+      <!-- Main Content -->
+      <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+          
+          <!-- Contact Info Sidebar -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Quick Info -->
+            <div class="bg-[#24283b]/50 backdrop-blur-sm border border-[#414868]/30 rounded-2xl p-6">
+              <h2 class="text-2xl font-bold text-[#7aa2f7] mb-6">Get In Touch</h2>
+              
+              <div class="space-y-4">
+                <!-- Email -->
+                <div class="flex items-center gap-4 p-4 bg-[#1a1b26]/50 rounded-xl border border-[#414868]/20 hover:border-[#7aa2f7]/30 transition-colors">
+                  <div class="w-12 h-12 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-[#c0caf5]">Email</h3>
+                    <p class="text-sm text-[#a9b1d6]">99marafay@gmail.com</p>
+                  </div>
+                </div>
 
-          <!-- Name -->
-          <div class="form-group">
-            <label for="name" class="form-label"> Your Name </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              class="input-field w-full p-4 rounded-xl text-base"
-              placeholder="John Doe"
-              required
-            />
+                <!-- Response Time -->
+                <div class="flex items-center gap-4 p-4 bg-[#1a1b26]/50 rounded-xl border border-[#414868]/20 hover:border-[#9ece6a]/30 transition-colors">
+                  <div class="w-12 h-12 bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-[#c0caf5]">Response Time</h3>
+                    <p class="text-sm text-[#a9b1d6]">Within 24 hours</p>
+                  </div>
+                </div>
+
+                <!-- Location -->
+                <div class="flex items-center gap-4 p-4 bg-[#1a1b26]/50 rounded-xl border border-[#414868]/20 hover:border-[#bb9af7]/30 transition-colors">
+                  <div class="w-12 h-12 bg-gradient-to-r from-[#bb9af7] to-[#9ece6a] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-[#c0caf5]">Location</h3>
+                    <p class="text-sm text-[#a9b1d6]">Remote Worldwide</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Services -->
+            <div class="bg-[#24283b]/50 backdrop-blur-sm border border-[#414868]/30 rounded-2xl p-6">
+              <h3 class="text-xl font-bold text-[#7aa2f7] mb-4">What I Do</h3>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 bg-[#7aa2f7] rounded-full"></div>
+                  <span class="text-sm text-[#a9b1d6]">Web Development</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 bg-[#bb9af7] rounded-full"></div>
+                  <span class="text-sm text-[#a9b1d6]">Mobile Apps</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 bg-[#9ece6a] rounded-full"></div>
+                  <span class="text-sm text-[#a9b1d6]">UI/UX Design</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 bg-[#f7768e] rounded-full"></div>
+                  <span class="text-sm text-[#a9b1d6]">Consulting</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Email -->
-          <div class="form-group">
-            <label for="email" class="form-label"> Email Address </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              class="input-field w-full p-4 rounded-xl text-base"
-              placeholder="you@example.com"
-              required
-            />
+          <!-- Contact Form -->
+          <div class="lg:col-span-3">
+            <div class="bg-[#24283b]/50 backdrop-blur-sm border border-[#414868]/30 rounded-2xl p-6 sm:p-8">
+              <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent mb-2">
+                  Send Message
+                </h2>
+                <p class="text-[#a9b1d6]">Tell me about your project</p>
+              </div>
+
+              <form id="contactForm" class="space-y-6">
+                <!-- Hidden Access Key -->
+                <input type="hidden" name="access_key" value="c0613ed5-2935-40a1-8d33-b32fd9eea403" />
+
+                <!-- Name & Email Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div class="form-group">
+                    <label for="name" class="block text-sm font-semibold text-[#c0caf5] mb-2">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
+                      class="w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors"
+                      placeholder="John Doe"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="email" class="block text-sm font-semibold text-[#c0caf5] mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      class="w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                </div>
+
+                <!-- Subject -->
+                <div class="form-group">
+                  <label for="subject" class="block text-sm font-semibold text-[#c0caf5] mb-2">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    required
+                    class="w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors"
+                    placeholder="Project Discussion"
+                  />
+                </div>
+
+                <!-- Message -->
+                <div class="form-group">
+                  <label for="message" class="block text-sm font-semibold text-[#c0caf5] mb-2">
+                    Your Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows="5"
+                    class="w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors resize-none"
+                    placeholder="Tell me about your project, timeline, budget, and any specific requirements..."
+                  ></textarea>
+                </div>
+
+                <!-- hCaptcha -->
+                <div class="h-captcha" data-captcha="true"></div>
+
+                <!-- Submit Button -->
+                <button
+                  type="submit"
+                  id="submitBtn"
+                  class="w-full py-4 px-6 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#7aa2f7]/25 focus:outline-none focus:ring-4 focus:ring-[#7aa2f7]/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span id="btnText">Send Message</span>
+                  <span id="btnLoader" class="hidden">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                  </span>
+                </button>
+
+                <!-- Result Message -->
+                <div id="result" class="hidden p-4 rounded-xl text-center font-medium"></div>
+              </form>
+            </div>
           </div>
-
-          <!-- Message -->
-          <div class="form-group">
-            <label for="message" class="form-label"> Your Message </label>
-            <textarea
-              id="message"
-              name="message"
-              class="input-field w-full p-4 rounded-xl text-base resize-none"
-              rows="6"
-              placeholder="Write your message..."
-              required></textarea>
-          </div>
-
-          <!-- hCaptcha -->
-          <div class="h-captcha my-6" data-captcha="true"></div>
-
-          <!-- Submit Button -->
-          <div class="text-center">
-            <button
-              type="submit"
-              class="submit-btn w-full py-4 px-8 rounded-xl text-lg font-semibold relative overflow-hidden"
-            >
-              <span class="relative z-10">Send Message</span>
-            </button>
-          </div>
-
-          <!-- Result Message -->
-          <div id="result" class="hidden text-center p-4 mt-6 rounded-xl"></div>
-        </form>
+        </div>
       </section>
     </main>
 
-    <Footer class="mt-auto" />
+    <Footer />
 
     <!-- Scripts -->
-    <script lang="js" is:inline>
-      document.getElementById("form").addEventListener("submit", function (e) {
-        const hcaptchaResponse = document.querySelector(
-          'textarea[name="h-captcha-response"]'
-        );
-        if (!hcaptchaResponse || hcaptchaResponse.value === "") {
-          e.preventDefault();
-          alert("Please complete the hCaptcha.");
-        }
-      });
-    </script>
-
+    <script is:inline src="https://web3forms.com/client/script.js" async defer></script>
+    
     <script is:inline>
-      const form = document.getElementById("form");
-      const result = document.getElementById("result");
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contactForm');
+        const result = document.getElementById('result');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnLoader = document.getElementById('btnLoader');
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+        // Form validation
+        function validateForm() {
+          const name = document.getElementById('name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const subject = document.getElementById('subject').value.trim();
+          const message = document.getElementById('message').value.trim();
+          
+          if (!name || !email || !subject || !message) {
+            showResult('Please fill in all required fields.', 'error');
+            return false;
+          }
+          
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            showResult('Please enter a valid email address.', 'error');
+            return false;
+          }
+          
+          return true;
+        }
 
-        const formData = new FormData(form);
-        const object = Object.fromEntries(formData);
-        const json = JSON.stringify(object);
-
-        result.className =
-          "block loading-message text-center p-4 mt-6 rounded-xl";
-        result.innerHTML = "Sending your message...";
-
-        fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: json,
-        })
-          .then(async (response) => {
-            let json = await response.json();
-            if (response.status == 200) {
-              result.className =
-                "block success-message text-center p-4 mt-6 rounded-xl";
-              result.innerHTML = "✅ " + json.message;
-            } else {
-              result.className =
-                "block error-message text-center p-4 mt-6 rounded-xl";
-              result.innerHTML = "❌ " + json.message;
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-            result.className =
-              "block error-message text-center p-4 mt-6 rounded-xl";
-            result.innerHTML = "❌ Something went wrong! Please try again.";
-          })
-          .then(() => {
-            form.reset();
+        // Show result message
+        function showResult(message, type) {
+          result.className = `block p-4 rounded-xl text-center font-medium ${
+            type === 'success' 
+              ? 'bg-[#9ece6a]/20 border border-[#9ece6a]/30 text-[#9ece6a]' 
+              : type === 'error'
+              ? 'bg-[#f7768e]/20 border border-[#f7768e]/30 text-[#f7768e]'
+              : 'bg-[#7aa2f7]/20 border border-[#7aa2f7]/30 text-[#7aa2f7]'
+          }`;
+          result.innerHTML = message;
+          
+          if (type === 'success') {
             setTimeout(() => {
-              result.style.opacity = "0";
-              result.style.transition = "opacity 0.5s ease";
+              result.style.opacity = '0';
+              result.style.transition = 'opacity 0.5s ease';
               setTimeout(() => {
-                result.classList.add("hidden");
-                result.style.opacity = "1";
+                result.classList.add('hidden');
+                result.style.opacity = '1';
               }, 500);
-            }, 4000);
+            }, 5000);
+          }
+        }
+
+        // Toggle loading state
+        function setLoading(loading) {
+          submitBtn.disabled = loading;
+          if (loading) {
+            btnText.classList.add('hidden');
+            btnLoader.classList.remove('hidden');
+          } else {
+            btnText.classList.remove('hidden');
+            btnLoader.classList.add('hidden');
+          }
+        }
+
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          // Validate hCaptcha
+          const hcaptchaResponse = document.querySelector('textarea[name="h-captcha-response"]');
+          if (!hcaptchaResponse || hcaptchaResponse.value === '') {
+            showResult('Please complete the security verification.', 'error');
+            return;
+          }
+          
+          // Validate form
+          if (!validateForm()) return;
+          
+          setLoading(true);
+          showResult('Sending your message...', 'loading');
+          
+          try {
+            const formData = new FormData(form);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+            
+            const response = await fetch('https://api.web3forms.com/submit', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: json
+            });
+            
+            const responseData = await response.json();
+            
+            if (response.status === 200) {
+              showResult('✅ Message sent successfully! I\'ll get back to you soon.', 'success');
+              form.reset();
+              // Reset hCaptcha
+              if (window.hcaptcha) {
+                window.hcaptcha.reset();
+              }
+            } else {
+              showResult('❌ ' + (responseData.message || 'Something went wrong. Please try again.'), 'error');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            showResult('❌ Network error. Please check your connection and try again.', 'error');
+          } finally {
+            setLoading(false);
+          }
+        });
+
+        // Real-time validation feedback
+        const inputs = form.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+          input.addEventListener('blur', function() {
+            if (this.hasAttribute('required') && !this.value.trim()) {
+              this.classList.add('border-[#f7768e]');
+              this.classList.remove('border-[#414868]/40');
+            } else {
+              this.classList.remove('border-[#f7768e]');
+              this.classList.add('border-[#414868]/40');
+            }
           });
+          
+          input.addEventListener('focus', function() {
+            this.classList.remove('border-[#f7768e]');
+          });
+        });
       });
     </script>
-
-    <script is:inline src="https://web3forms.com/client/script.js" async defer
-    ></script>
   </body>
 </html>

@@ -1,15 +1,15 @@
 ---
-import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
-import Footer from "@astro/footer/Footer.astro";
-import ArticleHeader from "@astro/blog/layout/ArticleHeader.astro";
-import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
+import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
+import Header from "../components/AstroComponent/header/Header.astro";
+import Footer from "../components/AstroComponent/footer/Footer.astro";
+import ArticleHeader from "../components/AstroComponent/blog/layout/ArticleHeader.astro";
+import ContentContainer from "../components/AstroComponent/blog/layout/ContentContainer.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import PostComment from "@astro/blog/comments/PostComment.astro";
-import ShareButtons from "@react/blog/interactions/socialButton";
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
-import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
+import PostComment from "../components/AstroComponent/blog/comments/PostComment.astro";
+import ShareButtons from "../components/ReactComponent/blog/interactions/socialButton";
+import { featureFlags } from "../config/featureFlag/featureFlag.json";
+import CodeCopySimple from "../components/ReactComponent/blog/enhancements/code-copy/CodeCopySimple";
+import MermaidRenderer from "../components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer";
 
 const pageUrl = Astro.url.href;
 export const prerender = true;

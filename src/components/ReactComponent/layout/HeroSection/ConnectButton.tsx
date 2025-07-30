@@ -1,67 +1,97 @@
-import { memo } from "react";
+import React, { memo, useCallback } from "react";
 import { motion } from "framer-motion";
+import { Calendar, ArrowRight } from "lucide-react";
 
 const ConnectButton = memo(function ConnectButton() {
+  // Optimized smooth scroll function with cubic easing
+  const smoothScrollTo = useCallback((targetPosition: number, duration: number = 2000) => {
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    let start: number | null = null;
+
+    // Cubic easing function for smooth animation
+    const easeInOutCubic = (t: number, b: number, c: number, d: number): number => {
+      t /= d / 2;
+      if (t < 1) return c / 2 * t * t * t + b;
+      t -= 2;
+      return c / 2 * (t * t * t + 2) + b;
+    };
+
+    const animation = (currentTime: number) => {
+      if (start === null) start = currentTime;
+      const timeElapsed = currentTime - start;
+      const run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
+      window.scrollTo(0, run);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    };
+
+    requestAnimationFrame(animation);
+  }, []);
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('Button clicked!');
+    
+    try {
+      const contactSection = document.querySelector('#contact-section') as HTMLElement;
+      console.log('Contact section found:', contactSection);
+      
+      if (contactSection) {
+        // Scroll to contact section with 100px offset for better positioning
+        const targetPosition = contactSection.offsetTop - 100;
+        smoothScrollTo(targetPosition);
+      } else {
+        console.warn('Contact section not found. Available sections:', 
+          Array.from(document.querySelectorAll('section[id]')).map(s => s.id)
+        );
+        // Fallback: scroll to bottom of page
+        smoothScrollTo(document.body.scrollHeight);
+      }
+    } catch (error) {
+      console.error('Error scrolling to contact section:', error);
+      // Fallback: scroll to bottom of page
+      smoothScrollTo(document.body.scrollHeight);
+    }
+  }, [smoothScrollTo]);
+
   return (
     <motion.div
-      className="mt-6"
+      className="flex justify-start relative"
+      style={{ zIndex: 100 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1, duration: 0.6 }}
+      transition={{ 
+        duration: 0.6, 
+        delay: 1.2, // Appears after Greeting animations (0.2, 0.4, 0.6, 0.8, 1.0)
+        ease: "easeOut"
+      }}
     >
-      <motion.a
-        href="/contact-me"
-        className="group inline-flex items-center px-6 py-3 font-bold text-base rounded-xl overflow-hidden shadow-lg backdrop-blur-sm border border-[var(--accent)]/30 bg-gradient-to-r from-[var(--accent-dark)]/80 to-[var(--accent-dark)]/40 hover:border-[var(--accent)]/60 transition-all duration-300"
-        whileHover={{
-          scale: 1.05,
-          y: -2,
+      <motion.button
+        onClick={handleClick}
+        onMouseDown={(e) => e.preventDefault()}
+        className="group relative px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white font-bold rounded-full overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-[#7aa2f7]/30 text-base sm:text-lg shadow-lg cursor-pointer"
+        style={{ 
+          position: 'relative',
+          zIndex: 100,
+          pointerEvents: 'auto'
         }}
+        whileHover={{ scale: 1.05, y: -2 }}
         whileTap={{ scale: 0.98 }}
       >
-        {/* Content */}
-        <div className="flex items-center space-x-3">
-          {/* Icon */}
-          <svg
-            className="w-5 h-5 text-[var(--accent)] group-hover:scale-110 transition-transform duration-200"
-            fill="currentColor"
-            viewBox="0 0 20 20"
+        <span className="relative z-10 flex items-center justify-center gap-3 drop-shadow-sm">
+          <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />
+          Available for Projects
+          <motion.div
+            animate={{ x: [0, 4, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <path
-              fillRule="evenodd"
-              d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-              clipRule="evenodd"
-            />
-          </svg>
-
-          {/* Text */}
-          <span className="bg-gradient-to-r from-[var(--accent)] to-[var(--text-light)] bg-clip-text text-transparent font-bold tracking-wide">
-            Connect with Me
-          </span>
-
-          {/* Arrow */}
-          <svg
-            className="w-4 h-4 text-[var(--accent)] group-hover:translate-x-1 transition-transform duration-200"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-      </motion.a>
-
-      {/* Simple hint text */}
-      <motion.p
-        className="text-center mt-3 text-sm text-[var(--text-light)]/60 font-medium"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
-      >
-        Let's build something amazing together
-      </motion.p>
+            <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
+          </motion.div>
+        </span>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+      </motion.button>
     </motion.div>
   );
 });

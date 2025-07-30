@@ -12,7 +12,7 @@
         "showPrivacy": true,
         "showTermsOfService": true,
         "showSubNewsletter": true,
-        "showTrendingPosts": true,
+        "showTrendingPosts": false,
         "showTermsandConditions": true,
         "showPrivacyPolicy": true,
         "showWiki": true,
@@ -20,8 +20,14 @@
         "showWhatsNew": true,
         "showQASection": true,
         "enableViewTransation": false,
-        "showGitHubStats": true,
-        "enableAstroDiagrams": false
+        "showGitHubStats": false,
+        "enableCoreServices": true,
+        "enableProcessShowcase": true,
+        "enablePortfolioSection": true,
+        "enableTestimonialsSection": false,
+        "enableSkillsShowcase": true,
+        "enableContactMap": true
+        
     },
     "FeatureFlagsApi": {
         "enableauthorInfoAPI": true,

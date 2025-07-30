@@ -5,11 +5,12 @@ export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      fontFamily: {
+        'poppins': ['Poppins', 'sans-serif'],
+        'sans': ['Poppins', 'sans-serif'],
+      },
       colors: {
-        // Centralized Theme Colors
         ...generateTailwindColors(colors),
-
-        // Legacy colors for backward compatibility
         accent: {
           DEFAULT: "#7aa2f7",
           dark: "#1f2335",
