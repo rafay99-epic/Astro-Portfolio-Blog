@@ -74,20 +74,25 @@ The application should:
     *   **Code Quality:** Ensure the generated code is well-commented, follows reasonable code best practices for the chosen framework, and is easy to understand.
 ```
 
-## Loveable
+Alright, Abdul Rafay, let's refine just that "Lovable" section. We'll make it crisp, clear, and perfectly slot into your existing blog post, handling the more complex prompt you used for it as a specific stress test for *this* tool, leading into your universal prompt for the others.
 
-Love is the one with the most ads on my feed and I have used it and it is good but not too good, there are fews things that are needed to be updated and fixed or imporved upone as well.
+### **Tool 1: Lovable.dev - The Ambitious Start**
 
-The promote is share above but the processing time is good for small application, it took **3 mins** to make the application and it's good, the process is detailed and here are the images as you can see
-in the images bellow![Loveable promote 01](/BlogImages/loveable_promote.webp)![Loveable Promote 3](/BlogImages/loveable_promote2.webp)![Loveable Promote Processing 02](/BlogImages/loveable_promote4.webp)
+Lovable.dev has been practically living in my ad feeds, so it was naturally the first one I had to put to the test. My initial take? It's got potential, it's *good*, but it definitely feels like there are some rough edges needing polish, or perhaps a full refactor in places.
 
-As you can see that The pomoting Process is very complex and detail but it's not all rainbow and sun shine. 
+For Lovable, I decided to push the boundaries right out of the gate, giving it a truly ambitious challenge—a stress test, if you will, to see how far these "full application" claims could truly stretch. My prompt went beyond a simple to-do list, aiming for real-world complexity. I tasked it with:
 
-In this Promote, I gave it two complex task
+* **Adding Authentication:** Because what's a modern app without user logins?
+* **Database Persistence:** Storing to-do items not just locally, but in a backend database. For this, I specifically chose **Supabase** as the backend.
 
-1. Add Auth 
-2. Storge The to-do item into the DB, and for this test, Superbase was the choice. 
+The **prompting process** itself was quite detailed and involved, guiding me through various configurations, which hinted at the complexity it was trying to handle. In terms of raw speed, Lovable was impressively quick for such a task, taking approximately **3 minutes** to generate what it claimed was a complete application. Not bad for kicking off a new project!![](/BlogImages/loveable_promote.webp)![](/BlogImages/loveable_promote2.webp)![](/BlogImages/loveable_promote3.webp)
 
-and this is the UI and the error 
+As you can see from the process, it’s not all sunshine and rainbows. While the detailed prompting *tried* to cover a lot of ground, the actual output told a different story.
 
-![](/BlogImages/loveable_01.webp)![](/BlogImages/loveable_UI_4.webp)The UI is okay but no performaing the simple task is kind of a big let down so it's okay plus in order to use Auth we need to create a superbase Project and then simple conncet the project with few button which is easy to setup. 
+![](/BlogImages/Loveable_5.webp)![](/BlogImages/loveable_UI_4.webp)
+
+The generated UI? It was okay—functional, but nothing to write home about. The real disappointment, though, came when it failed to perform even the most basic "add to-do" task correctly, despite the heavy lifting I asked it to do with authentication and Supabase integration. That's a pretty big letdown when the fundamental feature falls flat.
+
+On a positive note, setting up the Supabase connection for the authentication feature was surprisingly straightforward; it just needed a few button clicks to link it to an existing Supabase project. The *idea* of integrating a backend with such ease is fantastic, even if the execution on the core feature wasn't quite there.
+
+**Lovable.dev Verdict:** While its ambition to tackle auth and external databases with impressive speed is commendable, and the setup for Supabase was intuitive, the failure on basic to-do functionality left a significant gap. It's a powerful *idea*, but the current free-tier execution indicates a need for substantial refinement to deliver on the "full app" promise for complex prompts. This initial deep dive for Lovable truly shaped my approach for the *other* tools, leading me to define the **Universal Prompt** (detailed below) that aims for a strong, robust, yet achievable feature set for consistent comparison.
