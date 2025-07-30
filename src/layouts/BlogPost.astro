@@ -65,8 +65,11 @@ const {
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} 
-    image={heroImage}
+    <BaseHead 
+      title={title} 
+      description={description} 
+      image={heroImage}
+      keywords={keywords}
     />
     <SpeedInsights />
     <style>
@@ -482,7 +485,7 @@ const {
         "@type": "WebPage",
         "@id": pageUrl
       },
-      "keywords": tags?.join(", ") || "blog, technology, programming",
+      "keywords": keywords?.join(", ") || tags?.join(", ") || "blog, technology, programming",
       "articleSection": tags?.[0] || "Technology",
       "wordCount": blogContent.length,
       "timeRequired": readTime || "5 min read"
