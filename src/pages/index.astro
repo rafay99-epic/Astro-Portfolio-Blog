@@ -48,24 +48,24 @@ try {
 
       </div>
       <section> 
-        <CoreServices />
+        {featureFlags.enableCoreServices && <CoreServices />}
       </section>
     
       <section>
-      <ProcessShowcase client:visible />
+      {featureFlags.enableProcessShowcase && <ProcessShowcase client:visible />}
       </section>
       <section>
-        <PortfolioSection />
+        {featureFlags.enablePortfolioSection && <PortfolioSection />}
       </section>
       <section>
-        <TestimonialsSection />
+        {featureFlags.enableTestimonialsSection && <TestimonialsSection />}
       </section>
       <section>
-        <SkillsShowcase client:visible />
+        {featureFlags.enableSkillsShowcase && <SkillsShowcase client:visible />}
       </section>
       <section>
       <section id="contact-section">
-        <ContactMap />
+        {featureFlags.enableContactMap && <ContactMap />}
       </section>
     </main>
 

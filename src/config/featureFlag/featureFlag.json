@@ -20,8 +20,14 @@
         "showWhatsNew": true,
         "showQASection": true,
         "enableViewTransation": false,
-        "showGitHubStats": true,
-        "enableAstroDiagrams": false
+        "showGitHubStats": false,
+        "enableCoreServices": true,
+        "enableProcessShowcase": true,
+        "enablePortfolioSection": true,
+        "enableTestimonialsSection": true,
+        "enableSkillsShowcase": true,
+        "enableContactMap": true
+        
     },
     "FeatureFlagsApi": {
         "enableauthorInfoAPI": true,
