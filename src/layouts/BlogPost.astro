@@ -3,17 +3,15 @@ import type { CollectionEntry } from "astro:content";
 import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
 import Header from "../components/AstroComponent/header/Header.astro";
 import Footer from "../components/AstroComponent/footer/Footer.astro";
-import ContentContainer from "../components/AstroComponent/blog/layout/ContentContainer.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import PostComment from "../components/AstroComponent/blog/comments/PostComment.astro";
 import { featureFlags } from "../config/featureFlag/featureFlag.json";
 import { getCollection } from "astro:content";
-import AISummaryCard from "../components/ReactComponent/blog/enhancements/summary-card/summary_blog";
-import BlogHeader from "../components/ReactComponent/blog/layout/BlogPostLayout/BlogPostLayoutHeader";
-import { QAChatWidget } from "../components/ReactComponent/blog/enhancements/qa-chat/QAChatWidget";
 import CodeCopySimple from "../components/ReactComponent/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "../components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer";
 import ImageCaptionRenderer from "../components/ReactComponent/blog/enhancements/image-caption-renderer/ImageCaptionRenderer";
+import BlogNavigation from "../components/ReactComponent/blog/layout/BlogNavigation";
+import { ViewTransitions } from "astro:transitions";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -71,7 +69,7 @@ const {
       image={heroImage}
       keywords={keywords}
     />
-    <SpeedInsights />
+    <ViewTransitions />
     <style>
       .blog-container {
         min-height: 100vh;
@@ -113,14 +111,6 @@ const {
         );
         filter: blur(2px);
         z-index: -1;
-      }
-
-      .main-content {
-        opacity: 1;
-      }
-
-      .comments-section {
-        opacity: 1;
       }
 
       .comments-container {
@@ -166,67 +156,7 @@ const {
         margin-bottom: 0.5rem;
       }
 
-      .blog-typography {
-        line-height: 1.8;
-        font-size: 1.1rem;
-      }
-
-      .blog-typography h1,
-      .blog-typography h2,
-      .blog-typography h3,
-      .blog-typography h4,
-      .blog-typography h5,
-      .blog-typography h6 {
-        margin-top: 2.5rem;
-        margin-bottom: 1rem;
-        scroll-margin-top: 100px;
-      }
-
-      .blog-typography h2 {
-        border-left: 4px solid #7aa2f7;
-        padding-left: 1rem;
-        background: rgba(122, 162, 247, 0.05);
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-      }
-
-      .blog-typography h3 {
-        color: #bb9af7;
-        position: relative;
-      }
-
-      .blog-typography h3::before {
-        content: "📝";
-        margin-right: 0.5rem;
-      }
-
-      .blog-typography blockquote {
-        background: rgba(122, 162, 247, 0.1);
-        border-left: 4px solid #7aa2f7;
-        padding: 1rem 1.5rem;
-        margin: 1.5rem 0;
-        border-radius: 0 8px 8px 0;
-      }
-
-      .blog-typography ul li::marker {
-        color: #7aa2f7;
-      }
-
-      .blog-typography ol li::marker {
-        color: #bb9af7;
-        font-weight: bold;
-      }
-
       @media (max-width: 600px) {
-        .main-content {
-          padding: 0.5rem !important;
-        }
-
-        .blog-typography {
-          font-size: 1rem;
-          line-height: 1.7;
-        }
-
         .comments-container {
           padding: 24px;
         }
@@ -238,192 +168,6 @@ const {
         #scroll-progress {
           height: 3px;
         }
-      }
-
-      /* Unified Section Styles */
-      .unified-section {
-        background: linear-gradient(135deg, rgba(26, 27, 38, 0.8) 0%, rgba(26, 27, 38, 0.6) 100%);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(86, 95, 137, 0.2);
-        border-radius: 20px;
-        padding: 32px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .unified-section::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(122, 162, 247, 0.03) 0%, rgba(187, 154, 247, 0.03) 100%);
-        pointer-events: none;
-      }
-
-      .section-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 24px;
-        position: relative;
-        z-index: 1;
-      }
-
-      .section-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #a9b1d6;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 0;
-      }
-
-      .section-icon {
-        width: 20px;
-        height: 20px;
-        color: #7aa2f7;
-      }
-
-      .section-badge {
-        font-size: 0.75rem;
-        color: #565f89;
-        background: rgba(26, 27, 38, 0.6);
-        padding: 4px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(86, 95, 137, 0.2);
-      }
-
-      .section-grid {
-        display: grid;
-        gap: 16px;
-        grid-template-columns: 1fr;
-        position: relative;
-        z-index: 1;
-      }
-
-      @media (min-width: 768px) {
-        .section-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      @media (min-width: 1024px) {
-        .section-grid {
-          grid-template-columns: repeat(3, 1fr);
-        }
-      }
-
-      .section-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 16px;
-        background: rgba(26, 27, 38, 0.4);
-        border: 1px solid rgba(86, 95, 137, 0.1);
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .section-item::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(122, 162, 247, 0.05) 0%, rgba(187, 154, 247, 0.05) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .section-item:hover {
-        border-color: rgba(122, 162, 247, 0.3);
-        background: rgba(26, 27, 38, 0.6);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(122, 162, 247, 0.15);
-      }
-
-      .section-item:hover::before {
-        opacity: 1;
-      }
-
-      .item-number {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #7aa2f7;
-        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-        background: rgba(122, 162, 247, 0.1);
-        padding: 4px 8px;
-        border-radius: 6px;
-        min-width: 32px;
-        text-align: center;
-        position: relative;
-        z-index: 1;
-      }
-
-      .item-text {
-        color: #a9b1d6;
-        font-size: 0.875rem;
-        font-weight: 500;
-        line-height: 1.4;
-        position: relative;
-        z-index: 1;
-        flex: 1;
-      }
-
-      .item-content {
-        flex: 1;
-        position: relative;
-        z-index: 1;
-      }
-
-      .item-title {
-        color: #a9b1d6;
-        font-size: 0.875rem;
-        font-weight: 600;
-        line-height: 1.4;
-        margin: 0 0 8px 0;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .item-description {
-        color: #565f89;
-        font-size: 0.75rem;
-        line-height: 1.5;
-        margin: 0 0 12px 0;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .item-meta {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.625rem;
-        color: #565f89;
-      }
-
-      .section-footer {
-        text-align: center;
-        margin-top: 16px;
-        position: relative;
-        z-index: 1;
-      }
-
-      .footer-text {
-        font-size: 0.75rem;
-        color: #565f89;
       }
     </style>
 
@@ -608,180 +352,37 @@ const {
     
     <!-- Content Security Policy for better security -->
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <SpeedInsights />
   </head>
   <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
     <div id="scroll-progress"></div>
 
     <main
-      class="max-w-5xl mx-auto w-full px-6 py-8 md:py-12 overflow-x-hidden main-content"
+      class="max-w-4xl mx-auto w-full px-6 py-8 md:py-12 overflow-x-hidden main-content  pt-15"
     >
-      <section class="mb-12">
-        <BlogHeader
-          client:visible
-          title={title ?? "Untitled"}
-          date={new Date(pubDate).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-          authorName={authorName ?? "Anonymous"}
-          authorAvatar={authorAvatar ?? "/default-avatar.png"}
-          coverImage={heroImage ?? "/default-cover.jpg"}
-          tags={tags}
-          readtime={readTime}
-        />
-        <div class="mt-8">
-          <AISummaryCard
-            client:load
-            title={title}
-            description={description}
-            author={authorName}
-            content={blogContent}
-          />
+      <!-- Minimal Blog Header -->
+      <header class="mb-12 text-center">
+        <div class="flex items-center justify-center gap-4 text-sm text-[#565f89] mb-4">
+          <time datetime={pubDate.toISOString()}>
+            {new Date(pubDate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
+          <span>•</span>
+          <span>Written by {authorName}</span>
         </div>
-      </section>
+        
+        <h1 class="text-4xl md:text-5xl  mb-8 leading-tight bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent" transition:name={`blog-title-${currentSlug}`}>
+          {title}
+        </h1>
+      </header>
 
       <!-- Main Content -->
-      <div class="w-full">
-        <ContentContainer withBackground={false} class="blog-typography">
+      <div class="w-full ">
           <slot />
-        </ContentContainer>
-      </div>
-
-      <!-- Smart Table of Contents (appears after content hook) -->
-      {(() => {
-        const headings = blogContent.match(/^#{2,6}\s+(.+)$/gm) || [];
-        if (headings.length < 3) return null;
-        
-        return (
-          <div class="smart-toc my-12" id="smart-toc">
-            <div class="unified-section">
-              <div class="section-header">
-                <h3 class="section-title">
-                  <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-                  </svg>
-                  What's in this article?
-                </h3>
-                <span class="section-badge">
-                  {headings.length} sections
-                </span>
-              </div>
-              
-              <div class="section-grid">
-                {headings.slice(0, 9).map((heading, index) => {
-                  const level = heading.indexOf(' ');
-                  const text = heading.substring(level + 1);
-                  const id = text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
-                  
-                  return (
-                    <a
-                      href={`#${id}`}
-                      class="section-item"
-                    >
-                      <span class="item-number">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <span class="item-text">
-                        {text}
-                      </span>
-                    </a>
-                  );
-                })}
-              </div>
-              
-              {headings.length > 9 && (
-                <div class="section-footer">
-                  <span class="footer-text">
-                    +{headings.length - 9} more sections
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
-
-      <!-- Related Posts Section -->
-      <div class="related-posts-section my-12">
-        <div class="unified-section">
-          <div class="section-header">
-            <h3 class="section-title">
-              <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-              </svg>
-              You Might Also Like
-            </h3>
-            <span class="section-badge">
-              {(() => {
-                const currentTags = tags || [];
-                const relatedPosts = BlogPosts
-                  .filter(post => post.slug !== currentSlug)
-                  .map(post => {
-                    const postTags = post.data.tags || [];
-                    let score = 0;
-                    currentTags.forEach(tag => {
-                      if (postTags.includes(tag)) score += 3;
-                    });
-                    return { post, score };
-                  })
-                  .filter(item => item.score > 0);
-                return `${relatedPosts.length} related posts`;
-              })()}
-            </span>
-          </div>
-          
-          <div class="section-grid">
-            {(() => {
-              const currentTags = tags || [];
-              const relatedPosts = BlogPosts
-                .filter(post => post.slug !== currentSlug)
-                .map(post => {
-                  const postTags = post.data.tags || [];
-                  let score = 0;
-                  
-                  // Calculate relevance based on tags
-                  currentTags.forEach(tag => {
-                    if (postTags.includes(tag)) score += 3;
-                  });
-                  
-                  return { post, score };
-                })
-                .filter(item => item.score > 0)
-                .sort((a, b) => b.score - a.score)
-                .slice(0, 3)
-                .map(item => item.post);
-              
-              return relatedPosts.map((post, index) => (
-                <a
-                  href={`/blog/${post.slug}`}
-                  class="section-item"
-                  title={`Read: ${post.data.title}`}
-                  rel="related"
-                >
-                  <span class="item-number">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <div class="item-content">
-                    <h4 class="item-title">
-                      {post.data.title}
-                    </h4>
-                    <p class="item-description">
-                      {post.data.description}
-                    </p>
-                    <div class="item-meta">
-                      <span>{new Date(post.data.pubDate).toLocaleDateString()}</span>
-                      {post.data.readTime && (
-                        <span>• {post.data.readTime}</span>
-                      )}
-                    </div>
-                  </div>
-                </a>
-              ));
-            })()}
-          </div>
-        </div>
       </div>
 
       <!-- Mermaid Diagram Renderer -->
@@ -792,6 +393,13 @@ const {
 
       <!-- Code Copy Enhancement -->
       <CodeCopySimple client:load />
+
+      <!-- Blog Navigation -->
+      <BlogNavigation 
+        client:load
+        currentSlug={currentSlug || ""}
+        allPosts={BlogPosts}
+      />
 
       <div class="comments-section">
         <div class="comments-container">
@@ -808,18 +416,6 @@ const {
       </div>
     </main>
 
-    {
-      featureFlags.showQASection && (
-        <QAChatWidget
-          client:visible
-          title={title}
-          description={description}
-          author={authorName}
-          content={blogContent}
-        />
-      )
-    }
-
     <script is:inline>
       // Prevent auto-scroll restoration and conflicts
       if ("scrollRestoration" in history) {
@@ -833,30 +429,7 @@ const {
         }, 0);
       });
 
-      // Smart Table of Contents - appears after user is hooked
-      document.addEventListener("DOMContentLoaded", function () {
-        const toc = document.getElementById('smart-toc');
-        if (!toc) return;
 
-        // Initially hide the TOC
-        toc.style.opacity = '0';
-        toc.style.transform = 'translateY(20px)';
-        toc.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-
-        // Show TOC after user scrolls and gets hooked
-        const showTOC = () => {
-          const scrollPosition = window.scrollY;
-          const triggerPosition = 600; // Show after scrolling 600px (after hook)
-          
-          if (scrollPosition > triggerPosition) {
-            toc.style.opacity = '1';
-            toc.style.transform = 'translateY(0)';
-            window.removeEventListener('scroll', showTOC);
-          }
-        };
-
-        window.addEventListener('scroll', showTOC);
-      });
     </script>
     <script type="text/partytown" is:inline src="/js/progressbar.js"></script>
     <Footer />

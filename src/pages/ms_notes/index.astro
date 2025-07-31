@@ -38,11 +38,11 @@ try {
       description={`Browse categorized notes on ${authorConfig.SiteName}`}
     />
   </head>
-  <body>
+  <body class="pt-15 mt-0">
     <Header />
     <SpeedInsights />
 
-    <main class="pt-0 mt-0">
+    <main >
       <section>
         <SubjectGrid client:visible subjects={subjects} />
       </section>
