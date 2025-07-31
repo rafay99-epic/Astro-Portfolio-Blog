@@ -1,4 +1,4 @@
-import type { Post } from "types/articles";
+import type { Post } from "../types/articles";
 
 export interface SearchInputProps {
   query: string;
