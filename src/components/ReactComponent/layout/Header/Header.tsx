@@ -47,9 +47,9 @@ const NavLink = memo<NavLinkProps>(({
         ? "text-[#c0caf5] hover:text-[#7aa2f7] py-3 px-4 rounded-lg hover:bg-[#24283b]/80 border border-transparent hover:border-[#565f89]/30"
         : "text-[#c0caf5] hover:text-[#7aa2f7] px-3 py-2 rounded-lg hover:bg-[#24283b]/50"
     } ${className}`}
-    whileHover={{ scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-    transition={{ duration: 0.15, ease: "easeOut" }}
+    whileHover={{ scale: 1.01 }}
+    whileTap={{ scale: 0.99 }}
+    transition={{ duration: 0.2, ease: "easeOut" }}
   >
     {icon && (
       <span className={`${children ? "mr-3" : ""} text-[#7aa2f7] group-hover:text-[#bb9af7] transition-colors duration-300`}>
@@ -154,10 +154,10 @@ const Header = memo(function Header() {
     <>
       {/* Header */}
       <motion.header
-        className="sticky top-0 z-50 backdrop-blur-xl bg-[#1a1b26]/80"
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#1a1b26]/90"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex justify-between items-center py-4">
@@ -165,24 +165,24 @@ const Header = memo(function Header() {
             <motion.a
               href="/"
               className="flex items-center group"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             >
               <div className="relative">
                 <motion.img
                   src={authorConfig.avator}
                   className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-[#7aa2f7]/30 group-hover:border-[#7aa2f7] transition-all duration-300"
-                  whileHover={{ rotateZ: 5 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  whileHover={{ rotateZ: 2 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                 />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
               </div>
               <div className="ml-3 hidden sm:block">
                 <motion.h1
                   className="text-lg font-bold bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  whileHover={{ scale: 1.01 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                 >
                   {authorConfig.SiteName}
                 </motion.h1>
@@ -229,9 +229,9 @@ const Header = memo(function Header() {
                 <motion.button
                   onClick={toggleDropdown}
                   className="flex items-center text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-[#24283b]/50"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                   aria-expanded={isDropdownOpen}
                 >
                   <MoreHorizontal className="w-4 h-4" />
@@ -257,8 +257,8 @@ const Header = memo(function Header() {
                           <motion.a
                             href="/newsletter"
                             className="flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
-                            whileHover={{ x: 5 }}
-                            transition={{ duration: 0.15, ease: "easeOut" }}
+                            whileHover={{ x: 3 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
                           >
                             <Newspaper className="w-4 h-4 text-[#7aa2f7]" />
                             <span className="font-medium">Newsletter Archive</span>
@@ -269,8 +269,8 @@ const Header = memo(function Header() {
                           <motion.a
                             href="/trending"
                             className="flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
-                            whileHover={{ x: 5 }}
-                            transition={{ duration: 0.15, ease: "easeOut" }}
+                            whileHover={{ x: 3 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
                           >
                             <TrendingUp className="w-4 h-4 text-[#f7768e]" />
                             <span className="font-medium">Trending Articles</span>
@@ -282,8 +282,8 @@ const Header = memo(function Header() {
                             <motion.a
                               href="/ms_notes"
                               className="flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
-                              whileHover={{ x: 5 }}
-                              transition={{ duration: 0.15, ease: "easeOut" }}
+                              whileHover={{ x: 3 }}
+                              transition={{ duration: 0.2, ease: "easeOut" }}
                             >
                               <StickyNote className="w-4 h-4 text-[#e0af68]" />
                               <span className="font-medium">MS Notes</span>
@@ -297,8 +297,8 @@ const Header = memo(function Header() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
-                            whileHover={{ x: 5 }}
-                            transition={{ duration: 0.15, ease: "easeOut" }}
+                            whileHover={{ x: 3 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
                           >
                             <Globe className="w-4 h-4 text-[#9ece6a]" />
                             <span className="font-medium">Website Wiki</span>
@@ -316,9 +316,9 @@ const Header = memo(function Header() {
             <motion.button
               onClick={toggleMobileMenu}
               className="lg:hidden text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 p-2 rounded-lg hover:bg-[#24283b]/50"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
@@ -372,8 +372,8 @@ const Header = memo(function Header() {
                 <motion.button
                   onClick={closeMobileMenu}
                   className="text-[#c0caf5] hover:text-[#7aa2f7] p-2 rounded-lg hover:bg-[#24283b]/50 transition-colors duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <X className="w-5 h-5" />
                 </motion.button>

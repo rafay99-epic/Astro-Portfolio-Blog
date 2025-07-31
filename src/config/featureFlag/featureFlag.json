@@ -8,7 +8,7 @@
         "showTags": true,
         "showExperience": true,
         "showSearch": true,
-        "showNewsletter": true,
+        "showNewsletter": false,
         "showPrivacy": true,
         "showTermsOfService": true,
         "showSubNewsletter": true,
@@ -18,7 +18,6 @@
         "showWiki": true,
         "showNotes": true,
         "showWhatsNew": true,
-        "showQASection": true,
         "enableViewTransation": false,
         "showGitHubStats": false,
         "enableCoreServices": true,
@@ -30,7 +29,6 @@
         
     },
     "FeatureFlagsApi": {
-        "enableauthorInfoAPI": true,
-        "enableAI_Summary": true
+        "enableauthorInfoAPI": true
     }
 }

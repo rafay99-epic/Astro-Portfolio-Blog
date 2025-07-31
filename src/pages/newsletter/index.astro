@@ -28,7 +28,7 @@ const newsletters = await getCollection("newsletter");
       description={`Subscribe to my newsletter and get updates on my latest projects.`}
     />
   </head>
-  <body>
+  <body class="pt-15 mt-0">
     <Header />
     <SpeedInsights />
     <Newsletter newsletters={newsletters} client:visible />
