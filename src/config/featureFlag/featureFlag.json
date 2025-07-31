@@ -8,7 +8,7 @@
         "showTags": true,
         "showExperience": true,
         "showSearch": true,
-        "showNewsletter": true,
+        "showNewsletter": false,
         "showPrivacy": true,
         "showTermsOfService": true,
         "showSubNewsletter": true,
