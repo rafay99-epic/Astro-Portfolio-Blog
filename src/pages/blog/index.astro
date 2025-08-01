@@ -8,6 +8,12 @@ import { featureFlags } from "../../config/featureFlag/featureFlag.json";
 import { ViewTransitions } from "astro:transitions";
 export const prerender = false;
 export const ssr = true;
+export const dynamic = true;
+
+// Force fresh content in production
+export async function getStaticPaths() {
+  return [];
+}
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 const postsPerPage = 9;
@@ -24,22 +30,36 @@ if (pageParam) {
   }
 }
 
-// Debug logging
-console.log('Pagination Debug:', {
-  url: url.toString(),
-  pageParam,
-  currentPage,
-  totalPosts: (await getCollection("blog")).filter(post => !post.data.draft).length
-});
 
+// Get all posts with fresh data
 const allPosts = (await getCollection("blog"))
   .filter(post => !post.data.draft) // Only published posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()); // Newest first
 
+// Calculate pagination with validation
+const totalPosts = allPosts.length;
+const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+// Validate current page
+if (currentPage > totalPages && totalPages > 0) {
+  return Astro.redirect('/blog');
+}
+
 // Get posts for current page
 const startIndex = (currentPage - 1) * postsPerPage;
-const posts = allPosts.slice(startIndex, startIndex + postsPerPage);
-const totalPages = Math.ceil(allPosts.length / postsPerPage);
+const endIndex = startIndex + postsPerPage;
+const posts = allPosts.slice(startIndex, endIndex);
+
+// Additional debug for production
+console.log('Production Pagination Debug:', {
+  currentPage,
+  totalPosts,
+  totalPages,
+  startIndex,
+  endIndex,
+  postsCount: posts.length,
+  firstPostTitle: posts[0]?.data.title || 'No posts'
+});
 
 // Redirect to first page if current page is invalid
 if (currentPage > totalPages && totalPages > 0) {
@@ -254,14 +274,15 @@ try {
     <Footer />
 
     <script>
-      // Ensure pagination works properly
+      // Ensure pagination works properly in both dev and production
       document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
         const currentPage = urlParams.get('page') || '1';
         
         console.log('Client-side pagination debug:', {
           currentPage,
-          url: window.location.href
+          url: window.location.href,
+          userAgent: navigator.userAgent
         });
         
         // Handle pagination links with full page reload
@@ -286,6 +307,16 @@ try {
             window.location.reload();
           }
         });
+        
+        // Additional production check - verify content loaded correctly
+        setTimeout(() => {
+          const articles = document.querySelectorAll('article');
+          console.log('Articles found on page:', articles.length);
+          
+          if (articles.length === 0) {
+            console.warn('No articles found, possible rendering issue');
+          }
+        }, 1000);
       });
     </script>
 
