@@ -7,14 +7,30 @@ import { getCollection } from "astro:content";
 import { featureFlags } from "../../config/featureFlag/featureFlag.json";
 import { ViewTransitions } from "astro:transitions";
 export const prerender = false;
+export const ssr = true;
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 const postsPerPage = 9;
 
-// Get current page from URL
+// Get current page from URL - more robust parsing
 const url = new URL(Astro.request.url);
 const pageParam = url.searchParams.get('page');
-const currentPage = pageParam ? parseInt(pageParam) : 1;
+let currentPage = 1;
+
+if (pageParam) {
+  const parsedPage = parseInt(pageParam);
+  if (!isNaN(parsedPage) && parsedPage > 0) {
+    currentPage = parsedPage;
+  }
+}
+
+// Debug logging
+console.log('Pagination Debug:', {
+  url: url.toString(),
+  pageParam,
+  currentPage,
+  totalPosts: (await getCollection("blog")).filter(post => !post.data.draft).length
+});
 
 const allPosts = (await getCollection("blog"))
   .filter(post => !post.data.draft) // Only published posts
@@ -45,6 +61,11 @@ try {
       title={`Articles | ${authorConfig.SiteName}`}
       description={`Browse all articles on ${authorConfig.SiteName} and explore categorized content.`}
     />
+    
+    <!-- Prevent caching for dynamic pagination -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <SpeedInsights />
 
     <ViewTransitions />
@@ -191,6 +212,8 @@ try {
                   ? "text-[#7aa2f7] hover:text-[#bb9af7]" 
                   : "text-[#565f89] cursor-not-allowed"
               }`}
+              data-astro-reload
+              onclick={currentPage > 1 ? `window.location.href='/blog?page=${currentPage - 1}'` : "return false"}
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -213,6 +236,8 @@ try {
                   ? "text-[#7aa2f7] hover:text-[#bb9af7]" 
                   : "text-[#565f89] cursor-not-allowed"
               }`}
+              data-astro-reload
+              onclick={currentPage < totalPages ? `window.location.href='/blog?page=${currentPage + 1}'` : "return false"}
             >
               <span>Next</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -227,6 +252,42 @@ try {
     </main>
 
     <Footer />
+
+    <script>
+      // Ensure pagination works properly
+      document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentPage = urlParams.get('page') || '1';
+        
+        console.log('Client-side pagination debug:', {
+          currentPage,
+          url: window.location.href
+        });
+        
+        // Handle pagination links with full page reload
+        const links = document.querySelectorAll('a[href*="?page="]');
+        links.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            console.log('Navigating to:', href);
+            
+            // Force full page reload for pagination
+            window.location.href = href;
+          });
+        });
+        
+        // Listen for URL changes and reload if needed
+        let currentUrl = window.location.href;
+        window.addEventListener('popstate', function() {
+          if (window.location.href !== currentUrl) {
+            currentUrl = window.location.href;
+            console.log('URL changed, reloading page');
+            window.location.reload();
+          }
+        });
+      });
+    </script>
 
     <style>
       .line-clamp-2 {
