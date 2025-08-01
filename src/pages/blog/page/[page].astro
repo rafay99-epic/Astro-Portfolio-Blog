@@ -1,15 +1,22 @@
 ---
-import BaseHead from "../../components/AstroComponent/base/BaseHead.astro";
-import Header from "../../components/AstroComponent/header/Header.astro";
-import Footer from "../../components/AstroComponent/footer/Footer.astro";
-import authorConfig from "../../config/siteConfig/info.json";
+import BaseHead from "../../../components/AstroComponent/base/BaseHead.astro";
+import Header from "../../../components/AstroComponent/header/Header.astro";
+import Footer from "../../../components/AstroComponent/footer/Footer.astro";
+import authorConfig from "../../../config/siteConfig/info.json";
 import { getCollection } from "astro:content";
-import { featureFlags } from "../../config/featureFlag/featureFlag.json";
+import { featureFlags } from "../../../config/featureFlag/featureFlag.json";
 import { ViewTransitions } from "astro:transitions";
-export const prerender = false;
-import SpeedInsights from "@vercel/speed-insights/astro";
 
 const postsPerPage = 9;
+
+// Get page number from URL params
+const { page } = Astro.params;
+const currentPage = page ? parseInt(page) : 1;
+
+// Validate page number
+if (isNaN(currentPage) || currentPage < 1) {
+  return Astro.redirect('/blog');
+}
 
 const allPosts = (await getCollection("blog"))
   .filter(post => !post.data.draft)
@@ -18,9 +25,15 @@ const allPosts = (await getCollection("blog"))
 const totalPosts = allPosts.length;
 const totalPages = Math.ceil(totalPosts / postsPerPage);
 
-const currentPage = 1;
+// Redirect if page is out of bounds
+if (currentPage > totalPages && totalPages > 0) {
+  return Astro.redirect('/blog');
+}
 
-const posts = allPosts.slice(0, postsPerPage);
+// Get posts for current page
+const startIndex = (currentPage - 1) * postsPerPage;
+const endIndex = startIndex + postsPerPage;
+const posts = allPosts.slice(startIndex, endIndex);
 
 try {
   if (!featureFlags.showBlog) {
@@ -34,12 +47,10 @@ try {
 <html lang="en">
   <head>
     <BaseHead
-      title={`Articles | ${authorConfig.SiteName}`}
-      description={`Browse all articles on ${authorConfig.SiteName} and explore categorized content.`}
+      title={`Articles - Page ${currentPage} | ${authorConfig.SiteName}`}
+      description={`Browse articles on page ${currentPage} of ${authorConfig.SiteName}.`}
     />
     
-    <SpeedInsights />
-
     <ViewTransitions />
     
     <style>
@@ -75,9 +86,9 @@ try {
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Blog",
-      "name": `${authorConfig.SiteName} Blog`,
-      "description": `Browse all articles on ${authorConfig.SiteName} and explore categorized content.`,
-      "url": "https://rafay99.com/blog",
+      "name": `${authorConfig.SiteName} Blog - Page ${currentPage}`,
+      "description": `Browse articles on page ${currentPage} of ${authorConfig.SiteName}.`,
+      "url": `https://rafay99.com/blog/page/${currentPage}`,
       "publisher": {
         "@type": "Organization",
         "name": authorConfig.SiteName,
@@ -106,7 +117,7 @@ try {
     <main class="flex-1 max-w-7xl mx-auto px-8 py-16">
       <!-- Page Title -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl lg:text-5xl  mb-3 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+        <h1 class="text-4xl lg:text-5xl mb-3 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
           Articles
         </h1>
         <p class="text-lg max-w-xl mx-auto text-[#a9b1d6]">
@@ -215,13 +226,9 @@ try {
           </div>
         </div>
       )}
-
-     
     </main>
 
     <Footer />
-
-
 
     <style>
       .line-clamp-2 {
@@ -239,4 +246,4 @@ try {
       }
     </style>
   </body>
-</html>
+</html> 
