@@ -18,7 +18,7 @@ export default defineConfig({
     format: "directory",
   },
   prefetch: {
-    prefetchAll: false,
+    prefetchAll: true,
   },
   experimental: {
     // svg: true,
