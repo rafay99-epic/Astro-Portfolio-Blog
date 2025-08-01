@@ -71,6 +71,7 @@ const Header = memo(function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
@@ -117,6 +118,7 @@ const Header = memo(function Header() {
   }, []);
 
   const toggleDropdown = useCallback(() => {
+    setHasInteracted(true);
     setIsDropdownOpen(!isDropdownOpen);
   }, [isDropdownOpen]);
 
@@ -246,7 +248,7 @@ const Header = memo(function Header() {
                   {isDropdownOpen && (
                     <motion.div
                       variants={dropdownVariants}
-                      initial="hidden"
+                      initial={hasInteracted ? "hidden" : false}
                       animate="visible"
                       exit="hidden"
                       transition={{ duration: 0.2, ease: "easeOut" }}
