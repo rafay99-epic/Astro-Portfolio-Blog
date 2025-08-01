@@ -71,19 +71,8 @@ const {
     />
     <ViewTransitions />
     <style>
-      /* Slow down view transitions */
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation-duration: 0.8s;
-        animation-timing-function: ease-in-out;
-      }
-
       /* Prevent white flash during view transitions */
-      ::view-transition-old(root) {
-        animation: none;
-        mix-blend-mode: normal;
-      }
-
+      ::view-transition-old(root),
       ::view-transition-new(root) {
         animation: none;
         mix-blend-mode: normal;
