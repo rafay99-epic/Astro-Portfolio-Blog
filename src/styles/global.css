@@ -74,6 +74,7 @@
 html {
   scroll-behavior: smooth;
   font-family: "Poppins", sans-serif;
+  background-color: #1a1b26;
 }
 
 body {
@@ -81,13 +82,26 @@ body {
   margin: 0;
   padding: 0;
   text-align: left;
-  background-color: var(--color-bg-primary, var(--accent-dark));
+  background-color: #1a1b26;
   background-size: 100% 600px;
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: var(--color-text-primary, var(--text-light));
   font-size: 20px;
   line-height: 1.7;
+}
+
+/* Prevent white flash during view transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Prevent flash on React component mount */
+[data-astro-reload] {
+  opacity: 1 !important;
+  transition: none !important;
 }
 
 

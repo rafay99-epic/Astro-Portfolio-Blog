@@ -49,6 +49,35 @@ try {
 
     <ViewTransitions />
     
+    <style>
+      /* Prevent white flash during view transitions */
+      ::view-transition-old(root) {
+        animation: none;
+        mix-blend-mode: normal;
+      }
+
+      ::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
+      }
+
+      /* Ensure smooth transitions */
+      html {
+        background-color: #1a1b26;
+      }
+
+      body {
+        background-color: #1a1b26;
+        transition: none;
+      }
+
+      /* Prevent flash on React component mount */
+      [data-astro-reload] {
+        opacity: 1 !important;
+        transition: none !important;
+      }
+    </style>
+    
     <!-- Structured Data for Blog Listing -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
