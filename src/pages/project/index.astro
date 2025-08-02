@@ -5,10 +5,12 @@ import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import ProjectList from "@react/personal/ProjectList/Projectlist";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import { ViewTransitions } from "astro:transitions";
+
 const projects = await getCollection("projects");
 export const prerender = true;
+
 try {
   if (!featureFlags.showProjects) {
     return Astro.redirect("/access-denied");
@@ -16,6 +18,15 @@ try {
 } catch (error) {
   return Astro.redirect("/404");
 }
+
+// Filter and sort projects
+const filteredProjects = projects
+  .filter((project) => !project.data.draft)
+  .sort((a, b) => {
+    const rankingA = parseInt(a.data.ProjectRanking || "9999", 10);
+    const rankingB = parseInt(b.data.ProjectRanking || "9999", 10);
+    return rankingA - rankingB;
+  });
 ---
 
 <html lang="en">
@@ -24,16 +35,210 @@ try {
       title={`Projects | ${authorConfig.SiteName}`}
       description={`Browse all projects on ${authorConfig.SiteName} and explore categorized content.`}
     />
+    <ViewTransitions />
+    <style>
+      /* Prevent white flash during view transitions */
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
+      }
+
+      /* Ensure smooth transitions */
+      html {
+        background-color: #1a1b26;
+      }
+
+      body {
+        background-color: #1a1b26;
+        transition: none;
+      }
+
+      /* Prevent flash on React component mount */
+      [data-astro-reload] {
+        opacity: 1 !important;
+        transition: none !important;
+      }
+
+      /* Faster, more direct view transitions */
+      ::view-transition-old(root) {
+        animation: fade-out 0.2s ease-out;
+      }
+
+      ::view-transition-new(root) {
+        animation: fade-in 0.2s ease-out;
+      }
+
+      @keyframes fade-out {
+        to {
+          opacity: 0;
+        }
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+      }
+
+      .line-clamp-4 {
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    </style>
   </head>
 
-  <body>
+  <body class="bg-[#1a1b26] text-[#c0caf5]" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
     <SpeedInsights />
-    <main>
-      <div>
-        <ProjectList projects={projects} client:visible />
+
+    <main class="min-h-screen py-16 px-4 md:px-8">
+      <div class="container mx-auto max-w-7xl relative z-10">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+          <h1
+            class="font-extrabold mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent text-4xl md:text-6xl lg:text-7xl"
+            transition:name="projects-title"
+          >
+            My Creations
+          </h1>
+          <p class="text-[#a9b1d6] max-w-3xl mx-auto text-lg md:text-xl">
+            A curated collection of innovative projects, showcasing my passion
+            for problem-solving and software craftsmanship.
+          </p>
+          <div
+            class="mx-auto mt-6 h-1 bg-gradient-to-r from-transparent via-[#7aa2f7] to-transparent rounded-full w-48 md:w-64"
+          ></div>
+        </div>
+
+        <!-- Projects Grid -->
+        <div id="projects-grid" class="grid gap-6 grid-cols-1 md:grid-cols-2">
+          {
+            filteredProjects.map((project) => (
+              <div
+                class="project-card"
+                data-categories={JSON.stringify(
+                  project.data.ProjectCategory || [],
+                )}
+              >
+                <a
+                  href={`/project/${project.slug}`}
+                  class="block relative overflow-hidden rounded-2xl bg-[#24283b]/70 border border-[#3b4261]/50 shadow-lg hover:shadow-xl hover:shadow-[#7aa2f7]/20 transition-all duration-300 transform hover:-translate-y-1 group"
+                >
+                  <!-- Project Image Section: Now the primary visible content -->
+                  <div class="relative w-full h-72 md:h-80 overflow-hidden">
+                    <img
+                      src={project.data.ProjectImage}
+                      alt={project.data.Projecttitle}
+                      class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    />
+                    <!-- No initial text overlay needed here, let the image shine -->
+                  </div>
+
+                  <!-- Project Details Overlay (reveals ALL details on hover) -->
+                  <div
+                    class="project-details-overlay absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-[#1a1b26] via-[#1a1b26] to-[#1a1b26]/80 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-30"
+                  >
+                    <h2 
+                      class="font-bold mb-2 text-2xl md:text-3xl text-white"
+                      transition:name={`project-title-${project.data.Projecttitle}`}
+                    >
+                      {project.data.Projecttitle}
+                    </h2>
+                    <p
+                      class="text-gray-200 mb-4 leading-relaxed text-sm md:text-base line-clamp-4"
+                    >
+                      {project.data.ProjectDescription}
+                    </p>
+
+                    {project.data.ProjectTech &&
+                      project.data.ProjectTech.length > 0 && (
+                        <div class="flex flex-wrap gap-2 mb-4">
+                          {project.data.ProjectTech.slice(0, 4).map((tech) => (
+                            <span
+                              class="bg-[#24283b]/80 border border-[#565f89]/50 text-gray-100 text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm group-hover:border-[#7aa2f7]/50 group-hover:bg-[#7aa2f7]/10 transition-all duration-300"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                          {project.data.ProjectTech.length > 4 && (
+                            <span class="text-gray-200 text-xs font-medium px-2 py-1.5">
+                              +{project.data.ProjectTech.length - 4} more
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                    <div
+                      class="flex items-center justify-between mt-4 pt-4 border-t border-[#3b4261]/30"
+                    >
+                      <div class="flex items-center gap-4">
+                        {project.data.githubLink && (
+                          <a
+                            href={project.data.githubLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex items-center gap-2 text-gray-200 hover:text-[#7aa2f7] transition-colors duration-300 text-lg md:text-xl"
+                            aria-label={`GitHub repository for ${project.data.Projecttitle}`}
+                            onclick="event.stopPropagation()"
+                          >
+                            <i class="fab fa-github"></i>
+                            <span class="text-sm font-medium hidden sm:inline"
+                              >Code</span
+                            >
+                          </a>
+                        )}
+                        {project.data.deployedLink && (
+                          <a
+                            href={project.data.deployedLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex items-center gap-2 text-gray-200 hover:text-[#9ece6a] transition-colors duration-300 text-lg md:text-xl"
+                            aria-label={`Live demo for ${project.data.Projecttitle}`}
+                            onclick="event.stopPropagation()"
+                          >
+                            <i class="fas fa-external-link-alt"></i>
+                            <span class="text-sm font-medium hidden sm:inline"
+                              >Demo</span
+                            >
+                          </a>
+                        )}
+                      </div>
+
+                      <div
+                        class="flex items-center gap-2 text-gray-100 font-semibold text-sm group-hover:text-[#bb9af7] transition-colors duration-300"
+                      >
+                        <span class="hidden sm:block">View Details</span>
+                        <i
+                          class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform duration-300"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            ))
+          }
+        </div>
       </div>
     </main>
+
+    <script is:inline>
+      // Prevent auto-scroll restoration and conflicts
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+
+      // Prevent initial scroll jumping
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+        }, 0);
+      });
+    </script>
+
     <Footer />
   </body>
 </html>
