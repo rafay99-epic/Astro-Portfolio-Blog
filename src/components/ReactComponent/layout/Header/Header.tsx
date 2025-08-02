@@ -157,9 +157,6 @@ const Header = memo(function Header() {
       {/* Header */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#1a1b26]/90"
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex justify-between items-center py-4">

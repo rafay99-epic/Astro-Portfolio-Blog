@@ -27,14 +27,6 @@ const filteredProjects = projects
     const rankingB = parseInt(b.data.ProjectRanking || "9999", 10);
     return rankingA - rankingB;
   });
-
-// Get unique categories and ensure 'All' is the first option
-const allCategories = Array.from(
-  new Set(
-    filteredProjects.flatMap((project) => project.data.ProjectCategory || [])
-  ),
-).sort(); // Sort categories alphabetically
-const uniqueCategories = ["All", ...allCategories];
 ---
 
 <html lang="en">
@@ -68,13 +60,25 @@ const uniqueCategories = ["All", ...allCategories];
         transition: none !important;
       }
 
-      /* Hide scrollbar for category filter while keeping scroll functionality */
-      .scrollbar-hide {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+      /* Faster, more direct view transitions */
+      ::view-transition-old(root) {
+        animation: fade-out 0.2s ease-out;
       }
-      .scrollbar-hide::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
+
+      ::view-transition-new(root) {
+        animation: fade-in 0.2s ease-out;
+      }
+
+      @keyframes fade-out {
+        to {
+          opacity: 0;
+        }
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
       }
 
       .line-clamp-4 {
@@ -82,16 +86,6 @@ const uniqueCategories = ["All", ...allCategories];
         -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
         overflow: hidden;
-      }
-
-      .category-pill {
-        @apply px-5 py-2 rounded-full font-semibold text-sm cursor-pointer transition-all duration-300;
-        @apply bg-[#24283b] text-[#a9b1d6] border border-[#3b4261]/50;
-        @apply hover:bg-[#3b4261]/60 hover:text-[#c0caf5];
-      }
-
-      .category-pill.active {
-        @apply bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white shadow-md shadow-[#7aa2f7]/20 border-transparent;
       }
     </style>
   </head>
@@ -117,29 +111,6 @@ const uniqueCategories = ["All", ...allCategories];
           <div
             class="mx-auto mt-6 h-1 bg-gradient-to-r from-transparent via-[#7aa2f7] to-transparent rounded-full w-48 md:w-64"
           ></div>
-        </div>
-
-        <!-- Category Filter Section -->
-        <div class="mb-10 text-center">
-          <div
-            id="category-filter"
-            class="flex flex-wrap justify-center gap-3 overflow-x-auto pb-2 scrollbar-hide"
-          >
-            {
-              uniqueCategories.map((category) => (
-                <button
-                  type="button"
-                  data-category={category}
-                  class:list={[
-                    "category-pill",
-                    category === "All" && "active",
-                  ]}
-                >
-                  {category}
-                </button>
-              ))
-            }
-          </div>
         </div>
 
         <!-- Projects Grid -->
@@ -265,70 +236,6 @@ const uniqueCategories = ["All", ...allCategories];
         setTimeout(() => {
           window.scrollTo(0, 0);
         }, 0);
-      });
-    </script>
-
-    <!-- Client-side JavaScript for category filtering -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const filterContainer = document.getElementById("category-filter");
-        const projectCards =
-          document.querySelectorAll<HTMLElement>(".project-card");
-
-        if (!filterContainer || !projectCards.length) {
-          console.warn("Could not find filter container or project cards.");
-          return;
-        }
-
-        let activeCategory = "All";
-
-        const filterProjects = (category: string) => {
-          activeCategory = category;
-
-          projectCards.forEach((card) => {
-            const categoriesJson = card.dataset.categories;
-            let cardCategories: string[] = [];
-            if (categoriesJson) {
-              try {
-                cardCategories = JSON.parse(categoriesJson);
-              } catch (e) {
-                console.error("Error parsing categories:", e);
-              }
-            }
-
-            const isVisible =
-              activeCategory === "All" ||
-              cardCategories.includes(activeCategory);
-            card.style.display = isVisible ? "block" : "none";
-          });
-
-          // Update active pill styling
-          filterContainer
-            .querySelectorAll(".category-pill")
-            .forEach((pill) => {
-              pill.classList.remove("active");
-              if (
-                pill instanceof HTMLElement &&
-                pill.dataset.category === activeCategory
-              ) {
-                pill.classList.add("active");
-              }
-            });
-        };
-
-        // Initial filter on load
-        filterProjects(activeCategory);
-
-        // Add click event listeners to filter buttons
-        filterContainer.addEventListener("click", (event) => {
-          const target = event.target as HTMLElement;
-          if (target.classList.contains("category-pill")) {
-            const category = target.dataset.category;
-            if (category) {
-              filterProjects(category);
-            }
-          }
-        });
       });
     </script>
 
