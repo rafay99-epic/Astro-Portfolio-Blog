@@ -6,16 +6,24 @@ description: >-
   A deep dive into the Tea App data breach, explaining why it was a hack caused
   by poor backend design, Firebase misconfigurations, and the critical
   importance of proper API architecture.
-pubDate: 2025-08-01T19:00:00.000Z
-draft: true
+pubDate: 2025-08-02T11:08:41.000Z
+draft: false
+heroImage: /BlogImages/TeaApp.webp
 authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 keywords:
   - >-
-    data breach, API design, backend as a service, mobile development security,
-    secure backend, data exposure, Firebase misconfiguration, server-side code,
-    database security, security best practices, API architecture, software
-    engineering security
+    data breach, 
+  - API design
+  - backend as a service
+  - mobile development security
+  - secure backend
+  - data exposure
+  - Firebase misconfiguration
+  - server-side code
+  - database security
+  - security best practices
+  - API architecture
   - Firebase security
   - Tea App hack
 canonicalUrl: >-
@@ -57,44 +65,40 @@ So, how did this happen? It all boils down to an architectural philosophy that, 
 
 Let's visualize the difference:
 
-***
-
 **Diagram 1: The Secure API Model**
 
-```
-+---------------+           +-----------------------+           +-----------+
-| User (Client) | <-------> | API / Server          | <-------> | Database  |
-|               |           | (Auth & Validation)   |           |           |
-+---------------+           +-----------------------+           +-----------+
+```mermaid 
+graph TD
+    User["User (Client)"] <--> API["API / Server (Auth & Validation)"]
+    API <--> DB["Database"]
 
-**How it works:**
-1.  User sends a specific request (e.g., /getProfile?id=XYZ) to the API.
-2.  The API, written by developers, validates the user's identity and permissions.
-3.  If authorized, the API constructs a secure query to the database.
-4.  The database returns only the requested data to the API.
-5.  The API processes/reshapes the data and sends it back to the user.
-    *   **Security:** Logic is centralized in the API. Developers explicitly write code for authorization.
+    subgraph Explanation
+        direction LR
+        S1["How it works:"] --> S2("1. User sends a specific request (e.g., /getProfile?id=XYZ) to the API.")
+        S2 --> S3("2. The API, written by developers, validates the user's identity and permissions.")
+        S3 --> S4("3. If authorized, the API constructs a secure query to the database.")
+        S4 --> S5("4. The database returns only the requested data to the API.")
+        S5 --> S6("5. The API processes/reshapes the data and sends it back to the user.")
+        S6 --> S7("Security: Logic is centralized in the API. Developers explicitly write code for authorization.")
+    end
 ```
-
-***
 
 **Diagram 2: The Direct Database Access Model (Firebase / Bad Pattern)**
 
-```
-+---------------+           +-----------------------------+
-| User (Client) | <-------> | Database (Firebase/NoSQL)   |
-|               |           | (Rules / Permissions          |
-|               |           |  -- Often Missing/Misconfigured) |
-+---------------+           +-----------------------------+
+```mermaid
+graph TD
+    User["User (Client)"] --> DB["Database (Firebase/NoSQL)<br>(Rules / Permissions<br>-- Often Missing/Misconfigured)"]
 
-**How it works:**
-1.  User's client-side code directly queries the database (e.g., db.collection('profiles').get()).
-2.  The database (theoretically) applies rules to determine access.
-3.  The database sends data directly back to the user.
-    *   **Security:** Relies heavily on complex, declarative rules that are easy to misconfigure or overlook, often "exposed by default."
+    subgraph Explanation
+        direction LR
+        S1["How it works:"] --> S2["1. User's client-side code directly queries the database (e.g., db.collection('profiles').get())."]
+        S2 --> S3["2. The database (theoretically) applies rules to determine access."]
+        S3 --> S4["3. The database sends data directly back to the user."]
+        S4 --> S5["Security: Relies heavily on complex, declarative rules that are easy to misconfigure or overlook, often 'exposed by default.'"]
+    end
+
 ```
 
-***
 
 ### Firebase: A Convenient Trap?
 

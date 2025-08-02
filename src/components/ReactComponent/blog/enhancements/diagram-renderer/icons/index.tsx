@@ -1,10 +1,10 @@
-import { memo } from "react";
+import React, { memo } from "react";
 
 export const CopyIcon = memo(function CopyIcon() {
   return (
     <svg
-      width="16"
-      height="16"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -19,8 +19,8 @@ export const CopyIcon = memo(function CopyIcon() {
 export const CheckIcon = memo(function CheckIcon() {
   return (
     <svg
-      width="16"
-      height="16"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -34,8 +34,8 @@ export const CheckIcon = memo(function CheckIcon() {
 export const FullscreenIcon = memo(function FullscreenIcon() {
   return (
     <svg
-      width="16"
-      height="16"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -49,8 +49,8 @@ export const FullscreenIcon = memo(function FullscreenIcon() {
 export const CloseIcon = memo(function CloseIcon() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

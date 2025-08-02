@@ -600,3 +600,70 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #a4c2fb;
 }
+
+/* Diagram renderer styles for better readability */
+.mermaid-diagram-container svg {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 300px !important;
+  max-height: 700px !important;
+  overflow: visible !important;
+}
+
+/* Ensure diagram text is readable */
+.mermaid-diagram-container svg text {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  fill: #c0caf5 !important;
+}
+
+/* Improve node readability */
+.mermaid-diagram-container svg .node rect,
+.mermaid-diagram-container svg .node circle,
+.mermaid-diagram-container svg .node polygon {
+  stroke-width: 2px !important;
+}
+
+/* Ensure text in nodes is readable */
+.mermaid-diagram-container svg .node text {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+/* Improve arrow readability */
+.mermaid-diagram-container svg .edgePath path {
+  stroke-width: 2px !important;
+}
+
+/* Responsive sizing for better readability */
+@media (max-width: 768px) {
+  .mermaid-diagram-container svg {
+    min-height: 250px !important;
+    max-height: 600px !important;
+  }
+  
+  .mermaid-diagram-container svg text {
+    font-size: 15px !important;
+  }
+  
+  .mermaid-diagram-container svg .node text {
+    font-size: 15px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .mermaid-diagram-container svg {
+    min-height: 200px !important;
+    max-height: 500px !important;
+  }
+  
+  .mermaid-diagram-container svg text {
+    font-size: 14px !important;
+  }
+  
+  .mermaid-diagram-container svg .node text {
+    font-size: 14px !important;
+  }
+}
