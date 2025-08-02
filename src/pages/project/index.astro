@@ -185,14 +185,18 @@ const uniqueCategories = ["All", ...allCategories];
                     {project.data.ProjectTech &&
                       project.data.ProjectTech.length > 0 && (
                         <div class="flex flex-wrap gap-2 mb-4">
-                          {project.data.ProjectTech.map((tech, index) => (
+                          {project.data.ProjectTech.slice(0, 4).map((tech) => (
                             <span
                               class="bg-[#24283b]/80 border border-[#565f89]/50 text-gray-100 text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm group-hover:border-[#7aa2f7]/50 group-hover:bg-[#7aa2f7]/10 transition-all duration-300"
-                              transition:name={`tech-${project.data.Projecttitle}-${index}`}
                             >
                               {tech}
                             </span>
                           ))}
+                          {project.data.ProjectTech.length > 4 && (
+                            <span class="text-gray-200 text-xs font-medium px-2 py-1.5">
+                              +{project.data.ProjectTech.length - 4} more
+                            </span>
+                          )}
                         </div>
                       )}
 

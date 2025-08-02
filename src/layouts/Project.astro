@@ -270,11 +270,8 @@ try {
                 🛠️ Technologies Used
               </h3>
               <div class="tech-grid">
-                {ProjectTech.map((tech, index) => (
-                  <span 
-                    class="tech-chip"
-                    transition:name={`tech-${Projecttitle}-${index}`}
-                  >
+                {ProjectTech.map((tech) => (
+                  <span class="tech-chip">
                     {tech}
                   </span>
                 ))}
