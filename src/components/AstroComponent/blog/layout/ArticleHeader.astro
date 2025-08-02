@@ -12,6 +12,7 @@ interface Props {
   };
   subject?: string;
   type?: "notes" | "newsletter" | "blog" | "project" | "wiki";
+  transitionName?: string;
 }
 
 const {
@@ -22,6 +23,7 @@ const {
   badge,
   subject,
   type = "blog",
+  transitionName,
 } = Astro.props;
 ---
 
@@ -134,6 +136,7 @@ const {
     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
       <span
         class="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+        transition:name={transitionName}
       >
         {title}
       </span>
