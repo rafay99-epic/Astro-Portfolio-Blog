@@ -74,6 +74,35 @@ const Header = memo(function Header() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Add CSS to prevent flash during view transitions
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Prevent header flash during view transitions */
+      header {
+        background-color: #1a1b26 !important;
+        transition: none !important;
+      }
+      
+      /* Ensure consistent background during transitions */
+      ::view-transition-old(header),
+      ::view-transition-new(header) {
+        background-color: #1a1b26 !important;
+        animation: none !important;
+      }
+      
+      /* Prevent any blue flash */
+      .backdrop-blur-xl {
+        background-color: rgba(26, 27, 38, 0.9) !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const handleClickOutside = useCallback((event: MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsDropdownOpen(false);
@@ -157,6 +186,7 @@ const Header = memo(function Header() {
       {/* Header */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#1a1b26]/90"
+        style={{ viewTransitionName: 'header' }}
       >
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex justify-between items-center py-4">
