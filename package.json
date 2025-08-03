@@ -1,7 +1,7 @@
 {
     "name": "rafay99.com",
     "type": "module",
-    "version": "9.1.1",
+    "version": "9.2.0",
     "scripts": {
         "dev": "tinacms dev -c \"astro dev\"",
         "start": "astro dev",
@@ -9,7 +9,8 @@
         "preview": "astro preview",
         "astro": "astro",
         "preview-build": "astro build",
-        "scan": "npx react-scan@latest http://localhost:4321"
+        "scan": "npx react-scan@latest http://localhost:4321",
+        "changelog": "./scripts/generate-changelog.sh"
     },
     "dependencies": {
         "@astrojs/mdx": "^4.3.3",
