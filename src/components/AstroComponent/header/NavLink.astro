@@ -1,0 +1,36 @@
+---
+// src/components/common/NavLink.astro
+interface Props {
+  href: string;
+  icon?: any; // React-icons component
+  className?: string;
+  "aria-label"?: string;
+  target?: string;
+  rel?: string;
+}
+
+const { href, icon: Icon, className = "", ...rest } = Astro.props;
+---
+
+<a
+  href={href}
+  class={`group flex items-center transition-all duration-300 text-[#c0caf5] hover:text-[#7aa2f7] px-3 py-2 rounded-lg hover:bg-[#24283b]/50 hover:scale-[1.01] active:scale-[0.99] ${className}`}
+  {...rest}
+>
+  {Icon && (
+    <span
+      class={`${
+        Astro.slots.has("default") ? "mr-3" : ""
+      } text-[#7aa2f7] group-hover:text-[#bb9af7] transition-colors duration-300`}
+    >
+      <Icon class="w-4 h-4" />
+    </span>
+  )}
+  {
+    Astro.slots.has("default") && (
+      <span class="font-medium text-sm">
+        <slot />
+      </span>
+    )
+  }
+</a>

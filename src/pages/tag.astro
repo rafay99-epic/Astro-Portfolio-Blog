@@ -1,17 +1,52 @@
 ---
+// src/pages/tag.astro
 import { getCollection } from "astro:content";
 
 import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
-import Header from "../components/AstroComponent/header/Header.astro";
+import Header from "../components/AstroComponent/header/Header.astro"; // Assuming this is your full Astro header now
 import Footer from "../components/AstroComponent/footer/Footer.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import authorConfig from "../config/siteConfig/info.json";
-import TagFilter from "../components/ReactComponent/blog/metadata/Tags/Tags";
+import TagFilterDisplay from "../components/AstroComponent/blog/comments/TagFilterDisplay.astro"; // The new Astro component
 import { featureFlags } from "../config/featureFlag/featureFlag.json";
-export const prerender = true;
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+export const prerender = false;
+
+// Get all posts, sort by publish date (descending)
+const allPosts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() // Sort descending
+);
+
+// Filter out draft posts
+const publishedPosts = allPosts.filter((post) => !post.data.draft);
+
+// Get all unique tags from published posts
+const allTags = Array.from(
+  new Set(publishedPosts.flatMap((post) => post.data.tags || []))
+).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
+
+// Parse URL parameters for tag and page
+const url = new URL(Astro.request.url);
+const selectedTag = url.searchParams.get("tag");
+let currentPage = parseInt(url.searchParams.get("page") || "1", 10);
+
+// Apply filtering
+const filteredPosts = selectedTag
+  ? publishedPosts.filter((post) => post.data.tags?.includes(selectedTag))
+  : publishedPosts;
+
+// Pagination logic
+const postsPerPage = 10;
+const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+
+// Ensure current page is valid
+if (currentPage < 1) currentPage = 1;
+if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+if (totalPages === 0) currentPage = 1; // If no posts, ensure page is 1
+
+const paginatedPosts = filteredPosts.slice(
+  (currentPage - 1) * postsPerPage,
+  currentPage * postsPerPage
 );
 
 try {
@@ -19,6 +54,7 @@ try {
     return Astro.redirect("/access-denied");
   }
 } catch (error) {
+  // Catching error if featureFlags.json is malformed or missing showTags
   return Astro.redirect("/404");
 }
 ---
@@ -32,11 +68,19 @@ try {
   </head>
 
   <body>
+    <!-- Header component is now a direct sibling of main content to fix z-index issues -->
     <Header />
     <SpeedInsights />
     <main class="w-full max-w-5xl mx-auto ">
       <div>
-        <TagFilter client:visible posts={posts} />
+        <TagFilterDisplay
+          allTags={allTags}
+          paginatedPosts={paginatedPosts}
+          selectedTag={selectedTag}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          currentUrl={url}
+        />
       </div>
     </main>
     <Footer class="mt-auto" />
