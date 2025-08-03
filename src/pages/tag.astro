@@ -9,12 +9,13 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import authorConfig from "../config/siteConfig/info.json";
 import TagFilterDisplay from "../components/AstroComponent/blog/comments/TagFilterDisplay.astro"; // The new Astro component
 import { featureFlags } from "../config/featureFlag/featureFlag.json";
+import { ViewTransitions } from "astro:transitions";
 
 export const prerender = false;
 
 // Get all posts, sort by publish date (descending)
 const allPosts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() // Sort descending
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(), // Sort descending
 );
 
 // Filter out draft posts
@@ -22,7 +23,7 @@ const publishedPosts = allPosts.filter((post) => !post.data.draft);
 
 // Get all unique tags from published posts
 const allTags = Array.from(
-  new Set(publishedPosts.flatMap((post) => post.data.tags || []))
+  new Set(publishedPosts.flatMap((post) => post.data.tags || [])),
 ).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
 
 // Parse URL parameters for tag and page
@@ -46,7 +47,7 @@ if (totalPages === 0) currentPage = 1; // If no posts, ensure page is 1
 
 const paginatedPosts = filteredPosts.slice(
   (currentPage - 1) * postsPerPage,
-  currentPage * postsPerPage
+  currentPage * postsPerPage,
 );
 
 try {
@@ -65,13 +66,14 @@ try {
       title={`Tags | ${authorConfig.SiteName}`}
       description={`Browse all tags on ${authorConfig.SiteName} and explore categorized content.`}
     />
+    <ViewTransitions />
   </head>
 
   <body>
     <!-- Header component is now a direct sibling of main content to fix z-index issues -->
     <Header />
     <SpeedInsights />
-    <main class="w-full max-w-5xl mx-auto ">
+    <main class="w-full max-w-5xl mx-auto">
       <div>
         <TagFilterDisplay
           allTags={allTags}

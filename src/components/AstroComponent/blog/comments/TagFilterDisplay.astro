@@ -14,6 +14,10 @@ const {
 // Helper to construct URL for tags and pagination
 const getTagUrl = (tag: string | null) => {
   const newUrl = new URL(currentUrl.origin + currentUrl.pathname);
+  // Clear existing params
+  newUrl.searchParams.delete("tag");
+  newUrl.searchParams.delete("page");
+  
   if (tag) {
     newUrl.searchParams.set("tag", tag);
   }
@@ -22,6 +26,10 @@ const getTagUrl = (tag: string | null) => {
 
 const getPageUrl = (page: number) => {
   const newUrl = new URL(currentUrl.origin + currentUrl.pathname);
+  // Clear existing params
+  newUrl.searchParams.delete("tag");
+  newUrl.searchParams.delete("page");
+  
   if (selectedTag) {
     newUrl.searchParams.set("tag", selectedTag);
   }
