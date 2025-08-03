@@ -13,28 +13,23 @@ const {
 
 // Helper to construct URL for tags and pagination
 const getTagUrl = (tag: string | null) => {
-  const newUrl = new URL(currentUrl.origin + currentUrl.pathname);
-  // Clear existing params
-  newUrl.searchParams.delete("tag");
-  newUrl.searchParams.delete("page");
-  
   if (tag) {
-    newUrl.searchParams.set("tag", tag);
+    return `/tag/${tag}`;
   }
-  return newUrl.toString();
+  return "/tag";
 };
 
 const getPageUrl = (page: number) => {
-  const newUrl = new URL(currentUrl.origin + currentUrl.pathname);
-  // Clear existing params
-  newUrl.searchParams.delete("tag");
-  newUrl.searchParams.delete("page");
-  
   if (selectedTag) {
-    newUrl.searchParams.set("tag", selectedTag);
+    if (page === 1) {
+      return `/tag/${selectedTag}`;
+    }
+    return `/tag/${selectedTag}/page/${page}`;
   }
-  newUrl.searchParams.set("page", page.toString());
-  return newUrl.toString();
+  if (page === 1) {
+    return "/tag";
+  }
+  return `/tag/page/${page}`;
 };
 ---
 
