@@ -10,7 +10,6 @@ import {
   LuStickyNote as StickyNote,
   LuGlobe as Globe
 } from "react-icons/lu";
-import AnimatedNavLink from "./AnimatedNavLink"; // Using the animated link
 
 interface MoreDropdownProps {
   featureFlags: {

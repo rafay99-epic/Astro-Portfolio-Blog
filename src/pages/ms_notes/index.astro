@@ -12,11 +12,11 @@ export const prerender = false;
 
 const publishedNotes = await getCollection(
   "ms_notes",
-  ({ data }) => !data.lecture_draft
+  ({ data }) => !data.lecture_draft,
 );
 
 const subjects = Array.from(
-  new Set(publishedNotes.map((note) => note.data.subject))
+  new Set(publishedNotes.map((note) => note.data.subject)),
 ).map((subject) => ({
   name: subject as string,
   noteCount: publishedNotes.filter((n) => n.data.subject === subject).length,
@@ -37,15 +37,12 @@ try {
       title={`MS Notes | ${authorConfig.SiteName}`}
       description={`Browse categorized notes on ${authorConfig.SiteName}`}
     />
-  </head>
-  <body class="pt-15 mt-0">
     <Header />
     <SpeedInsights />
-
-    <main >
-      <section>
-        <SubjectGrid client:visible subjects={subjects} />
-      </section>
+  </head>
+  <body class="pt-0 mt-0">
+    <main class="pt-15 mt-0">
+      <SubjectGrid client:visible subjects={subjects} />
     </main>
 
     <Footer />
