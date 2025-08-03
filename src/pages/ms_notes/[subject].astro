@@ -1,12 +1,12 @@
 ---
-import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
-import Footer from "@astro/footer/Footer.astro";
-import authorConfig from "@config/siteConfig/info.json";
+import BaseHead from "../../components/AstroComponent/base/BaseHead.astro";
+import Header from "../../components/AstroComponent/header/Header.astro";
+import Footer from "../../components/AstroComponent/footer/Footer.astro";
+import authorConfig from "../../config/siteConfig/info.json";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import NotesGrid from "@react/personal/MS_Notes/MS_Notes";
+import { featureFlags } from "../../config/featureFlag/featureFlag.json";
+import NotesGrid from "../../components/ReactComponent/personal/MS_Notes/MS_Notes";
 export const prerender = true;
 
 export async function getStaticPaths() {
@@ -36,7 +36,7 @@ const publishedNotes = await getCollection("ms_notes", ({ data }) => {
 });
 
 const notes = publishedNotes.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
 try {

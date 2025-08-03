@@ -2,13 +2,12 @@
 import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
 import Header from "../components/AstroComponent/header/Header.astro";
 import Footer from "../components/AstroComponent/footer/Footer.astro";
-import ArticleHeader from "../components/AstroComponent/blog/layout/ArticleHeader.astro";
-import ContentContainer from "../components/AstroComponent/blog/layout/ContentContainer.astro";
 import ShareButtons from "../components/ReactComponent/blog/interactions/socialButton";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "../config/featureFlag/featureFlag.json";
 import MermaidRenderer from "../components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer";
 import CodeCopySimple from "../components/ReactComponent/blog/enhancements/code-copy/CodeCopySimple";
+import { ViewTransitions } from "astro:transitions";
 
 const pageUrl = Astro.url.href;
 export const prerender = true;
@@ -16,11 +15,11 @@ export const prerender = true;
 type Props = {
   Projecttitle: string;
   ProjectDescription: string;
-  ProjectImage?: string;
   ProjectTech?: string[];
+
 };
 
-const { Projecttitle, ProjectDescription, ProjectImage, ProjectTech } =
+const { Projecttitle, ProjectDescription, ProjectTech } =
   Astro.props;
 
 try {
@@ -35,108 +34,107 @@ try {
 <html lang="en">
   <head>
     <BaseHead title={Projecttitle} description={ProjectDescription} />
+    <ViewTransitions />
     <SpeedInsights />
     <style>
+      /* Prevent white flash during view transitions */
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
+      }
+
+      /* Ensure smooth transitions */
+      html {
+        background-color: #1a1b26;
+      }
+
+      body {
+        background-color: #1a1b26;
+        transition: none;
+      }
+
       .project-container {
         min-height: 100vh;
         position: relative;
+        background-color: #1a1b26;
       }
 
-      .main-content {
-        opacity: 1;
+      
+      /* Prevent flash on React component mount */
+      [data-astro-reload] {
+        opacity: 1 !important;
+        transition: none !important;
+        animation: none !important;
       }
 
-      .project-image-section {
-        opacity: 1;
-        margin-bottom: 2rem;
+      /* Hide scrollbar for better UX */
+      .scrollbar-hide {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
       }
 
-      .project-image {
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(122, 162, 247, 0.2);
-        position: relative;
+      .project-header {
         background: linear-gradient(
           135deg,
-          rgba(26, 27, 38, 0.6),
-          rgba(36, 40, 59, 0.6)
+          rgba(122, 162, 247, 0.1) 0%,
+          rgba(187, 154, 247, 0.1) 100%
         );
         backdrop-filter: blur(20px);
-      }
-
-      .project-image img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform 0.3s ease;
-      }
-
-      .project-image:hover img {
-        transform: scale(1.02);
-      }
-
-      .share-section {
-        display: flex;
-        justify-content: center;
-        margin: 2rem 0;
-        opacity: 1;
-      }
-
-      .tech-section {
-        opacity: 1;
-        margin: 2rem 0;
-      }
-
-      .tech-container {
-        background: rgba(26, 27, 38, 0.6);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(86, 95, 137, 0.2);
+        border: 1px solid rgba(122, 162, 247, 0.2);
         border-radius: 20px;
-        padding: 32px;
+        padding: 2rem;
+        margin-bottom: 2rem;
         position: relative;
         overflow: hidden;
       }
 
-      .tech-container::before {
+      .project-header::before {
         content: "";
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        bottom: 0;
+        height: 1px;
         background: linear-gradient(
-          135deg,
-          rgba(122, 162, 247, 0.03) 0%,
-          rgba(158, 206, 106, 0.03) 100%
+          90deg,
+          transparent,
+          rgba(122, 162, 247, 0.5),
+          transparent
         );
-        pointer-events: none;
       }
 
-      .tech-header {
-        text-align: center;
+      .project-badge {
+        background: linear-gradient(135deg, #7aa2f7, #bb9af7);
+        border-radius: 12px;
+        padding: 8px 16px;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 20px rgba(122, 162, 247, 0.3);
+        margin-bottom: 1rem;
+      }
+
+      .tech-section {
+        background: rgba(26, 27, 38, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(86, 95, 137, 0.2);
+        border-radius: 16px;
+        padding: 1.5rem;
         margin-bottom: 2rem;
-        position: relative;
-        z-index: 1;
-      }
-
-      .tech-title {
-        font-size: 1.8rem;
-        font-weight: bold;
-        background: linear-gradient(135deg, #7aa2f7, #9ece6a);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 0.5rem;
       }
 
       .tech-grid {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 8px;
         justify-content: center;
-        position: relative;
-        z-index: 1;
       }
 
       .tech-chip {
@@ -147,64 +145,40 @@ try {
         );
         border: 1px solid rgba(122, 162, 247, 0.3);
         color: #c0caf5;
-        padding: 8px 16px;
-        border-radius: 12px;
-        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 13px;
         font-weight: 500;
         transition: all 0.3s ease;
-        backdrop-filter: blur(10px);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .tech-chip::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.1),
-          transparent
-        );
-        transition: left 0.5s ease;
       }
 
       .tech-chip:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(122, 162, 247, 0.3);
-        border-color: rgba(122, 162, 247, 0.5);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(122, 162, 247, 0.3);
       }
 
-      .tech-chip:hover::before {
-        left: 100%;
-      }
-
-      .content-section {
-        opacity: 1;
-      }
-
-      /* Enhanced Typography for Project Content */
-      .project-typography {
-        line-height: 1.8;
+      .project-content {
+        background: rgba(26, 27, 38, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(86, 95, 137, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        line-height: 1.7;
         font-size: 1.1rem;
       }
 
-      .project-typography h1,
-      .project-typography h2,
-      .project-typography h3,
-      .project-typography h4,
-      .project-typography h5,
-      .project-typography h6 {
-        margin-top: 2.5rem;
+      .project-content h1,
+      .project-content h2,
+      .project-content h3,
+      .project-content h4,
+      .project-content h5,
+      .project-content h6 {
+        margin-top: 2rem;
         margin-bottom: 1rem;
         scroll-margin-top: 100px;
       }
 
-      .project-typography h2 {
+      .project-content h2 {
         border-left: 4px solid #7aa2f7;
         padding-left: 1rem;
         background: rgba(122, 162, 247, 0.05);
@@ -212,17 +186,11 @@ try {
         border-radius: 8px;
       }
 
-      .project-typography h3 {
+      .project-content h3 {
         color: #bb9af7;
-        position: relative;
       }
 
-      .project-typography h3::before {
-        content: "🚀";
-        margin-right: 0.5rem;
-      }
-
-      .project-typography blockquote {
+      .project-content blockquote {
         background: rgba(122, 162, 247, 0.1);
         border-left: 4px solid #7aa2f7;
         padding: 1rem 1.5rem;
@@ -230,32 +198,38 @@ try {
         border-radius: 0 8px 8px 0;
       }
 
-      .project-typography ul li::marker {
+      .project-content ul li::marker {
         color: #7aa2f7;
       }
 
-      .project-typography ol li::marker {
+      .project-content ol li::marker {
         color: #bb9af7;
         font-weight: bold;
       }
 
+      .share-section {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+      }
+
       @media (max-width: 768px) {
-        .project-typography {
+        .project-header {
+          padding: 1.5rem;
+        }
+
+        .project-content {
+          padding: 1.5rem;
           font-size: 1rem;
-          line-height: 1.7;
         }
 
-        .tech-container {
-          padding: 24px;
-        }
-
-        .tech-title {
-          font-size: 1.5rem;
+        .tech-section {
+          padding: 1rem;
         }
 
         .tech-chip {
           font-size: 12px;
-          padding: 6px 12px;
+          padding: 4px 8px;
         }
       }
     </style>
@@ -264,69 +238,76 @@ try {
   <body class="project-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
 
-    <main class="w-full max-w-7xl mx-auto main-content">
+    <main class="w-full max-w-7xl mx-auto ">
       <article>
-        {/* Article Header */}
-        <ArticleHeader
-          title={Projecttitle}
-          description={ProjectDescription}
-          pubDate={new Date()}
-          badge={{
-            text: "Project",
-            icon: "🚀",
-          }}
-          type="project"
-        />
+        {/* Project Header - Title Only */}
+        <div class="project-header text-center">
+          <div class="project-badge">
+            <span>🚀</span>
+            Project
+          </div>
+          <h1 
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight"
+            transition:name={`project-title-${Projecttitle}`}
+          >
+            <span class="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent">
+              {Projecttitle}
+            </span>
+          </h1>
+          {ProjectDescription && (
+            <p class="text-lg text-[#a9b1d6] max-w-3xl mx-auto leading-relaxed">
+              {ProjectDescription}
+            </p>
+          )}
 
-        {
-          ProjectImage && (
-            <div class="project-image-section">
-              <div class="project-image">
-                <img
-                  src={ProjectImage}
-                  alt={Projecttitle}
-                  width="1020"
-                  height="510"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          )
-        }
+        </div>
 
+        {/* Technologies Section - Only if tech exists */}
         {
           ProjectTech && ProjectTech.length > 0 && (
             <div class="tech-section">
-              <div class="tech-container">
-                <div class="tech-header">
-                  <h2 class="tech-title">🛠️ Technologies Used</h2>
-                  <p class="text-[#a9b1d6] text-sm">
-                    Built with modern tools and frameworks
-                  </p>
-                </div>
-                <div class="tech-grid">
-                  {ProjectTech.map((tech) => (
-                    <span class="tech-chip">{tech}</span>
-                  ))}
-                </div>
+              <h3 class="text-center text-lg font-semibold mb-3 text-[#c0caf5]">
+                🛠️ Technologies Used
+              </h3>
+              <div class="tech-grid">
+                {ProjectTech.map((tech) => (
+                  <span class="tech-chip">
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
           )
         }
 
-        {/* Content Section */}
-        <div class="content-section">
-          <ContentContainer withBackground={true} class="project-typography">
-            <slot />
-          </ContentContainer>
-          <div>
-            <ShareButtons url={pageUrl} pagetitle="Project" client:visible />
-          </div>
+        {/* Project Content */}
+        <div class="project-content">
+          <slot />
+        </div>
+
+        {/* Share Buttons */}
+        <div class="share-section">
+          <ShareButtons url={pageUrl} pagetitle="Project" client:visible />
         </div>
       </article>
+      
       <MermaidRenderer client:load />
       <CodeCopySimple client:load />
     </main>
+
+    <script is:inline>
+      // Prevent auto-scroll restoration and conflicts
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+
+      // Prevent initial scroll jumping
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+        }, 0);
+      });
+    </script>
 
     <Footer />
   </body>

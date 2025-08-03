@@ -1,9 +1,8 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
-import type { Note } from "types/notes";
-import { useNotesGrid } from "@react/personal/MS_Notes/MS_NotesLogic";
-import NotesGridUI from "@react/personal/MS_Notes/MS_NotesUi";
-import { withTheme } from "@components/ReactComponent/layout/ThemeManager/withTheme";
+import type { Note } from "../../../../types/notes";
+import { useNotesGrid } from "../../../../components/ReactComponent/personal/MS_Notes/MS_NotesLogic";
+import NotesGridUI from "../../../../components/ReactComponent/personal/MS_Notes/MS_NotesUi";
 
 interface NotesGridProps {
   notes: Note[];

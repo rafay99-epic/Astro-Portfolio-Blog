@@ -1,6 +1,367 @@
 ---
-import HeaderReact from "../../ReactComponent/layout/Header/Header";
-export const prerender = true;
+import featureFlags from "../../../config/featureFlag/featureFlag.json";
+import authorConfig from "../../../config/siteConfig/info.json";
+import NavLink from "./NavLink.astro"; // The simple Astro NavLink component
+import MoreDropdown from "../../ReactComponent/layout/Header/MoreDropdown"; // Keep if you want the desktop dropdown in React
+
+import {
+  LuMenu as Menu,
+  LuX as X,
+  LuSearch as Search,
+  LuTag as Tag,
+  LuEllipsis as MoreHorizontal,
+  LuHouse as Home,
+  LuBookOpen as BookOpen,
+  LuMail as Mail,
+  LuUser as User,
+  LuBriefcase as Briefcase,
+  LuRocket as Rocket,
+  LuNewspaper as Newspaper,
+  LuTrendingUp as TrendingUp,
+  LuStickyNote as StickyNote,
+  LuGlobe as Globe,
+  LuChevronDown as ChevronDown,
+  LuExternalLink as ExternalLink,
+} from "react-icons/lu";
 ---
 
-<HeaderReact client:load />
+<style is:global>
+  /* Prevent header flash during view transitions */
+  header {
+    background-color: #1a1b26 !important;
+    transition: none !important;
+  }
+
+  /* Ensure consistent background during transitions */
+  ::view-transition-old(header),
+  ::view-transition-new(header) {
+    background-color: #1a1b26 !important;
+    animation: none !important;
+  }
+
+  /* Prevent any blue flash */
+  .backdrop-blur-xl {
+    background-color: rgba(26, 27, 38, 0.9) !important;
+  }
+
+  /* Mobile menu specific styles for Astro */
+  .mobile-menu-overlay {
+    transition:
+      opacity 0.3s ease-in-out,
+      transform 0.3s ease-in-out;
+    transform: translateX(100%); /* Start off-screen */
+  }
+
+  .mobile-menu-overlay.is-open {
+    transform: translateX(0); /* Slide in */
+  }
+
+  .mobile-menu-backdrop {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0; /* Start hidden */
+  }
+
+  .mobile-menu-backdrop.is-open {
+    opacity: 1; /* Fade in */
+  }
+</style>
+
+<!-- This fragment ensures the header and mobile menu are siblings at the root of the page's body -->
+
+<header
+  class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#1a1b26]/90"
+  style={{ viewTransitionName: "header" }}
+>
+  <div class="container mx-auto px-4 sm:px-6">
+    <div class="flex justify-between items-center py-4">
+      <!-- Logo -->
+      <a href="/" class="flex items-center group">
+        <div class="relative">
+          <img
+            src={authorConfig.avator}
+            class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-[#7aa2f7]/30 group-hover:border-[#7aa2f7] transition-all duration-300"
+          />
+          <div
+            class="absolute inset-0 rounded-full bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"
+          >
+          </div>
+        </div>
+        <div class="ml-3 hidden sm:block">
+          <h1
+            class="text-lg font-bold bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent hover:scale-[1.01] transition-transform duration-200 ease-out"
+          >
+            {authorConfig.SiteName}
+          </h1>
+          <p class="text-xs text-[#a9b1d6]">Developer & Creator</p>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center space-x-2">
+        {
+          featureFlags.featureFlags.showBlog && (
+            <NavLink href="/blog" icon={BookOpen}>
+              Articles
+            </NavLink>
+          )
+        }
+        {
+          featureFlags.featureFlags.showNewsletter && (
+            <NavLink href="/newsletter-subscribe" icon={Mail}>
+              Newsletter
+            </NavLink>
+          )
+        }
+        {
+          featureFlags.featureFlags.showAbout && (
+            <NavLink href="/about" icon={User}>
+              About
+            </NavLink>
+          )
+        }
+        {
+          featureFlags.featureFlags.showExperience && (
+            <NavLink href="/experience" icon={Briefcase}>
+              Experience
+            </NavLink>
+          )
+        }
+        {
+          featureFlags.featureFlags.showProjects && (
+            <NavLink href="/project" icon={Rocket}>
+              Projects
+            </NavLink>
+          )
+        }
+        {
+          featureFlags.featureFlags.showTags && (
+            <NavLink href="/tag" icon={Tag} aria-label="Tags" />
+          )
+        }
+        {
+          featureFlags.featureFlags.showSearch && (
+            <NavLink href="/search" icon={Search} aria-label="Search" />
+          )
+        }
+        <MoreDropdown featureFlags={featureFlags.featureFlags} client:load />
+      </nav>
+
+      <button
+        id="mobile-menu-button"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        class="lg:hidden text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 p-2 rounded-lg hover:bg-[#24283b]/50"
+      >
+        <Menu id="menu-icon" className="w-6 h-6" />
+        <X id="close-icon" className="w-6 h-6 hidden" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu Overlay (now directly in Astro, sibling to header) -->
+<div
+  id="mobile-menu-backdrop"
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[90] lg:hidden mobile-menu-backdrop hidden"
+>
+</div>
+
+<nav
+  id="mobile-menu"
+  class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-[#1a1b26]/95 backdrop-blur-xl border-l border-[#565f89]/30 z-[100] lg:hidden overflow-y-auto mobile-menu-overlay"
+>
+  <!-- Mobile Menu Header -->
+  <div
+    class="flex items-center justify-between p-6 border-b border-[#565f89]/20"
+  >
+    <div class="flex items-center gap-3">
+      <img
+        src={authorConfig.avator}
+        alt="Author Avatar"
+        class="w-10 h-10 rounded-full border-2 border-[#7aa2f7]/30"
+      />
+      <div>
+        <h2
+          class="text-lg font-bold bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent"
+        >
+          {authorConfig.SiteName}
+        </h2>
+        <p class="text-xs text-[#a9b1d6]">Developer & Creator</p>
+      </div>
+    </div>
+    <button
+      id="close-mobile-menu"
+      class="text-[#c0caf5] hover:text-[#7aa2f7] p-2 rounded-lg hover:bg-[#24283b]/50 transition-colors duration-300"
+    >
+      <X className="w-5 h-5" />
+    </button>
+  </div>
+
+  <!-- Mobile Menu Items (using NavLink.astro now) -->
+  <div class="p-6 space-y-2">
+    <NavLink href="/" icon={Home}> Home </NavLink>
+
+    {
+      featureFlags.featureFlags.showBlog && (
+        <NavLink href="/blog" icon={BookOpen}>
+          Articles
+        </NavLink>
+      )
+    }
+
+    {
+      featureFlags.featureFlags.showNewsletter && (
+        <NavLink href="/newsletter-subscribe" icon={Mail}>
+          Newsletter
+        </NavLink>
+      )
+    }
+
+    {
+      featureFlags.featureFlags.showAbout && (
+        <NavLink href="/about" icon={User}>
+          About
+        </NavLink>
+      )
+    }
+
+    {
+      featureFlags.featureFlags.showExperience && (
+        <NavLink href="/experience" icon={Briefcase}>
+          Experience
+        </NavLink>
+      )
+    }
+
+    {
+      featureFlags.featureFlags.showProjects && (
+        <NavLink href="/project" icon={Rocket}>
+          Projects
+        </NavLink>
+      )
+    }
+
+    {
+      featureFlags.featureFlags.showTags && (
+        <NavLink href="/tag" icon={Tag}>
+          Tags
+        </NavLink>
+      )
+    }
+
+    {
+      featureFlags.featureFlags.showSearch && (
+        <NavLink href="/search" icon={Search}>
+          Search
+        </NavLink>
+      )
+    }
+
+    <!-- Additional Links Section -->
+    {
+      (featureFlags.featureFlags.showNewsletter ||
+        featureFlags.featureFlags.showTrendingPosts ||
+        featureFlags.featureFlags.showNotes ||
+        featureFlags.featureFlags.showWiki) && (
+        <div class="pt-4">
+          <div class="border-t border-[#565f89]/20 pt-4">
+            <h3 class="text-sm font-semibold text-[#a9b1d6] mb-3 px-4">More</h3>
+            <div class="space-y-2">
+              {featureFlags.featureFlags.showNewsletter && (
+                <NavLink href="/newsletter" icon={Newspaper}>
+                  Newsletter Archive
+                </NavLink>
+              )}
+              {featureFlags.featureFlags.showTrendingPosts && (
+                <NavLink href="/trending" icon={TrendingUp}>
+                  Trending Articles
+                </NavLink>
+              )}
+              {featureFlags.featureFlags.showNotes && (
+                <NavLink href="/ms_notes" icon={StickyNote}>
+                  MS Notes
+                </NavLink>
+              )}
+              {featureFlags.featureFlags.showWiki && (
+                <NavLink
+                  href="https://rafay99-docs.vercel.app/"
+                  icon={Globe}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Website Wiki
+                </NavLink>
+              )}
+            </div>
+          </div>
+        </div>
+      )
+    }
+  </div>
+</nav>
+
+<!-- Vanilla JS for Mobile Menu Functionality -->
+<script is:inline>
+  const mobileMenuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const mobileMenuBackdrop = document.getElementById("mobile-menu-backdrop");
+  const closeMobileMenuButton = document.getElementById("close-mobile-menu");
+  const menuIcon = document.getElementById("menu-icon");
+  const closeIcon = document.getElementById("close-icon");
+
+  let isMobileMenuOpen = false;
+
+  const toggleMobileMenu = () => {
+    isMobileMenuOpen = !isMobileMenuOpen;
+    mobileMenuButton.setAttribute("aria-expanded", isMobileMenuOpen.toString());
+
+    if (isMobileMenuOpen) {
+      mobileMenu.classList.add("is-open");
+      mobileMenuBackdrop.classList.add("is-open");
+      mobileMenuBackdrop.classList.remove("hidden"); // Show backdrop
+      menuIcon.classList.add("hidden");
+      closeIcon.classList.remove("hidden");
+      document.body.style.overflow = "hidden"; // Prevent scrolling
+    } else {
+      mobileMenu.classList.remove("is-open");
+      mobileMenuBackdrop.classList.remove("is-open");
+      // Give time for transition before hiding
+      setTimeout(() => {
+        mobileMenuBackdrop.classList.add("hidden");
+      }, 300); // Match transition duration
+      menuIcon.classList.remove("hidden");
+      closeIcon.classList.add("hidden");
+      document.body.style.overflow = ""; // Re-enable scrolling
+    }
+  };
+
+  const closeMobileMenu = () => {
+    if (isMobileMenuOpen) {
+      toggleMobileMenu(); // Simply call toggle to close it
+    }
+  };
+
+  if (mobileMenuButton) {
+    mobileMenuButton.addEventListener("click", toggleMobileMenu);
+  }
+  if (closeMobileMenuButton) {
+    closeMobileMenuButton.addEventListener("click", closeMobileMenu);
+  }
+  if (mobileMenuBackdrop) {
+    mobileMenuBackdrop.addEventListener("click", closeMobileMenu);
+  }
+
+  // Close menu on route changes (using popstate for SPA-like navigation)
+  window.addEventListener("popstate", closeMobileMenu);
+
+  // Close menu on resize if above mobile breakpoint
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 1024 && isMobileMenuOpen) {
+      closeMobileMenu();
+    }
+  });
+
+  // Ensure initial state is closed when page loads via client-side navigation
+  // (e.g., if navigating back from a page where menu was open)
+  document.addEventListener("astro:after-swap", closeMobileMenu);
+</script>
