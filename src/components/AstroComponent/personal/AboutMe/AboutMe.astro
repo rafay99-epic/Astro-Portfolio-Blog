@@ -1,0 +1,368 @@
+---
+import authorConfig from "../../../../config/siteConfig/info.json";
+
+const stats = [
+    { label: "Years Experience", value: "3+" },
+    { label: "Projects Completed", value: "50+" },
+    { label: "Technologies", value: "15+" },
+    { label: "Happy Clients", value: "25+" },
+];
+
+const highlights = [
+    "Full Stack Engineer",
+    "Flutter Developer",
+    "React Specialist",
+    "Problem Solver",
+];
+---
+
+<style>
+    /* Hero section animations */
+    .hero-animate {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: heroSlideIn 0.8s ease-out forwards;
+    }
+
+    @keyframes heroSlideIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Stats animations */
+    .stat-item {
+        opacity: 0;
+        transform: scale(0.8);
+        animation: statPopIn 0.6s ease-out forwards;
+    }
+
+    .stat-item:nth-child(1) {
+        animation-delay: 0.2s;
+    }
+    .stat-item:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+    .stat-item:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+    .stat-item:nth-child(4) {
+        animation-delay: 0.5s;
+    }
+
+    @keyframes statPopIn {
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Highlight animations */
+    .highlight-item {
+        opacity: 0;
+        transform: translateX(-20px);
+        animation: highlightSlideIn 0.6s ease-out forwards;
+    }
+
+    .highlight-item:nth-child(1) {
+        animation-delay: 0.6s;
+    }
+    .highlight-item:nth-child(2) {
+        animation-delay: 0.7s;
+    }
+    .highlight-item:nth-child(3) {
+        animation-delay: 0.8s;
+    }
+    .highlight-item:nth-child(4) {
+        animation-delay: 0.9s;
+    }
+
+    @keyframes highlightSlideIn {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Profile image hover effect */
+    .profile-container:hover .profile-image {
+        transform: scale(1.05);
+    }
+
+    .profile-container:hover .profile-overlay {
+        opacity: 1;
+    }
+
+    /* Gradient text animation */
+    .gradient-text {
+        background: linear-gradient(135deg, #7aa2f7, #bb9af7, #9ece6a);
+        background-size: 200% 200%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientShift 3s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    /* Floating elements */
+    .floating {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .floating:nth-child(2) {
+        animation-delay: -2s;
+    }
+
+    .floating:nth-child(3) {
+        animation-delay: -4s;
+    }
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    /* CTA button hover */
+    .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px rgba(122, 162, 247, 0.3);
+    }
+
+    /* Glassmorphism cards */
+    .glass-card {
+        background: rgba(36, 40, 59, 0.2);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    .glass-card-hover:hover {
+        background: rgba(36, 40, 59, 0.4);
+        transform: translateY(-2px);
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+        .hero-animate {
+            animation-delay: 0.1s;
+        }
+
+        .stat-item {
+            animation-delay: 0.3s !important;
+        }
+
+        .highlight-item {
+            animation-delay: 0.5s !important;
+        }
+
+        .profile-image {
+            width: 200px !important;
+            height: 200px !important;
+        }
+
+        .gradient-text {
+            font-size: 2.5rem !important;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+        }
+
+        .highlights-container {
+            gap: 0.75rem !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .profile-image {
+            width: 180px !important;
+            height: 180px !important;
+        }
+
+        .gradient-text {
+            font-size: 2rem !important;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.5rem !important;
+        }
+
+        .stat-value {
+            font-size: 1.25rem !important;
+        }
+
+        .highlight-text {
+            font-size: 1rem !important;
+        }
+    }
+</style>
+
+<section
+    class="relative min-h-screen flex items-center justify-center py-8 sm:py-12 lg:py-16 px-4 overflow-hidden"
+>
+    <!-- Animated Background -->
+    <div class="absolute inset-0">
+        <div
+            class="floating absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-[#7aa2f7]/8 to-[#bb9af7]/8 rounded-full blur-3xl"
+        >
+        </div>
+        <div
+            class="floating absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-[#bb9af7]/8 to-[#9ece6a]/8 rounded-full blur-3xl"
+        >
+        </div>
+        <div
+            class="floating absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-[#9ece6a]/6 to-[#7aa2f7]/6 rounded-full blur-2xl"
+        >
+        </div>
+    </div>
+
+    <div class="container mx-auto max-w-6xl relative z-10">
+        <div
+            class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+        >
+            <!-- Left Column - Profile & Stats -->
+            <div class="space-y-8">
+                <!-- Profile Section -->
+                <div class="hero-animate text-center lg:text-left">
+                    <div class="relative inline-block mb-8">
+                        <div
+                            class="profile-container relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 mx-auto lg:mx-0"
+                        >
+                            <img
+                                src={authorConfig?.picture ?? ""}
+                                alt="Profile"
+                                class="profile-image w-full h-full object-cover rounded-3xl shadow-2xl transition-all duration-500"
+                                loading="eager"
+                            />
+                            <div
+                                class="profile-overlay absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/10 to-[#bb9af7]/10 rounded-3xl opacity-0 transition-opacity duration-500"
+                            >
+                            </div>
+
+                            <!-- Status Badge -->
+                            <div
+                                class="absolute -bottom-3 -right-3 bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
+                            >
+                                Available
+                            </div>
+                        </div>
+                    </div>
+
+                    <h1
+                        class="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 gradient-text"
+                    >
+                        About Me
+                    </h1>
+                    <p
+                        class="text-lg sm:text-xl text-[#a9b1d6] max-w-md mx-auto lg:mx-0"
+                    >
+                        Crafting digital experiences with passion and precision
+                    </p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {
+                        stats.map((stat, index) => (
+                            <div class="stat-item glass-card glass-card-hover text-center p-4 rounded-xl transition-all duration-300">
+                                <div class="stat-value text-2xl lg:text-3xl font-bold text-[#7aa2f7] mb-1">
+                                    {stat.value}
+                                </div>
+                                <div class="text-xs text-[#a9b1d6]">
+                                    {stat.label}
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <!-- Right Column - Highlights & CTA -->
+            <div class="space-y-6 lg:space-y-8">
+                <!-- Highlights -->
+                <div class="highlights-container space-y-3 lg:space-y-4">
+                    {
+                        highlights.map((highlight, index) => (
+                            <div class="highlight-item glass-card glass-card-hover flex items-center space-x-3 p-4 rounded-xl transition-all duration-300">
+                                <div class="w-2 h-2 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-full" />
+                                <span class="highlight-text text-base lg:text-lg font-semibold text-[#c0caf5]">
+                                    {highlight}
+                                </span>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <!-- Quick Bio -->
+                <div class="highlight-item glass-card p-6 rounded-2xl">
+                    <p
+                        class="text-[#a9b1d6] leading-relaxed text-sm lg:text-base"
+                    >
+                        Full Stack Engineer specializing in Flutter and React. I
+                        build scalable, user-centered applications that make a
+                        difference.
+                    </p>
+                </div>
+
+                <!-- CTA Section -->
+                <div class="highlight-item space-y-4">
+                    <div
+                        class="cta-button inline-flex items-center space-x-2 px-6 lg:px-8 py-3 lg:py-4 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white font-semibold rounded-xl shadow-lg transition-all duration-300 cursor-pointer"
+                    >
+                        <span class="text-sm lg:text-base"
+                            >Let's Work Together</span
+                        >
+                        <svg
+                            class="w-4 h-4 lg:w-5 lg:h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </div>
+
+                    <div
+                        class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 text-xs lg:text-sm text-[#a9b1d6]"
+                    >
+                        <div class="flex items-center space-x-2">
+                            <div
+                                class="w-2 h-2 bg-[#9ece6a] rounded-full animate-pulse"
+                            >
+                            </div>
+                            <span>Open to opportunities</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div
+                                class="w-2 h-2 bg-[#7aa2f7] rounded-full animate-pulse"
+                                style="animation-delay: 0.5s;"
+                            >
+                            </div>
+                            <span>Remote friendly</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

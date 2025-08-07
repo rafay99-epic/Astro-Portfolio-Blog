@@ -1,0 +1,371 @@
+---
+import experienceData from "../../../../config/siteConfig/info.json";
+
+const workExperience = experienceData.workExperience;
+
+// Calculate stats
+const totalPositions = workExperience.length;
+const totalTechnologies = new Set(workExperience.flatMap((job) => job.toolsUsed)).size;
+const totalResponsibilities = workExperience.reduce((total, job) => total + job.roles.length, 0);
+---
+
+<style>
+  /* Timeline animations */
+  .timeline-item {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+  .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+  .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+  .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+  .timeline-item:nth-child(5) { animation-delay: 0.5s; }
+  .timeline-item:nth-child(6) { animation-delay: 0.6s; }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Header animation */
+  .header-animate {
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: headerFadeIn 0.8s ease-out forwards;
+  }
+
+  @keyframes headerFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Stats animation */
+  .stats-animate {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: statsFadeIn 0.8s ease-out 0.5s forwards;
+  }
+
+  @keyframes statsFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Card hover effects */
+  .experience-card {
+    transition: all 0.3s ease-out;
+  }
+
+  .experience-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(122, 162, 247, 0.1);
+  }
+
+  /* Timeline dot glow effect */
+  .timeline-dot {
+    box-shadow: 0 0 15px rgba(122, 162, 247, 0.5);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(122, 162, 247, 0.5); }
+    50% { box-shadow: 0 0 25px rgba(122, 162, 247, 0.8); }
+  }
+
+  /* Bottom accent line animation */
+  .accent-line {
+    width: 0;
+    transition: width 0.5s ease-out;
+  }
+
+  .experience-card:hover .accent-line {
+    width: 100%;
+  }
+
+  /* Technology tag hover */
+  .tech-tag {
+    transition: all 0.2s ease-out;
+  }
+
+  .tech-tag:hover {
+    transform: scale(1.05);
+    background-color: rgba(122, 162, 247, 0.2) !important;
+  }
+
+  /* Responsive timeline */
+  @media (max-width: 768px) {
+    .timeline-line {
+      left: 1rem;
+    }
+    
+    .timeline-dot {
+      left: 0.625rem;
+    }
+    
+    .timeline-item {
+      padding-left: 3rem;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .timeline-line {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .timeline-dot {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .timeline-item:nth-child(odd) {
+      flex-direction: row;
+    }
+    
+    .timeline-item:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+  }
+</style>
+
+<section class="py-8 px-4 relative">
+  <!-- Background Effects -->
+  <div class="absolute inset-0 overflow-hidden opacity-15">
+    <div
+      class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl"
+      style="background-color: #7aa2f7;"
+    ></div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-56 h-56 rounded-full blur-3xl"
+      style="background-color: #bb9af7;"
+    ></div>
+  </div>
+
+  <div class="container mx-auto max-w-7xl relative z-10">
+    <!-- Header -->
+    <div class="text-center mb-8 header-animate">
+      <h2
+        class="font-bold mb-4 text-2xl md:text-4xl lg:text-5xl"
+        style="background: linear-gradient(135deg, #7aa2f7, #bb9af7, #9ece6a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
+      >
+        💼 Professional Experience
+      </h2>
+      <p
+        class="max-w-2xl mx-auto text-sm md:text-lg"
+        style="color: #a9b1d6;"
+      >
+        My journey through various roles and technologies in software development
+      </p>
+    </div>
+
+    <!-- Timeline Layout -->
+    <div class="relative">
+      <!-- Timeline Line -->
+      <div
+        class="timeline-line absolute h-full w-0.5 opacity-30"
+        style="background: linear-gradient(to bottom, #7aa2f7, #bb9af7, #9ece6a);"
+      ></div>
+
+      {workExperience.map((job, index) => (
+        <div
+          class={`timeline-item relative mb-12 flex items-center ${
+            index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+          }`}
+        >
+          <!-- Timeline Dot -->
+          <div
+            class="timeline-dot absolute w-4 h-4 rounded-full shadow-lg z-20"
+            style="background: linear-gradient(135deg, #7aa2f7, #bb9af7);"
+          ></div>
+
+          <!-- Connector Line for Desktop -->
+          <div
+            class={`absolute top-1/2 transform -translate-y-0.5 w-8 h-0.5 z-10 ${
+              index % 2 === 0 ? 'left-1/2 ml-2' : 'right-1/2 mr-2'
+            }`}
+            style={`background: linear-gradient(${
+              index % 2 === 0 ? 'to right' : 'to left'
+            }, #7aa2f7, #bb9af7);`}
+          ></div>
+
+          <!-- Experience Card -->
+          <div class={`w-full md:w-[calc(50%-3rem)]`}>
+            <div
+              class="experience-card group relative backdrop-blur-sm border rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6"
+              style="background-color: rgba(45, 49, 66, 0.6); border-color: rgba(86, 95, 137, 0.4);"
+            >
+              <!-- Decorative Corner -->
+              <div
+                class="absolute top-0 right-0 rounded-bl-3xl rounded-tr-xl opacity-20 w-20 h-20"
+                style="background: linear-gradient(to bottom left, #7aa2f7, transparent);"
+              ></div>
+
+              <!-- Header -->
+              <div class="relative z-10 mb-4">
+                <div class="flex items-start gap-3 mb-3">
+                  <div
+                    class="flex-shrink-0 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 w-12 h-12"
+                    style="background: linear-gradient(135deg, #7aa2f7, #bb9af7);"
+                  >
+                    <svg class="text-white text-base w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                      <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"></path>
+                    </svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h3
+                      class="font-bold leading-tight text-lg"
+                      style="color: #c0caf5;"
+                    >
+                      {job.position}
+                    </h3>
+                    <p
+                      class="font-semibold text-base"
+                      style="color: #bb9af7;"
+                    >
+                      @ {job.companyName}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs">
+                  <svg class="w-3 h-3" fill="currentColor" style="color: #9ece6a;" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span style="color: #a9b1d6;">
+                    {job.employmentTime}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Responsibilities -->
+              <div class="relative z-10 mb-4">
+                <h4
+                  class="text-sm font-semibold mb-2 flex items-center gap-2"
+                  style="color: #c0caf5;"
+                >
+                  <span>📋</span>
+                  Key Responsibilities
+                </h4>
+                <ul class="space-y-1">
+                  {job.roles.slice(0, 3).map((role) => (
+                    <li
+                      class="text-xs leading-relaxed flex items-start gap-2"
+                      style="color: #a9b1d6;"
+                    >
+                      <span
+                        class="text-xs mt-0.5"
+                        style="color: #9ece6a;"
+                      >
+                        ▸
+                      </span>
+                      <span>{role}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- Technologies -->
+              <div class="relative z-10">
+                <h4
+                  class="text-sm font-semibold mb-2 flex items-center gap-2"
+                  style="color: #c0caf5;"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" style="color: #bb9af7;" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
+                  </svg>
+                  Technologies
+                </h4>
+                <div class="flex flex-wrap gap-1">
+                  {job.toolsUsed.slice(0, 6).map((tech) => (
+                    <span
+                      class="tech-tag text-xs px-2 py-1 rounded border"
+                      style="background-color: rgba(26, 27, 38, 0.6); border-color: rgba(86, 95, 137, 0.4); color: #7aa2f7;"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                  {job.toolsUsed.length > 6 && (
+                    <span
+                      class="text-xs px-2 py-1 rounded border"
+                      style="background-color: rgba(36, 40, 59, 0.6); border-color: rgba(86, 95, 137, 0.4); color: #565f89;"
+                    >
+                      +{job.toolsUsed.length - 6}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <!-- Bottom Accent Line -->
+              <div
+                class="accent-line absolute bottom-0 left-0 h-0.5 rounded-b-xl"
+                style="background: linear-gradient(90deg, #7aa2f7, #bb9af7);"
+              ></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Stats Section -->
+    <div class="mt-12 stats-animate">
+      <div
+        class="backdrop-blur-sm border rounded-xl p-6"
+        style="background-color: rgba(45, 49, 66, 0.4); border-color: rgba(86, 95, 137, 0.3);"
+      >
+        <div class="grid gap-6 text-center grid-cols-1 md:grid-cols-3">
+          <div>
+            <div
+              class="font-bold mb-1 text-xl md:text-3xl"
+              style="color: #7aa2f7;"
+            >
+              {totalPositions}
+            </div>
+            <div
+              class="text-xs md:text-base"
+              style="color: #a9b1d6;"
+            >
+              Positions
+            </div>
+          </div>
+          <div class="md:border-l md:border-r" style="border-color: rgba(86, 95, 137, 0.3);">
+            <div
+              class="font-bold mb-1 text-xl md:text-3xl"
+              style="color: #bb9af7;"
+            >
+              {totalTechnologies}
+            </div>
+            <div
+              class="text-xs md:text-base"
+              style="color: #a9b1d6;"
+            >
+              Technologies
+            </div>
+          </div>
+          <div>
+            <div
+              class="font-bold mb-1 text-xl md:text-3xl"
+              style="color: #9ece6a;"
+            >
+              {totalResponsibilities}
+            </div>
+            <div
+              class="text-xs md:text-base"
+              style="color: #a9b1d6;"
+            >
+              Responsibilities
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

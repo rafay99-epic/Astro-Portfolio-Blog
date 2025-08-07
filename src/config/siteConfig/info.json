@@ -26,11 +26,9 @@
             "tools": [
                 "flutter",
                 "android",
-                "xamarin",
                 "androidstudio",
                 "xcode",
                 "vscode",
-                "intellij",
                 "dart"
             ]
         },
@@ -41,52 +39,35 @@
                 "tailwindcss",
                 "nodejs",
                 "react",
-                "hugo",
                 "typescript",
-                "handlebars",
-                "javascript"
+                "javascript", 
+                "nextjs"
             ]
         },
         {
             "category": "Backend Development",
             "tools": [
                 "firebase",
-                "docker",
                 "mongodb",
-                "mysql",
-                "amazonwebservices",
-                "googlecloud",
-                "fastapi",
-                "graphql",
                 "sqlite",
-                "realm",
-                "azure",
                 "supabase",
                 "postgresql",
                 "express",
-                "nextjs",
                 "prisma",
-                "Convex"
+                "convex",
+                "nodejs",
+                "express",
+                "sql"
             ]
         },
         {
             "category": "Cloud Computing",
             "tools": [
                 "vercel",
-                "amazonwebservices",
                 "linux",
                 "netlify",
-                "digitalocean"
-            ]
-        },
-        {
-            "category": "Essential",
-            "tools": [
-                "git",
-                "github",
-                "gitlab",
-                "bitbucket",
-                "sketch"
+                "aws",
+                "docker"
             ]
         },
         {
@@ -94,7 +75,6 @@
             "tools": [
                 "powershell",
                 "bash",
-                "lua",
                 "python"
             ]
         }

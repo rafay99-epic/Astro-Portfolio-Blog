@@ -1,12 +1,13 @@
 ---
-import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
-import authorConfig from "@config/siteConfig/info.json";
-import Footer from "@astro/footer/Footer.astro";
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import AboutSection from "@react/personal/AboutMe/aboutme";
-import SpeedInsights from "@vercel/speed-insights/astro";
+import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
+import Header from "../components/AstroComponent/header/Header.astro";
+import authorConfig from "../config/siteConfig/info.json";
+import Footer from "../components/AstroComponent/footer/Footer.astro";
+import { featureFlags } from "../config/featureFlag/featureFlag.json";
+import AboutSection from "../components/AstroComponent/personal/AboutMe/AboutMe.astro";
+
 export const prerender = true;
+
 try {
   if (!featureFlags.showAbout) {
     return Astro.redirect("/access-denied");
@@ -24,13 +25,10 @@ try {
       description={`Learn more about me and my journey.`}
     />
   </head>
-  <body class="mt-0 pt-15">
+  <body class="mt-0 pt-0">
     <Header />
-    <SpeedInsights />
-    <main >
-      <section>
-        <AboutSection client:load authorConfig={authorConfig} />
-      </section>
+    <main class="mt-0 pt-15">
+      <AboutSection authorConfig={authorConfig} />
     </main>
     <Footer class="mt-auto" />
   </body>
