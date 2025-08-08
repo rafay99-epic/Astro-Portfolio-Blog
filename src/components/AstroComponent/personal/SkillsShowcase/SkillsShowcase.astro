@@ -1,0 +1,269 @@
+---
+import authorConfig from "../../../../config/siteConfig/info.json";
+
+const techStack = authorConfig.techStack;
+
+// Organize skills by category
+const skillsByCategory = techStack.reduce((acc, item) => {
+  acc[item.category] = item.tools;
+  return acc;
+}, {} as Record<string, string[]>);
+
+const categories = Object.keys(skillsByCategory);
+const totalSkills = Object.values(skillsByCategory).reduce((total, skills) => total + skills.length, 0);
+---
+
+<style>
+  /* Skill card animations */
+  .skill-card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    animation: skillCardIn 0.6s ease-out forwards;
+  }
+
+  .skill-card:nth-child(1) { animation-delay: 0.1s; }
+  .skill-card:nth-child(2) { animation-delay: 0.15s; }
+  .skill-card:nth-child(3) { animation-delay: 0.2s; }
+  .skill-card:nth-child(4) { animation-delay: 0.25s; }
+  .skill-card:nth-child(5) { animation-delay: 0.3s; }
+  .skill-card:nth-child(6) { animation-delay: 0.35s; }
+  .skill-card:nth-child(7) { animation-delay: 0.4s; }
+  .skill-card:nth-child(8) { animation-delay: 0.45s; }
+  .skill-card:nth-child(9) { animation-delay: 0.5s; }
+  .skill-card:nth-child(10) { animation-delay: 0.55s; }
+
+  @keyframes skillCardIn {
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Category section animations */
+  .category-section {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: categorySlideIn 0.8s ease-out forwards;
+  }
+
+  .category-section:nth-child(1) { animation-delay: 0.2s; }
+  .category-section:nth-child(2) { animation-delay: 0.4s; }
+  .category-section:nth-child(3) { animation-delay: 0.6s; }
+  .category-section:nth-child(4) { animation-delay: 0.8s; }
+  .category-section:nth-child(5) { animation-delay: 1s; }
+  .category-section:nth-child(6) { animation-delay: 1.2s; }
+
+  @keyframes categorySlideIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Header animation */
+  .header-animate {
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: headerFadeIn 1s ease-out forwards;
+  }
+
+  @keyframes headerFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Floating animation for background elements */
+  .floating {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .floating:nth-child(2) {
+    animation-delay: -2s;
+  }
+
+  .floating:nth-child(3) {
+    animation-delay: -4s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  /* Skill icon hover effects */
+  .skill-icon {
+    transition: all 0.3s ease-out;
+  }
+
+  .skill-card:hover .skill-icon {
+    transform: scale(1.2) rotate(5deg);
+    filter: drop-shadow(0 10px 20px rgba(122, 162, 247, 0.3));
+  }
+
+  /* Glow effect on hover */
+  .skill-card:hover {
+    box-shadow: 0 20px 40px rgba(122, 162, 247, 0.15);
+  }
+
+  /* Category title gradient animation */
+  .category-title {
+    background: linear-gradient(45deg, #7aa2f7, #bb9af7, #9ece6a, #7aa2f7);
+    background-size: 300% 300%;
+    animation: gradientShift 3s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Stats counter animation */
+  .stats-counter {
+    opacity: 0;
+    transform: scale(0.5);
+    animation: statsPopIn 0.8s ease-out 1.5s forwards;
+  }
+
+  @keyframes statsPopIn {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+</style>
+
+<section class="relative py-20 px-4 overflow-hidden">
+  <!-- Animated Background Elements -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="floating absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-full blur-3xl"></div>
+    <div class="floating absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-[#bb9af7] to-[#9ece6a] rounded-full blur-3xl"></div>
+    <div class="floating absolute bottom-20 left-1/4 w-28 h-28 bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="container mx-auto max-w-7xl relative z-10">
+    <!-- Header Section -->
+    <div class="text-center mb-16 header-animate">
+      <h2 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent">
+        Skills Arsenal
+      </h2>
+      <p class="text-xl md:text-2xl text-[#a9b1d6] max-w-3xl mx-auto leading-relaxed">
+        A comprehensive collection of technologies, frameworks, and tools that power modern development
+      </p>
+    </div>
+
+    <!-- Skills Grid -->
+    <div class="grid gap-8 md:gap-12">
+      {categories.map((category, categoryIndex) => (
+        <div class="category-section">
+          <!-- Category Header -->
+          <div class="flex items-center gap-4 mb-8">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] flex items-center justify-center shadow-lg">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                {category === "App Development" && (
+                  <path d="M17 2H7C5.9 2 5 2.9 5 4V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V4C19 2.9 18.1 2 17 2ZM17 20H7V4H17V20Z"/>
+                )}
+                {category === "Frontend Development" && (
+                  <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22S22 17.52 22 12S17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12S7.59 4 12 4S20 7.59 20 12S16.41 20 12 20Z"/>
+                )}
+                {category === "Backend Development" && (
+                  <path d="M3 3H21V5H3V3ZM3 7H21V9H3V7ZM3 11H21V13H3V11ZM3 15H21V17H3V15ZM3 19H21V21H3V19Z"/>
+                )}
+                {category === "Cloud Computing" && (
+                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04ZM19 18H6C3.79 18 2 16.21 2 14C2 11.79 3.79 10 6 10H7.13C7.68 7.69 9.67 6 12 6C14.33 6 16.32 7.69 16.87 10H19C20.66 10 22 11.34 22 13C22 14.66 20.66 16 19 16V18Z"/>
+                )}
+                {category === "Essential" && (
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                )}
+                {category === "Scripting" && (
+                  <path d="M14.23,12.004a2.236,2.236,0,0,1-2.235,2.236,2.236,2.236,0,0,1-2.236-2.236,2.236,2.236,0,0,1,2.235-2.236A2.236,2.236,0,0,1,14.23,12.004ZM11.995,24c-.263,0-.527-.027-.789-.077a12.044,12.044,0,0,1-9.46-9.461A11.87,11.87,0,0,1,1.5,12.005a11.87,11.87,0,0,1,.246-2.457,12.044,12.044,0,0,1,9.46-9.46A11.87,11.87,0,0,1,12.005,0a11.87,11.87,0,0,1,2.457.246,12.044,12.044,0,0,1,9.46,9.46,11.87,11.87,0,0,1,.246,2.457,11.87,11.87,0,0,1-.246,2.457,12.044,12.044,0,0,1-9.46,9.46A11.87,11.87,0,0,1,11.995,24ZM3.609,12.005a8.386,8.386,0,0,0,8.386,8.386,8.386,8.386,0,0,0,8.386-8.386,8.386,8.386,0,0,0-8.386-8.386A8.386,8.386,0,0,0,3.609,12.005Z"/>
+                )}
+              </svg>
+            </div>
+            <h3 class="text-2xl md:text-3xl font-bold category-title bg-clip-text text-transparent">
+              {category}
+            </h3>
+            <div class="flex-1 h-px bg-gradient-to-r from-[#7aa2f7] to-transparent"></div>
+            <span class="text-sm text-[#565f89] font-medium">
+              {skillsByCategory[category].length} skills
+            </span>
+          </div>
+
+          <!-- Skills Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 md:gap-6">
+            {skillsByCategory[category].map((skill, skillIndex) => (
+              <div class="skill-card group">
+                <div class="relative bg-gradient-to-br from-[#1a1b26]/80 to-[#24283b]/80 backdrop-blur-sm border border-[#565f89]/30 rounded-2xl p-4 md:p-6 shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col items-center justify-center text-center">
+                  <!-- Glow effect on hover -->
+                  <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#7aa2f7]/10 via-[#bb9af7]/5 to-[#9ece6a]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <!-- Skill Icon -->
+                  <div class="relative z-10 mb-3">
+                    <i class={`devicon-${skill.toLowerCase()}-plain colored skill-icon text-4xl md:text-5xl`}></i>
+                  </div>
+                  
+                  <!-- Skill Name -->
+                  <h4 class="relative z-10 text-sm md:text-base font-semibold text-[#c0caf5] group-hover:text-white transition-colors duration-300">
+                    {skill.charAt(0).toUpperCase() + skill.slice(1)}
+                  </h4>
+                  
+                  <!-- Decorative dots -->
+                  <div class="absolute top-2 right-2 w-1.5 h-1.5 bg-[#7aa2f7] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div class="absolute bottom-2 left-2 w-1.5 h-1.5 bg-[#bb9af7] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Stats Section -->
+    <div class="mt-20 stats-counter">
+      <div class="bg-gradient-to-r from-[#1a1b26]/80 to-[#24283b]/80 backdrop-blur-xl border border-[#565f89]/30 rounded-3xl p-8 md:p-12 shadow-2xl">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div class="group">
+            <div class="text-4xl md:text-6xl font-bold text-[#7aa2f7] mb-2 group-hover:scale-110 transition-transform duration-300">
+              {categories.length}
+            </div>
+            <div class="text-lg md:text-xl text-[#a9b1d6] font-medium">
+              Categories
+            </div>
+            <div class="w-16 h-1 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] mx-auto mt-3 rounded-full"></div>
+          </div>
+          
+          <div class="group">
+            <div class="text-4xl md:text-6xl font-bold text-[#bb9af7] mb-2 group-hover:scale-110 transition-transform duration-300">
+              {totalSkills}
+            </div>
+            <div class="text-lg md:text-xl text-[#a9b1d6] font-medium">
+              Technologies
+            </div>
+            <div class="w-16 h-1 bg-gradient-to-r from-[#bb9af7] to-[#9ece6a] mx-auto mt-3 rounded-full"></div>
+          </div>
+          
+          <div class="group">
+            <div class="text-4xl md:text-6xl font-bold text-[#9ece6a] mb-2 group-hover:scale-110 transition-transform duration-300">
+              {Math.floor(totalSkills / categories.length)}
+            </div>
+            <div class="text-lg md:text-xl text-[#a9b1d6] font-medium">
+              Avg per Category
+            </div>
+            <div class="w-16 h-1 bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] mx-auto mt-3 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="mt-16 text-center">
+      <div class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <span class="text-white font-semibold text-lg">Explore My Projects</span>
+        <svg class="w-5 h-5 text-white group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>

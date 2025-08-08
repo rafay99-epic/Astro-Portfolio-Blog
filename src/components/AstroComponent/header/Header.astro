@@ -2,7 +2,6 @@
 import featureFlags from "../../../config/featureFlag/featureFlag.json";
 import authorConfig from "../../../config/siteConfig/info.json";
 import NavLink from "./NavLink.astro"; // The simple Astro NavLink component
-import MoreDropdown from "../../ReactComponent/layout/Header/MoreDropdown"; // Keep if you want the desktop dropdown in React
 
 import {
   LuMenu as Menu,
@@ -64,6 +63,45 @@ import {
   .mobile-menu-backdrop.is-open {
     opacity: 1; /* Fade in */
   }
+
+  /* MoreDropdown styles */
+  .more-dropdown {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition: all 0.2s ease-out;
+    pointer-events: none;
+  }
+
+  .more-dropdown.is-open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .more-dropdown-button:hover {
+    transform: scale(1.01);
+  }
+
+  .more-dropdown-button:active {
+    transform: scale(0.99);
+  }
+
+  .more-dropdown-item {
+    transition: all 0.2s ease-out;
+  }
+
+  .more-dropdown-item:hover {
+    transform: translateX(3px);
+  }
+
+  .more-dropdown-external-link {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+
+  .more-dropdown-item:hover .more-dropdown-external-link {
+    opacity: 1;
+  }
 </style>
 
 <!-- This fragment ensures the header and mobile menu are siblings at the root of the page's body -->
@@ -98,6 +136,8 @@ import {
 
       <!-- Desktop Navigation -->
       <nav class="hidden lg:flex items-center space-x-2">
+        <NavLink href="/" icon={Home}> Home </NavLink>
+
         {
           featureFlags.featureFlags.showBlog && (
             <NavLink href="/blog" icon={BookOpen}>
@@ -105,6 +145,7 @@ import {
             </NavLink>
           )
         }
+
         {
           featureFlags.featureFlags.showNewsletter && (
             <NavLink href="/newsletter-subscribe" icon={Mail}>
@@ -112,6 +153,7 @@ import {
             </NavLink>
           )
         }
+
         {
           featureFlags.featureFlags.showAbout && (
             <NavLink href="/about" icon={User}>
@@ -119,6 +161,7 @@ import {
             </NavLink>
           )
         }
+
         {
           featureFlags.featureFlags.showExperience && (
             <NavLink href="/experience" icon={Briefcase}>
@@ -126,6 +169,7 @@ import {
             </NavLink>
           )
         }
+
         {
           featureFlags.featureFlags.showProjects && (
             <NavLink href="/project" icon={Rocket}>
@@ -143,7 +187,80 @@ import {
             <NavLink href="/search" icon={Search} aria-label="Search" />
           )
         }
-        <MoreDropdown featureFlags={featureFlags.featureFlags} client:load />
+
+        <!-- MoreDropdown - Pure HTML/Tailwind/JS -->
+        <div class="relative" id="more-dropdown-container">
+          <button
+            aria-haspopup="true"
+            id="more-dropdown-button"
+            class="more-dropdown-button flex items-center text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-[#24283b]/50"
+            aria-expanded="false"
+          >
+            <MoreHorizontal className="w-4 h-4" />
+            <ChevronDown
+              id="more-dropdown-chevron"
+              className="w-3 h-3 ml-1 transition-transform duration-300"
+            />
+          </button>
+
+          <div
+            id="more-dropdown-menu"
+            class="more-dropdown absolute right-0 mt-2 w-56 backdrop-blur-xl bg-[#24283b]/95 border border-[#565f89]/30 rounded-xl shadow-2xl py-2 z-50"
+          >
+            <div class="px-2 space-y-1">
+              {
+                featureFlags.featureFlags.showNewsletter && (
+                  <a
+                    href="/newsletter"
+                    class="more-dropdown-item flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                  >
+                    <Newspaper className="w-4 h-4 text-[#7aa2f7]" />
+                    <span class="font-medium">Newsletter Archive</span>
+                    <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
+                  </a>
+                )
+              }
+              {
+                featureFlags.featureFlags.showTrendingPosts && (
+                  <a
+                    href="/trending"
+                    class="more-dropdown-item flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                  >
+                    <TrendingUp className="w-4 h-4 text-[#f7768e]" />
+                    <span class="font-medium">Trending Articles</span>
+                    <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
+                  </a>
+                )
+              }
+              {
+                featureFlags.featureFlags.showNotes && (
+                  <a
+                    href="/ms_notes"
+                    class="more-dropdown-item flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                  >
+                    <StickyNote className="w-4 h-4 text-[#e0af68]" />
+                    <span class="font-medium">MS Notes</span>
+                    <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
+                  </a>
+                )
+              }
+              {
+                featureFlags.featureFlags.showWiki && (
+                  <a
+                    href="https://rafay99-docs.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="more-dropdown-item flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                  >
+                    <Globe className="w-4 h-4 text-[#9ece6a]" />
+                    <span class="font-medium">Website Wiki</span>
+                    <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
+                  </a>
+                )
+              }
+            </div>
+          </div>
+        </div>
       </nav>
 
       <button
@@ -364,4 +481,64 @@ import {
   // Ensure initial state is closed when page loads via client-side navigation
   // (e.g., if navigating back from a page where menu was open)
   document.addEventListener("astro:after-swap", closeMobileMenu);
+
+  // MoreDropdown Functionality
+  const moreDropdownButton = document.getElementById("more-dropdown-button");
+  const moreDropdownMenu = document.getElementById("more-dropdown-menu");
+  const moreDropdownChevron = document.getElementById("more-dropdown-chevron");
+  const moreDropdownContainer = document.getElementById(
+    "more-dropdown-container",
+  );
+
+  let isMoreDropdownOpen = false;
+
+  const toggleMoreDropdown = () => {
+    isMoreDropdownOpen = !isMoreDropdownOpen;
+    moreDropdownButton.setAttribute(
+      "aria-expanded",
+      isMoreDropdownOpen.toString(),
+    );
+
+    if (isMoreDropdownOpen) {
+      moreDropdownMenu.classList.add("is-open");
+      moreDropdownChevron.style.transform = "rotate(180deg)";
+    } else {
+      moreDropdownMenu.classList.remove("is-open");
+      moreDropdownChevron.style.transform = "rotate(0deg)";
+    }
+  };
+
+  const closeMoreDropdown = () => {
+    if (isMoreDropdownOpen) {
+      isMoreDropdownOpen = false;
+      moreDropdownButton.setAttribute("aria-expanded", "false");
+      moreDropdownMenu.classList.remove("is-open");
+      moreDropdownChevron.style.transform = "rotate(0deg)";
+    }
+  };
+
+  // Event listeners for MoreDropdown
+  if (moreDropdownButton) {
+    moreDropdownButton.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleMoreDropdown();
+    });
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", (e) => {
+    if (moreDropdownContainer && !moreDropdownContainer.contains(e.target)) {
+      closeMoreDropdown();
+    }
+  });
+
+  // Close dropdown on escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isMoreDropdownOpen) {
+      closeMoreDropdown();
+    }
+  });
+
+  // Close dropdown on route changes
+  document.addEventListener("astro:after-swap", closeMoreDropdown);
 </script>

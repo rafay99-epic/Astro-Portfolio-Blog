@@ -63,9 +63,11 @@ declare global {
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
-{keywords && keywords.length > 0 && (
-  <meta name="keywords" content={keywords.join(", ")} />
-)}
+{
+  keywords && keywords.length > 0 && (
+    <meta name="keywords" content={keywords.join(", ")} />
+  )
+}
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
@@ -144,25 +146,21 @@ declare global {
   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
   crossorigin="anonymous"></script>
 
-
-    <!-- Google tag (gtag.js) -->
-<script  type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-DKPL4VGM52"></script>
+<!-- Google tag (gtag.js) - Combined GA4 + Google Ads via Partytown -->
+<script
+  type="text/partytown"
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-DKPL4VGM52"></script>
 <script type="text/partytown">
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
 
-  gtag('config', 'G-DKPL4VGM52');
-</script>
+  // GA4
+  gtag("config", "G-DKPL4VGM52");
 
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17413331660">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'AW-17413331660');
+  // Google Ads
+  gtag("config", "AW-17413331660");
 </script>

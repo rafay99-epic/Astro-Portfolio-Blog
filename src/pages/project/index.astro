@@ -6,7 +6,7 @@ import authorConfig from "@config/siteConfig/info.json";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { ViewTransitions } from "astro:transitions";
+
 
 const projects = await getCollection("projects");
 export const prerender = true;
@@ -35,59 +35,7 @@ const filteredProjects = projects
       title={`Projects | ${authorConfig.SiteName}`}
       description={`Browse all projects on ${authorConfig.SiteName} and explore categorized content.`}
     />
-    <ViewTransitions />
-    <style>
-      /* Prevent white flash during view transitions */
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation: none;
-        mix-blend-mode: normal;
-      }
 
-      /* Ensure smooth transitions */
-      html {
-        background-color: #1a1b26;
-      }
-
-      body {
-        background-color: #1a1b26;
-        transition: none;
-      }
-
-      /* Prevent flash on React component mount */
-      [data-astro-reload] {
-        opacity: 1 !important;
-        transition: none !important;
-      }
-
-      /* Faster, more direct view transitions */
-      ::view-transition-old(root) {
-        animation: fade-out 0.2s ease-out;
-      }
-
-      ::view-transition-new(root) {
-        animation: fade-in 0.2s ease-out;
-      }
-
-      @keyframes fade-out {
-        to {
-          opacity: 0;
-        }
-      }
-
-      @keyframes fade-in {
-        from {
-          opacity: 0;
-        }
-      }
-
-      .line-clamp-4 {
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-    </style>
   </head>
 
   <body class="bg-[#1a1b26] text-[#c0caf5]" style="overflow-x: hidden; overflow-y: auto;">
@@ -100,7 +48,7 @@ const filteredProjects = projects
         <div class="text-center mb-12">
           <h1
             class="font-extrabold mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent text-4xl md:text-6xl lg:text-7xl"
-            transition:name="projects-title"
+
           >
             My Creations
           </h1>
@@ -143,7 +91,7 @@ const filteredProjects = projects
                   >
                     <h2 
                       class="font-bold mb-2 text-2xl md:text-3xl text-white"
-                      transition:name={`project-title-${project.data.Projecttitle}`}
+
                     >
                       {project.data.Projecttitle}
                     </h2>

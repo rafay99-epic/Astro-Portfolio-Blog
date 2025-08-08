@@ -5,14 +5,14 @@ import Footer from "../../components/AstroComponent/footer/Footer.astro";
 import authorConfig from "../../config/siteConfig/info.json";
 import { getCollection } from "astro:content";
 import { featureFlags } from "../../config/featureFlag/featureFlag.json";
-import { ViewTransitions } from "astro:transitions";
+
 export const prerender = false;
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 const postsPerPage = 9;
 
 const allPosts = (await getCollection("blog"))
-  .filter(post => !post.data.draft)
+  .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const totalPosts = allPosts.length;
@@ -37,191 +37,218 @@ try {
       title={`Articles | ${authorConfig.SiteName}`}
       description={`Browse all articles on ${authorConfig.SiteName} and explore categorized content.`}
     />
-    
+
     <SpeedInsights />
 
-    <ViewTransitions />
-    
-    <style>
-      /* Prevent white flash during view transitions */
-      ::view-transition-old(root) {
-        animation: none;
-        mix-blend-mode: normal;
-      }
-
-      ::view-transition-new(root) {
-        animation: none;
-        mix-blend-mode: normal;
-      }
-
-      /* Ensure smooth transitions */
+    <!-- Critical inline styles to prevent white flash -->
+    <style is:inline>
       html {
-        background-color: #1a1b26;
+        background-color: #1a1b26 !important;
+      }
+      body {
+        background-color: #1a1b26 !important;
+      }
+      #__astro {
+        background-color: #1a1b26 !important;
+      }
+    </style>
+
+    <style>
+      /* Prevent white flash */
+      html {
+        background-color: #1a1b26 !important;
       }
 
       body {
-        background-color: #1a1b26;
-        transition: none;
-      }
-
-      /* Prevent flash on React component mount */
-      [data-astro-reload] {
-        opacity: 1 !important;
+        background-color: #1a1b26 !important;
         transition: none !important;
       }
     </style>
-    
+
     <!-- Structured Data for Blog Listing -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      "name": `${authorConfig.SiteName} Blog`,
-      "description": `Browse all articles on ${authorConfig.SiteName} and explore categorized content.`,
-      "url": "https://rafay99.com/blog",
-      "publisher": {
-        "@type": "Organization",
-        "name": authorConfig.SiteName,
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://rafay99.com/favicon.webp"
-        }
-      },
-      "blogPost": posts.map(post => ({
-        "@type": "BlogPosting",
-        "headline": post.data.title,
-        "description": post.data.description,
-        "author": {
-          "@type": "Person",
-          "name": post.data.authorName
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        name: `${authorConfig.SiteName} Blog`,
+        description: `Browse all articles on ${authorConfig.SiteName} and explore categorized content.`,
+        url: "https://rafay99.com/blog",
+        publisher: {
+          "@type": "Organization",
+          name: authorConfig.SiteName,
+          logo: {
+            "@type": "ImageObject",
+            url: "https://rafay99.com/favicon.webp",
+          },
         },
-        "datePublished": post.data.pubDate.toISOString(),
-        "url": `https://rafay99.com/blog/${post.slug}`,
-        "keywords": post.data.tags?.join(", ") || "blog, technology"
-      }))
-    })} />
+        blogPost: posts.map((post) => ({
+          "@type": "BlogPosting",
+          headline: post.data.title,
+          description: post.data.description,
+          author: {
+            "@type": "Person",
+            name: post.data.authorName,
+          },
+          datePublished: post.data.pubDate.toISOString(),
+          url: `https://rafay99.com/blog/${post.slug}`,
+          keywords: post.data.tags?.join(", ") || "blog, technology",
+        })),
+      })}
+    />
   </head>
   <body class="flex flex-col min-h-screen bg-[#1a1b26] text-[#a9b1d6]">
     <Header />
-    
+
     <main class="flex-1 max-w-7xl mx-auto px-8 py-16">
       <!-- Page Title -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl lg:text-5xl  mb-3 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+        <h1
+          class="text-4xl lg:text-5xl mb-3 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent"
+        >
           Articles
         </h1>
         <p class="text-lg max-w-xl mx-auto text-[#a9b1d6]">
           Explore insights, tutorials, and thoughts on development
         </p>
-        <div class="mx-auto mt-4 h-0.5 w-20 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]"></div>
+        <div
+          class="mx-auto mt-4 h-0.5 w-20 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]"
+        >
+        </div>
       </div>
 
       <!-- Articles Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-        {posts.map((post, index) => (
-          <article>
-            <a href={`/blog/${post.slug}`} class="block" transition:name={`blog-card-${post.slug}`}>
-              {/* Larger Image with Breathing Room */}
-              <div class="h-64 overflow-hidden rounded-xl mb-6">
-                <img
-                  src={post.data.heroImage || "/default-image.jpg"}
-                  alt={post.data.title}
-                  class="w-full h-full object-cover"
-                  transition:name={`blog-image-${post.slug}`}
-                />
-              </div>
-
-              {/* Content with More Spacing */}
-              <div class="text-center">
-                {/* Small Date */}
-                <time 
-                  datetime={post.data.pubDate.toISOString()}
-                  class="block text-xs text-[#565f89] mb-4"
-                >
-                  {new Date(post.data.pubDate).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}
-                </time>
-
-                {/* Centered Title */}
-                <h2 class="text-xl text-white mb-6 line-clamp-2 leading-tight hover:text-[#7aa2f7] transition-colors duration-200" transition:name={`blog-title-${post.slug}`}>
-                  {post.data.title}
-                </h2>
-
-                {/* Small Read More */}
-                <div class="flex items-center justify-center text-[#7aa2f7] text-sm font-medium hover:text-[#bb9af7] transition-colors duration-200">
-                  <span>Read article</span>
-                  <svg
-                    class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+        {
+          posts.map((post, index) => (
+            <article>
+              <a href={`/blog/${post.slug}`} class="block">
+                {/* Larger Image with Breathing Room */}
+                <div class="h-64 overflow-hidden rounded-xl mb-6">
+                  <img
+                    src={post.data.heroImage || "/default-image.jpg"}
+                    alt={post.data.title}
+                    class="w-full h-full object-cover"
+                  />
                 </div>
-              </div>
-            </a>
-          </article>
-        ))}
+
+                {/* Content with More Spacing */}
+                <div class="text-center">
+                  {/* Small Date */}
+                  <time
+                    datetime={post.data.pubDate.toISOString()}
+                    class="block text-xs text-[#565f89] mb-4"
+                  >
+                    {new Date(post.data.pubDate).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </time>
+
+                  {/* Centered Title */}
+                  <h2 class="text-xl text-white mb-6 line-clamp-2 leading-tight hover:text-[#7aa2f7] transition-colors duration-200">
+                    {post.data.title}
+                  </h2>
+
+                  {/* Small Read More */}
+                  <div class="flex items-center justify-center text-[#7aa2f7] text-sm font-medium hover:text-[#bb9af7] transition-colors duration-200">
+                    <span>Read article</span>
+                    <svg
+                      class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))
+        }
       </div>
 
       <!-- Minimal Pagination -->
-      {totalPages > 1 && (
-        <div class="flex justify-center items-center mt-8 pt-6 border-t border-[#565f89]/20">
-          <div class="flex items-center gap-6">
-            {/* Previous */}
-            <a
-              href={currentPage > 1 ? `/blog/page/${currentPage - 1}` : "#"}
-              class={`flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
-                currentPage > 1 
-                  ? "text-[#7aa2f7] hover:text-[#bb9af7]" 
-                  : "text-[#565f89] cursor-not-allowed"
-              }`}
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
-              <span>Previous</span>
-            </a>
+      {
+        totalPages > 1 && (
+          <div class="flex justify-center items-center mt-8 pt-6 border-t border-[#565f89]/20">
+            <div class="flex items-center gap-6">
+              {/* Previous */}
+              <a
+                href={currentPage > 1 ? `/blog/page/${currentPage - 1}` : "#"}
+                class={`flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                  currentPage > 1
+                    ? "text-[#7aa2f7] hover:text-[#bb9af7]"
+                    : "text-[#565f89] cursor-not-allowed"
+                }`}
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                <span>Previous</span>
+              </a>
 
-            {/* Page indicator */}
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 rounded-full bg-[#7aa2f7]"></div>
-              <span class="text-xs text-[#565f89]">Page {currentPage} of {totalPages}</span>
-              <div class="w-2 h-2 rounded-full bg-[#565f89]/30"></div>
+              {/* Page indicator */}
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-[#7aa2f7]" />
+                <span class="text-xs text-[#565f89]">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <div class="w-2 h-2 rounded-full bg-[#565f89]/30" />
+              </div>
+
+              {/* Next */}
+              <a
+                href={
+                  currentPage < totalPages
+                    ? `/blog/page/${currentPage + 1}`
+                    : "#"
+                }
+                class={`flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                  currentPage < totalPages
+                    ? "text-[#7aa2f7] hover:text-[#bb9af7]"
+                    : "text-[#565f89] cursor-not-allowed"
+                }`}
+              >
+                <span>Next</span>
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </a>
             </div>
-
-            {/* Next */}
-            <a
-              href={currentPage < totalPages ? `/blog/page/${currentPage + 1}` : "#"}
-              class={`flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
-                currentPage < totalPages 
-                  ? "text-[#7aa2f7] hover:text-[#bb9af7]" 
-                  : "text-[#565f89] cursor-not-allowed"
-              }`}
-            >
-              <span>Next</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
           </div>
-        </div>
-      )}
-
-     
+        )
+      }
     </main>
 
     <Footer />
-
-
 
     <style>
       .line-clamp-2 {
