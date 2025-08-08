@@ -1,5 +1,7 @@
 ---
-title: 'Cursor Cli: Just Droped '
+title: >-
+  When the Terminal Becomes Your Pair Programmer — My Experience with Cursor CLI
+  and GPT‑5
 description: There is a new CLI tool called Cursor CLI
 pubDate: 2025-08-09T19:00:00.000Z
 draft: true
@@ -10,26 +12,97 @@ tags:
   - AI
 ---
 
-With the release of GPT 5  from OpenAI there are lot of tools which are getting major update and out of these there was one surpises me, that was Cursor CLI, I am not sure about these kind of tools but I have seen on twitter there is alot of tools like this, Google Gemni Tool, Claude Code, OpenCLI and Wrap Terminal and now Cursor has joined the league and today blog post is very simple we are going cursor cli, on an application that my office and my team will be using in the future.
+There’s a certain kind of magic when your terminal stops being a passive black box and starts actively helping you write, refactor, and commit code.\
+With the release of **GPT‑5** from OpenAI, we’ve seen a wave of AI-powered developer tools getting major updates — **Google Gemini CLI**, **Claude Code**, **OpenCLI**, **Warp Terminal** — and now **Cursor CLI** has joined the league.
 
-Okay before we being with the coding, let's beging with understanding the code and the problem we are trying to solve.
+I’ve been seeing Cursor CLI pop up all over Twitter, and I’ll admit, I wasn’t sure if it was just another AI gimmick. But curiosity won. I decided to test it on a **real project** my team will actually use in production.
 
-I have a project with convex and I don't want a cloud base operation that would break alot of things, I want a simple local solution where I will enter email or user id and I will get the result. So to solve this I have build a simple python application with three major compoents.
+## The Problem I Wanted to Solve
 
-1. Load Data Folder
-2. Enter User Email or User ID
-3. Then display the user data
-   1. Such as user information
-   2. Ranking
-   3. referal Points History
-   4. Application tracking application
+I have a **Convex**-based project, but I don’t want to rely on cloud-based operations for certain lookups. Too many dependencies, too many ways for things to break.
 
-Simple and Clean Process.
+Instead, I wanted a **local-first Python application** where I could:
 
-## The Terminal
+1. **Load a Data Folder** (local dataset)
+2. **Enter a User Email or User ID**
+3. **Display the User Data**, including:
+   * User Information
+   * Ranking
+   * Referral Points History
+   * Application Tracking Progress
 
-For this Coding session, we will going full vibe code using cursor cli with GPT-5 model, I have heard so much from this model in terms of coding but I want to test how this will last and how this will effect the code base.
+The goal was a **simple, clean, and reliable process** — no cloud calls, no external dependencies that could fail at the wrong time.
 
-One more thing, I will be creating a branch and if it breaks then I will revert to the main branch.
+## The Terminal Setup
 
-![Wrap Terminal Look running cursor cli](/BlogImages/terminal_look.webp)
+For this coding session, I went **full vibe mode** — running **Cursor CLI** inside **Warp Terminal** with the **GPT‑5 model**.\
+No IDE, no VS Code, just me, the terminal, and an AI that could read, modify, and commit code.
+
+To be safe, I created a **new branch**. If things went sideways, I could revert to `main` and pretend nothing happened.
+
+![Warp Terminal running Cursor CLI](/BlogImages/terminal_look.webp)
+
+## The Original Limitation
+
+The application worked, but the **Profile View** section’s *Referral History* was just plain text. It was functional, but not exactly user-friendly.
+
+I wanted to:
+
+* Make the data **readable and visually appealing**
+* Add **tables, charts, and modern UI styling**
+* Keep everything **local and lightweight**
+
+## What I Added During the Session
+
+With Cursor CLI acting as my AI pair programmer, here’s what I implemented:
+
+1. **Database Memory** — The app now remembers the last loaded dataset for faster reloads.
+2. **Upload Dataset** — Added a clean interface for importing new datasets.
+3. **Reset Old Dataset** — One-click reset to clear previous data.
+4. **New User Profile Creation** — Ability to add new users directly from the app.
+5. **PDF Export Support** — Export user profiles, rankings, and history as PDF reports.
+6. **Multiple Window Support** — Open different sections of the app in separate windows.
+7. **Build Scripts for Mac and Windows** — Easy packaging for cross-platform distribution.
+8. **App Bar with Exit and About Section** — A proper application feel with navigation and info.
+
+## How Cursor CLI + GPT‑5 Helped
+
+Here’s where Cursor CLI really impressed me:
+
+* **Understanding the Codebase** — It scanned my `data_loader.py` and `utils.py` to understand how history entries were structured before making changes.
+* **UI Overhaul** — It replaced raw text with **sortable tables**, **charts**, and **color-coded highlights**.
+* **Error Prevention** — It compiled the Python files to check for syntax errors before committing.
+* **Clean Commits** — It staged only the relevant changes and wrote clear, professional commit messages.
+
+Example commit message it generated:
+
+> Profile: Replace plain text history with tables, charts, and details. Introduce sortable tables and visualizations for Referral History, Points History, Mini Game Progress, and Wake-up Pings.
+
+## The Experience
+
+Using Cursor CLI felt less like using an autocomplete tool and more like **pair programming with a junior developer who’s fast, careful, and occasionally paranoid**.
+
+At one point, it asked:
+
+> "Run this command? Not in allowlist: python"
+
+It’s like having a teammate who says, *"I can run it for you… but only if you promise it won’t blow up the server."*
+
+## Why This Matters
+
+For developers working on **local-first applications**, **data visualization tools**, or **internal utilities**, AI-powered CLI tools like Cursor CLI can:
+
+* Speed up UI improvements
+* Automate repetitive coding tasks
+* Keep commits clean and organized
+* Reduce the risk of introducing errors during refactors
+
+## Final Thoughts
+
+This wasn’t just AI writing code — it was **AI collaborating on a real feature set**.\
+In one session, I went from a functional but plain Python app to a **multi-window, export-capable, visually polished tool** ready for my team to use.
+
+Would I trust Cursor CLI with my entire production codebase? Not yet.\
+Would I use it for **feature branches, rapid prototyping, and UI overhauls**? Absolutely.
+
+**SEO Keywords:** Cursor CLI, GPT‑5 coding, AI pair programming, Python local data app, Convex database, AI coding tools, AI terminal tools, AI-assisted development, Python UI refactor, PDF export Python, multi-window Python app.
