@@ -1,0 +1,503 @@
+---
+title: 'GPT-5 in the Real World: Fixing Bugs, Building Apps, and Automating Workflows'
+description: >-
+  GPT-5 is finally here, and I’ve been putting it through its paces—from fixing
+  Google Tag Manager issues to designing UI, building a Jetpack Joyride clone,
+  and even solving client projects via WhatsApp chat. Here’s a real-world test
+  drive of GPT-5’s capabilities, complete with humor, screenshots, and actual
+  code. Nerds and non-nerds alike, welcome.
+pubDate: 2025-08-08T19:00:00.000Z
+draft: true
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - Thought-Process
+  - AI
+keywords:
+  - t3.chat GPT-5 review
+  - GPT-5 Astro Tailwind UI migration
+  - AI game development with GPT
+  - GPT-5 marketing automation
+  - GPT-5 vs GPT-4 performance
+  - GPT-5 Jetpack Joyride game
+  - Using GPT-5 for coding and debugging
+  - GPT-5 real-world use cases
+canonicalUrl: www.rafay99.com/blog/real-world-gpt5-review
+featured: true
+excerpt: >-
+  Dive into a real-world review of GPT-5 with tasks like fixing GTM issues,
+  building a Jetpack Joyride clone, upgrading Astro UIs, and automating
+  marketing workflows. Not just benchmarks—this is AI in action.
+---
+
+*So GPT-5 walked into my browser, and I thought, “Let’s break the internet… or at least my to-do list.”* 😎
+
+While most people were still wrapping their heads around GPT-4, OpenAI surprised us with GPT-5, and I couldn’t resist diving head-first into testing it. I loaded up t3.chat, brewed some tea, and told myself: if this model breaks, I’ll break with it. Spoiler alert: I didn’t.
+
+This blog isn't just another tech review. It's a *real-world test drive* of GPT-5 with tasks that range from web dev issues to UI refactoring, game creation, and even marketing copy help. And yes, there’s code. Lots of it. Let’s go, one task at a time.
+
+***
+
+## Task 01: Fixing Google Tag Manager Issues
+
+For a while, I was unintentionally running **two Google Tag Manager setups**: one for analytics and one for ads. Rookie mistake, I know.
+
+So I fed GPT-5 the context, including screenshots (yes, it can parse those too), and boom—step-by-step guidance. It actually:
+
+* Identified the conflict
+* Cleaned up the tag hierarchy
+* Suggested best practices for load performance
+
+It felt like having a Google Analytics consultant on demand—who doesn’t judge you.
+
+## Task 02: Updating My Website UI with Astro + Tailwind
+
+I wanted to migrate some React components using Framer Motion over to **Astro components** with **Tailwind CSS and built-in animations**. Problem: Tailwind animation logic isn't quite as intuitive if you're coming from Framer Motion.
+
+But GPT-5? This thing understood component structures and animation syntax like a senior frontend dev. I used both:
+
+* **Cursor CLI Tool** (blog on that coming soon)
+* **t3.chat with GPT-5**
+
+And guess what? It recreated animations with precision, gave suggestions for UI simplification, and even auto-generated Tailwind utility combos that I hadn’t thought of.
+
+## Task 03: Building a Jetpack Joyride Clone Game
+
+So I saw Sam Altman talking about using GPT for building games. I said, *Challenge accepted.* I prompted:
+
+> "Can you make me a simple Jetpack Joyride game?"
+
+It delivered. The initial version was basic, so I asked it to improve UI, controls, and design. Here’s the evolution:
+
+### Initial Game Code:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jetpack Joyride Clone</title>
+    <style>
+      body {
+        margin: 0;
+        background: #222;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+        margin: auto;
+        background: linear-gradient(#87ceeb, #1e90ff);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // Player
+      const player = {
+        x: 50,
+        y: 200,
+        width: 40,
+        height: 40,
+        velocityY: 0,
+        gravity: 0.5,
+        lift: -10,
+      };
+
+      // Obstacles
+      let obstacles = [];
+      let frame = 0;
+      let score = 0;
+      let gameOver = false;
+
+      function drawPlayer() {
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+      }
+
+      function drawObstacles() {
+        ctx.fillStyle = "red";
+        obstacles.forEach((obs) => {
+          ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+        });
+      }
+
+      function updateObstacles() {
+        if (frame % 90 === 0) {
+          const height = Math.random() * 200 + 50;
+          obstacles.push({
+            x: canvas.width,
+            y: canvas.height - height,
+            width: 40,
+            height: height,
+          });
+        }
+        obstacles.forEach((obs) => (obs.x -= 5));
+        obstacles = obstacles.filter((obs) => obs.x + obs.width > 0);
+      }
+
+      function checkCollision() {
+        for (let obs of obstacles) {
+          if (
+            player.x < obs.x + obs.width &&
+            player.x + player.width > obs.x &&
+            player.y < obs.y + obs.height &&
+            player.y + player.height > obs.y
+          ) {
+            gameOver = true;
+          }
+        }
+        if (player.y + player.height > canvas.height || player.y < 0) {
+          gameOver = true;
+        }
+      }
+
+      function drawScore() {
+        ctx.fillStyle = "white";
+        ctx.font = "20px Arial";
+        ctx.fillText("Score: " + score, 10, 20);
+      }
+
+      function gameLoop() {
+        if (gameOver) {
+          ctx.fillStyle = "black";
+          ctx.globalAlpha = 0.7;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = "white";
+          ctx.font = "40px Arial";
+          ctx.fillText("Game Over", canvas.width / 2 - 100, canvas.height / 2);
+          ctx.font = "20px Arial";
+          ctx.fillText(
+            "Final Score: " + score,
+            canvas.width / 2 - 60,
+            canvas.height / 2 + 30
+          );
+          return;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Player physics
+        player.velocityY += player.gravity;
+        player.y += player.velocityY;
+
+        // Update & draw
+        drawPlayer();
+        updateObstacles();
+        drawObstacles();
+        checkCollision();
+
+        // Score
+        score++;
+        drawScore();
+
+        frame++;
+        requestAnimationFrame(gameLoop);
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.code === "Space") {
+          player.velocityY = player.lift;
+        }
+      });
+
+      gameLoop();
+    </script>
+  </body>
+</html>
+```
+
+### Upgraded Version with UI, Sprites, Background:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jetpack Joyride Clone</title>
+    <style>
+      body {
+        margin: 0;
+        background: #222;
+        overflow: hidden;
+        font-family: "Arial", sans-serif;
+      }
+      canvas {
+        display: block;
+        margin: auto;
+        background: #87ceeb;
+      }
+      #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        font-size: 24px;
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 18px;
+        margin-top: 20px;
+        cursor: pointer;
+        border: none;
+        background: #ff9800;
+        color: white;
+        border-radius: 5px;
+      }
+      button:hover {
+        background: #e68900;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="900" height="500"></canvas>
+    <div id="overlay">
+      <h1>🚀 Jetpack Joyride Clone</h1>
+      <p>Press SPACE or Hold Mouse/Touch to Fly</p>
+      <button id="startBtn">Start Game</button>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      const overlay = document.getElementById("overlay");
+      const startBtn = document.getElementById("startBtn");
+
+      // Load images
+      const playerImg = new Image();
+      playerImg.src =
+        "https://i.ibb.co/3m1V7nB/jetpack-guy.png"; // placeholder sprite
+
+      const coinImg = new Image();
+      coinImg.src = "https://i.ibb.co/4m1V7nB/coin.png"; // placeholder coin
+
+      const bgImg = new Image();
+      bgImg.src =
+        "https://i.ibb.co/6b1V7nB/bg-layer.png"; // placeholder background
+
+      // Game variables
+      let player, obstacles, coins, score, gameOver, frame, bgX, flying;
+
+      function resetGame() {
+        player = {
+          x: 100,
+          y: canvas.height / 2,
+          width: 50,
+          height: 50,
+          velocityY: 0,
+          gravity: 0.5,
+          lift: -10,
+        };
+        obstacles = [];
+        coins = [];
+        score = 0;
+        gameOver = false;
+        frame = 0;
+        bgX = 0;
+        flying = false;
+      }
+
+      function drawBackground() {
+        ctx.drawImage(bgImg, bgX, 0, canvas.width, canvas.height);
+        ctx.drawImage(bgImg, bgX + canvas.width, 0, canvas.width, canvas.height);
+        bgX -= 2;
+        if (bgX <= -canvas.width) bgX = 0;
+      }
+
+      function drawPlayer() {
+        ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+      }
+
+      function drawObstacles() {
+        ctx.fillStyle = "#ff4d4d";
+        obstacles.forEach((obs) => {
+          ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+        });
+      }
+
+      function drawCoins() {
+        coins.forEach((coin) => {
+          ctx.drawImage(coinImg, coin.x, coin.y, coin.size, coin.size);
+        });
+      }
+
+      function updateObstacles() {
+        if (frame % 100 === 0) {
+          const height = Math.random() * 200 + 50;
+          obstacles.push({
+            x: canvas.width,
+            y: canvas.height - height,
+            width: 50,
+            height: height,
+          });
+        }
+        obstacles.forEach((obs) => (obs.x -= 5));
+        obstacles = obstacles.filter((obs) => obs.x + obs.width > 0);
+      }
+
+      function updateCoins() {
+        if (frame % 150 === 0) {
+          coins.push({
+            x: canvas.width,
+            y: Math.random() * (canvas.height - 50),
+            size: 30,
+          });
+        }
+        coins.forEach((coin) => (coin.x -= 5));
+        coins = coins.filter((coin) => coin.x + coin.size > 0);
+      }
+
+      function checkCollision() {
+        for (let obs of obstacles) {
+          if (
+            player.x < obs.x + obs.width &&
+            player.x + player.width > obs.x &&
+            player.y < obs.y + obs.height &&
+            player.y + player.height > obs.y
+          ) {
+            gameOver = true;
+          }
+        }
+        coins.forEach((coin, index) => {
+          if (
+            player.x < coin.x + coin.size &&
+            player.x + player.width > coin.x &&
+            player.y < coin.y + coin.size &&
+            player.y + player.height > coin.y
+          ) {
+            score += 50;
+            coins.splice(index, 1);
+          }
+        });
+        if (player.y + player.height > canvas.height || player.y < 0) {
+          gameOver = true;
+        }
+      }
+
+      function drawScore() {
+        ctx.fillStyle = "white";
+        ctx.font = "20px Arial";
+        ctx.fillText("Score: " + score, 20, 30);
+      }
+
+      function gameLoop() {
+        if (gameOver) {
+          overlay.innerHTML = `
+            <h1>💀 Game Over</h1>
+            <p>Final Score: ${score}</p>
+            <button id="restartBtn">Restart</button>
+          `;
+          overlay.style.display = "flex";
+          document
+            .getElementById("restartBtn")
+            .addEventListener("click", () => {
+              overlay.style.display = "none";
+              resetGame();
+              requestAnimationFrame(gameLoop);
+            });
+          return;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        drawBackground();
+
+        // Player physics
+        if (flying) {
+          player.velocityY = player.lift;
+        }
+        player.velocityY += player.gravity;
+        player.y += player.velocityY;
+
+        drawPlayer();
+        updateObstacles();
+        drawObstacles();
+        updateCoins();
+        drawCoins();
+        checkCollision();
+
+        score++;
+        drawScore();
+
+        frame++;
+        requestAnimationFrame(gameLoop);
+      }
+
+      // Controls
+      document.addEventListener("keydown", (e) => {
+        if (e.code === "Space") flying = true;
+      });
+      document.addEventListener("keyup", (e) => {
+        if (e.code === "Space") flying = false;
+      });
+      canvas.addEventListener("mousedown", () => (flying = true));
+      canvas.addEventListener("mouseup", () => (flying = false));
+      canvas.addEventListener("touchstart", () => (flying = true));
+      canvas.addEventListener("touchend", () => (flying = false));
+
+      startBtn.addEventListener("click", () => {
+        overlay.style.display = "none";
+        resetGame();
+        requestAnimationFrame(gameLoop);
+      });
+    </script>
+  </body>
+</html>
+
+```
+
+And just like that, my childhood nostalgia had a browser-based rebirth. Bonus points: GPT-5 even suggested adding characters and sound effects if I wanted to take it further.
+
+**Images:**
+![Starting of the GTP-5](/BlogImages/starting.webp)
+![End Response of the GTP-5](/BlogImages/ending.webp)
+
+## Task 04: Project Help Through Chat Logs
+
+I was stuck with a client project, unsure about requirements and a bit short on time. So I:
+
+1. Exported my WhatsApp chat
+2. Gave GPT-5 full context
+3. Asked it to summarize goals and recommend solutions
+
+It analyzed everything, broke down campaign needs, and even recommended Mailchimp pop-ups, signup landing pages, and remarketing strategies.
+
+Some of the things I asked it:
+
+> "I want to collect leads but ditch Gmail forms. What's better?"
+
+> "Here’s a list of ideas: signup forms, embedded forms, surveys, ads—what’s ideal for me?"
+
+GPT-5 replied with real marketing insights. It was like having a digital strategist on call.
+
+Screenshots for context:
+
+* [Website Screenshot 1](https://upoevdcxa3.ufs.sh/f/IN4OjmY4wMHBXnZ1dSQiFhHc4D8kv2YePwEzyQOnbx90SfpK)
+* [Website Screenshot 2](https://upoevdcxa3.ufs.sh/f/IN4OjmY4wMHBdbzZougyKaOogCUwHXbPlf4L8SE0TIV5JB39)
+* [Website Screenshot 3](https://upoevdcxa3.ufs.sh/f/IN4OjmY4wMHBJPtqZtF6usOK0TVqB8Lv2akdgf94EwY5pjRD)
+
+## Final Thoughts: GPT-5 for Nerds & Mortals Alike
+
+If you're a casual user, GPT-5 will feel like a faster, smarter version of what you're used to.
+
+But if you're a *nerd*, like me (and probably you), then the magic starts when you:
+
+* Feed it context-rich tasks
+* Push its coding logic
+* Use it for real-world workflows (like game creation or marketing automation)
+
+I haven’t tested its full **tool calling** powers or deeper **Cursor integration**, but that’s coming next. Stay tuned.
