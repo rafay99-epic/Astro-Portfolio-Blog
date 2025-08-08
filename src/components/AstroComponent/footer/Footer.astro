@@ -17,16 +17,6 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
     transform: translateY(-1px);
   }
 
-  .astro-badge {
-    transition: all 0.2s ease;
-    opacity: 0.7;
-  }
-
-  .astro-badge:hover {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-
   .footer-section {
     transition: all 0.3s ease;
   }
@@ -44,22 +34,24 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
   }
 </style>
 
-<footer class="pt-8 pb-2 px-4 border-t border-[#565f89]/20 bg-gradient-to-b from-transparent to-[#1a1b26]/10">
+<footer
+  class="pt-8 pb-2 px-4 border-t border-[#565f89]/20 bg-gradient-to-b from-transparent to-[#1a1b26]/10"
+>
   <div class="container mx-auto max-w-7xl">
-    
     <!-- Main Footer Content -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-      
       <!-- Brand Section -->
       <div class="footer-section">
         <div class="flex items-center gap-3 mb-4">
-          <img 
-            src={authorConfig.avator} 
+          <img
+            src={authorConfig.avator}
             alt={authorConfig.name}
             class="w-12 h-12 rounded-full border-2 border-[#7aa2f7]/30"
           />
           <div>
-            <h3 class="text-lg font-semibold text-[#c0caf5]">{authorConfig.name}</h3>
+            <h3 class="text-lg font-semibold text-[#c0caf5]">
+              {authorConfig.name}
+            </h3>
             <p class="text-sm text-[#565f89]">{authorConfig.jobTitle}</p>
           </div>
         </div>
@@ -67,7 +59,7 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
           {authorConfig.SiteDescription}
         </p>
         <div class="social-links-container">
-          <SocialLinks class="flex gap-3" />
+          <SocialLinks class="flex gap-3" client:visible />
         </div>
       </div>
 
@@ -81,7 +73,7 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
                 href="/about"
                 class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full"></span>
+                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
                 About
               </a>
             )
@@ -92,7 +84,7 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
                 href="/blog"
                 class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full"></span>
+                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
                 Blog
               </a>
             )
@@ -103,7 +95,7 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
                 href="/project"
                 class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full"></span>
+                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
                 Projects
               </a>
             )
@@ -114,7 +106,7 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
                 href="/contact-me"
                 class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full"></span>
+                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
                 Contact
               </a>
             )
@@ -125,7 +117,7 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
                 href="/ms_notes"
                 class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full"></span>
+                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
                 Notes
               </a>
             )
@@ -135,82 +127,134 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
 
       <!-- Technology Stack -->
       <div class="footer-section">
-        <h3 class="text-lg font-semibold text-[#c0caf5] mb-4">Technology Stack</h3>
+        <h3 class="text-lg font-semibold text-[#c0caf5] mb-4">
+          Technology Stack
+        </h3>
         <div class="flex flex-col gap-3">
           <!-- Astro -->
-          <a 
-            href="https://astro.build" 
+          <a
+            href="https://astro.build"
             class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
           >
-            <div class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200">
-              <svg class="w-5 h-5 text-[#ff6d3a]" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 19h20L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-6h2v4h-2z"/>
+            <div
+              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+            >
+              <svg
+                class="w-5 h-5 text-[#ff6d3a]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12 2L2 19h20L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-6h2v4h-2z"
+                ></path>
               </svg>
             </div>
             <span class="font-medium">Astro Framework</span>
           </a>
 
           <!-- React -->
-          <a 
-            href="https://react.dev" 
+          <a
+            href="https://react.dev"
             class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
           >
-            <div class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200">
-              <svg class="w-5 h-5 text-[#61dafb]" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M14.23,12.004a2.236,2.236,0,0,1-2.235,2.236,2.236,2.236,0,0,1-2.236-2.236,2.236,2.236,0,0,1,2.235-2.236A2.236,2.236,0,0,1,14.23,12.004ZM11.995,24c-.263,0-.527-.027-.789-.077a12.044,12.044,0,0,1-9.46-9.461A11.87,11.87,0,0,1,1.5,12.005a11.87,11.87,0,0,1,.246-2.457,12.044,12.044,0,0,1,9.46-9.46A11.87,11.87,0,0,1,12.005,0a11.87,11.87,0,0,1,2.457.246,12.044,12.044,0,0,1,9.46,9.46,11.87,11.87,0,0,1,.246,2.457,11.87,11.87,0,0,1-.246,2.457,12.044,12.044,0,0,1-9.46,9.46A11.87,11.87,0,0,1,11.995,24ZM3.609,12.005a8.386,8.386,0,0,0,8.386,8.386,8.386,8.386,0,0,0,8.386-8.386,8.386,8.386,0,0,0-8.386-8.386A8.386,8.386,0,0,0,3.609,12.005Z"/>
+            <div
+              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+            >
+              <svg
+                class="w-5 h-5 text-[#61dafb]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M14.23,12.004a2.236,2.236,0,0,1-2.235,2.236,2.236,2.236,0,0,1-2.236-2.236,2.236,2.236,0,0,1,2.235-2.236A2.236,2.236,0,0,1,14.23,12.004ZM11.995,24c-.263,0-.527-.027-.789-.077a12.044,12.044,0,0,1-9.46-9.461A11.87,11.87,0,0,1,1.5,12.005a11.87,11.87,0,0,1,.246-2.457,12.044,12.044,0,0,1,9.46-9.46A11.87,11.87,0,0,1,12.005,0a11.87,11.87,0,0,1,2.457.246,12.044,12.044,0,0,1,9.46,9.46,11.87,11.87,0,0,1,.246,2.457,11.87,11.87,0,0,1-.246,2.457,12.044,12.044,0,0,1-9.46,9.46A11.87,11.87,0,0,1,11.995,24ZM3.609,12.005a8.386,8.386,0,0,0,8.386,8.386,8.386,8.386,0,0,0,8.386-8.386,8.386,8.386,0,0,0-8.386-8.386A8.386,8.386,0,0,0,3.609,12.005Z"
+                ></path>
               </svg>
             </div>
             <span class="font-medium">React Library</span>
           </a>
 
           <!-- Tailwind CSS -->
-          <a 
-            href="https://tailwindcss.com" 
+          <a
+            href="https://tailwindcss.com"
             class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
           >
-            <div class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200">
-              <svg class="w-5 h-5 text-[#06b6d4]" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/>
+            <div
+              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+            >
+              <svg
+                class="w-5 h-5 text-[#06b6d4]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"
+                ></path>
               </svg>
             </div>
             <span class="font-medium">Tailwind CSS</span>
           </a>
 
           <!-- Vercel -->
-          <a 
-            href="https://vercel.com" 
+          <a
+            href="https://vercel.com"
             class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
           >
-            <div class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200">
-              <svg class="w-5 h-5 text-[#000000] dark:text-[#ffffff]" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M24 22.525H0l12-21.05 12 21.05z"/>
+            <div
+              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+            >
+              <svg
+                class="w-5 h-5 text-[#000000] dark:text-[#ffffff]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M24 22.525H0l12-21.05 12 21.05z"></path>
               </svg>
             </div>
             <span class="font-medium">Vercel Deployment</span>
           </a>
 
           <!-- Tina CMS -->
-          <a 
-            href="https://tina.io" 
+          <a
+            href="https://tina.io"
             class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
           >
-            <div class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200">
-              <svg class="w-5 h-5 text-[#EC4815]" viewBox="0 0 448 621" fill="currentColor">
-                <path d="M287.399 275.676C317.558 250.731 330.922 103.315 343.977 50.3249C357.033 -2.6648 411.027 0.0227954 411.027 0.0227954C411.027 0.0227954 397.009 24.4176 402.727 42.6222C408.444 60.8267 447.612 77.0994 447.612 77.0994L439.165 99.3704C439.165 99.3704 421.524 97.114 411.027 118.112C400.53 139.109 424.177 344.885 424.177 344.885C424.177 344.885 354.684 471.46 354.684 524C354.684 576.539 379.552 620.572 379.552 620.572H344.655C344.655 620.572 293.462 559.65 282.963 529.203C272.464 498.757 276.662 468.31 276.662 468.31C276.662 468.31 221.017 465.161 171.674 468.31C122.331 471.46 89.4239 513.876 83.4849 537.603C77.5459 561.329 75.0859 620.572 75.0859 620.572H47.4931C30.6987 568.744 17.3603 550.169 24.5963 524C44.6393 451.512 40.7023 410.399 36.0616 392.088C31.4209 373.776 0 357.794 0 357.794C15.3916 326.436 31.1027 311.368 98.6838 309.796C166.265 308.225 257.239 300.62 287.399 275.676Z"/>
-                <path d="M106.714 520.964C106.714 520.964 113.844 586.948 151.724 620.573H184.186C151.724 583.798 148.184 487.941 148.184 487.941C131.673 493.317 108.814 512.565 106.714 520.964Z"/>
+            <div
+              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+            >
+              <svg
+                class="w-5 h-5 text-[#EC4815]"
+                viewBox="0 0 448 621"
+                fill="currentColor"
+              >
+                <path
+                  d="M287.399 275.676C317.558 250.731 330.922 103.315 343.977 50.3249C357.033 -2.6648 411.027 0.0227954 411.027 0.0227954C411.027 0.0227954 397.009 24.4176 402.727 42.6222C408.444 60.8267 447.612 77.0994 447.612 77.0994L439.165 99.3704C439.165 99.3704 421.524 97.114 411.027 118.112C400.53 139.109 424.177 344.885 424.177 344.885C424.177 344.885 354.684 471.46 354.684 524C354.684 576.539 379.552 620.572 379.552 620.572H344.655C344.655 620.572 293.462 559.65 282.963 529.203C272.464 498.757 276.662 468.31 276.662 468.31C276.662 468.31 221.017 465.161 171.674 468.31C122.331 471.46 89.4239 513.876 83.4849 537.603C77.5459 561.329 75.0859 620.572 75.0859 620.572H47.4931C30.6987 568.744 17.3603 550.169 24.5963 524C44.6393 451.512 40.7023 410.399 36.0616 392.088C31.4209 373.776 0 357.794 0 357.794C15.3916 326.436 31.1027 311.368 98.6838 309.796C166.265 308.225 257.239 300.62 287.399 275.676Z"
+                ></path>
+                <path
+                  d="M106.714 520.964C106.714 520.964 113.844 586.948 151.724 620.573H184.186C151.724 583.798 148.184 487.941 148.184 487.941C131.673 493.317 108.814 512.565 106.714 520.964Z"
+                ></path>
               </svg>
             </div>
             <span class="font-medium">Tina CMS</span>
           </a>
 
           <!-- GitHub -->
-          <a 
-            href="https://github.com" 
+          <a
+            href="https://github.com"
             class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
           >
-            <div class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200">
-              <svg class="w-5 h-5 text-[#ffffff]" viewBox="0 0 1024 1024" fill="currentColor">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" transform="scale(64)"/>
+            <div
+              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+            >
+              <svg
+                class="w-5 h-5 text-[#ffffff]"
+                viewBox="0 0 1024 1024"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z"
+                  transform="scale(64)"></path>
               </svg>
             </div>
             <span class="font-medium">GitHub</span>
@@ -220,7 +264,9 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
 
       <!-- Services & Resources -->
       <div class="footer-section">
-        <h3 class="text-lg font-semibold text-[#c0caf5] mb-4">Services & Resources</h3>
+        <h3 class="text-lg font-semibold text-[#c0caf5] mb-4">
+          Services & Resources
+        </h3>
         <div class="grid grid-cols-1 gap-4">
           <div>
             <h4 class="text-sm font-medium text-[#7aa2f7] mb-3">Services</h4>
@@ -235,7 +281,7 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
                     href="/privacy-policy"
                     class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
                   >
-                    <span class="w-1 h-1 bg-[#7aa2f7] rounded-full"></span>
+                    <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
                     Privacy Policy
                   </a>
                 )
@@ -246,7 +292,7 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
                     href="/terms-of-service"
                     class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
                   >
-                    <span class="w-1 h-1 bg-[#7aa2f7] rounded-full"></span>
+                    <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
                     Terms of Service
                   </a>
                 )
@@ -259,7 +305,7 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
                     rel="noopener noreferrer"
                     class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
                   >
-                    <span class="w-1 h-1 bg-[#7aa2f7] rounded-full"></span>
+                    <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
                     Documentation
                   </a>
                 )
@@ -280,19 +326,36 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
     </div>
 
     <!-- Bottom: Copyright & Info -->
-    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-[#565f89]/10">
+    <div
+      class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-[#565f89]/10"
+    >
       <div class="text-center sm:text-left">
         <p class="text-[#565f89] text-sm">
-          &copy; {new Date().getFullYear()} {authorConfig.name}. All rights reserved.
+          &copy; {new Date().getFullYear()}
+          {authorConfig.name}. All rights reserved.
         </p>
-        <p class="text-xs text-[#565f89]/70 mt-1 flex items-center gap-1 justify-center sm:justify-start">
+        <p
+          class="text-xs text-[#565f89]/70 mt-1 flex items-center gap-1 justify-center sm:justify-start"
+        >
           <span>Crafted with</span>
-          <svg class="w-3 h-3 text-[#f7768e]" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          <svg
+            class="w-3 h-3 text-[#f7768e]"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            ></path>
           </svg>
           <span>and lots of</span>
-          <svg class="w-3 h-3 text-[#e0af68]" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7v-1h.5c1.93 0 3.5-1.57 3.5-3.5S20.43 3 18.5 3z"/>
+          <svg
+            class="w-3 h-3 text-[#e0af68]"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7v-1h.5c1.93 0 3.5-1.57 3.5-3.5S20.43 3 18.5 3z"
+            ></path>
           </svg>
         </p>
       </div>
@@ -303,11 +366,15 @@ import ServicesIcons from "../../ReactComponent/footer/ServicesIcons";
           <span>v{packageJson.version}</span>
         </div>
         <span class="hidden sm:inline">•</span>
-        <span class="hidden sm:inline">{today.toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'short', 
-          day: 'numeric' 
-        })}</span>
+        <span class="hidden sm:inline"
+          >{
+            today.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })
+          }</span
+        >
         <span class="hidden md:inline">•</span>
         <span class="hidden md:inline">Last updated</span>
       </div>

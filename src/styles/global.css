@@ -728,3 +728,8 @@ html {
         height: 3px;
     }
 }
+
+[data-astro-reload] {
+    opacity: 1 !important;
+    transition: none !important;
+}

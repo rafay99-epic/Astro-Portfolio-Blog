@@ -20,8 +20,7 @@
         "lifeBeyondCode": "Away from the screen, I recharge through life's simple joys—sipping coffee, diving into competitive video games, and exploring new experiences. This balance keeps me energized and brings a fresh, creative edge to the problems I solve every day.",
         "continuousLearning": "I thrive on continuous learning and self-improvement. The fast-paced evolution of the tech industry excites me, and I'm always expanding my skills to stay ahead. Whether it's adopting new frameworks or refining my problem-solving toolkit, I'm driven by curiosity and a commitment to excellence."
     },
-    "techStack": [
-        {
+    "techStack": [{
             "category": "App Development",
             "tools": [
                 "flutter",
@@ -40,7 +39,7 @@
                 "nodejs",
                 "react",
                 "typescript",
-                "javascript", 
+                "javascript",
                 "nextjs"
             ]
         },
@@ -52,7 +51,6 @@
                 "sqlite",
                 "supabase",
                 "postgresql",
-                "express",
                 "prisma",
                 "convex",
                 "nodejs",
@@ -79,8 +77,7 @@
             ]
         }
     ],
-    "workExperience": [
-        {
+    "workExperience": [{
             "companyName": "Future Tech Technologies",
             "position": "Senior Software Engineer & Team Lead",
             "employmentTime": "2nd June, 2025 - Present",
@@ -205,8 +202,7 @@
             ]
         }
     ],
-    "testimonials": [
-        {
+    "testimonials": [{
             "id": 1,
             "name": "Sarah Johnson",
             "position": "CEO",
@@ -251,8 +247,7 @@
             "technologies": ["Next.js", "Redis", "Docker"]
         }
     ],
-    "services": [
-        {
+    "services": [{
             "title": "Mobile App Development",
             "description": "Building native and cross-platform mobile applications with Flutter and React Native. From concept to deployment, I create intuitive, high-performance apps for iOS and Android.",
             "icon": "📱",
