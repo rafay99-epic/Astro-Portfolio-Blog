@@ -106,6 +106,33 @@ const {
         filter: blur(2px);
         z-index: -1;
       }
+
+      /* Prevent white flash - Critical styles */
+      html {
+        background-color: #1a1b26 !important;
+      }
+
+      body {
+        background-color: #1a1b26 !important;
+        transition: none !important;
+      }
+
+      .blog-container {
+        background-color: #1a1b26 !important;
+      }
+    </style>
+
+    <!-- Critical inline styles to prevent any flash -->
+    <style is:inline>
+      html {
+        background-color: #1a1b26 !important;
+      }
+      body {
+        background-color: #1a1b26 !important;
+      }
+      #__astro {
+        background-color: #1a1b26 !important;
+      }
     </style>
 
     <SEO
@@ -361,7 +388,6 @@ const {
 
         <h1
           class="text-4xl md:text-5xl mb-8 leading-tight bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
-          transition:name={`blog-title-${currentSlug}`}
         >
           {title}
         </h1>

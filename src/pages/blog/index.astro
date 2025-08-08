@@ -40,6 +40,31 @@ try {
 
     <SpeedInsights />
 
+    <!-- Critical inline styles to prevent white flash -->
+    <style is:inline>
+      html {
+        background-color: #1a1b26 !important;
+      }
+      body {
+        background-color: #1a1b26 !important;
+      }
+      #__astro {
+        background-color: #1a1b26 !important;
+      }
+    </style>
+
+    <style>
+      /* Prevent white flash */
+      html {
+        background-color: #1a1b26 !important;
+      }
+
+      body {
+        background-color: #1a1b26 !important;
+        transition: none !important;
+      }
+    </style>
+
     <!-- Structured Data for Blog Listing -->
     <script
       type="application/ld+json"
@@ -97,18 +122,13 @@ try {
         {
           posts.map((post, index) => (
             <article>
-              <a
-                href={`/blog/${post.slug}`}
-                class="block"
-                transition:name={`blog-card-${post.slug}`}
-              >
+              <a href={`/blog/${post.slug}`} class="block">
                 {/* Larger Image with Breathing Room */}
                 <div class="h-64 overflow-hidden rounded-xl mb-6">
                   <img
                     src={post.data.heroImage || "/default-image.jpg"}
                     alt={post.data.title}
                     class="w-full h-full object-cover"
-                    transition:name={`blog-image-${post.slug}`}
                   />
                 </div>
 
@@ -127,10 +147,7 @@ try {
                   </time>
 
                   {/* Centered Title */}
-                  <h2
-                    class="text-xl text-white mb-6 line-clamp-2 leading-tight hover:text-[#7aa2f7] transition-colors duration-200"
-                    transition:name={`blog-title-${post.slug}`}
-                  >
+                  <h2 class="text-xl text-white mb-6 line-clamp-2 leading-tight hover:text-[#7aa2f7] transition-colors duration-200">
                     {post.data.title}
                   </h2>
 
