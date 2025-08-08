@@ -7,7 +7,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "../config/featureFlag/featureFlag.json";
 import MermaidRenderer from "../components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer";
 import CodeCopySimple from "../components/ReactComponent/blog/enhancements/code-copy/CodeCopySimple";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 
 const pageUrl = Astro.url.href;
 export const prerender = true;
@@ -16,11 +16,9 @@ type Props = {
   Projecttitle: string;
   ProjectDescription: string;
   ProjectTech?: string[];
-
 };
 
-const { Projecttitle, ProjectDescription, ProjectTech } =
-  Astro.props;
+const { Projecttitle, ProjectDescription, ProjectTech } = Astro.props;
 
 try {
   if (!featureFlags.showProjects) {
@@ -34,7 +32,7 @@ try {
 <html lang="en">
   <head>
     <BaseHead title={Projecttitle} description={ProjectDescription} />
-    <ViewTransitions />
+    <ClientRouter />
     <SpeedInsights />
     <style>
       /* Prevent white flash during view transitions */
@@ -60,7 +58,6 @@ try {
         background-color: #1a1b26;
       }
 
-      
       /* Prevent flash on React component mount */
       [data-astro-reload] {
         opacity: 1 !important;
@@ -238,7 +235,7 @@ try {
   <body class="project-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
 
-    <main class="w-full max-w-7xl mx-auto ">
+    <main class="w-full max-w-7xl mx-auto">
       <article>
         {/* Project Header - Title Only */}
         <div class="project-header text-center">
@@ -246,20 +243,23 @@ try {
             <span>🚀</span>
             Project
           </div>
-          <h1 
+          <h1
             class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight"
             transition:name={`project-title-${Projecttitle}`}
           >
-            <span class="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent">
+            <span
+              class="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+            >
               {Projecttitle}
             </span>
           </h1>
-          {ProjectDescription && (
-            <p class="text-lg text-[#a9b1d6] max-w-3xl mx-auto leading-relaxed">
-              {ProjectDescription}
-            </p>
-          )}
-
+          {
+            ProjectDescription && (
+              <p class="text-lg text-[#a9b1d6] max-w-3xl mx-auto leading-relaxed">
+                {ProjectDescription}
+              </p>
+            )
+          }
         </div>
 
         {/* Technologies Section - Only if tech exists */}
@@ -271,9 +271,7 @@ try {
               </h3>
               <div class="tech-grid">
                 {ProjectTech.map((tech) => (
-                  <span class="tech-chip">
-                    {tech}
-                  </span>
+                  <span class="tech-chip">{tech}</span>
                 ))}
               </div>
             </div>
@@ -290,7 +288,7 @@ try {
           <ShareButtons url={pageUrl} pagetitle="Project" client:visible />
         </div>
       </article>
-      
+
       <MermaidRenderer client:load />
       <CodeCopySimple client:load />
     </main>

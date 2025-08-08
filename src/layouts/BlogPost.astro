@@ -11,7 +11,7 @@ import CodeCopySimple from "../components/ReactComponent/blog/enhancements/code-
 import MermaidRenderer from "../components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer";
 import ImageCaptionRenderer from "../components/ReactComponent/blog/enhancements/image-caption-renderer/ImageCaptionRenderer";
 import BlogNavigation from "../components/ReactComponent/blog/layout/BlogNavigation";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -32,7 +32,7 @@ try {
 
 const BlogPosts = featureFlags.showBlog
   ? (await getCollection("blog"))
-      .filter(post => !post.data.draft) // Only published posts
+      .filter((post) => !post.data.draft) // Only published posts
       .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
   : [];
 
@@ -63,43 +63,14 @@ const {
 
 <html lang="en">
   <head>
-    <BaseHead 
-      title={title} 
-      description={description} 
+    <BaseHead
+      title={title}
+      description={description}
       image={heroImage}
       keywords={keywords}
     />
-    <ViewTransitions />
+    <ClientRouter />
     <style>
-      /* Prevent white flash during view transitions */
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation: none;
-        mix-blend-mode: normal;
-      }
-
-      /* Ensure smooth transitions */
-      html {
-        background-color: #1a1b26;
-      }
-
-      body {
-        background-color: #1a1b26;
-        transition: none;
-      }
-
-      .blog-container {
-        min-height: 100vh;
-        position: relative;
-        background-color: #1a1b26;
-      }
-
-      /* Prevent flash on React component mount */
-      [data-astro-reload] {
-        opacity: 1 !important;
-        transition: none !important;
-      }
-
       #scroll-progress {
         position: fixed;
         top: 0;
@@ -136,63 +107,6 @@ const {
         filter: blur(2px);
         z-index: -1;
       }
-
-      .comments-container {
-        background: rgba(26, 27, 38, 0.6);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(86, 95, 137, 0.2);
-        border-radius: 20px;
-        padding: 32px;
-        margin-top: 32px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .comments-container::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(
-          135deg,
-          rgba(122, 162, 247, 0.03) 0%,
-          rgba(187, 154, 247, 0.03) 100%
-        );
-        pointer-events: none;
-      }
-
-      .comments-header {
-        text-align: center;
-        margin-bottom: 2rem;
-        position: relative;
-        z-index: 1;
-      }
-
-      .comments-title {
-        font-size: 2.5rem;
-        font-weight: bold;
-        background: linear-gradient(135deg, #7aa2f7, #bb9af7);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 0.5rem;
-      }
-
-      @media (max-width: 600px) {
-        .comments-container {
-          padding: 24px;
-        }
-
-        .comments-title {
-          font-size: 2rem;
-        }
-
-        #scroll-progress {
-          height: 3px;
-        }
-      }
     </style>
 
     <SEO
@@ -202,7 +116,9 @@ const {
         basic: {
           title: title,
           type: "article",
-          image: heroImage ? new URL(heroImage, Astro.url).toString() : openGraphImageUrl,
+          image: heroImage
+            ? new URL(heroImage, Astro.url).toString()
+            : openGraphImageUrl,
           url: pageUrl,
         },
         optional: {
@@ -217,123 +133,156 @@ const {
         creator: "@rafay99",
       }}
     />
-        <!-- Google tag (gtag.js) -->
-    <script  type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-DKPL4VGM52"></script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      type="text/partytown"
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-DKPL4VGM52"></script>
     <script type="text/partytown">
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-DKPL4VGM52');
+      gtag("config", "G-DKPL4VGM52");
     </script>
     <!-- Structured Data for Blog Post -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": title,
-      "description": description,
-      "image": heroImage ? new URL(heroImage, Astro.url).toString() : new URL("/Rafay99.webp", Astro.url).toString(),
-      "author": {
-        "@type": "Person",
-        "name": authorName,
-        "image": authorAvatar ? new URL(authorAvatar, Astro.url).toString() : new URL("/author.jpg", Astro.url).toString(),
-        "url": "https://rafay99.com"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Rafay99",
-        "logo": {
-          "@type": "ImageObject",
-          "url": new URL("/favicon.webp", Astro.url).toString()
-        }
-      },
-      "datePublished": pubDate.toISOString(),
-      "dateModified": currentBlog.data.updatedDate?.toISOString() || pubDate.toISOString(),
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": pageUrl
-      },
-      "keywords": keywords?.join(", ") || tags?.join(", ") || "blog, technology, programming",
-      "articleSection": tags?.[0] || "Technology",
-      "wordCount": blogContent.length,
-      "timeRequired": readTime || "5 min read"
-    })} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: title,
+        description: description,
+        image: heroImage
+          ? new URL(heroImage, Astro.url).toString()
+          : new URL("/Rafay99.webp", Astro.url).toString(),
+        author: {
+          "@type": "Person",
+          name: authorName,
+          image: authorAvatar
+            ? new URL(authorAvatar, Astro.url).toString()
+            : new URL("/author.jpg", Astro.url).toString(),
+          url: "https://rafay99.com",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Rafay99",
+          logo: {
+            "@type": "ImageObject",
+            url: new URL("/favicon.webp", Astro.url).toString(),
+          },
+        },
+        datePublished: pubDate.toISOString(),
+        dateModified:
+          currentBlog.data.updatedDate?.toISOString() || pubDate.toISOString(),
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": pageUrl,
+        },
+        keywords:
+          keywords?.join(", ") ||
+          tags?.join(", ") ||
+          "blog, technology, programming",
+        articleSection: tags?.[0] || "Technology",
+        wordCount: blogContent.length,
+        timeRequired: readTime || "5 min read",
+      })}
+    />
 
     <!-- Breadcrumb Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://rafay99.com"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Blog",
-          "item": "https://rafay99.com/blog"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": title,
-          "item": pageUrl
-        }
-      ]
-    })} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://rafay99.com",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: "https://rafay99.com/blog",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: title,
+            item: pageUrl,
+          },
+        ],
+      })}
+    />
 
     <!-- FAQ Schema for Better Search Visibility -->
-    {(() => {
-      const faqMatches = blogContent.match(/^#{2,6}\s+(.+)$/gm);
-      if (!faqMatches || faqMatches.length < 3) return null;
-      
-      const faqItems = faqMatches.slice(0, 5).map((heading, index) => {
-        const text = heading.replace(/^#{2,6}\s+/, '');
-        return {
-          "@type": "Question",
-          "name": text,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `This section covers ${text.toLowerCase()}. Read the full article for detailed information.`
-          }
-        };
-      });
-      
-      return (
-        <script type="application/ld+json" set:html={JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": faqItems
-        })} />
-      );
-    })()}
+    {
+      (() => {
+        const faqMatches = blogContent.match(/^#{2,6}\s+(.+)$/gm);
+        if (!faqMatches || faqMatches.length < 3) return null;
+
+        const faqItems = faqMatches.slice(0, 5).map((heading, index) => {
+          const text = heading.replace(/^#{2,6}\s+/, "");
+          return {
+            "@type": "Question",
+            name: text,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: `This section covers ${text.toLowerCase()}. Read the full article for detailed information.`,
+            },
+          };
+        });
+
+        return (
+          <script
+            type="application/ld+json"
+            set:html={JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: faqItems,
+            })}
+          />
+        );
+      })()
+    }
 
     <!-- Additional SEO Meta Tags -->
     <meta name="author" content={authorName} />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="googlebot" content="index, follow">
-    <meta name="bingbot" content="index, follow">
-    <meta name="copyright" content="© 2025 Abdul Rafay">
-    <meta name="keywords" content={keywords?.join(", ") || tags?.join(", ") || "blog, technology, programming"} />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="bingbot" content="index, follow" />
+    <meta name="copyright" content="© 2025 Abdul Rafay" />
+    <meta
+      name="keywords"
+      content={keywords?.join(", ") ||
+        tags?.join(", ") ||
+        "blog, technology, programming"}
+    />
     <meta name="article:published_time" content={pubDate.toISOString()} />
-    {currentBlog.data.updatedDate && (
-      <meta name="article:modified_time" content={currentBlog.data.updatedDate.toISOString()} />
-    )}
+    {
+      currentBlog.data.updatedDate && (
+        <meta
+          name="article:modified_time"
+          content={currentBlog.data.updatedDate.toISOString()}
+        />
+      )
+    }
     <meta name="article:author" content={authorName} />
-    {tags?.map(tag => (
-      <meta name="article:tag" content={tag} />
-    ))}
+    {tags?.map((tag) => <meta name="article:tag" content={tag} />)}
     <meta name="article:section" content={tags?.[0] || "Technology"} />
     {featured && <meta name="article:featured" content="true" />}
     {excerpt && <meta name="description" content={excerpt} />}
-    
+
     <!-- Preload hero image for better performance -->
-    {heroImage && (
-      <link rel="preload" as="image" href={heroImage} />
-    )}
+    {heroImage && <link rel="preload" as="image" href={heroImage} />}
 
     <!-- Enhanced SEO Meta Tags -->
     <meta name="revisit-after" content="7 days" />
@@ -343,39 +292,47 @@ const {
     <meta name="target" content="all" />
     <meta name="HandheldFriendly" content="true" />
     <meta name="format-detection" content="telephone=no" />
-    
+
     <!-- Social Media Enhanced Meta Tags -->
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Rafay99" />
     <meta property="og:published_time" content={pubDate.toISOString()} />
-    {currentBlog.data.updatedDate && (
-      <meta property="og:modified_time" content={currentBlog.data.updatedDate.toISOString()} />
-    )}
-    {tags?.map(tag => (
-      <meta property="og:tag" content={tag} />
-    ))}
-    
+    {
+      currentBlog.data.updatedDate && (
+        <meta
+          property="og:modified_time"
+          content={currentBlog.data.updatedDate.toISOString()}
+        />
+      )
+    }
+    {tags?.map((tag) => <meta property="og:tag" content={tag} />)}
+
     <!-- Twitter Enhanced Meta Tags -->
     <meta name="twitter:label1" content="Reading time" />
     <meta name="twitter:data1" content={readTime || "5 min read"} />
     <meta name="twitter:label2" content="Category" />
     <meta name="twitter:data2" content={tags?.[0] || "Technology"} />
-    
+
     <!-- Canonical URL -->
-    {canonicalUrl ? (
-      <link rel="canonical" href={canonicalUrl} />
-    ) : (
-      <link rel="canonical" href={pageUrl} />
-    )}
-    
+    {
+      canonicalUrl ? (
+        <link rel="canonical" href={canonicalUrl} />
+      ) : (
+        <link rel="canonical" href={pageUrl} />
+      )
+    }
+
     <!-- Language and Region -->
     <meta name="language" content="English" />
     <meta name="geo.region" content="US" />
     <meta name="geo.placename" content="United States" />
-    
+
     <!-- Content Security Policy for better security -->
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="upgrade-insecure-requests"
+    />
     <SpeedInsights />
   </head>
   <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
@@ -383,30 +340,37 @@ const {
     <div id="scroll-progress"></div>
 
     <main
-      class="max-w-4xl mx-auto w-full px-6 py-8 md:py-12 overflow-x-hidden main-content  pt-15"
+      class="max-w-4xl mx-auto w-full px-6 py-8 md:py-12 overflow-x-hidden main-content pt-15"
     >
       <!-- Minimal Blog Header -->
       <header class="mb-12 text-center">
-        <div class="flex items-center justify-center gap-4 text-sm text-[#565f89] mb-4">
+        <div
+          class="flex items-center justify-center gap-4 text-sm text-[#565f89] mb-4"
+        >
           <time datetime={pubDate.toISOString()}>
-            {new Date(pubDate).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            {
+              new Date(pubDate).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            }
           </time>
           <span>•</span>
           <span>Written by {authorName}</span>
         </div>
-        
-        <h1 class="text-4xl md:text-5xl  mb-8 leading-tight bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent" transition:name={`blog-title-${currentSlug}`}>
+
+        <h1
+          class="text-4xl md:text-5xl mb-8 leading-tight bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+          transition:name={`blog-title-${currentSlug}`}
+        >
           {title}
         </h1>
       </header>
 
       <!-- Main Content -->
-      <div class="w-full ">
-          <slot />
+      <div class="w-full">
+        <slot />
       </div>
 
       <!-- Mermaid Diagram Renderer -->
@@ -419,7 +383,7 @@ const {
       <CodeCopySimple client:load />
 
       <!-- Blog Navigation -->
-      <BlogNavigation 
+      <BlogNavigation
         client:load
         currentSlug={currentSlug || ""}
         allPosts={BlogPosts}
@@ -452,8 +416,6 @@ const {
           window.scrollTo(0, 0);
         }, 0);
       });
-
-
     </script>
     <script type="text/partytown" is:inline src="/js/progressbar.js"></script>
     <Footer />
