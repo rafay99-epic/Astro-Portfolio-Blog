@@ -91,17 +91,9 @@ body {
     line-height: 1.7;
 }
 
-/* Prevent white flash during view transitions */
-::view-transition-old(root),
-::view-transition-new(root) {
-    animation: none !important;
-    mix-blend-mode: normal !important;
-}
-
-/* Prevent flash on React component mount */
-[data-astro-reload] {
-    opacity: 1 !important;
-    transition: none !important;
+/* Ensure consistent styling across all pages */
+body {
+    background-color: #1a1b26 !important;
 }
 
 

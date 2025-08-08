@@ -5,7 +5,7 @@ import Footer from "../../components/AstroComponent/footer/Footer.astro";
 import authorConfig from "../../config/siteConfig/info.json";
 import { getCollection } from "astro:content";
 import { featureFlags } from "../../config/featureFlag/featureFlag.json";
-import { ClientRouter } from "astro:transitions";
+
 export const prerender = false;
 import SpeedInsights from "@vercel/speed-insights/astro";
 
@@ -39,7 +39,6 @@ try {
     />
 
     <SpeedInsights />
-    <ClientRouter />
 
     <!-- Structured Data for Blog Listing -->
     <script

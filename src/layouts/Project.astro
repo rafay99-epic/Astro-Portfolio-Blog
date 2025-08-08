@@ -7,7 +7,6 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "../config/featureFlag/featureFlag.json";
 import MermaidRenderer from "../components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer";
 import CodeCopySimple from "../components/ReactComponent/blog/enhancements/code-copy/CodeCopySimple";
-import { ClientRouter } from "astro:transitions";
 
 const pageUrl = Astro.url.href;
 export const prerender = true;
@@ -32,37 +31,21 @@ try {
 <html lang="en">
   <head>
     <BaseHead title={Projecttitle} description={ProjectDescription} />
-    <ClientRouter />
     <SpeedInsights />
     <style>
-      /* Prevent white flash during view transitions */
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation: none;
-        mix-blend-mode: normal;
-      }
-
-      /* Ensure smooth transitions */
+      /* Ensure consistent background */
       html {
         background-color: #1a1b26;
       }
 
       body {
         background-color: #1a1b26;
-        transition: none;
       }
 
       .project-container {
         min-height: 100vh;
         position: relative;
         background-color: #1a1b26;
-      }
-
-      /* Prevent flash on React component mount */
-      [data-astro-reload] {
-        opacity: 1 !important;
-        transition: none !important;
-        animation: none !important;
       }
 
       /* Hide scrollbar for better UX */

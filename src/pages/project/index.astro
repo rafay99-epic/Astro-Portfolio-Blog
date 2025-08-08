@@ -6,7 +6,7 @@ import authorConfig from "@config/siteConfig/info.json";
 import { getCollection } from "astro:content";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { ClientRouter } from "astro:transitions";
+
 
 const projects = await getCollection("projects");
 export const prerender = true;
@@ -35,7 +35,7 @@ const filteredProjects = projects
       title={`Projects | ${authorConfig.SiteName}`}
       description={`Browse all projects on ${authorConfig.SiteName} and explore categorized content.`}
     />
-    <ClientRouter />
+
   </head>
 
   <body class="bg-[#1a1b26] text-[#c0caf5]" style="overflow-x: hidden; overflow-y: auto;">
