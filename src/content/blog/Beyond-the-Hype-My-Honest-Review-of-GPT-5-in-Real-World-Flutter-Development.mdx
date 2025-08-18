@@ -1,0 +1,100 @@
+---
+title: 'Beyond the Hype: My Honest Review of GPT-5 in Real-World Flutter Development'
+description: >-
+  "Weeks of buzz, big promises, but did GPT-5 truly revolutionize my coding
+  workflow? I spent 50 intensive hours leveraging GPT-5 and Cursor to resurrect
+  an old Flutter project (MS Bridge), fix stubborn bugs, and integrate a host of
+  new features. Dive into my candid experience to see if OpenAI's latest model
+  lives up to the 'game-changer' claims for software engineers."
+pubDate: 2025-08-18T19:00:00.000Z
+draft: true
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - Thought-Process
+  - AI
+keywords:
+  - Flutter Project
+  - AI coding assistant
+  - Flutter development GPT-5
+  - GPT-5 real-world
+  - GPT-5 review
+  - software engineer GPT-5
+canonicalUrl: >-
+  https://rafay99.com/blog/Beyond-the-Hype-My-Honest-Review-of-GPT-5-in-Real-World-Flutter-Development
+featured: true
+excerpt: >-
+  Spent 50 hours on GPT-5 for Flutter development: fixing bugs, adding features
+  to MS Bridge. My honest take on OpenAI's 'game-changer' claims for software
+  engineers.
+---
+
+Remember the fever pitch, the whispers, the sheer *anticipation* leading up to the GPT-5 launch? For what felt like ages, OpenAI seemed to be playing catch-up, then suddenly, the internet exploded with news of GPT-5, promising a monumental leap forward. Like many, my ears were glued, my developer senses tingling. This *had* to be the one, right? The massive, paradigm-shifting change we’d all been waiting for.
+
+Well, after spending nearly 50 intense hours putting GPT-5 through its paces on a real-world project, I'm here to spill the beans. And let's just say, the reality check was…interesting.
+
+### The Buzz vs. The Reality: Is GPT-5 *Really* Different?
+
+Initial thoughts? It looked amazing, just as we all hoped. But then, the honeymoon phase ended. After extensively using GPT-5 with various tools and workflows, I have to be honest: it doesn't *feel* like the massive change OpenAI proclaimed. It feels, dare I say it, a lot like GPT-4.
+
+Sure, it brings some undeniable improvements to the table:
+
+1. **More Context Window:** Definitely a plus for those longer coding sessions or complex problem-solving.
+2. **Better Tool Calling:** Smoother integrations and more reliable execution of external functions.
+3. **Smarter Decisions:** In some scenarios, it seems to grasp nuances better, leading to slightly more intelligent code suggestions.
+
+But are these incremental upgrades enough to warrant the "massive change" rhetoric? For me, as a developer working to ship features, the answer leaned towards a resounding "not quite."
+
+### The Unfinished Business: Resurrecting MS Bridge with GPT-5
+
+Feeling a bit underwhelmed by the "next big thing," I decided to put GPT-5 to the ultimate test: breathing new life into an old Flutter project of mine, **MS Bridge**. This app had been sidelined due to a nasty combination of Flutter version woes, stubborn build issues, and general machine-related gremlins. It was the perfect guinea pig for GPT-5's supposed prowess in debugging and feature implementation.
+
+My goal? Vibe code most of the application's features, making sure things worked better, and seeing if GPT-5 could truly accelerate the prototyping phase.
+
+I started with the new **Cursor Agent CLI**, which, by default, runs the GPT-5 model. My first hurdle, a familiar nemesis: getting the project to *run*. I knew it was Flutter 3.22.2, but Java versions, build paths, and a host of other cryptic errors were causing endless headaches. Off the bat, GPT-5's CLI agent struggled. It kept running into the same issues, again and again, until I had to step in, manually install Java 17, and configure the project path. **Lesson one:** Even with GPT-5, fundamental environment setup still needs a human touch.
+
+### Bug Squashing & Feature Frenzy: A Mixed Bag
+
+With the project finally running, I dove into fixing some long-standing bugs in the MS Bridge Note-Taking Editor (if you’re curious about MS Bridge, check out my previous blog post!). The main culprits were:
+
+1. **AI Summary Not Working:** A crucial feature for quick insights into notes.
+2. **Auto-Save Triplicate:** New notes would mysteriously create three identical copies.
+3. **Blog Search Breakdown:** The search functionality for blog entries was stubbornly broken.
+
+I set about fixing these with GPT-5's assistance. Initially, I found its understanding of my small, well-divided file structure a bit...fragmented. It would often fail to identify dependencies between files and make assumptions that led to frustrating dead ends. Let's just say, my patience was tested!
+
+Switching from the Cursor CLI to **Cursor with the GPT-5 Model** (the desktop application interface) definitely improved things. The context window felt much larger, losing its "memory" less frequently. However, even with the expanded context, it still had a peculiar habit: any feature it attempted to implement often defaulted to a overly complex solution, requiring extensive back-and-forth and detailed explanations from my end to simplify the approach.
+
+Despite these quirks, I pushed ahead, adding a torrent of new features to MS Bridge:
+
+* **A Pin-based Lock Screen:** Replacing a finicky fingerprint lock.
+* **New MS Notes Reading Screen:** A cleaner, more intuitive interface.
+* **Better HTML Render Options:** Enhanced display of rich content.
+* **A New Search Screen:** Overhauling the broken search.
+* **A New AI Chatbot:** With access to both personal and MS Notes – a truly cool, context-aware AI.
+* **New Layout Options in Note-Taking:** More flexibility for users.
+* **Tags and Folder View:** Essential organization features.
+* **A Brand New Settings UI:** With a lot of bug fixes and UI polish.
+* **Streak Notifications:** Gamifying daily usage.
+* **Push and Pull Sync Level:** Robust data synchronization.
+* **User Option to Disable/Enable Cloud Sync:** Firebase or other cloud options for privacy and control.
+
+### The Pain Points: Where AI Still Needs a Hand
+
+While many of these features were surprisingly straightforward to implement with AI assistance, some were, frankly, a massive pain. The **Auto-Pin and Lock System** was a nightmare to get working reliably – it ate up so much time. Migrating the entire **Settings Panel** from one design paradigm to another was similarly taxing. If a screen had too many elements, GPT-5 would often add some but miss others, or break the existing UI in the process (e.g., moving the "Appearance" section from a full screen to a bottom sheet caused chaos).
+
+The **Folder and Tag features** were smoothly divided in terms of logic, but the UI for them required extensive manual tweaking, proving that aesthetic design and user experience nuances are still firmly in the human domain.
+
+### The Verdict: 50 Hours In, Is GPT-5 a Game Changer?
+
+After investing approximately 48 to 50 hours of intensive development using GPT-5-powered tools, my honest take is this: **it’s an average model for practical feature development.**
+
+Don't get me wrong, it *is* better than GPT-4 in some aspects, and its performance might be on par with or slightly better than models like Claude in certain benchmarks. But for my specific use case – rapidly adding new features to an existing application – I found myself asking: "Could I have achieved the same results, in roughly the same timeframe, with GPT-4 or even Claude?" The answer is often, "Yes." These models (including GPT-5) are fantastic for quick prototyping and validating ideas, but they haven't eliminated the need for a deep understanding of code, architecture, and, crucially, relentless debugging.
+
+Nothing I built felt "fancy" or exclusively possible because of GPT-5. The features, while enhancing user experience, were standard additions. My benchmark isn't abstract metrics; it's tangible feature delivery. And on that front, GPT-5 delivers incrementally, not exponentially.
+
+The hype machine for "GPT-5" was colossal, and perhaps my expectations were unfairly high. While others focus on benchmarks and formatting, my real-world test focused on how effectively it integrates into my day-to-day as a full-stack engineer, student, and researcher.
+
+So, where do we go from here? AI models are undeniably powerful tools, making us more efficient. But as a developer, I still find myself leading the charge, defining the intricate logic, and ultimately, being the one to connect the dots and wrestle with those truly stubborn bugs. GPT-5 is a powerful co-pilot, but for now, the human pilot is still firmly in control.
+
+I'm curious to hear your thoughts! Have you had a similar experience with GPT-5 or other advanced AI models in your projects? Share your insights in the comments below!
