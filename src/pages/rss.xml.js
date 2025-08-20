@@ -7,6 +7,11 @@ import authorConfig from "@config/siteConfig/info.json";
 export async function GET(context) {
     const posts = await getCollection("blog");
 
+    // Sort posts by publication date (newest first)
+    const sortedPosts = posts.sort((a, b) =>
+        new Date(b.data.pubDate) - new Date(a.data.pubDate)
+    );
+
     // const staticPages = [
     //   {
     //     title: "Newsletter",
@@ -35,11 +40,12 @@ export async function GET(context) {
     // ];
 
     return rss({
+        stylesheet: "/rss/stylesheet.xsl",
         title: authorConfig.SiteName,
         description: authorConfig.SiteDescription,
         site: context.site,
         items: [
-            ...posts.map((post) => ({
+            ...sortedPosts.map((post) => ({
                 title: post.data.title,
                 description: post.data.description,
                 pubDate: post.data.pubDate,
