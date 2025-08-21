@@ -1,108 +1,37 @@
 ---
-lecture_title: Lecture 02
+lecture_title: "Lecture 02:  Process Control Block, Timeout, Inter-Process
+  Communication, Dispatcher, Scheduler, and Scheduling Basics"
 lecture_description: "Basics of OS "
 pubDate: 2025-08-21
 lecture_draft: true
 lectureNumber: "02"
 subject: advance-operating-system
 ---
-\## 1. **Process Control Block (PCB)**
+\## Process Control Block (PCB)
 
-The **PCB** is the _data structure_ the operating system uses to store all information about a process. Think of it as the **“identity card”** of a process.
+The **Process Control Block (PCB)** serves as a comprehensive data structure maintained by the operating system for each active process. It contains all the necessary information about the process, essentially acting as its unique identifier and control center. The PCB holds three main categories of information: process identification data, processor state information, and process control information. Process identification data includes the Process ID (PID), Parent Process ID, and User ID. The PID is a unique identifier assigned to each process by the operating system, allowing it to be distinguished from all other processes. The Parent Process ID indicates the process that created the current process, forming a hierarchical relationship. The User ID identifies the user associated with the process, enabling the operating system to enforce security and access control policies.
 
-\### Contents of PCB:
+Processor state information encompasses the Program Counter (PC), CPU registers, and Program Status Word (PSW). The Program Counter holds the address of the next instruction that the process will execute. CPU registers store data and intermediate results used by the process during execution, while the Program Status Word contains condition codes and mode bits that describe the current state of the processor.
 
-1\. **Process Identification Data**
+Process control information includes the process state (new, ready, running, waiting, terminated), scheduling priority, accounting information, and I/O status. The process state indicates the current activity of the process. The scheduling priority determines the order in which processes are selected for execution. Accounting information tracks CPU time and execution time, while I/O status details open files and allocated devices.
 
-\- Process ID (PID)
+\## Timeout
 
-\- Parent process ID
+A **timeout** is a mechanism implemented to prevent processes or system calls from indefinitely waiting for an event or resource. It enforces a maximum time limit for a particular operation to complete. If the operation exceeds the allotted time, a timeout event is triggered, causing the operating system to intervene and take appropriate action. Timeouts are used in various scenarios, including process scheduling, deadlock handling, and network communication.
 
-\- User ID
+In process scheduling, a process may be assigned a specific time quantum, representing the duration for which it can execute before potentially being preempted. If the process does not complete its execution within the time quantum, a timeout occurs, and the operating system saves the process's state and moves it back to the ready queue. This ensures fair distribution of CPU time and prevents any single process from monopolizing the processor.
 
-2\. **Processor State Information**
+In deadlock handling, timeouts can be used to break potential deadlocks. When multiple processes are blocked indefinitely, waiting for each other to release resources, a timeout can be set for each process. If a process remains blocked for an extended period, the timeout will trigger, allowing the operating system to interrupt the process, release its resources, and potentially resolve the deadlock situation.
 
-\- Program Counter (PC) → next instruction to execute
+In networking, timeouts are essential for reliable communication. When sending data over a network, the sender expects an acknowledgment from the receiver within a certain timeframe. If the acknowledgment is not received within the timeout period, the sender assumes that the data was lost and retransmits it. This ensures that data is eventually delivered, even in the presence of network congestion or failures.
 
-\- CPU registers (general, stack pointer, etc.)
+\## Inter-Process Communication (IPC)
 
-\- PSW (Program Status Word: condition codes, mode bits)
+**Inter-Process Communication (IPC)** enables processes to communicate, coordinate, and synchronize with each other. This is essential for building complex applications consisting of multiple interacting processes. There are two main models: Message Passing and Shared Memory. In message passing, processes send and receive messages to exchange data. This method is particularly useful in distributed systems where processes may reside on different machines.
 
-3\. **Process Control Information**
+Shared memory involves creating a region of memory that multiple processes can access. This enables processes to share data directly, leading to faster communication compared to message passing. However, shared memory requires careful synchronization to prevent data corruption or race conditions.
 
-\- Process state (new, ready, running, waiting, terminated)
-
-\- Scheduling priority
-
-\- Accounting info (CPU time used, execution time, etc.)
-
-\- I/O status (open files, devices allocated)
-
-📌 **Key Idea:**
-
-When a process is switched out (context switch), the OS saves its state in the PCB. When it’s resumed, the OS restores the state from the PCB.
-
-\---
-
-\## 2. **Timeout**
-
-A **timeout** occurs when a process or system call takes longer than the allowed time to complete.
-
-It’s a **safety mechanism** to prevent indefinite waiting.
-
-\### Uses:
-
-\- **Process Scheduling:** A process is given a _time quantum_ (in Round Robin scheduling). If it doesn’t finish, a timeout occurs → process is preempted.
-
-\- **Deadlock Handling:** Timeout can break indefinite waits.
-
-\- **Networking:** If a response isn’t received in time, a timeout triggers retransmission.
-
-📌 **Example:**
-
-In Round Robin, if a process gets 100ms CPU time and doesn’t finish → timeout → CPU is taken away and given to the next process.
-
-\---
-
-\## 3. **Inter-Process Communication (IPC)**
-
-Processes often need to **communicate and synchronize** with each other.
-
-\### Two Main Models:
-
-1\. **Message Passing**
-
-\- Processes send/receive messages via OS.
-
-\- Useful in distributed systems.
-
-\- Example: `send(message)`, `receive(message)`
-
-2\. **Shared Memory**
-
-\- Processes share a region of memory.
-
-\- Faster but requires synchronization (semaphores, mutexes).
-
-\### IPC Mechanisms:
-
-\- Pipes
-
-\- Message Queues
-
-\- Shared Memory
-
-\- Semaphores
-
-\- Signals
-
-\- Sockets (for networked IPC)
-
-📌 **Key Idea:** IPC ensures **coordination** and **data exchange** between processes.
-
-\---
-
-\## 4. **Dispatcher**
+\## Dispatcher
 
 The **dispatcher** is the OS module that **gives control of the CPU to the process selected by the scheduler**.
 
@@ -114,13 +43,7 @@ The **dispatcher** is the OS module that **gives control of the CPU to the proce
 
 \- Jumps to the correct instruction in the process
 
-📌 **Dispatcher Latency:**
-
-The time it takes for the dispatcher to stop one process and start another.
-
-\---
-
-\## 5. **Scheduler**
+\## Scheduler
 
 The **scheduler** decides _which process runs when_.
 
@@ -146,9 +69,7 @@ The **scheduler** decides _which process runs when_.
 
 \- Runs very frequently (milliseconds).
 
-\---
-
-\## 6. **Executing Timeout**
+\## Executing Timeout
 
 When a process **exceeds its allocated CPU time quantum**, the OS:
 
@@ -160,11 +81,7 @@ When a process **exceeds its allocated CPU time quantum**, the OS:
 
 4\. Dispatcher loads the next process.
 
-📌 **This ensures fairness** in CPU allocation (especially in Round Robin scheduling).
-
-* * *
-
-\## 7. **Scheduling Basics**
+\## Scheduling Basics
 
 Scheduling is about **maximizing CPU utilization and minimizing waiting time**.
 
@@ -195,17 +112,3 @@ Scheduling is about **maximizing CPU utilization and minimizing waiting time**.
 5\. **Multilevel Queue Scheduling** – different queues for different process types.
 
 6\. **Multilevel Feedback Queue** – processes can move between queues (adaptive).
-
-* * *
-
-**Quick Analogy:**
-
-\- **Scheduler** = “decides who gets the mic next.”
-
-\- **Dispatcher** = “hands the mic to the chosen speaker.”
-
-\- **PCB** = “the speaker’s notes and position in the script.”
-
-\- **Timeout** = “if you talk too long, your mic is cut off.”
-
-\- **IPC** = “passing notes between speakers.”
