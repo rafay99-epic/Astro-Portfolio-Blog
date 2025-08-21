@@ -249,4 +249,170 @@ These diagrams should give you a visual representation of the topics you're stud
 
 Here is the thing, this model is not good because there is way too much process switching, and with a timeout, this can lead to much worse problems, and with content switch from one process to another mode, then it requires more memory and more work.
 
-Plus thing is that one process needs to be completed, then we will work on the third model as well.
+Plus thing is that one process needs to be completed, then we will work on the third model as well.  
+  
+And because of this limit, we came across Five State Model
+
+## The Five-State Process Model
+
+The **five-state process model** is a way of representing the different stages a process goes through from its creation to its termination. It's a simplified abstraction, but it captures the essential phases and transitions a process experiences. These states are:
+
+1\. **New**
+
+2\. **Ready**
+
+3\. **Running**
+
+4\. **Waiting (Blocked)**
+
+5\. **Terminated**
+
+Here's a detailed breakdown of each state and the transitions between them:
+
+\## 1. New State
+
+\* **Description**: The process is being created but has not yet been admitted into the system. Resources are being allocated, and initial setup is being performed.
+
+\* **Activities**:
+
+\* Process creation and initialization.
+
+\* Allocation of necessary resources (memory, file handles, etc.).
+
+\* Loading the program code into memory.
+
+\* **Transition**:
+
+\* **New → Ready**: Once the OS deems the process ready for execution (sufficient resources are allocated), it transitions to the Ready state. This transition is usually managed by the long-term scheduler (also known as the admission controller).
+
+\## 2. Ready State
+
+\* **Description**: The process is ready to execute but is waiting for its turn to be scheduled by the CPU. It's in the ready queue, competing with other processes for CPU time.
+
+\* **Activities**:
+
+\* Waiting in the ready queue for CPU time.
+
+\* No actual execution happening; the process is just queued up.
+
+\* **Transitions**:
+
+\* **Ready → Running**: When the scheduler selects this process, the dispatcher assigns the CPU to it, and the process enters the Running state.
+
+\* **Ready → Terminated**: In some scenarios, the process might be terminated due to system reasons (e.g., insufficient resources, process aborted by user).
+
+\## 3. Running State
+
+\* **Description**: The process is currently executing on the CPU. Instructions are being processed, and the process is actively performing its intended tasks.
+
+\* **Activities**:
+
+\* Executing instructions and performing computations.
+
+\* Accessing memory and system resources.
+
+\* **Transitions**:
+
+\* **Running → Waiting**: The process may need to wait for an event, such as I/O completion, a lock acquisition, or a message. It then transitions to the Waiting state.
+
+\* **Running → Ready**: If the process's time quantum expires (in time-sharing systems) or a higher-priority process becomes ready, the process is preempted and moves back to the Ready state.
+
+\* **Running → Terminated**: When the process completes its execution or is terminated due to an error, it enters the Terminated state.
+
+\## 4. Waiting (Blocked) State
+
+\* **Description**: The process is waiting for an external event to occur (e.g., I/O operation completion, receipt of a signal, or availability of a resource). The process is blocked and cannot proceed until the event occurs.
+
+\* **Activities**:
+
+\* Waiting for an event to occur.
+
+\* Process is suspended and not eligible for CPU time.
+
+\* **Transitions**:
+
+\* **Waiting → Ready**: When the event the process was waiting for occurs (e.g., I/O completes), the process moves to the Ready state.
+
+\## 5. Terminated State
+
+\* **Description**: The process has completed its execution or has been terminated. It's no longer active and is waiting for its resources to be deallocated by the OS.
+
+\* **Activities**:
+
+\* Releasing resources allocated to the process.
+
+\* Performing any necessary cleanup operations.
+
+\* **Transition**:
+
+\* There are generally no transitions out of the Terminated state. The process is eventually removed from the system.
+
+\## The Process State Diagram
+
+A process state diagram is the graphical representation of the process states and their transitions.
+
+\`\`\`mermaid
+
+stateDiagram
+
+\[\*\] --> New : Process Creation
+
+New --> Ready : Admitted
+
+Ready --> Running : Scheduled
+
+Running --> Waiting : I/O Request
+
+Waiting --> Ready : I/O Completion
+
+Running --> Ready : Timeout or Preemption
+
+Running --> Terminated : Process Completion
+
+Ready --> Terminated : Process Aborted
+
+Waiting --> Terminated : Process Aborted
+
+state New {
+
+label: "Process is being created"
+
+}
+
+state Ready {
+
+label: "Waiting for CPU"
+
+}
+
+state Running {
+
+label: "Executing on CPU"
+
+}
+
+state Waiting {
+
+label: "Waiting for I/O"
+
+}
+
+state Terminated {
+
+label: "Process completed"
+
+}
+
+\`\`\`
+
+\## Key Considerations
+
+\* **Scheduler's Role**: The scheduler (primarily the short-term or CPU scheduler) determines which process moves from the Ready state to the Running state.
+
+\* **Dispatcher's Role**: The dispatcher is responsible for the actual context switch: saving the state of the current process and loading the state of the next process.
+
+\* **Resource Management**: The OS manages resources to prevent starvation (where a process is indefinitely denied necessary resources).
+
+By understanding the five-state process model, you gain a clearer insight into how operating systems manage and schedule processes.
+
+##
