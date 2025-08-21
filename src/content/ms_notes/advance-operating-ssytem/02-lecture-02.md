@@ -101,7 +101,7 @@ Scheduling is about **maximizing CPU utilization and minimizing waiting time**.
 
 \### Common Scheduling Algorithms:
 
-1\. **First Come First Serve (FCFS)** – simple, but can cause convoy effect.
+1\. **First Come First Serve (FCFS)** – simple, but can cause the convoy effect.
 
 2\. **Shortest Job Next (SJN/SJF)** – optimal for average waiting time, but needs job length prediction.
 
@@ -112,3 +112,141 @@ Scheduling is about **maximizing CPU utilization and minimizing waiting time**.
 5\. **Multilevel Queue Scheduling** – different queues for different process types.
 
 6\. **Multilevel Feedback Queue** – processes can move between queues (adaptive).
+
+## Process State Transition Diagram
+
+This diagram illustrates the lifecycle of a process, showcasing the different states a process can be in and the transitions between these states.
+
+\`\`\`mermaid
+
+stateDiagram
+
+\[\*\] --> New : Process Creation
+
+New --> Ready : Admitted
+
+Ready --> Running : Scheduled
+
+Running --> Waiting : I/O Request
+
+Waiting --> Ready : I/O Completion
+
+Running --> Ready : Timeout or Preemption
+
+Running --> Terminated : Process Completion
+
+Ready --> Terminated : Process Aborted
+
+Waiting --> Terminated : Process Aborted
+
+state New {
+
+label: "Process is being created"
+
+}
+
+state Ready {
+
+label: "Waiting for CPU"
+
+}
+
+state Running {
+
+label: "Executing on CPU"
+
+}
+
+state Waiting {
+
+label: "Waiting for I/O"
+
+}
+
+state Terminated {
+
+label: "Process completed"
+
+}
+
+\`\`\`
+
+\## Process Scheduling Queue Diagram
+
+This diagram shows how different processes are organized in queues based on their state, and how the scheduler and dispatcher interact to manage these queues.
+
+\`\`\`mermaid
+
+graph LR
+
+ReadyQueue --> Scheduler
+
+Scheduler --> Dispatcher
+
+Dispatcher --> CPU
+
+CPU --> RunningProcess
+
+RunningProcess --> ReadyQueue : Timeout or Preemption
+
+RunningProcess --> WaitingQueue : I/O Request
+
+WaitingQueue --> ReadyQueue : I/O Completion
+
+RunningProcess --> Terminated : Process Completion
+
+subgraph Queues
+
+ReadyQueue("Ready Queue")
+
+WaitingQueue("Waiting Queue")
+
+Terminated("Terminated")
+
+end
+
+subgraph Components
+
+Scheduler("Scheduler")
+
+Dispatcher("Dispatcher")
+
+CPU("CPU")
+
+RunningProcess("Running Process")
+
+end
+
+\`\`\`
+
+\## Inter-Process Communication Diagram (Shared Memory)
+
+This diagram illustrates how shared memory is used for inter-process communication.
+
+\`\`\`mermaid
+
+graph LR
+
+ProcessA("Process A")
+
+ProcessB("Process B")
+
+SharedMemory("Shared Memory Region")
+
+ProcessA -- Write Data --> SharedMemory
+
+ProcessB -- Read Data --> SharedMemory
+
+SharedMemory -- Data --> ProcessA
+
+SharedMemory -- Data --> ProcessB
+
+\`\`\`
+
+These diagrams should give you a visual representation of the topics you're studying, which can greatly aid in your understanding and retention.
+
+## Two Process Model Sufficient
+
+Here is the thing, this model is not good because there is way too much process switching, and with a timeout, this can lead to much worse problems, and with content switch from one process to another mode, then it requires more memory and more work.
+
+Plus thing is that one process needs to be completed, then we will work on the third model as well.
