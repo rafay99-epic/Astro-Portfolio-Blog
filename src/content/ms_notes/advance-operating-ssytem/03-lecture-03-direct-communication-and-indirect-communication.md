@@ -434,3 +434,156 @@ Here's the play-by-play, guided by your diagram:
 In essence, `pipe()` sets up the channel, `fork()` gives both processes access, and then careful closing of unused file descriptors (`fd[0]` for the writer, `fd[1]` for the reader) defines the *direction* and ensures proper **EOF signaling**, allowing for smooth, one-way communication!
 
 It's a neat ballet of system calls, right? The `close()` calls are perhaps the most vital step after `fork()` to prevent headaches! What do you think, does this clear up the diagram's flow for two processes talking?
+
+Alright, let's dive into the fascinating world of pipes, both the ones that pop up and vanish, and the ones that stick around! It's all about how processes whisper secrets to each other.
+
+### 🌬️ Unnamed Pipes (Anonymous Pipes)
+
+Think of an unnamed pipe as a temporary, direct telephone line set up exclusively between two *related* individuals – usually a parent and a child. Once the call is over (or one hangs up), the line is gone.
+
+#### Theory & How They Work:
+
+*   **Nature**: A **unidirectional** byte stream, existing solely within the kernel's memory. It's truly "anonymous" because it doesn't have a name in the filesystem.
+*   **Relation**: Designed for communication between processes that share a common ancestor (typically parent-child, or siblings created by the same parent after the pipe). This is crucial because they inherit the pipe's file descriptors.
+*   **Creation**: You conjure them into existence using the `pipe()` system call in a single process.
+    ```c
+    int fd[2]; // An array to hold two file descriptors
+    if (pipe(fd) == -1) { /* error handling */ }
+    // fd[0] is the read end, fd[1] is the write end
+    ```
+*   **Mechanism**:
+    1.  When `pipe(fd)` is called, the kernel allocates a small, fixed-size buffer (e.g., 64 KiB) in memory. It then assigns `fd[0]` (read end) and `fd[1]` (write end) to the *current* process, both pointing to this kernel buffer.
+    2.  The `fork()` system call is then used. The child process inherits copies of *all* open file descriptors from the parent, including `fd[0]` and `fd[1]`. Now both parent and child have access to the *same* underlying kernel pipe.
+    3.  **Crucial Step: Closing Unused Ends**:
+        *   If the parent wants to *write* and the child wants to *read*: The parent closes `fd[0]` (its read end), and the child closes `fd[1]` (its write end).
+        *   Data written to `fd[1]` by the writer is buffered by the kernel and can be read from `fd[0]` by the reader.
+    4.  **FIFO Order**: Data flows strictly First-In, First-Out.
+    5.  **Blocking Behavior**:
+        *   `read()` blocks if the pipe is empty.
+        *   `write()` blocks if the pipe is full.
+    6.  **EOF**: When *all* write ends of a pipe are closed, a subsequent `read()` on the read end will return 0 bytes, signaling End-Of-File.
+*   **Lifetime**: The pipe's existence is tied to the processes. It evaporates once all processes that inherited its file descriptors have closed them or terminated.
+
+#### Diagram:
+
+```mermaid
+graph TD
+  subgraph UserSpace
+    P_Before_Fork["Parent Process\nBefore fork"]
+    P_After_Fork["Parent Process\nAfter fork"]
+    C_After_Fork["Child Process\nAfter fork"]
+  end
+
+  subgraph KernelSpace
+    KernelPipe["Kernel Buffer\n64 KiB FIFO"]
+  end
+
+  P_Before_Fork -->|1 pipe fd creates| KernelPipe
+  P_Before_Fork -->|fd0 read end| KernelPipe
+  P_Before_Fork -->|fd1 write end| KernelPipe
+
+  P_Before_Fork -->|2 fork copies FDs| P_After_Fork
+  P_Before_Fork -->|2 fork creates child| C_After_Fork
+
+  P_After_Fork -->|fd0 read end| KernelPipe
+  P_After_Fork -->|fd1 write end| KernelPipe
+
+  C_After_Fork -->|fd0 read end| KernelPipe
+  C_After_Fork -->|fd1 write end| KernelPipe
+
+  P_After_Fork -->|3a close fd0| P_After_Fork
+  C_After_Fork -->|3b close fd1| C_After_Fork
+
+  P_After_Fork -->|4 write fd1 data| KernelPipe
+  KernelPipe -->|5 data buffered| KernelPipe
+  KernelPipe -->|6 read fd0 buf| C_After_Fork
+
+  P_After_Fork -->|7 close fd1| P_After_Fork
+  KernelPipe -->|8 EOF signal| C_After_Fork
+  C_After_Fork -->|9 close fd0| C_After_Fork
+```
+*   **Flow**: The parent first creates the pipe, getting two file descriptors. When `fork()` happens, both parent and child get copies of these FDs, all pointing to the *same* kernel buffer. Each then closes the end they don't need, establishing a one-way channel. Data flows from the writer's `fd[1]` into the buffer, and out through the reader's `fd[0]`.
+
+### 🏷️ Named Pipes (FIFOs)
+
+Now, imagine you want to leave a message in a specific mailbox that *anyone* can access by its address, not just family. That's a named pipe, often called a FIFO (First In, First Out). It's a special kind of file on the filesystem that acts like a pipe.
+
+#### Theory & How They Work:
+
+*   **Nature**: A **unidirectional** byte stream that has a name and exists as an entry in the filesystem. It's a "special file type" (like a directory or a device file), not a regular file that stores data.
+*   **Relation**: The superpower of named pipes is enabling communication between **unrelated processes**. They don't need to share a common ancestor or inherit file descriptors. Any process that knows the FIFO's name can open it.
+*   **Creation**:
+    *   Using the `mkfifo()` system call in C:
+        ```c
+        #include <sys/types.h>
+        #include <sys/stat.h>
+        if (mkfifo("/tmp/my_fifo", 0666) == -1) { /* error handling */ }
+        // Creates a FIFO special file named /tmp/my_fifo
+        ```
+    *   Using the `mkfifo` shell command:
+        ```bash
+        mkfifo /tmp/my_fifo
+        ```
+*   **Mechanism**:
+    1.  **Filesystem Entry**: `mkfifo` creates a file-like entry in the directory structure. This entry *itself* doesn't store data; it's a pointer to where the kernel will set up the actual pipe buffer.
+    2.  **Opening the FIFO**: Processes communicate by opening this special file. One process opens it for writing (`O_WRONLY`), and another opens it for reading (`O_RDONLY`).
+        ```c
+        // Writer Process
+        int write_fd = open("/tmp/my_fifo", O_WRONLY);
+
+        // Reader Process
+        int read_fd = open("/tmp/my_fifo", O_RDONLY);
+        ```
+    3.  **Rendezvous Point**: This is a key difference. An `open()` call on a FIFO typically **blocks** until another process opens the *opposite* end. For example, if a process opens a FIFO for writing, it will pause until another process opens that same FIFO for reading. This ensures both ends are ready for communication.
+    4.  **Kernel Buffer**: Once both ends are opened, the kernel effectively establishes an in-memory buffer, just like with an unnamed pipe. Data written by the writer flows into this buffer, and the reader pulls it out.
+    5.  **Behavior**: Reads, writes, blocking, FIFO order, and EOF signaling (when the last writer closes its end) behave exactly like unnamed pipes.
+*   **Lifetime**:
+    *   The **filesystem entry** for the FIFO persists until it's explicitly deleted with `rm` (or the filesystem containing it is removed/reformatted).
+    *   The **actual pipe buffer** in kernel memory is created when processes open both ends and disappears when the last processes close their ends.
+
+#### Diagram:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant P as Parent
+    participant K as Kernel
+    participant C as Child
+
+    P->>K: pipe(fd)          %% #1
+    K-->>P: returns fd[0], fd[1]
+    P->>P: fork()            %% #2
+    alt In Parent
+        P->>P: close(fd[0])    %% #3a
+        P->>K: write(fd[1], data)  %% #4
+        K->>K: buffer data       %% #5
+        P->>P: close(fd[1])    %% #6a
+    else In Child
+        C->>C: close(fd[1])    %% #3b
+        C->>K: read(fd[0], buf)   %% #5
+        alt Kernel has no more data
+            K-->>C: EOF           %% #6b
+        end
+        C->>C: close(fd[0])    %% #7
+    end
+
+```
+*   **Flow**: The FIFO file is first created on the filesystem. Then, the `WriterApp` opens it for writing and `ReaderApp` opens it for reading. These `open()` calls act as a rendezvous point, blocking until the opposite end is also opened. Once both are open, the kernel sets up the temporary in-memory buffer, and data flows from the writer, through the buffer, to the reader. The filesystem entry remains even after communication stops.
+
+### Key Differences & When to Use Which:
+
+| Feature          | Unnamed Pipes (Anonymous)                                   | Named Pipes (FIFOs)                                                |
+| :--------------- | :---------------------------------------------------------- | :----------------------------------------------------------------- |
+| **Relation**     | Only between **related** processes (parent/child, siblings) | Between **unrelated** processes                                    |
+| **Creation**     | `pipe()` system call                                        | `mkfifo()` system call or `mkfifo` shell command                   |
+| **Name**         | No name (exists only via inherited file descriptors)        | Has a name in the filesystem (e.g., `/tmp/my_fifo`)                |
+| **Access**       | Inherited file descriptors                                  | `open()` the filesystem path by name                               |
+| **Persistence**  | Ephemeral; disappears when processes close FDs / terminate  | Filesystem entry persists until `rm`; buffer is ephemeral          |
+| **Rendezvous**   | No explicit rendezvous; `fork()` does the sharing           | `open()` calls block until both ends are open (explicit rendezvous) |
+| **Use Case**     | Simple parent-child communication (`ls | grep`)            | Client-server, shell scripts, communication between any processes  |
+
+Choosing between them is usually straightforward:
+*   If you need simple, one-way communication strictly within a family of processes that you're managing with `fork()`, go for **unnamed pipes**. They're lightweight and ideal for that scenario.
+*   If you need any process to talk to any other process, especially if they weren't spawned by the same parent, or if you want to use them in shell scripts, **named pipes** are your go-to. They provide that persistent "mailbox" address.
+
+Both are incredibly powerful and fundamental building blocks for inter-process communication in UNIX-like systems! This is super valuable for your OS class! Let me know if anything here sparked more curiosity!
