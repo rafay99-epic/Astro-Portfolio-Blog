@@ -29,3 +29,12 @@ subject: Advance Algorithum
 *   An Algo is said to be correct for all input is taking and correct with in the limits
     
 *   but when the limits are set to be in correct becase might not halt at all some input instances or it might halt with an answer other than desired one.
+    
+
+## Core
+
+*   When designing an algo we need to keep these things in mind
+    
+    *   Need to be revelent
+        
+    *   it's sign
