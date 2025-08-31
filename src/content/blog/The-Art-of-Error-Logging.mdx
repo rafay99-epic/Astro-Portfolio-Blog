@@ -1,0 +1,138 @@
+---
+title: The Art of Error Logging
+description: My ways of error logging
+pubDate: 2025-08-31T19:00:00.000Z
+draft: true
+heroImage: /BlogImages/comingsoon.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+---
+
+Ah, not so long ago, I was a fresh-faced dev, happily crafting simple applications for a grand total of one or two users. Sound familiar? Because honestly, we all kick off our journeys right there.
+
+From late-night university projects to personal passion projects, devouring cool new tech – that's often our classroom. And if that's not how you're learning, then I've got to ask: how are you doing it?
+
+My own learning curve? It's been a winding road, complete with a plot twist that, frankly, stung a bit. But that 'sad part' delivered such a profound lesson that now, every time I write a line of code, I make a silent vow: never again will I make that same mistake.
+
+In just a few short years, the difference is night and day. I've grown by leaps and bounds, even if I'm still occasionally shipping code that makes me chuckle with a touch of self-deprecating irony. But hey, that's the beautiful, messy reality of a developer's life, isn't it?
+
+Enough reflection, though! You didn't come here for a stroll down memory lane. You're here for the good stuff, the vital stuff: the art and science of error logging and error handling.
+
+## The Development Process: From Local Logs to Production Headaches
+
+When you're knee-deep in building an application or website, your trusty `console.log()` statements or print functions are your best friends. You're diving into `try-catch` blocks, meticulously handling errors, and ensuring everything looks just right. Then, development wraps up, you hit that `build` button, and deploy your code, crossing your fingers and hoping for the best in the **production environment**.
+
+But here’s the harsh reality: even after all your rigorous testing, production is a different beast. There are always **edge cases** you simply couldn't foresee, especially as a solo developer juggling everything from writing clean code and robust tests to perfecting UI and ensuring core functionality. You validate your app, then unleash it into the wild, only to find users are… well, *users*. They'll click, swipe, and interact in ways so outlandish you'll often scratch your head, wondering, "Why on earth would they do that?!"
+
+And yet, that's precisely what users do. The real challenge emerges: how do you identify those unpredictable flows and track these novel **application errors** when your app is running live? You can't just open a console and watch the logs stream by. So, what's a developer to do?
+
+It's a solid question. Most solo devs, myself included once upon a time, would often go full **YOLO** mode. And honestly? I'm almost proud to admit I've been there.
+
+But going `no logger`... that’s where the real trouble begins.
+Okay, Abdul Rafay, let's dive into the solution space with that signature "been there, done that" vibe! You've navigated the often-treacherous waters of finding the right tools, and that's a story worth telling.
+
+## Unlocking Robust Error Logging: Beyond the "Painful" Enterprise Tools
+
+After wrestling with these **production challenges**, a thought gnawed at me: "What *can* I do?" A deep dive into Google's rabbit hole quickly surfaced a plethora of **error logging solutions**. Many of these tools, while offering a tempting **free tier**, often felt like a labyrinth to set up in my codebase. They came with frustrating limits, seemed to break at the most inconvenient times, and integrating them genuinely felt like a massive pain.
+
+Seriously, try Googling for logging tools. You'll be swamped with sponsored content for what are essentially **enterprise-grade monitoring platforms**. Don't get me wrong, these behemoths are fantastic for large teams and complex systems, but as a solo developer? I don't need that much firepower, nor do I want the hefty price tag that usually comes with it. My focus is on efficient **application performance monitoring** and reliable **crash reporting**, not an entire suite of features I'll never touch. When that level of power *is* needed, I'll happily upgrade, but for now, it's overkill.
+
+So, after all that sifting, I stumbled upon two tools that truly clicked. And before you jump to conclusions – *no, this isn't a sponsored ad!* I genuinely wish it were, because these tools have been absolute game-changers in my projects. They've made my **developer workflow** so much smoother.
+
+Why the praise? They're incredibly easy to configure and provide remarkably detailed insights – not just during **development**, but critically, in **production** as well. They've transformed how I approach **debugging** and **identifying application errors** live.
+
+I'm talking about:
+
+* **Axiom Logging**
+* **BugFender**
+
+Both offer generous free tiers that, while having their limits, provide an amazing amount of information for **real-time logs**, **crash analytics**, and just about everything in between. Trust me, integrating them for comprehensive **error tracking** is a breeze, and I'm excited to show you exactly how to code them into your projects and where they shine brightest!
+
+## BugFender: My Go-To for Robust Mobile Error Tracking (Android & iOS)
+
+When it comes to **mobile app development** for both Android and iOS, especially for **production monitoring**, BugFender has become my secret weapon. It’s funny how I found this tool by accident, created an account, but initially, I wasn't fully committed. At the time, I was deeply entrenched with **Firebase Crashlytics** for all my **error recording** and **crash reporting** needs.
+
+Now, don’t get me wrong, Firebase tools are mature and provide a lot of information. The rub, however, was that the data often felt disorganized. I struggled to quickly pinpoint crucial device details, specific Android versions, or other vital context for **debugging production issues**. Maybe the information *was* there, but in my experience, it wasn't presented in a way that made my life easier as a busy solo dev.
+
+But then came the turning point: I had created an account and, honestly, promptly forgot about it for a week. To my surprise, BugFender's support team actually reached out, genuinely asking why I hadn't started using their service. That personal touch was a game-changer!
+
+At that exact moment, I was deep into developing MS Bridge, my personal, feature-rich note-taking and note-reading application. It's grown into a massive codebase, evolving from a simple reader to a truly complex application, and I'm constantly layering on new features.
+
+Given the scale, manually ripping out all of Firebase's crash reporting would have been a rough undertaking. So, with a bit of trepidation, I opted to install BugFender’s SDK. And you know what? It was surprisingly easy, even with my Flutter-based mobile application.
+
+The instructions for **Flutter logging** were incredibly straightforward:
+
+First, add the package:
+
+```bash
+flutter pub add flutter_bugfender
+```
+
+Then, in your `main.dart` file, just drop in this concise initialization code:
+
+```dart
+import 'package:flutter_bugfender/flutter_bugfender.dart';
+import 'package:flutter/material.dart'; // Assuming MyApp needs this
+
+void main() {
+  FlutterBugfender.handleUncaughtErrors(() async {
+    await FlutterBugfender.init("YOUR_APP_KEY",
+        enableCrashReporting: true, // these are optional, but recommended
+        enableUIEventLogging: true,
+        enableAndroidLogcatLogging: true);
+    FlutterBugfender.log("hello world!");
+    runApp(new MyApp());
+  });
+}
+```
+
+*Just remember to import the package, and you’re essentially set!* This simple setup means your application is now using robust **real-time logging** and **crash analytics**.
+
+The tool offers a comprehensive suite of logging options, allowing for highly granular **error tracking** (as per their documentation):
+
+```dart
+// Comprehensive logging capabilities
+FlutterBugfender.log("Working fine!");
+FlutterBugfender.fatal("Fatal sent!");
+FlutterBugfender.error("Error sent!");
+FlutterBugfender.warn("Warning sent!");
+FlutterBugfender.info("Info sent!");
+FlutterBugfender.debug("Debug sent!");
+FlutterBugfender.trace("Trace sent!");
+FlutterBugfender.sendLog(
+ line: 42,
+ method: "someMethod()",
+ file:"someFile",
+ level: LogLevel.info,
+ tag: "Custom tag",
+ text: "This is a custom log"
+);
+// Device-specific context
+FlutterBugfender.setDeviceString("user.email", "example@example.com");
+FlutterBugfender.setDeviceInt("user.id", 32);
+FlutterBugfender.setDeviceFloat("user.pi", 3.14);
+FlutterBugfender.setDeviceBool("user.enabled", true);
+FlutterBugfender.removeDeviceKey("user.pi");
+// Advanced reporting
+FlutterBugfender.sendCrash("Test Crash", "Stacktrace here!");
+FlutterBugfender.sendIssue("Test Issue", "Issue value goes here!");
+FlutterBugfender.sendUserFeedback("Test user feedback", "User feedback details here!");
+// Control and utility
+FlutterBugfender.setForceEnabled(true);
+FlutterBugfender.forceSendOnce();
+FlutterBugfender.getDeviceUri());
+FlutterBugfender.getSessionUri());
+FlutterBugfender.getUserFeedback()); // Show a screen which asks for feedback
+```
+
+For me, the most crucial functions that I constantly rely on are:
+
+* `FlutterBugfender.error()`: For recording specific error conditions.
+* `FlutterBugfender.log()`: My standard for general event logging and understanding **user behavior**.
+* `FlutterBugfender.sendCrash()`: To push instant **crash reports** directly to the dashboard.
+
+These functions are invaluable for quickly printing logs, sending detailed crash data to the dashboard, and comprehensively recording all errors occurring within the application. And the dashboard? It's simply *good*. Clean, intuitive, and it provides all the contextual information a developer needs to make informed decisions. It gives you the precise stats and **actionable insights** so you can jump straight into fixing bugs, instead of wasting precious time trying to decipher what a user *might* have been doing.
+
+While there are many other features to explore, I haven't delved into them all just yet. But give me time! For now, I highly recommend exploring this incredibly useful, and yes, **free**, tool for your **mobile app debugging** needs.
+
+## Web Development Cycle.
