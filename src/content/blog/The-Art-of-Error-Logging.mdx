@@ -135,4 +135,57 @@ These functions are invaluable for quickly printing logs, sending detailed crash
 
 While there are many other features to explore, I haven't delved into them all just yet. But give me time! For now, I highly recommend exploring this incredibly useful, and yes, **free**, tool for your **mobile app debugging** needs.
 
-## Web Development Cycle.
+## Web Development Cycle
+
+Now for the web technology, Yeah I know flutter do exits for web and yes you can use
+
+BugFender for flutter for web but flutter for web is good but not too good and lack the polish of the website.
+
+For, Me when I build a web application, I am going with react, simple demo has to with vite and for complex stuff, I am going with NextJs, It's serverless and gives me the power to do some crazy stuff.
+
+Like making complex blog post,cool animation, UI changes and much much more, yes it get complex very fast and not coded right very bad very fast, I have learned my lesson, If you want to know my store then check out my pervious blog post on which I[ how I get into a truble](https://www.rafay99.com/blog/convex-scaling-cache-nightmare)
+
+And for logging and sending data from my website I use Axiom, the ultimate tool for logging activity for your website, it's very easy to setup and will make sure that things are getting info, You have import in one place and the it will log the whole site, the code to setup is very easy
+
+Install the package
+
+```js
+npm install --save @axiomhq/js @axiomhq/logging @axiomhq/nextjs @axiomhq/react
+```
+
+and the cimple create a file anywhere in the codebase called `axiom.ts` with the following code
+
+```js
+import { Axiom } from '@axiomhq/js';
+
+const axiomClient = new Axiom({
+  token: process.env.NEXT_PUBLIC_AXIOM_TOKEN!,
+});
+
+export default axiomClient;
+```
+
+and then for server side logging create another file called server.ts and paste the code in the file
+
+```js
+import axiomClient from '@/lib/axiom/axiom';
+import { Logger, AxiomJSTransport } from '@axiomhq/logging';
+import { createAxiomRouteHandler, nextJsFormatters } from '@axiomhq/nextjs';
+
+export const logger = new Logger({
+  transports: [
+    new AxiomJSTransport({ axiom: axiomClient, dataset: process.env.NEXT_PUBLIC_AXIOM_DATASET! }),
+  ],
+  formatters: nextJsFormatters,
+});
+
+export const withAxiom = createAxiomRouteHandler(logger);
+```
+
+Now simple call these for logging and you are set to go, here is the thingm Nextjs is server side application and client side application as well so you just can't simply import or create a single file and then use that, both are totally different and need different way to log the activity of the application
+
+> My Provided code can chnage so please use proper [docs](https://axiom.co/docs/send-data/nextjs) for setting up axiom for your project.
+
+and then run the application and you will be good to go, Once everything is setup in the code, then you need to set up the dashboard, it's preety simple, just select the db from there choice and then when you app is deployed then you can simple, it will auto detect and all the activity will be recorded as well.
+
+For me My dashboard is looking like this: 
