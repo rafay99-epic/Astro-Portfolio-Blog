@@ -44,9 +44,10 @@ export default defineConfig({
 
     redirects: {
         "/snaprescue.sh": "/downloads/scripts/snaprescue.sh",
+        "/MSBridge": "https://msbridge.rafay99.com",
         "/Meaning-Mate-APK": "/downloads/app/meaning_mate/Meaning-Mate-APK.apk",
-        "/MSBridge-APK": "/downloads/app/msbridge/release/MSBridge-release.apk",
-        "/MSBridge-beta": "/downloads/app/msbridge/beta/app-release.apk",
+        "/MSBridge-APK": "https://msbridge.rafay99.com//downloads/ms-bridge-stable.apk",
+        "/MSBridge-beta": "https://msbridge.rafay99.com//downloads/ms-bridge-beta.apk",
         "/SimpleThread-APK": "/downloads/app/SimpleThread/simple_thread.apk",
         "/MeetTime-APK": "/downloads/app/meet_time/MeetTime.apk",
         "/webwiki": "https://rafay99-docs.vercel.app/",
