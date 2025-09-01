@@ -159,6 +159,59 @@ export default defineConfig({
         ],
       },
       {
+        name: "ms_notes",
+        label: "MS Notes",
+        path: "/src/content/ms_notes",
+        format: "md",
+        fields: [
+          {
+            type: "string",
+            name: "lecture_title",
+            label: "MS Note Title",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "lecture_description",
+            label: "MS Note Description",
+            required: true,
+          },
+          {
+            type: "datetime",
+            name: "pubDate",
+            label: "Publish Date",
+            required: true,
+          },
+          {
+            type: "boolean",
+            name: "lecture_draft",
+            label: "Draft",
+            required: true,
+          },
+          {
+
+            type: "string",
+            name: "lectureNumber",
+            label: "Lecture Number",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "subject",
+            label: "Subject",
+            required: true,
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Body",
+            isBody: true,
+          },
+          
+        ],
+      },
+
+      {
         name: "projects",
         label: "Projects",
         path: "/src/content/projects",
