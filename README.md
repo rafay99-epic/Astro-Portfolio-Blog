@@ -3,7 +3,7 @@
 
 
 <div align="center">
-  <img src="/MarkUps/1.png" alt="Website Preview" width="700"/>
+  <img src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ0vJwX0UyjPi0LTu2YFIrUpwecAbsgvfR1zoN" alt="Website Preview" width="700"/>
   <h1>My Personal Blog & Portfolio</h1>
   <p>
     <strong>Showcasing my professional journey, projects, and personal interests. Built with Astro for a lightning-fast, dynamic experience.</strong>
