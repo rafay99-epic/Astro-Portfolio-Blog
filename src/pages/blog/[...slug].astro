@@ -1,8 +1,8 @@
 ---
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection, render } from "astro:content";
 import BlogPost from "@layouts/BlogPost.astro";
-import { calculateReadTime } from "@util/read_time";
+// import { calculateReadTime } from "@util/read_time";
 export const prerender = true;
 
 export async function getStaticPaths() {
@@ -26,7 +26,8 @@ type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
 
-const readTime = calculateReadTime(post.body);
+// const readTime = calculateReadTime(post.body);
+const { remarkPluginFrontmatter } = await render(post);
 
 const { Content } = featureFlags.showBlog
   ? await post.render()
@@ -36,7 +37,7 @@ const { Content } = featureFlags.showBlog
 {
   featureFlags.showBlog ? (
     Content ? (
-      <BlogPost {...post.data} readTime={readTime}>
+      <BlogPost {...post.data} readTime={remarkPluginFrontmatter.minutesRead}>
         <Content />
       </BlogPost>
     ) : (

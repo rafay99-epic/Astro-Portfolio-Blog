@@ -1,8 +1,7 @@
 ---
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection, render } from "astro:content";
 import MSNoteLayout from "@layouts/MSNotes.astro";
-import { calculateReadTime } from "@util/read_time";
 export const prerender = true;
 
 export async function getStaticPaths() {
@@ -26,7 +25,7 @@ type Props = CollectionEntry<"ms_notes">;
 
 const post = Astro.props;
 
-const readTime = calculateReadTime(post.body);
+const { remarkPluginFrontmatter } = await render(post);
 
 const { Content } = featureFlags.showNotes
   ? await post.render()
@@ -36,7 +35,10 @@ const { Content } = featureFlags.showNotes
 {
   featureFlags.showNotes ? (
     Content ? (
-      <MSNoteLayout {...post.data} readTime={readTime}>
+      <MSNoteLayout
+        {...post.data}
+        readTime={remarkPluginFrontmatter.minutesRead}
+      >
         <Content />
       </MSNoteLayout>
     ) : (
