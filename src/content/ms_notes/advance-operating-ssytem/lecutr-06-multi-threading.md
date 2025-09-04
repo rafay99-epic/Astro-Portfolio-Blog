@@ -536,3 +536,96 @@ flowchart TD
 | Blocking syscalls | Blocks whole process                 | Only blocks the calling thread         |
 | Parallelism       | Not true parallelism (one core only) | True parallelism across multiple cores |
 | Portability       | High (library only)                  | Low (OS-specific support needed)       |
+
+## 🌐 Multithreading Models
+
+Since we can have threads managed by the **user space library** (user-level threads, ULTs) and also by the **kernel** (kernel-level threads, KLTs), the OS needs a way to map one to the other. This mapping is what we call **multithreading models**.
+
+There are **three classic models**:
+
+### 1. **Many-to-One Model**
+
+* **How it works:**
+  * Multiple user threads (ULTs) are mapped to a **single kernel thread**.
+  * The OS only sees *one thread per process*.
+  * The user-level thread library handles scheduling among user threads.
+* **Pros:**
+  * Simple and efficient for context switching (only in user space).
+  * No need for kernel support for threading.
+* **Cons:**
+  * **Blocking problem**: If one ULT makes a blocking system call, the whole process (all threads) is blocked.
+  * Cannot take advantage of multiprocessor systems since only one kernel thread runs.
+* **Diagram:**
+
+```
+  [ULT1] \
+  [ULT2]  > ----> [Single KLT] ----> [CPU]
+  [ULT3] /
+```
+
+### 2. **One-to-One Model**
+
+* **How it works:**
+  * Each user thread is mapped to **its own kernel thread**.
+  * The OS manages scheduling and execution directly.
+* **Pros:**
+  * True parallelism on multiprocessors.
+  * If one thread blocks, others can still run.
+* **Cons:**
+  * **Overhead**: Creating a user thread requires creating a kernel thread (more expensive).
+  * Some OSes limit the number of threads that can be created due to kernel resource usage.
+* **Diagram:**
+
+```
+  [ULT1] ---> [KLT1] ---> CPU
+  [ULT2] ---> [KLT2] ---> CPU
+  [ULT3] ---> [KLT3] ---> CPU
+```
+
+### 3. **Many-to-Many Model**
+
+* **How it works:**
+  * Multiple user threads are mapped to multiple kernel threads.
+  * The thread library schedules user threads onto a smaller or equal pool of kernel threads.
+  * The OS and user library **share responsibility** for scheduling.
+* **Pros:**
+  * Flexible: Can exploit parallelism but also avoid excessive kernel thread creation.
+  * Solves the blocking problem: if one ULT blocks, another can still be scheduled on a different KLT.
+* **Cons:**
+  * More complex to implement (requires cooperation between user and kernel).
+  * Higher coordination overhead.
+* **Diagram:**
+
+```
+  [ULT1] \
+  [ULT2]  > ---> [KLT1] ---> CPU
+  [ULT3] / \
+           \---> [KLT2] ---> CPU
+```
+
+### 4. **Two-Level Model (Variation of Many-to-Many)**
+
+* **How it works:**
+  * Similar to Many-to-Many but allows some ULTs to be **bound** to specific KLTs.
+  * Gives flexibility and also efficiency for certain "critical" threads.
+* **Example:**
+  * A thread that performs real-time I/O may be bound to a kernel thread for direct execution, while other threads are multiplexed.
+
+## 🔄 Workflow (Flow of Execution)
+
+1. **User creates a thread** → User-level library handles the creation.
+2. **Depending on model**:
+   * In *Many-to-One*: Only one kernel thread represents all threads.
+   * In *One-to-One*: Each ULT → new KLT in the kernel.
+   * In *Many-to-Many*: ULT scheduler assigns ULT → available KLT.
+3. **Kernel schedules KLTs** → Maps them to CPUs.
+4. **Execution happens** → ULT runs on top of the assigned KLT.
+
+💡 Quick comparison table:
+
+| Model        | Parallelism? | Blocking Issue? | Efficiency | Complexity |
+| ------------ | ------------ | --------------- | ---------- | ---------- |
+| Many-to-One  | ❌ No         | ✅ Yes           | ✅ High     | ❌ Low      |
+| One-to-One   | ✅ Yes        | ❌ No            | ❌ Low      | ✅ Medium   |
+| Many-to-Many | ✅ Yes        | ❌ No            | ✅ Medium   | ❌ High     |
+| Two-Level    | ✅ Yes        | ❌ No            | ✅ Medium   | ✅ Higher   |
