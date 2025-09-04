@@ -1,8 +1,8 @@
 ---
-lecture_title: Multi-Threading
+lecture_title: 'Lecture 06: Multi-Threading'
 lecture_description: 'Everything about thread '
 pubDate: 2025-09-03T19:00:00.000Z
-lecture_draft: true
+lecture_draft: false
 lectureNumber: '06'
 subject: advance-operating-system
 ---
