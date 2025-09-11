@@ -431,3 +431,65 @@ sequenceDiagram
 3. **Counter’s Safety:**
    * Only one process (Producer OR Consumer) can touch it at a time → **no race condition**.
    * Both Producer and Consumer are put to sleep if resource isn’t available → **no busy CPU wastage**.
+
+## 🔹 First — What is a Race Condition?
+
+* A **race condition** happens when **two or more threads/processes** access a **shared resource (like shared memory, counter, buffer, etc.) at the same time**, and the **final result depends on the order of execution**.
+* The OS can’t guarantee which thread will finish first → *chaotic outcome*.
+
+Think of **two people updating the same Google Doc offline**, then syncing back → conflicting results.
+
+## 🔹 How to Get Out of a Race Condition (Solutions)
+
+The key is **synchronization**. Methods to fix race conditions:
+
+1. **Mutex (Mutual Exclusion lock)**
+   * Only one thread at a time enters the critical section.
+2. **Semaphores**
+   * Manage access to resources (counting or binary).
+3. **Monitors (in Java etc.)**
+   * High-level synchronization mechanism → synchronized methods/blocks.
+4. **Atomic Operations**
+   * Certain CPUs/OS provide atomic increment/decrement (`atomic_inc`, `std::atomic` in C++).
+5. **Avoid Shared State**
+   * Design threads so they don’t share variables whenever possible (functional / immutability approach).
+
+## 🔹 Effect of Race Conditions on Threads
+
+### 🟢 Main Thread
+
+* If your **main thread** faces a race condition with children threads (like updating a shared variable), the **entire program result can be corrupted**.
+* Example in C/Java:
+  * Main thread spawns worker threads to compute partial sums.
+  * All threads update a single `total`.
+  * Without locking → wrong total printed by main thread.
+
+So → the **main thread depends on correct synchronization** from child threads to produce valid results.
+
+### 🟢 User-Level Threads (ULTs)
+
+* In **user-level threads**, scheduling is done in **user space** (not by the OS kernel).
+* If a user-level thread hits a race condition:
+  * The **user-space thread library** must enforce synchronization.
+  * If one thread blocks on I/O, sometimes the whole process may block (since kernel doesn’t know threads exist unless it’s M:N model).
+* Race conditions at ULT level → can corrupt shared program data structures and starve the scheduler.
+
+👉 **Effect**: More severe because kernel cannot “save you” — it just thinks it’s a single process. Synchronization must be handled at **user level**.
+
+### 🟢 Kernel-Level Threads (KLTs)
+
+* Here, the OS kernel is aware of all threads.
+* If a kernel-level thread hits a race condition:
+  * The OS may *partially help* with preemptive scheduling (e.g., thread preemption with locks).
+  * But **data inconsistency still occurs** if you don’t use proper primitives (mutex/semaphores).
+* Good thing → one thread blocking doesn’t block the whole process (since OS schedules other kernel threads).
+
+👉 **Effect**: Errors remain local, but synchronization is still needed to prevent corruption.
+
+## 🔹 Summary Table
+
+| **Aspect**              | **Without Sync (Race Condition)**                                             | **With Sync**                                   |
+| ----------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------- |
+| **Main Thread**         | Gets wrong results from child threads                                         | Collects correct results                        |
+| **User-level Thread**   | Race causes full process corruption (all threads share 1 kernel thread state) | User-space lib ensures correctness (mutex, sem) |
+| **Kernel-level Thread** | Data corruption between kernel threads; OS can’t help automatically           | Mutex/semaphores protect shared state           |
