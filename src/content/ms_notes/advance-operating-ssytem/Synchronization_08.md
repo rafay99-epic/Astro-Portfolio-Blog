@@ -493,3 +493,76 @@ So → the **main thread depends on correct synchronization** from child threads
 | **Main Thread**         | Gets wrong results from child threads                                         | Collects correct results                        |
 | **User-level Thread**   | Race causes full process corruption (all threads share 1 kernel thread state) | User-space lib ensures correctness (mutex, sem) |
 | **Kernel-level Thread** | Data corruption between kernel threads; OS can’t help automatically           | Mutex/semaphores protect shared state           |
+
+## **Shared Memory vs Critical Section**
+
+### 🔹 Shared Memory
+
+* **What it is:** A memory segment accessible by multiple processes/threads.
+* **Purpose:** Fastest **IPC (Inter-Process Communication)** method.
+* **Issue:** Causes **race conditions** when multiple processes read/write simultaneously.
+* **Example:** A global counter `int count;` shared by multiple processes.
+
+### 🔹 Critical Section
+
+* **What it is:** A block of **code** where shared resources (*like shared memory*) are being accessed.
+* **Purpose:** Protect shared resources by ensuring **one process/thread executes that block at a time.**
+* **Issue:** If multiple threads enter the critical section without synchronization, race conditions occur.
+* **Example:**
+
+```c
+  // Critical Section:
+  counter = counter + 1;  // accessing shared memory safely
+```
+
+### 🔹 Difference Between Shared Memory & Critical Section
+
+| Aspect             | Shared Memory                                                   | Critical Section                                               |
+| ------------------ | --------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Definition**     | Shared data segment accessible by processes/threads             | Part of the program code accessing shared resources            |
+| **Nature**         | Resource (data)                                                 | Code (logic/instructions)                                      |
+| **Role**           | Provides communication / shared access                          | Protects from race condition while accessing shared memory     |
+| **Race Condition** | Occurs if multiple processes use it simultaneously without sync | Occurs if multiple threads enter the same section without sync |
+| **Fix**            | Needs synchronization (mutex, semaphore, monitor)               | Needs synchronization (mutex, semaphore, monitor)              |
+
+### 🔹 How They Overlap
+
+✅ **They overlap when accessing shared memory inside critical section**:
+
+* Shared Memory = *Where the resource lives*.
+* Critical Section = *How we update/use the resource*.
+* Race Condition occurs when multiple threads/processes simultaneously execute the **critical section code that modifies shared memory**.
+
+### 🔹 Mermaid Diagram
+
+```mermaid
+flowchart TD
+subgraph SharedMemory["Shared Memory (Resource)"]
+  C["Counter Variable"]
+end
+
+subgraph CriticalSection["Critical Section"]
+  A["Read Counter"]
+  B["Update Counter"]
+  D["Write Counter"]
+end
+
+T1["Thread 1"] -->|Accesses| C
+T2["Thread 2"] -->|Accesses| C
+T3["Thread 3"] -->|Accesses| C
+
+C --> A
+
+style SharedMemory fill:#fdf5e6,stroke:#f39c12,stroke-width:2px
+style CriticalSection fill:#e6f7ff,stroke:#3498db,stroke-width:2px
+style T1 fill:#d5f5e3,stroke:#27ae60
+style T2 fill:#f9e79f,stroke:#f1c40f
+style T3 fill:#f5b7b1,stroke:#e74c3c
+```
+
+## 🔹 Notes to Remember (Memory Tricks 🧠)
+
+* **Shared Memory = Battleground** → where race conditions can happen.
+* **Critical Section = Fight Zone** → the actual lines of code that fight over the shared memory.
+* **Overlap:** Shared memory becomes dangerous only *inside critical sections* where multiple threads try to update/use it together.
+* **Solution:** Use synchronization (Mutex, Semaphore, Monitors, Atomic Ops).
