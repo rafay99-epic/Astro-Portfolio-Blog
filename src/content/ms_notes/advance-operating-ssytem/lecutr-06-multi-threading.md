@@ -4,7 +4,7 @@ lecture_description: 'Everything about thread '
 pubDate: 2025-09-03T19:00:00.000Z
 lecture_draft: false
 lectureNumber: '06'
-subject: advance-operating-system
+subject: Advance Operating System
 ---
 
 # 🔹 Process vs Thread
