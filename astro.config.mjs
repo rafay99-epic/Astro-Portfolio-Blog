@@ -26,10 +26,6 @@ export default defineConfig({
     prefetch: {
         prefetchAll: false,
     },
-    experimental: {
-        csp: true
-
-    },
     markdown: {
         syntaxHighlight: {
             excludeLangs: ["mermaid"],

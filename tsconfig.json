@@ -21,11 +21,12 @@
       "@util/*": ["util/*"],
       "@config/*": ["config/*"],
       "@hooks/*": ["hooks/*"], 
-      "@package.json": ["package.json"]
+      "@package.json": ["./package.json"]
     },
     "strictNullChecks": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   }
 }

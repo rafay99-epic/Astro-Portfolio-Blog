@@ -388,7 +388,7 @@ export default defineConfig({
                 label: "Show What's New",
                 required: true,
               },
-              {
+              
               {
                 type: "boolean",
                 name: "enableViewTransition",

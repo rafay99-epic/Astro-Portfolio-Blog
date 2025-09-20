@@ -28,6 +28,7 @@
 
     },
     "FeatureFlagsApi": {
-        "enableauthorInfoAPI": true
+        "enableauthorInfoAPI": true,
+        "enableNewsletterSubscription": true
     }
 }
