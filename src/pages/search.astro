@@ -9,7 +9,7 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
 const posts = featureFlags.showBlog
   ? (await getCollection("blog")).sort(
-      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
     )
   : [];
 
@@ -36,9 +36,9 @@ try {
     </style>
   </head>
 
-  <body class="flex flex-col min-h-screen">
+  <body class="flex min-h-screen flex-col">
     <Header />
-    <main class="flex-grow mx-auto">
+    <main class="mx-auto flex-grow">
       <div>
         <SearchReactComponent client:visible posts={posts} />
       </div>

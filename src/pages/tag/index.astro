@@ -1,5 +1,4 @@
 ---
-// src/pages/tag/index.astro
 import { getCollection } from "astro:content";
 
 import BaseHead from "@astro/base/BaseHead.astro";
@@ -12,67 +11,61 @@ import { ClientRouter } from "astro:transitions";
 
 export const prerender = true;
 
-// Get all posts, sort by publish date (descending)
 const allPosts = (await getCollection("blog")).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(), // Sort descending
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-// Filter out draft posts
 const publishedPosts = allPosts.filter((post) => !post.data.draft);
 
-// Get all unique tags from published posts
 const allTags = Array.from(
-    new Set(publishedPosts.flatMap((post) => post.data.tags || [])),
+  new Set(publishedPosts.flatMap((post) => post.data.tags || [])),
 ).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
 
-// This is the "All" page - no specific tag selected
 const selectedTag = null;
 const currentPage = 1;
 
-// Show all posts for the "All" page
 const filteredPosts = publishedPosts;
 
-// Pagination logic
 const postsPerPage = 10;
 const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
 const paginatedPosts = filteredPosts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage,
+  (currentPage - 1) * postsPerPage,
+  currentPage * postsPerPage,
 );
 
 try {
-    if (!featureFlags.showTags) {
-        return Astro.redirect("/access-denied");
-    }
+  if (!featureFlags.showTags) {
+    return Astro.redirect("/access-denied");
+  }
 } catch (error) {
-    return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 ---
 
 <html lang="en">
-    <head>
-        <BaseHead
-            title={`Tags | ${authorConfig.SiteName}`}
-            description={`Browse all tags on ${authorConfig.SiteName} and explore categorized content.`}
-        />
-    </head>
+  <head>
+    <BaseHead
+      title={`Tags | ${authorConfig.SiteName}`}
+      description={`Browse all tags on ${authorConfig.SiteName} and explore categorized content.`}
+    />
+  </head>
 
-    <body>
-        <Header />
-        <ClientRouter />
-        <main class="w-full max-w-5xl mx-auto">
-            <div>
-                <TagFilterDisplay
-                    allTags={allTags}
-                    paginatedPosts={paginatedPosts}
-                    selectedTag={selectedTag}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    currentUrl={new URL(Astro.url)}
-                />
-            </div>
-        </main>
-        <Footer class="mt-auto" />
-    </body>
+  <body>
+    <Header />
+    <ClientRouter />
+    <main class="mx-auto w-full max-w-5xl">
+      <div>
+        <TagFilterDisplay
+          allTags={allTags}
+          paginatedPosts={paginatedPosts}
+          selectedTag={selectedTag}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          currentUrl={new URL(Astro.url)}
+        />
+      </div>
+    </main>
+    <Footer class="mt-auto" />
+  </body>
 </html>

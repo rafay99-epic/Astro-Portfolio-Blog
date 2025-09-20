@@ -1,35 +1,38 @@
 ---
-title: 'The Truth About Contact Forms: They Suck (and My Astro Debugging Nightmare)'
-description: '"Contact forms suck," says this developer, who braved Astro debugging
+title: "The Truth About Contact Forms: They Suck (and My Astro Debugging Nightmare)"
+description:
+  '"Contact forms suck," says this developer, who braved Astro debugging
   hell to find a (not-so-perfect) solution for a simple problem.'
 pubDate: 2025-02-17 19:00:00+00:00
 draft: false
 heroImage: /BlogImages/My Astro Contact Form Nightmare (and How I Fixed It!).webp
-authorName: 'Abdul Rafay '
+authorName: "Abdul Rafay "
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
-- Thoughts-Process
-- WebDevelopment
+  - Thoughts-Process
+  - WebDevelopment
 keywords:
-- webdevelopment
-- programming
-- performance
-- thoughts-process
-- software development
-- static site generator
-- web development
-- blog
-- astro
-- technology
+  - webdevelopment
+  - programming
+  - performance
+  - thoughts-process
+  - software development
+  - static site generator
+  - web development
+  - blog
+  - astro
+  - technology
 featured: true
-excerpt: '"Contact forms suck," says this developer, who braved Astro debugging hell
+excerpt:
+  '"Contact forms suck," says this developer, who braved Astro debugging hell
   to find a (not-so-perfect) solution for a simple problem.'
 canonicalUrl: /blog/the-truth-about-contact-forms-they-suck-and-my-astro-debugging-nightmare
 ---
-**The Truth About Contact Forms: They Suck (and My Astro Debugging Nightmare)**
-You heard the title right—I’m here to expose the reality of contact forms. And let's be real: contact forms *suck*. I'm not just saying that to be edgy; I'm talking from experience. How many times have you filled out a form, hit submit, and then *crickets*? Or worse, you get a "Server Error" when all you wanted to do was ask a simple question? Yeah, contact forms are a menace, a spam magnet, and often a UI/UX disaster on mobile. I've built countless websites, tested every implementation under the sun, and I'm here to tell you exactly why they fail...and whether there's *any* hope for making them less awful.
 
-Before we dive in, you might be wondering: *What even is a contact form? Why do they suck? Is there a way to make them better?* Spoiler alert: the answer to the last one is a *maybe* with a heavy dose of "it depends." But if you're a developer, trying to build a functional, user-friendly contact form from scratch, this post is for you. If you're happily using WordPress or Shopify... well, you're probably living in a blissful alternate reality, and this post might just ruin your day. Consider yourself warned!
+**The Truth About Contact Forms: They Suck (and My Astro Debugging Nightmare)**
+You heard the title right—I’m here to expose the reality of contact forms. And let's be real: contact forms _suck_. I'm not just saying that to be edgy; I'm talking from experience. How many times have you filled out a form, hit submit, and then _crickets_? Or worse, you get a "Server Error" when all you wanted to do was ask a simple question? Yeah, contact forms are a menace, a spam magnet, and often a UI/UX disaster on mobile. I've built countless websites, tested every implementation under the sun, and I'm here to tell you exactly why they fail...and whether there's _any_ hope for making them less awful.
+
+Before we dive in, you might be wondering: _What even is a contact form? Why do they suck? Is there a way to make them better?_ Spoiler alert: the answer to the last one is a _maybe_ with a heavy dose of "it depends." But if you're a developer, trying to build a functional, user-friendly contact form from scratch, this post is for you. If you're happily using WordPress or Shopify... well, you're probably living in a blissful alternate reality, and this post might just ruin your day. Consider yourself warned!
 
 ### A Quick Note
 
@@ -49,9 +52,9 @@ Since Astro supports both **Server-Side Rendering (SSR)** and **Static Site Gene
 
 To make the contact form reusable, I structured it as follows:
 
-* **ContactForm.tsx** → The UI component.
-* **useContactForm.tsx** → A custom hook handling form submission.
-* **submit.ts** → The API route handling the request.
+- **ContactForm.tsx** → The UI component.
+- **useContactForm.tsx** → A custom hook handling form submission.
+- **submit.ts** → The API route handling the request.
 
 The idea was simple: the form UI would send data to the hook, which would then call the API to submit the form. If I ever wanted to switch from **Web3Forms** to another service, I could simply change the API call without modifying the rest of my code.
 
@@ -104,20 +107,20 @@ try {
 
   return new Response(
     JSON.stringify({ success: true, message: "Message sent successfully!" }),
-    { status: 200, headers: { "Content-Type": "application/json" } }
+    { status: 200, headers: { "Content-Type": "application/json" } },
   );
 } catch (error) {
   if (error.name === "AbortError") {
     console.error("Web3Forms Request Timed Out");
     return new Response(
       JSON.stringify({ success: false, message: "Request timed out." }),
-      { status: 504, headers: { "Content-Type": "application/json" } }
+      { status: 504, headers: { "Content-Type": "application/json" } },
     );
   }
   console.error("Web3Forms Request Failed:", error);
   return new Response(
     JSON.stringify({ success: false, message: "Failed to contact Web3Forms." }),
-    { status: 500, headers: { "Content-Type": "application/json" } }
+    { status: 500, headers: { "Content-Type": "application/json" } },
   );
 }
 ```
@@ -132,7 +135,7 @@ This journey has been full of surprises, and I’ll go into **how I finally solv
 
 ## New Service: The Hunt for a Less Terrible Option
 
-At this point, I was *done*. Debugging, trying new things, rewriting code, and debugging again—I needed a solution. So, I started searching for alternatives, and oh boy, I was in for another few days of torture. And no, I’m not talking about the code itself—I’m talking about the sheer number of services available for something as simple as a contact form. It's like everyone and their grandma has a contact form service these days!
+At this point, I was _done_. Debugging, trying new things, rewriting code, and debugging again—I needed a solution. So, I started searching for alternatives, and oh boy, I was in for another few days of torture. And no, I’m not talking about the code itself—I’m talking about the sheer number of services available for something as simple as a contact form. It's like everyone and their grandma has a contact form service these days!
 
 From my experience, there are two ways to get a contact form working:
 
@@ -152,6 +155,7 @@ Here are some of the services I looked into:
    ![Screenshot showing](</BlogImages/Screenshot 2025-02-16 182018.webp>)
 
    As you can see, the pricing is steep for a small personal site. If you have a larger user base, this might work, but for me, it just wasn’t feasible.
+
 2. **[FormBold](https://formbold.com/)** – Another solid option, but again, no free tier. Their pricing structure is almost identical to Formspree, which makes it just as inaccessible for small personal projects.
 
 I also briefly considered X, Y, and Z, but their privacy policies made my skin crawl. I'm not about to sell my users' data just so they can send me a message!
@@ -162,11 +166,11 @@ Meanwhile, Web3Forms does have a free plan—but unfortunately, after all my tes
 
 ## The Solution: Embrace the Hack (Maybe?)
 
-Okay, full disclosure: what I ended up doing isn't exactly going to win any awards for code elegance. But after days of wrestling with Web3Forms, React, and the mysteries of Astro's API routes, I was desperate. I needed something that *worked*, even if it meant sacrificing a bit of code purity.
+Okay, full disclosure: what I ended up doing isn't exactly going to win any awards for code elegance. But after days of wrestling with Web3Forms, React, and the mysteries of Astro's API routes, I was desperate. I needed something that _worked_, even if it meant sacrificing a bit of code purity.
 
 So, I did what any sane (or perhaps insane) developer would do: I reverted to a plain Astro component with inline `<script>` tags. Yes, you read that right. I know, I know\... it's like going back to the Stone Age of web development. But hear me out!
 
-See, Web3Forms *seemed* to only play nice when it was dealing with static HTML and JavaScript. The moment React got involved, things went haywire. I suspect it's something to do with how React handles the form lifecycle or maybe some weird timing issue. Whatever the reason, the only way I could get Web3Forms to reliably send emails without throwing random errors was to bypass all the fancy React hooks and API routes and just... *make it static*.
+See, Web3Forms _seemed_ to only play nice when it was dealing with static HTML and JavaScript. The moment React got involved, things went haywire. I suspect it's something to do with how React handles the form lifecycle or maybe some weird timing issue. Whatever the reason, the only way I could get Web3Forms to reliably send emails without throwing random errors was to bypass all the fancy React hooks and API routes and just... _make it static_.
 
 \[Show a screenshot of the code here, maybe with a circle around the `<script>` tags and a "Don't judge me!" caption]
 
@@ -337,7 +341,7 @@ I created a contact section with a form, where two key elements play a crucial r
 1. The `#result` element, which displays feedback messages (because who doesn't love instant gratification?).
 2. The `hCaptcha` field, because spam bots are the bane of my existence.
 
-By utilizing inline `<script>` tags within the Astro component, I ensured that these scripts are only executed when needed. While this may not be the most elegant approach, it was the *only* way to make Web3Forms work seamlessly in a static environment.
+By utilizing inline `<script>` tags within the Astro component, I ensured that these scripts are only executed when needed. While this may not be the most elegant approach, it was the _only_ way to make Web3Forms work seamlessly in a static environment.
 
 So, is it perfect? Absolutely not. Is it a bit of a hack? You bet. But does it (mostly) work? Yes! And sometimes, in the world of web development, "mostly working" is a victory in itself.
 
@@ -353,6 +357,6 @@ At the end of the day, I needed a cost-effective, React-friendly contact form so
 
 For now, the hunt continues. 🚀
 
-So, have *you* wrestled with contact forms in Astro or React? What's *your* preferred (least terrible) solution? Let me know in the comments! I'm always looking for new (or at least slightly less painful) ways to solve this age-old problem.
+So, have _you_ wrestled with contact forms in Astro or React? What's _your_ preferred (least terrible) solution? Let me know in the comments! I'm always looking for new (or at least slightly less painful) ways to solve this age-old problem.
 
 Until then, peace out, nerds. 👓

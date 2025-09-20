@@ -83,7 +83,8 @@ export default defineConfig({
             label: "SEO Keywords",
             list: true,
             required: false,
-            description: "Keywords for better search engine optimization (optional)",
+            description:
+              "Keywords for better search engine optimization (optional)",
             ui: {
               component: "tags",
             },
@@ -93,7 +94,8 @@ export default defineConfig({
             name: "canonicalUrl",
             label: "Canonical URL",
             required: false,
-            description: "Custom canonical URL (only needed for content migration or cross-domain)",
+            description:
+              "Custom canonical URL (only needed for content migration or cross-domain)",
           },
           {
             type: "boolean",
@@ -107,7 +109,8 @@ export default defineConfig({
             name: "excerpt",
             label: "SEO Excerpt",
             required: false,
-            description: "Custom meta description for search engines (150-160 characters recommended)",
+            description:
+              "Custom meta description for search engines (150-160 characters recommended)",
             ui: {
               component: "textarea",
             },
@@ -189,7 +192,6 @@ export default defineConfig({
             required: true,
           },
           {
-
             type: "string",
             name: "lectureNumber",
             label: "Lecture Number",
@@ -207,7 +209,6 @@ export default defineConfig({
             label: "Body",
             isBody: true,
           },
-          
         ],
       },
 
@@ -388,7 +389,7 @@ export default defineConfig({
                 label: "Show What's New",
                 required: true,
               },
-              
+
               {
                 type: "boolean",
                 name: "enableViewTransition",

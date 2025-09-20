@@ -1,4 +1,4 @@
-import  { memo } from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 interface ComingSoonProps {
@@ -45,13 +45,13 @@ const iconVariants = {
 const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
   return (
     <div
-      className="min-h-screen flex flex-col justify-center items-center  text-[#c0caf5] p-6 relative overflow-hidden"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden p-6 text-[#c0caf5]"
       role="main"
     >
       {}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-[#bb9af7]/10 to-[#9ece6a]/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute left-1/4 top-1/4 h-96 w-96 animate-pulse rounded-full bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 h-80 w-80 animate-pulse rounded-full bg-gradient-to-r from-[#bb9af7]/10 to-[#9ece6a]/10 blur-3xl delay-1000" />
       </div>
 
       <motion.div
@@ -63,19 +63,19 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
         {}
         <motion.div
           variants={cardVariants}
-          className="backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 rounded-3xl p-8 md:p-16 text-center shadow-2xl relative overflow-hidden w-full"
+          className="relative w-full overflow-hidden rounded-3xl border border-[#565f89]/30 bg-[#24283b]/60 p-8 text-center shadow-2xl backdrop-blur-xl md:p-16"
           role="alert"
           aria-live="polite"
         >
           {}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5 rounded-3xl" />
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5" />
 
           <div className="relative space-y-8">
             {}
             <motion.div variants={iconVariants} className="flex justify-center">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-2xl blur-lg opacity-50" />
-                <div className="relative bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-2xl p-6 text-6xl">
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] opacity-50 blur-lg" />
+                <div className="relative rounded-2xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] p-6 text-6xl">
                   🚀
                 </div>
               </div>
@@ -83,23 +83,23 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
 
             {}
             <motion.div variants={cardVariants} className="space-y-4">
-              <h1 className="text-4xl md:text-6xl font-bold">
+              <h1 className="text-4xl font-bold md:text-6xl">
                 <span className="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent">
                   {featureName}
                 </span>
               </h1>
 
-              <h2 className="text-2xl md:text-3xl font-semibold text-[#a9b1d6]">
+              <h2 className="text-2xl font-semibold text-[#a9b1d6] md:text-3xl">
                 Coming Soon!
               </h2>
 
-              <div className="mx-auto w-24 h-1 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] rounded-full" />
+              <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a]" />
             </motion.div>
 
             {}
             <motion.p
               variants={cardVariants}
-              className="text-lg md:text-xl text-[#a9b1d6] leading-relaxed max-w-3xl mx-auto"
+              className="mx-auto max-w-3xl text-lg leading-relaxed text-[#a9b1d6] md:text-xl"
             >
               This feature is currently under development. We're working hard to
               bring you something amazing. Stay tuned for updates!
@@ -108,7 +108,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
             {}
             <motion.div
               variants={cardVariants}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-4xl mx-auto"
+              className="mx-auto mt-8 grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-3"
             >
               {[
                 { icon: "⚡", text: "Lightning Fast" },
@@ -118,10 +118,10 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05, y: -2 }}
-                  className="backdrop-blur-md bg-[#1a1b26]/40 border border-[#565f89]/20 rounded-xl p-4 hover:border-[#7aa2f7]/40 transition-all duration-300"
+                  className="rounded-xl border border-[#565f89]/20 bg-[#1a1b26]/40 p-4 backdrop-blur-md transition-all duration-300 hover:border-[#7aa2f7]/40"
                 >
-                  <div className="text-2xl mb-2">{feature.icon}</div>
-                  <div className="text-sm text-[#a9b1d6] font-medium">
+                  <div className="mb-2 text-2xl">{feature.icon}</div>
+                  <div className="text-sm font-medium text-[#a9b1d6]">
                     {feature.text}
                   </div>
                 </motion.div>
@@ -133,12 +133,12 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
               <motion.a
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white rounded-xl font-semibold shadow-lg shadow-[#7aa2f7]/25 hover:shadow-xl hover:shadow-[#7aa2f7]/30 transition-all duration-300 overflow-hidden"
+                className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7aa2f7]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
                 href="/"
                 aria-label="Return to homepage"
                 role="button"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#bb9af7] to-[#7aa2f7] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#bb9af7] to-[#7aa2f7] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <span className="relative">Back to Home</span>
                 <motion.span
                   animate={{ x: [0, -5, 0] }}
@@ -157,19 +157,19 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
             {}
             <motion.div
               variants={cardVariants}
-              className="mt-10 space-y-4 max-w-md mx-auto"
+              className="mx-auto mt-10 max-w-md space-y-4"
             >
-              <div className="text-sm text-[#565f89] font-medium">
+              <div className="text-sm font-medium text-[#565f89]">
                 Development Progress
               </div>
-              <div className="w-full bg-[#1a1b26]/60 rounded-full h-3 overflow-hidden">
+              <div className="h-3 w-full overflow-hidden rounded-full bg-[#1a1b26]/60">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: "65%" }}
                   transition={{ duration: 2, delay: 1 }}
-                  className="h-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-full relative"
+                  className="relative h-full rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+                  <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                 </motion.div>
               </div>
               <div className="text-xs text-[#565f89]">65% Complete</div>
@@ -180,13 +180,13 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
         {}
         <motion.div
           variants={cardVariants}
-          className="text-center mt-8 text-[#565f89] text-sm"
+          className="mt-8 text-center text-sm text-[#565f89]"
         >
           <p>Want to be notified when this feature launches?</p>
           <motion.a
             whileHover={{ scale: 1.05 }}
             href="/newsletter-subscribe"
-            className="inline-flex items-center gap-2 mt-2 text-[#7aa2f7] hover:text-[#bb9af7] transition-colors duration-300"
+            className="mt-2 inline-flex items-center gap-2 text-[#7aa2f7] transition-colors duration-300 hover:text-[#bb9af7]"
           >
             <span>Subscribe to our newsletter</span>
             <span>📧</span>

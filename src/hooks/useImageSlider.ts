@@ -16,7 +16,7 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
 
   const isImageLoaded = useCallback(
     (index: number) => loadedImages.has(index),
-    [loadedImages]
+    [loadedImages],
   );
 
   const prevSlide = useCallback(() => {
@@ -58,7 +58,7 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
         touchStart.current = 0;
       }
     },
-    [nextSlide, prevSlide]
+    [nextSlide, prevSlide],
   );
 
   const handleMouseEnter = useCallback(() => {

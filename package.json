@@ -4,15 +4,14 @@
     "version": "9.4.0",
     "scripts": {
         "dev": "tinacms dev -c \"astro dev\"",
-        "start": "astro dev",
-        "build": "tinacms build && astro build",
+        "production_build": "tinacms build && astro build",
+        "build": "astro build",
         "preview": "astro preview",
-        "check_build": "astro check && astro build",
-        "astro": "astro",
         "check": "astro check",
-        "preview-build": "astro build",
         "scan": "npx react-scan@latest http://localhost:4321",
-        "changelog": "./scripts/generate-changelog.sh"
+        "changelog": "./scripts/generate-changelog.sh",
+        "lint": "bunx prettier --check . && bunx tsc --noEmit --skipLibCheck",
+        "lint:fix": "bunx prettier --write ."
     },
     "dependencies": {
         "@astrojs/mdx": "^4.3.5",

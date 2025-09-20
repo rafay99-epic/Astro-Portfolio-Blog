@@ -1,4 +1,4 @@
-import  { useRef } from "react";
+import { useRef } from "react";
 import { memo } from "react";
 import { Copy, Check } from "lucide-react";
 import type { CopyButtonProps } from "types/codeblock";
@@ -30,7 +30,7 @@ const CopyButton = memo(function CopyButton({
       aria-label="Copy code to clipboard"
       role="button"
     >
-      {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+      {isCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
     </button>
   );
 });

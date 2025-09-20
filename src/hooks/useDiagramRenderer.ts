@@ -43,21 +43,32 @@ export function useDiagramRenderer({
 
         const svgElement = svgWrapper.querySelector("svg");
         if (svgElement) {
-          const viewBox = svgElement.getAttribute('viewBox');
+          const viewBox = svgElement.getAttribute("viewBox");
           let diagramWidth = 0;
           let diagramHeight = 0;
-          
+
           if (viewBox) {
-            const [, , width, height] = viewBox.split(' ').map(Number);
+            const [, , width, height] = viewBox.split(" ").map(Number);
             diagramWidth = width;
             diagramHeight = height;
           }
+
+          let measuredWidth = 0;
           
-          const containerRect = container.getBoundingClientRect();
-          const containerWidth = containerRect.width - 48; 
+          if (container && container.isConnected) {
+            const containerRect = container.getBoundingClientRect();
+            measuredWidth = containerRect.width;
+          } else if (container && container.parentElement) {
+            const parentRect = container.parentElement.getBoundingClientRect();
+            measuredWidth = parentRect.width;
+          } else {
+            measuredWidth = window.innerWidth;
+          }
           
-          let targetHeight = 400; 
-          
+          const containerWidth = Math.max(0, measuredWidth - 48);
+
+          let targetHeight = 400;
+
           if (diagramHeight > 0) {
             if (diagramHeight < 200) {
               targetHeight = Math.max(350, diagramHeight * 3);
@@ -67,33 +78,33 @@ export function useDiagramRenderer({
               targetHeight = Math.max(350, Math.min(550, diagramHeight * 2));
             }
           }
-          
+
           const aspectRatio = diagramWidth / diagramHeight;
           const targetWidth = targetHeight * aspectRatio;
-          
+
           if (targetWidth < containerWidth * 0.8) {
             targetHeight = (containerWidth * 0.8) / aspectRatio;
           }
-          
+
           svgElement.style.width = "100%";
           svgElement.style.maxWidth = "100%";
           svgElement.style.height = `${targetHeight}px`;
-          svgElement.style.minHeight = "300px"; 
-          svgElement.style.maxHeight = "700px"; 
-          
+          svgElement.style.minHeight = "300px";
+          svgElement.style.maxHeight = "700px";
+
           svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
           svgElement.style.overflow = "visible";
-          
-          const textElements = svgElement.querySelectorAll('text, tspan');
+
+          const textElements = svgElement.querySelectorAll("text, tspan");
           textElements.forEach((textElement) => {
             const element = textElement as HTMLElement;
-            const currentFontSize = parseFloat(element.style.fontSize || '14');
+            const currentFontSize = parseFloat(element.style.fontSize || "14");
             if (currentFontSize < 16) {
-              element.style.fontSize = '16px';
+              element.style.fontSize = "16px";
             } else if (currentFontSize < 20) {
               element.style.fontSize = `${Math.max(18, currentFontSize * 1.2)}px`;
             }
-            element.style.fontWeight = '600';
+            element.style.fontWeight = "600";
           });
 
           container.appendChild(svgWrapper);
@@ -104,7 +115,7 @@ export function useDiagramRenderer({
         console.error("Failed to render diagram:", error);
       }
     },
-    [extractDiagramType]
+    [extractDiagramType],
   );
 
   useEffect(() => {
@@ -112,7 +123,7 @@ export function useDiagramRenderer({
 
     const renderDiagrams = () => {
       const diagrams = document.querySelectorAll(
-        "pre code.language-mermaid:not([data-mermaid-rendered])"
+        "pre code.language-mermaid:not([data-mermaid-rendered])",
       );
       diagrams.forEach(renderDiagram);
     };

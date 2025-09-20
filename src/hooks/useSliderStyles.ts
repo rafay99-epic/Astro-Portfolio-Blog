@@ -13,7 +13,7 @@ export const useSliderStyles = (
   layout: Layout,
   aspectRatio: AspectRatio,
   thumbnailPosition: ThumbnailPosition,
-  isFullScreen: boolean
+  isFullScreen: boolean,
 ) => {
   const themeClasses = useMemo((): ThemeClasses => {
     switch (theme) {
@@ -99,7 +99,7 @@ export const useSliderStyles = (
     ${isFullScreen ? "fixed inset-0 z-50" : ""}
     group
   `,
-    [layoutClasses.container, themeClasses.container, isFullScreen]
+    [layoutClasses.container, themeClasses.container, isFullScreen],
   );
 
   const mainContentClasses = useMemo(
@@ -108,7 +108,7 @@ export const useSliderStyles = (
     ${thumbnailPosition === "left" ? "flex-row-reverse" : ""}
     ${thumbnailPosition === "right" ? "flex-row" : "flex-col"}
   `,
-    [thumbnailPosition]
+    [thumbnailPosition],
   );
 
   const aspectRatioClass = useMemo(() => {

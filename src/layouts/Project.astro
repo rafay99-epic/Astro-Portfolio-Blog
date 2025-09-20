@@ -216,16 +216,15 @@ try {
   <body class="project-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
 
-    <main class="w-full max-w-7xl mx-auto">
+    <main class="mx-auto w-full max-w-7xl">
       <article>
-        {/* Project Header - Title Only */}
         <div class="project-header text-center">
           <div class="project-badge">
             <span>🚀</span>
             Project
           </div>
           <h1
-            class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight"
+            class="mb-4 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl"
             transition:name={`project-title-${Projecttitle}`}
           >
             <span
@@ -236,18 +235,17 @@ try {
           </h1>
           {
             ProjectDescription && (
-              <p class="text-lg text-[#a9b1d6] max-w-3xl mx-auto leading-relaxed">
+              <p class="mx-auto max-w-3xl text-lg leading-relaxed text-[#a9b1d6]">
                 {ProjectDescription}
               </p>
             )
           }
         </div>
 
-        {/* Technologies Section - Only if tech exists */}
         {
           ProjectTech && ProjectTech.length > 0 && (
             <div class="tech-section">
-              <h3 class="text-center text-lg font-semibold mb-3 text-[#c0caf5]">
+              <h3 class="mb-3 text-center text-lg font-semibold text-[#c0caf5]">
                 🛠️ Technologies Used
               </h3>
               <div class="tech-grid">
@@ -259,12 +257,10 @@ try {
           )
         }
 
-        {/* Project Content */}
         <div class="project-content">
           <slot />
         </div>
 
-        {/* Share Buttons */}
         <div class="share-section">
           <ShareButtons url={pageUrl} pagetitle="Project" client:visible />
         </div>
@@ -275,12 +271,10 @@ try {
     </main>
 
     <script is:inline>
-      // Prevent auto-scroll restoration and conflicts
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
       }
 
-      // Prevent initial scroll jumping
       document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           window.scrollTo(0, 0);

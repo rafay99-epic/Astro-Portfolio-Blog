@@ -1,6 +1,6 @@
 ---
 lecture_title: Critical Section Problem
-lecture_description: 'Going through the OS important section and dealing with the processing. '
+lecture_description: "Going through the OS important section and dealing with the processing. "
 pubDate: 2025-09-15T19:00:00.000Z
 lecture_draft: true
 lectureNumber: "09"
@@ -25,9 +25,7 @@ Here are three prominent approaches to tackling this challenge:
 
 1. **Semaphores**
 
-Semaphores are synchronization tools that can be used to control access to a common resource by multiple processes in a concurrent system. They are essentially integer variables that are accessed only through two atomic operations:
-\*   `wait()` (also known as `P` or `down`): Decrements the semaphore value. If the value becomes negative, the process blocks until another process performs a `signal()` operation.
-\*   `signal()` (also known as `V` or `up`): Increments the semaphore value. If there are processes waiting, one of them is unblocked.
+Semaphores are synchronization tools that can be used to control access to a common resource by multiple processes in a concurrent system. They are essentially integer variables that are accessed only through two atomic operations: \* `wait()` (also known as `P` or `down`): Decrements the semaphore value. If the value becomes negative, the process blocks until another process performs a `signal()` operation. \* `signal()` (also known as `V` or `up`): Increments the semaphore value. If there are processes waiting, one of them is unblocked.
 
 For a critical section, a **binary semaphore** (which can only be 0 or 1, essentially a mutex) is typically used:
 

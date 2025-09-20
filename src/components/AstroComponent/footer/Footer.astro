@@ -35,18 +35,16 @@ import ServicesIcons from "@react/footer/ServicesIcons";
 </style>
 
 <footer
-  class="pt-8 pb-2 px-4 border-t border-[#565f89]/20 bg-gradient-to-b from-transparent to-[#1a1b26]/10"
+  class="border-t border-[#565f89]/20 bg-gradient-to-b from-transparent to-[#1a1b26]/10 px-4 pb-2 pt-8"
 >
   <div class="container mx-auto max-w-7xl">
-    <!-- Main Footer Content -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-      <!-- Brand Section -->
+    <div class="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
       <div class="footer-section">
-        <div class="flex items-center gap-3 mb-4">
+        <div class="mb-4 flex items-center gap-3">
           <img
             src={authorConfig.avator}
             alt={authorConfig.name}
-            class="w-12 h-12 rounded-full border-2 border-[#7aa2f7]/30"
+            class="h-12 w-12 rounded-full border-2 border-[#7aa2f7]/30"
           />
           <div>
             <h3 class="text-lg font-semibold text-[#c0caf5]">
@@ -55,7 +53,7 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             <p class="text-sm text-[#565f89]">{authorConfig.jobTitle}</p>
           </div>
         </div>
-        <p class="text-sm text-[#565f89] mb-4 leading-relaxed">
+        <p class="mb-4 text-sm leading-relaxed text-[#565f89]">
           {authorConfig.SiteDescription}
         </p>
         <div class="social-links-container">
@@ -63,17 +61,16 @@ import ServicesIcons from "@react/footer/ServicesIcons";
         </div>
       </div>
 
-      <!-- Navigation -->
       <div class="footer-section">
-        <h3 class="text-lg font-semibold text-[#c0caf5] mb-4">Navigation</h3>
+        <h3 class="mb-4 text-lg font-semibold text-[#c0caf5]">Navigation</h3>
         <nav class="flex flex-col gap-3">
           {
             featureFlags.showAbout && (
               <a
                 href="/about"
-                class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
+                class="footer-link flex items-center gap-2 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
+                <span class="h-1 w-1 rounded-full bg-[#7aa2f7]" />
                 About
               </a>
             )
@@ -82,9 +79,9 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             featureFlags.showBlog && (
               <a
                 href="/blog"
-                class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
+                class="footer-link flex items-center gap-2 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
+                <span class="h-1 w-1 rounded-full bg-[#7aa2f7]" />
                 Blog
               </a>
             )
@@ -93,9 +90,9 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             featureFlags.showProjects && (
               <a
                 href="/project"
-                class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
+                class="footer-link flex items-center gap-2 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
+                <span class="h-1 w-1 rounded-full bg-[#7aa2f7]" />
                 Projects
               </a>
             )
@@ -104,9 +101,9 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             featureFlags.showContact && (
               <a
                 href="/contact-me"
-                class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
+                class="footer-link flex items-center gap-2 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
+                <span class="h-1 w-1 rounded-full bg-[#7aa2f7]" />
                 Contact
               </a>
             )
@@ -115,9 +112,9 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             featureFlags.showNotes && (
               <a
                 href="/ms_notes"
-                class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
+                class="footer-link flex items-center gap-2 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
+                <span class="h-1 w-1 rounded-full bg-[#7aa2f7]" />
                 Notes
               </a>
             )
@@ -125,22 +122,20 @@ import ServicesIcons from "@react/footer/ServicesIcons";
         </nav>
       </div>
 
-      <!-- Technology Stack -->
       <div class="footer-section">
-        <h3 class="text-lg font-semibold text-[#c0caf5] mb-4">
+        <h3 class="mb-4 text-lg font-semibold text-[#c0caf5]">
           Technology Stack
         </h3>
         <div class="flex flex-col gap-3">
-          <!-- Astro -->
           <a
             href="https://astro.build"
-            class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
+            class="footer-link group flex items-center gap-3 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
           >
             <div
-              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+              class="flex h-6 w-6 items-center justify-center transition-transform duration-200 group-hover:scale-110"
             >
               <svg
-                class="w-5 h-5 text-[#ff6d3a]"
+                class="h-5 w-5 text-[#ff6d3a]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -152,16 +147,15 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             <span class="font-medium">Astro Framework</span>
           </a>
 
-          <!-- React -->
           <a
             href="https://react.dev"
-            class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
+            class="footer-link group flex items-center gap-3 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
           >
             <div
-              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+              class="flex h-6 w-6 items-center justify-center transition-transform duration-200 group-hover:scale-110"
             >
               <svg
-                class="w-5 h-5 text-[#61dafb]"
+                class="h-5 w-5 text-[#61dafb]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -173,16 +167,15 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             <span class="font-medium">React Library</span>
           </a>
 
-          <!-- Tailwind CSS -->
           <a
             href="https://tailwindcss.com"
-            class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
+            class="footer-link group flex items-center gap-3 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
           >
             <div
-              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+              class="flex h-6 w-6 items-center justify-center transition-transform duration-200 group-hover:scale-110"
             >
               <svg
-                class="w-5 h-5 text-[#06b6d4]"
+                class="h-5 w-5 text-[#06b6d4]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -194,16 +187,15 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             <span class="font-medium">Tailwind CSS</span>
           </a>
 
-          <!-- Vercel -->
           <a
             href="https://vercel.com"
-            class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
+            class="footer-link group flex items-center gap-3 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
           >
             <div
-              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+              class="flex h-6 w-6 items-center justify-center transition-transform duration-200 group-hover:scale-110"
             >
               <svg
-                class="w-5 h-5 text-[#000000] dark:text-[#ffffff]"
+                class="h-5 w-5 text-[#000000] dark:text-[#ffffff]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -213,16 +205,15 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             <span class="font-medium">Vercel Deployment</span>
           </a>
 
-          <!-- Tina CMS -->
           <a
             href="https://tina.io"
-            class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
+            class="footer-link group flex items-center gap-3 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
           >
             <div
-              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+              class="flex h-6 w-6 items-center justify-center transition-transform duration-200 group-hover:scale-110"
             >
               <svg
-                class="w-5 h-5 text-[#EC4815]"
+                class="h-5 w-5 text-[#EC4815]"
                 viewBox="0 0 448 621"
                 fill="currentColor"
               >
@@ -237,16 +228,15 @@ import ServicesIcons from "@react/footer/ServicesIcons";
             <span class="font-medium">Tina CMS</span>
           </a>
 
-          <!-- GitHub -->
           <a
             href="https://github.com"
-            class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-3 group"
+            class="footer-link group flex items-center gap-3 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
           >
             <div
-              class="flex items-center justify-center w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+              class="flex h-6 w-6 items-center justify-center transition-transform duration-200 group-hover:scale-110"
             >
               <svg
-                class="w-5 h-5 text-[#ffffff]"
+                class="h-5 w-5 text-[#ffffff]"
                 viewBox="0 0 1024 1024"
                 fill="currentColor"
               >
@@ -262,26 +252,25 @@ import ServicesIcons from "@react/footer/ServicesIcons";
         </div>
       </div>
 
-      <!-- Services & Resources -->
       <div class="footer-section">
-        <h3 class="text-lg font-semibold text-[#c0caf5] mb-4">
+        <h3 class="mb-4 text-lg font-semibold text-[#c0caf5]">
           Services & Resources
         </h3>
         <div class="grid grid-cols-1 gap-4">
           <div>
-            <h4 class="text-sm font-medium text-[#7aa2f7] mb-3">Services</h4>
+            <h4 class="mb-3 text-sm font-medium text-[#7aa2f7]">Services</h4>
             <ServicesIcons client:visible services={authorConfig.services} />
           </div>
           <div>
-            <h4 class="text-sm font-medium text-[#7aa2f7] mb-3">Resources</h4>
+            <h4 class="mb-3 text-sm font-medium text-[#7aa2f7]">Resources</h4>
             <nav class="flex flex-col gap-3">
               {
                 featureFlags.showPrivacyPolicy && (
                   <a
                     href="/privacy-policy"
-                    class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
+                    class="footer-link flex items-center gap-2 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
                   >
-                    <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
+                    <span class="h-1 w-1 rounded-full bg-[#7aa2f7]" />
                     Privacy Policy
                   </a>
                 )
@@ -290,9 +279,9 @@ import ServicesIcons from "@react/footer/ServicesIcons";
                 featureFlags.showTermsOfService && (
                   <a
                     href="/terms-of-service"
-                    class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
+                    class="footer-link flex items-center gap-2 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
                   >
-                    <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
+                    <span class="h-1 w-1 rounded-full bg-[#7aa2f7]" />
                     Terms of Service
                   </a>
                 )
@@ -303,9 +292,9 @@ import ServicesIcons from "@react/footer/ServicesIcons";
                     href="https://rafay99-docs.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
+                    class="footer-link flex items-center gap-2 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
                   >
-                    <span class="w-1 h-1 bg-[#7aa2f7] rounded-full" />
+                    <span class="h-1 w-1 rounded-full bg-[#7aa2f7]" />
                     Documentation
                   </a>
                 )
@@ -314,9 +303,9 @@ import ServicesIcons from "@react/footer/ServicesIcons";
                 href="https://github.com/rafay99-epic"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="footer-link text-sm text-[#a9b1d6] hover:text-[#7aa2f7] transition-colors duration-200 flex items-center gap-2"
+                class="footer-link flex items-center gap-2 text-sm text-[#a9b1d6] transition-colors duration-200 hover:text-[#7aa2f7]"
               >
-                <span class="w-1 h-1 bg-[#7aa2f7] rounded-full"></span>
+                <span class="h-1 w-1 rounded-full bg-[#7aa2f7]"></span>
                 GitHub
               </a>
             </nav>
@@ -325,21 +314,20 @@ import ServicesIcons from "@react/footer/ServicesIcons";
       </div>
     </div>
 
-    <!-- Bottom: Copyright & Info -->
     <div
-      class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-[#565f89]/10"
+      class="flex flex-col items-center justify-between gap-4 border-t border-[#565f89]/10 pt-6 sm:flex-row"
     >
       <div class="text-center sm:text-left">
-        <p class="text-[#565f89] text-sm">
+        <p class="text-sm text-[#565f89]">
           &copy; {new Date().getFullYear()}
           {authorConfig.name}. All rights reserved.
         </p>
         <p
-          class="text-xs text-[#565f89]/70 mt-1 flex items-center gap-1 justify-center sm:justify-start"
+          class="mt-1 flex items-center justify-center gap-1 text-xs text-[#565f89]/70 sm:justify-start"
         >
           <span>Crafted with</span>
           <svg
-            class="w-3 h-3 text-[#f7768e]"
+            class="h-3 w-3 text-[#f7768e]"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -349,7 +337,7 @@ import ServicesIcons from "@react/footer/ServicesIcons";
           </svg>
           <span>and lots of</span>
           <svg
-            class="w-3 h-3 text-[#e0af68]"
+            class="h-3 w-3 text-[#e0af68]"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -362,7 +350,7 @@ import ServicesIcons from "@react/footer/ServicesIcons";
 
       <div class="flex items-center gap-4 text-xs text-[#565f89]">
         <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#9ece6a] rounded-full animate-pulse"></div>
+          <div class="h-2 w-2 animate-pulse rounded-full bg-[#9ece6a]"></div>
           <span>v{packageJson.version}</span>
         </div>
         <span class="hidden sm:inline">•</span>

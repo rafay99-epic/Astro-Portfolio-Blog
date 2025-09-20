@@ -1,16 +1,16 @@
-import  { memo } from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 const NotFoundPage = memo(function NotFoundPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
+    <div className="flex min-h-screen items-center justify-center p-6">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="max-w-2xl w-full text-center"
+        className="w-full max-w-2xl text-center"
       >
-        <div className="backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-3xl p-8 md:p-12">
+        <div className="rounded-3xl border border-[#565f89]/30 bg-[#24283b]/40 p-8 backdrop-blur-xl md:p-12">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -18,10 +18,10 @@ const NotFoundPage = memo(function NotFoundPage() {
             className="mb-8"
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 rounded-2xl blur-2xl"></div>
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 blur-2xl"></div>
 
-              <div className="relative bg-[#1a1b26]/80 border border-[#565f89]/40 rounded-2xl p-8 font-mono">
-                <div className="flex items-center justify-center gap-4 text-4xl md:text-5xl lg:text-6xl font-bold">
+              <div className="relative rounded-2xl border border-[#565f89]/40 bg-[#1a1b26]/80 p-8 font-mono">
+                <div className="flex items-center justify-center gap-4 text-4xl font-bold md:text-5xl lg:text-6xl">
                   <motion.span
                     animate={{
                       color: ["#7aa2f7", "#bb9af7", "#9ece6a", "#7aa2f7"],
@@ -73,7 +73,7 @@ const NotFoundPage = memo(function NotFoundPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="mt-4 text-sm md:text-base text-[#a9b1d6]"
+                  className="mt-4 text-sm text-[#a9b1d6] md:text-base"
                 >
                   <span className="text-[#ff7a93]">Error:</span>
                   <span className="text-[#c0caf5]"> Page not found</span>
@@ -86,7 +86,7 @@ const NotFoundPage = memo(function NotFoundPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4"
+            className="mb-4 text-2xl font-bold md:text-3xl lg:text-4xl"
           >
             <span className="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent">
               Oops! You're Lost in Code
@@ -97,7 +97,7 @@ const NotFoundPage = memo(function NotFoundPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-[#a9b1d6] text-base md:text-lg lg:text-xl mb-8 leading-relaxed"
+            className="mb-8 text-base leading-relaxed text-[#a9b1d6] md:text-lg lg:text-xl"
           >
             It seems like you've wandered into uncharted code territory. The
             page you're looking for doesn't exist in this repository.
@@ -107,13 +107,13 @@ const NotFoundPage = memo(function NotFoundPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col justify-center gap-4 sm:flex-row"
           >
             <motion.a
               href="/"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white font-semibold rounded-xl shadow-lg shadow-[#7aa2f7]/25 hover:shadow-xl hover:shadow-[#7aa2f7]/30 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7aa2f7]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
             >
               <span>🏠</span>
               <span>Return to Home</span>
@@ -133,7 +133,7 @@ const NotFoundPage = memo(function NotFoundPage() {
               href="/blog"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1a1b26]/60 border border-[#565f89]/40 text-[#a9b1d6] font-semibold rounded-xl hover:bg-[#24283b]/60 hover:border-[#7aa2f7]/40 hover:text-[#c0caf5] transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 px-8 py-4 font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#7aa2f7]/40 hover:bg-[#24283b]/60 hover:text-[#c0caf5]"
             >
               <span>📚</span>
               <span>Browse Blog</span>
@@ -144,7 +144,7 @@ const NotFoundPage = memo(function NotFoundPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.5 }}
-            className="mt-8 pt-6 border-t border-[#565f89]/20"
+            className="mt-8 border-t border-[#565f89]/20 pt-6"
           >
             <div className="flex items-center justify-center gap-4 text-sm text-[#565f89]">
               <div className="flex items-center gap-2">
@@ -155,25 +155,12 @@ const NotFoundPage = memo(function NotFoundPage() {
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="w-2 h-2 bg-[#ff7a93] rounded-full"
+                  className="h-2 w-2 rounded-full bg-[#ff7a93]"
                 />
                 <span>404 Error</span>
               </div>
               <span>•</span>
               <span>Page Not Found</span>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className="mt-6 text-xs font-mono text-[#565f89] space-y-1"
-          >
-            <div>// TODO: Fix broken links</div>
-            <div>// DEBUG: Route not found</div>
-            <div className="text-[#9ece6a]">
-              // SUCCESS: User redirected safely
             </div>
           </motion.div>
         </div>

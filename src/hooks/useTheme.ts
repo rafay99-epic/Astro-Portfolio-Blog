@@ -25,7 +25,7 @@ export interface UseThemeReturn {
 interface ThemeContextType extends UseThemeReturn {}
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function useThemeProvider() {
@@ -34,64 +34,53 @@ export function useThemeProvider() {
   const [isInitialized, setIsInitialized] = useState(false);
   const updateTimeoutRef = useRef<number | undefined>(undefined);
 
-  
   const colors = useMemo(() => getThemeColors(currentTheme), [currentTheme]);
 
   const updateCSSVariables = useCallback((palette: ColorPalette) => {
-    
     if (updateTimeoutRef.current) {
       clearTimeout(updateTimeoutRef.current);
     }
 
-    
     updateTimeoutRef.current = window.setTimeout(() => {
       requestAnimationFrame(() => {
         const root = document.documentElement;
         const updates: [string, string][] = [
-          
           ["--color-primary", palette.primary],
           ["--color-secondary", palette.secondary],
           ["--color-accent", palette.accent],
 
-          
           ["--color-bg-primary", palette.background.primary],
           ["--color-bg-secondary", palette.background.secondary],
           ["--color-bg-tertiary", palette.background.tertiary],
           ["--color-bg-card", palette.background.card],
           ["--color-bg-overlay", palette.background.overlay],
 
-          
           ["--color-text-primary", palette.text.primary],
           ["--color-text-secondary", palette.text.secondary],
           ["--color-text-muted", palette.text.muted],
           ["--color-text-accent", palette.text.accent],
           ["--color-text-inverse", palette.text.inverse],
 
-          
           ["--color-border-primary", palette.border.primary],
           ["--color-border-secondary", palette.border.secondary],
           ["--color-border-accent", palette.border.accent],
           ["--color-border-hover", palette.border.hover],
 
-          
           ["--color-success", palette.status.success],
           ["--color-warning", palette.status.warning],
           ["--color-error", palette.status.error],
           ["--color-info", palette.status.info],
 
-          
           ["--color-hover", palette.interactive.hover],
           ["--color-focus", palette.interactive.focus],
           ["--color-active", palette.interactive.active],
           ["--color-disabled", palette.interactive.disabled],
 
-          
           ["--gradient-primary", palette.gradients.primary],
           ["--gradient-secondary", palette.gradients.secondary],
           ["--gradient-accent", palette.gradients.accent],
           ["--gradient-rainbow", palette.gradients.rainbow],
 
-          
           ["--color-twitter", palette.social.twitter],
           ["--color-facebook", palette.social.facebook],
           ["--color-linkedin", palette.social.linkedin],
@@ -101,17 +90,16 @@ export function useThemeProvider() {
           ["--color-upwork", palette.social.upwork],
         ];
 
-        
         updates.forEach(([property, value]) => {
           root.style.setProperty(property, value);
         });
       });
-    }, 16); 
+    }, 16);
   }, []);
 
   useEffect(() => {
     let mounted = true;
-    
+
     const initializeTheme = () => {
       try {
         const savedTheme = localStorage.getItem("theme") as ThemeName;
@@ -128,9 +116,8 @@ export function useThemeProvider() {
           if (savedDarkMode !== null) {
             setIsDarkMode(JSON.parse(savedDarkMode));
           } else {
-            
             const prefersDark = window.matchMedia(
-              "(prefers-color-scheme: dark)"
+              "(prefers-color-scheme: dark)",
             ).matches;
             setIsDarkMode(prefersDark);
           }
@@ -145,7 +132,6 @@ export function useThemeProvider() {
       }
     };
 
-    
     if (typeof window !== "undefined" && "requestIdleCallback" in window) {
       (window as any).requestIdleCallback(initializeTheme);
     } else {
@@ -157,14 +143,12 @@ export function useThemeProvider() {
     };
   }, []);
 
-  
   useEffect(() => {
     if (isInitialized) {
       updateCSSVariables(colors);
     }
   }, [colors, updateCSSVariables, isInitialized]);
 
-  
   useEffect(() => {
     if (isInitialized) {
       const saveTimeout = setTimeout(() => {
@@ -174,23 +158,20 @@ export function useThemeProvider() {
         } catch (error) {
           console.warn("Failed to save theme to localStorage:", error);
         }
-      }, 100); 
+      }, 100);
 
       return () => clearTimeout(saveTimeout);
     }
   }, [currentTheme, isDarkMode, isInitialized]);
 
-  
   const switchTheme = useCallback((theme: ThemeName) => {
     setCurrentTheme(theme);
   }, []);
 
-  
   const toggleDarkMode = useCallback(() => {
     setIsDarkMode((prev) => !prev);
   }, []);
 
-  
   useEffect(() => {
     return () => {
       if (updateTimeoutRef.current) {
@@ -199,7 +180,6 @@ export function useThemeProvider() {
     };
   }, []);
 
-  
   return useMemo(
     () => ({
       currentTheme,
@@ -216,7 +196,7 @@ export function useThemeProvider() {
       isDarkMode,
       toggleDarkMode,
       isInitialized,
-    ]
+    ],
   );
 }
 
@@ -238,14 +218,13 @@ export function useThemeColors() {
       bgSecondary: colors.background.secondary,
       bgCard: colors.background.card,
 
-      
       textPrimary: colors.text.primary,
       textSecondary: colors.text.secondary,
       textMuted: colors.text.muted,
-      
+
       ...colors,
     }),
-    [colors]
+    [colors],
   );
 }
 
@@ -268,7 +247,7 @@ export function useThemeStyles() {
         accent: "text-theme-accent",
       },
     }),
-    []
+    [],
   );
 
   const styles = useMemo(
@@ -293,7 +272,7 @@ export function useThemeStyles() {
         border: `1px solid ${colors.border.secondary}`,
       }),
     }),
-    [colors]
+    [colors],
   );
 
   return useMemo(
@@ -302,6 +281,6 @@ export function useThemeStyles() {
       styles,
       isDarkMode,
     }),
-    [classes, styles, isDarkMode]
+    [classes, styles, isDarkMode],
   );
 }

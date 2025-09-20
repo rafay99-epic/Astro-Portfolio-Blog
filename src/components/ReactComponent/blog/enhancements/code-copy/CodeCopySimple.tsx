@@ -1,4 +1,4 @@
-import  { useEffect, useCallback, useMemo, useRef } from "react";
+import { useEffect, useCallback, useMemo, useRef } from "react";
 import { memo } from "react";
 import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
@@ -14,11 +14,11 @@ const CodeCopySimple = memo(function CodeCopySimple() {
       Object.entries(styles).forEach(([property, value]) => {
         element.style.setProperty(
           property.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`),
-          value
+          value,
         );
       });
     },
-    []
+    [],
   );
 
   const createLanguageLabel = useMemo(
@@ -30,7 +30,7 @@ const CodeCopySimple = memo(function CodeCopySimple() {
         applyStyles(languageLabel, STYLES.language);
         return languageLabel;
       },
-    [applyStyles]
+    [applyStyles],
   );
 
   const extractLanguage = useMemo(
@@ -40,7 +40,7 @@ const CodeCopySimple = memo(function CodeCopySimple() {
         const languageMatch = codeClasses.match(/(?:language|lang)-(\w+)/);
         return languageMatch ? languageMatch[1] : undefined;
       },
-    []
+    [],
   );
 
   const enhanceCodeBlock = useCallback(
@@ -79,7 +79,7 @@ const CodeCopySimple = memo(function CodeCopySimple() {
               navigator.vibrate(50);
             }
           }}
-        />
+        />,
       );
 
       buttonContainer.appendChild(reactContainer);
@@ -87,7 +87,7 @@ const CodeCopySimple = memo(function CodeCopySimple() {
 
       enhancedElementsRef.current.add(preElement);
     },
-    [createLanguageLabel, extractLanguage]
+    [createLanguageLabel, extractLanguage],
   );
 
   const observerCallback = useMemo(
@@ -99,8 +99,8 @@ const CodeCopySimple = memo(function CodeCopySimple() {
             (node) =>
               node.nodeType === Node.ELEMENT_NODE &&
               ((node as Element).querySelector("pre") ||
-                (node as Element).tagName === "PRE")
-          )
+                (node as Element).tagName === "PRE"),
+          ),
       );
 
       if (shouldReEnhance) {
@@ -111,7 +111,7 @@ const CodeCopySimple = memo(function CodeCopySimple() {
         });
       }
     },
-    [enhanceCodeBlock]
+    [enhanceCodeBlock],
   );
 
   useEffect(() => {

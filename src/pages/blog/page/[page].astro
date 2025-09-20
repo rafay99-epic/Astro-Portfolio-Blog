@@ -22,12 +22,10 @@ const allPosts = (await getCollection("blog"))
 const totalPosts = allPosts.length;
 const totalPages = Math.ceil(totalPosts / postsPerPage);
 
-// Redirect if page is out of bounds
 if (currentPage > totalPages && totalPages > 0) {
   return Astro.redirect("/blog");
 }
 
-// Get posts for current page
 const startIndex = (currentPage - 1) * postsPerPage;
 const endIndex = startIndex + postsPerPage;
 const posts = allPosts.slice(startIndex, endIndex);
@@ -59,7 +57,8 @@ try {
     </style>
 
     <script
-      is:inline type="application/ld+json"
+      is:inline
+      type="application/ld+json"
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Blog",
@@ -89,18 +88,17 @@ try {
       })}
     />
   </head>
-  <body class="flex flex-col min-h-screen bg-[#1a1b26] text-[#a9b1d6]">
+  <body class="flex min-h-screen flex-col bg-[#1a1b26] text-[#a9b1d6]">
     <Header />
 
-    <main class="flex-1 max-w-7xl mx-auto px-8 py-16">
-      <!-- Page Title -->
-      <div class="text-center mb-12">
+    <main class="mx-auto max-w-7xl flex-1 px-8 py-16">
+      <div class="mb-12 text-center">
         <h1
-          class="text-4xl lg:text-5xl mb-3 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent"
+          class="mb-3 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-4xl text-transparent lg:text-5xl"
         >
           Articles
         </h1>
-        <p class="text-lg max-w-xl mx-auto text-[#a9b1d6]">
+        <p class="mx-auto max-w-xl text-lg text-[#a9b1d6]">
           Explore insights, tutorials, and thoughts on development
         </p>
         <div
@@ -109,27 +107,23 @@ try {
         </div>
       </div>
 
-      <!-- Articles Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
         {
           posts.map((post, _index) => (
             <article>
               <a href={`/blog/${post.slug}`} class="block">
-                {/* Larger Image with Breathing Room */}
-                <div class="h-64 overflow-hidden rounded-xl mb-6">
+                <div class="mb-6 h-64 overflow-hidden rounded-xl">
                   <img
                     src={post.data.heroImage || "/default-image.jpg"}
                     alt={post.data.title}
-                    class="w-full h-full object-cover"
+                    class="h-full w-full object-cover"
                   />
                 </div>
 
-                {/* Content with More Spacing */}
                 <div class="text-center">
-                  {/* Small Date */}
                   <time
                     datetime={post.data.pubDate.toISOString()}
-                    class="block text-xs text-[#565f89] mb-4"
+                    class="mb-4 block text-xs text-[#565f89]"
                   >
                     {new Date(post.data.pubDate).toLocaleDateString("en-US", {
                       month: "short",
@@ -138,16 +132,14 @@ try {
                     })}
                   </time>
 
-                  {/* Centered Title */}
-                  <h2 class="text-xl text-white mb-6 line-clamp-2 leading-tight hover:text-[#7aa2f7] transition-colors duration-200">
+                  <h2 class="mb-6 line-clamp-2 text-xl leading-tight text-white transition-colors duration-200 hover:text-[#7aa2f7]">
                     {post.data.title}
                   </h2>
 
-                  {/* Small Read More */}
-                  <div class="flex items-center justify-center text-[#7aa2f7] text-sm font-medium hover:text-[#bb9af7] transition-colors duration-200">
+                  <div class="flex items-center justify-center text-sm font-medium text-[#7aa2f7] transition-colors duration-200 hover:text-[#bb9af7]">
                     <span>Read article</span>
                     <svg
-                      class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200"
+                      class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -167,22 +159,20 @@ try {
         }
       </div>
 
-      <!-- Minimal Pagination -->
       {
         totalPages > 1 && (
-          <div class="flex justify-center items-center mt-8 pt-6 border-t border-[#565f89]/20">
+          <div class="mt-8 flex items-center justify-center border-t border-[#565f89]/20 pt-6">
             <div class="flex items-center gap-6">
-              {/* Previous */}
               <a
                 href={currentPage > 1 ? `/blog/page/${currentPage - 1}` : "#"}
                 class={`flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
                   currentPage > 1
                     ? "text-[#7aa2f7] hover:text-[#bb9af7]"
-                    : "text-[#565f89] cursor-not-allowed"
+                    : "cursor-not-allowed text-[#565f89]"
                 }`}
               >
                 <svg
-                  class="w-4 h-4"
+                  class="h-4 w-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -197,16 +187,14 @@ try {
                 <span>Previous</span>
               </a>
 
-              {/* Page indicator */}
               <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-[#7aa2f7]" />
+                <div class="h-2 w-2 rounded-full bg-[#7aa2f7]" />
                 <span class="text-xs text-[#565f89]">
                   Page {currentPage} of {totalPages}
                 </span>
-                <div class="w-2 h-2 rounded-full bg-[#565f89]/30" />
+                <div class="h-2 w-2 rounded-full bg-[#565f89]/30" />
               </div>
 
-              {/* Next */}
               <a
                 href={
                   currentPage < totalPages
@@ -216,12 +204,12 @@ try {
                 class={`flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
                   currentPage < totalPages
                     ? "text-[#7aa2f7] hover:text-[#bb9af7]"
-                    : "text-[#565f89] cursor-not-allowed"
+                    : "cursor-not-allowed text-[#565f89]"
                 }`}
               >
                 <span>Next</span>
                 <svg
-                  class="w-4 h-4"
+                  class="h-4 w-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -259,4 +247,3 @@ try {
     </style>
   </body>
 </html>
-

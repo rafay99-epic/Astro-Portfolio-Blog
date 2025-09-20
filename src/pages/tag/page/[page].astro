@@ -11,81 +11,78 @@ import { getCollection } from "astro:content";
 export const prerender = true;
 
 export async function getStaticPaths() {
-    if (!featureFlags.showTags) {
-        return [];
-    }
+  if (!featureFlags.showTags) {
+    return [];
+  }
 
-    const allPosts = (await getCollection("blog"))
-        .filter((post) => !post.data.draft)
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const allPosts = (await getCollection("blog"))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-    // Get all unique tags
-    const allTags = Array.from(
-        new Set(allPosts.flatMap((post) => post.data.tags || [])),
-    ).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
+  const allTags = Array.from(
+    new Set(allPosts.flatMap((post) => post.data.tags || [])),
+  ).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
 
-    const paths: any[] = [];
-    const postsPerPage = 10;
-    const totalPages = Math.ceil(allPosts.length / postsPerPage);
+  const paths: any[] = [];
+  const postsPerPage = 10;
+  const totalPages = Math.ceil(allPosts.length / postsPerPage);
 
-    // Generate paths for each page of "All" posts
-    for (let page = 2; page <= totalPages; page++) {
-        paths.push({
-            params: { page: page.toString() },
-            props: {
-                tag: null,
-                page,
-                totalPages,
-                postsPerPage,
-                allPosts,
-                allTags,
-            },
-        });
-    }
+  for (let page = 2; page <= totalPages; page++) {
+    paths.push({
+      params: { page: page.toString() },
+      props: {
+        tag: null,
+        page,
+        totalPages,
+        postsPerPage,
+        allPosts,
+        allTags,
+      },
+    });
+  }
 
-    return paths;
+  return paths;
 }
 
 const { tag, page, totalPages, postsPerPage, allPosts, allTags } = Astro.props;
 const currentPage = page;
 
-// Get posts for current page (all posts, no tag filter)
 const startIndex = (currentPage - 1) * postsPerPage;
 const endIndex = startIndex + postsPerPage;
 const paginatedPosts = allPosts.slice(startIndex, endIndex);
 
 try {
-    if (!featureFlags.showTags) {
-        return Astro.redirect("/access-denied");
-    }
+  if (!featureFlags.showTags) {
+    return Astro.redirect("/access-denied");
+  }
 } catch (error) {
-    return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 ---
 
 <html lang="en">
-    <head>
-        <BaseHead
-            title={`All Articles - Page ${currentPage} | ${authorConfig.SiteName}`}
-            description={`Browse all articles on page ${currentPage} of ${authorConfig.SiteName}.`}
-        />
-    </head>
+  <head>
+    <BaseHead
+      title={`All Articles - Page ${currentPage} | ${authorConfig.SiteName}`}
+      description={`Browse all articles on page ${currentPage} of ${authorConfig.SiteName}.`}
+    />
+  </head>
 
-    <body>
-        <Header />
-        <ClientRouter />
-        <main class="w-full max-w-5xl mx-auto">
-            <div>
-                <TagFilterDisplay
-                    allTags={allTags}
-                    paginatedPosts={paginatedPosts}
-                    selectedTag={tag}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    currentUrl={new URL(Astro.url)}
-                />
-            </div>
-        </main>
-        <Footer class="mt-auto" />
-    </body>
+  <body>
+    <Header />
+    <ClientRouter />
+    <main class="mx-auto w-full max-w-5xl">
+      <div>
+        <TagFilterDisplay
+          allTags={allTags}
+          paginatedPosts={paginatedPosts}
+          selectedTag={tag}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          currentUrl={new URL(Astro.url)}
+        />
+      </div>
+    </main>
+    <Footer class="mt-auto" />
+  </body>
 </html>

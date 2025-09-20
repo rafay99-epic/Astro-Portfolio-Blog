@@ -11,7 +11,7 @@ ProjectTech:
     "TailwindCSS",
     "ShadcnUI",
     "Sharp-Image Process",
-    "Image Converter"
+    "Image Converter",
   ]
 ProjectCategory: ["Web Apps"]
 ProjectGithubLink: "https://github.com/rafay99-epic/ImageComposer"
@@ -21,28 +21,30 @@ ProjectDeployedLink: "https://image-composer-studio.vercel.app/"
 
 import ImageSlider from "../../components/ReactComponent/blog/enhancements/image-slider/image-slider";
 
-##  Project Overview
+## Project Overview
 
 **ImageComposer** is a modern, feature-rich web application that provides comprehensive image processing capabilities directly in the browser. Built with privacy-first principles, it allows users to compress, enhance, convert, and optimize images without uploading them to external servers.
 
-###  Purpose & Mission
+### Purpose & Mission
 
 The primary goal of ImageComposer is to provide professional-grade image processing tools while maintaining complete user privacy. Unlike traditional online image processors that require file uploads, this application processes all images locally in the user's browser, ensuring data security and privacy.
 
 **Key Objectives:**
+
 - Provide client-side image processing capabilities
 - Offer multiple image optimization features in one platform
 - Ensure complete privacy and data security
 - Deliver professional-quality results
 - Support modern web standards and responsive design
 
-##  Scope & Features
+## Scope & Features
 
 ### Core Features
 
-#### 1. **Image Compression** 
+#### 1. **Image Compression**
+
 - **Technology**: Browser Canvas API with custom compression algorithms
-- **Capabilities**: 
+- **Capabilities**:
   - Quality adjustment (1-100%)
   - Format conversion (JPEG/PNG/WebP)
   - Batch processing with bulk selection
@@ -51,6 +53,7 @@ The primary goal of ImageComposer is to provide professional-grade image process
 - **Performance**: Up to 90% file size reduction while maintaining quality
 
 #### 2. **SVG Converter**
+
 - **Technology**: Canvas-based raster-to-vector conversion with SVGO optimization
 - **Capabilities**:
   - PNG/JPG to SVG conversion
@@ -60,6 +63,7 @@ The primary goal of ImageComposer is to provide professional-grade image process
   - Professional SVG optimization
 
 #### 3. **AI Image Enhancement**
+
 - **Technology**: Integration with Replicate API for AI-powered enhancement
 - **Capabilities**:
   - Smart model selection (Real-ESRGAN for small images, ControlNet for detailed enhancements)
@@ -68,6 +72,7 @@ The primary goal of ImageComposer is to provide professional-grade image process
   - Custom prompt-based enhancements
 
 #### 4. **Manual Image Enhancement**
+
 - **Technology**: Custom image processing algorithms using Canvas API
 - **Capabilities**:
   - Brightness, contrast, and saturation adjustment
@@ -84,41 +89,47 @@ The primary goal of ImageComposer is to provide professional-grade image process
 - **Dark Mode**: Modern UI with theme support
 - **Real-time Statistics**: Detailed compression and optimization metrics
 
-##  Technology Stack
+## Technology Stack
 
 ### Frontend Framework
+
 - **React 18.2.0**: Modern UI framework with hooks and functional components
 - **TypeScript 5.8.3**: Type-safe development with enhanced IDE support
 - **Vite 5.0.8**: Fast build tool and development server
 
 ### Styling & UI
+
 - **Tailwind CSS 3.4.0**: Utility-first CSS framework
 - **shadcn/ui**: Modern component library built on Radix UI
 - **Lucide React**: Beautiful, customizable icons
 - **class-variance-authority**: Component variant management
 
 ### Image Processing
+
 - **Browser Canvas API**: Core image manipulation capabilities
 - **SVGO 4.0.0**: SVG optimization and compression
 - **Custom Algorithms**: Proprietary compression and enhancement algorithms
 
 ### AI Integration
+
 - **Replicate API**: AI-powered image enhancement models
 - **Real-ESRGAN**: Fast upscaling for small images
 - **ControlNet Tile**: High-quality enhancement for detailed images
 
 ### Development Tools
+
 - **ESLint**: Code quality and consistency
 - **PostCSS**: CSS processing and optimization
 - **tsup**: TypeScript bundling for libraries
 - **React Router DOM**: Client-side routing
 
 ### Build & Deployment
+
 - **Vite**: Fast development and optimized production builds
 - **Vercel**: Cloud deployment platform
 - **GitHub**: Version control and collaboration
 
-##  Development Process
+## Development Process
 
 ### Architecture Overview
 
@@ -153,7 +164,7 @@ src/
 - **Error Handling**: Comprehensive error boundaries and user feedback
 - **Accessibility**: ARIA labels and keyboard navigation support
 
-##  Build Process
+## Build Process
 
 ### Development Environment
 
@@ -174,12 +185,14 @@ npm run preview
 ### Build Configuration
 
 **Vite Configuration** (`vite.config.ts`):
+
 - React plugin for JSX/TSX support
 - Proxy configuration for API calls
 - Environment variable handling
 - Optimized build settings
 
 **TypeScript Configuration**:
+
 - Strict type checking
 - Modern ES2020 target
 - Module resolution for clean imports
@@ -193,7 +206,7 @@ npm run preview
 4. **Environment Variables**: Secure API key management
 5. **Performance Monitoring**: Built-in analytics and error tracking
 
-##  Performance Metrics
+## Performance Metrics
 
 ### Optimization Features
 
@@ -209,7 +222,7 @@ npm run preview
 - **Mobile Support**: iOS Safari, Chrome Mobile
 - **Progressive Enhancement**: Graceful degradation for older browsers
 
-##  Security & Privacy
+## Security & Privacy
 
 ### Privacy-First Design
 
@@ -225,7 +238,7 @@ npm run preview
 - **CORS Configuration**: Proper cross-origin resource sharing
 - **Environment Variables**: Secure API key management
 
-##  User Experience
+## User Experience
 
 ### Design Principles
 
@@ -244,7 +257,7 @@ npm run preview
 5. **Download**: Optimized files ready for use
 6. **Sharing**: Optional social media integration
 
-##  Future Roadmap
+## Future Roadmap
 
 ### Planned Features
 
@@ -261,7 +274,7 @@ npm run preview
 - **PWA Support**: Progressive Web App capabilities
 - **Advanced Analytics**: Usage insights and performance monitoring
 
-##  Impact & Results
+## Impact & Results
 
 ### User Adoption
 
@@ -277,7 +290,7 @@ npm run preview
 - **Performance Optimization**: Sub-second processing for most images
 - **Scalability**: Handles multiple file formats and sizes efficiently
 
-##  User Interface
+## User Interface
 
 <ImageSlider
   images={[
@@ -289,7 +302,7 @@ npm run preview
     "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJrCxYHSyP1w3SZ8vfyplIOCXQx5bWATscUJFN",
     "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJzFr0P7B7pQ0TRPA9NYOdUsXcZvWxnjer5yg8",
     "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJOeozTC8kbVhcyQEigAvaB3fqpPwWD0CRnm81",
-    "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJOeozTC8kbVhcyQEigAvaB3fqpPwWD0CRnm81"
+    "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJOeozTC8kbVhcyQEigAvaB3fqpPwWD0CRnm81",
   ]}
   client:load
   layout="modern"

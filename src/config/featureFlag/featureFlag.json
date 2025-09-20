@@ -1,34 +1,33 @@
 {
-    "featureFlags": {
-        "showBlog": true,
-        "showAbout": true,
-        "showContact": true,
-        "showProjects": true,
-        "showIndex": true,
-        "showTags": true,
-        "showExperience": true,
-        "showSearch": true,
-        "showNewsletter": false,
-        "showPrivacy": true,
-        "showTermsOfService": true,
-        "showSubNewsletter": true,
-        "showTrendingPosts": false,
-        "showTermsandConditions": true,
-        "showPrivacyPolicy": true,
-        "showWiki": true,
-        "showNotes": true,
-        "showWhatsNew": true,
-        "enableViewTransation": false,
-        "enableCoreServices": true,
-        "enableProcessShowcase": true,
-        "enablePortfolioSection": true,
-        "enableTestimonialsSection": false,
-        "enableSkillsShowcase": true,
-        "enableContactMap": true
-
-    },
-    "FeatureFlagsApi": {
-        "enableauthorInfoAPI": true,
-        "enableNewsletterSubscription": true
-    }
+  "featureFlags": {
+    "showBlog": true,
+    "showAbout": true,
+    "showContact": true,
+    "showProjects": true,
+    "showIndex": true,
+    "showTags": true,
+    "showExperience": true,
+    "showSearch": true,
+    "showNewsletter": false,
+    "showPrivacy": true,
+    "showTermsOfService": true,
+    "showSubNewsletter": true,
+    "showTrendingPosts": false,
+    "showTermsandConditions": true,
+    "showPrivacyPolicy": true,
+    "showWiki": true,
+    "showNotes": true,
+    "showWhatsNew": true,
+    "enableViewTransation": false,
+    "enableCoreServices": true,
+    "enableProcessShowcase": true,
+    "enablePortfolioSection": true,
+    "enableTestimonialsSection": false,
+    "enableSkillsShowcase": true,
+    "enableContactMap": true
+  },
+  "FeatureFlagsApi": {
+    "enableauthorInfoAPI": true,
+    "enableNewsletterSubscription": true
+  }
 }

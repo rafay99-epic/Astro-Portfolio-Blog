@@ -3,9 +3,14 @@ import featureFlagConfig from "@config/featureFlag/featureFlag.json";
 export const POST: APIRoute = async ({ request }) => {
   try {
     if (!featureFlagConfig.FeatureFlagsApi.enableNewsletterSubscription) {
-      return new Response(JSON.stringify({ error: "Newsletter subscription is currently disabled." }), {
-        status: 503,
-      });
+      return new Response(
+        JSON.stringify({
+          error: "Newsletter subscription is currently disabled.",
+        }),
+        {
+          status: 503,
+        },
+      );
     }
 
     let body: { email?: string; listId?: number };
@@ -60,7 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
           message:
             "Subscription successful. Please check your email to verify.",
         }),
-        { status: 200 }
+        { status: 200 },
       );
     } else {
       const errorData = await response.json();
@@ -69,7 +74,7 @@ export const POST: APIRoute = async ({ request }) => {
         JSON.stringify({
           error: "An error occurred while processing your request.",
         }),
-        { status: response.status }
+        { status: response.status },
       );
     }
   } catch (error) {

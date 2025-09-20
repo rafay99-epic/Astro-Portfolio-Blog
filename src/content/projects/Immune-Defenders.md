@@ -54,7 +54,6 @@ If you want to try out **Immune Defenders** on your own machine, follow these st
    ```
 
 2. **Open in Unity**
-
    - Open **Unity Hub**.
    - Select **Open** and navigate to the project folder you just cloned.
    - Open the project in Unity and let the editor load all the necessary files.
@@ -62,7 +61,6 @@ If you want to try out **Immune Defenders** on your own machine, follow these st
 #### Running the Game
 
 1. **Play in Unity**
-
    - Once the project is open, click on **Play** in Unity's toolbar to start the game directly inside the editor.
 
 2. **Run the Build**

@@ -11,96 +11,93 @@ import { getCollection } from "astro:content";
 export const prerender = true;
 
 export async function getStaticPaths() {
-    if (!featureFlags.showTags) {
-        return [];
-    }
+  if (!featureFlags.showTags) {
+    return [];
+  }
 
-    const allPosts = (await getCollection("blog"))
-        .filter((post) => !post.data.draft)
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const allPosts = (await getCollection("blog"))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-    // Get all unique tags
-    const allTags = Array.from(
-        new Set(allPosts.flatMap((post) => post.data.tags || [])),
-    ).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
+  const allTags = Array.from(
+    new Set(allPosts.flatMap((post) => post.data.tags || [])),
+  ).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
 
-    const paths: Array<{
-        params: { tag: string };
-        props: {
-            tag: string;
-            page: number;
-            totalPages: number;
-            postsPerPage: number;
-            allPosts: typeof allPosts;
-            allTags: string[];
-        };
-    }> = [];
-    const postsPerPage = 10;
+  const paths: Array<{
+    params: { tag: string };
+    props: {
+      tag: string;
+      page: number;
+      totalPages: number;
+      postsPerPage: number;
+      allPosts: typeof allPosts;
+      allTags: string[];
+    };
+  }> = [];
+  const postsPerPage = 10;
 
-    // Generate paths for each tag
-    for (const tag of allTags) {
-        const filteredPosts = allPosts.filter((post) =>
-            post.data.tags?.includes(tag),
-        );
-        const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+  for (const tag of allTags) {
+    const filteredPosts = allPosts.filter((post) =>
+      post.data.tags?.includes(tag),
+    );
+    const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
-        paths.push({
-            params: { tag },
-            props: {
-                tag,
-                page: 1,
-                totalPages,
-                postsPerPage,
-                allPosts,
-                allTags,
-            },
-        });
-    }
+    paths.push({
+      params: { tag },
+      props: {
+        tag,
+        page: 1,
+        totalPages,
+        postsPerPage,
+        allPosts,
+        allTags,
+      },
+    });
+  }
 
-    return paths;
+  return paths;
 }
 
 const { tag, page, totalPages, postsPerPage, allPosts, allTags } = Astro.props;
 const currentPage = page;
 
-// Get posts for current tag and page
 const filteredPosts = allPosts.filter((post) => post.data.tags?.includes(tag));
 const startIndex = (currentPage - 1) * postsPerPage;
 const endIndex = startIndex + postsPerPage;
 const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
 
 try {
-    if (!featureFlags.showTags) {
-        return Astro.redirect("/access-denied");
-    }
+  if (!featureFlags.showTags) {
+    return Astro.redirect("/access-denied");
+  }
 } catch (error) {
-    return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 ---
 
 <html lang="en">
-    <head>
-        <BaseHead
-            title={`Tag: ${tag} | ${authorConfig.SiteName}`}
-            description={`Browse articles tagged with ${tag} on ${authorConfig.SiteName}.`}
-        />
-    </head>
+  <head>
+    <BaseHead
+      title={`Tag: ${tag} | ${authorConfig.SiteName}`}
+      description={`Browse articles tagged with ${tag} on ${authorConfig.SiteName}.`}
+    />
+  </head>
 
-    <body>
-        <Header />
-        <ClientRouter />
-        <main class="w-full max-w-5xl mx-auto">
-            <div>
-                <TagFilterDisplay
-                    allTags={allTags}
-                    paginatedPosts={paginatedPosts}
-                    selectedTag={tag}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    currentUrl={new URL(Astro.url)}
-                />
-            </div>
-        </main>
-        <Footer class="mt-auto" />
-    </body>
+  <body>
+    <Header />
+    <ClientRouter />
+    <main class="mx-auto w-full max-w-5xl">
+      <div>
+        <TagFilterDisplay
+          allTags={allTags}
+          paginatedPosts={paginatedPosts}
+          selectedTag={tag}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          currentUrl={new URL(Astro.url)}
+        />
+      </div>
+    </main>
+    <Footer class="mt-auto" />
+  </body>
 </html>

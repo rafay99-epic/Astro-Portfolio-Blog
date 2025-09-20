@@ -1,11 +1,16 @@
 {
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "astro/tsconfigs/base", "node_modules", "tina/__generated__"],
+  "exclude": [
+    "dist",
+    "astro/tsconfigs/base",
+    "node_modules",
+    "tina/__generated__"
+  ],
   "compilerOptions": {
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"
-      },
+      }
     ],
     "baseUrl": "./src",
     "paths": {
@@ -20,7 +25,7 @@
       "@types/*": ["types/*"],
       "@util/*": ["util/*"],
       "@config/*": ["config/*"],
-      "@hooks/*": ["hooks/*"], 
+      "@hooks/*": ["hooks/*"],
       "@package.json": ["./package.json"]
     },
     "strictNullChecks": true,

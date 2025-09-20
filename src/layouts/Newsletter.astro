@@ -178,9 +178,8 @@ try {
   >
     <Header />
 
-    <main class="w-full max-w-7xl mx-auto main-content">
+    <main class="main-content mx-auto w-full max-w-7xl">
       <article>
-        {/* Article Header */}
         <ArticleHeader
           title={title}
           description={summary}
@@ -192,28 +191,25 @@ try {
           type="newsletter"
         />
 
-        {/* Share Section */}
         <div>
           <ShareButtons url={pageUrl} pagetitle="Newsletter" client:visible />
         </div>
 
-        {/* Content Section */}
         <div class="content-section">
           <ContentContainer withBackground={true} class="newsletter-typography">
             <slot />
           </ContentContainer>
         </div>
 
-        {/* Comments Section */}
         <div class="comments-section">
           <div class="comments-container">
             <div class="comments-header">
               <h2 class="comments-title">💬 Join the Discussion</h2>
-              <p class="text-[#a9b1d6] text-sm">
+              <p class="text-sm text-[#a9b1d6]">
                 Share your thoughts and engage with the community
               </p>
             </div>
-            <div class="relative z-1">
+            <div class="z-1 relative">
               <PostComment />
             </div>
           </div>

@@ -5,7 +5,7 @@ import type { SearchState, SearchCache } from "types/search";
 
 const searchCache = new Map<string, SearchCache>();
 
-const CACHE_DURATION = 5 * 60 * 1000; 
+const CACHE_DURATION = 5 * 60 * 1000;
 const MAX_HISTORY_ITEMS = 10;
 const SEARCH_HISTORY_KEY = "search_history";
 
@@ -21,20 +21,19 @@ const loadSearchHistory = (): string[] => {
 const saveSearchHistory = (history: string[]) => {
   try {
     localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
-  } catch {
-  }
+  } catch {}
 };
 
 const calculateRelevance = (
   result: { score?: number; item: Post },
-  searchIntent: ReturnType<typeof detectSearchIntent>
+  searchIntent: ReturnType<typeof detectSearchIntent>,
 ) => {
   const baseScore = 1 - (result.score || 0);
   const intentBonus = searchIntent.type !== "general" ? 0.2 : 0;
   const freshness =
     (Date.now() - new Date(result.item.data.pubDate).getTime()) /
     (1000 * 60 * 60 * 24 * 365);
-  const freshnessBoost = Math.min(0.2, 1 / (1 + freshness)); 
+  const freshnessBoost = Math.min(0.2, 1 / (1 + freshness));
 
   return baseScore + intentBonus + freshnessBoost;
 };
@@ -43,7 +42,7 @@ const UNIFIED_SEARCH_CONFIG = {
   keys: [
     {
       name: "data.title",
-      weight: 2.0, 
+      weight: 2.0,
     },
     {
       name: "data.description",
@@ -111,7 +110,7 @@ const useSearch = (posts: Post[]): SearchState => {
     matchedFields: [] as string[],
   });
   const [searchHistory, setSearchHistory] = useState<string[]>(() =>
-    loadSearchHistory()
+    loadSearchHistory(),
   );
 
   const clearHistory = useCallback(() => {
@@ -145,7 +144,7 @@ const useSearch = (posts: Post[]): SearchState => {
     (
       searchQuery: string,
       results: Post[],
-      stats: SearchState["searchStats"]
+      stats: SearchState["searchStats"],
     ) => {
       searchCache.set(searchQuery, {
         results,
@@ -153,17 +152,17 @@ const useSearch = (posts: Post[]): SearchState => {
         timestamp: Date.now(),
       });
     },
-    []
+    [],
   );
 
   const filteredPosts = useMemo(
     () => posts.filter((post) => !post.data.draft),
-    [posts]
+    [posts],
   );
 
   const fuse = useMemo(
     () => new Fuse(filteredPosts, UNIFIED_SEARCH_CONFIG),
-    [filteredPosts]
+    [filteredPosts],
   );
 
   const performSearch = useCallback(
@@ -193,19 +192,19 @@ const useSearch = (posts: Post[]): SearchState => {
       if (searchIntent.type !== "general") {
         processedQuery = searchQuery.replace(
           /^(date:|tag:|tags:|#|author:|by:|on:)\s*/,
-          ""
+          "",
         );
       }
 
       const terms = processedQuery.split(" ").map((term) => {
         if (term.startsWith('"') && term.endsWith('"')) {
-          return `=${term.slice(1, -1)}`; 
+          return `=${term.slice(1, -1)}`;
         }
         if (term.startsWith("-")) {
-          return `!${term.slice(1)}`; 
+          return `!${term.slice(1)}`;
         }
         if (term.startsWith("+")) {
-          return `'${term.slice(1)}`; 
+          return `'${term.slice(1)}`;
         }
         return term;
       });
@@ -247,11 +246,11 @@ const useSearch = (posts: Post[]): SearchState => {
         relevanceScore: enhancedResults.length
           ? enhancedResults.reduce(
               (acc, curr) => acc + (curr as any).relevanceScore,
-              0
+              0,
             ) / enhancedResults.length
           : 0,
         matchedFields: Array.from(
-          new Set(enhancedResults.flatMap((r) => r.matchedFields))
+          new Set(enhancedResults.flatMap((r) => r.matchedFields)),
         ),
       };
 
@@ -260,7 +259,7 @@ const useSearch = (posts: Post[]): SearchState => {
       updateCache(searchQuery, enhancedResults, stats);
       updateSearchHistory(searchQuery);
     },
-    [checkCache, updateCache, updateSearchHistory, fuse]
+    [checkCache, updateCache, updateSearchHistory, fuse],
   );
 
   useEffect(() => {

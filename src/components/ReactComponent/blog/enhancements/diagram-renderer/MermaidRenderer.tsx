@@ -3,17 +3,14 @@ import { useMermaidRenderer } from "@hooks/useMermaidRenderer";
 import { useDiagramRenderer } from "@hooks/useDiagramRenderer";
 
 const MermaidRenderer = memo(function MermaidRenderer() {
-  const {
-    mermaidInitialized,
-    extractDiagramType,
-  } = useMermaidRenderer();
+  const { mermaidInitialized, extractDiagramType } = useMermaidRenderer();
 
   useDiagramRenderer({
     mermaidInitialized,
     extractDiagramType,
   });
 
-  return null; 
+  return null;
 });
 
 export default MermaidRenderer;

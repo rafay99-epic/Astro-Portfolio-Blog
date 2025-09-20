@@ -1,4 +1,3 @@
-
 export type ThemeName = "tokyo-night" | "cyberpunk" | "ocean" | "forest";
 
 export interface ColorPalette {
@@ -186,8 +185,8 @@ const cyberpunkColors: ColorPalette = {
 const themes: Record<ThemeName, ColorPalette> = {
   "tokyo-night": tokyoNightColors,
   cyberpunk: cyberpunkColors,
-  ocean: tokyoNightColors, 
-  forest: tokyoNightColors, 
+  ocean: tokyoNightColors,
+  forest: tokyoNightColors,
 };
 
 export const CURRENT_THEME: ThemeName = "tokyo-night";

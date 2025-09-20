@@ -1,4 +1,4 @@
-import  { memo } from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 import type { SearchInputProps } from "types/search";
 
@@ -13,9 +13,9 @@ const SearchInput = memo(function SearchInput({
   resultsLength,
 }: SearchInputProps) {
   return (
-    <div className="relative flex items-center mb-4">
+    <div className="relative mb-4 flex items-center">
       <motion.div
-        className="absolute left-4 flex items-center h-full text-xl"
+        className="absolute left-4 flex h-full items-center text-xl"
         animate={{
           scale: isSearchFocused ? 1.1 : 1,
           rotate: isSearchFocused ? [0, -10, 10, 0] : 0,
@@ -36,7 +36,7 @@ const SearchInput = memo(function SearchInput({
         onBlur={() => setIsSearchFocused(false)}
         placeholder="Search by title, tag, author, or content... (Press '/' to focus)"
         aria-label="Search articles"
-        className={`w-full bg-[#1a1b26]/60 border border-[#565f89]/40 text-[#c0caf5] placeholder-[#a9b1d6] rounded-xl transition-all duration-300 focus:outline-none focus:border-[#7aa2f7] focus:shadow-lg focus:shadow-[#7aa2f7]/20 ${
+        className={`w-full rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 text-[#c0caf5] placeholder-[#a9b1d6] transition-all duration-300 focus:border-[#7aa2f7] focus:shadow-lg focus:shadow-[#7aa2f7]/20 focus:outline-none ${
           isMobile ? "py-3 pl-12 pr-10 text-base" : "py-4 pl-14 pr-12 text-lg"
         }`}
       />
@@ -72,22 +72,22 @@ const KeyboardShortcuts = memo(function KeyboardShortcuts({
   resultsLength: number;
 }) {
   return (
-    <div className="absolute right-14 top-1/2 -translate-y-1/2 flex items-center gap-2 text-[#565f89] text-sm">
+    <div className="absolute right-14 top-1/2 flex -translate-y-1/2 items-center gap-2 text-sm text-[#565f89]">
       {!isMobile && !query && (
-        <span className="hidden md:flex items-center gap-1">
-          <kbd className="px-2 py-1 bg-[#1a1b26] rounded text-[#565f89] text-xs">
+        <span className="hidden items-center gap-1 md:flex">
+          <kbd className="rounded bg-[#1a1b26] px-2 py-1 text-xs text-[#565f89]">
             /
           </kbd>
           <span>to focus</span>
         </span>
       )}
       {isSearchFocused && resultsLength > 0 && (
-        <span className="hidden md:flex items-center gap-1">
-          <kbd className="px-2 py-1 bg-[#1a1b26] rounded text-[#565f89] text-xs">
+        <span className="hidden items-center gap-1 md:flex">
+          <kbd className="rounded bg-[#1a1b26] px-2 py-1 text-xs text-[#565f89]">
             ↑↓
           </kbd>
           <span>to navigate</span>
-          <kbd className="px-2 py-1 bg-[#1a1b26] rounded text-[#565f89] text-xs">
+          <kbd className="rounded bg-[#1a1b26] px-2 py-1 text-xs text-[#565f89]">
             ↵
           </kbd>
           <span>to select</span>
@@ -104,7 +104,7 @@ const ClearButton = memo(function ClearButton({
 }) {
   return (
     <motion.button
-      className="absolute right-4 flex items-center h-full text-[#a9b1d6] hover:text-[#c0caf5] transition-colors duration-300"
+      className="absolute right-4 flex h-full items-center text-[#a9b1d6] transition-colors duration-300 hover:text-[#c0caf5]"
       onClick={onClick}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}

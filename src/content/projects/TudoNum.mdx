@@ -15,7 +15,6 @@ ProjectTech:
     "Lucide Icons",
     "React Hook Form",
     "React Query",
-
   ]
 ProjectCategory: ["Web Apps"]
 ProjectGithubLink: "https://github.com/rafay99-epic/TudoNum-landing"
@@ -25,12 +24,14 @@ ProjectDeployedLink: "https://www.tudonum.app/"
 
 import ImageSlider from "../../components/ReactComponent/blog/enhancements/image-slider/image-slider";
 
-##  Project Overview
+## Project Overview
 
 **TudoNum** is a revolutionary multi-service platform that unifies various service categories under one comprehensive ecosystem. It's designed as a "super app" that connects users with service providers across multiple industries while incorporating a sophisticated affiliate marketing system.
 
-###  Core Purpose
+### Core Purpose
+
 TudoNum serves as a unified platform that eliminates the need for multiple apps by providing access to services across:
+
 - **Transportation** (Taxi, Logistics)
 - **Food & Groceries** (Food delivery, Grocery shopping)
 - **Healthcare** (Doctor consultations, Health services)
@@ -42,20 +43,23 @@ TudoNum serves as a unified platform that eliminates the need for multiple apps 
 - **Marketplace** (Classified ads, E-commerce)
 - **Home Services** (Maintenance, Construction)
 
-##  Technology Stack
+## Technology Stack
 
 ### **Frontend Framework**
+
 - **Next.js 15.2.4** - React-based full-stack framework
 - **React 19** - Latest React with concurrent features
 - **TypeScript 5.8.3** - Type-safe development
 - **Tailwind CSS 3.4.17** - Utility-first CSS framework
 
 ### **Backend & Database**
+
 - **Convex** - Real-time backend platform with automatic scaling
 - **Clerk** - Authentication and user management
 - **Vercel** - Deployment and hosting platform
 
 ### **UI/UX Components**
+
 - **Radix UI** - Accessible, unstyled UI primitives
 - **Framer Motion** - Advanced animations and transitions
 - **Lucide React** - Beautiful icon library
@@ -64,20 +68,23 @@ TudoNum serves as a unified platform that eliminates the need for multiple apps 
 - **TipTap** - Rich text editor for blog content
 
 ### **Data Visualization & Charts**
+
 - **Chart.js** - Interactive charts
 - **React Chart.js 2** - React wrapper for Chart.js
 - **Recharts** - Composable charting library
 
 ### **Additional Libraries**
+
 - **QR Code generation** - For referral system
 - **PDF generation** - For reports and exports
 - **Excel export** - For data analysis
 - **Country selection** - International support
 - **Date handling** - Date-fns for time operations
 
-##  Design System
+## Design System
 
 ### **Modern UI/UX Approach**
+
 - **Gradient backgrounds** with animated effects
 - **Responsive design** optimized for all devices
 - **Dark/Light theme** support
@@ -86,20 +93,23 @@ TudoNum serves as a unified platform that eliminates the need for multiple apps 
 - **Mobile-first** responsive approach
 
 ### **Visual Identity**
+
 - **Clean, modern aesthetic** with gradient accents
 - **Consistent color scheme** with blue primary colors
 - **Professional typography** with proper hierarchy
 - **Interactive elements** with hover effects and micro-animations
 
-##  Core Features
+## Core Features
 
 ### **1. Multi-Service Platform**
+
 - **Unified Dashboard** - Single interface for all services
 - **Service Categories** - 18+ different service types
 - **Smart Booking** - Intelligent service matching
 - **Real-time Updates** - Live status tracking
 
 ### **2. Advanced Affiliate System**
+
 - **10-Level Network** - L10 to L1 affiliate structure
 - **Lifetime Commissions** - Ongoing earnings from network
 - **Multiple Referral Methods**:
@@ -111,12 +121,14 @@ TudoNum serves as a unified platform that eliminates the need for multiple apps 
 - **Performance Analytics** - Detailed referral tracking
 
 ### **3. User Management**
+
 - **Role-based Access** - User and Admin roles
 - **Profile Completion** - Guided onboarding
 - **Activity Tracking** - User engagement monitoring
 - **Wake-up Pings** - Re-engagement system for inactive users
 
 ### **4. Admin Dashboard**
+
 - **Comprehensive Analytics** - User and platform metrics
 - **Blog Management** - Content creation and editing
 - **Feature Flags** - A/B testing and feature control
@@ -125,15 +137,17 @@ TudoNum serves as a unified platform that eliminates the need for multiple apps 
 - **Mini-Games** - Gamification management
 
 ### **5. Blog System**
+
 - **Rich Text Editor** - TipTap-powered content creation
 - **SEO Optimization** - Meta tags and structured data
 - **Tag Management** - Content categorization
 - **Search Functionality** - Full-text search capabilities
 - **Responsive Design** - Mobile-optimized reading
 
-##  Architecture
+## Architecture
 
 ### **Database Schema (Convex)**
+
 ```mermaid
 erDiagram
     users ||--o{ referralStats : has
@@ -146,6 +160,7 @@ erDiagram
 ```
 
 ### **Key Tables**
+
 - **users** - Core user data and referral information
 - **pointsConfig** - Configurable reward system
 - **levelThresholds** - Affiliate level requirements
@@ -155,14 +170,16 @@ erDiagram
 - **miniGames** - Gamification elements
 
 ### **API Structure**
+
 - **RESTful APIs** - Standard HTTP endpoints
 - **Real-time Queries** - Live data updates via Convex
 - **Webhook Integration** - Clerk authentication events
 - **File Storage** - Image and document management
 
-##  Performance & Optimization
+## Performance & Optimization
 
 ### **Performance Features**
+
 - **React Compiler** - Automatic optimization
 - **Image Optimization** - Next.js image handling
 - **Code Splitting** - Lazy loading of components
@@ -170,59 +187,67 @@ erDiagram
 - **Bundle Optimization** - Tree shaking and minification
 
 ### **Monitoring & Analytics**
+
 - **Vercel Analytics** - Performance monitoring
 - **Error Tracking** - Comprehensive error handling
 - **User Analytics** - Engagement metrics
 - **Performance Metrics** - Core Web Vitals tracking
 
-##  Security & Privacy
+## Security & Privacy
 
 ### **Authentication**
+
 - **Clerk Integration** - Enterprise-grade auth
 - **Role-based Access** - Secure permission system
 - **Webhook Verification** - Secure event handling
 - **Environment Variables** - Secure configuration
 
 ### **Data Protection**
+
 - **Type Safety** - TypeScript throughout
 - **Input Validation** - Form and API validation
 - **SQL Injection Prevention** - Convex query safety
 - **XSS Protection** - Content sanitization
 
-##  Internationalization
+## Internationalization
 
 ### **Global Reach**
+
 - **Multi-language Support** - International user base
 - **Country Selection** - Geographic targeting
 - **Currency Support** - Multi-currency transactions
 - **Time Zone Handling** - Global time management
 
-##  Mobile Experience
+## Mobile Experience
 
 ### **Mobile Optimization**
+
 - **Responsive Design** - All screen sizes
 - **Touch-friendly Interface** - Mobile-first interactions
 - **Progressive Web App** - App-like experience
 - **Offline Capabilities** - Service worker support
 
-##  Gamification Elements
+## Gamification Elements
 
 ### **Engagement Features**
+
 - **Points System** - Reward-based engagement
 - **Level Progression** - Achievement system
 - **Mini-Games** - Interactive challenges
 - **Leaderboards** - Competitive elements
 - **Achievement Badges** - Recognition system
 
-##  Business Model
+## Business Model
 
 ### **Revenue Streams**
+
 1. **Service Commission** - Percentage from service providers
 2. **Affiliate Network** - Multi-level marketing structure
 3. **Premium Features** - Enhanced user experiences
 4. **Advertising** - Targeted marketing opportunities
 
 ### **Growth Strategy**
+
 - **Viral Referral System** - Organic user acquisition
 - **Service Provider Network** - Expanding service categories
 - **Geographic Expansion** - Multi-city deployment
@@ -231,6 +256,7 @@ erDiagram
 ## 🔮 Future Roadmap
 
 ### **Planned Features**
+
 - **AI-Powered Matching** - Smart service recommendations
 - **Blockchain Integration** - Decentralized payments
 - **AR/VR Experiences** - Immersive service previews
@@ -238,14 +264,16 @@ erDiagram
 - **Advanced Analytics** - Predictive insights
 
 ### **Expansion Plans**
+
 - **International Markets** - Global platform expansion
 - **Enterprise Solutions** - B2B service offerings
 - **API Marketplace** - Third-party integrations
 - **Mobile Apps** - Native iOS/Android applications
 
-##  Development Workflow
+## Development Workflow
 
 ### **Development Tools**
+
 - **Git Version Control** - Collaborative development
 - **TypeScript** - Type-safe development
 - **ESLint** - Code quality enforcement
@@ -253,27 +281,29 @@ erDiagram
 - **Husky** - Git hooks for quality assurance
 
 ### **Deployment Pipeline**
+
 - **Vercel Integration** - Automatic deployments
 - **Environment Management** - Staging and production
 - **Performance Monitoring** - Real-time metrics
 - **Error Tracking** - Proactive issue resolution
 
-##  Success Metrics
+## Success Metrics
 
 ### **Key Performance Indicators**
+
 - **User Acquisition** - Sign-up rates and growth
 - **Engagement** - Daily/monthly active users
 - **Retention** - User lifetime value
 - **Revenue** - Platform earnings and growth
 - **Network Effects** - Referral system effectiveness
 
-##  Project Vision
+## Project Vision
 
 TudoNum represents the future of service platforms - a unified ecosystem that connects users with quality services while empowering individuals through an innovative affiliate system. By combining multiple service categories under one roof, TudoNum eliminates the friction of managing multiple apps while creating opportunities for users to earn through referrals.
 
 The platform's sophisticated technology stack, comprehensive feature set, and scalable architecture position it as a leading solution in the rapidly evolving digital services market. With its focus on user experience, performance, and growth, TudoNum is poised to become a dominant player in the global service economy.
 
-##  User Interface
+## User Interface
 
 <ImageSlider
   images={[

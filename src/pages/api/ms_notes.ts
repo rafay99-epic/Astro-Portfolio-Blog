@@ -1,11 +1,11 @@
 import { getCollection } from "astro:content";
 import featureFlagConfig from "@config/featureFlag/featureFlag.json";
 
-export async function GET({  }: { request: Request }) {
+export async function GET(_request: Request) {
   const headers = {
     "Content-Type": "application/json",
     "Cache-Control": "public, max-age=86400",
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "https://www.rafay99.com",
     "Access-Control-Allow-Methods": "GET, OPTIONS",
   };
 
@@ -16,7 +16,7 @@ export async function GET({  }: { request: Request }) {
         {
           status: 403,
           headers: headers,
-        }
+        },
       );
     }
 

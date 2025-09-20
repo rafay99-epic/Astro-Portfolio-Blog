@@ -55,16 +55,16 @@ const Newsletter = memo(function Newsletter() {
   };
 
   return (
-    <section className="relative overflow-hidden py-12 px-4">
+    <section className="relative overflow-hidden px-4 py-12">
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7aa2f7] rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#bb9af7] rounded-full blur-3xl" />
-        <div className="absolute top-3/4 left-3/4 w-32 h-32 bg-[#9ece6a] rounded-full blur-3xl" />
+        <div className="absolute left-1/4 top-1/4 h-64 w-64 rounded-full bg-[#7aa2f7] blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-[#bb9af7] blur-3xl" />
+        <div className="absolute left-3/4 top-3/4 h-32 w-32 rounded-full bg-[#9ece6a] blur-3xl" />
       </div>
 
-      <div className="container mx-auto relative z-10 max-w-7xl">
+      <div className="container relative z-10 mx-auto max-w-7xl">
         <motion.div
-          className="backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 rounded-3xl shadow-2xl overflow-hidden"
+          className="overflow-hidden rounded-3xl border border-[#565f89]/30 bg-[#24283b]/60 shadow-2xl backdrop-blur-xl"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -74,14 +74,14 @@ const Newsletter = memo(function Newsletter() {
           >
             {!isMobile && (
               <motion.div
-                className="lg:w-1/2 flex justify-center items-center p-8 lg:p-12"
+                className="flex items-center justify-center p-8 lg:w-1/2 lg:p-12"
                 variants={imageVariants}
               >
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/20 via-[#bb9af7]/20 to-[#9ece6a]/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-110"></div>
+                <div className="group relative">
+                  <div className="absolute inset-0 scale-110 transform rounded-3xl bg-gradient-to-r from-[#7aa2f7]/20 via-[#bb9af7]/20 to-[#9ece6a]/20 opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100"></div>
 
                   <motion.div
-                    className="relative overflow-hidden rounded-3xl border-2 border-[#565f89]/30 group-hover:border-[#7aa2f7]/50 transition-all duration-500"
+                    className="relative overflow-hidden rounded-3xl border-2 border-[#565f89]/30 transition-all duration-500 group-hover:border-[#7aa2f7]/50"
                     whileHover={{
                       scale: 1.05,
                       rotateY: 5,
@@ -89,7 +89,7 @@ const Newsletter = memo(function Newsletter() {
                     }}
                   >
                     <motion.img
-                      className="h-80 w-80 lg:h-96 lg:w-96 object-contain p-6"
+                      className="h-80 w-80 object-contain p-6 lg:h-96 lg:w-96"
                       src="/assets/sub-newsletter.png"
                       alt="Newsletter subscription illustration"
                       initial={{ scale: 1.1 }}
@@ -97,12 +97,12 @@ const Newsletter = memo(function Newsletter() {
                       transition={{ duration: 0.8 }}
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
                   </motion.div>
 
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-[#7aa2f7] rounded-full opacity-60 animate-pulse"></div>
+                  <div className="absolute -right-2 -top-2 h-4 w-4 animate-pulse rounded-full bg-[#7aa2f7] opacity-60"></div>
                   <div
-                    className="absolute -bottom-2 -left-2 w-3 h-3 bg-[#bb9af7] rounded-full opacity-40 animate-pulse"
+                    className="absolute -bottom-2 -left-2 h-3 w-3 animate-pulse rounded-full bg-[#bb9af7] opacity-40"
                     style={{ animationDelay: "1s" }}
                   ></div>
                 </div>
@@ -110,21 +110,21 @@ const Newsletter = memo(function Newsletter() {
             )}
 
             <motion.div
-              className={`${isMobile ? "w-full p-6" : "lg:w-1/2 p-8 lg:p-12"} flex flex-col justify-center`}
+              className={`${isMobile ? "w-full p-6" : "p-8 lg:w-1/2 lg:p-12"} flex flex-col justify-center`}
               variants={itemVariants}
             >
               <motion.div className="mb-8" variants={itemVariants}>
                 <motion.div
-                  className="inline-block mb-3"
+                  className="mb-3 inline-block"
                   whileHover={{ scale: 1.05 }}
                 >
-                  <span className="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent text-sm font-bold tracking-wide uppercase">
+                  <span className="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-sm font-bold uppercase tracking-wide text-transparent">
                     Stay Connected
                   </span>
                 </motion.div>
 
                 <motion.h2
-                  className={`font-bold bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent ${
+                  className={`bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text font-bold text-transparent ${
                     isMobile ? "text-2xl" : "text-3xl lg:text-4xl"
                   }`}
                   variants={itemVariants}
@@ -133,8 +133,8 @@ const Newsletter = memo(function Newsletter() {
                 </motion.h2>
 
                 <motion.p
-                  className={`text-[#a9b1d6] leading-relaxed ${
-                    isMobile ? "text-sm mt-3" : "text-lg mt-4"
+                  className={`leading-relaxed text-[#a9b1d6] ${
+                    isMobile ? "mt-3 text-sm" : "mt-4 text-lg"
                   }`}
                   variants={itemVariants}
                 >
@@ -143,7 +143,7 @@ const Newsletter = memo(function Newsletter() {
                 </motion.p>
 
                 <motion.div
-                  className="mt-4 h-0.5 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-transparent rounded-full"
+                  className="mt-4 h-0.5 rounded-full bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-transparent"
                   initial={{ width: 0 }}
                   animate={{ width: "80px" }}
                   transition={{ delay: 0.8, duration: 0.6 }}
@@ -158,7 +158,7 @@ const Newsletter = memo(function Newsletter() {
                 <motion.div variants={itemVariants}>
                   <label
                     htmlFor="email"
-                    className={`block font-medium text-[#c0caf5] mb-2 ${
+                    className={`mb-2 block font-medium text-[#c0caf5] ${
                       isMobile ? "text-sm" : "text-base"
                     }`}
                   >
@@ -170,14 +170,14 @@ const Newsletter = memo(function Newsletter() {
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className={`w-full text-[#c0caf5] bg-[#1a1b26]/80 border border-[#565f89]/50 rounded-xl shadow-sm backdrop-blur-sm transition-all duration-300 focus:ring-2 focus:ring-[#7aa2f7]/50 focus:border-[#7aa2f7] hover:border-[#7aa2f7]/70 ${
+                      className={`w-full rounded-xl border border-[#565f89]/50 bg-[#1a1b26]/80 text-[#c0caf5] shadow-sm backdrop-blur-sm transition-all duration-300 hover:border-[#7aa2f7]/70 focus:border-[#7aa2f7] focus:ring-2 focus:ring-[#7aa2f7]/50 ${
                         isMobile ? "px-4 py-3 text-sm" : "px-6 py-4 text-base"
                       }`}
                       placeholder="you@example.com"
                       required
                       whileFocus={{ scale: 1.01 }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/5 to-[#bb9af7]/5 rounded-xl opacity-0 pointer-events-none transition-opacity duration-300 hover:opacity-100"></div>
+                    <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-r from-[#7aa2f7]/5 to-[#bb9af7]/5 opacity-0 transition-opacity duration-300 hover:opacity-100"></div>
                   </div>
                 </motion.div>
 
@@ -191,22 +191,22 @@ const Newsletter = memo(function Newsletter() {
                       type="checkbox"
                       checked={isAgreed}
                       onChange={() => setIsAgreed(!isAgreed)}
-                      className="w-5 h-5 text-[#7aa2f7] bg-[#1a1b26]/80 border border-[#565f89]/50 rounded focus:ring-[#7aa2f7]/50 focus:ring-2 transition-all duration-300"
+                      className="h-5 w-5 rounded border border-[#565f89]/50 bg-[#1a1b26]/80 text-[#7aa2f7] transition-all duration-300 focus:ring-2 focus:ring-[#7aa2f7]/50"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                     />
                     {isAgreed && (
-                      <div className="absolute inset-0 bg-[#7aa2f7]/20 rounded blur-sm"></div>
+                      <div className="absolute inset-0 rounded bg-[#7aa2f7]/20 blur-sm"></div>
                     )}
                   </div>
                   <label
                     htmlFor="terms"
-                    className={`text-[#a9b1d6] leading-relaxed cursor-pointer hover:text-[#c0caf5] transition-colors duration-300 ${
+                    className={`cursor-pointer leading-relaxed text-[#a9b1d6] transition-colors duration-300 hover:text-[#c0caf5] ${
                       isMobile ? "text-sm" : "text-base"
                     }`}
                   >
                     I agree to receive newsletters and accept the{" "}
-                    <span className="text-[#7aa2f7] hover:text-[#bb9af7] transition-colors duration-300">
+                    <span className="text-[#7aa2f7] transition-colors duration-300 hover:text-[#bb9af7]">
                       data privacy statement
                     </span>
                     .
@@ -217,10 +217,10 @@ const Newsletter = memo(function Newsletter() {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`text-center p-3 rounded-xl backdrop-blur-sm ${
+                    className={`rounded-xl p-3 text-center backdrop-blur-sm ${
                       statusColor.includes("green")
-                        ? "bg-[#9ece6a]/10 border border-[#9ece6a]/30 text-[#9ece6a]"
-                        : "bg-red-500/10 border border-red-500/30 text-red-400"
+                        ? "border border-[#9ece6a]/30 bg-[#9ece6a]/10 text-[#9ece6a]"
+                        : "border border-red-500/30 bg-red-500/10 text-red-400"
                     } ${isMobile ? "text-sm" : "text-base"}`}
                   >
                     {statusMessage}
@@ -230,8 +230,8 @@ const Newsletter = memo(function Newsletter() {
                 <motion.div variants={itemVariants}>
                   <motion.button
                     type="submit"
-                    className={`w-full font-semibold text-white bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-xl shadow-lg shadow-[#7aa2f7]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30 focus:outline-none focus:ring-2 focus:ring-[#7aa2f7]/50 focus:ring-offset-2 focus:ring-offset-[#1a1b26] ${
-                      isMobile ? "py-3 px-6 text-sm" : "py-4 px-8 text-base"
+                    className={`w-full rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] font-semibold text-white shadow-lg shadow-[#7aa2f7]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30 focus:outline-none focus:ring-2 focus:ring-[#7aa2f7]/50 focus:ring-offset-2 focus:ring-offset-[#1a1b26] ${
+                      isMobile ? "px-6 py-3 text-sm" : "px-8 py-4 text-base"
                     }`}
                     whileHover={{
                       scale: 1.02,
@@ -256,13 +256,13 @@ const Newsletter = memo(function Newsletter() {
                     className={`text-[#565f89] ${isMobile ? "text-xs" : "text-sm"}`}
                   >
                     Join{" "}
-                    <span className="text-[#7aa2f7] font-medium">1,000+</span>{" "}
+                    <span className="font-medium text-[#7aa2f7]">1,000+</span>{" "}
                     developers who trust our content
                   </p>
 
-                  <div className="flex justify-center items-center mt-3 space-x-4">
+                  <div className="mt-3 flex items-center justify-center space-x-4">
                     <div className="flex items-center space-x-1">
-                      <div className="w-2 h-2 bg-[#9ece6a] rounded-full animate-pulse"></div>
+                      <div className="h-2 w-2 animate-pulse rounded-full bg-[#9ece6a]"></div>
                       <span
                         className={`text-[#a9b1d6] ${isMobile ? "text-xs" : "text-sm"}`}
                       >
@@ -271,7 +271,7 @@ const Newsletter = memo(function Newsletter() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <div
-                        className="w-2 h-2 bg-[#7aa2f7] rounded-full animate-pulse"
+                        className="h-2 w-2 animate-pulse rounded-full bg-[#7aa2f7]"
                         style={{ animationDelay: "0.5s" }}
                       ></div>
                       <span
@@ -294,9 +294,9 @@ const Newsletter = memo(function Newsletter() {
           />
         </motion.div>
 
-        <div className="absolute -top-4 -left-4 w-8 h-8 bg-[#7aa2f7]/10 rounded-full blur-sm animate-pulse"></div>
+        <div className="absolute -left-4 -top-4 h-8 w-8 animate-pulse rounded-full bg-[#7aa2f7]/10 blur-sm"></div>
         <div
-          className="absolute -bottom-4 -right-4 w-6 h-6 bg-[#bb9af7]/10 rounded-full blur-sm animate-pulse"
+          className="absolute -bottom-4 -right-4 h-6 w-6 animate-pulse rounded-full bg-[#bb9af7]/10 blur-sm"
           style={{ animationDelay: "1s" }}
         ></div>
       </div>

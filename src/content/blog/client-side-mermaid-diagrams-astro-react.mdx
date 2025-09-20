@@ -1,33 +1,38 @@
 ---
-title: 'The Phantom Diagrams: How I Ditched Server-Side Headaches for Client-Side
-  Magic'
-description: How I turned a server-side deployment nightmare into a sleek client-side
+title:
+  "The Phantom Diagrams: How I Ditched Server-Side Headaches for Client-Side
+  Magic"
+description:
+  How I turned a server-side deployment nightmare into a sleek client-side
   win using React and Mermaid.js.
 pubDate: 2025-06-26 19:00:00+00:00
 draft: false
-heroImage: /BlogImages/The Phantom Diagrams How I Ditched Server-Side Headaches for
+heroImage:
+  /BlogImages/The Phantom Diagrams How I Ditched Server-Side Headaches for
   Client-Side Magic.webp
 authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
-- Though-Process
-- WebDevelopment
+  - Though-Process
+  - WebDevelopment
 keywords:
-- webdevelopment
-- though-process
-- programming
-- chatgpt
-- ai
-- artificial intelligence
-- github copilot
-- frontend
-- software development
-- typescript
+  - webdevelopment
+  - though-process
+  - programming
+  - chatgpt
+  - ai
+  - artificial intelligence
+  - github copilot
+  - frontend
+  - software development
+  - typescript
 featured: true
-excerpt: How I turned a server-side deployment nightmare into a sleek client-side
+excerpt:
+  How I turned a server-side deployment nightmare into a sleek client-side
   win using React and Mermaid.js.
 canonicalUrl: /blog/the-phantom-diagrams-how-i-ditched-server-side-headaches-for-client-side-magic
 ---
+
 You know that moment. You’ve spent weeks building a blog or a portfolio you’re genuinely proud of. You test it locally, and everything looks perfect — animations, diagrams, responsiveness, all silky smooth. You deploy, expecting applause. But instead, you get build logs filled with cryptic errors and dependency hell. That’s exactly what happened to me when I decided to add **dynamic Mermaid.js diagrams** to my Astro-powered portfolio and blog.
 
 Locally, it was a dream. Beautiful flowcharts and sequence diagrams rendered straight from fenced code blocks like ` ```mermaid ` — all converted into SVGs during the build process using Playwright.
@@ -117,7 +122,7 @@ useEffect(() => {
   const renderDiagrams = async () => {
     const mermaid = (await import("mermaid")).default;
     const blocks = document.querySelectorAll(
-      "pre code.language-mermaid:not([data-mermaid-rendered])"
+      "pre code.language-mermaid:not([data-mermaid-rendered])",
     );
 
     for (let i = 0; i < blocks.length; i++) {

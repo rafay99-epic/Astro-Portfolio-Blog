@@ -18,13 +18,11 @@ declare global {
 }
 ---
 
-<!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.webp" />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Preload Poppins Fonts -->
 <link
   rel="preload"
   href="/fonts/Poppins/Poppins-Black.ttf"
@@ -56,10 +54,8 @@ declare global {
   crossorigin="anonymous"
 />
 
-<!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
@@ -69,37 +65,32 @@ declare global {
   )
 }
 
-<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
 
-<!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-<!-- Open Graph Metadata for LinkedIn and WhatsApp -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
 
-<!-- Additional metadata -->
 <meta name="description" content={description} />
 <meta name="image" content={new URL(image, Astro.url)} />
 
-<!-- Good Indexing Search Console  for future Insight-->
 <meta
   name="google-site-verification"
   content="2VQD6NfW5UaStcErGXyVQjGAtsQh_7hztSuKS-lIKkw"
 />
-<!-- Good Indexing Search Console  for 99marafay-->
+
 <meta
   name="google-site-verification"
   content="yhlSscdVZmq_TymJP_qeDvw2R1HWYzPTQOoCTiA6jgA"
@@ -119,7 +110,6 @@ declare global {
   astroGenerator={true}
 />
 
-<!-- Umami Analytics -->
 <script
   is:inline
   defer
@@ -130,7 +120,6 @@ declare global {
 
 <meta name="copyright" content="ISC" />
 
-<!-- RSS Feed -->
 <link
   rel="alternate"
   type="application/rss+xml"
@@ -138,16 +127,13 @@ declare global {
   href={`${Astro.site}rss.xml`}
 />
 
-<!-- Sitemap -->
 <link rel="sitemap" href="/sitemap-index.xml" />
 
-<!-- Google Ads -->
 <!-- <script
   async
   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
   crossorigin="anonymous"></script> -->
 
-<!-- Google tag (gtag.js) - Combined GA4 + Google Ads via Partytown -->
 <script
   is:inline
   type="text/partytown"
@@ -160,11 +146,7 @@ declare global {
   }
   gtag("js", new Date());
 
-  // GA4
   gtag("config", "G-DKPL4VGM52");
-
-  // // Google Ads
-  // gtag("config", "AW-17413331660");
 </script>
 
 <script is:inline id="mcjs">
@@ -181,7 +163,6 @@ declare global {
   );
 </script>
 
-<!-- MailerLite Universal -->
 <!-- <script is:inline type="text/partytown">
   (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
   .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
@@ -189,4 +170,3 @@ declare global {
   (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
   ml('account', '1747196');
 </script> -->
-<!-- End MailerLite Universal -->

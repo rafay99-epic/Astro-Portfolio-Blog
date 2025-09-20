@@ -1,4 +1,4 @@
-import  { useState, useEffect, memo } from "react";
+import { useState, useEffect, memo } from "react";
 import type { CSSProperties } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { motion, AnimatePresence } from "framer-motion";
@@ -77,7 +77,7 @@ const fetchFileContent = async (filePath: string): Promise<string> => {
 };
 
 const processCodeInput = async (
-  input: string | CodeInput
+  input: string | CodeInput,
 ): Promise<{ content: string; language: string }> => {
   if (typeof input === "string") {
     return {
@@ -361,36 +361,36 @@ const CodeCompare = memo(function CodeCompare({
       layout
       className={`${
         isFullScreen
-          ? "fixed inset-0 z-50 bg-[var(--accent-dark)] overflow-auto"
-          : "rounded-xl overflow-hidden border border-[var(--accent)]/20 bg-[var(--accent-dark)]/50 backdrop-blur-sm shadow-lg"
+          ? "fixed inset-0 z-50 overflow-auto bg-[var(--accent-dark)]"
+          : "border-[var(--accent)]/20 bg-[var(--accent-dark)]/50 overflow-hidden rounded-xl border shadow-lg backdrop-blur-sm"
       }`}
     >
-      <div className="flex items-center justify-between p-4 border-b border-[var(--accent)]/20">
+      <div className="border-[var(--accent)]/20 flex items-center justify-between border-b p-4">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-[var(--text-light)] font-medium">
+            <span className="font-medium text-[var(--text-light)]">
               {file1Title}
               {typeof code1 !== "string" && code1.filePath && (
-                <span className="ml-2 text-xs text-[var(--accent)]/70">
+                <span className="text-[var(--accent)]/70 ml-2 text-xs">
                   ({processedCode1.language})
                 </span>
               )}
             </span>
             <span className="text-[var(--accent)]/50">vs</span>
-            <span className="text-[var(--text-light)] font-medium">
+            <span className="font-medium text-[var(--text-light)]">
               {file2Title}
               {typeof code2 !== "string" && code2.filePath && (
-                <span className="ml-2 text-xs text-[var(--accent)]/70">
+                <span className="text-[var(--accent)]/70 ml-2 text-xs">
                   ({processedCode2.language})
                 </span>
               )}
             </span>
           </div>
-          <div className="h-4 w-px bg-[var(--accent)]/20" />
+          <div className="bg-[var(--accent)]/20 h-4 w-px" />
           <div className="flex items-center gap-2">
             <button
               onClick={() => setView("split")}
-              className={`px-3 py-1 rounded-md text-sm transition-colors ${
+              className={`rounded-md px-3 py-1 text-sm transition-colors ${
                 view === "split"
                   ? "bg-[var(--accent)] text-[var(--text-light)]"
                   : "text-[var(--text-light)]/70 hover:text-[var(--text-light)]"
@@ -400,7 +400,7 @@ const CodeCompare = memo(function CodeCompare({
             </button>
             <button
               onClick={() => setView("unified")}
-              className={`px-3 py-1 rounded-md text-sm transition-colors ${
+              className={`rounded-md px-3 py-1 text-sm transition-colors ${
                 view === "unified"
                   ? "bg-[var(--accent)] text-[var(--text-light)]"
                   : "text-[var(--text-light)]/70 hover:text-[var(--text-light)]"
@@ -412,13 +412,11 @@ const CodeCompare = memo(function CodeCompare({
         </div>
         <button
           onClick={toggleFullScreen}
-          className="px-3 py-1 rounded-md text-sm bg-[var(--accent)]/10 
-            text-[var(--text-light)]/70 hover:text-[var(--text-light)] 
-            hover:bg-[var(--accent)]/20 transition-colors"
+          className="bg-[var(--accent)]/10 text-[var(--text-light)]/70 hover:bg-[var(--accent)]/20 rounded-md px-3 py-1 text-sm transition-colors hover:text-[var(--text-light)]"
         >
           {isFullScreen ? "Exit Full Screen" : "Full Screen"}
         </button>
-        {error && <div className="text-red-500 text-sm">Error: {error}</div>}
+        {error && <div className="text-sm text-red-500">Error: {error}</div>}
       </div>
 
       <div
@@ -443,14 +441,11 @@ const CodeCompare = memo(function CodeCompare({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="relative group"
+                  className="group relative"
                 >
                   <button
                     onClick={() => handleCopy(processedCode1.content, "code1")}
-                    className="absolute right-2 top-2 px-3 py-1 rounded-md 
-                      bg-[var(--accent-dark)]/80 text-[var(--text-light)] text-sm
-                      opacity-0 group-hover:opacity-100 transition-opacity z-10
-                      hover:bg-[var(--accent)]"
+                    className="bg-[var(--accent-dark)]/80 absolute right-2 top-2 z-10 rounded-md px-3 py-1 text-sm text-[var(--text-light)] opacity-0 transition-opacity hover:bg-[var(--accent)] group-hover:opacity-100"
                   >
                     {copied === "code1" ? "Copied!" : "Copy"}
                   </button>
@@ -473,14 +468,11 @@ const CodeCompare = memo(function CodeCompare({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="relative group"
+                  className="group relative"
                 >
                   <button
                     onClick={() => handleCopy(processedCode2.content, "code2")}
-                    className="absolute right-2 top-2 px-3 py-1 rounded-md 
-                      bg-[var(--accent-dark)]/80 text-[var(--text-light)] text-sm
-                      opacity-0 group-hover:opacity-100 transition-opacity z-10
-                      hover:bg-[var(--accent)]"
+                    className="bg-[var(--accent-dark)]/80 absolute right-2 top-2 z-10 rounded-md px-3 py-1 text-sm text-[var(--text-light)] opacity-0 transition-opacity hover:bg-[var(--accent)] group-hover:opacity-100"
                   >
                     {copied === "code2" ? "Copied!" : "Copy"}
                   </button>

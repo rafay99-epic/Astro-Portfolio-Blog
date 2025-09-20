@@ -10,7 +10,6 @@ subject: Design and Analysis of Algorithms
 **I. Introduction to Algorithms**
 
 - **What is an Algorithm?**
-
   - **Informally:**
     - A process, method, technique, procedure, or recipe.
     - A _tool_ for solving a problem.
@@ -23,12 +22,10 @@ subject: Design and Analysis of Algorithms
     - Is a _finite_ set of statements guaranteed to finish in a finite time (ideally finding an optimal solution, though this isn't always the case for all algorithms).
 
 - **Example: Sorting**
-
   - **Input:** A sequence of `n` numbers `<a₁, a₂, ..., aₙ>`.
   - **Output:** A permutation (re-ordering) `<b₁, b₂, ..., bₙ>` of the input sequence such that `b₁ ≤ b₂ ≤ ... ≤ bₙ`.
 
 - **Correctness of an Algorithm**
-
   - An algorithm is **correct** if, for _every_ possible input instance, it halts with the _correct_ output.
   - An **incorrect** algorithm might:
     - Not halt at all on some inputs.
@@ -45,17 +42,14 @@ subject: Design and Analysis of Algorithms
 **II. The Problem-Solving Process & Algorithm Design**
 
 - **Problem Solving Steps:**
-
   1.  **Problem Definition:** Understand the problem thoroughly.
   2.  **Algorithm Design:** Devise a method/strategy to solve the problem.
   3.  **Algorithm Analysis:** Evaluate the algorithm's efficiency (time, space) and correctness. Check if it meets requirements.
   4.  **Implementation:** Translate the algorithm into a programming language.
   5.  **Verification/Testing/Experiment:** Test the program with various inputs to ensure correctness and measure performance.
-
   - _Note:_ This is often an iterative cycle (Analyze -> Design -> Implement -> Experiment -> Analyze...).
 
 - **Characteristics of Good Algorithms/Software:**
-
   - Good Design
   - Easy to Implement
   - Easy to Use
@@ -69,14 +63,12 @@ subject: Design and Analysis of Algorithms
 **III. Algorithm Analysis**
 
 - **What is Algorithm Analysis?**
-
   - Measuring the "goodness" or **efficiency** of an algorithm.
   - Predicting the **resource requirements** (primarily time and space).
   - **Computation Time (Running Time):** Usually the primary concern.
   - **Goal:** Determine how running time increases as the _size of the problem (input size)_ increases.
 
 - **Why Analyze Algorithms?**
-
   - To **choose** the most efficient algorithm among several options.
   - To **increase** the efficiency of existing algorithms.
   - To determine if an algorithm is **optimal** (the best possible).
@@ -86,7 +78,6 @@ subject: Design and Analysis of Algorithms
   - Performance is the **currency** of computing.
 
 - **Running Time Definition:**
-
   - The total number of **primitive operations** (or "steps") executed for a given input.
     - Primitive Operations: Simple instructions like arithmetic (+, -, \*, /), data movement (load, store, copy), control (branch, function call), memory access.
   - Each primitive operation is assumed to take a constant amount of time (e.g., 1 time unit).
@@ -113,14 +104,12 @@ subject: Design and Analysis of Algorithms
 **IV. Order of Growth & Asymptotic Analysis**
 
 - **Order of Growth:**
-
   - Describes how the running time scales as the input size `n` becomes very large.
   - Focuses on the dominant term in the running time function, ignoring constant factors and lower-order terms.
   - Example: An algorithm with time `3n² + 10n + 5` has an order of growth of `n²`.
   - Different orders of growth lead to vastly different performance for large `n` (e.g., `log n` vs `n` vs `n²` vs `2ⁿ`).
 
 - **Complexity Classes:**
-
   - Sets of problems/algorithms with similar orders of growth (complexity).
   - Common classes (from fastest to slowest growing):
     - `1` (Constant)
@@ -134,7 +123,6 @@ subject: Design and Analysis of Algorithms
     - _Note:_ `n log n` is often associated with efficient sorting algorithms like Heap Sort, Merge Sort, Quick Sort (average case).
 
 - **Asymptotic Analysis:**
-
   - A method for describing the **limiting behavior** of a function (like running time) as the input `n` approaches infinity (`n -> ∞`).
   - Uses **Asymptotic Notations** to formally capture the order of growth.
 

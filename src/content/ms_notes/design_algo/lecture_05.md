@@ -32,7 +32,6 @@ The algorithm consists of two main phases:
 Transform the input array `A` (of length `n`) into a max-heap.
 
 - **`BUILD-MAX-HEAP(A)` Pseudocode:**
-
   1.  `heap-size[A] ← length[A]` (Initialize heap size, though often implicitly the array length `n`)
   2.  `for i ← floor(length[A]/2) downto 1` (Iterate from the last non-leaf node up to the root - using 1-based indexing convention here for pseudocode consistency)
   3.  `do MAX-HEAPIFY(A, i)` (Call Max-Heapify on each non-leaf node to establish the heap property)
@@ -43,7 +42,6 @@ Transform the input array `A` (of length `n`) into a max-heap.
 Repeatedly extract the maximum element and rebuild the heap.
 
 - **`HEAPSORT(A)` Pseudocode:**
-
   1.  `BUILD-MAX-HEAP(A)` (First, build the initial max-heap)
   2.  `for i ← length[A] downto 2` (Iterate from the last element down to the second element - using 1-based indexing)
   3.  `do exchange A[1] ↔ A[i]` (Swap the root (max element) with the last element in the current heap)
@@ -132,13 +130,11 @@ print(f"Sorted list (Heap Sort): {my_list}")
 Let's analyze the time complexity of the different components:
 
 1.  **`MAX-HEAPIFY`:**
-
     - The work done at each node involves a constant number of comparisons and potential swaps.
     - The recursion depth is limited by the height of the tree, `h`. For a complete or almost complete binary tree with `n` nodes, the height `h = Θ(log n)`.
     - Therefore, the time complexity of `MAX-HEAPIFY(A, i)` is `O(log n)`.
 
 2.  **`BUILD-MAX-HEAP`:**
-
     - **Simpler Analysis:** The procedure calls `MAX-HEAPIFY` for roughly `n/2` nodes (the non-leaf nodes). Since each call takes `O(log n)`, a straightforward upper bound is `(n/2) * O(log n) = O(n log n)`.
     - **Tighter Analysis (O(n)):** A more precise analysis considers that `MAX-HEAPIFY`'s runtime depends on the height of the node it's called on, not the total height of the heap. Most nodes are near the bottom of the heap with small heights.
       - Number of nodes at height `h` in a complete binary tree is at most `⌈n / 2^(h+1)⌉`.
@@ -170,7 +166,6 @@ Let's analyze the time complexity of the different components:
 Heaps are dynamic structures, and their properties must be maintained when elements are added, deleted, or modified.
 
 - **Restoring Heap Property:**
-
   - If a node's value **increases** (potentially violating the max-heap property with its parent), the property can be restored by repeatedly swapping the node with its parent until it reaches a position where it's less than or equal to its parent, or it becomes the root. This upward movement is called **Percolation Up** or **Sifting Up**.
   - If a node's value **decreases** (potentially violating the max-heap property with its children), the property can be restored by repeatedly swapping the node with its **larger** child until it reaches a position where it's greater than or equal to both its children, or it becomes a leaf. This downward movement is essentially what `MAX-HEAPIFY` does and is called **Percolation Down** or **Sifting Down**.
 
@@ -184,13 +179,11 @@ Heaps are dynamic structures, and their properties must be maintained when eleme
 **Home Task Examples**
 
 1.  **Maintain Minimum Heap / Sort Descending:**
-
     - Given array: `[1, 6, 9, 2, 7, 5, 2, 7, 4, 10]`
     - To sort in descending order, you would build a **Min-Heap**.
     - Follow the `HEAP SORT` algorithm steps, but use `BUILD-MIN-HEAP` and `MIN-HEAPIFY`. In the extraction phase, swapping the root (minimum element) to the end of the current heap range effectively places the smallest elements at the end of the array, resulting in descending order.
 
 2.  **Sort Descending using Heap Sort:**
-
     - Given array: `[24, 21, 23, 22, 36, 29, 30, 34, 28, 27]`
     - Again, build a **Min-Heap** and follow the Heap Sort extraction process to get descending order.
 

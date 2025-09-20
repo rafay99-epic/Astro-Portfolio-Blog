@@ -52,7 +52,7 @@ Theme colors are integrated into Tailwind CSS:
 ```tsx
 const MyComponent = () => {
   return (
-    <div className="bg-theme-primary text-theme-accent border-theme-secondary">
+    <div className="border-theme-secondary bg-theme-primary text-theme-accent">
       <h1 className="text-gradient-primary">Gradient Text</h1>
       <button className="bg-theme-social-twitter">Twitter Button</button>
     </div>
@@ -117,13 +117,11 @@ Pre-built utility classes are available:
 ### Current Themes
 
 1. **Tokyo Night** (Default)
-
    - Primary: `#7aa2f7` (Blue)
    - Secondary: `#bb9af7` (Purple)
    - Accent: `#9ece6a` (Green)
 
 2. **Cyberpunk** (Available)
-
    - Primary: `#ff0080` (Pink)
    - Secondary: `#00ff80` (Green)
    - Accent: `#8000ff` (Purple)
@@ -321,7 +319,7 @@ const styles = {
 #### Or Using Tailwind Classes
 
 ```tsx
-<div className="bg-theme-primary text-theme-text-primary border border-theme-border-primary">
+<div className="border border-theme-border-primary bg-theme-primary text-theme-text-primary">
   Content
 </div>
 ```
@@ -435,7 +433,9 @@ interface ColorPalette {
 ```javascript
 // In browser console
 console.log(
-  getComputedStyle(document.documentElement).getPropertyValue("--color-primary")
+  getComputedStyle(document.documentElement).getPropertyValue(
+    "--color-primary",
+  ),
 );
 ```
 

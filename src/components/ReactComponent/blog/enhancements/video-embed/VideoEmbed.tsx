@@ -16,22 +16,22 @@ const VideoEmbed: FunctionComponent<VideoEmbedProps> = ({
     src.includes("ufs.sh") || src.endsWith(".mp4") || src.endsWith(".webm");
 
   return (
-    <div className="w-full max-w-[800px] mx-auto mb-8">
+    <div className="mx-auto mb-8 w-full max-w-[800px]">
       <div
-        className="relative w-full overflow-hidden rounded-xl bg-[var(--accent-dark)]/10"
+        className="bg-[var(--accent-dark)]/10 relative w-full overflow-hidden rounded-xl"
         style={{
-          paddingBottom: "56.25%" ,
+          paddingBottom: "56.25%",
         }}
       >
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-[var(--accent-dark)]/10">
-            <div className="w-10 h-10 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
+          <div className="bg-[var(--accent-dark)]/10 absolute inset-0 flex items-center justify-center">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-[var(--accent)] border-t-transparent" />
           </div>
         )}
 
         {isDirectVideo ? (
           <video
-            className="absolute top-0 left-0 w-full h-full rounded-xl"
+            className="absolute left-0 top-0 h-full w-full rounded-xl"
             controls
             playsInline
             onLoadedData={() => setIsLoading(false)}
@@ -46,8 +46,8 @@ const VideoEmbed: FunctionComponent<VideoEmbedProps> = ({
           <iframe
             src={src}
             title={title}
-            className="absolute top-0 left-0 w-full h-full rounded-xl"
-            style={{ border: 'none' }}
+            className="absolute left-0 top-0 h-full w-full rounded-xl"
+            style={{ border: "none" }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
             onLoad={() => setIsLoading(false)}

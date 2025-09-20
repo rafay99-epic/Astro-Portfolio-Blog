@@ -9,7 +9,7 @@ interface NewsletterLogicProps {
     currentPage: number,
     handlePageChange: (page: number) => void,
     isLoading: boolean,
-    error: string | null
+    error: string | null,
   ) => React.ReactElement;
 }
 
@@ -17,7 +17,7 @@ const NewsletterListLogic: React.FC<NewsletterLogicProps> = ({
   newsletters,
   children,
 }) => {
-  const newslettersPerPage = 5; 
+  const newslettersPerPage = 5;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +27,7 @@ const NewsletterListLogic: React.FC<NewsletterLogicProps> = ({
       return [...newsletters].sort((a, b) => {
         const dateA = new Date(a.data.pubDate).getTime();
         const dateB = new Date(b.data.pubDate).getTime();
-        return dateB - dateA; 
+        return dateB - dateA;
       });
     } catch (err) {
       setError("Failed to sort newsletters. Please try again.");
@@ -67,7 +67,7 @@ const NewsletterListLogic: React.FC<NewsletterLogicProps> = ({
         currentPage,
         handlePageChange,
         isLoading,
-        error
+        error,
       )}
     </>
   );

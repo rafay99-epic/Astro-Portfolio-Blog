@@ -30,7 +30,7 @@ try {
 
 const BlogPosts = featureFlags.showBlog
   ? (await getCollection("blog"))
-      .filter((post) => !post.data.draft) // Only published posts
+      .filter((post) => !post.data.draft)
       .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
   : [];
 
@@ -121,7 +121,6 @@ const {
       }
     </style>
 
-    <!-- Critical inline styles to prevent any flash -->
     <style is:inline>
       html {
         background-color: #1a1b26 !important;
@@ -158,9 +157,10 @@ const {
         creator: "@rafay99",
       }}
     />
-    <!-- Google tag (gtag.js) -->
+
     <script
-      is:inline type="text/partytown"
+      is:inline
+      type="text/partytown"
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-DKPL4VGM52"></script>
     <script is:inline type="text/partytown">
@@ -172,9 +172,10 @@ const {
 
       gtag("config", "G-DKPL4VGM52");
     </script>
-    <!-- Structured Data for Blog Post -->
+
     <script
-      is:inline type="application/ld+json"
+      is:inline
+      type="application/ld+json"
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BlogPosting",
@@ -216,9 +217,9 @@ const {
       })}
     />
 
-    <!-- Breadcrumb Structured Data -->
     <script
-      is:inline type="application/ld+json"
+      is:inline
+      type="application/ld+json"
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -245,7 +246,6 @@ const {
       })}
     />
 
-    <!-- FAQ Schema for Better Search Visibility -->
     {
       (() => {
         const faqMatches = blogContent.match(/^#{2,6}\s+(.+)$/gm);
@@ -265,7 +265,8 @@ const {
 
         return (
           <script
-            is:inline type="application/ld+json"
+            is:inline
+            type="application/ld+json"
             set:html={JSON.stringify({
               "@context": "https://schema.org",
               "@type": "FAQPage",
@@ -276,7 +277,6 @@ const {
       })()
     }
 
-    <!-- Additional SEO Meta Tags -->
     <meta name="author" content={authorName} />
     <meta
       name="robots"
@@ -306,10 +306,8 @@ const {
     {featured && <meta name="article:featured" content="true" />}
     {excerpt && <meta name="description" content={excerpt} />}
 
-    <!-- Preload hero image for better performance -->
     {heroImage && <link rel="preload" as="image" href={heroImage} />}
 
-    <!-- Enhanced SEO Meta Tags -->
     <meta name="revisit-after" content="7 days" />
     <meta name="rating" content="general" />
     <meta name="distribution" content="global" />
@@ -318,7 +316,6 @@ const {
     <meta name="HandheldFriendly" content="true" />
     <meta name="format-detection" content="telephone=no" />
 
-    <!-- Social Media Enhanced Meta Tags -->
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Rafay99" />
@@ -333,13 +330,11 @@ const {
     }
     {tags?.map((tag) => <meta property="og:tag" content={tag} />)}
 
-    <!-- Twitter Enhanced Meta Tags -->
     <meta name="twitter:label1" content="Reading time" />
     <meta name="twitter:data1" content={readTime || "5 min read"} />
     <meta name="twitter:label2" content="Category" />
     <meta name="twitter:data2" content={tags?.[0] || "Technology"} />
 
-    <!-- Canonical URL -->
     {
       canonicalUrl ? (
         <link rel="canonical" href={canonicalUrl} />
@@ -348,12 +343,10 @@ const {
       )
     }
 
-    <!-- Language and Region -->
     <meta name="language" content="English" />
     <meta name="geo.region" content="US" />
     <meta name="geo.placename" content="United States" />
 
-    <!-- Content Security Policy for better security -->
     <meta
       http-equiv="Content-Security-Policy"
       content="upgrade-insecure-requests"
@@ -364,12 +357,11 @@ const {
     <div id="scroll-progress"></div>
 
     <main
-      class="max-w-4xl mx-auto w-full px-6 py-8 md:py-12 overflow-x-hidden main-content pt-15"
+      class="main-content pt-15 mx-auto w-full max-w-4xl overflow-x-hidden px-6 py-8 md:py-12"
     >
-      <!-- Minimal Blog Header -->
       <header class="mb-12 text-center">
         <div
-          class="flex items-center justify-center gap-4 text-sm text-[#565f89] mb-4"
+          class="mb-4 flex items-center justify-center gap-4 text-sm text-[#565f89]"
         >
           <time datetime={pubDate.toISOString()}>
             {
@@ -387,27 +379,22 @@ const {
         </div>
 
         <h1
-          class="text-4xl md:text-5xl mb-8 leading-tight bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+          class="mb-8 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-4xl leading-tight text-transparent md:text-5xl"
         >
           {title}
         </h1>
       </header>
 
-      <!-- Main Content -->
       <div class="w-full">
         <slot />
       </div>
 
-      <!-- Mermaid Diagram Renderer -->
       <MermaidRenderer client:load />
 
-      <!-- Image Caption Renderer -->
       <ImageCaptionRenderer client:load />
 
-      <!-- Code Copy Enhancement -->
       <CodeCopySimple client:load />
 
-      <!-- Blog Navigation -->
       <BlogNavigation
         client:load
         currentSlug={currentSlug || ""}
@@ -418,11 +405,11 @@ const {
         <div class="comments-container">
           <div class="comments-header">
             <h2 class="comments-title">💬 Join the Discussion</h2>
-            <p class="text-[#a9b1d6] text-sm">
+            <p class="text-sm text-[#a9b1d6]">
               Share your thoughts and engage with the community
             </p>
           </div>
-          <div class="relative z-1">
+          <div class="z-1 relative">
             <PostComment />
           </div>
         </div>
@@ -430,12 +417,10 @@ const {
     </main>
 
     <script is:inline>
-      // Prevent auto-scroll restoration and conflicts
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
       }
 
-      // Prevent initial scroll jumping
       document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           window.scrollTo(0, 0);

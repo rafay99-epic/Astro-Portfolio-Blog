@@ -2,7 +2,6 @@
 import authorConfig from "@config/siteConfig/info.json";
 const { services } = authorConfig;
 
-// Define SVG icons for each service
 const serviceIcons = {
   "Mobile App Development": `<svg class="w-8 h-8 text-[#7aa2f7]" viewBox="0 0 24 24" fill="currentColor">
     <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>
@@ -17,71 +16,85 @@ const serviceIcons = {
   </svg>`,
   "Cloud & DevOps": `<svg class="w-8 h-8 text-[#7aa2f7]" viewBox="0 0 24 24" fill="currentColor">
     <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
-  </svg>`
+  </svg>`,
 };
 ---
 
-<section class="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1b26]">
-  <div class="max-w-6xl mx-auto">
-    <!-- Header -->
-    <div class="text-center mb-12 sm:mb-16">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-[#c0caf5] mb-4">
+<section class="relative bg-[#1a1b26] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+  <div class="mx-auto max-w-6xl">
+    <div class="mb-12 text-center sm:mb-16">
+      <h2
+        class="mb-4 text-3xl font-black text-[#c0caf5] sm:text-4xl lg:text-5xl"
+      >
         Core
-        <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+        <span
+          class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent"
+        >
           Services
         </span>
       </h2>
-      <p class="text-base sm:text-lg text-[#a9b1d6] max-w-2xl mx-auto">
+      <p class="mx-auto max-w-2xl text-base text-[#a9b1d6] sm:text-lg">
         Professional development solutions for modern businesses
       </p>
     </div>
 
-    <!-- Services Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-      {services.map((service, index) => (
-        <div 
-          class="group bg-[#24283b]/50 border border-[#414868]/30 rounded-xl p-6 sm:p-8 hover:border-[#7aa2f7]/30 hover:-translate-y-1 transition-all duration-300"
-          style={`animation-delay: ${index * 0.1}s`}
-        >
-          <!-- Service Header -->
-          <div class="flex items-baseline gap-3 mb-4">
-            <div class="flex-shrink-0 flex items-center" set:html={serviceIcons[service.title] || serviceIcons["Web Development"]}></div>
-            <h3 class="text-xl sm:text-2xl font-bold text-[#c0caf5] group-hover:text-[#7aa2f7] transition-colors">
-              {service.title}
-            </h3>
-          </div>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
+      {
+        services.map((service, index) => (
+          <div
+            class="group rounded-xl border border-[#414868]/30 bg-[#24283b]/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#7aa2f7]/30 sm:p-8"
+            style={`animation-delay: ${index * 0.1}s`}
+          >
+            <div class="mb-4 flex items-baseline gap-3">
+              <div
+                class="flex flex-shrink-0 items-center"
+                set:html={
+                  serviceIcons[service.title] || serviceIcons["Web Development"]
+                }
+              />
+              <h3 class="text-xl font-bold text-[#c0caf5] transition-colors group-hover:text-[#7aa2f7] sm:text-2xl">
+                {service.title}
+              </h3>
+            </div>
 
-          <!-- Service Description -->
-          <p class="text-sm sm:text-base text-[#a9b1d6] mb-4 leading-relaxed">
-            {service.description}
-          </p>
+            <p class="mb-4 text-sm leading-relaxed text-[#a9b1d6] sm:text-base">
+              {service.description}
+            </p>
 
-          <!-- Key Technologies -->
-          <div class="flex flex-wrap gap-2">
-            {service.technologies.slice(0, 4).map((tech) => (
-              <span class="px-2 py-1 bg-[#1a1b26]/50 border border-[#414868]/30 rounded-md text-xs text-[#a9b1d6]">
-                {tech}
-              </span>
-            ))}
-            {service.technologies.length > 4 && (
-              <span class="px-2 py-1 bg-[#7aa2f7]/20 border border-[#7aa2f7]/30 rounded-md text-xs text-[#7aa2f7]">
-                +{service.technologies.length - 4} more
-              </span>
-            )}
+            <div class="flex flex-wrap gap-2">
+              {service.technologies.slice(0, 4).map((tech) => (
+                <span class="rounded-md border border-[#414868]/30 bg-[#1a1b26]/50 px-2 py-1 text-xs text-[#a9b1d6]">
+                  {tech}
+                </span>
+              ))}
+              {service.technologies.length > 4 && (
+                <span class="rounded-md border border-[#7aa2f7]/30 bg-[#7aa2f7]/20 px-2 py-1 text-xs text-[#7aa2f7]">
+                  +{service.technologies.length - 4} more
+                </span>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
 
-    <!-- Simple CTA -->
-    <div class="text-center mt-12 sm:mt-16">
-      <a 
-        href="/contact-me" 
-        class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#7aa2f7]/25 transition-all duration-300"
+    <div class="mt-12 text-center sm:mt-16">
+      <a
+        href="/contact-me"
+        class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-6 py-3 font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-[#7aa2f7]/25"
       >
         <span>Start Your Project</span>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+        <svg
+          class="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
         </svg>
       </a>
     </div>
@@ -102,8 +115,16 @@ const serviceIcons = {
     }
   }
 
-  .group:nth-child(1) { animation-delay: 0.1s; }
-  .group:nth-child(2) { animation-delay: 0.2s; }
-  .group:nth-child(3) { animation-delay: 0.3s; }
-  .group:nth-child(4) { animation-delay: 0.4s; }
+  .group:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .group:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .group:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .group:nth-child(4) {
+    animation-delay: 0.4s;
+  }
 </style>

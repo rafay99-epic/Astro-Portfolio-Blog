@@ -56,13 +56,13 @@ try {
   </head>
   <body>
     <Header />
-    <main class="pt-0 mt-0">
+    <main class="mt-0 pt-0">
       <section>
         {
           notes.length > 0 ? (
             <NotesGrid notes={notes} client:load />
           ) : (
-            <p class="text-center text-gray-400 mt-4">
+            <p class="mt-4 text-center text-gray-400">
               No notes found for this subject.
             </p>
           )
