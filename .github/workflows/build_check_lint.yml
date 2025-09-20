@@ -1,7 +1,9 @@
 name: Astro Build Check
 on:
+  push:
+    branches: ["main"]
   pull_request:
-    branches: ["**"]
+    branches: ["main"]
 
 jobs:
   build-and-check:
@@ -22,8 +24,11 @@ jobs:
       - name: Astro Code Check
         run: bun run check
 
-      - name: Lint Code
-        run: bun run lint
+      - name: Lint Prettier Code
+        run: bunx prettier --check . 
+      
+      - name: Lint TypeScript Code
+        run: bunx tsc --noEmit --skipLibCheck
 
       - name: Validate JSON files
         run: |
