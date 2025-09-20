@@ -12,7 +12,7 @@ export const mermaidConfig = {
     primaryBorderColor: "#7aa2f7",
     lineColor: "#7aa2f7",
     secondaryColor: "#bb9af7",
-    tertiaryColor: "#565f89", // Changed to a neutral gray instead of red
+    tertiaryColor: "#565f89", 
     background: "#1a1b26",
     mainBkg: "#24283b",
     secondaryBkg: "#414868",
@@ -20,43 +20,43 @@ export const mermaidConfig = {
     secondaryTextColor: "#a9b1d6",
     tertiaryTextColor: "#9aa5ce",
     secondaryBorderColor: "#bb9af7",
-    tertiaryBorderColor: "#565f89", // Changed to match tertiaryColor
+    tertiaryBorderColor: "#565f89", 
     noteBkgColor: "#24283b",
     noteTextColor: "#c0caf5",
     noteBorderColor: "#7aa2f7",
     darkMode: "true",
     fontFamily: "Poppins",
-    fontSize: "18px", // Increased from 16px for much better readability
+    fontSize: "18px", 
   },
   startOnLoad: true,
   securityLevel: "strict" as const,
   flowchart: {
     htmlLabels: true,
     curve: "basis" as const,
-    nodeSpacing: 60, // Increased spacing between nodes
-    rankSpacing: 60, // Increased spacing between ranks
-    useMaxWidth: true, // Use maximum width for better layout
+    nodeSpacing: 60, 
+    rankSpacing: 60, 
+    useMaxWidth: true, 
   },
   sequence: {
     useMaxWidth: true,
-    diagramMarginX: 60, // Increased margins
-    diagramMarginY: 15, // Increased margins
-    actorMargin: 60, // Increased actor margin
-    width: 180, // Increased width
-    height: 80, // Increased height
-    boxMargin: 15, // Increased box margin
-    boxTextMargin: 8, // Increased text margin
-    noteMargin: 15, // Increased note margin
-    messageMargin: 40, // Increased message margin
+    diagramMarginX: 60, 
+    diagramMarginY: 15, 
+    actorMargin: 60, 
+    width: 180, 
+    height: 80, 
+    boxMargin: 15, 
+    boxTextMargin: 8, 
+    noteMargin: 15, 
+    messageMargin: 40, 
     mirrorActors: true,
     bottomMarginAdj: 1,
     rightAngles: false,
     showSequenceNumbers: false,
-    actorFontSize: 16, // Increased font size
+    actorFontSize: 16, 
     actorFontFamily: "Poppins, sans-serif",
-    noteFontSize: 16, // Increased font size
+    noteFontSize: 16, 
     noteFontFamily: "Poppins, sans-serif",
-    messageFontSize: 16, // Increased font size
+    messageFontSize: 16, 
     messageFontFamily: "Poppins, sans-serif",
   },
 } as const;

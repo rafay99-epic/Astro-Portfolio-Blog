@@ -51,7 +51,7 @@ const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
   return (
     <div className="py-12 px-4">
       <div className="container mx-auto max-w-6xl">
-        {/* Header Section */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -68,7 +68,7 @@ const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
           </p>
         </motion.div>
 
-        {/* Subjects Grid */}
+        {}
         <motion.section
           className={`grid gap-6 ${
             isMobile
@@ -82,7 +82,6 @@ const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
           {subjects.map((subject, idx) => {
             const IconComponent = subjectIcons[idx % subjectIcons.length];
 
-            // Calculate meaningful progress
             const progress =
               subject.totalExpectedNotes && subject.noteCount
                 ? Math.round(
@@ -103,23 +102,23 @@ const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="relative backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl p-6 h-full hover:bg-[#2d3142]/60 hover:border-[#7aa2f7]/40 transition-all duration-300 hover:shadow-2xl hover:shadow-[#7aa2f7]/10 overflow-hidden">
-                  {/* Decorative Corner Accent */}
+                  {}
                   <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-[#7aa2f7]/20 to-transparent rounded-bl-2xl rounded-tr-2xl" />
 
-                  {/* Subject Icon */}
+                  {}
                   <div className="relative z-10 mb-4">
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white mb-4 group-hover:scale-110 transition-transform duration-300">
                       <IconComponent className="text-lg" />
                     </div>
                   </div>
 
-                  {/* Content */}
+                  {}
                   <div className="relative z-10 space-y-3">
                     <h3 className="text-lg md:text-xl font-bold text-[#c0caf5] group-hover:text-[#7aa2f7] transition-colors duration-300 leading-tight">
                       {subject.name}
                     </h3>
 
-                    {/* Note Count */}
+                    {}
                     <div className="flex items-center gap-2 text-sm text-[#a9b1d6]">
                       <span className="text-[#9ece6a]">📄</span>
                       <span>
@@ -135,7 +134,7 @@ const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
                       </span>
                     </div>
 
-                    {/* Progress Indicator - Only show if we have meaningful progress data */}
+                    {}
                     {progress !== null && (
                       <div className="space-y-2">
                         <div className="flex justify-between items-center text-xs text-[#565f89]">
@@ -166,7 +165,7 @@ const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
                       </div>
                     )}
 
-                    {/* Show note count indicator even without progress */}
+                    {}
                     {progress === null &&
                       subject.noteCount &&
                       subject.noteCount > 0 && (
@@ -178,7 +177,7 @@ const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
                         </div>
                       )}
 
-                    {/* Action Indicator */}
+                    {}
                     <div className="flex items-center justify-between pt-2">
                       <span className="text-xs text-[#565f89] group-hover:text-[#a9b1d6] transition-colors duration-300">
                         Click to explore
@@ -189,12 +188,12 @@ const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
                     </div>
                   </div>
 
-                  {/* Hover Effect Overlay */}
+                  {}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10 rounded-full blur-xl" />
                   </div>
 
-                  {/* Bottom Accent Line */}
+                  {}
                   <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] group-hover:w-full transition-all duration-500 ease-out" />
                 </div>
               </motion.a>
@@ -202,7 +201,7 @@ const SubjectGrid = memo(function SubjectGrid({ subjects }: SubjectGridProps) {
           })}
         </motion.section>
 
-        {/* Stats Section */}
+        {}
         {subjects.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}

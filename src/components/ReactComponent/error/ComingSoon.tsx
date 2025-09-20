@@ -48,7 +48,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
       className="min-h-screen flex flex-col justify-center items-center  text-[#c0caf5] p-6 relative overflow-hidden"
       role="main"
     >
-      {/* Background Effects */}
+      {}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-[#bb9af7]/10 to-[#9ece6a]/10 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -60,18 +60,18 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
         animate="visible"
         className="relative z-10 w-full max-w-5xl"
       >
-        {/* Main Card */}
+        {}
         <motion.div
           variants={cardVariants}
           className="backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 rounded-3xl p-8 md:p-16 text-center shadow-2xl relative overflow-hidden w-full"
           role="alert"
           aria-live="polite"
         >
-          {/* Card Glow Effect */}
+          {}
           <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5 rounded-3xl" />
 
           <div className="relative space-y-8">
-            {/* Icon */}
+            {}
             <motion.div variants={iconVariants} className="flex justify-center">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-2xl blur-lg opacity-50" />
@@ -81,7 +81,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
               </div>
             </motion.div>
 
-            {/* Title Section */}
+            {}
             <motion.div variants={cardVariants} className="space-y-4">
               <h1 className="text-4xl md:text-6xl font-bold">
                 <span className="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent">
@@ -96,7 +96,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
               <div className="mx-auto w-24 h-1 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] rounded-full" />
             </motion.div>
 
-            {/* Description */}
+            {}
             <motion.p
               variants={cardVariants}
               className="text-lg md:text-xl text-[#a9b1d6] leading-relaxed max-w-3xl mx-auto"
@@ -105,7 +105,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
               bring you something amazing. Stay tuned for updates!
             </motion.p>
 
-            {/* Features Preview */}
+            {}
             <motion.div
               variants={cardVariants}
               className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-4xl mx-auto"
@@ -128,7 +128,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
               ))}
             </motion.div>
 
-            {/* Action Button */}
+            {}
             <motion.div variants={cardVariants} className="mt-12">
               <motion.a
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -154,7 +154,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
               </motion.a>
             </motion.div>
 
-            {/* Progress Indicator */}
+            {}
             <motion.div
               variants={cardVariants}
               className="mt-10 space-y-4 max-w-md mx-auto"
@@ -177,7 +177,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
           </div>
         </motion.div>
 
-        {/* Footer Note */}
+        {}
         <motion.div
           variants={cardVariants}
           className="text-center mt-8 text-[#565f89] text-sm"

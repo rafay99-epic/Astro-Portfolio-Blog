@@ -1,4 +1,3 @@
-// newsletterTypes.ts
 
 export interface Newsletter {
   slug: string;

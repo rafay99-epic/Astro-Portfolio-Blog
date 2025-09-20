@@ -3,7 +3,7 @@ lecture_title: Critical Section Problem
 lecture_description: 'Going through the OS important section and dealing with the processing. '
 pubDate: 2025-09-15T19:00:00.000Z
 lecture_draft: true
-lectureNumber: 09
+lectureNumber: "09"
 subject: Advance Operating System
 ---
 

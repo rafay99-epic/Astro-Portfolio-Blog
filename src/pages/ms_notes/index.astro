@@ -1,12 +1,11 @@
 ---
-import BaseHead from "../../components/AstroComponent/base/BaseHead.astro";
-import Header from "../../components/AstroComponent/header/Header.astro";
-import Footer from "../../components/AstroComponent/footer/Footer.astro";
-import authorConfig from "../../config/siteConfig/info.json";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import authorConfig from "@config/siteConfig/info.json";
 import { getCollection } from "astro:content";
-import SpeedInsights from "@vercel/speed-insights/astro";
-import { featureFlags } from "../../config/featureFlag/featureFlag.json";
-import SubjectGrid from "../../components/ReactComponent/personal/Subjects/subjectGride";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import SubjectGrid from "@react/personal/Subjects/subjectGride";
 
 export const prerender = false;
 
@@ -38,7 +37,6 @@ try {
       description={`Browse categorized notes on ${authorConfig.SiteName}`}
     />
     <Header />
-    <SpeedInsights />
   </head>
   <body class="pt-0 mt-0">
     <main class="pt-15 mt-0">

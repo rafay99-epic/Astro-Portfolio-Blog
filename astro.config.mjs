@@ -104,6 +104,9 @@ export default defineConfig({
         webAnalytics: {
             enabled: true,
         },
+        speedInsights: {
+            enabled: true,
+        },
         maxDuration: 3,
         imageService: true,
         isr: true,
@@ -156,6 +159,7 @@ export default defineConfig({
                 "@config": "/src/config",
                 "@server": "/src/server",
                 "@hooks": "/src/hooks",
+                "@package.json": "/package.json",
             },
         },
     },

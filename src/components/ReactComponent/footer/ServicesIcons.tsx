@@ -48,7 +48,6 @@ const ServicesIcons: React.FC<ServicesIconsProps> = ({ services }) => {
       return <FaAws className="w-5 h-5" />;
     }
     
-    // Default icon
     return <FaCode className="w-5 h-5" />;
   };
 

@@ -17,18 +17,17 @@ const NewsletterListLogic: React.FC<NewsletterLogicProps> = ({
   newsletters,
   children,
 }) => {
-  const newslettersPerPage = 5; // Adjust as needed
+  const newslettersPerPage = 5; 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Memoized sorted newsletters for better performance
   const sortedNewsletters = useMemo(() => {
     try {
       return [...newsletters].sort((a, b) => {
         const dateA = new Date(a.data.pubDate).getTime();
         const dateB = new Date(b.data.pubDate).getTime();
-        return dateB - dateA; // Most recent first
+        return dateB - dateA; 
       });
     } catch (err) {
       setError("Failed to sort newsletters. Please try again.");
@@ -38,7 +37,6 @@ const NewsletterListLogic: React.FC<NewsletterLogicProps> = ({
 
   const totalPages = Math.ceil(sortedNewsletters.length / newslettersPerPage);
 
-  // Memoized current newsletters for better performance
   const currentNewsletters = useMemo(() => {
     const startIndex = (currentPage - 1) * newslettersPerPage;
     return sortedNewsletters.slice(startIndex, startIndex + newslettersPerPage);
@@ -51,7 +49,6 @@ const NewsletterListLogic: React.FC<NewsletterLogicProps> = ({
       setIsLoading(true);
       setError(null);
 
-      // Simulate brief loading for smooth UX (can be removed if not needed)
       await new Promise((resolve) => setTimeout(resolve, 200));
 
       setCurrentPage(page);

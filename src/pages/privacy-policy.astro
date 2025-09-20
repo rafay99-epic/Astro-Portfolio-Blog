@@ -1,10 +1,9 @@
 ---
-import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
-import Footer from "../components/AstroComponent/footer/Footer.astro";
-import Header from "../components/AstroComponent/header/Header.astro";
-import authorConfig from "../config/siteConfig/info.json";
-import { featureFlags } from "../config/featureFlag/featureFlag.json";
-import SpeedInsights from "@vercel/speed-insights/astro";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Footer from "@astro/footer/Footer.astro";
+import Header from "@astro/header/Header.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
 try {
   if (!featureFlags.showPrivacy) {
@@ -26,7 +25,6 @@ try {
 
   <body>
     <Header />
-    <SpeedInsights />
     <main class="max-w-7xl mx-auto ">
       <h1 class="text-6xl font-bold mb-8 text-center">Privacy Policy</h1>
       <p class="text-lg mb-6 text-center">Last updated: September 26, 2024</p>

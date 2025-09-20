@@ -13,7 +13,6 @@ const VideoEmbed: FunctionComponent<VideoEmbedProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check if the source is a direct video file link (like Uploadthing) or YouTube
   const isDirectVideo =
     src.includes("ufs.sh") || src.endsWith(".mp4") || src.endsWith(".webm");
 
@@ -22,7 +21,7 @@ const VideoEmbed: FunctionComponent<VideoEmbedProps> = ({
       <div
         className="relative w-full overflow-hidden rounded-xl bg-[var(--accent-dark)]/10"
         style={{
-          paddingBottom: "56.25%" /* 16:9 Aspect Ratio */,
+          paddingBottom: "56.25%" ,
         }}
       >
         {isLoading && (

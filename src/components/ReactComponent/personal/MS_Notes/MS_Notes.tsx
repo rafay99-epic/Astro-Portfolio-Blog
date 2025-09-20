@@ -28,9 +28,9 @@ const NotesGrid = memo(function NotesGrid({ notes }: NotesGridProps) {
           transition={{ duration: 0.6 }}
           className="max-w-lg w-full text-center"
         >
-          {/* Main Empty State Container */}
+          {}
           <div className="backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-3xl p-8 md:p-12">
-            {/* Animated Icon */}
+            {}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -45,7 +45,7 @@ const NotesGrid = memo(function NotesGrid({ notes }: NotesGridProps) {
               </div>
             </motion.div>
 
-            {/* Title */}
+            {}
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -57,7 +57,7 @@ const NotesGrid = memo(function NotesGrid({ notes }: NotesGridProps) {
               </span>
             </motion.h2>
 
-            {/* Description */}
+            {}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -68,7 +68,7 @@ const NotesGrid = memo(function NotesGrid({ notes }: NotesGridProps) {
               explore other sections or subscribe for updates.
             </motion.p>
 
-            {/* Action Buttons */}
+            {}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -106,7 +106,7 @@ const NotesGrid = memo(function NotesGrid({ notes }: NotesGridProps) {
               </motion.a>
             </motion.div>
 
-            {/* Bottom Decorative Elements */}
+            {}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

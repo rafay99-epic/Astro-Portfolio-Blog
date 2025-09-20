@@ -5,7 +5,7 @@ import Footer from "../../../components/AstroComponent/footer/Footer.astro";
 import authorConfig from "../../../config/siteConfig/info.json";
 import TagFilterDisplay from "../../../components/AstroComponent/blog/comments/TagFilterDisplay.astro";
 import { featureFlags } from "../../../config/featureFlag/featureFlag.json";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import { getCollection } from "astro:content";
 
 export const prerender = true;
@@ -69,11 +69,12 @@ try {
             title={`All Articles - Page ${currentPage} | ${authorConfig.SiteName}`}
             description={`Browse all articles on page ${currentPage} of ${authorConfig.SiteName}.`}
         />
-        <ViewTransitions />
+
     </head>
 
     <body>
         <Header />
+        <ClientRouter />
         <main class="w-full max-w-5xl mx-auto">
             <div>
                 <TagFilterDisplay

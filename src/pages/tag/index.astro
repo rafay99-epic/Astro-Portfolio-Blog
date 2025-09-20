@@ -8,7 +8,7 @@ import Footer from "../../components/AstroComponent/footer/Footer.astro";
 import authorConfig from "../../config/siteConfig/info.json";
 import TagFilterDisplay from "../../components/AstroComponent/blog/comments/TagFilterDisplay.astro";
 import { featureFlags } from "../../config/featureFlag/featureFlag.json";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter    } from "astro:transitions";
 
 export const prerender = true;
 
@@ -56,11 +56,11 @@ try {
             title={`Tags | ${authorConfig.SiteName}`}
             description={`Browse all tags on ${authorConfig.SiteName} and explore categorized content.`}
         />
-        <ViewTransitions />
     </head>
 
     <body>
         <Header />
+        <ClientRouter />
         <main class="w-full max-w-5xl mx-auto">
             <div>
                 <TagFilterDisplay

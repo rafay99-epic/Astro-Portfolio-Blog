@@ -14,7 +14,7 @@ const MermaidRenderer = memo(function MermaidRenderer() {
     extractDiagramType,
   });
 
-  return null; // No UI needed, just handles diagram rendering
+  return null; 
 });
 
 export default MermaidRenderer;

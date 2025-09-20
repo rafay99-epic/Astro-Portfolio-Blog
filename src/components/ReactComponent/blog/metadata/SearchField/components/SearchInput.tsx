@@ -41,7 +41,7 @@ const SearchInput = memo(function SearchInput({
         }`}
       />
 
-      {/* Keyboard shortcuts help */}
+      {}
       <KeyboardShortcuts
         isMobile={isMobile}
         query={query}

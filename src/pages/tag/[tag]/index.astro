@@ -5,7 +5,7 @@ import Footer from "../../../components/AstroComponent/footer/Footer.astro";
 import authorConfig from "../../../config/siteConfig/info.json";
 import TagFilterDisplay from "../../../components/AstroComponent/blog/comments/TagFilterDisplay.astro";
 import { featureFlags } from "../../../config/featureFlag/featureFlag.json";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import { getCollection } from "astro:content";
 
 export const prerender = true;
@@ -24,7 +24,17 @@ export async function getStaticPaths() {
         new Set(allPosts.flatMap((post) => post.data.tags || [])),
     ).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
 
-    const paths: any[] = [];
+    const paths: Array<{
+        params: { tag: string };
+        props: {
+            tag: string;
+            page: number;
+            totalPages: number;
+            postsPerPage: number;
+            allPosts: typeof allPosts;
+            allTags: string[];
+        };
+    }> = [];
     const postsPerPage = 10;
 
     // Generate paths for each tag
@@ -74,11 +84,11 @@ try {
             title={`Tag: ${tag} | ${authorConfig.SiteName}`}
             description={`Browse articles tagged with ${tag} on ${authorConfig.SiteName}.`}
         />
-        <ViewTransitions />
     </head>
 
     <body>
         <Header />
+        <ClientRouter />
         <main class="w-full max-w-5xl mx-auto">
             <div>
                 <TagFilterDisplay

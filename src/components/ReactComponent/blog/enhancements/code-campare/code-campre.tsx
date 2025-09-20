@@ -7,9 +7,7 @@ type SyntaxStyle = {
   [key: string]: CSSProperties | SyntaxStyle;
 };
 
-// Language mapping for file extensions
 const FILE_EXTENSION_TO_LANGUAGE: { [key: string]: string } = {
-  // Web
   js: "javascript",
   jsx: "jsx",
   ts: "typescript",
@@ -18,36 +16,29 @@ const FILE_EXTENSION_TO_LANGUAGE: { [key: string]: string } = {
   css: "css",
   scss: "scss",
   less: "less",
-  // Mobile
   dart: "dart",
   kt: "kotlin",
   swift: "swift",
   java: "java",
-  // Backend
   py: "python",
   rb: "ruby",
   php: "php",
   go: "go",
   rs: "rust",
-  // Shell
   sh: "bash",
   bash: "bash",
   zsh: "bash",
   fish: "bash",
-  // Data
   json: "json",
   yaml: "yaml",
   yml: "yaml",
   xml: "xml",
   csv: "csv",
-  // Config
   toml: "toml",
   ini: "ini",
   env: "plaintext",
-  // Documentation
   md: "markdown",
   mdx: "markdown",
-  // Other
   sql: "sql",
   graphql: "graphql",
   dockerfile: "dockerfile",
@@ -97,7 +88,6 @@ const processCodeInput = async (
 
   let content = input.content;
 
-  // If filePath is provided but no content, fetch the content
   if (input.filePath && !content) {
     content = await fetchFileContent(input.filePath);
   }

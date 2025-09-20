@@ -1,4 +1,4 @@
-import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
 
 export async function GET({ request }: { request: Request }) {
@@ -9,7 +9,7 @@ export async function GET({ request }: { request: Request }) {
     ETag: crypto.randomUUID(),
   };
   try {
-    if (!FeatureFlagsApi.enableauthorInfoAPI) {
+    if (!featureFlags.enableauthorInfoAPI) {
       return new Response(
         JSON.stringify({ error: "Author Profile is disabled" }),
         {

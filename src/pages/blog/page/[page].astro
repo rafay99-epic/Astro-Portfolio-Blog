@@ -1,18 +1,16 @@
 ---
-import BaseHead from "../../../components/AstroComponent/base/BaseHead.astro";
-import Header from "../../../components/AstroComponent/header/Header.astro";
-import Footer from "../../../components/AstroComponent/footer/Footer.astro";
-import authorConfig from "../../../config/siteConfig/info.json";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import authorConfig from "@config/siteConfig/info.json";
 import { getCollection } from "astro:content";
-import { featureFlags } from "../../../config/featureFlag/featureFlag.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 const postsPerPage = 9;
 
-// Get page number from URL params
 const { page } = Astro.params;
 const currentPage = page ? parseInt(page) : 1;
 
-// Validate page number
 if (isNaN(currentPage) || currentPage < 1) {
   return Astro.redirect("/blog");
 }
@@ -51,7 +49,6 @@ try {
     />
 
     <style>
-      /* Ensure consistent background */
       html {
         background-color: #1a1b26;
       }
@@ -61,7 +58,6 @@ try {
       }
     </style>
 
-    <!-- Structured Data for Blog Listing -->
     <script
       type="application/ld+json"
       set:html={JSON.stringify({

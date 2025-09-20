@@ -22,7 +22,6 @@ export async function GET({ request }: { request: Request }) {
 
     const posts = await getCollection("ms_notes");
 
-    // Filter notes where lectureDraft is false
     const filteredPosts = posts.filter((post) => !post.data.lecture_draft);
 
     return new Response(JSON.stringify(filteredPosts), {

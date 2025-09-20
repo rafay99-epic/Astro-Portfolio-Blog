@@ -59,7 +59,7 @@ const NotesGridUI = memo(function NotesGridUI({
   return (
     <div className="py-8 px-4">
       <div className="container mx-auto max-w-7xl">
-        {/* Header Section */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ const NotesGridUI = memo(function NotesGridUI({
           </p>
         </motion.div>
 
-        {/* Tags Filter Section */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -159,7 +159,7 @@ const NotesGridUI = memo(function NotesGridUI({
           )}
         </motion.div>
 
-        {/* Notes Grid or Empty State */}
+        {}
         <AnimatePresence mode="wait">
           {paginatedNotes.length === 0 ? (
             <motion.div
@@ -207,21 +207,21 @@ const NotesGridUI = memo(function NotesGridUI({
                   className="group relative block"
                 >
                   <div className="relative backdrop-blur-xl bg-[#24283b]/40 border border-[#565f89]/30 rounded-2xl p-6 h-full hover:bg-[#2d3142]/60 hover:border-[#7aa2f7]/40 transition-all duration-300 hover:shadow-2xl hover:shadow-[#7aa2f7]/10 overflow-hidden">
-                    {/* Lecture Number Badge */}
+                    {}
                     <div className="absolute top-4 right-4">
                       <span className="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white text-xs font-bold px-3 py-1 rounded-full">
                         Lecture {note.data.lectureNumber}
                       </span>
                     </div>
 
-                    {/* Content */}
+                    {}
                     <div className="space-y-4">
-                      {/* Title */}
+                      {}
                       <h2 className="text-lg md:text-xl font-bold text-[#c0caf5] group-hover:text-[#7aa2f7] transition-colors duration-300 pr-16 leading-tight">
                         {note.data.lecture_title}
                       </h2>
 
-                      {/* Metadata */}
+                      {}
                       <div className="space-y-2 text-sm">
                         <div className="flex items-center gap-2 text-[#a9b1d6]">
                           <FaCalendarAlt className="text-[#9ece6a] text-xs" />
@@ -239,12 +239,12 @@ const NotesGridUI = memo(function NotesGridUI({
                         </div>
                       </div>
 
-                      {/* Description */}
+                      {}
                       <p className="text-[#a9b1d6] text-sm leading-relaxed line-clamp-3">
                         {note.data.lecture_description}
                       </p>
 
-                      {/* Read More Indicator */}
+                      {}
                       <div className="flex items-center justify-between pt-2">
                         <div className="flex items-center gap-2 text-xs text-[#565f89]">
                           <FaFileAlt />
@@ -257,12 +257,12 @@ const NotesGridUI = memo(function NotesGridUI({
                       </div>
                     </div>
 
-                    {/* Hover Effect Overlay */}
+                    {}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-[#7aa2f7]/10 to-[#bb9af7]/10 rounded-full blur-xl" />
                     </div>
 
-                    {/* Bottom Accent Line */}
+                    {}
                     <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] group-hover:w-full transition-all duration-500 ease-out" />
                   </div>
                 </motion.a>
@@ -271,7 +271,7 @@ const NotesGridUI = memo(function NotesGridUI({
           )}
         </AnimatePresence>
 
-        {/* Pagination */}
+        {}
         {totalPages > 1 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}

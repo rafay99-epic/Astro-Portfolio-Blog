@@ -6,7 +6,6 @@ export function useNotesGrid(notes: Note[]) {
   const [currentPage, setCurrentPage] = useState(1);
   const notesPerPage = 6;
 
-  // Memoize expensive computations
   const allTags = useMemo(
     () => Array.from(new Set(notes.flatMap((note) => note.data.subject))),
     [notes]
@@ -30,10 +29,9 @@ export function useNotesGrid(notes: Note[]) {
     return filteredNotes.slice(startIndex, startIndex + notesPerPage);
   }, [filteredNotes, currentPage, notesPerPage]);
 
-  // Memoize callback functions
   const memoizedSetSelectedTag = useCallback((tag: string | null) => {
     setSelectedTag(tag);
-    setCurrentPage(1); // Reset to first page when tag changes
+    setCurrentPage(1); 
   }, []);
 
   const memoizedSetCurrentPage = useCallback((page: number) => {

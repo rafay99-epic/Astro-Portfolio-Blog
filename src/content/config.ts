@@ -1,5 +1,4 @@
 import { defineCollection, z } from "astro:content";
-// Blog Collection
 const blog = defineCollection({
 
   type: "content",
@@ -14,14 +13,12 @@ const blog = defineCollection({
     authorAvatar: z.string().optional(),
     tags: z.array(z.string()).default(["blog"]),
     readTime: z.string().optional(),
-    // SEO enhancements
     keywords: z.array(z.string()).optional(),
     canonicalUrl: z.string().optional(),
     featured: z.boolean().default(false),
     excerpt: z.string().optional(),
   }),
 });
-// NewsLetter Collection
 const newsletter = defineCollection({
   type: "content",
   schema: z.object({
@@ -32,7 +29,6 @@ const newsletter = defineCollection({
   }),
 });
 
-// Projects Collection
 const projects = defineCollection({
   type: "content",
   schema: z.object({
@@ -48,7 +44,6 @@ const projects = defineCollection({
   }),
 });
 
-// Website Wiki Collection
 const ms_notes = defineCollection({
   type: "content",
   schema: z.object({
@@ -62,7 +57,6 @@ const ms_notes = defineCollection({
   }),
 });
 
-// Export collections
 export const collections = {
   blog: blog,
   newsletter: newsletter,

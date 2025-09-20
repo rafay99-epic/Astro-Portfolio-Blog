@@ -1,7 +1,12 @@
 {
-  "extends": "astro/tsconfigs/base",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "astro/tsconfigs/base"],
   "compilerOptions": {
-    "moduleResolution": "bundler",
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      },
+    ],
     "baseUrl": "./src",
     "paths": {
       "@assets/*": ["assets/*"],
@@ -15,8 +20,8 @@
       "@types/*": ["types/*"],
       "@util/*": ["util/*"],
       "@config/*": ["config/*"],
-      "@server/*": ["server/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"], 
+      "@package.json": ["package.json"]
     },
     "strictNullChecks": true,
     "jsx": "react-jsx",
