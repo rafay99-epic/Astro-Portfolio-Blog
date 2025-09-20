@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import  { useMemo } from "react";
 import { memo } from "react";
 import { CloseIcon, CopyIcon, CheckIcon } from "../icons";
 

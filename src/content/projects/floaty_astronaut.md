@@ -12,6 +12,7 @@ ProjectTech:
   - unity2D
 ProjectCategory: ["Games"]
 ProjectRanking: "13"
+ProjectDeployedLink: ""
 ---
 
 Welcome to **Floaty Astronaut**! Imagine drifting through space, dodging deadly obstacles, and racing against the odds to reach your spaceship. If you’re a fan of challenging games with retro-style graphics and immersive sounds, you’re in for a treat. Floaty Astronaut is a fast-paced, high-skill game that challenges players to navigate through space while avoiding spikes.

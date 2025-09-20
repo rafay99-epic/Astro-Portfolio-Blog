@@ -1,7 +1,7 @@
-import { useState, memo } from "react";
+import {  memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@hooks/useIsMobile";
-import type { Newsletter } from "types/newsletter_types.ts";
+import type { Newsletter } from "types/newsletter_types";
 
 interface NewsletterListUIProps {
   currentNewsletters: Newsletter[];
@@ -20,7 +20,6 @@ const NewsletterListUI = memo(function NewsletterListUI({
   isLoading,
   error,
 }: NewsletterListUIProps) {
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
   const containerVariants = {

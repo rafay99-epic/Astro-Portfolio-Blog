@@ -6,12 +6,8 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const [isHovered, setIsHovered] = useState(false);
-  const sliderRef = useRef<HTMLDivElement>(
-    null
-  ) as React.MutableRefObject<HTMLDivElement>;
-  const containerRef = useRef<HTMLDivElement>(
-    null
-  ) as React.MutableRefObject<HTMLDivElement>;
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const touchStart = useRef(0);
 
   const handleImageLoad = useCallback((index: number) => {

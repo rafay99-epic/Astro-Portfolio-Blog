@@ -280,11 +280,11 @@
 
 <!-- Mailchimp Form Scripts -->
 <script
-  type="text/javascript"
+  is:inline type="text/javascript"
   src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"
 ></script>
-<script type="text/javascript">
-  (function ($) {
+<script is:inline type="text/javascript">
+  (function () {
     window.fnames = new Array();
     window.ftypes = new Array();
     fnames[0] = "EMAIL";
@@ -305,8 +305,7 @@
     ftypes[7] = "address";
     fnames[8] = "BIRTHDAY";
     ftypes[8] = "birthday";
-  })(jQuery);
-  var $mcj = jQuery.noConflict(true);
+  })();
 
   // Custom form handling
   document.addEventListener('DOMContentLoaded', function() {
@@ -314,7 +313,7 @@
     const successMessage = document.getElementById('custom-success-message');
     
     if (form) {
-      form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', function() {
         // Show success message immediately
         successMessage.classList.remove('hidden');
         

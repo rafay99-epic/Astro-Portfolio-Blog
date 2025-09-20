@@ -16,29 +16,7 @@ export const useCopyButton = ({
       await navigator.clipboard.writeText(text);
       return true;
     } catch (error) {
-      console.warn("Clipboard API failed, falling back to execCommand:", error);
-      return fallbackCopy(text);
-    }
-  };
-
-  const fallbackCopy = (text: string): boolean => {
-    try {
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.cssText =
-        "position: fixed; left: -999999px; top: -999999px; opacity: 0;";
-      textArea.setAttribute("aria-hidden", "true");
-
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-
-      const success = document.execCommand("copy");
-      document.body.removeChild(textArea);
-
-      return success;
-    } catch (error) {
-      console.error("Fallback copy failed:", error);
+      console.error("Failed to copy to clipboard:", error);
       return false;
     }
   };

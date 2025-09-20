@@ -64,7 +64,7 @@ try {
     </style>
 
     <!-- Structured Data for Blog Listing -->
-    <script
+    <script is:inline
       type="application/ld+json"
       set:html={JSON.stringify({
         "@context": "https://schema.org",
@@ -80,7 +80,7 @@ try {
             url: "https://rafay99.com/favicon.webp",
           },
         },
-        blogPost: posts.map((post) => ({
+        blogPost: posts.map((post, _index) => ({
           "@type": "BlogPosting",
           headline: post.data.title,
           description: post.data.description,
@@ -118,7 +118,7 @@ try {
       <!-- Articles Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
         {
-          posts.map((post, index) => (
+          posts.map((post, _index) => (
             <article>
               <a href={`/blog/${post.slug}`} class="block">
                 {/* Larger Image with Breathing Room */}

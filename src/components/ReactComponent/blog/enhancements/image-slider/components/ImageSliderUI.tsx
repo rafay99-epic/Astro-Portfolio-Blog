@@ -17,8 +17,6 @@ export const ImageSliderUI = memo(function ImageSliderUI({
   const {
     current,
     isFullScreen,
-    loadedImages,
-    isHovered,
     sliderRef,
     containerRef,
     handleImageLoad,

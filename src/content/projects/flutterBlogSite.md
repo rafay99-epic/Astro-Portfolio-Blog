@@ -23,6 +23,7 @@ ProjectTech:
   ]
 ProjectRanking: "15"
 ProjectCategory: ["Web Apps"]
+ProjectDeployedLink: ""
 ---
 
 Welcome to **Rafay's Portfolio**, a dynamic platform designed to showcase a variety of web development projects. Hosted on Netlify, this site serves as a playground for experimentation, featuring an array of applications built with cutting-edge technologies like **Flutter**, **React**, and more. Let's take a closer look at what this portfolio offers, the technologies utilized, and the design philosophy behind it.

@@ -160,10 +160,10 @@ const {
     />
     <!-- Google tag (gtag.js) -->
     <script
-      type="text/partytown"
+      is:inline type="text/partytown"
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-DKPL4VGM52"></script>
-    <script type="text/partytown">
+    <script is:inline type="text/partytown">
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -174,7 +174,7 @@ const {
     </script>
     <!-- Structured Data for Blog Post -->
     <script
-      type="application/ld+json"
+      is:inline type="application/ld+json"
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BlogPosting",
@@ -218,7 +218,7 @@ const {
 
     <!-- Breadcrumb Structured Data -->
     <script
-      type="application/ld+json"
+      is:inline type="application/ld+json"
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -251,7 +251,7 @@ const {
         const faqMatches = blogContent.match(/^#{2,6}\s+(.+)$/gm);
         if (!faqMatches || faqMatches.length < 3) return null;
 
-        const faqItems = faqMatches.slice(0, 5).map((heading, index) => {
+        const faqItems = faqMatches.slice(0, 5).map((heading, _index) => {
           const text = heading.replace(/^#{2,6}\s+/, "");
           return {
             "@type": "Question",
@@ -265,7 +265,7 @@ const {
 
         return (
           <script
-            type="application/ld+json"
+            is:inline type="application/ld+json"
             set:html={JSON.stringify({
               "@context": "https://schema.org",
               "@type": "FAQPage",
@@ -442,7 +442,7 @@ const {
         }, 0);
       });
     </script>
-    <script type="text/partytown" is:inline src="/js/progressbar.js"></script>
+    <script is:inline type="text/partytown" src="/js/progressbar.js"></script>
     <Footer />
   </body>
 </html>

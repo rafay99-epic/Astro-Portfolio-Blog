@@ -279,7 +279,7 @@ const highlights = [
                 <!-- Stats Grid -->
                 <div class="stats-grid grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {
-                        stats.map((stat, index) => (
+                        stats.map((stat, _index) => (
                             <div class="stat-item glass-card glass-card-hover text-center p-4 rounded-xl transition-all duration-300">
                                 <div class="stat-value text-2xl lg:text-3xl font-bold text-[#7aa2f7] mb-1">
                                     {stat.value}
@@ -298,7 +298,7 @@ const highlights = [
                 <!-- Highlights -->
                 <div class="highlights-container space-y-3 lg:space-y-4">
                     {
-                        highlights.map((highlight, index) => (
+                        highlights.map((highlight, _index) => (
                             <div class="highlight-item glass-card glass-card-hover flex items-center space-x-3 p-4 rounded-xl transition-all duration-300">
                                 <div class="w-2 h-2 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-full" />
                                 <span class="highlight-text text-base lg:text-lg font-semibold text-[#c0caf5]">

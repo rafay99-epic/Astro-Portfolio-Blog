@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import  { useState, useEffect, memo } from "react";
 import type { CSSProperties } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { motion, AnimatePresence } from "framer-motion";
@@ -303,7 +303,6 @@ const CodeCompare = memo(function CodeCompare({
   code2,
   file1Title = "Original",
   file2Title = "Modified",
-  showDiff = false,
 }: CodeCompareProps) {
   const [view, setView] = useState<"split" | "unified">("split");
   const [copied, setCopied] = useState<string | null>(null);

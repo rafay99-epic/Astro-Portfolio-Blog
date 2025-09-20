@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import  { memo } from "react";
 import { motion } from "framer-motion";
 import type { Note } from "../../../../types/notes";
 import { useNotesGrid } from "../../../../components/ReactComponent/personal/MS_Notes/MS_NotesLogic";

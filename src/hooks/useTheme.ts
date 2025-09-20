@@ -6,10 +6,8 @@ import {
   useMemo,
   useCallback,
   useRef,
-  type ReactNode,
 } from "react";
 import {
-  colors,
   getThemeColors,
   type ThemeName,
   type ColorPalette,

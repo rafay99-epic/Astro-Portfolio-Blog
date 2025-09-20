@@ -57,13 +57,15 @@ const ImageCaptionRenderer = memo(function ImageCaptionRenderer() {
 
   useEffect(() => {
     processImages();
-    
+
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
     const observer = new MutationObserver((mutations) => {
       let hasNewImages = false;
-      
+
       for (const mutation of mutations) {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-          for (const node of mutation.addedNodes) {
+          for (const node of Array.from(mutation.addedNodes)) {
             if (node.nodeType === Node.ELEMENT_NODE) {
               const element = node as Element;
               if (shouldProcessElement(element)) {
@@ -75,10 +77,10 @@ const ImageCaptionRenderer = memo(function ImageCaptionRenderer() {
           if (hasNewImages) break;
         }
       }
-      
+
       if (hasNewImages) {
-        const timeoutId = setTimeout(processImages, 150);
-        return () => clearTimeout(timeoutId);
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(processImages, 150);
       }
     });
     

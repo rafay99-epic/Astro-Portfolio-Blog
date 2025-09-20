@@ -1,4 +1,5 @@
 ---
+import type { Post } from "types/articles";
 
 const {
   allTags,
@@ -6,7 +7,6 @@ const {
   selectedTag,
   currentPage,
   totalPages,
-  currentUrl
 } = Astro.props;
 
 // Helper to construct URL for tags and pagination
@@ -129,7 +129,7 @@ const getPageUrl = (page: number) => {
 
           <!-- Individual Tag buttons -->
           {
-            allTags.map((tag) => (
+            allTags.map((tag: string) => (
               <a
                 href={getTagUrl(tag)}
                 class:list={[
@@ -181,7 +181,7 @@ const getPageUrl = (page: number) => {
       <div class="space-y-4">
         {
           paginatedPosts.length > 0 ? (
-            paginatedPosts.map((post) => (
+            paginatedPosts.map((post: Post) => (
               <div class="group">
                 <a
                   href={`/blog/${post.slug}`}
@@ -244,7 +244,7 @@ const getPageUrl = (page: number) => {
                       <div class="mt-4 flex flex-wrap gap-2">
                         {post.data.tags
                           .slice(0, 5) // Always show max 5 tags, rely on CSS for mobile
-                          .map((tag) => (
+                          .map((tag: string) => (
                             <span
                               class:list={[
                                 "bg-[#1a1b26]/60 border border-[#565f89]/40 text-[#a9b1d6] font-medium rounded-lg transition-all duration-300 group-hover:border-[#7aa2f7]/50 group-hover:text-[#c0caf5]",

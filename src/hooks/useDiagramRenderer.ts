@@ -29,7 +29,6 @@ export function useDiagramRenderer({
       try {
         const mermaid = (await import("mermaid")).default;
         const diagramId = `mermaid-diagram-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-        const diagramType = extractDiagramType(mermaidCode);
 
         const container = document.createElement("div");
         container.className = `${containerStyles.diagram} mermaid-diagram-container`;
@@ -56,7 +55,6 @@ export function useDiagramRenderer({
           
           const containerRect = container.getBoundingClientRect();
           const containerWidth = containerRect.width - 48; 
-          const containerHeight = Math.max(300, containerRect.height - 48); 
           
           let targetHeight = 400; 
           

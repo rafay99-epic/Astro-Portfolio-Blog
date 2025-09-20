@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro";
-import FeatureFlagsApi from "@config/featureFlag/featureFlag.json";
+import featureFlagConfig from "@config/featureFlag/featureFlag.json";
 export const POST: APIRoute = async ({ request }) => {
   try {
-    if (!FeatureFlagsApi.enableNewsletterSubscription) {
+    if (!featureFlagConfig.FeatureFlagsApi.enableNewsletterSubscription) {
       return new Response(JSON.stringify({ error: "Newsletter subscription is currently disabled." }), {
         status: 503,
       });

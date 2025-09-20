@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import  { memo } from "react";
 import { FaWhatsapp, FaTwitter, FaFacebook, FaLinkedin } from "react-icons/fa";
 import { generateShareUrls } from "types/shareUtils";
 

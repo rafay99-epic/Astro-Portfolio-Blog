@@ -1,7 +1,7 @@
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import featureFlagConfig from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
 
-export async function GET({ request }: { request: Request }) {
+export async function GET({  }: { request: Request }) {
   const header = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "https://www.rafay99.com",
@@ -9,7 +9,7 @@ export async function GET({ request }: { request: Request }) {
     ETag: crypto.randomUUID(),
   };
   try {
-    if (!featureFlags.enableauthorInfoAPI) {
+    if (!featureFlagConfig.FeatureFlagsApi.enableauthorInfoAPI) {
       return new Response(
         JSON.stringify({ error: "Author Profile is disabled" }),
         {

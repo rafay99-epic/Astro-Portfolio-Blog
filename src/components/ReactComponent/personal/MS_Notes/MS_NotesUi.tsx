@@ -191,7 +191,7 @@ const NotesGridUI = memo(function NotesGridUI({
                   : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
               }`}
             >
-              {paginatedNotes.map((note, index) => (
+              {paginatedNotes.map((note, _index) => (
                 <motion.a
                   key={note.slug}
                   href={`/ms_notes/${note.slug}`}

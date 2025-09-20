@@ -1,9 +1,8 @@
-import React, { useRef } from "react";
+import  { useRef } from "react";
 import { memo } from "react";
 import { Copy, Check } from "lucide-react";
-import { toast } from "react-hot-toast";
 import type { CopyButtonProps } from "types/codeblock";
-import { useCopyButton } from "../../../../../hooks/useCopyButton";
+import { useCopyButton } from "@hooks/useCopyButton";
 import { STYLES, TOAST_STYLES } from "./styles";
 
 const CopyButton = memo(function CopyButton({

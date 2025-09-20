@@ -28,7 +28,7 @@ const { theme = "dark" } = Astro.props;
     </div>
   </div>
 
-  <script define:vars={{ theme }}>
+  <script is:inline define:vars={{ theme }}>
     class GiscusManager {
       constructor() {
         this.container = document.getElementById("giscus-container");

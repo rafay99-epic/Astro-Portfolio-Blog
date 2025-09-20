@@ -17,6 +17,7 @@ ProjectTech:
   ]
 ProjectCategory: ["Web Apps"]
 ranking: "8"
+ProjectDeployedLink: ""
 ---
 
 Future Insight's blog site is your go-to destination for understanding the latest advancements and emerging trends in technology. This site offers an in-depth view into fields like artificial intelligence, machine learning, and web development. Developed using **Hugo**, **Node.js**, **CSS**, **JavaScript**, and **Firebase**, Future Insight is crafted to provide a streamlined and interactive experience, making complex tech topics accessible and engaging for everyone.

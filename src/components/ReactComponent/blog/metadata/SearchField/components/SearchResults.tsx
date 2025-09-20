@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import  { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { SearchResultsProps } from "types/search";
 

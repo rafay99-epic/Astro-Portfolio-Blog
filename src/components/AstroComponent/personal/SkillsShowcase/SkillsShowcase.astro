@@ -155,7 +155,7 @@ const totalSkills = Object.values(skillsByCategory).reduce((total, skills) => to
 
     <!-- Skills Grid -->
     <div class="grid gap-8 md:gap-12">
-      {categories.map((category, categoryIndex) => (
+      {categories.map((category, _categoryIndex) => (
         <div class="category-section">
           <!-- Category Header -->
           <div class="flex items-center gap-4 mb-8">
@@ -192,7 +192,7 @@ const totalSkills = Object.values(skillsByCategory).reduce((total, skills) => to
 
           <!-- Skills Grid -->
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 md:gap-6">
-            {skillsByCategory[category].map((skill, skillIndex) => (
+            {skillsByCategory[category].map((skill, _skillIndex) => (
               <div class="skill-card group">
                 <div class="relative bg-gradient-to-br from-[#1a1b26]/80 to-[#24283b]/80 backdrop-blur-sm border border-[#565f89]/30 rounded-2xl p-4 md:p-6 shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col items-center justify-center text-center">
                   <!-- Glow effect on hover -->

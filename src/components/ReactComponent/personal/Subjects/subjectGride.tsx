@@ -7,7 +7,6 @@ import {
   FaLightbulb,
 } from "react-icons/fa";
 import { useIsMobile } from "@hooks/useIsMobile";
-import clsx from "clsx";
 
 type SubjectGridProps = {
   subjects: {

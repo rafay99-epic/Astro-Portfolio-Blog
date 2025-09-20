@@ -1,7 +1,7 @@
 import { getCollection } from "astro:content";
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import featureFlagConfig from "@config/featureFlag/featureFlag.json";
 
-export async function GET({ request }: { request: Request }) {
+export async function GET({  }: { request: Request }) {
   const header = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "https://www.rafay99.com",
@@ -9,7 +9,7 @@ export async function GET({ request }: { request: Request }) {
     ETag: crypto.randomUUID(),
   };
   try {
-    if (!featureFlags.showNewsletter) {
+    if (!featureFlagConfig.featureFlags.showNewsletter) {
       return new Response(
         JSON.stringify({ error: "Newsletter Read is disabled" }),
         {
