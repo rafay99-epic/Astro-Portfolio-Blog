@@ -389,8 +389,9 @@ export default defineConfig({
                 required: true,
               },
               {
+              {
                 type: "boolean",
-                name: "enableViewTransation",
+                name: "enableViewTransition",
                 label: "Enable View Transition",
                 required: true,
               },
