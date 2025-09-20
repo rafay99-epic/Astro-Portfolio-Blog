@@ -1,18 +1,17 @@
 ---
-import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
-import Header from "../components/AstroComponent/header/Header.astro";
-import Footer from "../components/AstroComponent/footer/Footer.astro";
-import SkillsShowcase from "../components/AstroComponent/personal/SkillsShowcase/SkillsShowcase.astro";
-import ContactMap from "../components/AstroComponent/home/ContactMap/ContactMap.astro";
-import CoreServices from "../components/AstroComponent/home/core-service/core_service.astro";
-import PortfolioSection from "../components/AstroComponent/home/portfolio/portfolio.astro";
-import TestimonialsSection from "../components/AstroComponent/home/testimonials/testimonials.astro";
-import authorConfig from "../config/siteConfig/info.json";
-import HeroSection from "../components/AstroComponent/home/Hero/HeroSection.astro";
-import { featureFlags } from "../config/featureFlag/featureFlag.json";
-import SpeedInsights from "@vercel/speed-insights/astro";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import SkillsShowcase from "@astro/personal/SkillsShowcase/SkillsShowcase.astro";
+import ContactMap from "@astro/home/ContactMap/ContactMap.astro";
+import CoreServices from "@astro/home/core-service/core_service.astro";
+import PortfolioSection from "@astro/home/portfolio/portfolio.astro";
+import TestimonialsSection from "@astro/home/testimonials/testimonials.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import HeroSection from "@astro/home/Hero/HeroSection.astro";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
-import ProcessShowcase from "../components/AstroComponent/personal/Process/ProcessShowcase.astro";
+import ProcessShowcase from "@astro/personal/Process/ProcessShowcase.astro";
 const { name, jobTitle, position, picture, socialLinks } = authorConfig;
 try {
   if (!featureFlags.showIndex) {
@@ -33,7 +32,6 @@ try {
   </head>
   <body>
     <Header />
-    <SpeedInsights />
     <main class="pt-15 mt-0">
       <div class="flex items-center justify-center">
         <HeroSection

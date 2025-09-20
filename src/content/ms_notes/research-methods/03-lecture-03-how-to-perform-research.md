@@ -8,6 +8,7 @@ lecture_draft: false
 lectureNumber: "03"
 subject: Research Methods
 ---
+
 ## **Reading and Understanding a Research Paper**
 
 Reading is essential for understanding any subject, and in research, it is the most critical skill. However, many students find reading and writing research papers frustrating.
@@ -17,22 +18,16 @@ Reading is essential for understanding any subject, and in research, it is the m
 The **Three-Pass Approach** is a systematic method for efficiently reading and understanding a research paper:
 
 1.  **First Pass** – Provides a general overview of the paper.
-    
 2.  **Second Pass** – Helps grasp the paper’s content without focusing on details.
-    
 3.  **Third Pass** – Ensures an in-depth understanding of the paper.
-    
 
 ### **First Pass:** Quick Overview
 
 In this pass, carefully read the following:
 
-*   **Title, abstract, and all section and subsection headings**
-    
-*   **Conclusion**
-    
-*   Ignore everything else for now
-    
+- **Title, abstract, and all section and subsection headings**
+- **Conclusion**
+- Ignore everything else for now
 
 This step helps you determine whether the paper is relevant and worth further reading.
 
@@ -40,12 +35,9 @@ This step helps you determine whether the paper is relevant and worth further re
 
 Once you decide to proceed with the paper, read it more carefully while still avoiding excessive details such as proofs. Focus on:
 
-*   **Introduction**
-    
-*   **Figures, diagrams, and illustrations**
-    
-*   **Marking unread references for further reading**
-    
+- **Introduction**
+- **Figures, diagrams, and illustrations**
+- **Marking unread references for further reading**
 
 This step should take about an hour and should allow you to summarize the paper’s main ideas.
 
@@ -53,14 +45,10 @@ This step should take about an hour and should allow you to summarize the paper�
 
 This is the most detailed and time-consuming pass, where you analyze the paper as if you wrote it. Your goal is to fully understand every aspect of the research. This involves:
 
-*   Reading the **entire** paper thoroughly
-    
-*   Understanding the **methodology**
-    
-*   Examining all equations, proofs, and technical details
-    
-*   Searching for **related research papers** for additional context
-    
+- Reading the **entire** paper thoroughly
+- Understanding the **methodology**
+- Examining all equations, proofs, and technical details
+- Searching for **related research papers** for additional context
 
 This step requires strong attention to detail and deep critical thinking.
 
@@ -69,19 +57,12 @@ This step requires strong attention to detail and deep critical thinking.
 To enhance the reading process, consider using these tools:
 
 1.  **Zotero** – A reference manager for organizing papers and citations.
-    
 2.  **Mendeley** – Helps manage and annotate PDFs.
-    
 3.  **Connected Papers** – A tool for exploring related research.
-    
 4.  **Semantic Scholar** – AI-powered research paper search.
-    
 5.  **Google Scholar** – A widely used search engine for academic papers.
-    
 6.  **Notion or Obsidian** – For taking structured notes while reading.
-    
 7.  **Paper Digest** – Provides quick summaries of research papers.
-    
 
 By following this structured approach and leveraging the right tools, you can improve both the efficiency and depth of your research paper reading.
 
@@ -101,24 +82,20 @@ Let’s say your research topic is **"How social media affects students' study h
 
 To understand this better, you look at:
 
-*   A **book** a professor wrote on social media and education
-    
-*   An **article** in a journal that studied how much time students spend on Instagram
-    
-*   A **report** from a school survey about student performance and phone usage
-    
-*   A **website** that shares expert opinions on screen time
-    
+- A **book** a professor wrote on social media and education
+- An **article** in a journal that studied how much time students spend on Instagram
+- A **report** from a school survey about student performance and phone usage
+- A **website** that shares expert opinions on screen time
 
 All of these are called **research literature** because they are part of what’s already known or said about your topic.
 
-* * *
+---
 
 ### In Simple Words:
 
 > “Research literature is what other smart people have already said or found out about the topic I want to study.”
 
-* * *
+---
 
 ## How to Write a Research Paper
 
@@ -130,16 +107,11 @@ However, in this lecture, I will break down the **basic structure** for writing 
 
 Before starting the writing process, it's important to gather and organize all your data properly. You should:
 
-*   Collect all the key **data**, **analyses**, **plots**, and **tables** relevant to your research.
-    
-*   Understand the **flow** of your work — how each part connects and builds on the other.
-    
-*   Analyze and visualize your data using **charts** and **graphs**.
-    
-*   Organize your results in a **logical sequence** so they tell a clear and consistent story.
-    
-*   Consolidate your data plots and prepare **well-labeled figures** that can be directly used in your manuscript.
-    
+- Collect all the key **data**, **analyses**, **plots**, and **tables** relevant to your research.
+- Understand the **flow** of your work — how each part connects and builds on the other.
+- Analyze and visualize your data using **charts** and **graphs**.
+- Organize your results in a **logical sequence** so they tell a clear and consistent story.
+- Consolidate your data plots and prepare **well-labeled figures** that can be directly used in your manuscript.
 
 By preparing your data in this structured way, your final report or research paper will be much easier to write and much clearer to read
 
@@ -151,10 +123,8 @@ The title is the first impression of your paper and should accurately reflect th
 
 **Examples:**
 
-*   _Probabilistic Pathfinding: Beyond Deterministic Methods for Navigation in Rough Terrain_
-    
-*   _GRAMMPS: A Generalized Mission Planner for Multiple Mobile Robots in Unstructured Environments_
-    
+- _Probabilistic Pathfinding: Beyond Deterministic Methods for Navigation in Rough Terrain_
+- _GRAMMPS: A Generalized Mission Planner for Multiple Mobile Robots in Unstructured Environments_
 
 ### Abstract
 
@@ -176,7 +146,7 @@ This section details how you conducted your research. It should include all proc
 
 If your method is complex, use tables, diagrams, or flowcharts for clarity. Don’t include results here. However, you can mention pilot studies that helped you refine your methods. Also, if human or animal subjects were involved, include ethical considerations — such as informed consent or steps taken to minimize harm.
 
-* * *
+---
 
 ### Experimental Section
 
@@ -188,7 +158,7 @@ Here, you present the data you collected. Use figures, charts, and tables to vis
 
 Not all data needs to be included, only what's relevant to your conclusions. Don’t manipulate or overstate your findings. Your results should be accurate, transparent, and honestly presented.
 
-* * *
+---
 
 ### Discussion
 
@@ -202,7 +172,7 @@ The conclusion gives you the final word. It summarizes the key points of your re
 
 Good conclusions don’t just restate what’s already been said. They often connect to broader questions, future possibilities, or applications in real-world contexts. A strong conclusion makes readers feel that their time was well spent.
 
-* * *
+---
 
 ### Acknowledgments
 
@@ -214,7 +184,7 @@ Proper referencing is essential. Citations recognize others' work, give credit w
 
 Use consistent formatting and only cite credible sources. References should support your claims, show awareness of previous work, and help readers follow the development of your ideas.
 
-* * *
+---
 
 ### Supporting Information
 

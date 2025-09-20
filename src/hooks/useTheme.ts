@@ -6,10 +6,8 @@ import {
   useMemo,
   useCallback,
   useRef,
-  type ReactNode,
 } from "react";
 import {
-  colors,
   getThemeColors,
   type ThemeName,
   type ColorPalette,
@@ -27,78 +25,62 @@ export interface UseThemeReturn {
 interface ThemeContextType extends UseThemeReturn {}
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
+  undefined,
 );
 
-/**
- * Optimized Theme Hook with centralized state management
- * Prevents multiple localStorage reads and unnecessary re-renders
- */
 export function useThemeProvider() {
   const [currentTheme, setCurrentTheme] = useState<ThemeName>("tokyo-night");
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
   const updateTimeoutRef = useRef<number | undefined>(undefined);
 
-  // Memoized theme colors to prevent recalculation on every render
   const colors = useMemo(() => getThemeColors(currentTheme), [currentTheme]);
 
-  // Debounced CSS variable update function
   const updateCSSVariables = useCallback((palette: ColorPalette) => {
-    // Clear any pending updates
     if (updateTimeoutRef.current) {
       clearTimeout(updateTimeoutRef.current);
     }
 
-    // Batch CSS updates using requestAnimationFrame for better performance
     updateTimeoutRef.current = window.setTimeout(() => {
       requestAnimationFrame(() => {
         const root = document.documentElement;
         const updates: [string, string][] = [
-          // Primary Colors
           ["--color-primary", palette.primary],
           ["--color-secondary", palette.secondary],
           ["--color-accent", palette.accent],
 
-          // Background Colors
           ["--color-bg-primary", palette.background.primary],
           ["--color-bg-secondary", palette.background.secondary],
           ["--color-bg-tertiary", palette.background.tertiary],
           ["--color-bg-card", palette.background.card],
           ["--color-bg-overlay", palette.background.overlay],
 
-          // Text Colors
           ["--color-text-primary", palette.text.primary],
           ["--color-text-secondary", palette.text.secondary],
           ["--color-text-muted", palette.text.muted],
           ["--color-text-accent", palette.text.accent],
           ["--color-text-inverse", palette.text.inverse],
 
-          // Border Colors
           ["--color-border-primary", palette.border.primary],
           ["--color-border-secondary", palette.border.secondary],
           ["--color-border-accent", palette.border.accent],
           ["--color-border-hover", palette.border.hover],
 
-          // Status Colors
           ["--color-success", palette.status.success],
           ["--color-warning", palette.status.warning],
           ["--color-error", palette.status.error],
           ["--color-info", palette.status.info],
 
-          // Interactive Colors
           ["--color-hover", palette.interactive.hover],
           ["--color-focus", palette.interactive.focus],
           ["--color-active", palette.interactive.active],
           ["--color-disabled", palette.interactive.disabled],
 
-          // Gradients
           ["--gradient-primary", palette.gradients.primary],
           ["--gradient-secondary", palette.gradients.secondary],
           ["--gradient-accent", palette.gradients.accent],
           ["--gradient-rainbow", palette.gradients.rainbow],
 
-          // Social Colors
           ["--color-twitter", palette.social.twitter],
           ["--color-facebook", palette.social.facebook],
           ["--color-linkedin", palette.social.linkedin],
@@ -108,19 +90,16 @@ export function useThemeProvider() {
           ["--color-upwork", palette.social.upwork],
         ];
 
-        // Batch apply all CSS custom properties
         updates.forEach(([property, value]) => {
           root.style.setProperty(property, value);
         });
       });
-    }, 16); // 60fps = ~16ms
+    }, 16);
   }, []);
 
-  // Initialize theme from localStorage or system preference (only once)
   useEffect(() => {
     let mounted = true;
 
-    // Use requestIdleCallback for non-critical initialization
     const initializeTheme = () => {
       try {
         const savedTheme = localStorage.getItem("theme") as ThemeName;
@@ -137,9 +116,8 @@ export function useThemeProvider() {
           if (savedDarkMode !== null) {
             setIsDarkMode(JSON.parse(savedDarkMode));
           } else {
-            // Check system preference
             const prefersDark = window.matchMedia(
-              "(prefers-color-scheme: dark)"
+              "(prefers-color-scheme: dark)",
             ).matches;
             setIsDarkMode(prefersDark);
           }
@@ -154,7 +132,6 @@ export function useThemeProvider() {
       }
     };
 
-    // Use requestIdleCallback if available, otherwise use setTimeout
     if (typeof window !== "undefined" && "requestIdleCallback" in window) {
       (window as any).requestIdleCallback(initializeTheme);
     } else {
@@ -166,14 +143,12 @@ export function useThemeProvider() {
     };
   }, []);
 
-  // Update CSS variables when theme changes (debounced)
   useEffect(() => {
     if (isInitialized) {
       updateCSSVariables(colors);
     }
   }, [colors, updateCSSVariables, isInitialized]);
 
-  // Save to localStorage (debounced)
   useEffect(() => {
     if (isInitialized) {
       const saveTimeout = setTimeout(() => {
@@ -183,23 +158,20 @@ export function useThemeProvider() {
         } catch (error) {
           console.warn("Failed to save theme to localStorage:", error);
         }
-      }, 100); // Debounce localStorage writes
+      }, 100);
 
       return () => clearTimeout(saveTimeout);
     }
   }, [currentTheme, isDarkMode, isInitialized]);
 
-  // Memoized switch theme function
   const switchTheme = useCallback((theme: ThemeName) => {
     setCurrentTheme(theme);
   }, []);
 
-  // Memoized toggle dark mode function
   const toggleDarkMode = useCallback(() => {
     setIsDarkMode((prev) => !prev);
   }, []);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (updateTimeoutRef.current) {
@@ -208,7 +180,6 @@ export function useThemeProvider() {
     };
   }, []);
 
-  // Return memoized theme state
   return useMemo(
     () => ({
       currentTheme,
@@ -225,17 +196,12 @@ export function useThemeProvider() {
       isDarkMode,
       toggleDarkMode,
       isInitialized,
-    ]
+    ],
   );
 }
 
-/**
- * Optimized hook for theme management
- * Uses centralized context instead of individual state instances
- */
 export function useTheme(): UseThemeReturn {
   const context = useContext(ThemeContext);
-
   if (context === undefined) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
@@ -243,36 +209,25 @@ export function useTheme(): UseThemeReturn {
   return context;
 }
 
-/**
- * Optimized hook to get specific color values
- * Memoized to prevent unnecessary recalculations
- */
 export function useThemeColors() {
   const { colors } = useTheme();
 
   return useMemo(
     () => ({
-      // Quick access to commonly used colors (aliased for convenience)
       bgPrimary: colors.background.primary,
       bgSecondary: colors.background.secondary,
       bgCard: colors.background.card,
 
-      // Text colors (aliased for convenience)
       textPrimary: colors.text.primary,
       textSecondary: colors.text.secondary,
       textMuted: colors.text.muted,
 
-      // All colors (includes primary, secondary, accent, etc.)
       ...colors,
     }),
-    [colors]
+    [colors],
   );
 }
 
-/**
- * Optimized hook for theme-aware styling
- * Memoized style functions and class helpers
- */
 export function useThemeStyles() {
   const { colors, isDarkMode } = useTheme();
 
@@ -292,7 +247,7 @@ export function useThemeStyles() {
         accent: "text-theme-accent",
       },
     }),
-    []
+    [],
   );
 
   const styles = useMemo(
@@ -317,7 +272,7 @@ export function useThemeStyles() {
         border: `1px solid ${colors.border.secondary}`,
       }),
     }),
-    [colors]
+    [colors],
   );
 
   return useMemo(
@@ -326,6 +281,6 @@ export function useThemeStyles() {
       styles,
       isDarkMode,
     }),
-    [classes, styles, isDarkMode]
+    [classes, styles, isDarkMode],
   );
 }

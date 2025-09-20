@@ -1,8 +1,7 @@
 ---
-import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
-import authorConfig from "../config/siteConfig/info.json";
-import SpeedInsights from "@vercel/speed-insights/astro";
-import ComingSoon from "../components/ReactComponent/error/ComingSoon";
+import BaseHead from "@astro/base/BaseHead.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import ComingSoon from "@react/error/ComingSoon";
 const featureName = Astro.url.searchParams.get("feature") ?? "Exciting Feature";
 export const prerender = true;
 ---
@@ -14,7 +13,6 @@ export const prerender = true;
       title={`Access Denied | ${authorConfig.SiteName}`}
       description={`Sorry, you don't have access to this ${featureName}.`}
     />
-    <SpeedInsights />
   </head>
   <body>
     <main class="pt-15 mt-0">

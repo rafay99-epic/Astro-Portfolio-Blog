@@ -1,6 +1,7 @@
 ---
-title: 'Stop the Presses: Convex Is Here… And So Are the Growing Pains'
-description: A wild journey into building with Convex, where backend magic meets real-world
+title: "Stop the Presses: Convex Is Here… And So Are the Growing Pains"
+description:
+  A wild journey into building with Convex, where backend magic meets real-world
   scaling headaches.
 pubDate: 2025-07-25 19:00:00+00:00
 draft: false
@@ -8,22 +9,24 @@ heroImage: /BlogImages/convex-cache-thubnail.webp
 authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
-- Thought-Process
+  - Thought-Process
 keywords:
-- convex
-- backend
-- scaling
-- cache
-- performance
-- full-stack
-- nextjs
-- software engineering
+  - convex
+  - backend
+  - scaling
+  - cache
+  - performance
+  - full-stack
+  - nextjs
+  - software engineering
 featured: true
-excerpt: Discover the real challenges of scaling with Convex backend - from cache
+excerpt:
+  Discover the real challenges of scaling with Convex backend - from cache
   nightmares to performance optimization. A developer's journey through growing pains.
 canonicalUrl: /blog/stop-the-presses-convex-is-here-and-so-are-the-growing-pains
 ---
-**Ah yes, Convex.** The backend equivalent of sliced bread—at least according to the tech hype machine. You’ve seen it. YouTube tutorials swooning. X (formerly Twitter) threads declaring it the One True BaaS™ for web and AI alike. Blog posts throwing around words like *"game-changer"* and *"magic"*. So, naturally, when I landed a shiny new gig as a Full-Stack Software Engineer and got the task of building an onboarding flow, I thought: **"Why not lean into the hype?"**
+
+**Ah yes, Convex.** The backend equivalent of sliced bread—at least according to the tech hype machine. You’ve seen it. YouTube tutorials swooning. X (formerly Twitter) threads declaring it the One True BaaS™ for web and AI alike. Blog posts throwing around words like _"game-changer"_ and _"magic"_. So, naturally, when I landed a shiny new gig as a Full-Stack Software Engineer and got the task of building an onboarding flow, I thought: **"Why not lean into the hype?"**
 
 So I did.
 
@@ -32,7 +35,7 @@ I spun up a nice little Next.js frontend, connected it with Convex for the backe
 **Piece of cake, right?**
 
 **HAHAHA.**
-(*Cue the screaming.*)
+(_Cue the screaming._)
 
 ## The Calm Before the Storm
 
@@ -55,7 +58,7 @@ Client-side errors. Performance drops. Broken components.
 
 But here's the kicker:
 **No errors in the logs. Zero. Nada.**
-The system *looked* fine, but it was slowly dying inside.
+The system _looked_ fine, but it was slowly dying inside.
 
 So, I did what any engineer would do—meetings, debugging, late-night Slack rants, and more debugging.
 
@@ -79,7 +82,10 @@ export const getLeaderboard = query({
   },
   handler: async (ctx, args) => {
     const maxProcessLimit = 1000;
-    const processingLimit = Math.min(args.limit + args.skip + 100, maxProcessLimit);
+    const processingLimit = Math.min(
+      args.limit + args.skip + 100,
+      maxProcessLimit,
+    );
 
     let query = ctx.db.query("users");
 
@@ -95,19 +101,22 @@ export const getLeaderboard = query({
         name: user.name,
         profileImage: user.profileImage,
         country: user.country,
-        totalPoints: Object.values(user.pointsBreakdown).reduce((a, b) => a + b, 0),
+        totalPoints: Object.values(user.pointsBreakdown).reduce(
+          (a, b) => a + b,
+          0,
+        ),
         directReferralCount: user.directReferralCount,
       }))
       .sort(
         (a, b) =>
           b.totalPoints - a.totalPoints ||
-          b.directReferralCount - a.directReferralCount
+          b.directReferralCount - a.directReferralCount,
       )
       .slice(args.skip, args.skip + args.limit);
 
     const totalUsers = await ctx.db.query("users").collect();
     const totalCount = args.country
-      ? totalUsers.filter(u => u.country === args.country).length
+      ? totalUsers.filter((u) => u.country === args.country).length
       : totalUsers.length;
 
     return {
@@ -117,7 +126,8 @@ export const getLeaderboard = query({
       pagination: {
         limit: args.limit,
         skip: args.skip,
-        nextSkip: args.skip + args.limit < totalCount ? args.skip + args.limit : null,
+        nextSkip:
+          args.skip + args.limit < totalCount ? args.skip + args.limit : null,
       },
     };
   },
@@ -128,10 +138,10 @@ This code worked beautifully—for a demo. But in production, with real traffic?
 
 ### Why it failed:
 
-* **`collect()` pulls *everything* into memory.** That’s like trying to drink from a firehose because you're a little thirsty.
-* **No pagination safeguards.**
-* **Heavy client-side computation.**
-* **No caching optimization.**
+- **`collect()` pulls _everything_ into memory.** That’s like trying to drink from a firehose because you're a little thirsty.
+- **No pagination safeguards.**
+- **Heavy client-side computation.**
+- **No caching optimization.**
 
 ## The Rewrite: Optimized and Cache-Friendly
 
@@ -152,7 +162,7 @@ export const getLeaderboard = query({
     const precomputed = await ctx.db
       .query("precomputedStats")
       .withIndex("by_type_country", (q) =>
-        q.eq("statType", "leaderboard").eq("country", args.country || "global")
+        q.eq("statType", "leaderboard").eq("country", args.country || "global"),
       )
       .first();
 
@@ -167,7 +177,8 @@ export const getLeaderboard = query({
         pagination: {
           limit: safeLimit,
           skip: safeSkip,
-          nextSkip: safeSkip + safeLimit < data.length ? safeSkip + safeLimit : null,
+          nextSkip:
+            safeSkip + safeLimit < data.length ? safeSkip + safeLimit : null,
         },
         fromCache: true,
       };
@@ -184,16 +195,23 @@ export const getLeaderboard = query({
     const users = await query.take(fetchLimit);
 
     const processedUsers = users
-      .filter(user => !user.email.startsWith("DEACTIVATED_"))
+      .filter((user) => !user.email.startsWith("DEACTIVATED_"))
       .map((user) => ({
         userId: user.userId,
         name: user.name,
         profileImage: user.profileImage,
         country: user.country,
-        totalPoints: Object.values(user.pointsBreakdown).reduce((a, b) => a + b, 0),
+        totalPoints: Object.values(user.pointsBreakdown).reduce(
+          (a, b) => a + b,
+          0,
+        ),
         directReferralCount: user.directReferralCount,
       }))
-      .sort((a, b) => b.totalPoints - a.totalPoints || b.directReferralCount - a.directReferralCount);
+      .sort(
+        (a, b) =>
+          b.totalPoints - a.totalPoints ||
+          b.directReferralCount - a.directReferralCount,
+      );
 
     const sliced = processedUsers.slice(safeSkip, safeSkip + safeLimit);
 
@@ -204,7 +222,10 @@ export const getLeaderboard = query({
       pagination: {
         limit: safeLimit,
         skip: safeSkip,
-        nextSkip: safeSkip + safeLimit < processedUsers.length ? safeSkip + safeLimit : null,
+        nextSkip:
+          safeSkip + safeLimit < processedUsers.length
+            ? safeSkip + safeLimit
+            : null,
       },
       fromCache: false,
     };
@@ -225,11 +246,11 @@ But even with all these improvements… the question remains:
 
 > **How much can you actually cache before you need to refresh it?**
 
-Spoiler: A *lot*, but not everything. And certainly not forever.
+Spoiler: A _lot_, but not everything. And certainly not forever.
 
 ## The Real Pain
 
-This was *one* function.
+This was _one_ function.
 I’ve got dozens more: `completeMiniGame`, `getAllUsers`, etc.—all screaming for optimization and cache sanity.
 
 And the worst part? **Support is… nonexistent.**
@@ -242,13 +263,13 @@ Still caching. Still querying. Still debugging.
 
 But here’s the thing:
 
-**Convex *is* good.**
+**Convex _is_ good.**
 The folks who built it? Yeah, they helped scale Discord. That’s no small feat.
 This isn’t some random weekend project—it’s a serious, ambitious backend platform designed for modern apps.
 
 But here’s the catch:
 
-> It *looks* simple. It *feels* magical. But **it’s not easy.**
+> It _looks_ simple. It _feels_ magical. But **it’s not easy.**
 
 If you're going to build with Convex, **you need to understand how it works under the hood.**
 One wrong use of `collect()`, a careless `args{}` structure, or an unoptimized query—and boom, you're stuck in debug purgatory like I was.

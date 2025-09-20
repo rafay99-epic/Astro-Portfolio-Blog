@@ -6,7 +6,7 @@ description: >-
   In this hands-on review, I put Cursor CLI and GPT‑5 to the test on a real
   Convex-based Python project. See how AI-powered terminal coding helped me
   refactor the UI, add charts, enable PDF exports, and build a multi-window
-  local-first app — all without touching the cloud. 
+  local-first app — all without touching the cloud.
 pubDate: 2025-08-09T19:00:00.000Z
 draft: false
 heroImage: /BlogImages/cursor_cli.webp
@@ -34,6 +34,7 @@ excerpt: >-
   a polished, local-first tool with charts, PDF export, and multi-window
   support.
 ---
+
 There’s a certain kind of magic when your terminal stops being a passive black box and starts actively helping you write, refactor, and commit code.\
 With the release of **GPT‑5** from OpenAI, we’ve seen a wave of AI-powered developer tools getting major updates — **Google Gemini CLI**, **Claude Code**, **OpenCLI**, **Warp Terminal** — and now **Cursor CLI** has joined the league.
 
@@ -48,10 +49,10 @@ Instead, I wanted a **local-first Python application** where I could:
 1. **Load a Data Folder** (local dataset)
 2. **Enter a User Email or User ID**
 3. **Display the User Data**, including:
-   * User Information
-   * Ranking
-   * Referral Points History
-   * Application Tracking Progress
+   - User Information
+   - Ranking
+   - Referral Points History
+   - Application Tracking Progress
 
 The goal was a **simple, clean, and reliable process** — no cloud calls, no external dependencies that could fail at the wrong time.
 
@@ -66,13 +67,13 @@ To be safe, I created a **new branch**. If things went sideways, I could revert 
 
 ## The Original Limitation
 
-The application worked, but the **Profile View** section’s *Referral History* was just plain text. It was functional, but not exactly user-friendly.
+The application worked, but the **Profile View** section’s _Referral History_ was just plain text. It was functional, but not exactly user-friendly.
 
 I wanted to:
 
-* Make the data **readable and visually appealing**
-* Add **tables, charts, and modern UI styling**
-* Keep everything **local and lightweight**
+- Make the data **readable and visually appealing**
+- Add **tables, charts, and modern UI styling**
+- Keep everything **local and lightweight**
 
 ## What I Added During the Session
 
@@ -91,10 +92,10 @@ With Cursor CLI acting as my AI pair programmer, here’s what I implemented:
 
 Here’s where Cursor CLI really impressed me:
 
-* **Understanding the Codebase** — It scanned my `data_loader.py` and `utils.py` to understand how history entries were structured before making changes.
-* **UI Overhaul** — It replaced raw text with **sortable tables**, **charts**, and **color-coded highlights**.
-* **Error Prevention** — It compiled the Python files to check for syntax errors before committing.
-* **Clean Commits** — It staged only the relevant changes and wrote clear, professional commit messages.
+- **Understanding the Codebase** — It scanned my `data_loader.py` and `utils.py` to understand how history entries were structured before making changes.
+- **UI Overhaul** — It replaced raw text with **sortable tables**, **charts**, and **color-coded highlights**.
+- **Error Prevention** — It compiled the Python files to check for syntax errors before committing.
+- **Clean Commits** — It staged only the relevant changes and wrote clear, professional commit messages.
 
 Example commit message it generated:
 
@@ -108,16 +109,16 @@ At one point, it asked:
 
 > "Run this command? Not in allowlist: python"
 
-It’s like having a teammate who says, *"I can run it for you… but only if you promise it won’t blow up the server."*
+It’s like having a teammate who says, _"I can run it for you… but only if you promise it won’t blow up the server."_
 
 ## Why This Matters
 
 For developers working on **local-first applications**, **data visualization tools**, or **internal utilities**, AI-powered CLI tools like Cursor CLI can:
 
-* Speed up UI improvements
-* Automate repetitive coding tasks
-* Keep commits clean and organized
-* Reduce the risk of introducing errors during refactors
+- Speed up UI improvements
+- Automate repetitive coding tasks
+- Keep commits clean and organized
+- Reduce the risk of introducing errors during refactors
 
 ## Final Thoughts
 

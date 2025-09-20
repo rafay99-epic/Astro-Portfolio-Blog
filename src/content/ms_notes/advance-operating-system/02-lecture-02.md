@@ -90,9 +90,9 @@ process selected by the scheduler**.
 
 ### Responsibilities:
 
--   Performs **context switching**
--   Switches to **user mode**
--   Jumps to the correct instruction in the process
+- Performs **context switching**
+- Switches to **user mode**
+- Jumps to the correct instruction in the process
 
 ## Scheduler
 
@@ -101,20 +101,17 @@ The **scheduler** decides _which process runs when_.
 ### Types of Scheduling:
 
 1.  **Long-term Scheduler**
-
-    -   Controls admission of jobs into the system.
-    -   Decides which jobs enter the ready queue.
-    -   Runs less frequently.
+    - Controls admission of jobs into the system.
+    - Decides which jobs enter the ready queue.
+    - Runs less frequently.
 
 2.  **Medium-term Scheduler**
-
-    -   Temporarily suspends/resumes processes.
-    -   Improves mix of I/O-bound and CPU-bound processes.
+    - Temporarily suspends/resumes processes.
+    - Improves mix of I/O-bound and CPU-bound processes.
 
 3.  **Short-term Scheduler (CPU Scheduler)**
-
-    -   Decides which process in the ready queue gets CPU next.
-    -   Runs very frequently (milliseconds).
+    - Decides which process in the ready queue gets CPU next.
+    - Runs very frequently (milliseconds).
 
 ## Executing Timeout
 
@@ -131,12 +128,12 @@ Scheduling is about **maximizing CPU utilization and minimizing waiting time**.
 
 ### Scheduling Criteria:
 
--   **CPU Utilization** → keep CPU busy
--   **Throughput** → number of processes completed per unit time
--   **Turnaround Time** → completion time - arrival time
--   **Waiting Time** → time spent in ready queue
--   **Response Time** → time from request to first response
--   **Fairness** → no starvation
+- **CPU Utilization** → keep CPU busy
+- **Throughput** → number of processes completed per unit time
+- **Turnaround Time** → completion time - arrival time
+- **Waiting Time** → time spent in ready queue
+- **Response Time** → time from request to first response
+- **Fairness** → no starvation
 
 ### Common Scheduling Algorithms:
 
@@ -277,77 +274,77 @@ Here's a detailed breakdown of each state and the transitions between them:
 
 ## 1. New State
 
--   **Description**: The process is being created but has not yet been admitted
-    into the system. Resources are being allocated, and initial setup is being
-    performed.
--   **Activities**:
-    -   Process creation and initialization.
-    -   Allocation of necessary resources (memory, file handles, etc.).
-    -   Loading the program code into memory.
--   **Transition**:
-    -   **New → Ready**: Once the OS deems the process ready for execution
-        (sufficient resources are allocated), it transitions to the Ready state.
-        This transition is usually managed by the long-term scheduler (also
-        known as the admission controller).
+- **Description**: The process is being created but has not yet been admitted
+  into the system. Resources are being allocated, and initial setup is being
+  performed.
+- **Activities**:
+  - Process creation and initialization.
+  - Allocation of necessary resources (memory, file handles, etc.).
+  - Loading the program code into memory.
+- **Transition**:
+  - **New → Ready**: Once the OS deems the process ready for execution
+    (sufficient resources are allocated), it transitions to the Ready state.
+    This transition is usually managed by the long-term scheduler (also
+    known as the admission controller).
 
 ## 2. Ready State
 
--   **Description**: The process is ready to execute but is waiting for its
-    turn to be scheduled by the CPU. It's in the ready queue, competing with
-    other processes for CPU time.
--   **Activities**:
-    -   Waiting in the ready queue for CPU time.
-    -   No actual execution happening; the process is just queued up.
--   **Transitions**:
-    -   **Ready → Running**: When the scheduler selects this process, the
-        dispatcher assigns the CPU to it, and the process enters the Running
-        state.
-    -   **Ready → Terminated**: In some scenarios, the process might be
-        terminated due to system reasons (e.g., insufficient resources, process
-        aborted by user).
+- **Description**: The process is ready to execute but is waiting for its
+  turn to be scheduled by the CPU. It's in the ready queue, competing with
+  other processes for CPU time.
+- **Activities**:
+  - Waiting in the ready queue for CPU time.
+  - No actual execution happening; the process is just queued up.
+- **Transitions**:
+  - **Ready → Running**: When the scheduler selects this process, the
+    dispatcher assigns the CPU to it, and the process enters the Running
+    state.
+  - **Ready → Terminated**: In some scenarios, the process might be
+    terminated due to system reasons (e.g., insufficient resources, process
+    aborted by user).
 
 ## 3. Running State
 
--   **Description**: The process is currently executing on the CPU.
-    Instructions are being processed, and the process is actively performing
-    its intended tasks.
--   **Activities**:
-    -   Executing instructions and performing computations.
-    -   Accessing memory and system resources.
--   **Transitions**:
-    -   **Running → Waiting**: The process may need to wait for an event, such
-        as I/O completion, a lock acquisition, or a message. It then
-        transitions to the Waiting state.
-    -   **Running → Ready**: If the process's time quantum expires (in
-        time-sharing systems) or a higher-priority process becomes ready, the
-        process is preempted and moves back to the Ready state.
-    -   **Running → Terminated**: When the process completes its execution or
-        is terminated due to an error, it enters the Terminated state.
+- **Description**: The process is currently executing on the CPU.
+  Instructions are being processed, and the process is actively performing
+  its intended tasks.
+- **Activities**:
+  - Executing instructions and performing computations.
+  - Accessing memory and system resources.
+- **Transitions**:
+  - **Running → Waiting**: The process may need to wait for an event, such
+    as I/O completion, a lock acquisition, or a message. It then
+    transitions to the Waiting state.
+  - **Running → Ready**: If the process's time quantum expires (in
+    time-sharing systems) or a higher-priority process becomes ready, the
+    process is preempted and moves back to the Ready state.
+  - **Running → Terminated**: When the process completes its execution or
+    is terminated due to an error, it enters the Terminated state.
 
 ## 4. Waiting (Blocked) State
 
--   **Description**: The process is waiting for an external event to occur
-    (e.g., I/O operation completion, receipt of a signal, or availability of a
-    resource). The process is blocked and cannot proceed until the event
-    occurs.
--   **Activities**:
-    -   Waiting for an event to occur.
-    -   Process is suspended and not eligible for CPU time.
--   **Transitions**:
-    -   **Waiting → Ready**: When the event the process was waiting for occurs
-        (e.g., I/O completes), the process moves to the Ready state.
+- **Description**: The process is waiting for an external event to occur
+  (e.g., I/O operation completion, receipt of a signal, or availability of a
+  resource). The process is blocked and cannot proceed until the event
+  occurs.
+- **Activities**:
+  - Waiting for an event to occur.
+  - Process is suspended and not eligible for CPU time.
+- **Transitions**:
+  - **Waiting → Ready**: When the event the process was waiting for occurs
+    (e.g., I/O completes), the process moves to the Ready state.
 
 ## 5. Terminated State
 
--   **Description**: The process has completed its execution or has been
-    terminated. It's no longer active and is waiting for its resources to be
-    deallocated by the OS.
--   **Activities**:
-    -   Releasing resources allocated to the process.
-    -   Performing any necessary cleanup operations.
--   **Transition**:
-    -   There are generally no transitions out of the Terminated state. The
-        process is eventually removed from the system.
+- **Description**: The process has completed its execution or has been
+  terminated. It's no longer active and is waiting for its resources to be
+  deallocated by the OS.
+- **Activities**:
+  - Releasing resources allocated to the process.
+  - Performing any necessary cleanup operations.
+- **Transition**:
+  - There are generally no transitions out of the Terminated state. The
+    process is eventually removed from the system.
 
 ## The Process State Diagram
 
@@ -391,18 +388,17 @@ stateDiagram-v2
 
 ## Key Considerations
 
--   **Scheduler's Role**: The scheduler (primarily the short-term or CPU
-    scheduler) determines which process moves from the Ready state to the
-    Running state.
--   **Dispatcher's Role**: The dispatcher is responsible for the actual
-    context switch: saving the state of the current process and loading the
-    state of the next process.
--   **Resource Management**: The OS manages resources to prevent starvation
-    (where a process is indefinitely denied necessary resources).
+- **Scheduler's Role**: The scheduler (primarily the short-term or CPU
+  scheduler) determines which process moves from the Ready state to the
+  Running state.
+- **Dispatcher's Role**: The dispatcher is responsible for the actual
+  context switch: saving the state of the current process and loading the
+  state of the next process.
+- **Resource Management**: The OS manages resources to prevent starvation
+  (where a process is indefinitely denied necessary resources).
 
 By understanding the five-state process model, you gain a clearer insight into
 how operating systems manage and schedule processes.
-
 
 ## Process Creation:
 
@@ -410,87 +406,86 @@ Process creation is a fundamental operation in any operating system. It involves
 
 ## 1. Process Creation Request
 
--   **Initiation**:
-    -   A request to create a new process can originate from various sources:
-        -   **User action**: A user starts a program (e.g., by clicking an icon or typing a command).
-        -   **System initialization**: During system boot, the OS may start essential processes.
-        -   **Running process**: A process may create child processes (e.g., a web server spawning multiple processes to handle client requests).
-        -   **Scheduled job**: A scheduled task (e.g., cron job) can initiate process creation.
--   **System Call**:
-    -   The request translates into a system call, usually `fork()` followed by `exec()` (in Unix-like systems) or `CreateProcess()` (in Windows). These system calls signal the OS to create a new process.
+- **Initiation**:
+  - A request to create a new process can originate from various sources:
+    - **User action**: A user starts a program (e.g., by clicking an icon or typing a command).
+    - **System initialization**: During system boot, the OS may start essential processes.
+    - **Running process**: A process may create child processes (e.g., a web server spawning multiple processes to handle client requests).
+    - **Scheduled job**: A scheduled task (e.g., cron job) can initiate process creation.
+- **System Call**:
+  - The request translates into a system call, usually `fork()` followed by `exec()` (in Unix-like systems) or `CreateProcess()` (in Windows). These system calls signal the OS to create a new process.
 
 ## 2. OS Receives the Request
 
--   **Validation**:
-    -   The OS verifies the request for validity, checking if:
-        -   The user has the necessary permissions to create a new process.
-        -   The system has sufficient resources (memory, CPU, etc.) to support the new process.
--   **Resource Check**:
-    -   The OS determines the resources required by the process (based on the program being executed) and ensures they are available.
+- **Validation**:
+  - The OS verifies the request for validity, checking if:
+    - The user has the necessary permissions to create a new process.
+    - The system has sufficient resources (memory, CPU, etc.) to support the new process.
+- **Resource Check**:
+  - The OS determines the resources required by the process (based on the program being executed) and ensures they are available.
 
 ## 3. Process Control Block (PCB) Creation
 
--   **Memory Allocation**:
-    -   The OS allocates memory for the new process's PCB. This block will store all the essential information about the process.
--   **Initialization**:
-    -   The PCB is initialized with:
-        -   **Process ID (PID)**: A unique identifier assigned to the new process.
-        -   **Process State**: Initially set to 'New'.
-        -   **Priority**: Assigning a default or calculated priority.
-        -   **Accounting Information**: Initial values for CPU time used, execution time, etc.
-        -   **Memory Pointers**: Pointers to memory regions allocated to the process.
-        -   **Security Information**: User ID and permissions.
+- **Memory Allocation**:
+  - The OS allocates memory for the new process's PCB. This block will store all the essential information about the process.
+- **Initialization**:
+  - The PCB is initialized with:
+    - **Process ID (PID)**: A unique identifier assigned to the new process.
+    - **Process State**: Initially set to 'New'.
+    - **Priority**: Assigning a default or calculated priority.
+    - **Accounting Information**: Initial values for CPU time used, execution time, etc.
+    - **Memory Pointers**: Pointers to memory regions allocated to the process.
+    - **Security Information**: User ID and permissions.
 
 ## 4. Memory Allocation for the Process
 
--   **Address Space Setup**:
-    -   The OS allocates memory regions for the process's address space, which includes:
-        -   **Code (Text) Segment**: Stores the executable instructions of the program.
-        -   **Data Segment**: Stores global and static variables.
-        -   **Heap Segment**: Dynamically allocated memory during runtime.
-    -   **Stack Segment**: Used for function calls and local variables.
--   **Loading Executable**:
-    -   The program's executable file is loaded into the allocated memory (specifically the code segment).
+- **Address Space Setup**:
+  - The OS allocates memory regions for the process's address space, which includes:
+    - **Code (Text) Segment**: Stores the executable instructions of the program.
+    - **Data Segment**: Stores global and static variables.
+    - **Heap Segment**: Dynamically allocated memory during runtime.
+  - **Stack Segment**: Used for function calls and local variables.
+- **Loading Executable**:
+  - The program's executable file is loaded into the allocated memory (specifically the code segment).
 
 ## 5. Copying Necessary Data (for `fork()`)
 
-*   **Forking (if applicable)**:
-    *   If the process is being created via `fork()`, the OS performs a copy-on-write operation. This process involves both a parent and a child process:
-        *   **Parent Process**: The process that initiates the `fork()` system call to create a new process.
-        *   **Child Process**: The new process created as a result of the `fork()` system call.
-        *   **Copy-on-Write**: Instead of immediately copying all the parent's memory, the OS creates a shared mapping. When either the parent or child attempts to modify a shared page, a new copy of that page is created for the modifying process.
-    *   **Roles and Relationships**:
-        *   **PID**: The child process receives a new, unique Process ID (PID).
-        *   **PPID**: The child process's Parent Process ID (PPID) is set to the PID of the parent process.
-        *   **Memory**: Initially, the child process shares the memory space with the parent process (via copy-on-write). Over time, as either process modifies memory, they get their own copies.
-        *   **Execution**: After the `fork()` call, both the parent and child processes continue execution. The `fork()` call returns the PID of the child process to the parent, and it returns 0 to the child process.
-    *   This step is skipped if the process is created using `CreateProcess()` or similar mechanisms that don't involve forking.
-
+- **Forking (if applicable)**:
+  - If the process is being created via `fork()`, the OS performs a copy-on-write operation. This process involves both a parent and a child process:
+    - **Parent Process**: The process that initiates the `fork()` system call to create a new process.
+    - **Child Process**: The new process created as a result of the `fork()` system call.
+    - **Copy-on-Write**: Instead of immediately copying all the parent's memory, the OS creates a shared mapping. When either the parent or child attempts to modify a shared page, a new copy of that page is created for the modifying process.
+  - **Roles and Relationships**:
+    - **PID**: The child process receives a new, unique Process ID (PID).
+    - **PPID**: The child process's Parent Process ID (PPID) is set to the PID of the parent process.
+    - **Memory**: Initially, the child process shares the memory space with the parent process (via copy-on-write). Over time, as either process modifies memory, they get their own copies.
+    - **Execution**: After the `fork()` call, both the parent and child processes continue execution. The `fork()` call returns the PID of the child process to the parent, and it returns 0 to the child process.
+  - This step is skipped if the process is created using `CreateProcess()` or similar mechanisms that don't involve forking.
 
 ## 6. Initialization of Process Context
 
--   **CPU Registers**:
-    -   The CPU registers are initialized with appropriate values. This includes:
-        -   **Program Counter (PC)**: Set to the entry point of the program (typically the `main()` function).
-        -   **Stack Pointer (SP)**: Initialized to point to the top of the stack segment.
-        -   **Other Registers**: Set to initial default values or copied from the parent process (in the case of forking).
--   **I/O Setup**:
-    -   Standard input, standard output, and standard error streams are set up. By default, these are usually connected to the console.
+- **CPU Registers**:
+  - The CPU registers are initialized with appropriate values. This includes:
+    - **Program Counter (PC)**: Set to the entry point of the program (typically the `main()` function).
+    - **Stack Pointer (SP)**: Initialized to point to the top of the stack segment.
+    - **Other Registers**: Set to initial default values or copied from the parent process (in the case of forking).
+- **I/O Setup**:
+  - Standard input, standard output, and standard error streams are set up. By default, these are usually connected to the console.
 
 ## 7. Transition to Ready State
 
--   **Queueing**:
-    -   The process is moved from the 'New' state to the 'Ready' state.
-    -   The PCB is added to the ready queue, waiting for its turn to be scheduled on the CPU.
+- **Queueing**:
+  - The process is moved from the 'New' state to the 'Ready' state.
+  - The PCB is added to the ready queue, waiting for its turn to be scheduled on the CPU.
 
 ## 8. Scheduling and Execution
 
--   **Scheduler Selection**:
-    -   The scheduler selects a process from the ready queue to run based on scheduling algorithms (e.g., First-Come, First-Served, Shortest Job Next, Priority Scheduling, Round Robin).
--   **Dispatching**:
-    -   The dispatcher takes the selected process and performs a context switch:
-        -   **Context Switch**: Saving the state of the currently running process (if any) and loading the state of the new process.
-    -   The CPU is now executing instructions from the new process.
+- **Scheduler Selection**:
+  - The scheduler selects a process from the ready queue to run based on scheduling algorithms (e.g., First-Come, First-Served, Shortest Job Next, Priority Scheduling, Round Robin).
+- **Dispatching**:
+  - The dispatcher takes the selected process and performs a context switch:
+    - **Context Switch**: Saving the state of the currently running process (if any) and loading the state of the new process.
+  - The CPU is now executing instructions from the new process.
 
 ## Diagram: Process Creation Flow
 
@@ -515,13 +510,14 @@ graph LR
 
 ## Important Considerations
 
--   **Error Handling**: Throughout the process, the OS must handle errors gracefully (e.g., insufficient memory, invalid executable).
--   **Security**: Security measures are applied to prevent malicious code from compromising the system.
--   **Resource Limits**: The OS enforces resource limits to prevent processes from consuming excessive resources.
+- **Error Handling**: Throughout the process, the OS must handle errors gracefully (e.g., insufficient memory, invalid executable).
+- **Security**: Security measures are applied to prevent malicious code from compromising the system.
+- **Resource Limits**: The OS enforces resource limits to prevent processes from consuming excessive resources.
 
 By understanding these steps, you gain a comprehensive view of what happens behind the scenes when a new process is created. This knowledge is crucial for advanced topics in operating systems, such as process management, concurrency, and security.
 
 ## Process Creating Code
+
 ```c++
 #include <stdio.h>
 #include <stdlib.h>
@@ -586,9 +582,9 @@ The kernel keeps the zombie process's PCB until the parent process calls `wait()
 
 ## Characteristics of Zombie Processes
 
-*   **Inactive**: Zombie processes are not running or consuming any CPU time.
-*   **Minimal Resources**: They occupy very little memory, mainly just the PCB.
-*   **Visible**: They can be seen in process listings (e.g., using `ps` command on Unix-like systems) with a state of `Z` or ` defunct`.
+- **Inactive**: Zombie processes are not running or consuming any CPU time.
+- **Minimal Resources**: They occupy very little memory, mainly just the PCB.
+- **Visible**: They can be seen in process listings (e.g., using `ps` command on Unix-like systems) with a state of `Z` or ` defunct`.
 
 ## Problems Caused by Zombie Processes
 
@@ -634,12 +630,13 @@ int main() {
   return 0;
 }
 ```
+
 **You can find the complied code bu [clicking here](/blog_code/process_creation)**
 
 In this example:
 
-*   The child process exits immediately.
-*   The parent process sleeps for 60 seconds *without* calling `wait()`. This creates a zombie process that you can observe using the `ps` command during the parent's sleep time.
+- The child process exits immediately.
+- The parent process sleeps for 60 seconds _without_ calling `wait()`. This creates a zombie process that you can observe using the `ps` command during the parent's sleep time.
 
 ## Diagram: Zombie Process Lifecycle
 
@@ -666,66 +663,65 @@ sequenceDiagram
 
 ### 1. Parent Dies Before Child
 
-*   **Scenario**: What happens to a child process if its parent process terminates first?
+- **Scenario**: What happens to a child process if its parent process terminates first?
 
-*   **Answer**: In most operating systems, when a parent process dies before its child processes, the child processes become **orphaned**. The orphaned processes are then "adopted" by a special system process, typically the `init` process (PID 1) or a systemd equivalent.
+- **Answer**: In most operating systems, when a parent process dies before its child processes, the child processes become **orphaned**. The orphaned processes are then "adopted" by a special system process, typically the `init` process (PID 1) or a systemd equivalent.
 
-*   **Init Process's Role**:
-    *   The `init` process is designed to clean up orphaned processes.
-    *   It does this by periodically calling `wait()` or `waitpid()` on its child processes, thus reaping any zombie processes and preventing them from accumulating indefinitely.
+- **Init Process's Role**:
+  - The `init` process is designed to clean up orphaned processes.
+  - It does this by periodically calling `wait()` or `waitpid()` on its child processes, thus reaping any zombie processes and preventing them from accumulating indefinitely.
 
-*   **Impact on Child Process**:
-    *   The child process continues to run as normal. It's only the parent-child relationship that changes.
-    *   When the child process eventually terminates, the `init` process will receive the `SIGCHLD` signal and clean up the process entry.
+- **Impact on Child Process**:
+  - The child process continues to run as normal. It's only the parent-child relationship that changes.
+  - When the child process eventually terminates, the `init` process will receive the `SIGCHLD` signal and clean up the process entry.
 
 ### 2. Child Not Dead and Memory Usage
 
-*   **Scenario**: If the parent process terminates while the child process is still running, what about memory usage and other system resources held by the child?
+- **Scenario**: If the parent process terminates while the child process is still running, what about memory usage and other system resources held by the child?
 
-*   **Answer**:
-    *   **Memory**: The child process continues to use the memory and other resources (file descriptors, network connections, etc.) that were allocated to it. These resources are not automatically released when the parent process dies. The child process operates independently, and its resource usage is managed by the kernel as long as the child process is alive.
-    *   **Cleanup**: Once the child process terminates, the OS reclaims all the resources that were allocated to it, regardless of whether the original parent process is still alive.
+- **Answer**:
+  - **Memory**: The child process continues to use the memory and other resources (file descriptors, network connections, etc.) that were allocated to it. These resources are not automatically released when the parent process dies. The child process operates independently, and its resource usage is managed by the kernel as long as the child process is alive.
+  - **Cleanup**: Once the child process terminates, the OS reclaims all the resources that were allocated to it, regardless of whether the original parent process is still alive.
 
 ### 3. Parent Alive But Doesn't Expect Child to End
 
-*   **Scenario**: If the parent process is alive but doesn't expect the child process to end its task (i.e., the parent doesn't call `wait()`), can the child process still be adopted by the OS?
+- **Scenario**: If the parent process is alive but doesn't expect the child process to end its task (i.e., the parent doesn't call `wait()`), can the child process still be adopted by the OS?
 
-*   **Answer**: No, the child process cannot be adopted by the `init` process while the original parent process is still alive.
-    *   **Zombie State**: When the child process terminates, it becomes a zombie process. It will remain in the zombie state until the parent process calls `wait()` to collect its exit status.
-    *   **No Adoption**: The `init` process only adopts orphaned processes (i.e., processes whose parent has already terminated).
-    *   **Parent Responsibility**: As long as the parent process is alive, it's the parent's responsibility to handle the terminated child process and collect its exit status.
+- **Answer**: No, the child process cannot be adopted by the `init` process while the original parent process is still alive.
+  - **Zombie State**: When the child process terminates, it becomes a zombie process. It will remain in the zombie state until the parent process calls `wait()` to collect its exit status.
+  - **No Adoption**: The `init` process only adopts orphaned processes (i.e., processes whose parent has already terminated).
+  - **Parent Responsibility**: As long as the parent process is alive, it's the parent's responsibility to handle the terminated child process and collect its exit status.
 
 ### Summary:
 
-*   **Orphaned Children**: If a parent process dies, the `init` process adopts the orphaned children, ensuring they are eventually cleaned up.
-*   **Resource Management**: Child processes continue to use allocated resources, even if the parent dies.
-*   **Zombie Cleanup**: If the parent is alive but neglects to call `wait()`, the child becomes a zombie and remains until the parent reaps it.
-*   Zombie Process doesn't have resource leak on memory or the CPU; the only leak it has is the operating system cannot give the PID to another process until the parent process calls the wait command.
-
+- **Orphaned Children**: If a parent process dies, the `init` process adopts the orphaned children, ensuring they are eventually cleaned up.
+- **Resource Management**: Child processes continue to use allocated resources, even if the parent dies.
+- **Zombie Cleanup**: If the parent is alive but neglects to call `wait()`, the child becomes a zombie and remains until the parent reaps it.
+- Zombie Process doesn't have resource leak on memory or the CPU; the only leak it has is the operating system cannot give the PID to another process until the parent process calls the wait command.
 
 ### Why an OS Can't Assign a Task to a Zombie Process (Refined):
 
 1.  **Terminated Process**:
-    *   A zombie process is a process that has already **completed its execution**.
-    *   It's in a state where it no longer executes code.
+    - A zombie process is a process that has already **completed its execution**.
+    - It's in a state where it no longer executes code.
 
 2.  **Purpose is to Report Exit Status**:
-    *   The sole purpose of a zombie process is to retain its process ID (PID) and exit status (the reason for termination) so that its parent process can retrieve this information.
+    - The sole purpose of a zombie process is to retain its process ID (PID) and exit status (the reason for termination) so that its parent process can retrieve this information.
 
 3.  **No Execution Context**:
-    *   Zombie processes do not have an active execution context (CPU registers, program counter, etc.).
-    *   The OS cannot resume execution or assign new tasks to a process without an active execution context.
+    - Zombie processes do not have an active execution context (CPU registers, program counter, etc.).
+    - The OS cannot resume execution or assign new tasks to a process without an active execution context.
 
 4.  **Parent Process's Role**:
-    *   The parent process is responsible for calling `wait()` or `waitpid()` to retrieve the zombie process's exit status and release its entry from the process table.
-    *   As long as the parent process exists (and hasn't called `wait()`), the zombie process must remain to provide the exit status.
+    - The parent process is responsible for calling `wait()` or `waitpid()` to retrieve the zombie process's exit status and release its entry from the process table.
+    - As long as the parent process exists (and hasn't called `wait()`), the zombie process must remain to provide the exit status.
 
 5.  **Parent Process Does Not Determine Task Assignment**:
-    *   *Even if* the parent process were to continue running (and not call `wait()`), the zombie process *still* could not be assigned a new task.
-    *   The task assignment to any process is solely controlled by the OS, and it cannot assign tasks to a process that has terminated.
+    - _Even if_ the parent process were to continue running (and not call `wait()`), the zombie process _still_ could not be assigned a new task.
+    - The task assignment to any process is solely controlled by the OS, and it cannot assign tasks to a process that has terminated.
 
 6.  **Cannot Assign Any Task to a Dead Process regardless of if the parent process is alive and active**
-    *   A terminated child is meant to be reaped by the parent and not by an external agent like the OS.
+    - A terminated child is meant to be reaped by the parent and not by an external agent like the OS.
 
 ### Analogy:
 

@@ -1,10 +1,10 @@
 ---
-import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
-import Header from "../components/AstroComponent/header/Header.astro";
-import authorConfig from "../config/siteConfig/info.json";
-import Footer from "../components/AstroComponent/footer/Footer.astro";
-import { featureFlags } from "../config/featureFlag/featureFlag.json";
-import AboutSection from "../components/AstroComponent/personal/AboutMe/AboutMe.astro";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import Footer from "@astro/footer/Footer.astro";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import AboutSection from "@astro/personal/AboutMe/AboutMe.astro";
 
 export const prerender = true;
 
@@ -27,7 +27,7 @@ try {
   </head>
   <body class="mt-0 pt-0">
     <Header />
-    <main class="mt-0 pt-15">
+    <main class="pt-15 mt-0">
       <AboutSection authorConfig={authorConfig} />
     </main>
     <Footer class="mt-auto" />

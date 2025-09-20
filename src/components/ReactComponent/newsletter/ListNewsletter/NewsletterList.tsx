@@ -11,8 +11,8 @@ const NewsletterList = memo(function NewsletterList({
 }: NewsletterListProps) {
   if (newsletters.length === 0) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center mt-[-10vh] space-y-6 p-8 ">
-        <h2 className="text-3xl font-bold text-[#7aa2f7] tracking-wide">
+      <div className="mt-[-10vh] flex min-h-screen flex-col items-center justify-center space-y-6 p-8">
+        <h2 className="text-3xl font-bold tracking-wide text-[#7aa2f7]">
           No Newsletters Available Yet
         </h2>
         <p className="text-lg text-gray-400">
@@ -21,7 +21,7 @@ const NewsletterList = memo(function NewsletterList({
         </p>
         <a
           href="/"
-          className="inline-block px-6 py-3 bg-[#7aa2f7] text-white font-medium rounded-lg shadow-md hover:bg-[#5f90e8] transition duration-300"
+          className="inline-block rounded-lg bg-[#7aa2f7] px-6 py-3 font-medium text-white shadow-md transition duration-300 hover:bg-[#5f90e8]"
         >
           Go Back to Home
         </a>
@@ -37,7 +37,7 @@ const NewsletterList = memo(function NewsletterList({
         currentPage,
         handlePageChange,
         isLoading,
-        error
+        error,
       ) => (
         <NewsletterListUI
           currentNewsletters={currentNewsletters}

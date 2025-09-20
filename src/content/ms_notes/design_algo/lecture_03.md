@@ -209,20 +209,17 @@ Selection Sort's main advantage lies in minimizing swaps, making it suitable whe
 Recursive algorithms break a problem down into smaller, self-similar subproblems. Analyzing their efficiency often involves **recurrence relations**.
 
 - **Definition:** A recurrence relation defines a function or sequence, `T(n)`, in terms of its value on smaller inputs (e.g., `T(n-1)`, `T(n/2)`). It consists of:
-
   - **Base Case(s):** The value of the function for one or more fixed small inputs (e.g., `T(0)`, `T(1)`). This stops the recursion.
   - **Recursive (or Recurrent) Case:** Defines the function for a general input `n` based on its value on smaller inputs and the cost of the work done at that step (e.g., dividing the problem, combining results).
 
 - **Forming Recurrences from Code:**
   To form a recurrence `T(n)` for the running time of a recursive function on input size `n`:
-
   1.  Identify the **base case(s)** in the code. The time taken is usually constant, say `a` or `c`. `T(base_value) = constant`.
   2.  Identify the **recursive step(s)**. Determine:
       - The number of recursive calls made.
       - The size of the input for each recursive call (e.g., `n-1`, `n/2`).
       - The amount of work done _outside_ the recursive calls at the current step (comparisons, arithmetic, assignments, etc.). This is often represented as `f(n)`, e.g., `O(1)`, `O(n)`.
   3.  Combine these: `T(n) = (number_of_calls * T(size_of_call)) + f(n)`.
-
   - **Example 1 (Slide 3b/19 - `f(n)`):**
 
     ```java
@@ -240,6 +237,7 @@ Recursive algorithms break a problem down into smaller, self-similar subproblems
     - Recurrence: `T(n) = b + T(n-1)` for `n > 0`, `T(0) = a`.
 
   - **Example 2 (Slide 3b/20 - `g(n)`):**
+
     ```java
     public int g(int n) {
       if (n == 1) // Comparison: O(1)
@@ -248,6 +246,7 @@ Recursive algorithms break a problem down into smaller, self-similar subproblems
         return 3 * g(n / 2) + g( n / 2) + 5; // 2 recursive calls, size n/2
     }
     ```
+
     - Base Case: `n == 1`. Constant time work. Let `T(1) = c`.
     - Recursive Case: `n > 1`. Constant work (`b` = comparison, multiplication, addition, return) + two recursive calls `T(n/2)`.
     - Recurrence: `T(n) = b + 2T(n/2)` for `n > 1`, `T(1) = c`.
@@ -257,7 +256,6 @@ Recursive algorithms break a problem down into smaller, self-similar subproblems
 This method, also known as unrolling or back-substitution, involves repeatedly applying the recursive case definition to expand the recurrence until a pattern emerges, typically leading to a summation that can be solved.
 
 - **General Steps:**
-
   1.  Write down the recurrence relation.
   2.  Substitute the relation back into itself for the smaller term (e.g., replace `T(n-1)` or `T(n/2)` using the definition).
   3.  Repeat the substitution a few times.
@@ -268,7 +266,6 @@ This method, also known as unrolling or back-substitution, involves repeatedly a
   8.  Express the final result using Big-O notation.
 
 - **Example 1 Solved (T(n) = T(n-1) + n, T(1)=1):**
-
   1.  `T(n) = T(n-1) + n`
   2.  `T(n) = [T(n-2) + (n-1)] + n = T(n-2) + (n-1) + n`
   3.  `T(n) = [T(n-3) + (n-2)] + (n-1) + n = T(n-3) + (n-2) + (n-1) + n`
@@ -279,7 +276,6 @@ This method, also known as unrolling or back-substitution, involves repeatedly a
   8.  `T(n) = O(n²)`.
 
 - **Example 2 Solved (T(n) = T(n/2) + 1, T(1)=0):** (Assuming n is power of 2)
-
   1.  `T(n) = T(n/2) + 1`
   2.  `T(n) = [T(n/4) + 1] + 1 = T(n/4) + 2`
   3.  `T(n) = [T(n/8) + 1] + 2 = T(n/8) + 3`
@@ -290,7 +286,6 @@ This method, also known as unrolling or back-substitution, involves repeatedly a
   8.  `T(n) = O(log n)`.
 
 - **Example 3 Solved (T(n) = 2T(n/2) + n, T(1)=0):** (Assuming n is power of 2)
-
   1.  `T(n) = 2T(n/2) + n`
   2.  `T(n) = 2[2T(n/4) + n/2] + n = 4T(n/4) + n + n = 2²T(n/2²) + 2n`
   3.  `T(n) = 4[2T(n/8) + n/4] + 2n = 8T(n/8) + n + 2n = 2³T(n/2³) + 3n`
@@ -301,7 +296,6 @@ This method, also known as unrolling or back-substitution, involves repeatedly a
   8.  `T(n) = O(n log n)`. (This is characteristic of efficient divide-and-conquer algorithms like Merge Sort).
 
 - **Example 4 Solved (Factorial: T(n) = T(n-1) + b, T(0)=c):**
-
   1.  `T(n) = T(n-1) + b`
   2.  `T(n) = [T(n-2) + b] + b = T(n-2) + 2b`
   3.  `T(n) = [T(n-3) + b] + 2b = T(n-3) + 3b`

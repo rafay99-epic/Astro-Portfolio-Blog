@@ -46,7 +46,7 @@ const saveSearchHistory = (history: string[]) => {
 
 const calculateRelevance = (
   result: { score?: number; item: Post },
-  searchIntent: ReturnType<typeof detectSearchIntent>
+  searchIntent: ReturnType<typeof detectSearchIntent>,
 ) => {
   const baseScore = 1 - (result.score || 0);
   const intentBonus = searchIntent.type !== "general" ? 0.2 : 0;
@@ -130,7 +130,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     matchedFields: [] as string[],
   });
   const [searchHistory, setSearchHistory] = useState<string[]>(() =>
-    loadSearchHistory()
+    loadSearchHistory(),
   );
 
   const clearHistory = useCallback(() => {
@@ -164,7 +164,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     (
       searchQuery: string,
       results: Post[],
-      stats: UseSearchResult["searchStats"]
+      stats: UseSearchResult["searchStats"],
     ) => {
       searchCache.set(searchQuery, {
         results,
@@ -172,17 +172,17 @@ const useSearch = (posts: Post[]): UseSearchResult => {
         timestamp: Date.now(),
       });
     },
-    []
+    [],
   );
 
   const filteredPosts = useMemo(
     () => posts.filter((post) => !post.data.draft),
-    [posts]
+    [posts],
   );
 
   const fuse = useMemo(
     () => new Fuse(filteredPosts, UNIFIED_SEARCH_CONFIG),
-    [filteredPosts]
+    [filteredPosts],
   );
 
   const performSearch = useCallback(
@@ -212,7 +212,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
       if (searchIntent.type !== "general") {
         processedQuery = searchQuery.replace(
           /^(date:|tag:|tags:|#|author:|by:|on:)\s*/,
-          ""
+          "",
         );
       }
 
@@ -266,11 +266,11 @@ const useSearch = (posts: Post[]): UseSearchResult => {
         relevanceScore: enhancedResults.length
           ? enhancedResults.reduce(
               (acc, curr) => acc + (curr as any).relevanceScore,
-              0
+              0,
             ) / enhancedResults.length
           : 0,
         matchedFields: Array.from(
-          new Set(enhancedResults.flatMap((r) => r.matchedFields))
+          new Set(enhancedResults.flatMap((r) => r.matchedFields)),
         ),
       };
 
@@ -279,7 +279,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
       updateCache(searchQuery, enhancedResults, stats);
       updateSearchHistory(searchQuery);
     },
-    [checkCache, updateCache, updateSearchHistory, fuse]
+    [checkCache, updateCache, updateSearchHistory, fuse],
   );
 
   useEffect(() => {

@@ -22,7 +22,6 @@ const {
   readTime,
   badge,
   subject,
-  type = "blog",
   transitionName,
 } = Astro.props;
 ---
@@ -118,12 +117,11 @@ const {
   }
 </style>
 
-<div class="article-header p-8 mb-8">
+<div class="article-header mb-8 p-8">
   <div class="text-center">
-    {/* Badge Section */}
     {
       badge && (
-        <div class="flex justify-center mb-6">
+        <div class="mb-6 flex justify-center">
           <div class="article-badge">
             <span>{badge.icon}</span>
             {badge.text}
@@ -132,8 +130,7 @@ const {
       )
     }
 
-    {/* Title */}
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+    <h1 class="mb-6 text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
       <span
         class="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
         transition:name={transitionName}
@@ -142,16 +139,14 @@ const {
       </span>
     </h1>
 
-    {/* Description */}
     {
       description && (
-        <p class="text-lg text-[#a9b1d6] mb-6 max-w-3xl mx-auto leading-relaxed">
+        <p class="mx-auto mb-6 max-w-3xl text-lg leading-relaxed text-[#a9b1d6]">
           {description}
         </p>
       )
     }
 
-    {/* Meta Information */}
     <div class="meta-info">
       <div class="meta-item">
         <div class="meta-icon">📅</div>

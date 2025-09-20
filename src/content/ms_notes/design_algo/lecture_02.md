@@ -44,7 +44,6 @@ Let's look at common code structures:
     These are the lightning-fast operations that take roughly the same amount of time regardless of 'n'. Think simple assignments (`x = y;`), basic math (`x = 5 * y + 4 - z;`), accessing an array element (`A[j] = 5;`), or a simple `if (x < 12)` check. Blink and you miss it!
 
 2.  **Loops: Where Things Get Interesting**
-
     - **Simple Linear Loops: O(n)**
       If a loop runs `n` times, and the work inside is just O(1), the total time grows directly with `n`. Like `for (j=0; j < n; j++) { sum = sum + j; }`. This is **O(n)**.
       _Watch Out!_ If a loop runs a _fixed_ number of times, like `for (j=0; j < 100; j++)`, that's just constant work! 100 is a constant, so the loop is O(1).

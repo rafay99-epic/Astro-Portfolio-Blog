@@ -1,11 +1,10 @@
 ---
-import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
-import Header from "../components/AstroComponent/header/Header.astro";
-import NewsletterReactCompoent from "../components/ReactComponent/newsletter/SubNewsletter/newsletter";
-import Footer from "../components/AstroComponent/footer/Footer.astro";
-import authorConfig from "../config/siteConfig/info.json";
-import { featureFlags } from "../config/featureFlag/featureFlag.json";
-import SpeedInsights from "@vercel/speed-insights/astro";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import NewsletterReactCompoent from "@react/newsletter/SubNewsletter/newsletter";
+import Footer from "@astro/footer/Footer.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = false;
 try {
   if (!featureFlags.showNewsletter) {
@@ -27,8 +26,7 @@ try {
 
   <body>
     <Header />
-    <SpeedInsights />
-    <main class="pt-20 mt-0">
+    <main class="mt-0 pt-20">
       <NewsletterReactCompoent client:visible />
     </main>
     <Footer class="mt-auto" />

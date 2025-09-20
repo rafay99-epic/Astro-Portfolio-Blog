@@ -16,6 +16,7 @@ ProjectTech:
   ]
 ProjectRanking: "7"
 ProjectCategory: ["Mobile Apps"]
+ProjectDeployedLink: ""
 ---
 
 **Simple Thread** is a powerful yet straightforward chat application that leverages **Flutter** for a clean, cross-platform user interface and **Firebase** for secure, real-time data management. This open-source app focuses on offering an efficient and user-friendly messaging experience. Let's dive into the key features, functionality, and the development process behind Simple Thread, and explore how you can get started with it.

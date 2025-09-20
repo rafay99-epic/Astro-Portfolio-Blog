@@ -10,6 +10,7 @@ ProjectTech:
   - unity2D
 ProjectCategory: ["Games"]
 ProjectRanking: "14"
+ProjectDeployedLink: ""
 ---
 
 I'm excited to share with you my game **Immune Defenders**, a fast-paced, obstacle-dodging experience where you control a character navigating a virus-infested world. The goal? Dodge the viruses and reach the endpoint without touching any of the obstacles. With its engaging gameplay, cool music, and a challenging design, this game is built to test your reflexes and keep you hooked for hours.
@@ -53,7 +54,6 @@ If you want to try out **Immune Defenders** on your own machine, follow these st
    ```
 
 2. **Open in Unity**
-
    - Open **Unity Hub**.
    - Select **Open** and navigate to the project folder you just cloned.
    - Open the project in Unity and let the editor load all the necessary files.
@@ -61,7 +61,6 @@ If you want to try out **Immune Defenders** on your own machine, follow these st
 #### Running the Game
 
 1. **Play in Unity**
-
    - Once the project is open, click on **Play** in Unity's toolbar to start the game directly inside the editor.
 
 2. **Run the Build**

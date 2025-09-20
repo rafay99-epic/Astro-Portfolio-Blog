@@ -1,9 +1,9 @@
 ---
-lecture_title: 'Synchronization in Operating System '
+lecture_title: "Synchronization in Operating System "
 lecture_description: Synchronization in Process and Shared memory
 pubDate: 2025-09-10T19:00:00.000Z
 lecture_draft: true
-lectureNumber: '07'
+lectureNumber: "07"
 subject: Advance Operating System
 ---
 
@@ -25,18 +25,18 @@ A **process in shared memory** refers to a process that **communicates and excha
    Both (or more) processes **attach** this memory segment to their address space.
 3. **Communication via Shared Memory:**\
    Now, they can **read and write directly** to this memory instead of sending messages.
-   * Example: Process A writes data to shared memory.
-   * Process B reads the same data from shared memory.
+   - Example: Process A writes data to shared memory.
+   - Process B reads the same data from shared memory.
 4. **Detachment and Removal:**\
    After use, processes detach the memory, and finally, the OS can deallocate it.
 
 ### Benefit:
 
-* **Fastest IPC method** because it avoids kernel overhead of system calls once memory mapping is done.
+- **Fastest IPC method** because it avoids kernel overhead of system calls once memory mapping is done.
 
 ### Challenge:
 
-* Needs **synchronization** (using semaphores, mutexes, etc.), otherwise you get **race conditions** when multiple processes read/write at the same time.
+- Needs **synchronization** (using semaphores, mutexes, etc.), otherwise you get **race conditions** when multiple processes read/write at the same time.
 
 Ohh, this is **the core headache of concurrency** in operating systems 🤯 — but let’s untangle it step by step.
 
@@ -45,35 +45,35 @@ Ohh, this is **the core headache of concurrency** in operating systems 🤯 — 
 When **multiple processes** are performing the **same task** and try to **access shared memory simultaneously**, three key issues can arise:
 
 1. **Race Conditions**
-   * Happens when the output depends on the **order/timing** of execution.
-   * Example: Two processes try to increase the same counter in shared memory.
-     * Process A reads → 5
-     * Process B reads → 5
-     * Both increment → 6 (instead of 7). ⚠️
+   - Happens when the output depends on the **order/timing** of execution.
+   - Example: Two processes try to increase the same counter in shared memory.
+     - Process A reads → 5
+     - Process B reads → 5
+     - Both increment → 6 (instead of 7). ⚠️
 2. **Data Inconsistency**
-   * Because multiple processes are writing to the same location at the same time.
+   - Because multiple processes are writing to the same location at the same time.
 3. **CPU and Time Wastage**
-   * If not controlled, processes may "busy-wait" (constantly checking) for access.
-   * This wastes CPU cycles.
+   - If not controlled, processes may "busy-wait" (constantly checking) for access.
+   - This wastes CPU cycles.
 
 ## 🔹 How OS Handles This — Synchronization
 
-The OS provides **synchronization mechanisms** to enforce **mutual exclusion** (only *one* process can access the shared resource at a time).
+The OS provides **synchronization mechanisms** to enforce **mutual exclusion** (only _one_ process can access the shared resource at a time).
 
 ### Common Solutions:
 
 1. **Mutex (Mutual Exclusion lock)**
-   * Only one process can lock the shared resource at a time.
-   * Think of it like a *key*: if someone has the key, others must wait.
+   - Only one process can lock the shared resource at a time.
+   - Think of it like a _key_: if someone has the key, others must wait.
 2. **Semaphore**
-   * A signaling mechanism that can control access for single or multiple processes.
-   * Binary Semaphore → works like a mutex.
-   * Counting Semaphore → allows limited concurrent access.
+   - A signaling mechanism that can control access for single or multiple processes.
+   - Binary Semaphore → works like a mutex.
+   - Counting Semaphore → allows limited concurrent access.
 3. **Monitors (High-Level)**
-   * Higher abstraction (in languages like Java, synchronized methods).
+   - Higher abstraction (in languages like Java, synchronized methods).
 4. **Spinlocks / Busy Waiting vs. Blocking**
-   * To avoid wasting time:
-     * Instead of checking (spinlock), OS often **puts waiting processes to sleep** until resource is free → prevents CPU **time wastage**.
+   - To avoid wasting time:
+     - Instead of checking (spinlock), OS often **puts waiting processes to sleep** until resource is free → prevents CPU **time wastage**.
 
 ## 🔹 Example Scenario: Shared Counter Problem
 
@@ -81,25 +81,25 @@ Imagine **multiple processes updating a shared counter** in memory.
 
 ### ❌ Without Synchronization: (Race condition)
 
-* Process A reads counter = 10
-* Process B reads counter = 10
-* A increments → writes 11
-* B increments → writes 11
-* Final value = **11** (wrong, should be 12).
+- Process A reads counter = 10
+- Process B reads counter = 10
+- A increments → writes 11
+- B increments → writes 11
+- Final value = **11** (wrong, should be 12).
 
 ### ✅ With Synchronization (using a Mutex):
 
-* Process A locks → reads 10 → increments → writes 11 → unlocks.
-* Process B waits.
-* After unlock, B locks → reads 11 → increments → writes 12 → unlocks.
-* Final value = **12** (correct ✅).
+- Process A locks → reads 10 → increments → writes 11 → unlocks.
+- Process B waits.
+- After unlock, B locks → reads 11 → increments → writes 12 → unlocks.
+- Final value = **12** (correct ✅).
 
 ## 🔹 How this saves **time & resources**
 
-* Instead of processes constantly fighting for memory:
-  * **Mutex/Semaphore tells them when they can safely access.**
-  * Others are put to **sleep state** (not wasting CPU cycles).
-  * Wakes up only when it’s their turn → efficient.
+- Instead of processes constantly fighting for memory:
+  - **Mutex/Semaphore tells them when they can safely access.**
+  - Others are put to **sleep state** (not wasting CPU cycles).
+  - Wakes up only when it’s their turn → efficient.
 
 ## 🔹 Quick (Simplified) C Pseudocode Example
 
@@ -141,17 +141,17 @@ int main() {
 
 In the **first diagram**, all three processes (P1, P2, P3) are working on the same **shared memory** at the same time:
 
-* **Step A:**
-  * P1 reads shared memory value = 10
-  * Right after, P2 also reads = 10
-  * P3 also reads = 10
-* **Step B:**
-  * P1 increments (writes back 11)
-  * P2 also increments (but it had also read 10 earlier!) → writes 11
-  * P3 also increments (same read) → writes 11 too
-* **Final Result:**
-  * Instead of the correct final value = 13
-  * We get **11** (incorrect).
+- **Step A:**
+  - P1 reads shared memory value = 10
+  - Right after, P2 also reads = 10
+  - P3 also reads = 10
+- **Step B:**
+  - P1 increments (writes back 11)
+  - P2 also increments (but it had also read 10 earlier!) → writes 11
+  - P3 also increments (same read) → writes 11 too
+- **Final Result:**
+  - Instead of the correct final value = 13
+  - We get **11** (incorrect).
 
 ⚡️ **Why wrong?** Because all processes used the **old value** they read earlier and overwrote each other’s updates. This is the **classic race condition**: the “winner” is whoever writes last, not whoever is logically correct.
 
@@ -179,22 +179,22 @@ sequenceDiagram
 
 In the **second diagram**, processes can’t jump into shared memory whenever they want. They must first ask a **Mutex (lock) or Semaphore (signal)** for permission.
 
-* **Step A: (Process 1)**
-  * P1 requests lock → lock is free → granted ✅
-  * Reads memory = 10 → increments → writes = 11
-  * Releases lock 🔓
-* **Step B: (Process 2)**
-  * P2 tries to request lock → but waits 🔒 because P1 is still inside
-  * When P1 unlocks, P2 acquires lock
-  * Reads memory = 11 → increments → writes = 12
-  * Releases lock 🔓
-* **Step C: (Process 3)**
-  * Similarly, P3 acquires lock after P2 is done
-  * Reads memory = 12 → increments → writes 13
-  * Releases lock 🔓
-* **Final Result:**
-  * Correct value = 13
-  * Each process “saw” the updated value of the shared memory.
+- **Step A: (Process 1)**
+  - P1 requests lock → lock is free → granted ✅
+  - Reads memory = 10 → increments → writes = 11
+  - Releases lock 🔓
+- **Step B: (Process 2)**
+  - P2 tries to request lock → but waits 🔒 because P1 is still inside
+  - When P1 unlocks, P2 acquires lock
+  - Reads memory = 11 → increments → writes = 12
+  - Releases lock 🔓
+- **Step C: (Process 3)**
+  - Similarly, P3 acquires lock after P2 is done
+  - Reads memory = 12 → increments → writes 13
+  - Releases lock 🔓
+- **Final Result:**
+  - Correct value = 13
+  - Each process “saw” the updated value of the shared memory.
 
 ⚡️ **Why correct?** Because only **one process at a time** is allowed in the **critical section** (the update operation).
 
@@ -207,7 +207,7 @@ sequenceDiagram
     participant SM as Shared Memory
 
     Note over P1,P3: Processes must acquire lock before accessing shared memory
-    
+
     P1->>M: Request Lock
     M-->>P1: Lock Granted
     P1->>SM: Read value = 10
@@ -243,8 +243,8 @@ Let’s lock this concept into your brain with a few tricks:
 4. **Mutex = The Kitchen Key 🔑**\
    Without the key, you can’t enter. Ensures one-at-a-time execution.
 5. **Outcome**
-   * Without lock → last writer wins → wrong.
-   * With lock → everyone updates in turn → correct.
+   - Without lock → last writer wins → wrong.
+   - With lock → everyone updates in turn → correct.
 
 So the formula to remember:\
 **Shared Memory + Multiple Processes without Lock = Race Condition 🚨**\
@@ -255,43 +255,43 @@ So the formula to remember:\
 You have **two types of processes**:
 
 1. **Producer(s):** Generate data and put it into a shared buffer.
-   * Example: A bakery producing loaves of bread.
+   - Example: A bakery producing loaves of bread.
 2. **Consumer(s):** Take data from the shared buffer and use it.
-   * Example: Customers buying the loaves.
+   - Example: Customers buying the loaves.
 
 The **buffer (queue)** is of **limited size** (not infinite → hence **bounded buffer**).
 
 ### The Challenges:
 
-* **Race Condition:**\
+- **Race Condition:**\
   Producers and consumers both update the **shared buffer counter** (number of items in the buffer). Without synchronization:
-  * Producer might overwrite data if buffer is full.
-  * Consumer might try to consume when buffer is empty.
-  * Multiple processes might read/update counter at the same time → inconsistent value.
-* **Wasted Resources:**\
+  - Producer might overwrite data if buffer is full.
+  - Consumer might try to consume when buffer is empty.
+  - Multiple processes might read/update counter at the same time → inconsistent value.
+- **Wasted Resources:**\
   If consumers check the buffer when it’s empty, or producers try when it’s full, they waste CPU cycles (busy waiting).
 
 ## 🔹 Understanding the Counter Problem
 
 The **counter** here represents:
 
-* The **number of items currently in the buffer**.
+- The **number of items currently in the buffer**.
 
 ### Example:
 
-* Buffer size = 5.
-* Initial counter = 0 (empty).
-* Producer generates → counter++
-* Consumer uses → counter--
+- Buffer size = 5.
+- Initial counter = 0 (empty).
+- Producer generates → counter++
+- Consumer uses → counter--
 
 ### Without Synchronization:
 
 If two producers call `counter++` **simultaneously**, both might read the old value:
 
-* Counter = 3
-* Producer 1 reads 3, increments to 4 (not yet saved)
-* Producer 2 also reads 3, increments to 4
-* Both write 4 → but it should have been 5.\
+- Counter = 3
+- Producer 1 reads 3, increments to 4 (not yet saved)
+- Producer 2 also reads 3, increments to 4
+- Both write 4 → but it should have been 5.\
   ⚠️ Wrong counter = **race condition**.
 
 ## 🔹 The Solution: Synchronization with Semaphores
@@ -299,13 +299,13 @@ If two producers call `counter++` **simultaneously**, both might read the old va
 We solve this with **three controls**:
 
 1. **Empty Semaphore**
-   * Counts how many empty slots in the buffer.
-   * Ensures producer stops if buffer is full.
+   - Counts how many empty slots in the buffer.
+   - Ensures producer stops if buffer is full.
 2. **Full Semaphore**
-   * Counts how many filled slots.
-   * Ensures consumer stops if buffer is empty.
+   - Counts how many filled slots.
+   - Ensures consumer stops if buffer is empty.
 3. **Mutex (binary lock)**
-   * Prevents race condition when updating buffer and counter.
+   - Prevents race condition when updating buffer and counter.
 
 ## 🔹 Pseudocode (Classic Solution)
 
@@ -335,23 +335,23 @@ signal(empty);  // Increase count of empty slots
 
 ## 🔹 The OS Problem Formulation
 
-* **The Problem:**\
-  How to allow producers and consumers to work *in parallel* without corrupting the shared buffer counter or accessing invalid states (overflow or underflow).
-* **Main Risks Without Sync:**
-  * **Producer overwrites data** when buffer is already full.
-  * **Consumer reads garbage** when buffer is empty.
-  * **Counter corrupted** (incorrect values).
-* **The Solution:**\
+- **The Problem:**\
+  How to allow producers and consumers to work _in parallel_ without corrupting the shared buffer counter or accessing invalid states (overflow or underflow).
+- **Main Risks Without Sync:**
+  - **Producer overwrites data** when buffer is already full.
+  - **Consumer reads garbage** when buffer is empty.
+  - **Counter corrupted** (incorrect values).
+- **The Solution:**\
   Semaphores & Mutex ensure **orderly access** → correct counter values and buffer usage.
 
 ## 🔹 Real-World Memory Hack 🎓
 
-* Think of a **parking lot with 5 spaces** (buffer size = 5).
-  * **Cars = Producers** (add cars).
-  * **Drivers leaving = Consumers** (remove cars).
-  * **Counter = number of cars in the lot**.
-* Without regulation: 2 drivers enter at same time → counter might say 1 car, but really there are 2 → parking chaos!
-* With semaphore/mutex: Gatekeeper regulates entry/exit 🚦 → count always correct.
+- Think of a **parking lot with 5 spaces** (buffer size = 5).
+  - **Cars = Producers** (add cars).
+  - **Drivers leaving = Consumers** (remove cars).
+  - **Counter = number of cars in the lot**.
+- Without regulation: 2 drivers enter at same time → counter might say 1 car, but really there are 2 → parking chaos!
+- With semaphore/mutex: Gatekeeper regulates entry/exit 🚦 → count always correct.
 
 ✅ **Final Takeaway:**\
 The **Producer–Consumer Problem** with a counter highlights the dangers of **race conditions** in shared memory. Synchronization (mutex + semaphores) solves this by **blocking producers when full** and **blocking consumers when empty**, while ensuring the **counter is updated safely**.
@@ -378,11 +378,11 @@ sequenceDiagram
 
 ### ⚠️ Explanation:
 
-* Producer reads **3**, increments → writes 4.
-* At the same time, Consumer also reads **3**, decrements → writes 2.
-* Final counter depends on *who writes last* (2 or 4)…
-* But the correct should have been **3** (since one item added, one consumed → balance out).
-* This is the **race condition** in Producer–Consumer.
+- Producer reads **3**, increments → writes 4.
+- At the same time, Consumer also reads **3**, decrements → writes 2.
+- Final counter depends on _who writes last_ (2 or 4)…
+- But the correct should have been **3** (since one item added, one consumed → balance out).
+- This is the **race condition** in Producer–Consumer.
 
 ## Solution With Synchronization (✅ Mutex + Semaphores)
 
@@ -417,25 +417,25 @@ sequenceDiagram
 ## 📝 Detailed Walkthrough (Solution)
 
 1. **Producer Flow:**
-   * First checks `empty` semaphore (empty slots). If buffer is full → it waits.
-   * Locks the buffer using `mutex`.
-   * Adds item → increments counter safely.
-   * Unlocks buffer (other processes can enter now).
-   * Signals `full` that there’s one more item available.
+   - First checks `empty` semaphore (empty slots). If buffer is full → it waits.
+   - Locks the buffer using `mutex`.
+   - Adds item → increments counter safely.
+   - Unlocks buffer (other processes can enter now).
+   - Signals `full` that there’s one more item available.
 2. **Consumer Flow:**
-   * First checks `full` semaphore (any items inside?). If empty → it waits.
-   * Locks the buffer using `mutex`.
-   * Removes item → decrements counter safely.
-   * Unlocks after done.
-   * Signals `empty` that there’s one more free slot available.
+   - First checks `full` semaphore (any items inside?). If empty → it waits.
+   - Locks the buffer using `mutex`.
+   - Removes item → decrements counter safely.
+   - Unlocks after done.
+   - Signals `empty` that there’s one more free slot available.
 3. **Counter’s Safety:**
-   * Only one process (Producer OR Consumer) can touch it at a time → **no race condition**.
-   * Both Producer and Consumer are put to sleep if resource isn’t available → **no busy CPU wastage**.
+   - Only one process (Producer OR Consumer) can touch it at a time → **no race condition**.
+   - Both Producer and Consumer are put to sleep if resource isn’t available → **no busy CPU wastage**.
 
 ## 🔹 First — What is a Race Condition?
 
-* A **race condition** happens when **two or more threads/processes** access a **shared resource (like shared memory, counter, buffer, etc.) at the same time**, and the **final result depends on the order of execution**.
-* The OS can’t guarantee which thread will finish first → *chaotic outcome*.
+- A **race condition** happens when **two or more threads/processes** access a **shared resource (like shared memory, counter, buffer, etc.) at the same time**, and the **final result depends on the order of execution**.
+- The OS can’t guarantee which thread will finish first → _chaotic outcome_.
 
 Think of **two people updating the same Google Doc offline**, then syncing back → conflicting results.
 
@@ -444,45 +444,45 @@ Think of **two people updating the same Google Doc offline**, then syncing back 
 The key is **synchronization**. Methods to fix race conditions:
 
 1. **Mutex (Mutual Exclusion lock)**
-   * Only one thread at a time enters the critical section.
+   - Only one thread at a time enters the critical section.
 2. **Semaphores**
-   * Manage access to resources (counting or binary).
+   - Manage access to resources (counting or binary).
 3. **Monitors (in Java etc.)**
-   * High-level synchronization mechanism → synchronized methods/blocks.
+   - High-level synchronization mechanism → synchronized methods/blocks.
 4. **Atomic Operations**
-   * Certain CPUs/OS provide atomic increment/decrement (`atomic_inc`, `std::atomic` in C++).
+   - Certain CPUs/OS provide atomic increment/decrement (`atomic_inc`, `std::atomic` in C++).
 5. **Avoid Shared State**
-   * Design threads so they don’t share variables whenever possible (functional / immutability approach).
+   - Design threads so they don’t share variables whenever possible (functional / immutability approach).
 
 ## 🔹 Effect of Race Conditions on Threads
 
 ### 🟢 Main Thread
 
-* If your **main thread** faces a race condition with children threads (like updating a shared variable), the **entire program result can be corrupted**.
-* Example in C/Java:
-  * Main thread spawns worker threads to compute partial sums.
-  * All threads update a single `total`.
-  * Without locking → wrong total printed by main thread.
+- If your **main thread** faces a race condition with children threads (like updating a shared variable), the **entire program result can be corrupted**.
+- Example in C/Java:
+  - Main thread spawns worker threads to compute partial sums.
+  - All threads update a single `total`.
+  - Without locking → wrong total printed by main thread.
 
 So → the **main thread depends on correct synchronization** from child threads to produce valid results.
 
 ### 🟢 User-Level Threads (ULTs)
 
-* In **user-level threads**, scheduling is done in **user space** (not by the OS kernel).
-* If a user-level thread hits a race condition:
-  * The **user-space thread library** must enforce synchronization.
-  * If one thread blocks on I/O, sometimes the whole process may block (since kernel doesn’t know threads exist unless it’s M:N model).
-* Race conditions at ULT level → can corrupt shared program data structures and starve the scheduler.
+- In **user-level threads**, scheduling is done in **user space** (not by the OS kernel).
+- If a user-level thread hits a race condition:
+  - The **user-space thread library** must enforce synchronization.
+  - If one thread blocks on I/O, sometimes the whole process may block (since kernel doesn’t know threads exist unless it’s M:N model).
+- Race conditions at ULT level → can corrupt shared program data structures and starve the scheduler.
 
 👉 **Effect**: More severe because kernel cannot “save you” — it just thinks it’s a single process. Synchronization must be handled at **user level**.
 
 ### 🟢 Kernel-Level Threads (KLTs)
 
-* Here, the OS kernel is aware of all threads.
-* If a kernel-level thread hits a race condition:
-  * The OS may *partially help* with preemptive scheduling (e.g., thread preemption with locks).
-  * But **data inconsistency still occurs** if you don’t use proper primitives (mutex/semaphores).
-* Good thing → one thread blocking doesn’t block the whole process (since OS schedules other kernel threads).
+- Here, the OS kernel is aware of all threads.
+- If a kernel-level thread hits a race condition:
+  - The OS may _partially help_ with preemptive scheduling (e.g., thread preemption with locks).
+  - But **data inconsistency still occurs** if you don’t use proper primitives (mutex/semaphores).
+- Good thing → one thread blocking doesn’t block the whole process (since OS schedules other kernel threads).
 
 👉 **Effect**: Errors remain local, but synchronization is still needed to prevent corruption.
 
@@ -498,17 +498,17 @@ So → the **main thread depends on correct synchronization** from child threads
 
 ### 🔹 Shared Memory
 
-* **What it is:** A memory segment accessible by multiple processes/threads.
-* **Purpose:** Fastest **IPC (Inter-Process Communication)** method.
-* **Issue:** Causes **race conditions** when multiple processes read/write simultaneously.
-* **Example:** A global counter `int count;` shared by multiple processes.
+- **What it is:** A memory segment accessible by multiple processes/threads.
+- **Purpose:** Fastest **IPC (Inter-Process Communication)** method.
+- **Issue:** Causes **race conditions** when multiple processes read/write simultaneously.
+- **Example:** A global counter `int count;` shared by multiple processes.
 
 ### 🔹 Critical Section
 
-* **What it is:** A block of **code** where shared resources (*like shared memory*) are being accessed.
-* **Purpose:** Protect shared resources by ensuring **one process/thread executes that block at a time.**
-* **Issue:** If multiple threads enter the critical section without synchronization, race conditions occur.
-* **Example:**
+- **What it is:** A block of **code** where shared resources (_like shared memory_) are being accessed.
+- **Purpose:** Protect shared resources by ensuring **one process/thread executes that block at a time.**
+- **Issue:** If multiple threads enter the critical section without synchronization, race conditions occur.
+- **Example:**
 
 ```c
   // Critical Section:
@@ -529,9 +529,9 @@ So → the **main thread depends on correct synchronization** from child threads
 
 ✅ **They overlap when accessing shared memory inside critical section**:
 
-* Shared Memory = *Where the resource lives*.
-* Critical Section = *How we update/use the resource*.
-* Race Condition occurs when multiple threads/processes simultaneously execute the **critical section code that modifies shared memory**.
+- Shared Memory = _Where the resource lives_.
+- Critical Section = _How we update/use the resource_.
+- Race Condition occurs when multiple threads/processes simultaneously execute the **critical section code that modifies shared memory**.
 
 ### 🔹 Mermaid Diagram
 
@@ -562,7 +562,7 @@ style T3 fill:#f5b7b1,stroke:#e74c3c
 
 ## 🔹 Notes to Remember (Memory Tricks 🧠)
 
-* **Shared Memory = Battleground** → where race conditions can happen.
-* **Critical Section = Fight Zone** → the actual lines of code that fight over the shared memory.
-* **Overlap:** Shared memory becomes dangerous only *inside critical sections* where multiple threads try to update/use it together.
-* **Solution:** Use synchronization (Mutex, Semaphore, Monitors, Atomic Ops).
+- **Shared Memory = Battleground** → where race conditions can happen.
+- **Critical Section = Fight Zone** → the actual lines of code that fight over the shared memory.
+- **Overlap:** Shared memory becomes dangerous only _inside critical sections_ where multiple threads try to update/use it together.
+- **Solution:** Use synchronization (Mutex, Semaphore, Monitors, Atomic Ops).

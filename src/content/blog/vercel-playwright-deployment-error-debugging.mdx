@@ -1,7 +1,9 @@
 ---
-title: 'The Vercel Playwright Puzzle: When Headless Browsers Go Rogue on Deployment
-  (The Full Debugging Saga)'
-description: How a simple Playwright integration turned into a multi-day battle with
+title:
+  "The Vercel Playwright Puzzle: When Headless Browsers Go Rogue on Deployment
+  (The Full Debugging Saga)"
+description:
+  How a simple Playwright integration turned into a multi-day battle with
   Vercel — and how a feature flag saved the day.
 pubDate: 2025-06-22 19:00:00+00:00
 draft: false
@@ -9,20 +11,22 @@ heroImage: /BlogImages/vercel-playwright-deployment-error-debugging.webp
 authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
-- WebDevelopment
-- Thought-Process
+  - WebDevelopment
+  - Thought-Process
 keywords:
-- webdevelopment
-- programming
-- technology
-- software development
-- blog
-- thought-process
+  - webdevelopment
+  - programming
+  - technology
+  - software development
+  - blog
+  - thought-process
 featured: false
-excerpt: How a simple Playwright integration turned into a multi-day battle with Vercel
+excerpt:
+  How a simple Playwright integration turned into a multi-day battle with Vercel
   — and how a feature flag saved the day.
 canonicalUrl: /blog/the-vercel-playwright-puzzle-when-headless-browsers-go-rogue-on-deployment-the-full-debugging-saga
 ---
+
 As software engineers, we often pride ourselves on creating elegant, functional solutions. My recent project, an Astro-based portfolio and blog, included a particularly cool feature: dynamic diagram rendering using Playwright. Locally, everything worked like a charm – diagrams generated beautifully, tests passed, and the feature was a highlight. But then came the deployment to Vercel, and that's when a seemingly simple integration morphed into a multi-layered debugging saga.
 
 ### Act I: The Initial Mystery — `apt-get: command not found`
@@ -32,18 +36,18 @@ My `package.json` was set up to install Playwright and its necessary browser bin
 ```json
 // package.json snippet (initial)
 {
-    "name": "rafay99.com",
-    "type": "module",
-    "version": "8.0.0",
-    "scripts": {
-        "dev": "astro dev",
-        // ... other scripts
-        "postinstall": "npx playwright install" // <--- The culprit?
-    },
-    "dependencies": {
-        // ... other dependencies
-        "playwright": "^1.53.1"
-    }
+  "name": "rafay99.com",
+  "type": "module",
+  "version": "8.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    // ... other scripts
+    "postinstall": "npx playwright install" // <--- The culprit?
+  },
+  "dependencies": {
+    // ... other dependencies
+    "playwright": "^1.53.1"
+  }
 }
 ```
 
@@ -76,19 +80,19 @@ Removed the `postinstall` line:
 ```json
 // package.json snippet (after first change)
 {
-    "name": "rafay99.com",
-    // ...
-    "scripts": {
-        "dev": "astro dev",
-        "start": "astro dev",
-        "build": "tinacms build && astro build",
-        "preview": "astro preview",
-        "astro": "astro"
-        // "postinstall": "npx playwright install" <-- This line was removed
-    },
-    "dependencies": {
-        // ... "playwright" package itself remained here ...
-    }
+  "name": "rafay99.com",
+  // ...
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "tinacms build && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+    // "postinstall": "npx playwright install" <-- This line was removed
+  },
+  "dependencies": {
+    // ... "playwright" package itself remained here ...
+  }
 }
 ```
 
@@ -98,15 +102,15 @@ Combined `npm ci` with an explicit `npx playwright install chromium`:
 ```json
 // vercel.json (after first change)
 {
-    "installCommand": "npm ci && npx playwright install chromium", // <--- NEW
-    "buildCommand": "npm run build",
-    "routes": [
-        // ...
-    ]
+  "installCommand": "npm ci && npx playwright install chromium", // <--- NEW
+  "buildCommand": "npm run build",
+  "routes": [
+    // ...
+  ]
 }
 ```
 
-This seemed promising! The build logs confirmed that Playwright successfully downloaded the Chromium browser, bypassing the initial `apt-get: command not found` error during the *installation* phase:
+This seemed promising! The build logs confirmed that Playwright successfully downloaded the Chromium browser, bypassing the initial `apt-get: command not found` error during the _installation_ phase:
 
 ```
 [23:53:14.420] Downloading Chromium 138.0.7204.23 (playwright build v1179) from https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1179/chromium-linux.zip
@@ -118,7 +122,7 @@ However, a new problem surfaced shortly after...
 
 ### Act III: The Phantom Dependency — Browser Launch Failure
 
-The initial installation hurdle was cleared, but the core issue of missing *system* dependencies wasn't truly gone. During the `buildCommand` (`npm run build`), which triggers Astro's build process and subsequently uses Playwright for diagram rendering, the build failed with an almost identical message:
+The initial installation hurdle was cleared, but the core issue of missing _system_ dependencies wasn't truly gone. During the `buildCommand` (`npm run build`), which triggers Astro's build process and subsequently uses Playwright for diagram rendering, the build failed with an almost identical message:
 
 ```
 [23:54:17.861] browserType.launch:
@@ -133,7 +137,7 @@ The initial installation hurdle was cleared, but the core issue of missing *syst
 [23:54:26.701] Error: Command "npm run build" exited with 1
 ```
 
-**The New Revelation:** It wasn't just about *downloading* the browser binaries; it was about the underlying operating system having the necessary shared libraries to *execute* those binaries at runtime during the build. My explicit `npx playwright install chromium` only fetched the browser itself; it didn't install its crucial *system* dependencies. And attempting to use `npx playwright install-deps` or `apt-get` directly within the user's build script still wasn't permitted or working correctly in the Vercel environment.
+**The New Revelation:** It wasn't just about _downloading_ the browser binaries; it was about the underlying operating system having the necessary shared libraries to _execute_ those binaries at runtime during the build. My explicit `npx playwright install chromium` only fetched the browser itself; it didn't install its crucial _system_ dependencies. And attempting to use `npx playwright install-deps` or `apt-get` directly within the user's build script still wasn't permitted or working correctly in the Vercel environment.
 
 ### Act IV: The Canonical (But Elusive) Vercel Solution
 
@@ -148,20 +152,20 @@ Simplified `installCommand` to let Vercel's internal magic handle Playwright:
 ```json
 // vercel.json (after final change attempt)
 {
-    "installCommand": "npm install", // Simpler, letting Vercel manage Playwright's deps
-    "buildCommand": "npm run build",
-    "routes": [
-        // ...
-    ]
+  "installCommand": "npm install", // Simpler, letting Vercel manage Playwright's deps
+  "buildCommand": "npm run build",
+  "routes": [
+    // ...
+  ]
 }
 ```
 
 **Crucial Step: Adding an Environment Variable in Vercel UI:**
 Navigated to Vercel Project Settings > Environment Variables and added:
 
-* **Name:** `INSTALL_PLAYWRIGHT_DEPS`
-* **Value:** `1`
-* **Target:** `Build Time` (and Production/Preview, for completeness).
+- **Name:** `INSTALL_PLAYWRIGHT_DEPS`
+- **Value:** `1`
+- **Target:** `Build Time` (and Production/Preview, for completeness).
 
 The expectation was that this environment variable would signal Vercel to install the required `libnspr4`, `libnss3`, `libgbm1` etc., in a privileged way before the build began, finally resolving the browser launch issue.
 
