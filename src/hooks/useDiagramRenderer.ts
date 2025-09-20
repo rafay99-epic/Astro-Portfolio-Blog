@@ -54,7 +54,7 @@ export function useDiagramRenderer({
           }
 
           let measuredWidth = 0;
-          
+
           if (container && container.isConnected) {
             const containerRect = container.getBoundingClientRect();
             measuredWidth = containerRect.width;
@@ -64,7 +64,7 @@ export function useDiagramRenderer({
           } else {
             measuredWidth = window.innerWidth;
           }
-          
+
           const containerWidth = Math.max(0, measuredWidth - 48);
 
           let targetHeight = 400;

@@ -237,6 +237,7 @@ Recursive algorithms break a problem down into smaller, self-similar subproblems
     - Recurrence: `T(n) = b + T(n-1)` for `n > 0`, `T(0) = a`.
 
   - **Example 2 (Slide 3b/20 - `g(n)`):**
+
     ```java
     public int g(int n) {
       if (n == 1) // Comparison: O(1)
