@@ -27,7 +27,8 @@ export default defineConfig({
         prefetchAll: false,
     },
     experimental: {
-        // svg: true,
+        csp: true
+
     },
     markdown: {
         syntaxHighlight: {
