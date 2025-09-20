@@ -25,8 +25,8 @@ jobs:
         run: bun run check
 
       - name: Lint Prettier Code
-        run: bunx prettier --check . 
-      
+        run: bunx prettier --check .
+
       - name: Lint TypeScript Code
         run: bunx tsc --noEmit --skipLibCheck
 
