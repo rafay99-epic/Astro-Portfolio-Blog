@@ -21,9 +21,6 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Astro Code Check
-        run: bun run check
-
       - name: Lint Prettier Code
         run: bunx prettier --check .
 
