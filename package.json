@@ -11,8 +11,8 @@
     "check": "astro check",
     "scan": "npx react-scan@latest http://localhost:4321",
     "changelog": "./scripts/generate-changelog.sh",
-    "lint": "bunx prettier --check . && bunx tsc --noEmit --skipLibCheck",
-    "lint:fix": "bunx prettier --write ."
+    "lint": "prettier --check . &&  tsc --noEmit --skipLibCheck",
+    "lint:fix": "prettier --write ."
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.5",

@@ -131,12 +131,25 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     [posts],
   );
 
-  const initFuse = useCallback(async () => {
-    if (fuseRef.current) return fuseRef.current;
-    const { default: Fuse } = await import("fuse.js");
-    fuseRef.current = new Fuse(filteredPosts, FUSE_CONFIG as any);
-    return fuseRef.current;
-  }, [filteredPosts]);
+  const initFuse = useCallback(
+    async (force: boolean = false) => {
+      try {
+        if (!force && fuseRef.current) return fuseRef.current;
+        const mod = await import("fuse.js");
+        const Fuse = (mod as any).default ?? mod;
+        if (!Fuse) {
+          console.error("Failed to load fuse.js module");
+          return null;
+        }
+        fuseRef.current = new (Fuse as any)(filteredPosts, FUSE_CONFIG as any);
+        return fuseRef.current;
+      } catch (err) {
+        console.error("Error initializing Fuse:", err);
+        return null;
+      }
+    },
+    [filteredPosts],
+  );
 
   useEffect(() => {
     const schedule = () => {
@@ -151,6 +164,22 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     const t = setTimeout(schedule, 0);
     return () => clearTimeout(t);
   }, [initFuse]);
+
+  // Keep Fuse index in sync when filteredPosts changes
+  useEffect(() => {
+    const instance: any = fuseRef.current;
+    if (!instance) return;
+    try {
+      if (typeof instance.setCollection === "function") {
+        instance.setCollection(filteredPosts);
+      } else {
+        void initFuse(true);
+      }
+    } catch (e) {
+      console.error("Failed to sync Fuse collection, rebuilding:", e);
+      void initFuse(true);
+    }
+  }, [filteredPosts, initFuse]);
 
   const performSearch = useCallback(
     async (searchQuery: string) => {
