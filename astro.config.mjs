@@ -141,9 +141,6 @@ export default defineConfig({
               ) {
                 return "ui-components";
               }
-              if (/[\\/]node_modules[\\/](d3|d3-[^\\/]+)/.test(id)) {
-                return "vendor-d3";
-              }
               const rel = id.split("node_modules/")[1] || "";
               const parts = rel.split("/");
               const pkg = rel.startsWith("@")
