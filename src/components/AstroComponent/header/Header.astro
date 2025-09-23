@@ -25,46 +25,41 @@ import {
 ---
 
 <style is:global>
-  /* Prevent header flash during view transitions */
   header {
     background-color: #1a1b26 !important;
     transition: none !important;
   }
 
-  /* Ensure consistent background during transitions */
   ::view-transition-old(header),
   ::view-transition-new(header) {
     background-color: #1a1b26 !important;
     animation: none !important;
   }
 
-  /* Prevent any blue flash */
   .backdrop-blur-xl {
     background-color: rgba(26, 27, 38, 0.9) !important;
   }
 
-  /* Mobile menu specific styles for Astro */
   .mobile-menu-overlay {
     transition:
       opacity 0.3s ease-in-out,
       transform 0.3s ease-in-out;
-    transform: translateX(100%); /* Start off-screen */
+    transform: translateX(100%);
   }
 
   .mobile-menu-overlay.is-open {
-    transform: translateX(0); /* Slide in */
+    transform: translateX(0);
   }
 
   .mobile-menu-backdrop {
     transition: opacity 0.3s ease-in-out;
-    opacity: 0; /* Start hidden */
+    opacity: 0;
   }
 
   .mobile-menu-backdrop.is-open {
-    opacity: 1; /* Fade in */
+    opacity: 1;
   }
 
-  /* MoreDropdown styles */
   .more-dropdown {
     opacity: 0;
     transform: translateY(-10px) scale(0.95);
@@ -206,6 +201,7 @@ import {
               {
                 featureFlags.featureFlags.showNewsletter && (
                   <a
+                    role="menuitem"
                     href="/newsletter"
                     class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
                   >
@@ -218,6 +214,7 @@ import {
               {
                 featureFlags.featureFlags.showTrendingPosts && (
                   <a
+                    role="menuitem"
                     href="/trending"
                     class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
                   >
@@ -230,6 +227,7 @@ import {
               {
                 featureFlags.featureFlags.showNotes && (
                   <a
+                    role="menuitem"
                     href="/ms_notes"
                     class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
                   >
@@ -242,6 +240,7 @@ import {
               {
                 featureFlags.featureFlags.showWiki && (
                   <a
+                    role="menuitem"
                     href="https://rafay99-docs.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -259,8 +258,9 @@ import {
       </nav>
 
       <button
-        id="mobile-menu-button"
         aria-label="Toggle menu"
+        aria-haspopup="menu"
+        id="mobile-menu-button"
         aria-expanded="false"
         class="rounded-lg p-2 text-[#c0caf5] transition-colors duration-300 hover:bg-[#24283b]/50 hover:text-[#7aa2f7] lg:hidden"
       >
