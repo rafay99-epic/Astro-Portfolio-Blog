@@ -1,5 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
-import Fuse from "fuse.js";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import type { Post } from "types/articles";
 
 interface UseSearchResult {
@@ -44,81 +43,31 @@ const saveSearchHistory = (history: string[]) => {
   } catch {}
 };
 
-const calculateRelevance = (
-  result: { score?: number; item: Post },
-  searchIntent: ReturnType<typeof detectSearchIntent>
-) => {
-  const baseScore = 1 - (result.score || 0);
-  const intentBonus = searchIntent.type !== "general" ? 0.2 : 0;
-  const freshness =
-    (Date.now() - new Date(result.item.data.pubDate).getTime()) /
-    (1000 * 60 * 60 * 24 * 365);
-  const freshnessBoost = Math.min(0.2, 1 / (1 + freshness));
-
-  return baseScore + intentBonus + freshnessBoost;
-};
-
-const UNIFIED_SEARCH_CONFIG = {
+// Minimal Fuse config: title, authorName, pubDate only
+const FUSE_CONFIG = {
   keys: [
-    {
-      name: "data.title",
-      weight: 2.0,
-    },
-    {
-      name: "data.description",
-      weight: 1.5,
-    },
-    {
-      name: "data.tags",
-      weight: 1.8,
-    },
-    {
-      name: "data.authorName",
-      weight: 1.2,
-    },
-    {
-      name: "body",
-      weight: 1.0,
-    },
+    { name: "data.title", weight: 2.0 },
+    { name: "data.authorName", weight: 1.5 },
     {
       name: "data.pubDate",
-      weight: 1.5,
+      weight: 1.0,
       getFn: (obj: Post) => {
-        const date = new Date(obj.data.pubDate);
+        const d = new Date(obj.data.pubDate);
         return (
-          date.toLocaleDateString() +
+          d.toISOString().slice(0, 10) +
           " " +
-          date.toLocaleString("default", { month: "long", year: "numeric" })
+          d.toLocaleDateString() +
+          " " +
+          d.toLocaleString("default", { month: "long", year: "numeric" })
         );
       },
     },
   ],
   threshold: 0.4,
   includeScore: true,
-  useExtendedSearch: true,
   ignoreLocation: true,
-  fieldNormWeight: 1.5,
   shouldSort: true,
-};
-
-const detectSearchIntent = (query: string) => {
-  const patterns = {
-    date: /^(date:|on:)?\s*(\d{4}(-\d{2})?(-\d{2})?|yesterday|today|last\s+week|last\s+month|this\s+month)/i,
-    tag: /^(tag:|tags:|#)\s*\w+/i,
-    author: /^(author:|by:)\s*\w+/i,
-  };
-
-  if (patterns.date.test(query)) {
-    return { type: "date", weight: 2.0 };
-  }
-  if (patterns.tag.test(query)) {
-    return { type: "tag", weight: 2.0 };
-  }
-  if (patterns.author.test(query)) {
-    return { type: "author", weight: 2.0 };
-  }
-  return { type: "general", weight: 1.0 };
-};
+} as const;
 
 const useSearch = (posts: Post[]): UseSearchResult => {
   const [query, setQuery] = useState<string>("");
@@ -130,8 +79,10 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     matchedFields: [] as string[],
   });
   const [searchHistory, setSearchHistory] = useState<string[]>(() =>
-    loadSearchHistory()
+    loadSearchHistory(),
   );
+
+  const fuseRef = useRef<any>(null);
 
   const clearHistory = useCallback(() => {
     setSearchHistory([]);
@@ -164,7 +115,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
     (
       searchQuery: string,
       results: Post[],
-      stats: UseSearchResult["searchStats"]
+      stats: UseSearchResult["searchStats"],
     ) => {
       searchCache.set(searchQuery, {
         results,
@@ -172,21 +123,66 @@ const useSearch = (posts: Post[]): UseSearchResult => {
         timestamp: Date.now(),
       });
     },
-    []
+    [],
   );
 
   const filteredPosts = useMemo(
     () => posts.filter((post) => !post.data.draft),
-    [posts]
+    [posts],
   );
 
-  const fuse = useMemo(
-    () => new Fuse(filteredPosts, UNIFIED_SEARCH_CONFIG),
-    [filteredPosts]
+  const initFuse = useCallback(
+    async (force: boolean = false) => {
+      try {
+        if (!force && fuseRef.current) return fuseRef.current;
+        const mod = await import("fuse.js");
+        const Fuse = (mod as any).default ?? mod;
+        if (!Fuse) {
+          console.error("Failed to load fuse.js module");
+          return null;
+        }
+        fuseRef.current = new (Fuse as any)(filteredPosts, FUSE_CONFIG as any);
+        return fuseRef.current;
+      } catch (err) {
+        console.error("Error initializing Fuse:", err);
+        return null;
+      }
+    },
+    [filteredPosts],
   );
+
+  useEffect(() => {
+    const schedule = () => {
+      initFuse();
+    };
+    if (typeof (window as any).requestIdleCallback === "function") {
+      const id = (window as any).requestIdleCallback(schedule, {
+        timeout: 500,
+      });
+      return () => (window as any).cancelIdleCallback?.(id);
+    }
+    const t = setTimeout(schedule, 0);
+    return () => clearTimeout(t);
+  }, [initFuse]);
+
+  // Keep Fuse index in sync when filteredPosts changes
+  useEffect(() => {
+    const instance: any = fuseRef.current;
+    if (!instance) return;
+    try {
+      if (typeof instance.setCollection === "function") {
+        instance.setCollection(filteredPosts);
+      } else {
+        void initFuse(true);
+      }
+    } catch (e) {
+      console.error("Failed to sync Fuse collection, rebuilding:", e);
+      void initFuse(true);
+    }
+  }, [filteredPosts, initFuse]);
 
   const performSearch = useCallback(
-    (searchQuery: string) => {
+    async (searchQuery: string) => {
       if (!searchQuery.trim()) {
         setResults([]);
         setSearchStats({
@@ -206,80 +202,47 @@ const useSearch = (posts: Post[]): UseSearchResult => {
       }
 
       const startTime = performance.now();
-      const searchIntent = detectSearchIntent(searchQuery);
+      let items: Post[] = [];
 
-      let processedQuery = searchQuery;
-      if (searchIntent.type !== "general") {
-        processedQuery = searchQuery.replace(
-          /^(date:|tag:|tags:|#|author:|by:|on:)\s*/,
-          ""
-        );
+      const fuse = fuseRef.current ?? (await initFuse());
+      if (fuse) {
+        const raw = fuse.search(searchQuery);
+        items = raw.map((r: any) => r.item);
+      } else {
+        // Very light fallback until Fuse is ready
+        const q = searchQuery.toLowerCase();
+        items = filteredPosts.filter((p) => {
+          const t = p.data.title?.toLowerCase() ?? "";
+          const a = p.data.authorName?.toLowerCase() ?? "";
+          const d = new Date(p.data.pubDate)
+            .toISOString()
+            .slice(0, 10)
+            .toLowerCase();
+
+          return t.includes(q) || a.includes(q) || d.includes(q);
+        });
       }
 
-      const terms = processedQuery.split(" ").map((term) => {
-        if (term.startsWith('"') && term.endsWith('"')) {
-          return `=${term.slice(1, -1)}`;
-        }
-        if (term.startsWith("-")) {
-          return `!${term.slice(1)}`;
-        }
-        if (term.startsWith("+")) {
-          return `'${term.slice(1)}`;
-        }
-        return term;
-      });
-
-      const searchResults = fuse.search(terms.join(" "));
-
-      const enhancedResults = searchResults
-        .filter((result) => result.score && result.score < 0.6)
-        .map((result) => {
-          const relevanceScore = calculateRelevance(result, searchIntent);
-          const matchedFields = UNIFIED_SEARCH_CONFIG.keys
-            .map((key) => (typeof key === "string" ? key : key.name))
-            .filter((key) => {
-              const value = key
-                .split(".")
-                .reduce((obj, k) => obj?.[k], result.item);
-              return (
-                value &&
-                String(value)
-                  .toLowerCase()
-                  .includes(processedQuery.toLowerCase())
-              );
-            });
-
-          return {
-            ...result.item,
-            relevanceScore,
-            matchedFields,
-          };
-        })
-        .sort((a, b) => (b as any).relevanceScore - (a as any).relevanceScore);
+      items.sort(
+        (a, b) =>
+          new Date(b.data.pubDate).getTime() -
+          new Date(a.data.pubDate).getTime(),
+      );
 
       const endTime = performance.now();
-      const searchTime = endTime - startTime;
-
       const stats = {
-        totalResults: enhancedResults.length,
-        searchTime: Math.round(searchTime),
-        relevanceScore: enhancedResults.length
-          ? enhancedResults.reduce(
-              (acc, curr) => acc + (curr as any).relevanceScore,
-              0
-            ) / enhancedResults.length
-          : 0,
-        matchedFields: Array.from(
-          new Set(enhancedResults.flatMap((r) => r.matchedFields))
-        ),
+        totalResults: items.length,
+        searchTime: Math.round(endTime - startTime),
+        relevanceScore: 0,
+        matchedFields: [],
       };
 
-      setResults(enhancedResults);
+      setResults(items);
       setSearchStats(stats);
-      updateCache(searchQuery, enhancedResults, stats);
+      updateCache(searchQuery, items, stats);
       updateSearchHistory(searchQuery);
     },
-    [checkCache, updateCache, updateSearchHistory, fuse]
+    [checkCache, updateCache, updateSearchHistory, initFuse, filteredPosts],
   );
 
   useEffect(() => {

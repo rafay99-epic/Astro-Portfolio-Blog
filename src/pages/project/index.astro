@@ -4,9 +4,7 @@ import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import { getCollection } from "astro:content";
-import SpeedInsights from "@vercel/speed-insights/astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-
 
 const projects = await getCollection("projects");
 export const prerender = true;
@@ -19,7 +17,6 @@ try {
   return Astro.redirect("/404");
 }
 
-// Filter and sort projects
 const filteredProjects = projects
   .filter((project) => !project.data.draft)
   .sort((a, b) => {
@@ -35,151 +32,127 @@ const filteredProjects = projects
       title={`Projects | ${authorConfig.SiteName}`}
       description={`Browse all projects on ${authorConfig.SiteName} and explore categorized content.`}
     />
-
   </head>
 
-  <body class="bg-[#1a1b26] text-[#c0caf5]" style="overflow-x: hidden; overflow-y: auto;">
+  <body
+    class="bg-[#1a1b26] text-[#c0caf5]"
+    style="overflow-x: hidden; overflow-y: auto;"
+  >
     <Header />
-    <SpeedInsights />
-
-    <main class="min-h-screen py-16 px-4 md:px-8">
-      <div class="container mx-auto max-w-7xl relative z-10">
-        <!-- Header Section -->
-        <div class="text-center mb-12">
+    <main class="min-h-screen px-4 py-16 md:px-8">
+      <div class="container mx-auto max-w-7xl">
+        <div class="mb-12 text-center">
           <h1
-            class="font-extrabold mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent text-4xl md:text-6xl lg:text-7xl"
-
+            class="mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-4xl font-extrabold text-transparent md:text-6xl lg:text-7xl"
           >
             My Creations
           </h1>
-          <p class="text-[#a9b1d6] max-w-3xl mx-auto text-lg md:text-xl">
+          <p class="mx-auto max-w-3xl text-lg text-[#a9b1d6] md:text-xl">
             A curated collection of innovative projects, showcasing my passion
             for problem-solving and software craftsmanship.
           </p>
           <div
-            class="mx-auto mt-6 h-1 bg-gradient-to-r from-transparent via-[#7aa2f7] to-transparent rounded-full w-48 md:w-64"
-          ></div>
+            class="mx-auto mt-6 h-1 w-48 rounded-full bg-gradient-to-r from-transparent via-[#7aa2f7] to-transparent md:w-64"
+          >
+          </div>
         </div>
 
-        <!-- Projects Grid -->
-        <div id="projects-grid" class="grid gap-6 grid-cols-1 md:grid-cols-2">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {
             filteredProjects.map((project) => (
-              <div
-                class="project-card"
-                data-categories={JSON.stringify(
-                  project.data.ProjectCategory || [],
-                )}
-              >
-                <a
-                  href={`/project/${project.slug}`}
-                  class="block relative overflow-hidden rounded-2xl bg-[#24283b]/70 border border-[#3b4261]/50 shadow-lg hover:shadow-xl hover:shadow-[#7aa2f7]/20 transition-all duration-300 transform hover:-translate-y-1 group"
-                >
-                  <!-- Project Image Section: Now the primary visible content -->
-                  <div class="relative w-full h-72 md:h-80 overflow-hidden">
+              <div class="group relative">
+                <div class="relative overflow-hidden rounded-xl border border-[#3b4261]/50 bg-[#24283b]/70 transition-all duration-300 hover:border-[#7aa2f7]">
+                  <div class="relative h-64 overflow-hidden">
                     <img
                       src={project.data.ProjectImage}
                       alt={project.data.Projecttitle}
-                      class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <!-- No initial text overlay needed here, let the image shine -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#1a1b26]/90" />
                   </div>
 
-                  <!-- Project Details Overlay (reveals ALL details on hover) -->
-                  <div
-                    class="project-details-overlay absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-[#1a1b26] via-[#1a1b26] to-[#1a1b26]/80 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-30"
-                  >
-                    <h2 
-                      class="font-bold mb-2 text-2xl md:text-3xl text-white"
+                  <div class="p-6">
+                    <div class="mb-4 flex items-center justify-between">
+                      <h3 class="text-2xl font-bold text-[#c0caf5]">
+                        {project.data.Projecttitle}
+                      </h3>
+                      <span class="rounded-full bg-[#7aa2f7]/20 px-3 py-1 text-sm text-[#7aa2f7]">
+                        Rank #{project.data.ProjectRanking}
+                      </span>
+                    </div>
 
-                    >
-                      {project.data.Projecttitle}
-                    </h2>
-                    <p
-                      class="text-gray-200 mb-4 leading-relaxed text-sm md:text-base line-clamp-4"
-                    >
+                    <p class="mb-6 line-clamp-2 text-[#a9b1d6]">
                       {project.data.ProjectDescription}
                     </p>
 
                     {project.data.ProjectTech &&
                       project.data.ProjectTech.length > 0 && (
-                        <div class="flex flex-wrap gap-2 mb-4">
-                          {project.data.ProjectTech.slice(0, 4).map((tech) => (
-                            <span
-                              class="bg-[#24283b]/80 border border-[#565f89]/50 text-gray-100 text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm group-hover:border-[#7aa2f7]/50 group-hover:bg-[#7aa2f7]/10 transition-all duration-300"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                          {project.data.ProjectTech.length > 4 && (
-                            <span class="text-gray-200 text-xs font-medium px-2 py-1.5">
-                              +{project.data.ProjectTech.length - 4} more
-                            </span>
+                        <div class="mb-6 flex flex-wrap gap-2">
+                          {project.data.ProjectTech.slice(0, 5).map(
+                            (tech: string) => (
+                              <span class="rounded-full border border-[#3b4261]/50 bg-[#24283b] px-3 py-1 text-xs">
+                                {tech}
+                              </span>
+                            ),
                           )}
                         </div>
                       )}
 
-                    <div
-                      class="flex items-center justify-between mt-4 pt-4 border-t border-[#3b4261]/30"
-                    >
-                      <div class="flex items-center gap-4">
-                        {project.data.githubLink && (
+                    <div class="flex items-center justify-between border-t border-[#3b4261]/30 pt-4">
+                      <div class="flex gap-4">
+                        {project.data.ProjectGithubLink && (
                           <a
-                            href={project.data.githubLink}
+                            href={project.data.ProjectGithubLink}
+                            class="flex items-center gap-2 text-[#c0caf5] transition-colors hover:text-[#bb9af7]"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="flex items-center gap-2 text-gray-200 hover:text-[#7aa2f7] transition-colors duration-300 text-lg md:text-xl"
-                            aria-label={`GitHub repository for ${project.data.Projecttitle}`}
-                            onclick="event.stopPropagation()"
                           >
-                            <i class="fab fa-github"></i>
-                            <span class="text-sm font-medium hidden sm:inline"
-                              >Code</span
-                            >
+                            <i class="fas fa-code text-lg" />
+                            <span>Source</span>
                           </a>
                         )}
-                        {project.data.deployedLink && (
+                        {project.data.ProjectDeployedLink && (
                           <a
-                            href={project.data.deployedLink}
+                            href={project.data.ProjectDeployedLink}
+                            class="flex items-center gap-2 text-[#c0caf5] transition-colors hover:text-[#bb9af7]"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="flex items-center gap-2 text-gray-200 hover:text-[#9ece6a] transition-colors duration-300 text-lg md:text-xl"
-                            aria-label={`Live demo for ${project.data.Projecttitle}`}
-                            onclick="event.stopPropagation()"
                           >
-                            <i class="fas fa-external-link-alt"></i>
-                            <span class="text-sm font-medium hidden sm:inline"
-                              >Demo</span
-                            >
+                            <i class="fas fa-external-link-alt text-lg" />
+                            <span>Live Demo</span>
                           </a>
                         )}
                       </div>
 
-                      <div
-                        class="flex items-center gap-2 text-gray-100 font-semibold text-sm group-hover:text-[#bb9af7] transition-colors duration-300"
+                      <a
+                        href={`/project/${project.slug}`}
+                        class="flex items-center gap-2 text-[#7aa2f7] transition-colors hover:text-[#bb9af7]"
                       >
-                        <span class="hidden sm:block">View Details</span>
-                        <i
-                          class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform duration-300"
-                        ></i>
-                      </div>
+                        <span>View Details</span>
+                        <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1" />
+                      </a>
                     </div>
                   </div>
-                </a>
+                </div>
               </div>
             ))
           }
         </div>
       </div>
     </main>
-
     <script is:inline>
-      // Prevent auto-scroll restoration and conflicts
+      document
+        .querySelectorAll('.project-card a[target="_blank"]')
+        .forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.stopPropagation();
+          });
+        });
+
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
       }
 
-      // Prevent initial scroll jumping
       document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           window.scrollTo(0, 0);

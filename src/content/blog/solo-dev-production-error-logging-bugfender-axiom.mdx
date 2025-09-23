@@ -24,7 +24,7 @@ keywords:
   - flutter crash reporting solution
   - production error handling nextjs
   - effective error logging solo dev
-canonicalUrl: 'https://www.rafay99.com/blog/solo-dev-error-logging-bugfender-axiom'
+canonicalUrl: "https://www.rafay99.com/blog/solo-dev-error-logging-bugfender-axiom"
 featured: true
 excerpt: >-
   From 'YOLO' deployments to informed decisions! Learn how solo dev Abdul Rafay
@@ -45,7 +45,7 @@ Enough reflection, though! You didn't come here for a stroll down memory lane. Y
 
 When you're knee-deep in building an application or website, your trusty `console.log()` statements or print functions are your best friends. You're diving into `try-catch` blocks, meticulously handling errors, and ensuring everything looks just right. Then, development wraps up, you hit that `build` button, and deploy your code, crossing your fingers and hoping for the best in the **production environment**.
 
-But here’s the harsh reality: even after all your rigorous testing, production is a different beast. There are always **edge cases** you simply couldn't foresee, especially as a solo developer juggling everything from writing clean code and robust tests to perfecting UI and ensuring core functionality. You validate your app, then unleash it into the wild, only to find users are… well, *users*. They'll click, swipe, and interact in ways so outlandish you'll often scratch your head, wondering, "Why on earth would they do that?!"
+But here’s the harsh reality: even after all your rigorous testing, production is a different beast. There are always **edge cases** you simply couldn't foresee, especially as a solo developer juggling everything from writing clean code and robust tests to perfecting UI and ensuring core functionality. You validate your app, then unleash it into the wild, only to find users are… well, _users_. They'll click, swipe, and interact in ways so outlandish you'll often scratch your head, wondering, "Why on earth would they do that?!"
 
 And yet, that's precisely what users do. The real challenge emerges: how do you identify those unpredictable flows and track these novel **application errors** when your app is running live? You can't just open a console and watch the logs stream by. So, what's a developer to do?
 
@@ -56,18 +56,18 @@ Okay, Abdul Rafay, let's dive into the solution space with that signature "been 
 
 ## Unlocking Robust Error Logging: Beyond the "Painful" Enterprise Tools
 
-After wrestling with these **production challenges**, a thought gnawed at me: "What *can* I do?" A deep dive into Google's rabbit hole quickly surfaced a plethora of **error logging solutions**. Many of these tools, while offering a tempting **free tier**, often felt like a labyrinth to set up in my codebase. They came with frustrating limits, seemed to break at the most inconvenient times, and integrating them genuinely felt like a massive pain.
+After wrestling with these **production challenges**, a thought gnawed at me: "What _can_ I do?" A deep dive into Google's rabbit hole quickly surfaced a plethora of **error logging solutions**. Many of these tools, while offering a tempting **free tier**, often felt like a labyrinth to set up in my codebase. They came with frustrating limits, seemed to break at the most inconvenient times, and integrating them genuinely felt like a massive pain.
 
-Seriously, try Googling for logging tools. You'll be swamped with sponsored content for what are essentially **enterprise-grade monitoring platforms**. Don't get me wrong, these behemoths are fantastic for large teams and complex systems, but as a solo developer? I don't need that much firepower, nor do I want the hefty price tag that usually comes with it. My focus is on efficient **application performance monitoring** and reliable **crash reporting**, not an entire suite of features I'll never touch. When that level of power *is* needed, I'll happily upgrade, but for now, it's overkill.
+Seriously, try Googling for logging tools. You'll be swamped with sponsored content for what are essentially **enterprise-grade monitoring platforms**. Don't get me wrong, these behemoths are fantastic for large teams and complex systems, but as a solo developer? I don't need that much firepower, nor do I want the hefty price tag that usually comes with it. My focus is on efficient **application performance monitoring** and reliable **crash reporting**, not an entire suite of features I'll never touch. When that level of power _is_ needed, I'll happily upgrade, but for now, it's overkill.
 
-So, after all that sifting, I stumbled upon two tools that truly clicked. And before you jump to conclusions – *no, this isn't a sponsored ad!* I genuinely wish it were, because these tools have been absolute game-changers in my projects. They've made my **developer workflow** so much smoother.
+So, after all that sifting, I stumbled upon two tools that truly clicked. And before you jump to conclusions – _no, this isn't a sponsored ad!_ I genuinely wish it were, because these tools have been absolute game-changers in my projects. They've made my **developer workflow** so much smoother.
 
 Why the praise? They're incredibly easy to configure and provide remarkably detailed insights – not just during **development**, but critically, in **production** as well. They've transformed how I approach **debugging** and **identifying application errors** live.
 
 I'm talking about:
 
-* **Axiom Logging**
-* **BugFender**
+- **Axiom Logging**
+- **BugFender**
 
 Both offer generous free tiers that, while having their limits, provide an amazing amount of information for **real-time logs**, **crash analytics**, and just about everything in between. Trust me, integrating them for comprehensive **error tracking** is a breeze, and I'm excited to show you exactly how to code them into your projects and where they shine brightest!
 
@@ -75,7 +75,7 @@ Both offer generous free tiers that, while having their limits, provide an amazi
 
 When it comes to **mobile app development** for both Android and iOS, especially for **production monitoring**, BugFender has become my secret weapon. It’s funny how I found this tool by accident, created an account, but initially, I wasn't fully committed. At the time, I was deeply entrenched with **Firebase Crashlytics** for all my **error recording** and **crash reporting** needs.
 
-Now, don’t get me wrong, Firebase tools are mature and provide a lot of information. The rub, however, was that the data often felt disorganized. I struggled to quickly pinpoint crucial device details, specific Android versions, or other vital context for **debugging production issues**. Maybe the information *was* there, but in my experience, it wasn't presented in a way that made my life easier as a busy solo dev.
+Now, don’t get me wrong, Firebase tools are mature and provide a lot of information. The rub, however, was that the data often felt disorganized. I struggled to quickly pinpoint crucial device details, specific Android versions, or other vital context for **debugging production issues**. Maybe the information _was_ there, but in my experience, it wasn't presented in a way that made my life easier as a busy solo dev.
 
 But then came the turning point: I had created an account and, honestly, promptly forgot about it for a week. To my surprise, BugFender's support team actually reached out, genuinely asking why I hadn't started using their service. That personal touch was a game-changer!
 
@@ -109,7 +109,7 @@ void main() {
 }
 ```
 
-*Just remember to import the package, and you’re essentially set!* This simple setup means your application is now using robust **real-time logging** and **crash analytics**.
+_Just remember to import the package, and you’re essentially set!_ This simple setup means your application is now using robust **real-time logging** and **crash analytics**.
 
 The tool offers a comprehensive suite of logging options, allowing for highly granular **error tracking** (as per their documentation):
 
@@ -150,21 +150,21 @@ FlutterBugfender.getUserFeedback()); // Show a screen which asks for feedback
 
 For me, the most crucial functions that I constantly rely on are:
 
-* `FlutterBugfender.error()`: For recording specific error conditions.
-* `FlutterBugfender.log()`: My standard for general event logging and understanding **user behavior**.
-* `FlutterBugfender.sendCrash()`: To push instant **crash reports** directly to the dashboard.
+- `FlutterBugfender.error()`: For recording specific error conditions.
+- `FlutterBugfender.log()`: My standard for general event logging and understanding **user behavior**.
+- `FlutterBugfender.sendCrash()`: To push instant **crash reports** directly to the dashboard.
 
-These functions are invaluable for quickly printing logs, sending detailed crash data to the dashboard, and comprehensively recording all errors occurring within the application. And the dashboard? It's simply *good*. Clean, intuitive, and it provides all the contextual information a developer needs to make informed decisions. It gives you the precise stats and **actionable insights** so you can jump straight into fixing bugs, instead of wasting precious time trying to decipher what a user *might* have been doing.
+These functions are invaluable for quickly printing logs, sending detailed crash data to the dashboard, and comprehensively recording all errors occurring within the application. And the dashboard? It's simply _good_. Clean, intuitive, and it provides all the contextual information a developer needs to make informed decisions. It gives you the precise stats and **actionable insights** so you can jump straight into fixing bugs, instead of wasting precious time trying to decipher what a user _might_ have been doing.
 
 While there are many other features to explore, I haven't delved into them all just yet. But give me time! For now, I highly recommend exploring this incredibly useful, and yes, **free**, tool for your **mobile app debugging** needs.
 
 ## Axiom: Taming the Web Development Wild West (Especially Next.js!)
 
-Now, let's pivot to the **web technology** side of things. Yes, I know Flutter for Web exists, and sure, you *could* technically deploy BugFender there. But while Flutter is a powerhouse for mobile, I find its web output, while improving, still sometimes lacks the nuanced polish and native feel I demand for a truly stellar website.
+Now, let's pivot to the **web technology** side of things. Yes, I know Flutter for Web exists, and sure, you _could_ technically deploy BugFender there. But while Flutter is a powerhouse for mobile, I find its web output, while improving, still sometimes lacks the nuanced polish and native feel I demand for a truly stellar website.
 
 For my **web application development**, I'm firmly in the React camp. For those quick, snappy demos and prototypes, **Vite** is my go-to for its blazing-fast development experience. But when things get serious – think complex blog posts with dynamic content, cool animations, intricate UI changes, or just about anything else that pushes the boundaries – that's when **Next.js** truly shines. Its **serverless** capabilities give me the power to pull off some genuinely crazy, innovative stuff.
 
-A quick heads-up, though: with great power comes great complexity. Next.js can get *very* intricate *very* fast, and if not architected correctly, it can become a nightmare. Trust me, I've got the scars to prove it! If you're curious about the 'trouble' I got myself into with a **scaling cache nightmare**, you can dive into that saga in my previous blog post: [how I get into a truble](https://www.rafay99.com/blog/convex-scaling-cache-nightmare).
+A quick heads-up, though: with great power comes great complexity. Next.js can get _very_ intricate _very_ fast, and if not architected correctly, it can become a nightmare. Trust me, I've got the scars to prove it! If you're curious about the 'trouble' I got myself into with a **scaling cache nightmare**, you can dive into that saga in my previous blog post: [how I get into a truble](https://www.rafay99.com/blog/convex-scaling-cache-nightmare).
 
 ### Enter Axiom: Your Full-Stack Web Logging Champion
 
@@ -180,7 +180,7 @@ Next, create a simple `axiom.ts` file anywhere in your codebase (I usually put i
 
 ```typescript
 // lib/axiom/axiom.ts (or wherever you prefer)
-import { Axiom } from '@axiomhq/js';
+import { Axiom } from "@axiomhq/js";
 
 const axiomClient = new Axiom({
   token: process.env.NEXT_PUBLIC_AXIOM_TOKEN!,
@@ -193,13 +193,16 @@ Then, for robust **server-side logging** in Next.js – which is crucial because
 
 ```typescript
 // lib/axiom/server.ts
-import axiomClient from '@/lib/axiom/axiom'; // Adjust path if needed
-import { Logger, AxiomJSTransport } from '@axiomhq/logging';
-import { createAxiomRouteHandler, nextJsFormatters } from '@axiomhq/nextjs';
+import axiomClient from "@/lib/axiom/axiom"; // Adjust path if needed
+import { Logger, AxiomJSTransport } from "@axiomhq/logging";
+import { createAxiomRouteHandler, nextJsFormatters } from "@axiomhq/nextjs";
 
 export const logger = new Logger({
   transports: [
-    new AxiomJSTransport({ axiom: axiomClient, dataset: process.env.NEXT_PUBLIC_AXIOM_DATASET! }),
+    new AxiomJSTransport({
+      axiom: axiomClient,
+      dataset: process.env.NEXT_PUBLIC_AXIOM_DATASET!,
+    }),
   ],
   formatters: nextJsFormatters,
 });
@@ -219,7 +222,7 @@ For context, this is what my Axiom dashboard looks like, monitoring my Next.js b
 
 This is where Axiom truly shines! You can use it across your entire **full-stack application**, with independent logging for both your frontend and backend. Everything gets logged, from general activity to critical crashes. It’s **simple, clean, and makes setup a breeze**.
 
-What I particularly love is the flexibility: if your cloud provider supports Axiom integration, you can often consolidate all your default logs directly into Axiom. The ability to see *everything* – **distributed tracing**, **API logging**, user-triggered events – in a single, unified place is just awesome for **production debugging** and improving my overall **developer workflow**. I genuinely love this tool!
+What I particularly love is the flexibility: if your cloud provider supports Axiom integration, you can often consolidate all your default logs directly into Axiom. The ability to see _everything_ – **distributed tracing**, **API logging**, user-triggered events – in a single, unified place is just awesome for **production debugging** and improving my overall **developer workflow**. I genuinely love this tool!
 
 ### Why Axiom Over BugFender for Next.js?
 
@@ -227,7 +230,7 @@ It's important to clarify one point: while BugFender is fantastic for **client-s
 
 ## Your Debugging Superpower: From "YOLO" to "I Know!"
 
-So, there you have it. My journey from the wild, wild west of "YOLO" deployments, praying nothing broke in **production**, to a far more serene and *informed* state. We've all been there, pushing code and then bracing ourselves for those inexplicable **user-generated errors**. But with robust **error logging** and **crash reporting** in place, those days are largely behind me.
+So, there you have it. My journey from the wild, wild west of "YOLO" deployments, praying nothing broke in **production**, to a far more serene and _informed_ state. We've all been there, pushing code and then bracing ourselves for those inexplicable **user-generated errors**. But with robust **error logging** and **crash reporting** in place, those days are largely behind me.
 
 Whether it's the intuitive insights of BugFender for my **Flutter mobile applications** or the comprehensive **full-stack logging** Axiom provides for my **Next.js web projects**, these tools have truly transformed my **developer workflow**. They aren't just about catching bugs; they're about understanding the nuanced dance between your code and your users, pinpointing those elusive **edge cases**, and ultimately, building more resilient and user-friendly applications.
 

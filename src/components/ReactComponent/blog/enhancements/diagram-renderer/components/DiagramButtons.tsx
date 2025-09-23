@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { memo } from "react";
 import { CopyIcon, CheckIcon, FullscreenIcon } from "../icons";
 
@@ -26,13 +26,13 @@ const DiagramButtons = memo(
         fullscreenButton:
           "flex items-center gap-1 px-2 py-1 rounded text-xs transition-all duration-200 backdrop-blur-sm bg-[#24283b]/80 border border-[#565f89]/30 text-[#a9b1d6] hover:bg-[#414868]/50 hover:border-[#bb9af7]/50 hover:text-[#bb9af7]",
       }),
-      [copied]
+      [copied],
     );
 
     return (
-      <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10">
+      <div className="absolute right-2 top-2 z-10 flex items-center gap-1 opacity-0 transition-all duration-200 group-hover:opacity-100">
         {diagramType && (
-          <span className="text-xs font-medium text-[#565f89] bg-[#24283b]/80 px-1.5 py-0.5 rounded backdrop-blur-sm border border-[#565f89]/30">
+          <span className="rounded border border-[#565f89]/30 bg-[#24283b]/80 px-1.5 py-0.5 text-xs font-medium text-[#565f89] backdrop-blur-sm">
             {diagramType}
           </span>
         )}
@@ -66,7 +66,7 @@ const DiagramButtons = memo(
       prevProps.onCopy === nextProps.onCopy &&
       prevProps.onFullscreen === nextProps.onFullscreen
     );
-  }
+  },
 );
 
 export default DiagramButtons;

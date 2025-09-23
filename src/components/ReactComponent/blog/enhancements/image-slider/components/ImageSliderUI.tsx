@@ -17,8 +17,6 @@ export const ImageSliderUI = memo(function ImageSliderUI({
   const {
     current,
     isFullScreen,
-    loadedImages,
-    isHovered,
     sliderRef,
     containerRef,
     handleImageLoad,
@@ -44,7 +42,7 @@ export const ImageSliderUI = memo(function ImageSliderUI({
     layout,
     aspectRatio,
     thumbnailPosition,
-    isFullScreen
+    isFullScreen,
   );
 
   return (
@@ -81,7 +79,7 @@ export const ImageSliderUI = memo(function ImageSliderUI({
                 className={`w-full ${
                   isFullScreen
                     ? "h-screen object-contain"
-                    : "h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] object-cover"
+                    : "h-[500px] object-cover md:h-[600px] lg:h-[700px] xl:h-[800px]"
                 } ${layoutClasses.image}`}
               />
 
@@ -90,7 +88,7 @@ export const ImageSliderUI = memo(function ImageSliderUI({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-[var(--accent-dark)]/10"
+                  className="bg-[var(--accent-dark)]/10 absolute inset-0 flex items-center justify-center backdrop-blur-sm"
                 >
                   <motion.div
                     animate={{
@@ -101,7 +99,7 @@ export const ImageSliderUI = memo(function ImageSliderUI({
                         repeat: Infinity,
                       },
                     }}
-                    className={`w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full`}
+                    className={`h-12 w-12 rounded-full border-4 border-[var(--accent)] border-t-transparent`}
                   />
                 </motion.div>
               )}
@@ -120,11 +118,11 @@ export const ImageSliderUI = memo(function ImageSliderUI({
               themeClasses={themeClasses}
             />
 
-            <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-4">
+            <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-4">
               <motion.span
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`px-3 py-1 rounded-full text-sm ${themeClasses.controls}`}
+                className={`rounded-full px-3 py-1 text-sm ${themeClasses.controls}`}
               >
                 {current + 1} / {images.length}
               </motion.span>
@@ -133,8 +131,7 @@ export const ImageSliderUI = memo(function ImageSliderUI({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={toggleFullScreen}
-                className={`px-3 py-1 rounded-full text-sm transition-colors 
-                  focus:outline-none focus:ring-2 ${themeClasses.buttons} ${themeClasses.ring}`}
+                className={`rounded-full px-3 py-1 text-sm transition-colors focus:outline-none focus:ring-2 ${themeClasses.buttons} ${themeClasses.ring}`}
                 aria-label={
                   isFullScreen ? "Exit fullscreen" : "Enter fullscreen"
                 }

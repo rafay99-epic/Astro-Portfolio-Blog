@@ -1,6 +1,4 @@
-import {
-    defineConfig
-} from "astro/config";
+import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
@@ -10,153 +8,176 @@ import dotenv from "dotenv";
 import robotsTxt from "astro-robots-txt";
 dotenv.config();
 import partytown from "@astrojs/partytown";
-import {
-    remarkReadingTime
-} from './remark-reading-time.mjs';
+import { remarkReadingTime } from "./remark-reading-time.mjs";
 
 import playformCompress from "@playform/compress";
 
 export default defineConfig({
-    site: "https://www.rafay99.com",
-    output: "server",
-    build: {
-        concurrency: 10,
-        format: "directory",
+  site: "https://www.rafay99.com",
+  output: "server",
+  build: {
+    concurrency: 10,
+    format: "directory",
+  },
+  prefetch: {
+    prefetchAll: false,
+  },
+  markdown: {
+    syntaxHighlight: {
+      excludeLangs: ["mermaid"],
     },
-    prefetch: {
-        prefetchAll: false,
-    },
-    experimental: {
-        // svg: true,
-    },
-    markdown: {
-        syntaxHighlight: {
-            excludeLangs: ["mermaid"],
-        },
-        remarkPlugins: [remarkReadingTime],
-        gfm: true,
+    remarkPlugins: [remarkReadingTime],
+    gfm: true,
 
-        shikiConfig: {
-            theme: "tokyo-night",
-            defaultColor: false,
-            langAlias: {
-                cjs: "javascript",
-            },
-            wrap: false,
-            transformers: [],
-        },
+    shikiConfig: {
+      theme: "tokyo-night",
+      defaultColor: false,
+      langAlias: {
+        cjs: "javascript",
+      },
+      wrap: false,
+      transformers: [],
     },
+  },
 
-    redirects: {
-        "/snaprescue.sh": "/downloads/scripts/snaprescue.sh",
-        "/MSBridge": "https://msbridge.rafay99.com",
-        "/Meaning-Mate-APK": "/downloads/app/meaning_mate/Meaning-Mate-APK.apk",
-        "/MSBridge-APK": "https://msbridge.rafay99.com/downloads/ms-bridge-stable.apk",
-        "/MSBridge-beta": "https://msbridge.rafay99.com/downloads/ms-bridge-beta.apk",
-        "/SimpleThread-APK": "/downloads/app/SimpleThread/simple_thread.apk",
-        "/MeetTime-APK": "/downloads/app/meet_time/MeetTime.apk",
-        "/webwiki": "https://rafay99-docs.vercel.app/",
-    },
+  redirects: {
+    "/snaprescue.sh": "/downloads/scripts/snaprescue.sh",
+    "/MSBridge": "https://msbridge.rafay99.com",
+    "/Meaning-Mate-APK": "/downloads/app/meaning_mate/Meaning-Mate-APK.apk",
+    "/MSBridge-APK":
+      "https://msbridge.rafay99.com/downloads/ms-bridge-stable.apk",
+    "/MSBridge-beta":
+      "https://msbridge.rafay99.com/downloads/ms-bridge-beta.apk",
+    "/SimpleThread-APK": "/downloads/app/SimpleThread/simple_thread.apk",
+    "/MeetTime-APK": "/downloads/app/meet_time/MeetTime.apk",
+    "/webwiki": "https://rafay99-docs.vercel.app/",
+  },
 
-    security: {
-        checkOrigin: true,
-    },
-    integrations: [partytown({
-        config: {
-            forward: ["dataLayer.push"],
-        },
-    }), mdx({}), sitemap({}), react({
-        experimentalDisableStreaming: true,
-
-        include: ["**/react/*"],
-        babel: {
-            plugins: ["babel-plugin-react-compiler"],
-        },
-    }), tailwind(), robotsTxt({
-        sitemap: true,
-        host: "www.rafay99.com",
-    }), playformCompress({
-        CSS: true,
-        HTML: {
-            "html-minifier-terser": {
-                removeAttributeQuotes: false,
-                collapseWhitespace: true,
-                removeComments: true,
-            },
-
-        },
-        Image: {
-            quality: 80,
-            avif: {
-                quality: 80,
-                effort: 7,
-            },
-            webp: {
-                quality: 80,
-                effort: 5,
-            },
-        },
-        JavaScript: true,
-        SVG: true,
-        Logger: 2,
-    })],
-    adapter: vercel({
-        webAnalytics: {
-            enabled: true,
-        },
-        maxDuration: 3,
-        imageService: true,
-        isr: true,
+  security: {
+    checkOrigin: true,
+  },
+  integrations: [
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
     }),
-    vite: {
-        build: {
-            cssMinify: true,
-            minify: "terser",
-            terserOptions: {
-                compress: {
-                    drop_console: true,
-                    drop_debugger: true,
-                    passes: 3,
-                },
-                mangle: {
-                    toplevel: true,
-                },
-            },
-            rollupOptions: {
-                output: {
-                    manualChunks: {
-                        "react-vendor": ["react", "react-dom"],
-                        "ui-components": [
-                            "@headlessui/react",
-                            "@heroicons/react",
-                            "framer-motion",
-                        ],
-                    },
-                },
-            },
+    mdx({}),
+    sitemap({}),
+    react({
+      experimentalDisableStreaming: true,
+
+      include: ["**/ReactComponent/**", "**/*.{jsx,tsx}"],
+      babel: {
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
+    tailwind(),
+    robotsTxt({
+      sitemap: true,
+      host: "www.rafay99.com",
+    }),
+    playformCompress({
+      CSS: true,
+      HTML: {
+        "html-minifier-terser": {
+          removeAttributeQuotes: false,
+          collapseWhitespace: true,
+          removeComments: true,
         },
-        ssr: {
-            noExternal: ["@astrojs/*"],
+      },
+      Image: {
+        quality: 80,
+        avif: {
+          quality: 80,
+          effort: 7,
         },
-        optimizeDeps: {
-            exclude: ["@astrojs/image", "sharp"],
+        webp: {
+          quality: 80,
+          effort: 5,
         },
-        resolve: {
-            alias: {
-                "@assets": "/src/assets",
-                "@components": "/src/components",
-                "@astro": "/src/components/AstroComponent",
-                "@react": "/src/components/ReactComponent",
-                "@content": "/src/content",
-                "@layouts": "/src/layouts",
-                "@pages": "/src/pages",
-                "@styles": "/src/styles",
-                "@types": "/src/types",
-                "@util": "/src/util",
-                "@config": "/src/config",
-                "@server": "/src/server",
-                "@hooks": "/src/hooks",
-            },
-        },
+      },
+      JavaScript: true,
+      SVG: true,
+      Logger: 2,
+    }),
+  ],
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
     },
+    speedInsights: {
+      enabled: true,
+    },
+    maxDuration: 3,
+    imageService: true,
+    isr: true,
+  }),
+  vite: {
+    build: {
+      cssMinify: true,
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          passes: 3,
+        },
+        mangle: {
+          toplevel: true,
+        },
+      },
+      chunkSizeWarningLimit: 1500,
+      rollupOptions: {
+        output: {
+          experimentalMinChunkSize: 30000,
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              if (id.includes("react")) return "react-vendor";
+              if (
+                id.includes("@headlessui") ||
+                id.includes("@heroicons") ||
+                id.includes("framer-motion")
+              ) {
+                return "ui-components";
+              }
+              if (/[\\/]node_modules[\\/](d3|d3-[^\\/]+)/.test(id)) {
+                return "vendor-d3";
+              }
+              const rel = id.split("node_modules/")[1] || "";
+              const parts = rel.split("/");
+              const pkg = rel.startsWith("@")
+                ? `${parts[0]}/${parts[1]}`
+                : parts[0];
+              return `vendor-${pkg}`;
+            }
+          },
+        },
+      },
+    },
+    ssr: {
+      noExternal: ["@astrojs/*"],
+    },
+    optimizeDeps: {
+      exclude: ["@astrojs/image", "sharp"],
+    },
+    resolve: {
+      alias: {
+        "@assets": "/src/assets",
+        "@components": "/src/components",
+        "@astro": "/src/components/AstroComponent",
+        "@react": "/src/components/ReactComponent",
+        "@content": "/src/content",
+        "@layouts": "/src/layouts",
+        "@pages": "/src/pages",
+        "@styles": "/src/styles",
+        "@types": "/src/types",
+        "@util": "/src/util",
+        "@config": "/src/config",
+        "@server": "/src/server",
+        "@hooks": "/src/hooks",
+        "@package.json": "/package.json",
+      },
+    },
+  },
 });

@@ -1,7 +1,7 @@
 import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
 
-export async function GET({ request }: { request: Request }) {
+export async function GET({}: { request: Request }) {
   const header = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "https://www.rafay99.com",
@@ -15,7 +15,7 @@ export async function GET({ request }: { request: Request }) {
         {
           status: 403,
           headers: header,
-        }
+        },
       );
     }
 
@@ -34,7 +34,7 @@ export async function GET({ request }: { request: Request }) {
       {
         status: 500,
         headers: header,
-      }
+      },
     );
   }
 }

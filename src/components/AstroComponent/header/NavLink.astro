@@ -1,5 +1,4 @@
 ---
-// src/components/common/NavLink.astro
 interface Props {
   href: string;
   icon?: astroHTML.JSX.Element | (() => astroHTML.JSX.Element);
@@ -22,15 +21,15 @@ const { href, icon: Icon, className = "", ...rest } = Astro.props;
       <span
         class={`${
           Astro.slots.has("default") ? "mr-3" : ""
-        } text-[#7aa2f7] group-hover:text-[#bb9af7] transition-colors duration-300`}
+        } text-[#7aa2f7] transition-colors duration-300 group-hover:text-[#bb9af7]`}
       >
-        <Icon class="w-4 h-4" />
+        <Icon class="h-4 w-4" />
       </span>
     )
   }
   {
     Astro.slots.has("default") && (
-      <span class="font-medium text-sm">
+      <span class="text-sm font-medium">
         <slot />
       </span>
     )

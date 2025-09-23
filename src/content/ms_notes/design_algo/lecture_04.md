@@ -23,7 +23,6 @@ In the previous lecture, we introduced recurrence relations for analyzing recurs
 The Recursion Tree method provides a visual and intuitive way to analyze the cost of a recursive algorithm defined by a recurrence relation.
 
 - **Approach:**
-
   1.  **Expand:** Start with the initial recurrence. Represent the cost `f(n)` associated with the top-level call as the root of a tree. The recursive terms (e.g., `aT(n/b)`) become the children of the root. Each child node represents the cost associated with a subproblem. Continue expanding each node recursively until you reach the base cases (leaves).
   2.  **Sum Costs per Level:** Calculate the total cost incurred across all nodes at each depth (level) of the tree.
   3.  **Sum Level Costs:** Sum the costs calculated for all levels (from the root down to the level just above the leaves) and add the cost of the base cases (leaves) to get the total cost, which represents `T(n)`.
@@ -40,19 +39,16 @@ The Recursion Tree method provides a visual and intuitive way to analyze the cos
 Let's solve this recurrence using the recursion tree method (assuming `T(1) = Θ(1)` and n is a power of 2).
 
 1.  **Expand:**
-
     - **Level 0:** The root represents the cost `cn`. It has two children representing `T(n/2)`.
     - **Level 1:** There are 2 nodes. Each corresponds to a subproblem of size `n/2`. The cost _at each node_ for the divide/combine step is `c(n/2)`. The total cost at this level is `2 * c(n/2) = cn`. These nodes have children representing `T(n/4)`.
     - **Level 2:** There are `2^2 = 4` nodes. Each corresponds to a subproblem of size `n/4`. The cost at each node is `c(n/4)`. The total cost at this level is `4 * c(n/4) = cn`.
     - **Level i:** There are `2^i` nodes. Each corresponds to a subproblem of size `n/2^i`. The cost at each node is `c(n/2^i)`. The total cost at this level is `2^i * c(n/2^i) = cn`.
 
 2.  **Determine Tree Height and Leaves:**
-
     - The recursion stops when the subproblem size reaches the base case, typically size 1. So, `n/2^h = 1`, which implies `n = 2^h`, or `h = log₂n`. The tree has `h + 1` levels (from 0 to `h`).
     - The number of leaves at the last level (`h = log₂n`) is `2^h = 2^(log₂n) = n`. Each leaf represents a base case `T(1)`, which has a cost of `Θ(1)`. The total cost at the leaf level is `n * Θ(1) = Θ(n)`.
 
 3.  **Sum Costs:**
-
     - The total cost is the sum of costs at all levels (0 to h-1) plus the cost of the leaves (level h).
     - Total Cost = `(Cost Level 0) + (Cost Level 1) + ... + (Cost Level h-1) + (Cost Level h)`
     - Total Cost = `cn + cn + ... + cn` (`h` times) + `Θ(n)`
@@ -67,7 +63,6 @@ _(Slide 3b/8 presents an alternative calculation focusing on cost per node, but 
 **Example 2: T(n) = T(n/3) + T(2n/3) + n**
 
 1.  **Expand:**
-
     - **Level 0:** Root cost `n`. Children `T(n/3)` and `T(2n/3)`.
     - **Level 1:** Costs at nodes are `n/3` and `2n/3`. Total cost = `n/3 + 2n/3 = n`.
     - **Level 2:** Nodes represent `T(n/9)`, `T(2n/9)` (from `T(n/3)`) and `T(2n/9)`, `T(4n/9)` (from `T(2n/3)`). Costs are `n/9`, `2n/9`, `2n/9`, `4n/9`. Total cost = `(1+2+2+4)n/9 = 9n/9 = n`.
@@ -76,7 +71,6 @@ _(Slide 3b/8 presents an alternative calculation focusing on cost per node, but 
 2.  **Determine Tree Height:** The tree is unbalanced. The longest path follows the `T(2n/3)` branch. It stops when the size is `Θ(1)`. `(2/3)^h * n = 1 => n = (3/2)^h => h = log_{3/2} n`.
 
 3.  **Sum Costs:** The total cost is the sum of the costs per level (`n`) multiplied by the number of levels (height `h`).
-
     - Total Cost ≈ `n * h = n * log_{3/2} n`.
 
 4.  **Result:** `T(n) = O(n log n)`. (Using O-notation as the summation isn't perfectly uniform).
@@ -84,19 +78,16 @@ _(Slide 3b/8 presents an alternative calculation focusing on cost per node, but 
 **Example 3: T(n) = 3T(n/4) + cn²**
 
 1.  **Expand:**
-
     - **Level 0:** Root cost `cn²`. 3 children `T(n/4)`.
     - **Level 1:** Costs at nodes `c(n/4)² = cn²/16`. Total cost = `3 * cn²/16 = (3/16)cn²`.
     - **Level 2:** `3²=9` nodes. Costs `c(n/16)² = cn²/256`. Total = `9 * cn²/256 = (9/256)cn² = (3/16)²cn²`.
     - **Level i:** Total cost = `(3/16)^i * cn²`.
 
 2.  **Determine Tree Height and Leaves:**
-
     - `n/4^h = 1 => h = log₄n`.
     - Number of leaves = `3^h = 3^(log₄n) = n^(log₄3)`. Total leaf cost = `n^(log₄3) * T(1) = Θ(n^(log₄3))`.
 
 3.  **Sum Costs:**
-
     - Total Cost = `Σ (from i=0 to h-1) [(3/16)^i * cn²] + Θ(n^(log₄3))`
     - This is a geometric series with ratio `r = 3/16 < 1`. The sum is bounded by a constant factor of the first term (`i=0`).
     - Total Cost = `cn² * Θ(1) + Θ(n^(log₄3))`
@@ -106,14 +97,12 @@ _(Slide 3b/8 presents an alternative calculation focusing on cost per node, but 
 **Example 4 (Task 1): T(n) = T(n/4) + T(n/2) + n²**
 
 1.  **Expand:**
-
     - **Level 0:** Root cost `n²`. Children `T(n/4)` and `T(n/2)`.
     - **Level 1:** Node costs `(n/4)² = n²/16` and `(n/2)² = n²/4`. Total = `n²/16 + n²/4 = 5n²/16`.
     - **Level 2:** Total cost = `(n/16)² + (n/8)² + (n/8)² + (n/4)² = n²/256 + 2n²/64 + n²/16 = (1 + 8 + 16)n²/256 = 25n²/256 = (5/16)²n²`.
     - **Level i:** Total cost appears to be `(5/16)^i * n²`.
 
 2.  **Sum Costs:**
-
     - Total Cost = `Σ (from i=0 to h) [(5/16)^i * n²]`. (Height `h` is determined by the deeper `n/2` path, `log₂n`).
     - Geometric series with ratio `r = 5/16 < 1`. Dominated by the first term.
     - Total Cost = `n² * Θ(1)`.
@@ -123,7 +112,6 @@ _(Slide 3b/8 presents an alternative calculation focusing on cost per node, but 
 **Example 5 (Task 2): T(n) = 2T(n/2) + n²**
 
 1.  **Expand:**
-
     - **Level 0:** Root cost `n²`. Children `T(n/2)`.
     - **Level 1:** 2 nodes. Costs `(n/2)² = n²/4`. Total = `2 * n²/4 = n²/2`.
     - **Level 2:** 4 nodes. Costs `(n/4)² = n²/16`. Total = `4 * n²/16 = n²/4`.
@@ -132,7 +120,6 @@ _(Slide 3b/8 presents an alternative calculation focusing on cost per node, but 
 2.  **Determine Tree Height:** `h = log₂n`.
 
 3.  **Sum Costs:**
-
     - Total Cost = `Σ (from i=0 to h-1) [n²/2^i] + Θ(n)` (Leaves: `n` leaves \* `T(1)` cost)
     - Total Cost = `n² * Σ (from i=0 to logn-1) [(1/2)^i] + Θ(n)`
     - Geometric series with `r=1/2 < 1`. Sum is `Θ(1)`.
@@ -151,7 +138,6 @@ Divide and Conquer is a general strategy for designing algorithms, particularly 
 - **Nature:** Inherently recursive.
 - **Analysis:** Naturally leads to recurrence relations.
 - **Three Steps:**
-
   1.  **Divide:** Break the original problem of size `n` into `a` smaller, independent subproblems, each of size `n/b`.
   2.  **Conquer:** Solve the subproblems recursively. If a subproblem size is small enough (base case), solve it directly.
   3.  **Combine:** Combine the solutions of the subproblems to form the solution for the original problem. The work done in the Divide and Combine steps is represented by `f(n)` in the recurrence.
@@ -169,13 +155,11 @@ Divide and Conquer is a general strategy for designing algorithms, particularly 
 The Master Theorem provides a "cookbook" method for solving recurrences of the form `T(n) = aT(n/b) + f(n)`, provided `f(n)` can be expressed as `Θ(n^d)` for some `d ≥ 0`.
 
 - **Conditions:**
-
   - `a ≥ 1` (number of subproblems)
   - `b > 1` (factor by which subproblem size decreases)
   - `f(n) = Θ(n^d)` where `d ≥ 0` (cost of divide/combine is polynomial)
 
 - **Three Cases:** Compare `a` (rate of subproblem proliferation) with `b^d` (rate of work decrease per subproblem at each level).
-
   1.  **If `a < b^d` (Work decreases rapidly):** The cost is dominated by the work done at the root.
       `T(n) = Θ(f(n)) = Θ(n^d)`
 
@@ -188,21 +172,18 @@ The Master Theorem provides a "cookbook" method for solving recurrences of the f
 **Master Theorem Examples:**
 
 1.  **T(n) = 9T(n/3) + n**
-
     - `a = 9`, `b = 3`, `f(n) = n = Θ(n^1) => d = 1`.
     - Compare `a` with `b^d`: `9` vs `3^1 = 3`.
     - Since `9 > 3`, this is **Case 3**.
     - `T(n) = Θ(n^(log_b a)) = Θ(n^(log₃9)) = Θ(n²)`.
 
 2.  **T(n) = 8T(n/2) + n²**
-
     - `a = 8`, `b = 2`, `f(n) = n² = Θ(n²) => d = 2`.
     - Compare `a` with `b^d`: `8` vs `2² = 4`.
     - Since `8 > 4`, this is **Case 3**.
     - `T(n) = Θ(n^(log_b a)) = Θ(n^(log₂8)) = Θ(n³)`.
 
 3.  **T(n) = T(n/2) + 1**
-
     - `a = 1`, `b = 2`, `f(n) = 1 = Θ(n⁰) => d = 0`.
     - Compare `a` with `b^d`: `1` vs `2⁰ = 1`.
     - Since `1 = 1`, this is **Case 2**.
@@ -235,13 +216,11 @@ The Master Theorem provides a "cookbook" method for solving recurrences of the f
 Merge Sort is a classic D&C sorting algorithm.
 
 - **Algorithm:**
-
   1.  **Divide:** If the sequence `A[p...r]` has more than one element (`p < r`), find the midpoint `q = floor((p+r)/2)` and divide it into two subsequences `A[p...q]` and `A[q+1...r]`.
   2.  **Conquer:** Recursively sort the two subsequences using Merge Sort: `MERGE-SORT(A, p, q)` and `MERGE-SORT(A, q+1, r)`.
   3.  **Combine:** Merge the two now-sorted subsequences `A[p...q]` and `A[q+1...r]` back into a single sorted sequence in `A[p...r]`. This is done by the `MERGE(A, p, q, r)` procedure.
 
 - **Merge Procedure:**
-
   - Takes two sorted subarrays (conceptually `L` and `R`, often implemented using a temporary array) and merges them into a single sorted array.
   - Uses pointers (indices) into `L`, `R`, and the output array `A`.
   - Repeatedly compares the elements pointed to by the `L` and `R` pointers, copies the smaller element to the next position in `A`, and advances the corresponding pointer.
@@ -324,19 +303,16 @@ Merge Sort is a classic D&C sorting algorithm.
 Quick Sort is another efficient D&C sorting algorithm, often faster in practice than Merge Sort despite its worst-case performance.
 
 - **Algorithm:**
-
   1.  **Divide:** Choose an element from the array `A[p...r]` called the **pivot**. Rearrange the elements in `A[p...r]` such that all elements less than or equal to the pivot come before it, and all elements greater than the pivot come after it. The pivot ends up in its final sorted position, say index `q`. This step is called **Partitioning**. The array is divided into `A[p...q-1]` and `A[q+1...r]`.
   2.  **Conquer:** Recursively sort the two subarrays `A[p...q-1]` and `A[q+1...r]` by calling Quick Sort.
   3.  **Combine:** Trivial. Since the subarrays are sorted in place, no work is needed to combine them. The entire array `A[p...r]` is now sorted.
 
 - **Partitioning:**
-
   - The core operation. Several schemes exist (e.g., Lomuto, Hoare).
   - Goal: Given `A[p...r]` and a chosen pivot (often `A[r]` in Lomuto), rearrange so elements `<= pivot` are left, elements `> pivot` are right, and return the pivot's final index `q`.
   - Typically takes linear time, `Θ(n)`, where `n = r-p+1`.
 
 - **Pivot Selection:** Crucial for performance.
-
   - _Bad Choices (Worst Case):_ Always picking the smallest or largest element (e.g., first/last element in sorted/reversed array) leads to unbalanced partitions (sizes 0 and n-1) and `Θ(n²) `time.
   - _Good Choices (Average/Best Case):_ Picking a pivot near the median leads to balanced partitions (sizes roughly n/2) and `Θ(n log n)` time.
   - _Strategies:_
@@ -411,14 +387,12 @@ Heap Sort uses a binary heap data structure to sort an array. While it uses arra
   - **Max-Heap:** The value of each node is greater than or equal to the values of its children. The largest element is at the root.
   - **Min-Heap:** The value of each node is less than or equal to the values of its children. The smallest element is at the root.
 - **Array Representation (0-based indexing):**
-
   - Root: `A[0]`
   - Parent(i): `A[(i-1)//2]`
   - Left Child(i): `A[2*i + 1]`
   - Right Child(i): `A[2*i + 2]`
 
 - **Algorithm (using Max-Heap for ascending sort):**
-
   1.  **Build-Max-Heap:** Convert the input array `A` into a max-heap. This is done efficiently by calling `Max-Heapify` on nodes from the last non-leaf node (`n//2 - 1`) up to the root (`0`). Time: `O(N)`.
   2.  **Sort:** Repeat `n-1` times:
       - Swap the root element `A[0]` (the current maximum) with the last element of the current heap `A[heap_size - 1]`.
@@ -426,7 +400,6 @@ Heap Sort uses a binary heap data structure to sort an array. While it uses arra
       - Call `Max-Heapify(A, 0)` to restore the max-heap property for the reduced heap. Time per call `O(log N)`.
 
 - **Max-Heapify(A, i, heap_size):**
-
   - Assumes the binary trees rooted at `Left(i)` and `Right(i)` are max-heaps, but `A[i]` might violate the property.
   - Find the largest among `A[i]`, `A[Left(i)]`, and `A[Right(i)]` (within heap bounds).
   - If `A[i]` is not the largest, swap it with the largest child.

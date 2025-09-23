@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { SearchResultsProps } from "types/search";
 
@@ -84,19 +84,19 @@ const SearchResultItem = memo(function SearchResultItem({
     >
       <a
         href={`/blog/${post.slug}`}
-        className="block p-6 rounded-2xl backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 shadow-xl transition-all duration-300 hover:shadow-2xl hover:shadow-[#7aa2f7]/10"
+        className="block rounded-2xl border border-[#565f89]/30 bg-[#24283b]/60 p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:shadow-2xl hover:shadow-[#7aa2f7]/10"
         onMouseEnter={() => setSelectedResultIndex(index)}
       >
-        <h3 className="text-xl font-bold text-[#c0caf5] mb-2 group-hover:text-[#7aa2f7] transition-colors">
+        <h3 className="mb-2 text-xl font-bold text-[#c0caf5] transition-colors group-hover:text-[#7aa2f7]">
           {post.data.title}
         </h3>
-        <p className="text-[#a9b1d6] mb-4">{post.data.description}</p>
+        <p className="mb-4 text-[#a9b1d6]">{post.data.description}</p>
         {post.data.tags && (
           <div className="flex flex-wrap gap-2">
             {post.data.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-2 py-1 text-xs bg-[#1a1b26] rounded text-[#7aa2f7]"
+                className="rounded bg-[#1a1b26] px-2 py-1 text-xs text-[#7aa2f7]"
               >
                 #{tag}
               </span>

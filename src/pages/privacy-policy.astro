@@ -1,10 +1,9 @@
 ---
-import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
-import Footer from "../components/AstroComponent/footer/Footer.astro";
-import Header from "../components/AstroComponent/header/Header.astro";
-import authorConfig from "../config/siteConfig/info.json";
-import { featureFlags } from "../config/featureFlag/featureFlag.json";
-import SpeedInsights from "@vercel/speed-insights/astro";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Footer from "@astro/footer/Footer.astro";
+import Header from "@astro/header/Header.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
 try {
   if (!featureFlags.showPrivacy) {
@@ -26,12 +25,11 @@ try {
 
   <body>
     <Header />
-    <SpeedInsights />
-    <main class="max-w-7xl mx-auto ">
-      <h1 class="text-6xl font-bold mb-8 text-center">Privacy Policy</h1>
-      <p class="text-lg mb-6 text-center">Last updated: September 26, 2024</p>
+    <main class="mx-auto max-w-7xl">
+      <h1 class="mb-8 text-center text-6xl font-bold">Privacy Policy</h1>
+      <p class="mb-6 text-center text-lg">Last updated: September 26, 2024</p>
 
-      <div class="shadow-sm rounded-lg p-6 mb-8 bg-transparent">
+      <div class="mb-8 rounded-lg bg-transparent p-6 shadow-sm">
         <p class="mb-4 text-justify">
           This Privacy Policy describes Our policies and procedures on the
           collection, use and disclosure of Your information when You use the
@@ -49,17 +47,17 @@ try {
         </p>
       </div>
 
-      <h2 class="text-4xl font-bold mb-8 text-center">
+      <h2 class="mb-8 text-center text-4xl font-bold">
         Interpretation and Definitions
       </h2>
-      <h3 class="text-3xl font-bold mb-8 underline">Interpretation</h3>
+      <h3 class="mb-8 text-3xl font-bold underline">Interpretation</h3>
       <p class="mb-4 text-justify">
         The words of which the initial letter is capitalized have meanings
         defined under the following conditions. The following definitions shall
         have the same meaning regardless of whether they appear in singular or
         in plural.
       </p>
-      <h3 class="text-3xl font-bold mb-8 underline">Definitions</h3>
+      <h3 class="mb-8 text-3xl font-bold underline">Definitions</h3>
       <p class="mb-4 text-justify">For the purposes of this Privacy Policy:</p>
       <ul>
         <li>
@@ -147,11 +145,11 @@ try {
           </p>
         </li>
       </ul>
-      <h2 class="text-4xl font-bold mb-8 text-center">
+      <h2 class="mb-8 text-center text-4xl font-bold">
         Collecting and Using Your Personal Data
       </h2>
-      <h3 class="text-3xl font-bold mb-8 underline">Types of Data Collected</h3>
-      <h4 class="text-2xl font-bold mb-8 underline">Personal Data</h4>
+      <h3 class="mb-8 text-3xl font-bold underline">Types of Data Collected</h3>
+      <h4 class="mb-8 text-2xl font-bold underline">Personal Data</h4>
       <p class="mb-4 text-justify">
         While using Our Service, We may ask You to provide Us with certain
         personally identifiable information that can be used to contact or
@@ -161,7 +159,7 @@ try {
       <ul>
         <li>Usage Data</li>
       </ul>
-      <h4 class="text-2xl font-bold mb-8 underline">Usage Data</h4>
+      <h4 class="mb-8 text-2xl font-bold underline">Usage Data</h4>
       <p class="mb-4 text-justify">
         Usage Data is collected automatically when using the Service.
       </p>
@@ -185,7 +183,7 @@ try {
         visit our Service or when You access the Service by or through a mobile
         device.
       </p>
-      <h4 class="text-2xl font-bold mb-8 underline">
+      <h4 class="mb-8 text-2xl font-bold underline">
         Tracking Technologies and Cookies
       </h4>
       <p class="mb-4 text-justify">
@@ -272,7 +270,7 @@ try {
         cookies, please visit our Cookies Policy or the Cookies section of our
         Privacy Policy.
       </p>
-      <h3 class="text-3xl font-bold mb-8 underline">
+      <h3 class="mb-8 text-3xl font-bold underline">
         Use of Your Personal Data
       </h3>
       <p class="mb-4 text-justify">
@@ -381,7 +379,7 @@ try {
           information for any other purpose with Your consent.
         </li>
       </ul>
-      <h3 class="text-3xl font-bold mb-8 underline">
+      <h3 class="mb-8 text-3xl font-bold underline">
         Retention of Your Personal Data
       </h3>
       <p class="mb-4 text-justify">
@@ -399,7 +397,7 @@ try {
         functionality of Our Service, or We are legally obligated to retain this
         data for longer time periods.
       </p>
-      <h3 class="text-3xl font-bold mb-8 underline">
+      <h3 class="mb-8 text-3xl font-bold underline">
         Transfer of Your Personal Data
       </h3>
       <p class="mb-4 text-justify">
@@ -421,7 +419,7 @@ try {
         a country unless there are adequate controls in place including the
         security of Your data and other personal information.
       </p>
-      <h3 class="text-3xl font-bold mb-8 underline">
+      <h3 class="mb-8 text-3xl font-bold underline">
         Delete Your Personal Data
       </h3>
       <p class="mb-4 text-justify">
@@ -443,23 +441,23 @@ try {
         Please note, however, that We may need to retain certain information
         when we have a legal obligation or lawful basis to do so.
       </p>
-      <h3 class="text-3xl font-bold mb-8 underline">
+      <h3 class="mb-8 text-3xl font-bold underline">
         Disclosure of Your Personal Data
       </h3>
-      <h4 class="text-2xl font-bold mb-8 underline">Business Transactions</h4>
+      <h4 class="mb-8 text-2xl font-bold underline">Business Transactions</h4>
       <p class="mb-4 text-justify">
         If the Company is involved in a merger, acquisition or asset sale, Your
         Personal Data may be transferred. We will provide notice before Your
         Personal Data is transferred and becomes subject to a different Privacy
         Policy.
       </p>
-      <h4 class="text-2xl font-bold mb-8 underline">Law enforcement</h4>
+      <h4 class="mb-8 text-2xl font-bold underline">Law enforcement</h4>
       <p class="mb-4 text-justify">
         Under certain circumstances, the Company may be required to disclose
         Your Personal Data if required to do so by law or in response to valid
         requests by public authorities (e.g. a court or a government agency).
       </p>
-      <h4 class="text-2xl font-bold mb-8 underline">
+      <h4 class="mb-8 text-2xl font-bold underline">
         Other legal requirements
       </h4>
       <p class="mb-4 text-justify">
@@ -478,7 +476,7 @@ try {
         </li>
         <li>Protect against legal liability</li>
       </ul>
-      <h3 class="text-3xl font-bold mb-8 underline">
+      <h3 class="mb-8 text-3xl font-bold underline">
         Security of Your Personal Data
       </h3>
       <p class="mb-4 text-justify">
@@ -488,7 +486,7 @@ try {
         means to protect Your Personal Data, We cannot guarantee its absolute
         security.
       </p>
-      <h2 class="text-4xl font-bold mb-8 text-center">Children's Privacy</h2>
+      <h2 class="mb-8 text-center text-4xl font-bold">Children's Privacy</h2>
       <p class="mb-4 text-justify">
         Our Service does not address anyone under the age of 13. We do not
         knowingly collect personally identifiable information from anyone under
@@ -504,7 +502,7 @@ try {
         require Your parent's consent before We collect and use that
         information.
       </p>
-      <h2 class="text-4xl font-bold mb-8 text-center">
+      <h2 class="mb-8 text-center text-4xl font-bold">
         Links to Other Websites
       </h2>
       <p class="mb-4 text-justify">
@@ -517,7 +515,7 @@ try {
         We have no control over and assume no responsibility for the content,
         privacy policies or practices of any third party sites or services.
       </p>
-      <h2 class="text-4xl font-bold mb-8 text-center">
+      <h2 class="mb-8 text-center text-4xl font-bold">
         Changes to this Privacy Policy
       </h2>
       <p class="mb-4 text-justify">
@@ -534,7 +532,7 @@ try {
         changes. Changes to this Privacy Policy are effective when they are
         posted on this page.
       </p>
-      <h2 class="text-4xl font-bold mb-8 text-center">Contact Us</h2>
+      <h2 class="mb-8 text-center text-4xl font-bold">Contact Us</h2>
       <p class="mb-4 text-justify">
         If you have any questions about this Privacy Policy, You can contact us:
       </p>

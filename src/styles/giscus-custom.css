@@ -4,11 +4,11 @@
   --black: rgb(8, 12, 17);
   --gray: rgb(76, 80, 106);
   --gray-light: rgb(59, 66, 82);
-  --text-light: #F8F8F8;
+  --text-light: #f8f8f8;
   --gray-dark: rgb(31, 34, 40);
   --gray-gradient: linear-gradient(135deg, #1a1b26 0%, #414868 100%);
-  --box-shadow: 0 2px 6px rgba(76, 80, 106, 0.25),
-    0 8px 24px rgba(76, 80, 106, 0.33),
+  --box-shadow:
+    0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33),
     0 16px 32px rgba(76, 80, 106, 0.33);
 }
 

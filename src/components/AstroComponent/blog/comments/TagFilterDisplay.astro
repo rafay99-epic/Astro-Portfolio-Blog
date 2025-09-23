@@ -1,17 +1,9 @@
 ---
-// src/components/common/TagFilterDisplay.astro
-import type { Post } from "../../../../types/articles"; // Assuming this type is globally accessible or path is correct
+import type { Post } from "types/articles";
 
-const {
-  allTags,
-  paginatedPosts,
-  selectedTag,
-  currentPage,
-  totalPages,
-  currentUrl
-} = Astro.props;
+const { allTags, paginatedPosts, selectedTag, currentPage, totalPages } =
+  Astro.props;
 
-// Helper to construct URL for tags and pagination
 const getTagUrl = (tag: string | null) => {
   if (tag) {
     return `/tag/${tag}`;
@@ -59,123 +51,107 @@ const getPageUrl = (page: number) => {
   }
 </style>
 
-<section class="relative overflow-hidden py-8 px-4">
-  <!-- Background Elements -->
+<section class="relative overflow-hidden px-4 py-8">
   <div class="absolute inset-0 opacity-5">
     <div
-      class="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7aa2f7] rounded-full blur-3xl"
+      class="absolute left-1/4 top-1/4 h-64 w-64 rounded-full bg-[#7aa2f7] blur-3xl"
     >
     </div>
     <div
-      class="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#bb9af7] rounded-full blur-3xl"
+      class="absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-[#bb9af7] blur-3xl"
     >
     </div>
     <div
-      class="absolute top-3/4 left-3/4 w-32 h-32 bg-[#9ece6a] rounded-full blur-3xl"
+      class="absolute left-3/4 top-3/4 h-32 w-32 rounded-full bg-[#9ece6a] blur-3xl"
     >
     </div>
   </div>
 
-  <div class="container mx-auto relative z-10 max-w-6xl">
-    <!-- Header Section -->
-    <div class="text-center mb-12">
+  <div class="container relative z-10 mx-auto max-w-6xl">
+    <div class="mb-12 text-center">
       <h1
-        class="font-bold mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent text-3xl sm:text-4xl lg:text-5xl"
+        class="mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-3xl font-bold text-transparent sm:text-4xl lg:text-5xl"
       >
         Browse by Tags
       </h1>
-      <p class="text-[#a9b1d6] max-w-2xl mx-auto text-sm sm:text-lg">
+      <p class="mx-auto max-w-2xl text-sm text-[#a9b1d6] sm:text-lg">
         Discover articles by topic and explore content that interests you most
       </p>
 
-      <!-- Decorative line -->
       <div
-        class="mx-auto mt-6 h-0.5 bg-gradient-to-r from-transparent via-[#7aa2f7] to-transparent rounded-full w-32 sm:w-48 md:w-64"
+        class="mx-auto mt-6 h-0.5 w-32 rounded-full bg-gradient-to-r from-transparent via-[#7aa2f7] to-transparent sm:w-48 md:w-64"
       >
       </div>
     </div>
 
-    <!-- Tags Section -->
     <div class="mb-12">
       <div
-        class="backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 rounded-3xl p-6 md:p-8 shadow-2xl"
+        class="rounded-3xl border border-[#565f89]/30 bg-[#24283b]/60 p-6 shadow-2xl backdrop-blur-xl md:p-8"
       >
         <h2
-          class="font-semibold mb-6 bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent text-xl sm:text-2xl"
+          class="mb-6 bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-xl font-semibold text-transparent sm:text-2xl"
         >
           Filter by Tags
         </h2>
 
         <div class="flex flex-wrap gap-2 sm:gap-3">
-          <!-- All Tags button -->
           <a
             href={getTagUrl(null)}
             class:list={[
-              "transition-all duration-300 rounded-xl font-semibold tag-button",
+              "tag-button rounded-xl font-semibold transition-all duration-300",
               selectedTag === null
                 ? "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white shadow-lg shadow-[#7aa2f7]/25"
-                : "bg-[#1a1b26]/60 text-[#a9b1d6] border border-[#565f89]/40 hover:border-[#7aa2f7]/50 hover:text-[#c0caf5] hover:bg-[#7aa2f7]/10",
-              "py-2 px-3 text-sm sm:py-3 sm:px-4 sm:text-base"
+                : "border border-[#565f89]/40 bg-[#1a1b26]/60 text-[#a9b1d6] hover:border-[#7aa2f7]/50 hover:bg-[#7aa2f7]/10 hover:text-[#c0caf5]",
+              "px-3 py-2 text-sm sm:px-4 sm:py-3 sm:text-base",
             ]}
           >
             <span class="flex items-center gap-2">
               <span class="text-lg">#</span>
               <span>All</span>
-              {selectedTag === null && (
-                <span class="text-sm">
-                  ✓
-                </span>
-              )}
+              {selectedTag === null && <span class="text-sm">✓</span>}
             </span>
           </a>
 
-          <!-- Individual Tag buttons -->
           {
-            allTags.map((tag) => (
+            allTags.map((tag: string) => (
               <a
                 href={getTagUrl(tag)}
                 class:list={[
-                  "transition-all duration-300 rounded-xl font-semibold tag-button",
+                  "tag-button rounded-xl font-semibold transition-all duration-300",
                   selectedTag === tag
                     ? "bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white shadow-lg shadow-[#7aa2f7]/25"
-                    : "bg-[#1a1b26]/60 text-[#a9b1d6] border border-[#565f89]/40 hover:border-[#7aa2f7]/50 hover:text-[#c0caf5] hover:bg-[#7aa2f7]/10",
-                  "py-2 px-3 text-sm sm:py-3 sm:px-4 sm:text-base"
+                    : "border border-[#565f89]/40 bg-[#1a1b26]/60 text-[#a9b1d6] hover:border-[#7aa2f7]/50 hover:bg-[#7aa2f7]/10 hover:text-[#c0caf5]",
+                  "px-3 py-2 text-sm sm:px-4 sm:py-3 sm:text-base",
                 ]}
               >
                 <span class="flex items-center gap-2">
                   <span class="text-lg">#</span>
                   <span>{tag}</span>
-                  {selectedTag === tag && (
-                    <span class="text-sm">
-                      ✓
-                    </span>
-                  )}
+                  {selectedTag === tag && <span class="text-sm">✓</span>}
                 </span>
               </a>
             ))
           }
         </div>
 
-        <!-- Selected tag info -->
-        {selectedTag && (
-          <div
-            class="mt-6 p-4 bg-[#1a1b26]/40 border border-[#565f89]/30 rounded-xl"
-          >
-            <p class="text-[#a9b1d6] text-sm sm:text-base">
-              Showing articles tagged with{" "}
-              <span class="text-[#7aa2f7] font-semibold">#{selectedTag}</span>{" "}
-              ({paginatedPosts.length} article
-              {paginatedPosts.length !== 1 ? "s" : ""} found)
-            </p>
-          </div>
-        )}
+        {
+          selectedTag && (
+            <div class="mt-6 rounded-xl border border-[#565f89]/30 bg-[#1a1b26]/40 p-4">
+              <p class="text-sm text-[#a9b1d6] sm:text-base">
+                Showing articles tagged with{" "}
+                <span class="font-semibold text-[#7aa2f7]">#{selectedTag}</span>{" "}
+                ({paginatedPosts.length} article
+                {paginatedPosts.length !== 1 ? "s" : ""} found)
+              </p>
+            </div>
+          )
+        }
       </div>
     </div>
 
-    <!-- Articles Section -->
     <div>
       <h2
-        class="font-bold mb-8 bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent text-xl sm:text-2xl"
+        class="mb-8 bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-xl font-bold text-transparent sm:text-2xl"
       >
         {selectedTag ? `Articles tagged with #${selectedTag}` : "All Articles"}
       </h2>
@@ -183,36 +159,32 @@ const getPageUrl = (page: number) => {
       <div class="space-y-4">
         {
           paginatedPosts.length > 0 ? (
-            paginatedPosts.map((post) => (
+            paginatedPosts.map((post: Post) => (
               <div class="group">
                 <a
                   href={`/blog/${post.slug}`}
-                  class="article-card block relative overflow-hidden rounded-2xl backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 shadow-xl hover:shadow-2xl hover:shadow-[#7aa2f7]/10 transition-all duration-500"
+                  class="article-card relative block overflow-hidden rounded-2xl border border-[#565f89]/30 bg-[#24283b]/60 shadow-xl backdrop-blur-xl transition-all duration-500 hover:shadow-2xl hover:shadow-[#7aa2f7]/10"
                 >
                   <div class="p-4 sm:p-6">
-                    {/* Article header */}
-                    <div class="flex items-start justify-between mb-4">
+                    <div class="mb-4 flex items-start justify-between">
                       <div class="flex-1">
-                        <h3
-                          class="font-bold mb-2 bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent group-hover:from-[#7aa2f7] group-hover:to-[#bb9af7] transition-all duration-300 text-lg sm:text-xl"
-                        >
+                        <h3 class="mb-2 bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-lg font-bold text-transparent transition-all duration-300 group-hover:from-[#7aa2f7] group-hover:to-[#bb9af7] sm:text-xl">
                           {post.data.title}
                         </h3>
 
-                        {/* Meta information */}
-                        <div class="flex flex-wrap items-center gap-4 mb-3">
-                          <div class="flex items-center gap-1 text-[#a9b1d6] text-sm">
+                        <div class="mb-3 flex flex-wrap items-center gap-4">
+                          <div class="flex items-center gap-1 text-sm text-[#a9b1d6]">
                             <span class="text-base">📅</span>
                             <span>
                               {new Date(post.data.pubDate).toLocaleDateString()}
                             </span>
                           </div>
-                          <div class="flex items-center gap-1 text-[#a9b1d6] text-sm">
+                          <div class="flex items-center gap-1 text-sm text-[#a9b1d6]">
                             <span class="text-base">👤</span>
                             <span>{post.data.authorName}</span>
                           </div>
                           {post.data.tags && (
-                            <div class="flex items-center gap-1 text-[#a9b1d6] text-sm">
+                            <div class="flex items-center gap-1 text-sm text-[#a9b1d6]">
                               <span class="text-base">🏷️</span>
                               <span>
                                 {post.data.tags.length} tag
@@ -223,44 +195,35 @@ const getPageUrl = (page: number) => {
                         </div>
                       </div>
 
-                      {/* Read more indicator */}
-                      <div
-                        class="flex items-center gap-2 text-[#7aa2f7] font-medium text-sm group-hover:text-[#bb9af7] transition-colors duration-300 read-more-arrow"
-                      >
+                      <div class="read-more-arrow flex items-center gap-2 text-sm font-medium text-[#7aa2f7] transition-colors duration-300 group-hover:text-[#bb9af7]">
                         <span class="hidden sm:block">Read Article</span>
                         <span>→</span>
                       </div>
                     </div>
 
-                    {/* Description */}
                     {post.data.description && (
-                      <p
-                        class="text-[#a9b1d6] leading-relaxed group-hover:text-[#c0caf5] transition-colors duration-300 text-sm line-clamp-2 sm:text-base sm:line-clamp-3"
-                      >
+                      <p class="line-clamp-2 text-sm leading-relaxed text-[#a9b1d6] transition-colors duration-300 group-hover:text-[#c0caf5] sm:line-clamp-3 sm:text-base">
                         {post.data.description}
                       </p>
                     )}
 
-                    <!-- Tags -->
                     {post.data.tags && post.data.tags.length > 0 && (
                       <div class="mt-4 flex flex-wrap gap-2">
-                        {post.data.tags
-                          .slice(0, 5) // Always show max 5 tags, rely on CSS for mobile
-                          .map((tag) => (
-                            <span
-                              class:list={[
-                                "bg-[#1a1b26]/60 border border-[#565f89]/40 text-[#a9b1d6] font-medium rounded-lg transition-all duration-300 group-hover:border-[#7aa2f7]/50 group-hover:text-[#c0caf5]",
-                                selectedTag === tag
-                                  ? "border-[#7aa2f7]/70 text-[#7aa2f7]"
-                                  : "",
-                                "px-2 py-1 text-xs sm:px-3 sm:py-1 sm:text-sm"
-                              ]}
-                            >
-                              #{tag}
-                            </span>
-                          ))}
+                        {post.data.tags.slice(0, 5).map((tag: string) => (
+                          <span
+                            class:list={[
+                              "rounded-lg border border-[#565f89]/40 bg-[#1a1b26]/60 font-medium text-[#a9b1d6] transition-all duration-300 group-hover:border-[#7aa2f7]/50 group-hover:text-[#c0caf5]",
+                              selectedTag === tag
+                                ? "border-[#7aa2f7]/70 text-[#7aa2f7]"
+                                : "",
+                              "px-2 py-1 text-xs sm:px-3 sm:py-1 sm:text-sm",
+                            ]}
+                          >
+                            #{tag}
+                          </span>
+                        ))}
                         {post.data.tags.length > 5 && (
-                          <span class="text-[#a9b1d6] text-xs sm:text-sm">
+                          <span class="text-xs text-[#a9b1d6] sm:text-sm">
                             +{post.data.tags.length - 5} more
                           </span>
                         )}
@@ -268,32 +231,20 @@ const getPageUrl = (page: number) => {
                     )}
                   </div>
 
-                  <!-- Hover effects -->
-                  <div
-                    class="absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  >
-                  </div>
+                  <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#7aa2f7]/5 via-transparent to-[#bb9af7]/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-                  <!-- Bottom accent line -->
-                  <div
-                    class="h-1 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] opacity-0 group-hover:opacity-100 transition-opacity duration-500 accent-line"
-                  >
-                  </div>
+                  <div class="accent-line h-1 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 </a>
               </div>
             ))
           ) : (
-            <div class="text-center py-12">
-              <div
-                class="backdrop-blur-xl bg-[#24283b]/50 border border-[#565f89]/30 rounded-2xl p-8 shadow-xl"
-              >
-                <div class="text-6xl mb-4">📝</div>
-                <h3
-                  class="font-semibold text-[#c0caf5] mb-2 text-lg sm:text-xl"
-                >
+            <div class="py-12 text-center">
+              <div class="rounded-2xl border border-[#565f89]/30 bg-[#24283b]/50 p-8 shadow-xl backdrop-blur-xl">
+                <div class="mb-4 text-6xl">📝</div>
+                <h3 class="mb-2 text-lg font-semibold text-[#c0caf5] sm:text-xl">
                   No articles found
                 </h3>
-                <p class="text-[#a9b1d6] text-sm sm:text-base">
+                <p class="text-sm text-[#a9b1d6] sm:text-base">
                   {selectedTag
                     ? `No articles found with the tag "${selectedTag}". Try selecting a different tag.`
                     : "No articles available at the moment."}
@@ -304,47 +255,41 @@ const getPageUrl = (page: number) => {
         }
       </div>
 
-      <!-- Pagination -->
       {
         totalPages > 1 && (
-          <div class="flex justify-center items-center mt-12">
-            <div
-              class="backdrop-blur-xl bg-[#24283b]/50 border border-[#565f89]/30 rounded-2xl p-4 shadow-xl"
-            >
+          <div class="mt-12 flex items-center justify-center">
+            <div class="rounded-2xl border border-[#565f89]/30 bg-[#24283b]/50 p-4 shadow-xl backdrop-blur-xl">
               <div class="flex items-center gap-3">
-                <!-- Previous button -->
                 <a
                   href={getPageUrl(currentPage - 1)}
                   aria-disabled={currentPage === 1}
                   class:list={[
-                    "flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all duration-300",
+                    "flex items-center gap-2 rounded-xl px-4 py-2 font-semibold transition-all duration-300",
                     currentPage === 1
-                      ? "text-[#565f89] cursor-not-allowed pointer-events-none"
-                      : "text-[#a9b1d6] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 tag-button",
-                    "text-sm px-3 py-1.5 sm:text-base"
+                      ? "pointer-events-none cursor-not-allowed text-[#565f89]"
+                      : "tag-button text-[#a9b1d6] hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]",
+                    "px-3 py-1.5 text-sm sm:text-base",
                   ]}
                 >
                   <span>←</span>
                   <span class="hidden sm:inline">Previous</span>
                 </a>
 
-                <!-- Page info -->
-                <div class="text-[#a9b1d6] text-sm sm:text-base">
+                <div class="text-sm text-[#a9b1d6] sm:text-base">
                   <span class="font-medium text-[#c0caf5]">{currentPage}</span>
                   <span class="mx-2">of</span>
                   <span class="font-medium text-[#c0caf5]">{totalPages}</span>
                 </div>
 
-                <!-- Next button -->
                 <a
                   href={getPageUrl(currentPage + 1)}
                   aria-disabled={currentPage === totalPages}
                   class:list={[
-                    "flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all duration-300",
+                    "flex items-center gap-2 rounded-xl px-4 py-2 font-semibold transition-all duration-300",
                     currentPage === totalPages
-                      ? "text-[#565f89] cursor-not-allowed pointer-events-none"
-                      : "text-[#a9b1d6] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 tag-button",
-                    "text-sm px-3 py-1.5 sm:text-base"
+                      ? "pointer-events-none cursor-not-allowed text-[#565f89]"
+                      : "tag-button text-[#a9b1d6] hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]",
+                    "px-3 py-1.5 text-sm sm:text-base",
                   ]}
                 >
                   <span class="hidden sm:inline">Next</span>

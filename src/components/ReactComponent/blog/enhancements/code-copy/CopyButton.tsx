@@ -1,9 +1,8 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { memo } from "react";
 import { Copy, Check } from "lucide-react";
-import { toast } from "react-hot-toast";
 import type { CopyButtonProps } from "types/codeblock";
-import { useCopyButton } from "../../../../../hooks/useCopyButton";
+import { useCopyButton } from "@hooks/useCopyButton";
 import { STYLES, TOAST_STYLES } from "./styles";
 
 const CopyButton = memo(function CopyButton({
@@ -31,7 +30,7 @@ const CopyButton = memo(function CopyButton({
       aria-label="Copy code to clipboard"
       role="button"
     >
-      {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+      {isCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
     </button>
   );
 });

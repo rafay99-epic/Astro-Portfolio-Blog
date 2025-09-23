@@ -16,11 +16,11 @@ const { theme = "dark" } = Astro.props;
 <section class="giscus-wrapper mx-auto mt-10 w-full">
   <div
     id="giscus-container"
-    class="min-h-[200px] relative bg-[var(--background-light)]/10 rounded-lg p-6"
+    class="bg-[var(--background-light)]/10 relative min-h-[200px] rounded-lg p-6"
   >
-    <div class="flex items-center justify-center h-full">
+    <div class="flex h-full items-center justify-center">
       <div
-        class="animate-pulse text-[var(--text-light)]/60 flex flex-col items-center"
+        class="text-[var(--text-light)]/60 flex animate-pulse flex-col items-center"
       >
         <div class="loading-spinner mb-4"></div>
         <span>Loading comments...</span>
@@ -28,7 +28,7 @@ const { theme = "dark" } = Astro.props;
     </div>
   </div>
 
-  <script define:vars={{ theme }}>
+  <script is:inline define:vars={{ theme }}>
     class GiscusManager {
       constructor() {
         this.container = document.getElementById("giscus-container");
@@ -52,7 +52,7 @@ const { theme = "dark" } = Astro.props;
 
         if (document.readyState === "loading") {
           document.addEventListener("DOMContentLoaded", () =>
-            this.setupGiscus()
+            this.setupGiscus(),
           );
         } else {
           this.setupGiscus();
@@ -93,7 +93,7 @@ const { theme = "dark" } = Astro.props;
           {
             rootMargin: "100px 0px",
             threshold: 0.1,
-          }
+          },
         );
 
         observer.observe(this.container);
@@ -147,7 +147,7 @@ const { theme = "dark" } = Astro.props;
                 this.handleError("Script loading error");
               }
             },
-            true
+            true,
           );
         } catch (error) {
           this.handleError("Error initializing comments");
@@ -162,7 +162,7 @@ const { theme = "dark" } = Astro.props;
           this.showRetryMessage();
           setTimeout(
             () => this.loadGiscus(),
-            this.retryDelay * this.retryCount
+            this.retryDelay * this.retryCount,
           );
         } else {
           this.showErrorMessage();

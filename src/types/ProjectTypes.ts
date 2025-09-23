@@ -1,4 +1,3 @@
-// ProjectTypes.ts
 export interface Project {
   slug: string;
   data: {

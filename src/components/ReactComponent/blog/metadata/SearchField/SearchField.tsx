@@ -33,7 +33,7 @@ const Search = memo(function Search({ posts }: SearchProps) {
           case "ArrowDown":
             e.preventDefault();
             setSelectedResultIndex((prev) =>
-              prev < results.length - 1 ? prev + 1 : prev
+              prev < results.length - 1 ? prev + 1 : prev,
             );
             break;
           case "ArrowUp":
@@ -53,7 +53,7 @@ const Search = memo(function Search({ posts }: SearchProps) {
         }
       }
     },
-    [isSearchFocused, results, selectedResultIndex, setQuery]
+    [isSearchFocused, results, selectedResultIndex, setQuery],
   );
 
   useEffect(() => {
@@ -68,28 +68,28 @@ const Search = memo(function Search({ posts }: SearchProps) {
   useEffect(() => {
     if (selectedResultIndex >= 0) {
       const selectedElement = document.querySelector(
-        `[data-result-index="${selectedResultIndex}"]`
+        `[data-result-index="${selectedResultIndex}"]`,
       );
       selectedElement?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   }, [selectedResultIndex]);
 
   return (
-    <section className="relative overflow-hidden py-8 px-4">
+    <section className="relative overflow-hidden px-4 py-8">
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7aa2f7] rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#bb9af7] rounded-full blur-3xl" />
+        <div className="absolute left-1/4 top-1/4 h-64 w-64 rounded-full bg-[#7aa2f7] blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-[#bb9af7] blur-3xl" />
       </div>
 
-      <div className="container mx-auto relative z-10 max-w-6xl">
+      <div className="container relative z-10 mx-auto max-w-6xl">
         <motion.div
-          className="text-center mb-8"
+          className="mb-8 text-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <motion.h1
-            className={`font-bold mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent ${
+            className={`mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text font-bold text-transparent ${
               isMobile ? "text-3xl" : "text-4xl lg:text-5xl"
             }`}
             initial={{ scale: 0.9, opacity: 0 }}
@@ -99,7 +99,7 @@ const Search = memo(function Search({ posts }: SearchProps) {
             Search Articles
           </motion.h1>
           <motion.p
-            className={`text-[#a9b1d6] max-w-2xl mx-auto ${
+            className={`mx-auto max-w-2xl text-[#a9b1d6] ${
               isMobile ? "text-sm" : "text-lg"
             }`}
             initial={{ opacity: 0 }}
@@ -116,7 +116,7 @@ const Search = memo(function Search({ posts }: SearchProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          <div className="backdrop-blur-xl bg-[#24283b]/60 border border-[#565f89]/30 rounded-3xl p-6 md:p-8 shadow-2xl">
+          <div className="rounded-3xl border border-[#565f89]/30 bg-[#24283b]/60 p-6 shadow-2xl backdrop-blur-xl md:p-8">
             <SearchInput
               query={query}
               setQuery={setQuery}

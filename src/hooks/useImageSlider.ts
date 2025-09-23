@@ -6,12 +6,8 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const [isHovered, setIsHovered] = useState(false);
-  const sliderRef = useRef<HTMLDivElement>(
-    null
-  ) as React.MutableRefObject<HTMLDivElement>;
-  const containerRef = useRef<HTMLDivElement>(
-    null
-  ) as React.MutableRefObject<HTMLDivElement>;
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const touchStart = useRef(0);
 
   const handleImageLoad = useCallback((index: number) => {
@@ -20,7 +16,7 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
 
   const isImageLoaded = useCallback(
     (index: number) => loadedImages.has(index),
-    [loadedImages]
+    [loadedImages],
   );
 
   const prevSlide = useCallback(() => {
@@ -62,7 +58,7 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
         touchStart.current = 0;
       }
     },
-    [nextSlide, prevSlide]
+    [nextSlide, prevSlide],
   );
 
   const handleMouseEnter = useCallback(() => {

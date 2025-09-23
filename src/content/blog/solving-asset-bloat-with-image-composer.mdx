@@ -1,6 +1,7 @@
 ---
-title: 'From Slow to Snappy: The Story Behind Building Image Composer'
-description: Learn how I built Image Composer to efficiently compress images, improve
+title: "From Slow to Snappy: The Story Behind Building Image Composer"
+description:
+  Learn how I built Image Composer to efficiently compress images, improve
   performance, and boost my blog’s Speed Insights score from 50% to 100%.
 pubDate: 2025-04-29 19:00:00+00:00
 draft: false
@@ -8,24 +9,26 @@ heroImage: /BlogImages/image_composer.webp
 authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
-- WebDevelopment
-- Thought-Process
+  - WebDevelopment
+  - Thought-Process
 keywords:
-- webdevelopment
-- programming
-- performance
-- speed
-- technology
-- software development
-- static site generator
-- optimization
-- web performance
-- web development
+  - webdevelopment
+  - programming
+  - performance
+  - speed
+  - technology
+  - software development
+  - static site generator
+  - optimization
+  - web performance
+  - web development
 featured: true
-excerpt: Learn how I built Image Composer to efficiently compress images, improve
+excerpt:
+  Learn how I built Image Composer to efficiently compress images, improve
   performance, and boost my blog’s Speed Insights score from 50% to 100%.
 canonicalUrl: /blog/from-slow-to-snappy-the-story-behind-building-image-composer
 ---
+
 As you may know, my blog has evolved significantly over time, transforming from a simple online journal to a comprehensive reflection of my personality and interests. This digital space has become a sanctuary where I can freely express my thoughts and feelings without reservation. However, building this online home, brick by brick, has not been without its challenges. When I was working on version 5 of my application, I encountered an unexpected and unprecedented problem - one that I never thought I'd face, but here we are.
 
 ## The Web Flow
@@ -61,22 +64,22 @@ And of course, the UI had to be simple and clean so that anyone could use it wit
 
 For the tech stack, I kept it super lightweight and fast:
 
-* Node.js server
-* EJS for template rendering
-* Tailwind CSS for styling
+- Node.js server
+- EJS for template rendering
+- Tailwind CSS for styling
 
 ### TLD'R: How it Works
 
 If you don't want to nerd out on the code, here's the short version:
 
-* Visit the website
-* Drag and drop your images
-* Pick the quality you want
-* Choose if you want rounded corners
-* Hit "Compress Images."
-* The server compresses them using a library called Sharp
-* The compressed images get displayed back in the UI
-* Hit "Download," and boom — new, smaller, clean, high-quality images.
+- Visit the website
+- Drag and drop your images
+- Pick the quality you want
+- Choose if you want rounded corners
+- Hit "Compress Images."
+- The server compresses them using a library called Sharp
+- The compressed images get displayed back in the UI
+- Hit "Download," and boom — new, smaller, clean, high-quality images.
 
 ## Now, Let’s Nerd Out: Full Code Breakdown
 
@@ -92,7 +95,10 @@ const path = require("path");
 
 const configureMiddleware = require("./config/middleware");
 const configureViewEngine = require("./config/viewEngine");
-const { notFoundHandler, globalErrorHandler } = require("./middleware/errorHandler");
+const {
+  notFoundHandler,
+  globalErrorHandler,
+} = require("./middleware/errorHandler");
 
 const indexRoutes = require("./routes/routes");
 const imageRoutes = require("./routes/image");
@@ -116,15 +122,15 @@ app.listen(port, () => {
 
 #### **What’s Happening Here?**
 
-* We **import Express** and a few core modules.
-* We set up **middleware** (security, rate limiting, etc.).
-* We define **routes** (for the homepage + image compression API).
-* We handle **errors** properly.
-* We start the server and make it listen on **port 3000** (or whatever's in `process.env.PORT`).
+- We **import Express** and a few core modules.
+- We set up **middleware** (security, rate limiting, etc.).
+- We define **routes** (for the homepage + image compression API).
+- We handle **errors** properly.
+- We start the server and make it listen on **port 3000** (or whatever's in `process.env.PORT`).
 
 Nothing fancy, just a solid Express setup.
 
-***
+---
 
 ### **2. `config/middleware.js` – Security & Performance Middleware**
 
@@ -159,14 +165,14 @@ module.exports = configureMiddleware;
 
 #### **Why This Matters**
 
-* **Helmet** adds security headers.
-* **Rate limiting** prevents abuse (max 100 requests per 15 mins per IP).
-* **CORS** is enabled so the API can be used from different origins.
-* **Multer** (used later) only allows **JPEG, PNG, GIF, and WebP**—nothing shady.
+- **Helmet** adds security headers.
+- **Rate limiting** prevents abuse (max 100 requests per 15 mins per IP).
+- **CORS** is enabled so the API can be used from different origins.
+- **Multer** (used later) only allows **JPEG, PNG, GIF, and WebP**—nothing shady.
 
 This keeps the server **safe, fast, and reliable**.
 
-***
+---
 
 ### **3. `config/multer.js` – File Upload Handling**
 
@@ -182,7 +188,9 @@ const upload = multer({
   limits: { fileSize: 30 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowedMimes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-    allowedMimes.includes(file.mimetype) ? cb(null, true) : cb(new Error("Invalid file type"), false);
+    allowedMimes.includes(file.mimetype)
+      ? cb(null, true)
+      : cb(new Error("Invalid file type"), false);
   },
 });
 
@@ -191,13 +199,13 @@ module.exports = upload;
 
 #### **What’s Happening?**
 
-* **Stores images in memory** instead of disk (faster processing).
-* **Limits file size** to **30MB** (to prevent server crashes).
-* **Blocks unsupported formats** (JPEG, PNG, WebP, and GIF only).
+- **Stores images in memory** instead of disk (faster processing).
+- **Limits file size** to **30MB** (to prevent server crashes).
+- **Blocks unsupported formats** (JPEG, PNG, WebP, and GIF only).
 
 Multer makes sure **only valid images** reach our processor.
 
-***
+---
 
 ### **4. `controller/imageController.js` – The Brain of the Operation**
 
@@ -210,15 +218,22 @@ async function compressImage(req, res, next) {
   if (!req.file) return res.status(400).send("No image uploaded.");
 
   try {
-    const quality = Math.max(1, Math.min(100, parseInt(req.body.quality) || 80));
-    const format = ["jpeg", "png", "webp"].includes(req.body.format) ? req.body.format : "jpeg";
+    const quality = Math.max(
+      1,
+      Math.min(100, parseInt(req.body.quality) || 80),
+    );
+    const format = ["jpeg", "png", "webp"].includes(req.body.format)
+      ? req.body.format
+      : "jpeg";
     const rounded = req.body.roundedCorners === "true";
-    
+
     let image = sharp(req.file.buffer).toFormat(format, { quality });
 
     if (rounded) {
       const metadata = await image.metadata();
-      const mask = Buffer.from(`<svg><rect x="0" y="0" width="${metadata.width}" height="${metadata.height}" rx="50" ry="50"/></svg>`);
+      const mask = Buffer.from(
+        `<svg><rect x="0" y="0" width="${metadata.width}" height="${metadata.height}" rx="50" ry="50"/></svg>`,
+      );
       image = image.composite([{ input: mask, blend: "dest-in" }]);
     }
 
@@ -234,14 +249,14 @@ module.exports = { compressImage };
 
 #### **What’s Happening?**
 
-* **Validates inputs** (quality: `1-100`, formats: `jpeg/png/webp`).
-* **Sharp compresses the image** based on selected quality.
-* **Optional rounded corners** applied via SVG mask.
-* **Sends back the optimized image**—no saving to disk needed.
+- **Validates inputs** (quality: `1-100`, formats: `jpeg/png/webp`).
+- **Sharp compresses the image** based on selected quality.
+- **Optional rounded corners** applied via SVG mask.
+- **Sends back the optimized image**—no saving to disk needed.
 
 This keeps things **fast** and **efficient**.
 
-***
+---
 
 ### **5. `routes/image.js` – The API Endpoint**
 
@@ -261,10 +276,10 @@ module.exports = router;
 
 #### **How It Works**
 
-* **Receives an image** via a POST request.
-* **Passes it to Multer** for validation.
-* **Sends it to Sharp** for compression.
-* **Returns the optimized image.**
+- **Receives an image** via a POST request.
+- **Passes it to Multer** for validation.
+- **Sends it to Sharp** for compression.
+- **Returns the optimized image.**
 
 And that’s it—**one clean API route that just works**.
 

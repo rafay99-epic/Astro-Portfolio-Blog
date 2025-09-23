@@ -1,7 +1,7 @@
 ---
-import featureFlags from "../../../config/featureFlag/featureFlag.json";
-import authorConfig from "../../../config/siteConfig/info.json";
-import NavLink from "./NavLink.astro"; // The simple Astro NavLink component
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import authorConfig from "@config/siteConfig/info.json";
+import NavLink from "./NavLink.astro";
 
 import {
   LuMenu as Menu,
@@ -25,46 +25,41 @@ import {
 ---
 
 <style is:global>
-  /* Prevent header flash during view transitions */
   header {
     background-color: #1a1b26 !important;
     transition: none !important;
   }
 
-  /* Ensure consistent background during transitions */
   ::view-transition-old(header),
   ::view-transition-new(header) {
     background-color: #1a1b26 !important;
     animation: none !important;
   }
 
-  /* Prevent any blue flash */
   .backdrop-blur-xl {
     background-color: rgba(26, 27, 38, 0.9) !important;
   }
 
-  /* Mobile menu specific styles for Astro */
   .mobile-menu-overlay {
     transition:
       opacity 0.3s ease-in-out,
       transform 0.3s ease-in-out;
-    transform: translateX(100%); /* Start off-screen */
+    transform: translateX(100%);
   }
 
   .mobile-menu-overlay.is-open {
-    transform: translateX(0); /* Slide in */
+    transform: translateX(0);
   }
 
   .mobile-menu-backdrop {
     transition: opacity 0.3s ease-in-out;
-    opacity: 0; /* Start hidden */
+    opacity: 0;
   }
 
   .mobile-menu-backdrop.is-open {
-    opacity: 1; /* Fade in */
+    opacity: 1;
   }
 
-  /* MoreDropdown styles */
   .more-dropdown {
     opacity: 0;
     transform: translateY(-10px) scale(0.95);
@@ -104,29 +99,26 @@ import {
   }
 </style>
 
-<!-- This fragment ensures the header and mobile menu are siblings at the root of the page's body -->
-
 <header
-  class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#1a1b26]/90"
+  class="fixed left-0 right-0 top-0 z-50 bg-[#1a1b26]/90 backdrop-blur-xl"
   style={{ viewTransitionName: "header" }}
 >
   <div class="container mx-auto px-4 sm:px-6">
-    <div class="flex justify-between items-center py-4">
-      <!-- Logo -->
-      <a href="/" class="flex items-center group">
+    <div class="flex items-center justify-between py-4">
+      <a href="/" class="group flex items-center">
         <div class="relative">
           <img
             src={authorConfig.avator}
-            class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-[#7aa2f7]/30 group-hover:border-[#7aa2f7] transition-all duration-300"
+            class="h-10 w-10 rounded-full border-2 border-[#7aa2f7]/30 transition-all duration-300 group-hover:border-[#7aa2f7] sm:h-12 sm:w-12"
           />
           <div
-            class="absolute inset-0 rounded-full bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"
+            class="absolute inset-0 rounded-full bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-100"
           >
           </div>
         </div>
         <div class="ml-3 hidden sm:block">
           <h1
-            class="text-lg font-bold bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent hover:scale-[1.01] transition-transform duration-200 ease-out"
+            class="bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-lg font-bold text-transparent transition-transform duration-200 ease-out hover:scale-[1.01]"
           >
             {authorConfig.SiteName}
           </h1>
@@ -134,12 +126,11 @@ import {
         </div>
       </a>
 
-      <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center space-x-2">
+      <nav class="hidden items-center space-x-2 lg:flex">
         <NavLink href="/" icon={Home}> Home </NavLink>
 
         {
-          featureFlags.featureFlags.showBlog && (
+          featureFlags.showBlog && (
             <NavLink href="/blog" icon={BookOpen}>
               Articles
             </NavLink>
@@ -147,7 +138,7 @@ import {
         }
 
         {
-          featureFlags.featureFlags.showNewsletter && (
+          featureFlags.showNewsletter && (
             <NavLink href="/newsletter-subscribe" icon={Mail}>
               Newsletter
             </NavLink>
@@ -155,7 +146,7 @@ import {
         }
 
         {
-          featureFlags.featureFlags.showAbout && (
+          featureFlags.showAbout && (
             <NavLink href="/about" icon={User}>
               About
             </NavLink>
@@ -163,7 +154,7 @@ import {
         }
 
         {
-          featureFlags.featureFlags.showExperience && (
+          featureFlags.showExperience && (
             <NavLink href="/experience" icon={Briefcase}>
               Experience
             </NavLink>
@@ -171,48 +162,48 @@ import {
         }
 
         {
-          featureFlags.featureFlags.showProjects && (
+          featureFlags.showProjects && (
             <NavLink href="/project" icon={Rocket}>
               Projects
             </NavLink>
           )
         }
         {
-          featureFlags.featureFlags.showTags && (
+          featureFlags.showTags && (
             <NavLink href="/tag" icon={Tag} aria-label="Tags" />
           )
         }
         {
-          featureFlags.featureFlags.showSearch && (
+          featureFlags.showSearch && (
             <NavLink href="/search" icon={Search} aria-label="Search" />
           )
         }
 
-        <!-- MoreDropdown - Pure HTML/Tailwind/JS -->
         <div class="relative" id="more-dropdown-container">
           <button
             aria-haspopup="true"
             id="more-dropdown-button"
-            class="more-dropdown-button flex items-center text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-[#24283b]/50"
+            class="more-dropdown-button flex items-center rounded-lg px-3 py-2 text-[#c0caf5] transition-colors duration-300 hover:bg-[#24283b]/50 hover:text-[#7aa2f7]"
             aria-expanded="false"
           >
-            <MoreHorizontal className="w-4 h-4" />
+            <MoreHorizontal className="h-4 w-4" />
             <ChevronDown
               id="more-dropdown-chevron"
-              className="w-3 h-3 ml-1 transition-transform duration-300"
+              className="ml-1 h-3 w-3 transition-transform duration-300"
             />
           </button>
 
           <div
             id="more-dropdown-menu"
-            class="more-dropdown absolute right-0 mt-2 w-56 backdrop-blur-xl bg-[#24283b]/95 border border-[#565f89]/30 rounded-xl shadow-2xl py-2 z-50"
+            class="more-dropdown absolute right-0 z-50 mt-2 w-56 rounded-xl border border-[#565f89]/30 bg-[#24283b]/95 py-2 shadow-2xl backdrop-blur-xl"
           >
-            <div class="px-2 space-y-1">
+            <div class="space-y-1 px-2">
               {
-                featureFlags.featureFlags.showNewsletter && (
+                featureFlags.showNewsletter && (
                   <a
+                    role="menuitem"
                     href="/newsletter"
-                    class="more-dropdown-item flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                    class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
                   >
                     <Newspaper className="w-4 h-4 text-[#7aa2f7]" />
                     <span class="font-medium">Newsletter Archive</span>
@@ -221,10 +212,11 @@ import {
                 )
               }
               {
-                featureFlags.featureFlags.showTrendingPosts && (
+                featureFlags.showTrendingPosts && (
                   <a
+                    role="menuitem"
                     href="/trending"
-                    class="more-dropdown-item flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                    class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
                   >
                     <TrendingUp className="w-4 h-4 text-[#f7768e]" />
                     <span class="font-medium">Trending Articles</span>
@@ -233,10 +225,11 @@ import {
                 )
               }
               {
-                featureFlags.featureFlags.showNotes && (
+                featureFlags.showNotes && (
                   <a
+                    role="menuitem"
                     href="/ms_notes"
-                    class="more-dropdown-item flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                    class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
                   >
                     <StickyNote className="w-4 h-4 text-[#e0af68]" />
                     <span class="font-medium">MS Notes</span>
@@ -245,12 +238,13 @@ import {
                 )
               }
               {
-                featureFlags.featureFlags.showWiki && (
+                featureFlags.showWiki && (
                   <a
+                    role="menuitem"
                     href="https://rafay99-docs.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="more-dropdown-item flex items-center gap-3 py-2 px-3 text-[#c0caf5] hover:text-[#7aa2f7] hover:bg-[#1a1b26]/60 rounded-lg transition-all duration-300 group"
+                    class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
                   >
                     <Globe className="w-4 h-4 text-[#9ece6a]" />
                     <span class="font-medium">Website Wiki</span>
@@ -264,42 +258,41 @@ import {
       </nav>
 
       <button
-        id="mobile-menu-button"
         aria-label="Toggle menu"
+        aria-haspopup="menu"
+        id="mobile-menu-button"
         aria-expanded="false"
-        class="lg:hidden text-[#c0caf5] hover:text-[#7aa2f7] transition-colors duration-300 p-2 rounded-lg hover:bg-[#24283b]/50"
+        class="rounded-lg p-2 text-[#c0caf5] transition-colors duration-300 hover:bg-[#24283b]/50 hover:text-[#7aa2f7] lg:hidden"
       >
-        <Menu id="menu-icon" className="w-6 h-6" />
-        <X id="close-icon" className="w-6 h-6 hidden" />
+        <Menu id="menu-icon" className="h-6 w-6" />
+        <X id="close-icon" className="hidden h-6 w-6" />
       </button>
     </div>
   </div>
 </header>
 
-<!-- Mobile Menu Overlay (now directly in Astro, sibling to header) -->
 <div
   id="mobile-menu-backdrop"
-  class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[90] lg:hidden mobile-menu-backdrop hidden"
+  class="mobile-menu-backdrop fixed inset-0 z-[90] hidden bg-black/50 backdrop-blur-sm lg:hidden"
 >
 </div>
 
 <nav
   id="mobile-menu"
-  class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-[#1a1b26]/95 backdrop-blur-xl border-l border-[#565f89]/30 z-[100] lg:hidden overflow-y-auto mobile-menu-overlay"
+  class="mobile-menu-overlay fixed right-0 top-0 z-[100] h-full w-80 max-w-[85vw] overflow-y-auto border-l border-[#565f89]/30 bg-[#1a1b26]/95 backdrop-blur-xl lg:hidden"
 >
-  <!-- Mobile Menu Header -->
   <div
-    class="flex items-center justify-between p-6 border-b border-[#565f89]/20"
+    class="flex items-center justify-between border-b border-[#565f89]/20 p-6"
   >
     <div class="flex items-center gap-3">
       <img
         src={authorConfig.avator}
         alt="Author Avatar"
-        class="w-10 h-10 rounded-full border-2 border-[#7aa2f7]/30"
+        class="h-10 w-10 rounded-full border-2 border-[#7aa2f7]/30"
       />
       <div>
         <h2
-          class="text-lg font-bold bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-transparent"
+          class="bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-lg font-bold text-transparent"
         >
           {authorConfig.SiteName}
         </h2>
@@ -308,18 +301,17 @@ import {
     </div>
     <button
       id="close-mobile-menu"
-      class="text-[#c0caf5] hover:text-[#7aa2f7] p-2 rounded-lg hover:bg-[#24283b]/50 transition-colors duration-300"
+      class="rounded-lg p-2 text-[#c0caf5] transition-colors duration-300 hover:bg-[#24283b]/50 hover:text-[#7aa2f7]"
     >
-      <X className="w-5 h-5" />
+      <X className="h-5 w-5" />
     </button>
   </div>
 
-  <!-- Mobile Menu Items (using NavLink.astro now) -->
-  <div class="p-6 space-y-2">
+  <div class="space-y-2 p-6">
     <NavLink href="/" icon={Home}> Home </NavLink>
 
     {
-      featureFlags.featureFlags.showBlog && (
+      featureFlags.showBlog && (
         <NavLink href="/blog" icon={BookOpen}>
           Articles
         </NavLink>
@@ -327,7 +319,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showNewsletter && (
+      featureFlags.showNewsletter && (
         <NavLink href="/newsletter-subscribe" icon={Mail}>
           Newsletter
         </NavLink>
@@ -335,7 +327,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showAbout && (
+      featureFlags.showAbout && (
         <NavLink href="/about" icon={User}>
           About
         </NavLink>
@@ -343,7 +335,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showExperience && (
+      featureFlags.showExperience && (
         <NavLink href="/experience" icon={Briefcase}>
           Experience
         </NavLink>
@@ -351,7 +343,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showProjects && (
+      featureFlags.showProjects && (
         <NavLink href="/project" icon={Rocket}>
           Projects
         </NavLink>
@@ -359,7 +351,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showTags && (
+      featureFlags.showTags && (
         <NavLink href="/tag" icon={Tag}>
           Tags
         </NavLink>
@@ -367,39 +359,38 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showSearch && (
+      featureFlags.showSearch && (
         <NavLink href="/search" icon={Search}>
           Search
         </NavLink>
       )
     }
 
-    <!-- Additional Links Section -->
     {
-      (featureFlags.featureFlags.showNewsletter ||
-        featureFlags.featureFlags.showTrendingPosts ||
-        featureFlags.featureFlags.showNotes ||
-        featureFlags.featureFlags.showWiki) && (
+      (featureFlags.showNewsletter ||
+        featureFlags.showTrendingPosts ||
+        featureFlags.showNotes ||
+        featureFlags.showWiki) && (
         <div class="pt-4">
           <div class="border-t border-[#565f89]/20 pt-4">
-            <h3 class="text-sm font-semibold text-[#a9b1d6] mb-3 px-4">More</h3>
+            <h3 class="mb-3 px-4 text-sm font-semibold text-[#a9b1d6]">More</h3>
             <div class="space-y-2">
-              {featureFlags.featureFlags.showNewsletter && (
+              {featureFlags.showNewsletter && (
                 <NavLink href="/newsletter" icon={Newspaper}>
                   Newsletter Archive
                 </NavLink>
               )}
-              {featureFlags.featureFlags.showTrendingPosts && (
+              {featureFlags.showTrendingPosts && (
                 <NavLink href="/trending" icon={TrendingUp}>
                   Trending Articles
                 </NavLink>
               )}
-              {featureFlags.featureFlags.showNotes && (
+              {featureFlags.showNotes && (
                 <NavLink href="/ms_notes" icon={StickyNote}>
                   MS Notes
                 </NavLink>
               )}
-              {featureFlags.featureFlags.showWiki && (
+              {featureFlags.showWiki && (
                 <NavLink
                   href="https://rafay99-docs.vercel.app/"
                   icon={Globe}
@@ -417,7 +408,6 @@ import {
   </div>
 </nav>
 
-<!-- Vanilla JS for Mobile Menu Functionality -->
 <script is:inline>
   const mobileMenuButton = document.getElementById("mobile-menu-button");
   const mobileMenu = document.getElementById("mobile-menu");
@@ -435,26 +425,26 @@ import {
     if (isMobileMenuOpen) {
       mobileMenu.classList.add("is-open");
       mobileMenuBackdrop.classList.add("is-open");
-      mobileMenuBackdrop.classList.remove("hidden"); // Show backdrop
+      mobileMenuBackdrop.classList.remove("hidden");
       menuIcon.classList.add("hidden");
       closeIcon.classList.remove("hidden");
-      document.body.style.overflow = "hidden"; // Prevent scrolling
+      document.body.style.overflow = "hidden";
     } else {
       mobileMenu.classList.remove("is-open");
       mobileMenuBackdrop.classList.remove("is-open");
-      // Give time for transition before hiding
+
       setTimeout(() => {
         mobileMenuBackdrop.classList.add("hidden");
-      }, 300); // Match transition duration
+      }, 300);
       menuIcon.classList.remove("hidden");
       closeIcon.classList.add("hidden");
-      document.body.style.overflow = ""; // Re-enable scrolling
+      document.body.style.overflow = "";
     }
   };
 
   const closeMobileMenu = () => {
     if (isMobileMenuOpen) {
-      toggleMobileMenu(); // Simply call toggle to close it
+      toggleMobileMenu();
     }
   };
 
@@ -468,21 +458,16 @@ import {
     mobileMenuBackdrop.addEventListener("click", closeMobileMenu);
   }
 
-  // Close menu on route changes (using popstate for SPA-like navigation)
   window.addEventListener("popstate", closeMobileMenu);
 
-  // Close menu on resize if above mobile breakpoint
   window.addEventListener("resize", () => {
     if (window.innerWidth >= 1024 && isMobileMenuOpen) {
       closeMobileMenu();
     }
   });
 
-  // Ensure initial state is closed when page loads via client-side navigation
-  // (e.g., if navigating back from a page where menu was open)
   document.addEventListener("astro:after-swap", closeMobileMenu);
 
-  // MoreDropdown Functionality
   const moreDropdownButton = document.getElementById("more-dropdown-button");
   const moreDropdownMenu = document.getElementById("more-dropdown-menu");
   const moreDropdownChevron = document.getElementById("more-dropdown-chevron");
@@ -517,7 +502,6 @@ import {
     }
   };
 
-  // Event listeners for MoreDropdown
   if (moreDropdownButton) {
     moreDropdownButton.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -525,20 +509,17 @@ import {
     });
   }
 
-  // Close dropdown when clicking outside
   document.addEventListener("click", (e) => {
     if (moreDropdownContainer && !moreDropdownContainer.contains(e.target)) {
       closeMoreDropdown();
     }
   });
 
-  // Close dropdown on escape key
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && isMoreDropdownOpen) {
       closeMoreDropdown();
     }
   });
 
-  // Close dropdown on route changes
   document.addEventListener("astro:after-swap", closeMoreDropdown);
 </script>

@@ -1,5 +1,5 @@
 ---
-title: 'GPT-5 in the Real World: Fixing Bugs, Building Apps, and Automating Workflows'
+title: "GPT-5 in the Real World: Fixing Bugs, Building Apps, and Automating Workflows"
 description: >-
   GPT-5 is finally here, and I’ve been putting it through its paces—from fixing
   Google Tag Manager issues to designing UI, building a Jetpack Joyride clone,
@@ -30,13 +30,14 @@ excerpt: >-
   building a Jetpack Joyride clone, upgrading Astro UIs, and automating
   marketing workflows. Not just benchmarks—this is AI in action.
 ---
-*So GPT-5 walked into my browser, and I thought, “Let’s break the internet… or at least my to-do list.”* 😎
+
+_So GPT-5 walked into my browser, and I thought, “Let’s break the internet… or at least my to-do list.”_ 😎
 
 While most people were still wrapping their heads around GPT-4, OpenAI surprised us with GPT-5, and I couldn’t resist diving head-first into testing it. I loaded up t3.chat, brewed some tea, and told myself: if this model breaks, I’ll break with it. Spoiler alert: I didn’t.
 
-This blog isn't just another tech review. It's a *real-world test drive* of GPT-5 with tasks that range from web dev issues to UI refactoring, game creation, and even marketing copy help. And yes, there’s code. Lots of it. Let’s go, one task at a time.
+This blog isn't just another tech review. It's a _real-world test drive_ of GPT-5 with tasks that range from web dev issues to UI refactoring, game creation, and even marketing copy help. And yes, there’s code. Lots of it. Let’s go, one task at a time.
 
-***
+---
 
 ## Task 01: Fixing Google Tag Manager Issues
 
@@ -44,9 +45,9 @@ For a while, I was unintentionally running **two Google Tag Manager setups**: on
 
 So I fed GPT-5 the context, including screenshots (yes, it can parse those too), and boom—step-by-step guidance. It actually:
 
-* Identified the conflict
-* Cleaned up the tag hierarchy
-* Suggested best practices for load performance
+- Identified the conflict
+- Cleaned up the tag hierarchy
+- Suggested best practices for load performance
 
 It felt like having a Google Analytics consultant on demand—who doesn’t judge you.
 
@@ -56,14 +57,14 @@ I wanted to migrate some React components using Framer Motion over to **Astro co
 
 But GPT-5? This thing understood component structures and animation syntax like a senior frontend dev. I used both:
 
-* **Cursor CLI Tool** (blog on that coming soon)
-* **t3.chat with GPT-5**
+- **Cursor CLI Tool** (blog on that coming soon)
+- **t3.chat with GPT-5**
 
 And guess what? It recreated animations with precision, gave suggestions for UI simplification, and even auto-generated Tailwind utility combos that I hadn’t thought of.
 
 ## Task 03: Building a Jetpack Joyride Clone Game
 
-So I saw Sam Altman talking about using GPT for building games. I said, *Challenge accepted.* I prompted:
+So I saw Sam Altman talking about using GPT for building games. I said, _Challenge accepted._ I prompted:
 
 > "Can you make me a simple Jetpack Joyride game?"
 
@@ -175,7 +176,7 @@ It delivered. The initial version was basic, so I asked it to improve UI, contro
           ctx.fillText(
             "Final Score: " + score,
             canvas.width / 2 - 60,
-            canvas.height / 2 + 30
+            canvas.height / 2 + 30,
           );
           return;
         }
@@ -279,15 +280,13 @@ It delivered. The initial version was basic, so I asked it to improve UI, contro
 
       // Load images
       const playerImg = new Image();
-      playerImg.src =
-        "https://i.ibb.co/3m1V7nB/jetpack-guy.png"; // placeholder sprite
+      playerImg.src = "https://i.ibb.co/3m1V7nB/jetpack-guy.png"; // placeholder sprite
 
       const coinImg = new Image();
       coinImg.src = "https://i.ibb.co/4m1V7nB/coin.png"; // placeholder coin
 
       const bgImg = new Image();
-      bgImg.src =
-        "https://i.ibb.co/6b1V7nB/bg-layer.png"; // placeholder background
+      bgImg.src = "https://i.ibb.co/6b1V7nB/bg-layer.png"; // placeholder background
 
       // Game variables
       let player, obstacles, coins, score, gameOver, frame, bgX, flying;
@@ -313,13 +312,25 @@ It delivered. The initial version was basic, so I asked it to improve UI, contro
 
       function drawBackground() {
         ctx.drawImage(bgImg, bgX, 0, canvas.width, canvas.height);
-        ctx.drawImage(bgImg, bgX + canvas.width, 0, canvas.width, canvas.height);
+        ctx.drawImage(
+          bgImg,
+          bgX + canvas.width,
+          0,
+          canvas.width,
+          canvas.height,
+        );
         bgX -= 2;
         if (bgX <= -canvas.width) bgX = 0;
       }
 
       function drawPlayer() {
-        ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+        ctx.drawImage(
+          playerImg,
+          player.x,
+          player.y,
+          player.width,
+          player.height,
+        );
       }
 
       function drawObstacles() {
@@ -457,7 +468,6 @@ It delivered. The initial version was basic, so I asked it to improve UI, contro
     </script>
   </body>
 </html>
-
 ```
 
 And just like that, my childhood nostalgia had a browser-based rebirth. Bonus points: GPT-5 even suggested adding characters and sound effects if I wanted to take it further.
@@ -494,10 +504,10 @@ Screenshots for context:
 
 If you're a casual user, GPT-5 will feel like a faster, smarter version of what you're used to.
 
-But if you're a *nerd*, like me (and probably you), then the magic starts when you:
+But if you're a _nerd_, like me (and probably you), then the magic starts when you:
 
-* Feed it context-rich tasks
-* Push its coding logic
-* Use it for real-world workflows (like game creation or marketing automation)
+- Feed it context-rich tasks
+- Push its coding logic
+- Use it for real-world workflows (like game creation or marketing automation)
 
 I haven’t tested its full **tool calling** powers or deeper **Cursor integration**, but that’s coming next. Stay tuned.

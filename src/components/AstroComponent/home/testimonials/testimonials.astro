@@ -1,120 +1,140 @@
 ---
-import authorConfig from "../../../../config/siteConfig/info.json";
+import authorConfig from "@config/siteConfig/info.json";
 const testimonials = authorConfig.testimonials;
 ---
 
-<section class="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-7xl mx-auto">
-    <!-- Header -->
-    <div class="text-center mb-12 sm:mb-16">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-[#c0caf5] mb-4">
+<section class="relative px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <div class="mb-12 text-center sm:mb-16">
+      <h2
+        class="mb-4 text-3xl font-black text-[#c0caf5] sm:text-4xl lg:text-5xl"
+      >
         Client
-        <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+        <span
+          class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent"
+        >
           Testimonials
         </span>
       </h2>
-      <p class="text-base sm:text-lg text-[#a9b1d6] max-w-2xl mx-auto">
-        What my clients say about working with me and the results we've achieved together
+      <p class="mx-auto max-w-2xl text-base text-[#a9b1d6] sm:text-lg">
+        What my clients say about working with me and the results we've achieved
+        together
       </p>
     </div>
 
-    <!-- Testimonials Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-      {testimonials.map((testimonial, index) => (
-        <div 
-          class="group relative border border-[#414868]/30 rounded-xl p-4 sm:p-6 lg:p-8 hover:border-[#7aa2f7]/30 hover:-translate-y-2 transition-all duration-500 hover:shadow-2xl hover:shadow-[#7aa2f7]/10"
-          style={`animation-delay: ${index * 0.15}s`}
-        >
-          <!-- Quote Icon -->
-          <div class="absolute top-2 right-2 sm:top-4 sm:right-4 text-[#7aa2f7]/20 text-3xl sm:text-4xl font-serif">
-            "
-          </div>
-
-          <!-- Rating Stars -->
-          <div class="flex gap-1 mb-3 sm:mb-4">
-            {Array.from({ length: testimonial.rating }, (_, i) => (
-              <svg class="w-3 h-3 sm:w-4 sm:h-4 text-[#f7768e]" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-            ))}
-          </div>
-
-          <!-- Testimonial Text -->
-          <blockquote class="text-sm sm:text-base text-[#a9b1d6] mb-4 sm:mb-6 leading-relaxed italic line-clamp-4 sm:line-clamp-none">
-            "{testimonial.testimonial}"
-          </blockquote>
-
-          <!-- Project Info -->
-          <div class="mb-3 sm:mb-4">
-            <div class="text-xs sm:text-sm text-[#7aa2f7] font-medium mb-2">
-              Project: {testimonial.project}
+    <div class="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2 lg:gap-8">
+      {
+        testimonials.map((testimonial, index) => (
+          <div
+            class="group relative rounded-xl border border-[#414868]/30 p-4 transition-all duration-500 hover:-translate-y-2 hover:border-[#7aa2f7]/30 hover:shadow-2xl hover:shadow-[#7aa2f7]/10 sm:p-6 lg:p-8"
+            style={`animation-delay: ${index * 0.15}s`}
+          >
+            <div class="absolute right-2 top-2 font-serif text-3xl text-[#7aa2f7]/20 sm:right-4 sm:top-4 sm:text-4xl">
+              "
             </div>
-            <div class="flex flex-wrap gap-1 sm:gap-1.5">
-              {testimonial.technologies.slice(0, 2).map((tech) => (
-                <span class="px-2 py-1 border border-[#414868]/30 rounded-md text-xs text-[#a9b1d6]">
-                  {tech}
-                </span>
+
+            <div class="mb-3 flex gap-1 sm:mb-4">
+              {Array.from({ length: testimonial.rating }, (_, _i) => (
+                <svg
+                  class="h-3 w-3 text-[#f7768e] sm:h-4 sm:w-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
               ))}
-              {testimonial.technologies.length > 2 && (
-                <span class="px-2 py-1 border border-[#7aa2f7]/30 rounded-md text-xs text-[#7aa2f7]">
-                  +{testimonial.technologies.length - 2}
-                </span>
-              )}
             </div>
-          </div>
 
-          <!-- Client Info -->
-          <div class="flex items-center gap-3 sm:gap-4 pt-3 sm:pt-4 border-t border-[#414868]/30">
-            <div class="relative flex-shrink-0">
-              <img 
-                src={testimonial.avatar} 
-                alt={testimonial.name}
-                class="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-[#7aa2f7]/30"
-                loading="lazy"
-              />
-              <div class="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-[#9ece6a] rounded-full border-2 border-[#1a1b26]"></div>
-            </div>
-            <div class="min-w-0 flex-1">
-              <h4 class="text-sm sm:text-base font-semibold text-[#c0caf5] group-hover:text-[#7aa2f7] transition-colors truncate">
-                {testimonial.name}
-              </h4>
-              <p class="text-xs sm:text-sm text-[#a9b1d6] truncate">
-                {testimonial.position} at {testimonial.company}
-              </p>
-            </div>
-          </div>
+            <blockquote class="mb-4 line-clamp-4 text-sm italic leading-relaxed text-[#a9b1d6] sm:mb-6 sm:line-clamp-none sm:text-base">
+              "{testimonial.testimonial}"
+            </blockquote>
 
-          <!-- Hover Effect -->
-          <div class="absolute inset-0 bg-gradient-to-br from-[#7aa2f7]/3 to-[#bb9af7]/3 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-        </div>
-      ))}
+            <div class="mb-3 sm:mb-4">
+              <div class="mb-2 text-xs font-medium text-[#7aa2f7] sm:text-sm">
+                Project: {testimonial.project}
+              </div>
+              <div class="flex flex-wrap gap-1 sm:gap-1.5">
+                {testimonial.technologies.slice(0, 2).map((tech: string) => (
+                  <span class="rounded-md border border-[#414868]/30 px-2 py-1 text-xs text-[#a9b1d6]">
+                    {tech}
+                  </span>
+                ))}
+                {testimonial.technologies.length > 2 && (
+                  <span class="rounded-md border border-[#7aa2f7]/30 px-2 py-1 text-xs text-[#7aa2f7]">
+                    +{testimonial.technologies.length - 2}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 border-t border-[#414868]/30 pt-3 sm:gap-4 sm:pt-4">
+              <div class="relative flex-shrink-0">
+                <img
+                  src={testimonial.avatar}
+                  alt={testimonial.name}
+                  class="h-10 w-10 rounded-full border-2 border-[#7aa2f7]/30 object-cover sm:h-12 sm:w-12"
+                  loading="lazy"
+                />
+                <div class="absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-[#1a1b26] bg-[#9ece6a] sm:h-4 sm:w-4" />
+              </div>
+              <div class="min-w-0 flex-1">
+                <h4 class="truncate text-sm font-semibold text-[#c0caf5] transition-colors group-hover:text-[#7aa2f7] sm:text-base">
+                  {testimonial.name}
+                </h4>
+                <p class="truncate text-xs text-[#a9b1d6] sm:text-sm">
+                  {testimonial.position} at {testimonial.company}
+                </p>
+              </div>
+            </div>
+
+            <div class="from-[#7aa2f7]/3 to-[#bb9af7]/3 pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          </div>
+        ))
+      }
     </div>
 
-    <!-- CTA Section -->
-    <div class="text-center mt-8 sm:mt-12 lg:mt-16">
-      <div class="border border-[#414868]/30 rounded-2xl p-6 sm:p-8 lg:p-12 max-w-4xl mx-auto">
-        <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-[#c0caf5] mb-3 sm:mb-4">
+    <div class="mt-8 text-center sm:mt-12 lg:mt-16">
+      <div
+        class="mx-auto max-w-4xl rounded-2xl border border-[#414868]/30 p-6 sm:p-8 lg:p-12"
+      >
+        <h3
+          class="mb-3 text-xl font-bold text-[#c0caf5] sm:mb-4 sm:text-2xl lg:text-3xl"
+        >
           Ready to Join These
-          <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+          <span
+            class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent"
+          >
             Success Stories?
           </span>
         </h3>
-        <p class="text-sm sm:text-base text-[#a9b1d6] mb-6 sm:mb-8 max-w-2xl mx-auto">
-          Let's discuss your project and create something amazing together. I'm here to help bring your vision to life.
+        <p
+          class="mx-auto mb-6 max-w-2xl text-sm text-[#a9b1d6] sm:mb-8 sm:text-base"
+        >
+          Let's discuss your project and create something amazing together. I'm
+          here to help bring your vision to life.
         </p>
-        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-          <a 
-            href="/contact-me" 
-            class="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#7aa2f7]/25 transition-all duration-300 group text-sm sm:text-base"
+        <div class="flex flex-col justify-center gap-3 sm:flex-row sm:gap-4">
+          <a
+            href="/contact-me"
+            class="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-[#7aa2f7]/25 sm:px-8 sm:py-4 sm:text-base"
           >
             <span>Start Your Project</span>
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            <svg
+              class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 sm:h-5 sm:w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
             </svg>
           </a>
-          <a 
-            href="/project" 
-            class="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-[#7aa2f7] text-[#7aa2f7] font-semibold rounded-xl hover:bg-[#7aa2f7] hover:text-white transition-all duration-300 text-sm sm:text-base"
+          <a
+            href="/project"
+            class="inline-flex items-center justify-center gap-2 rounded-xl border border-[#7aa2f7] px-6 py-3 text-sm font-semibold text-[#7aa2f7] transition-all duration-300 hover:bg-[#7aa2f7] hover:text-white sm:px-8 sm:py-4 sm:text-base"
           >
             <span>View My Work</span>
           </a>
@@ -138,10 +158,18 @@ const testimonials = authorConfig.testimonials;
     }
   }
 
-  .group:nth-child(1) { animation-delay: 0.1s; }
-  .group:nth-child(2) { animation-delay: 0.25s; }
-  .group:nth-child(3) { animation-delay: 0.4s; }
-  .group:nth-child(4) { animation-delay: 0.55s; }
+  .group:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .group:nth-child(2) {
+    animation-delay: 0.25s;
+  }
+  .group:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  .group:nth-child(4) {
+    animation-delay: 0.55s;
+  }
 
   .line-clamp-4 {
     display: -webkit-box;
@@ -155,7 +183,7 @@ const testimonials = authorConfig.testimonials;
     .group:hover {
       transform: none;
     }
-    
+
     .group:active {
       transform: scale(0.98);
     }

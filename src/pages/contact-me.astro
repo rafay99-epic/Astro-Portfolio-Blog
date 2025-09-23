@@ -1,10 +1,9 @@
 ---
-import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
+import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "../components/AstroComponent/header/Header.astro";
-import Footer from "../components/AstroComponent/footer/Footer.astro";
-import authorConfig from "../config/siteConfig/info.json";
-import { featureFlags } from "../config/featureFlag/featureFlag.json";
-import SpeedInsights from "@vercel/speed-insights/astro";
+import Footer from "@astro/footer/Footer.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 export const prerender = false;
 
@@ -23,23 +22,21 @@ try {
       title={`Contact Me | ${authorConfig.SiteName}`}
       description={`Get in touch with me for collaborations, projects, or just to say hello. I'm always excited to hear from fellow developers and potential clients.`}
     />
-    <SpeedInsights />
   </head>
 
-  <body class="bg-[#1a1b26] text-[#c0caf5] min-h-screen">
+  <body class="min-h-screen bg-[#1a1b26] text-[#c0caf5]">
     <Header />
 
-    <main class="relative pt-15 mt-0">
-      <!-- Hero Section -->
-      <section class="text-center py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
+    <main class="pt-15 relative mt-0">
+      <section class="px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
+        <div class="mx-auto max-w-4xl">
           <h1
-            class="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent leading-tight"
+            class="mb-6 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-4xl font-black leading-tight text-transparent sm:text-5xl lg:text-6xl"
           >
             Let's Build Something Amazing
           </h1>
           <p
-            class="text-lg sm:text-xl text-[#a9b1d6] max-w-2xl mx-auto leading-relaxed"
+            class="mx-auto max-w-2xl text-lg leading-relaxed text-[#a9b1d6] sm:text-xl"
           >
             Ready to bring your ideas to life? Let's discuss your project and
             create something extraordinary together.
@@ -47,29 +44,25 @@ try {
         </div>
       </section>
 
-      <!-- Main Content -->
-      <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
-          <!-- Contact Info Sidebar -->
-          <div class="lg:col-span-2 space-y-6">
-            <!-- Quick Info -->
+      <section class="mx-auto max-w-6xl px-4 pb-20 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-12">
+          <div class="space-y-6 lg:col-span-2">
             <div
-              class="bg-[#24283b]/50 backdrop-blur-sm border border-[#414868]/30 rounded-2xl p-6"
+              class="rounded-2xl border border-[#414868]/30 bg-[#24283b]/50 p-6 backdrop-blur-sm"
             >
-              <h2 class="text-2xl font-bold text-[#7aa2f7] mb-6">
+              <h2 class="mb-6 text-2xl font-bold text-[#7aa2f7]">
                 Get In Touch
               </h2>
 
               <div class="space-y-4">
-                <!-- Email -->
                 <div
-                  class="flex items-center gap-4 p-4 bg-[#1a1b26]/50 rounded-xl border border-[#414868]/20 hover:border-[#7aa2f7]/30 transition-colors"
+                  class="flex items-center gap-4 rounded-xl border border-[#414868]/20 bg-[#1a1b26]/50 p-4 transition-colors hover:border-[#7aa2f7]/30"
                 >
                   <div
-                    class="w-12 h-12 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] rounded-xl flex items-center justify-center flex-shrink-0"
+                    class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]"
                   >
                     <svg
-                      class="w-6 h-6 text-white"
+                      class="h-6 w-6 text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -88,15 +81,14 @@ try {
                   </div>
                 </div>
 
-                <!-- Response Time -->
                 <div
-                  class="flex items-center gap-4 p-4 bg-[#1a1b26]/50 rounded-xl border border-[#414868]/20 hover:border-[#9ece6a]/30 transition-colors"
+                  class="flex items-center gap-4 rounded-xl border border-[#414868]/20 bg-[#1a1b26]/50 p-4 transition-colors hover:border-[#9ece6a]/30"
                 >
                   <div
-                    class="w-12 h-12 bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] rounded-xl flex items-center justify-center flex-shrink-0"
+                    class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7]"
                   >
                     <svg
-                      class="w-6 h-6 text-white"
+                      class="h-6 w-6 text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -114,15 +106,14 @@ try {
                   </div>
                 </div>
 
-                <!-- Location -->
                 <div
-                  class="flex items-center gap-4 p-4 bg-[#1a1b26]/50 rounded-xl border border-[#414868]/20 hover:border-[#bb9af7]/30 transition-colors"
+                  class="flex items-center gap-4 rounded-xl border border-[#414868]/20 bg-[#1a1b26]/50 p-4 transition-colors hover:border-[#bb9af7]/30"
                 >
                   <div
-                    class="w-12 h-12 bg-gradient-to-r from-[#bb9af7] to-[#9ece6a] rounded-xl flex items-center justify-center flex-shrink-0"
+                    class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-[#bb9af7] to-[#9ece6a]"
                   >
                     <svg
-                      class="w-6 h-6 text-white"
+                      class="h-6 w-6 text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -148,40 +139,38 @@ try {
               </div>
             </div>
 
-            <!-- Services -->
             <div
-              class="bg-[#24283b]/50 backdrop-blur-sm border border-[#414868]/30 rounded-2xl p-6"
+              class="rounded-2xl border border-[#414868]/30 bg-[#24283b]/50 p-6 backdrop-blur-sm"
             >
-              <h3 class="text-xl font-bold text-[#7aa2f7] mb-4">What I Do</h3>
+              <h3 class="mb-4 text-xl font-bold text-[#7aa2f7]">What I Do</h3>
               <div class="grid grid-cols-2 gap-3">
                 <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 bg-[#7aa2f7] rounded-full"></div>
+                  <div class="h-2 w-2 rounded-full bg-[#7aa2f7]"></div>
                   <span class="text-sm text-[#a9b1d6]">Web Development</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 bg-[#bb9af7] rounded-full"></div>
+                  <div class="h-2 w-2 rounded-full bg-[#bb9af7]"></div>
                   <span class="text-sm text-[#a9b1d6]">Mobile Apps</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 bg-[#9ece6a] rounded-full"></div>
+                  <div class="h-2 w-2 rounded-full bg-[#9ece6a]"></div>
                   <span class="text-sm text-[#a9b1d6]">UI/UX Design</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 bg-[#f7768e] rounded-full"></div>
+                  <div class="h-2 w-2 rounded-full bg-[#f7768e]"></div>
                   <span class="text-sm text-[#a9b1d6]">Consulting</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Contact Form -->
           <div class="lg:col-span-3">
             <div
-              class="bg-[#24283b]/50 backdrop-blur-sm border border-[#414868]/30 rounded-2xl p-6 sm:p-8"
+              class="rounded-2xl border border-[#414868]/30 bg-[#24283b]/50 p-6 backdrop-blur-sm sm:p-8"
             >
-              <div class="text-center mb-8">
+              <div class="mb-8 text-center">
                 <h2
-                  class="text-3xl font-bold bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent mb-2"
+                  class="mb-2 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-3xl font-bold text-transparent"
                 >
                   Send Message
                 </h2>
@@ -201,12 +190,12 @@ try {
                   >
                     <div id="mc_embed_signup_scroll">
                       <h2
-                        class="text-2xl font-bold text-center mb-6 text-[#c0caf5]"
+                        class="mb-6 text-center text-2xl font-bold text-[#c0caf5]"
                       >
                         Get In Touch
                       </h2>
                       <div
-                        class="indicates-required text-center mb-6 text-[#a9b1d6] text-sm"
+                        class="indicates-required mb-6 text-center text-sm text-[#a9b1d6]"
                       >
                         <span class="asterisk text-[#f7768e]">*</span> indicates
                         required
@@ -216,7 +205,7 @@ try {
                         <div class="mc-field-group">
                           <label
                             for="mce-EMAIL"
-                            class="block text-sm font-semibold text-[#c0caf5] mb-2"
+                            class="mb-2 block text-sm font-semibold text-[#c0caf5]"
                           >
                             Email Address <span class="asterisk text-[#f7768e]"
                               >*</span
@@ -225,7 +214,7 @@ try {
                           <input
                             type="email"
                             name="EMAIL"
-                            class="required email w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors"
+                            class="required email w-full rounded-xl border-2 border-[#414868]/40 bg-[#1a1b26]/60 px-4 py-3 text-[#c0caf5] placeholder-[#565f89] transition-colors focus:border-[#7aa2f7] focus:outline-none focus:ring-0"
                             id="mce-EMAIL"
                             required=""
                             value=""
@@ -233,17 +222,17 @@ try {
                           />
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                           <div class="mc-field-group">
                             <label
                               for="mce-FNAME"
-                              class="block text-sm font-semibold text-[#c0caf5] mb-2"
+                              class="mb-2 block text-sm font-semibold text-[#c0caf5]"
                               >First Name</label
                             >
                             <input
                               type="text"
                               name="FNAME"
-                              class="text w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors"
+                              class="text w-full rounded-xl border-2 border-[#414868]/40 bg-[#1a1b26]/60 px-4 py-3 text-[#c0caf5] placeholder-[#565f89] transition-colors focus:border-[#7aa2f7] focus:outline-none focus:ring-0"
                               id="mce-FNAME"
                               value=""
                               placeholder="John"
@@ -253,13 +242,13 @@ try {
                           <div class="mc-field-group">
                             <label
                               for="mce-LNAME"
-                              class="block text-sm font-semibold text-[#c0caf5] mb-2"
+                              class="mb-2 block text-sm font-semibold text-[#c0caf5]"
                               >Last Name</label
                             >
                             <input
                               type="text"
                               name="LNAME"
-                              class="text w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors"
+                              class="text w-full rounded-xl border-2 border-[#414868]/40 bg-[#1a1b26]/60 px-4 py-3 text-[#c0caf5] placeholder-[#565f89] transition-colors focus:border-[#7aa2f7] focus:outline-none focus:ring-0"
                               id="mce-LNAME"
                               value=""
                               placeholder="Doe"
@@ -270,13 +259,13 @@ try {
                         <div class="mc-field-group">
                           <label
                             for="mce-COMPANY"
-                            class="block text-sm font-semibold text-[#c0caf5] mb-2"
+                            class="mb-2 block text-sm font-semibold text-[#c0caf5]"
                             >Company</label
                           >
                           <input
                             type="text"
                             name="COMPANY"
-                            class="text w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors"
+                            class="text w-full rounded-xl border-2 border-[#414868]/40 bg-[#1a1b26]/60 px-4 py-3 text-[#c0caf5] placeholder-[#565f89] transition-colors focus:border-[#7aa2f7] focus:outline-none focus:ring-0"
                             id="mce-COMPANY"
                             value=""
                             placeholder="Your Company"
@@ -286,13 +275,13 @@ try {
                         <div class="mc-field-group">
                           <label
                             for="mce-PHONE"
-                            class="block text-sm font-semibold text-[#c0caf5] mb-2"
+                            class="mb-2 block text-sm font-semibold text-[#c0caf5]"
                             >Phone Number</label
                           >
                           <input
                             type="tel"
                             name="PHONE"
-                            class="text w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors"
+                            class="text w-full rounded-xl border-2 border-[#414868]/40 bg-[#1a1b26]/60 px-4 py-3 text-[#c0caf5] placeholder-[#565f89] transition-colors focus:border-[#7aa2f7] focus:outline-none focus:ring-0"
                             id="mce-PHONE"
                             value=""
                             placeholder="+1 (555) 123-4567"
@@ -302,12 +291,12 @@ try {
                         <div class="mc-field-group">
                           <label
                             for="mce-MMERGE7"
-                            class="block text-sm font-semibold text-[#c0caf5] mb-2"
+                            class="mb-2 block text-sm font-semibold text-[#c0caf5]"
                             >Message</label
                           >
                           <textarea
                             name="MMERGE7"
-                            class="text w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] placeholder-[#565f89] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors resize-none"
+                            class="text w-full resize-none rounded-xl border-2 border-[#414868]/40 bg-[#1a1b26]/60 px-4 py-3 text-[#c0caf5] placeholder-[#565f89] transition-colors focus:border-[#7aa2f7] focus:outline-none focus:ring-0"
                             id="mce-MMERGE7"
                             rows="4"
                             value=""
@@ -318,13 +307,13 @@ try {
                         <div class="mc-field-group">
                           <label
                             for="mce-MMERGE8"
-                            class="block text-sm font-semibold text-[#c0caf5] mb-2"
+                            class="mb-2 block text-sm font-semibold text-[#c0caf5]"
                           >
                             What type of project are you interested in?
                           </label>
                           <select
                             name="MMERGE8"
-                            class="w-full px-4 py-3 bg-[#1a1b26]/60 border-2 border-[#414868]/40 rounded-xl text-[#c0caf5] focus:border-[#7aa2f7] focus:outline-none focus:ring-0 transition-colors"
+                            class="w-full rounded-xl border-2 border-[#414868]/40 bg-[#1a1b26]/60 px-4 py-3 text-[#c0caf5] transition-colors focus:border-[#7aa2f7] focus:outline-none focus:ring-0"
                             id="mce-MMERGE8"
                           >
                             <option value="">Select project type...</option>
@@ -359,10 +348,9 @@ try {
                         </div>
                       </div>
 
-                      <!-- Custom Success Message -->
                       <div
                         id="custom-success-message"
-                        class="hidden p-4 rounded-xl text-center font-medium bg-[#9ece6a]/20 border border-[#9ece6a]/30 text-[#9ece6a] mb-4"
+                        class="mb-4 hidden rounded-xl border border-[#9ece6a]/30 bg-[#9ece6a]/20 p-4 text-center font-medium text-[#9ece6a]"
                       >
                         ✅ Message sent successfully! I'll get back to you soon.
                       </div>
@@ -385,10 +373,10 @@ try {
                             type="submit"
                             name="subscribe"
                             id="mc-embedded-subscribe"
-                            class="w-full py-4 px-6 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#7aa2f7]/25 focus:outline-none focus:ring-4 focus:ring-[#7aa2f7]/20 transition-all duration-300 cursor-pointer"
+                            class="w-full cursor-pointer rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-6 py-4 font-bold text-white transition-all duration-300 hover:shadow-lg hover:shadow-[#7aa2f7]/25 focus:outline-none focus:ring-4 focus:ring-[#7aa2f7]/20"
                             value="Send Message"
                           />
-                          <p class="text-center mt-4 text-sm text-[#a9b1d6]">
+                          <p class="mt-4 text-center text-sm text-[#a9b1d6]">
                             <a
                               href="http://eepurl.com/jkQDxA"
                               title="Mailchimp - email marketing made easy and fun"
@@ -419,14 +407,8 @@ try {
 
     <Footer />
 
-    <!-- Scripts -->
-    <!-- Mailchimp Form Scripts -->
-    <script
-      type="text/javascript"
-      src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"
-    ></script>
-    <script type="text/javascript">
-      (function ($) {
+    <script is:inline type="text/javascript">
+      (function () {
         window.fnames = new Array();
         window.ftypes = new Array();
         fnames[0] = "EMAIL";
@@ -447,10 +429,8 @@ try {
         ftypes[7] = "address";
         fnames[8] = "BIRTHDAY";
         ftypes[8] = "birthday";
-      })(jQuery);
-      var $mcj = jQuery.noConflict(true);
+      })();
 
-      // Custom form handling
       document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("mc-embedded-subscribe-form");
         const successMessage = document.getElementById(
@@ -458,15 +438,12 @@ try {
         );
 
         if (form) {
-          form.addEventListener("submit", function (e) {
-            // Show success message immediately
+          form.addEventListener("submit", function () {
             successMessage.classList.remove("hidden");
 
-            // Clear form fields
             setTimeout(() => {
               form.reset();
 
-              // Hide success message after 5 seconds
               setTimeout(() => {
                 successMessage.classList.add("hidden");
               }, 5000);

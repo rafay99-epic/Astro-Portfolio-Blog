@@ -17,6 +17,7 @@ ProjectTech:
   ]
 ProjectRanking: "8"
 ProjectCategory: ["Web Apps"]
+ProjectDeployedLink: "https://shafiqlawchamber.com"
 ---
 
 **Shafiq Law Chamber** is a leading law firm based in Pakistan, dedicated to providing top-tier legal services with a client-centered approach. This project, developed by **Future Insight**, aimed to create a professional and user-friendly website showcasing the firm's expertise, services, and commitment to client success. The website not only highlights the firm's reputation but also provides an accessible resource for individuals seeking legal guidance in Pakistan. This blog post delves into the design, features, and technical aspects that make the Shafiq Law Chamber website a powerful digital presence for the law firm.

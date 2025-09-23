@@ -1,8 +1,19 @@
 import type { APIRoute } from "astro";
-
+import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 export const POST: APIRoute = async ({ request }) => {
   try {
-    let body;
+    if (!FeatureFlagsApi.enableNewsletterSubscription) {
+      return new Response(
+        JSON.stringify({
+          error: "Newsletter subscription is currently disabled.",
+        }),
+        {
+          status: 503,
+        },
+      );
+    }
+
+    let body: { email?: string; listId?: number };
     try {
       body = await request.json();
     } catch {
@@ -54,7 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
           message:
             "Subscription successful. Please check your email to verify.",
         }),
-        { status: 200 }
+        { status: 200 },
       );
     } else {
       const errorData = await response.json();
@@ -63,7 +74,7 @@ export const POST: APIRoute = async ({ request }) => {
         JSON.stringify({
           error: "An error occurred while processing your request.",
         }),
-        { status: response.status }
+        { status: response.status },
       );
     }
   } catch (error) {

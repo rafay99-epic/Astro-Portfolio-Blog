@@ -8,7 +8,6 @@ function updateProgress() {
   const totalHeight = document.body.scrollHeight - window.innerHeight;
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-  // Prevent negative values and ensure bounds
   const progress = Math.min(Math.max(scrollTop / totalHeight, 0), 1);
 
   progressBar.style.transform = `scaleX(${progress})`;
@@ -22,6 +21,8 @@ function requestTick() {
   }
 }
 
-document.addEventListener("scroll", requestTick, { passive: true });
+document.addEventListener("scroll", requestTick, {
+  passive: true,
+});
 
 updateProgress();

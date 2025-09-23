@@ -7,6 +7,7 @@ lecture_draft: false
 lectureNumber: "05"
 subject: Research Methods
 ---
+
 Simon Peyton Jones kicks off by promising seven simple, actionable suggestions that will genuinely make your research papers better. This isn't just about ticking boxes; it's about fundamentally changing how you approach the act of writing in a research context.
 
 **1\. Don't Wait: Write!**

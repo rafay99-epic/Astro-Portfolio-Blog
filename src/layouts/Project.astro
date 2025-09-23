@@ -1,12 +1,11 @@
 ---
-import BaseHead from "../components/AstroComponent/base/BaseHead.astro";
-import Header from "../components/AstroComponent/header/Header.astro";
-import Footer from "../components/AstroComponent/footer/Footer.astro";
-import ShareButtons from "../components/ReactComponent/blog/interactions/socialButton";
-import SpeedInsights from "@vercel/speed-insights/astro";
-import { featureFlags } from "../config/featureFlag/featureFlag.json";
-import MermaidRenderer from "../components/ReactComponent/blog/enhancements/diagram-renderer/MermaidRenderer";
-import CodeCopySimple from "../components/ReactComponent/blog/enhancements/code-copy/CodeCopySimple";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import ShareButtons from "@react/blog/interactions/socialButton";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
+import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
 
 const pageUrl = Astro.url.href;
 export const prerender = true;
@@ -31,7 +30,6 @@ try {
 <html lang="en">
   <head>
     <BaseHead title={Projecttitle} description={ProjectDescription} />
-    <SpeedInsights />
     <style>
       /* Ensure consistent background */
       html {
@@ -218,16 +216,15 @@ try {
   <body class="project-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
 
-    <main class="w-full max-w-7xl mx-auto">
+    <main class="mx-auto w-full max-w-7xl">
       <article>
-        {/* Project Header - Title Only */}
         <div class="project-header text-center">
           <div class="project-badge">
             <span>🚀</span>
             Project
           </div>
           <h1
-            class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight"
+            class="mb-4 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl"
             transition:name={`project-title-${Projecttitle}`}
           >
             <span
@@ -238,18 +235,17 @@ try {
           </h1>
           {
             ProjectDescription && (
-              <p class="text-lg text-[#a9b1d6] max-w-3xl mx-auto leading-relaxed">
+              <p class="mx-auto max-w-3xl text-lg leading-relaxed text-[#a9b1d6]">
                 {ProjectDescription}
               </p>
             )
           }
         </div>
 
-        {/* Technologies Section - Only if tech exists */}
         {
           ProjectTech && ProjectTech.length > 0 && (
             <div class="tech-section">
-              <h3 class="text-center text-lg font-semibold mb-3 text-[#c0caf5]">
+              <h3 class="mb-3 text-center text-lg font-semibold text-[#c0caf5]">
                 🛠️ Technologies Used
               </h3>
               <div class="tech-grid">
@@ -261,28 +257,24 @@ try {
           )
         }
 
-        {/* Project Content */}
         <div class="project-content">
           <slot />
         </div>
 
-        {/* Share Buttons */}
         <div class="share-section">
           <ShareButtons url={pageUrl} pagetitle="Project" client:visible />
         </div>
       </article>
 
       <MermaidRenderer client:load />
-      <CodeCopySimple client:load />
+      <CodeCopySimple client:visible />
     </main>
 
     <script is:inline>
-      // Prevent auto-scroll restoration and conflicts
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
       }
 
-      // Prevent initial scroll jumping
       document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           window.scrollTo(0, 0);

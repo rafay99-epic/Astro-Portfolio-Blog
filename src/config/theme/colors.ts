@@ -1,15 +1,10 @@
-// Theme Color Configuration
-// Centralized color management for easy theme switching and maintenance
-
 export type ThemeName = "tokyo-night" | "cyberpunk" | "ocean" | "forest";
 
 export interface ColorPalette {
-  // Primary Colors
   primary: string;
   secondary: string;
   accent: string;
 
-  // Background Colors
   background: {
     primary: string;
     secondary: string;
@@ -18,7 +13,6 @@ export interface ColorPalette {
     overlay: string;
   };
 
-  // Text Colors
   text: {
     primary: string;
     secondary: string;
@@ -27,7 +21,6 @@ export interface ColorPalette {
     inverse: string;
   };
 
-  // UI Element Colors
   border: {
     primary: string;
     secondary: string;
@@ -35,7 +28,6 @@ export interface ColorPalette {
     hover: string;
   };
 
-  // Status Colors
   status: {
     success: string;
     warning: string;
@@ -43,7 +35,6 @@ export interface ColorPalette {
     info: string;
   };
 
-  // Interactive Colors
   interactive: {
     hover: string;
     focus: string;
@@ -51,7 +42,6 @@ export interface ColorPalette {
     disabled: string;
   };
 
-  // Gradient Combinations
   gradients: {
     primary: string;
     secondary: string;
@@ -59,7 +49,6 @@ export interface ColorPalette {
     rainbow: string;
   };
 
-  // Social Platform Colors
   social: {
     twitter: string;
     facebook: string;
@@ -71,14 +60,11 @@ export interface ColorPalette {
   };
 }
 
-// Tokyo Night Theme (Current)
 const tokyoNightColors: ColorPalette = {
-  // Primary Colors
   primary: "#7aa2f7",
   secondary: "#bb9af7",
   accent: "#9ece6a",
 
-  // Background Colors
   background: {
     primary: "#1a1b26",
     secondary: "#24283b",
@@ -87,7 +73,6 @@ const tokyoNightColors: ColorPalette = {
     overlay: "#24283b60",
   },
 
-  // Text Colors
   text: {
     primary: "#c0caf5",
     secondary: "#a9b1d6",
@@ -96,7 +81,6 @@ const tokyoNightColors: ColorPalette = {
     inverse: "#1a1b26",
   },
 
-  // UI Element Colors
   border: {
     primary: "#565f89",
     secondary: "#565f8930",
@@ -104,7 +88,6 @@ const tokyoNightColors: ColorPalette = {
     hover: "#7aa2f760",
   },
 
-  // Status Colors
   status: {
     success: "#9ece6a",
     warning: "#e0af68",
@@ -112,7 +95,6 @@ const tokyoNightColors: ColorPalette = {
     info: "#7aa2f7",
   },
 
-  // Interactive Colors
   interactive: {
     hover: "#7aa2f720",
     focus: "#7aa2f740",
@@ -120,7 +102,6 @@ const tokyoNightColors: ColorPalette = {
     disabled: "#565f8940",
   },
 
-  // Gradient Combinations
   gradients: {
     primary: "linear-gradient(135deg, #7aa2f7, #bb9af7)",
     secondary: "linear-gradient(135deg, #bb9af7, #9ece6a)",
@@ -129,7 +110,6 @@ const tokyoNightColors: ColorPalette = {
       "linear-gradient(90deg, #7aa2f7, #bb9af7, #9ece6a, #bb9af7, #7aa2f7)",
   },
 
-  // Social Platform Colors
   social: {
     twitter: "#1DA1F2",
     facebook: "#1877F2",
@@ -141,7 +121,6 @@ const tokyoNightColors: ColorPalette = {
   },
 };
 
-// Future Theme Examples (Ready for implementation)
 const cyberpunkColors: ColorPalette = {
   primary: "#ff0080",
   secondary: "#00ff80",
@@ -203,26 +182,21 @@ const cyberpunkColors: ColorPalette = {
   },
 };
 
-// Theme Registry
 const themes: Record<ThemeName, ColorPalette> = {
   "tokyo-night": tokyoNightColors,
   cyberpunk: cyberpunkColors,
-  ocean: tokyoNightColors, // Placeholder - can be customized
-  forest: tokyoNightColors, // Placeholder - can be customized
+  ocean: tokyoNightColors,
+  forest: tokyoNightColors,
 };
 
-// Current active theme
 export const CURRENT_THEME: ThemeName = "tokyo-night";
 
-// Get current theme colors
 export const colors = themes[CURRENT_THEME];
 
-// Theme switching function for future use
 export function getThemeColors(themeName: ThemeName): ColorPalette {
   return themes[themeName] || themes["tokyo-night"];
 }
 
-// CSS Custom Properties Generator
 export function generateCSSVariables(palette: ColorPalette): string {
   return `
     :root {
@@ -281,10 +255,8 @@ export function generateCSSVariables(palette: ColorPalette): string {
   `;
 }
 
-// Tailwind Color Configuration Generator
 export function generateTailwindColors(palette: ColorPalette) {
   return {
-    // Custom color names for Tailwind
     "theme-primary": palette.primary,
     "theme-secondary": palette.secondary,
     "theme-accent": palette.accent,
@@ -331,9 +303,7 @@ export function generateTailwindColors(palette: ColorPalette) {
   };
 }
 
-// Utility functions for common color operations
 export const colorUtils = {
-  // Add opacity to any color
   withOpacity: (color: string, opacity: number): string => {
     const opacityHex = Math.round(opacity * 255)
       .toString(16)
@@ -341,7 +311,6 @@ export const colorUtils = {
     return `${color}${opacityHex}`;
   },
 
-  // Get RGB values from hex
   hexToRgb: (hex: string): { r: number; g: number; b: number } | null => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
@@ -353,12 +322,10 @@ export const colorUtils = {
       : null;
   },
 
-  // Create RGBA string
   rgba: (hex: string, alpha: number): string => {
     const rgb = colorUtils.hexToRgb(hex);
     return rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})` : hex;
   },
 };
 
-// Export current theme colors for easy import
 export default colors;
