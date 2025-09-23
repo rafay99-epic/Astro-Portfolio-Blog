@@ -67,7 +67,7 @@ export default defineConfig({
     react({
       experimentalDisableStreaming: true,
 
-      include: ["**/react/*"],
+      include: ["**/ReactComponent/**", "**/*.{jsx,tsx}"],
       babel: {
         plugins: ["babel-plugin-react-compiler"],
       },
