@@ -16,11 +16,21 @@ const ImageCaptionRenderer = memo(function ImageCaptionRenderer() {
       return;
     }
 
-    if (img.closest("figure figcaption")) {
+    if (img.closest("figure")) {
       return;
     }
 
-    if (img.naturalWidth < 100 || img.naturalHeight < 100) {
+    if ((img.naturalWidth > 0 && img.naturalWidth < 100) || 
+        (img.naturalHeight > 0 && img.naturalHeight < 100)) {
+      return;
+    }
+
+    if (img.naturalWidth === 0 || img.naturalHeight === 0) {
+      const handleLoad = () => {
+        img.removeEventListener('load', handleLoad);
+        processImage(img);
+      };
+      img.addEventListener('load', handleLoad);
       return;
     }
 

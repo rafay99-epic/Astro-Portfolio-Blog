@@ -19,6 +19,11 @@ const BlogNavigation: React.FC<BlogNavigationProps> = ({
   allPosts,
 }) => {
   const currentIndex = allPosts.findIndex((post) => post.slug === currentSlug);
+  
+  if (currentIndex === -1) {
+    return null;
+  }
+  
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   const nextPost =
     currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
@@ -49,9 +54,9 @@ const BlogNavigation: React.FC<BlogNavigationProps> = ({
             viewBox="0 0 24 24"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M15 19l-7-7 7-7"
             />
           </svg>
@@ -74,9 +79,9 @@ const BlogNavigation: React.FC<BlogNavigationProps> = ({
             viewBox="0 0 24 24"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M9 5l7 7-7 7"
             />
           </svg>

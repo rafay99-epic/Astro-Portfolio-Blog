@@ -17,7 +17,6 @@ const highlights = [
 ---
 
 <style>
-  /* Hero section animations */
   .hero-animate {
     opacity: 0;
     transform: translateY(30px);
@@ -137,13 +136,11 @@ const highlights = [
     }
   }
 
-  /* CTA button hover */
   .cta-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 20px 40px rgba(122, 162, 247, 0.3);
   }
 
-  /* Glassmorphism cards */
   .glass-card {
     background: rgba(36, 40, 59, 0.2);
     backdrop-filter: blur(12px);
@@ -155,7 +152,6 @@ const highlights = [
     transform: translateY(-2px);
   }
 
-  /* Mobile optimizations */
   @media (max-width: 768px) {
     .hero-animate {
       animation-delay: 0.1s;
@@ -304,7 +300,9 @@ const highlights = [
         </div>
 
         <div class="highlight-item space-y-4">
-          <div
+          <a
+            href="/contact-me"
+            aria-label="Contact Abdul Rafay"
             class="cta-button inline-flex cursor-pointer items-center space-x-2 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-6 py-3 font-semibold text-white shadow-lg transition-all duration-300 lg:px-8 lg:py-4"
           >
             <span class="text-sm lg:text-base">Let's Work Together</span>
@@ -320,7 +318,7 @@ const highlights = [
                 stroke-width="2"
                 d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
-          </div>
+          </a>
 
           <div
             class="flex flex-col items-start space-y-2 text-xs text-[#a9b1d6] sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0 lg:text-sm"

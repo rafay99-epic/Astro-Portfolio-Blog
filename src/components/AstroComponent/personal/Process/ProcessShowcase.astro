@@ -207,12 +207,16 @@ const processSteps = [
       <button
         id="prev-button"
         class="nav-button absolute left-0 top-1/2 z-10 -ml-6 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#414868]/50 bg-[#24283b]/80 text-[#a9b1d6] backdrop-blur-sm transition-all duration-300 hover:border-[#7aa2f7]/50 hover:text-[#7aa2f7] sm:h-12 sm:w-12"
+        aria-label="Previous slide"
+        aria-disabled="true"
+        disabled
       >
         <svg
           class="h-5 w-5 sm:h-6 sm:w-6"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path
             stroke-linecap="round"
@@ -225,12 +229,15 @@ const processSteps = [
       <button
         id="next-button"
         class="nav-button absolute right-0 top-1/2 z-10 -mr-6 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#414868]/50 bg-[#24283b]/80 text-[#a9b1d6] backdrop-blur-sm transition-all duration-300 hover:border-[#7aa2f7]/50 hover:text-[#7aa2f7] sm:h-12 sm:w-12"
+        aria-label="Next slide"
+        aria-disabled="false"
       >
         <svg
           class="h-5 w-5 sm:h-6 sm:w-6"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path
             stroke-linecap="round"
@@ -402,6 +409,10 @@ const processSteps = [
                   : "bg-[#414868] hover:bg-[#7aa2f7]/50"
               }`}
               data-step={index}
+              aria-label={`Go to slide ${index + 1}`}
+              role="tab"
+              aria-selected={index === 0}
+              tabindex={index === 0 ? "0" : "-1"}
             />
           ))
         }
@@ -410,7 +421,7 @@ const processSteps = [
       <div class="mt-4 text-center">
         <span class="text-sm text-[#a9b1d6]">
           <span id="current-step" class="font-semibold text-[#7aa2f7]">01</span>
-          / <span id="total-steps"
+          <span id="total-steps"
             >{String(processSteps.length).padStart(2, "0")}</span
           >
         </span>
@@ -421,7 +432,7 @@ const processSteps = [
 
 <script>
   let currentStep = 0;
-  const totalSteps = 6;
+  const totalSteps = document.querySelectorAll(".progress-dot").length || 0;
   const sliderTrack = document.getElementById("slider-track") as HTMLElement;
   const prevButton = document.getElementById(
     "prev-button",
@@ -443,9 +454,13 @@ const processSteps = [
       if (index === currentStep) {
         dot.classList.add("bg-[#7aa2f7]", "active");
         dot.classList.remove("bg-[#414868]", "hover:bg-[#7aa2f7]/50");
+        dot.setAttribute("aria-selected", "true");
+        dot.setAttribute("tabindex", "0");
       } else {
         dot.classList.remove("bg-[#7aa2f7]", "active");
         dot.classList.add("bg-[#414868]", "hover:bg-[#7aa2f7]/50");
+        dot.setAttribute("aria-selected", "false");
+        dot.setAttribute("tabindex", "-1");
       }
     });
 
@@ -454,13 +469,17 @@ const processSteps = [
     }
 
     if (prevButton) {
-      prevButton.disabled = currentStep === 0;
-      prevButton.classList.toggle("opacity-50", currentStep === 0);
+      const isDisabled = currentStep === 0;
+      prevButton.disabled = isDisabled;
+      prevButton.setAttribute("aria-disabled", isDisabled.toString());
+      prevButton.classList.toggle("opacity-50", isDisabled);
     }
 
     if (nextButton) {
-      nextButton.disabled = currentStep === totalSteps - 1;
-      nextButton.classList.toggle("opacity-50", currentStep === totalSteps - 1);
+      const isDisabled = currentStep === totalSteps - 1;
+      nextButton.disabled = isDisabled;
+      nextButton.setAttribute("aria-disabled", isDisabled.toString());
+      nextButton.classList.toggle("opacity-50", isDisabled);
     }
 
     const currentSlide = document.querySelector(
@@ -544,4 +563,11 @@ const processSteps = [
   }
 
   updateSlider();
+
+  if (prevButton) {
+    prevButton.removeAttribute("disabled");
+  }
+  if (nextButton) {
+    nextButton.removeAttribute("disabled");
+  }
 </script>
