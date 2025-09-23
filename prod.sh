@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Production script for building, linting, committing, and pushing code
+# Production script for building, linting, checking, committing, and pushing code
 
 # ===== COLORS =====
 RED="\033[0;31m"
@@ -43,14 +43,29 @@ if bun run lint; then
 else
   warn "Lint failed. Attempting to auto-fix..."
   if bun run lint:fix; then
-    success "Lint issues fixed successfully."
+    success "Lint issues fixed successfully. Re-running lint..."
+    if bun run lint; then
+      success "Lint passed after auto-fix ✅"
+    else
+      error "Lint still failing after fix ❌ Please resolve manually."
+      exit 1
+    fi
   else
     error "Lint auto-fix failed. Please fix issues manually."
     exit 1
   fi
 fi
 
-# ===== STEP 3: Build project =====
+# ===== STEP 3: Run check (type & constraints) =====
+log "Running 'bun run check'..."
+if bun run check; then
+  success "Check passed successfully."
+else
+  error "Check failed ❌ Please fix issues before continuing."
+  exit 1
+fi
+
+# ===== STEP 4: Build project =====
 log "Building project..."
 if bun run build; then
   success "Build completed successfully."
@@ -59,7 +74,7 @@ else
   exit 1
 fi
 
-# ===== STEP 4: Commit & Push =====
+# ===== STEP 5: Commit & Push =====
 read -r "commit_choice?Do you want to commit the changes? (yes/no): "
 
 case "$commit_choice" in
@@ -67,7 +82,11 @@ case "$commit_choice" in
     read -r "commit_message?Enter commit message: "
     log "Committing with message: '$commit_message'"
     git add .
-    git commit -m "$commit_message"
+    if git commit -m "$commit_message"; then
+      success "Commit successful."
+    else
+      warn "Nothing to commit, working tree clean."
+    fi
 
     read -r "push_choice?Do you want to push the changes? (yes/no): "
     case "$push_choice" in
@@ -89,4 +108,4 @@ case "$commit_choice" in
     ;;
 esac
 
-success "All tasks completed!"
+success "🎉 All tasks completed!"

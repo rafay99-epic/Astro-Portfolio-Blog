@@ -5,7 +5,6 @@ import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import TagFilterDisplay from "@astro/blog/comments/TagFilterDisplay.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { ClientRouter } from "astro:transitions";
 import { getCollection } from "astro:content";
 
 export const prerender = true;
@@ -70,7 +69,6 @@ try {
 
   <body>
     <Header />
-    <ClientRouter />
     <main class="mx-auto w-full max-w-5xl">
       <div>
         <TagFilterDisplay

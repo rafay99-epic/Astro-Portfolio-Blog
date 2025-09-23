@@ -127,15 +127,30 @@ export default defineConfig({
           toplevel: true,
         },
       },
+      chunkSizeWarningLimit: 1500,
       rollupOptions: {
         output: {
-          manualChunks: {
-            "react-vendor": ["react", "react-dom"],
-            "ui-components": [
-              "@headlessui/react",
-              "@heroicons/react",
-              "framer-motion",
-            ],
+          experimentalMinChunkSize: 30000,
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              if (id.includes("react")) return "react-vendor";
+              if (
+                id.includes("@headlessui") ||
+                id.includes("@heroicons") ||
+                id.includes("framer-motion")
+              ) {
+                return "ui-components";
+              }
+              if (id.match(/node_modules/)) {
+                return "vendor-d3";
+              }
+              const rel = id.split("node_modules/")[1] || "";
+              const parts = rel.split("/");
+              const pkg = rel.startsWith("@")
+                ? `${parts[0]}/${parts[1]}`
+                : parts[0];
+              return `vendor-${pkg}`;
+            }
           },
         },
       },
