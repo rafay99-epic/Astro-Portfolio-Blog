@@ -6,6 +6,7 @@
     "dev": "tinacms dev -c \"astro dev\"",
     "production_build": "tinacms build && astro build",
     "build": "astro build",
+    "dev:local": "astro dev",
     "preview": "astro preview",
     "check": "astro check",
     "scan": "npx react-scan@latest http://localhost:4321",

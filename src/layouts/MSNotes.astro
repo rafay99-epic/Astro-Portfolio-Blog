@@ -6,7 +6,6 @@ import ArticleHeader from "@astro/blog/layout/ArticleHeader.astro";
 import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
 import ShareButtons from "../components/ReactComponent/blog/interactions/socialButton";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 
 export const prerender = true;
@@ -175,8 +174,7 @@ try {
           </ContentContainer>
         </div>
       </article>
-      <MermaidRenderer client:load />
-      <CodeCopySimple client:load />
+      <MermaidRenderer client:visible />
     </main>
 
     <Footer />

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { LuSearch } from "react-icons/lu";
 import type { SearchInputProps } from "types/search";
 
 const SearchInput = memo(function SearchInput({
@@ -14,16 +14,12 @@ const SearchInput = memo(function SearchInput({
 }: SearchInputProps) {
   return (
     <div className="relative mb-4 flex items-center">
-      <motion.div
-        className="absolute left-4 flex h-full items-center text-xl"
-        animate={{
-          scale: isSearchFocused ? 1.1 : 1,
-          rotate: isSearchFocused ? [0, -10, 10, 0] : 0,
-        }}
-        transition={{ duration: 0.3 }}
+      <div
+        className="absolute left-4 flex h-full items-center text-xl text-[#a9b1d6] transition-transform duration-200 will-change-transform"
+        aria-hidden="true"
       >
-        🔍
-      </motion.div>
+        <LuSearch />
+      </div>
       <input
         id="search-input"
         type="text"
@@ -34,7 +30,7 @@ const SearchInput = memo(function SearchInput({
           setShowSearchTips(true);
         }}
         onBlur={() => setIsSearchFocused(false)}
-        placeholder="Search by title, tag, author, or content... (Press '/' to focus)"
+        placeholder="Type title or author"
         aria-label="Search articles"
         className={`w-full rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 text-[#c0caf5] placeholder-[#a9b1d6] transition-all duration-300 focus:border-[#7aa2f7] focus:shadow-lg focus:shadow-[#7aa2f7]/20 focus:outline-none ${
           isMobile ? "py-3 pl-12 pr-10 text-base" : "py-4 pl-14 pr-12 text-lg"
@@ -103,18 +99,13 @@ const ClearButton = memo(function ClearButton({
   onClick: () => void;
 }) {
   return (
-    <motion.button
-      className="absolute right-4 flex h-full items-center text-[#a9b1d6] transition-colors duration-300 hover:text-[#c0caf5]"
+    <button
+      className="absolute right-4 flex h-full items-center text-[#a9b1d6] transition-colors duration-200 hover:text-[#c0caf5] active:scale-95"
       onClick={onClick}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0, opacity: 0 }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
       aria-label="Clear search"
     >
       ✕
-    </motion.button>
+    </button>
   );
 });
 
