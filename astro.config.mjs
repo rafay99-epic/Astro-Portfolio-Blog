@@ -141,7 +141,8 @@ export default defineConfig({
               ) {
                 return "ui-components";
               }
-              if (id.match(/node_modules/)) {
+              // Group d3 packages together; avoid short-circuiting all vendor code
+              if (/[\\/]node_modules[\\/](d3|d3-[^\\/]+)/.test(id)) {
                 return "vendor-d3";
               }
               const rel = id.split("node_modules/")[1] || "";
