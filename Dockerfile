@@ -47,5 +47,5 @@ ENV NODE_ENV=production
 EXPOSE 4321
 
 # Start the server
-CMD ["node", "./dist/server/entry.mjs"]
+CMD ["bun", "./dist/server/entry.mjs"]
 

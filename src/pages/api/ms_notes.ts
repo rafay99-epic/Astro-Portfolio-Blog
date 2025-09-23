@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import featureFlagConfig from "@config/featureFlag/featureFlag.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 export async function GET(_request: Request) {
   const headers = {
@@ -10,7 +10,7 @@ export async function GET(_request: Request) {
   };
 
   try {
-    if (!featureFlagConfig.featureFlags.showNotes) {
+    if (!featureFlags.showNotes) {
       return new Response(
         JSON.stringify({ error: "Notes feature is disabled" }),
         {

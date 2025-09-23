@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import featureFlagConfig from "@config/featureFlag/featureFlag.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 export async function GET({}: { request: Request }) {
   const header = {
@@ -9,7 +9,7 @@ export async function GET({}: { request: Request }) {
     ETag: crypto.randomUUID(),
   };
   try {
-    if (!featureFlagConfig.featureFlags.showNewsletter) {
+    if (!featureFlags.showNewsletter) {
       return new Response(
         JSON.stringify({ error: "Newsletter Read is disabled" }),
         {

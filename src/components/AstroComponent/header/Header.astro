@@ -1,5 +1,5 @@
 ---
-import featureFlags from "@config/featureFlag/featureFlag.json";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
 import NavLink from "./NavLink.astro";
 
@@ -130,7 +130,7 @@ import {
         <NavLink href="/" icon={Home}> Home </NavLink>
 
         {
-          featureFlags.featureFlags.showBlog && (
+          featureFlags.showBlog && (
             <NavLink href="/blog" icon={BookOpen}>
               Articles
             </NavLink>
@@ -138,7 +138,7 @@ import {
         }
 
         {
-          featureFlags.featureFlags.showNewsletter && (
+          featureFlags.showNewsletter && (
             <NavLink href="/newsletter-subscribe" icon={Mail}>
               Newsletter
             </NavLink>
@@ -146,7 +146,7 @@ import {
         }
 
         {
-          featureFlags.featureFlags.showAbout && (
+          featureFlags.showAbout && (
             <NavLink href="/about" icon={User}>
               About
             </NavLink>
@@ -154,7 +154,7 @@ import {
         }
 
         {
-          featureFlags.featureFlags.showExperience && (
+          featureFlags.showExperience && (
             <NavLink href="/experience" icon={Briefcase}>
               Experience
             </NavLink>
@@ -162,19 +162,19 @@ import {
         }
 
         {
-          featureFlags.featureFlags.showProjects && (
+          featureFlags.showProjects && (
             <NavLink href="/project" icon={Rocket}>
               Projects
             </NavLink>
           )
         }
         {
-          featureFlags.featureFlags.showTags && (
+          featureFlags.showTags && (
             <NavLink href="/tag" icon={Tag} aria-label="Tags" />
           )
         }
         {
-          featureFlags.featureFlags.showSearch && (
+          featureFlags.showSearch && (
             <NavLink href="/search" icon={Search} aria-label="Search" />
           )
         }
@@ -199,7 +199,7 @@ import {
           >
             <div class="space-y-1 px-2">
               {
-                featureFlags.featureFlags.showNewsletter && (
+                featureFlags.showNewsletter && (
                   <a
                     role="menuitem"
                     href="/newsletter"
@@ -212,7 +212,7 @@ import {
                 )
               }
               {
-                featureFlags.featureFlags.showTrendingPosts && (
+                featureFlags.showTrendingPosts && (
                   <a
                     role="menuitem"
                     href="/trending"
@@ -225,7 +225,7 @@ import {
                 )
               }
               {
-                featureFlags.featureFlags.showNotes && (
+                featureFlags.showNotes && (
                   <a
                     role="menuitem"
                     href="/ms_notes"
@@ -238,7 +238,7 @@ import {
                 )
               }
               {
-                featureFlags.featureFlags.showWiki && (
+                featureFlags.showWiki && (
                   <a
                     role="menuitem"
                     href="https://rafay99-docs.vercel.app/"
@@ -311,7 +311,7 @@ import {
     <NavLink href="/" icon={Home}> Home </NavLink>
 
     {
-      featureFlags.featureFlags.showBlog && (
+      featureFlags.showBlog && (
         <NavLink href="/blog" icon={BookOpen}>
           Articles
         </NavLink>
@@ -319,7 +319,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showNewsletter && (
+      featureFlags.showNewsletter && (
         <NavLink href="/newsletter-subscribe" icon={Mail}>
           Newsletter
         </NavLink>
@@ -327,7 +327,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showAbout && (
+      featureFlags.showAbout && (
         <NavLink href="/about" icon={User}>
           About
         </NavLink>
@@ -335,7 +335,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showExperience && (
+      featureFlags.showExperience && (
         <NavLink href="/experience" icon={Briefcase}>
           Experience
         </NavLink>
@@ -343,7 +343,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showProjects && (
+      featureFlags.showProjects && (
         <NavLink href="/project" icon={Rocket}>
           Projects
         </NavLink>
@@ -351,7 +351,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showTags && (
+      featureFlags.showTags && (
         <NavLink href="/tag" icon={Tag}>
           Tags
         </NavLink>
@@ -359,7 +359,7 @@ import {
     }
 
     {
-      featureFlags.featureFlags.showSearch && (
+      featureFlags.showSearch && (
         <NavLink href="/search" icon={Search}>
           Search
         </NavLink>
@@ -367,30 +367,30 @@ import {
     }
 
     {
-      (featureFlags.featureFlags.showNewsletter ||
-        featureFlags.featureFlags.showTrendingPosts ||
-        featureFlags.featureFlags.showNotes ||
-        featureFlags.featureFlags.showWiki) && (
+      (featureFlags.showNewsletter ||
+        featureFlags.showTrendingPosts ||
+        featureFlags.showNotes ||
+        featureFlags.showWiki) && (
         <div class="pt-4">
           <div class="border-t border-[#565f89]/20 pt-4">
             <h3 class="mb-3 px-4 text-sm font-semibold text-[#a9b1d6]">More</h3>
             <div class="space-y-2">
-              {featureFlags.featureFlags.showNewsletter && (
+              {featureFlags.showNewsletter && (
                 <NavLink href="/newsletter" icon={Newspaper}>
                   Newsletter Archive
                 </NavLink>
               )}
-              {featureFlags.featureFlags.showTrendingPosts && (
+              {featureFlags.showTrendingPosts && (
                 <NavLink href="/trending" icon={TrendingUp}>
                   Trending Articles
                 </NavLink>
               )}
-              {featureFlags.featureFlags.showNotes && (
+              {featureFlags.showNotes && (
                 <NavLink href="/ms_notes" icon={StickyNote}>
                   MS Notes
                 </NavLink>
               )}
-              {featureFlags.featureFlags.showWiki && (
+              {featureFlags.showWiki && (
                 <NavLink
                   href="https://rafay99-docs.vercel.app/"
                   icon={Globe}
