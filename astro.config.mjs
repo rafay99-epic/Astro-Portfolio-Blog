@@ -141,7 +141,6 @@ export default defineConfig({
               ) {
                 return "ui-components";
               }
-              // Group d3 packages together; avoid short-circuiting all vendor code
               if (/[\\/]node_modules[\\/](d3|d3-[^\\/]+)/.test(id)) {
                 return "vendor-d3";
               }
