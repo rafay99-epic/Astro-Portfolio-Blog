@@ -19,11 +19,11 @@ const BlogNavigation: React.FC<BlogNavigationProps> = ({
   allPosts,
 }) => {
   const currentIndex = allPosts.findIndex((post) => post.slug === currentSlug);
-  
+
   if (currentIndex === -1) {
     return null;
   }
-  
+
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   const nextPost =
     currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
