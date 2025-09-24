@@ -1,9 +1,9 @@
-import { memo } from "react";
+import { memo, type ComponentType } from "react";
 import type { SearchTipsProps } from "types/search";
 import { LuSearch, LuUser, LuCalendar } from "react-icons/lu";
 
 const searchTips: Array<{
-  Icon: (props: { className?: string }) => JSX.Element;
+  Icon: ComponentType<{ className?: string }>;
   tip: string;
   description: string;
 }> = [

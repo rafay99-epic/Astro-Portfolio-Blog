@@ -1,5 +1,5 @@
 {
-  "include": [".astro/types.d.ts", "**/*"],
+  "include": ["**/*"],
   "exclude": ["dist", "astro/tsconfigs/base", "node_modules", "tina/"],
   "compilerOptions": {
     "plugins": [
@@ -26,6 +26,7 @@
     "strictNullChecks": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+    "types": ["react", "react-dom", "astro/client", "node"],
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   }
