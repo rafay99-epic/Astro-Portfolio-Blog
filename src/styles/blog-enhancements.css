@@ -1,0 +1,214 @@
+/* Enhanced Blog Typography and Visual Styles */
+
+/* Animated gradient text for headings */
+.prose h1, .prose h2, .prose h3 {
+  background: linear-gradient(90deg, #7aa2f7, #bb9af7, #9ece6a);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradientFlow 8s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Subtle hover effects for links */
+.prose a {
+  position: relative;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.prose a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: linear-gradient(90deg, #7aa2f7, #bb9af7);
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+.prose a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Enhanced blockquotes */
+.prose blockquote {
+  border-left: 4px solid #7aa2f7;
+  background: rgba(26, 27, 38, 0.5);
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.prose blockquote p {
+  font-style: italic;
+  position: relative;
+}
+
+.prose blockquote p::before {
+  content: '"';
+  font-size: 2rem;
+  color: #7aa2f7;
+  position: absolute;
+  left: -1rem;
+  top: -1rem;
+  opacity: 0.5;
+}
+
+/* Code block enhancements */
+.prose pre {
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.prose pre::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #7aa2f7, #bb9af7, #9ece6a);
+}
+
+/* Image enhancements */
+.prose img {
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* List styling */
+.prose ul li::before {
+  color: #7aa2f7;
+}
+
+.prose ol li::before {
+  color: #bb9af7;
+  font-weight: bold;
+}
+
+/* Table styling */
+.prose table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.prose thead {
+  background: rgba(26, 27, 38, 0.8);
+}
+
+.prose th {
+  border-bottom: 2px solid #565f89;
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.prose td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #565f89;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+/* Horizontal rule styling */
+.prose hr {
+  border: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #7aa2f7, #bb9af7, #9ece6a, transparent);
+  margin: 2rem 0;
+}
+
+/* Footnotes styling */
+.prose .footnotes {
+  border-top: 1px solid #565f89;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.prose .footnotes ol li {
+  color: #a9b1d6;
+}
+
+/* Callout boxes */
+.callout {
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-left: 4px solid;
+  background: rgba(26, 27, 38, 0.5);
+}
+
+.callout-info {
+  border-color: #7aa2f7;
+}
+
+.callout-warning {
+  border-color: #e0af68;
+}
+
+.callout-error {
+  border-color: #f7768e;
+}
+
+.callout-success {
+  border-color: #9ece6a;
+}
+
+/* Animated reading indicator */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(122, 162, 247, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(122, 162, 247, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(122, 162, 247, 0); }
+}
+
+#reading-progress-bar {
+  animation: pulse 2s infinite;
+}
+
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+:focus {
+  outline: 2px solid #7aa2f7;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .prose {
+    color: #000;
+  }
+  
+  .prose a {
+    color: #000;
+    text-decoration: underline;
+  }
+  
+  .prose h1, .prose h2, .prose h3 {
+    color: #000;
+  }
+}
