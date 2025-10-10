@@ -10,6 +10,9 @@ import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 import ImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/ImageCaptionRenderer";
 import BlogNavigation from "@react/blog/layout/BlogNavigation";
+// import TableOfContents from "@react/blog/enhancements/table-of-compoent/TableOfContents";
+import ReadingProgressBar from "@components/ReactComponent/blog/enhancements/progress-reading/ReadingProgressBar";
+import ImageZoom from "@react/blog/enhancements/image-zoom/ImageZoom";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -30,12 +33,17 @@ try {
 
 const BlogPosts = featureFlags.showBlog
   ? (await getCollection("blog"))
-      .filter((post) => !post.data.draft)
-      .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
+      .filter((post: { data: { draft: any } }) => !post.data.draft)
+      .sort(
+        (a: { data: { pubDate: number } }, b: { data: { pubDate: number } }) =>
+          a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+      )
   : [];
 
 const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
-const currentBlog = BlogPosts.find((post) => post.slug === currentSlug);
+const currentBlog = BlogPosts.find(
+  (post: { slug: string | undefined }) => post.slug === currentSlug,
+);
 
 if (!currentBlog) {
   return Astro.redirect("/access-denied");
@@ -251,17 +259,19 @@ const {
         const faqMatches = blogContent.match(/^#{2,6}\s+(.+)$/gm);
         if (!faqMatches || faqMatches.length < 3) return null;
 
-        const faqItems = faqMatches.slice(0, 5).map((heading, _index) => {
-          const text = heading.replace(/^#{2,6}\s+/, "");
-          return {
-            "@type": "Question",
-            name: text,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `This section covers ${text.toLowerCase()}. Read the full article for detailed information.`,
-            },
-          };
-        });
+        const faqItems = faqMatches
+          .slice(0, 5)
+          .map((heading: string, _index: any) => {
+            const text = heading.replace(/^#{2,6}\s+/, "");
+            return {
+              "@type": "Question",
+              name: text,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: `This section covers ${text.toLowerCase()}. Read the full article for detailed information.`,
+              },
+            };
+          });
 
         return (
           <script
@@ -301,7 +311,11 @@ const {
       )
     }
     <meta name="article:author" content={authorName} />
-    {tags?.map((tag) => <meta name="article:tag" content={tag} />)}
+    {
+      tags?.map((tag: string | URL | null | undefined) => (
+        <meta name="article:tag" content={tag} />
+      ))
+    }
     <meta name="article:section" content={tags?.[0] || "Technology"} />
     {featured && <meta name="article:featured" content="true" />}
     {excerpt && <meta name="description" content={excerpt} />}
@@ -328,7 +342,11 @@ const {
         />
       )
     }
-    {tags?.map((tag) => <meta property="og:tag" content={tag} />)}
+    {
+      tags?.map((tag: string | URL | null | undefined) => (
+        <meta property="og:tag" content={tag} />
+      ))
+    }
 
     <meta name="twitter:label1" content="Reading time" />
     <meta name="twitter:data1" content={readTime || "5 min read"} />
@@ -354,11 +372,12 @@ const {
   </head>
   <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
-    <div id="scroll-progress"></div>
+    <ReadingProgressBar client:visible />
 
     <main
       class="main-content pt-15 mx-auto w-full max-w-4xl overflow-x-hidden px-6 py-8 md:py-12"
     >
+      <!-- <TableOfContents client:load /> -->
       <header class="mb-12 text-center">
         <div
           class="mb-4 flex items-center justify-center gap-4 text-sm text-[#565f89]"
@@ -385,16 +404,20 @@ const {
         </h1>
       </header>
 
-      <div class="w-full">
+      <div
+        class="prose prose-invert prose-headings:scroll-mt-20 prose-a:text-[#7aa2f7] prose-code:text-[#bb9af7] w-full"
+      >
         <slot />
       </div>
-
+      <!-- Render Mermaid Diagrams -->
       <MermaidRenderer client:load />
-
+      <!-- Render Image Captions -->
       <ImageCaptionRenderer client:load />
-
+      <!-- Render Image Zoom -->
+      <ImageZoom client:visible />
+      <!-- Render Code Copy -->
       <CodeCopySimple client:load />
-
+      <!-- Render Blog Navigation -->
       <BlogNavigation
         client:load
         currentSlug={currentSlug || ""}
