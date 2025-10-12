@@ -1,0 +1,324 @@
+import { memo, useCallback, useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface ClickableImageProps {
+  src: string;
+  alt: string;
+  className?: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+  loading?: "lazy" | "eager";
+}
+
+const ClickableImage = memo(function ClickableImage({
+  src,
+  alt,
+  className = "",
+  caption,
+  width,
+  height,
+  loading = "lazy",
+}: ClickableImageProps) {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isThumbnailLoaded, setIsThumbnailLoaded] = useState(false);
+  const [isFullscreenLoaded, setIsFullscreenLoaded] = useState(false);
+  const [hasThumbnailError, setHasThumbnailError] = useState(false);
+  const [hasFullscreenError, setHasFullscreenError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const fullscreenRef = useRef<HTMLDivElement>(null);
+
+  const handleImageClick = useCallback(() => {
+    setIsFullscreen(true);
+  }, []);
+
+  const handleCloseFullscreen = useCallback(() => {
+    setIsFullscreen(false);
+  }, []);
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleCloseFullscreen();
+      }
+    },
+    [handleCloseFullscreen],
+  );
+
+  const handleBackdropClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (event.target === fullscreenRef.current) {
+        handleCloseFullscreen();
+      }
+    },
+    [handleCloseFullscreen],
+  );
+
+  const handleThumbnailLoad = useCallback(() => {
+    setIsThumbnailLoaded(true);
+    setHasThumbnailError(false);
+  }, []);
+
+  const handleThumbnailError = useCallback(() => {
+    setIsThumbnailLoaded(false);
+    setHasThumbnailError(true);
+  }, []);
+
+  const handleFullscreenLoad = useCallback(() => {
+    setIsFullscreenLoaded(true);
+    setHasFullscreenError(false);
+  }, []);
+
+  const handleFullscreenError = useCallback(() => {
+    setIsFullscreenLoaded(false);
+    setHasFullscreenError(true);
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
+
+  useEffect(() => {
+    if (isFullscreen) {
+      document.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = "unset";
+      };
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isFullscreen, handleKeyDown]);
+
+  const imageProps = {
+    src,
+    alt,
+    loading,
+    onLoad: handleThumbnailLoad,
+    onError: handleThumbnailError,
+    ref: imgRef,
+    className: `transition-all duration-300 ${className}`,
+    style: {
+      filter: hasThumbnailError
+        ? "none"
+        : isThumbnailLoaded
+          ? "none"
+          : "blur(5px)",
+      width: width ? `${width}px` : undefined,
+      height: height ? `${height}px` : undefined,
+    },
+  };
+
+  return (
+    <div className="my-4 text-center">
+      <motion.div
+        className="relative inline-block cursor-pointer"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleImageClick}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        <img {...imageProps} />
+
+        {}
+        <AnimatePresence>
+          {isHovered && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <motion.div
+                className="rounded-full bg-white/20 p-3 backdrop-blur-sm"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-white"
+                >
+                  <path d="M15 3h6v6"></path>
+                  <path d="M10 14L21 3"></path>
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                </svg>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {}
+        {hasThumbnailError && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4">
+            <div className="mb-2 text-red-500">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="15" y1="9" x2="9" y2="15" />
+                <line x1="9" y1="9" x2="15" y2="15" />
+              </svg>
+            </div>
+            <p className="text-sm text-gray-600">Failed to load image</p>
+            {alt && <p className="text-xs text-gray-500">Alt text: {alt}</p>}
+          </div>
+        )}
+
+        {}
+        {!isThumbnailLoaded && !hasThumbnailError && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500" />
+          </div>
+        )}
+      </motion.div>
+
+      {}
+      {(caption || alt) && (
+        <p className="mt-2 text-sm italic text-[#a9b1d6]">{caption || alt}</p>
+      )}
+
+      {}
+      <AnimatePresence>
+        {isFullscreen && (
+          <motion.div
+            ref={fullscreenRef}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            onClick={handleBackdropClick}
+          >
+            {}
+            <motion.button
+              className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+              onClick={handleCloseFullscreen}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label="Close fullscreen"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </motion.button>
+
+            {}
+            <motion.div
+              className="relative max-h-[90vh] max-w-[90vw]"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              <img
+                src={src}
+                alt={alt}
+                className="max-h-[90vh] max-w-[90vw] object-contain"
+                style={{
+                  filter: hasFullscreenError
+                    ? "none"
+                    : isFullscreenLoaded
+                      ? "none"
+                      : "blur(10px)",
+                }}
+                onLoad={handleFullscreenLoad}
+                onError={handleFullscreenError}
+              />
+
+              {}
+              {hasFullscreenError && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 p-4 text-white">
+                  <div className="mb-2 text-red-400">
+                    <svg
+                      width="48"
+                      height="48"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="15" y1="9" x2="9" y2="15" />
+                      <line x1="9" y1="9" x2="15" y2="15" />
+                    </svg>
+                  </div>
+                  <p className="text-sm">Failed to load image</p>
+                  {alt && (
+                    <p className="text-xs text-gray-300">Alt text: {alt}</p>
+                  )}
+                </div>
+              )}
+
+              {}
+              {!isFullscreenLoaded && !hasFullscreenError && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/30 border-t-white" />
+                </div>
+              )}
+
+              {}
+              {(caption || alt) && (
+                <motion.div
+                  className="absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-center text-white backdrop-blur-sm"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <p className="text-sm">{caption || alt}</p>
+                </motion.div>
+              )}
+            </motion.div>
+
+            {}
+            <motion.div
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-white/70"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <p className="text-xs">
+                Press <kbd className="rounded bg-white/20 px-1">ESC</kbd> or
+                click outside to close
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+});
+
+export default ClickableImage;

@@ -8,7 +8,7 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { getCollection } from "astro:content";
 import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
-import ImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/ImageCaptionRenderer";
+import EnhancedImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/EnhancedImageCaptionRenderer";
 import BlogNavigation from "@react/blog/layout/BlogNavigation";
 export const prerender = true;
 import { SEO } from "astro-seo";
@@ -301,7 +301,7 @@ const {
       )
     }
     <meta name="article:author" content={authorName} />
-    {tags?.map((tag) => <meta name="article:tag" content={tag} />)}
+    {tags?.map((tag: string) => <meta name="article:tag" content={tag} />)}
     <meta name="article:section" content={tags?.[0] || "Technology"} />
     {featured && <meta name="article:featured" content="true" />}
     {excerpt && <meta name="description" content={excerpt} />}
@@ -328,7 +328,7 @@ const {
         />
       )
     }
-    {tags?.map((tag) => <meta property="og:tag" content={tag} />)}
+    {tags?.map((tag: string) => <meta property="og:tag" content={tag} />)}
 
     <meta name="twitter:label1" content="Reading time" />
     <meta name="twitter:data1" content={readTime || "5 min read"} />
@@ -391,7 +391,7 @@ const {
 
       <MermaidRenderer client:load />
 
-      <ImageCaptionRenderer client:load />
+      <EnhancedImageCaptionRenderer client:load />
 
       <CodeCopySimple client:load />
 
