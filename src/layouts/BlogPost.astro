@@ -301,7 +301,7 @@ const {
       )
     }
     <meta name="article:author" content={authorName} />
-    {tags?.map((tag) => <meta name="article:tag" content={tag} />)}
+    {tags?.map((tag: string) => <meta name="article:tag" content={tag} />)}
     <meta name="article:section" content={tags?.[0] || "Technology"} />
     {featured && <meta name="article:featured" content="true" />}
     {excerpt && <meta name="description" content={excerpt} />}
@@ -328,7 +328,7 @@ const {
         />
       )
     }
-    {tags?.map((tag) => <meta property="og:tag" content={tag} />)}
+    {tags?.map((tag: string) => <meta property="og:tag" content={tag} />)}
 
     <meta name="twitter:label1" content="Reading time" />
     <meta name="twitter:data1" content={readTime || "5 min read"} />
