@@ -21,7 +21,10 @@ const ClickableImage = memo(function ClickableImage({
   loading = "lazy",
 }: ClickableImageProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isThumbnailLoaded, setIsThumbnailLoaded] = useState(false);
+  const [isFullscreenLoaded, setIsFullscreenLoaded] = useState(false);
+  const [hasThumbnailError, setHasThumbnailError] = useState(false);
+  const [hasFullscreenError, setHasFullscreenError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const fullscreenRef = useRef<HTMLDivElement>(null);
@@ -52,8 +55,24 @@ const ClickableImage = memo(function ClickableImage({
     [handleCloseFullscreen],
   );
 
-  const handleImageLoad = useCallback(() => {
-    setIsImageLoaded(true);
+  const handleThumbnailLoad = useCallback(() => {
+    setIsThumbnailLoaded(true);
+    setHasThumbnailError(false);
+  }, []);
+
+  const handleThumbnailError = useCallback(() => {
+    setIsThumbnailLoaded(false);
+    setHasThumbnailError(true);
+  }, []);
+
+  const handleFullscreenLoad = useCallback(() => {
+    setIsFullscreenLoaded(true);
+    setHasFullscreenError(false);
+  }, []);
+
+  const handleFullscreenError = useCallback(() => {
+    setIsFullscreenLoaded(false);
+    setHasFullscreenError(true);
   }, []);
 
   const handleMouseEnter = useCallback(() => {
@@ -82,11 +101,16 @@ const ClickableImage = memo(function ClickableImage({
     src,
     alt,
     loading,
-    onLoad: handleImageLoad,
+    onLoad: handleThumbnailLoad,
+    onError: handleThumbnailError,
     ref: imgRef,
     className: `transition-all duration-300 ${className}`,
     style: {
-      filter: isImageLoaded ? "none" : "blur(5px)",
+      filter: hasThumbnailError
+        ? "none"
+        : isThumbnailLoaded
+          ? "none"
+          : "blur(5px)",
       width: width ? `${width}px` : undefined,
       height: height ? `${height}px` : undefined,
     },
@@ -104,7 +128,7 @@ const ClickableImage = memo(function ClickableImage({
       >
         <img {...imageProps} />
 
-        {/* Hover overlay */}
+        {}
         <AnimatePresence>
           {isHovered && (
             <motion.div
@@ -141,20 +165,42 @@ const ClickableImage = memo(function ClickableImage({
           )}
         </AnimatePresence>
 
-        {/* Loading indicator */}
-        {!isImageLoaded && (
+        {}
+        {hasThumbnailError && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4">
+            <div className="mb-2 text-red-500">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="15" y1="9" x2="9" y2="15" />
+                <line x1="9" y1="9" x2="15" y2="15" />
+              </svg>
+            </div>
+            <p className="text-sm text-gray-600">Failed to load image</p>
+            {alt && <p className="text-xs text-gray-500">Alt text: {alt}</p>}
+          </div>
+        )}
+
+        {}
+        {!isThumbnailLoaded && !hasThumbnailError && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500" />
           </div>
         )}
       </motion.div>
 
-      {/* Caption */}
+      {}
       {(caption || alt) && (
         <p className="mt-2 text-sm italic text-[#a9b1d6]">{caption || alt}</p>
       )}
 
-      {/* Fullscreen Modal */}
+      {}
       <AnimatePresence>
         {isFullscreen && (
           <motion.div
@@ -166,7 +212,7 @@ const ClickableImage = memo(function ClickableImage({
             transition={{ duration: 0.2, ease: "easeInOut" }}
             onClick={handleBackdropClick}
           >
-            {/* Close Button */}
+            {}
             <motion.button
               className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
               onClick={handleCloseFullscreen}
@@ -189,7 +235,7 @@ const ClickableImage = memo(function ClickableImage({
               </svg>
             </motion.button>
 
-            {/* Image Container */}
+            {}
             <motion.div
               className="relative max-h-[90vh] max-w-[90vw]"
               initial={{ scale: 0.8, opacity: 0 }}
@@ -202,19 +248,48 @@ const ClickableImage = memo(function ClickableImage({
                 alt={alt}
                 className="max-h-[90vh] max-w-[90vw] object-contain"
                 style={{
-                  filter: isImageLoaded ? "none" : "blur(10px)",
+                  filter: hasFullscreenError
+                    ? "none"
+                    : isFullscreenLoaded
+                      ? "none"
+                      : "blur(10px)",
                 }}
-                onLoad={handleImageLoad}
+                onLoad={handleFullscreenLoad}
+                onError={handleFullscreenError}
               />
 
-              {/* Loading Indicator */}
-              {!isImageLoaded && (
+              {}
+              {hasFullscreenError && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 p-4 text-white">
+                  <div className="mb-2 text-red-400">
+                    <svg
+                      width="48"
+                      height="48"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="15" y1="9" x2="9" y2="15" />
+                      <line x1="9" y1="9" x2="15" y2="15" />
+                    </svg>
+                  </div>
+                  <p className="text-sm">Failed to load image</p>
+                  {alt && (
+                    <p className="text-xs text-gray-300">Alt text: {alt}</p>
+                  )}
+                </div>
+              )}
+
+              {}
+              {!isFullscreenLoaded && !hasFullscreenError && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/30 border-t-white" />
                 </div>
               )}
 
-              {/* Alt Text */}
+              {}
               {(caption || alt) && (
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-center text-white backdrop-blur-sm"
@@ -227,7 +302,7 @@ const ClickableImage = memo(function ClickableImage({
               )}
             </motion.div>
 
-            {/* Instructions */}
+            {}
             <motion.div
               className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-white/70"
               initial={{ y: 20, opacity: 0 }}

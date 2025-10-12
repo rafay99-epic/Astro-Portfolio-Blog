@@ -15,9 +15,10 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
   onImageClick,
 }: FullscreenImageViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [hasImageError, setHasImageError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isThumbnailLoaded, setIsThumbnailLoaded] = useState(false);
+  const [isFullscreenLoaded, setIsFullscreenLoaded] = useState(false);
+  const [hasThumbnailError, setHasThumbnailError] = useState(false);
+  const [hasFullscreenError, setHasFullscreenError] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const fullscreenRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -25,7 +26,6 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
   const handleImageClick = useCallback(() => {
     setIsFullscreen(true);
     onImageClick?.();
-    // Focus the close button when fullscreen opens
     setTimeout(() => {
       if (closeButtonRef.current) {
         closeButtonRef.current.focus();
@@ -35,7 +35,6 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
 
   const handleCloseFullscreen = useCallback(() => {
     setIsFullscreen(false);
-    // Return focus to the original image
     if (imgRef.current) {
       imgRef.current.focus();
     }
@@ -73,16 +72,24 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
     }
   }, [isFullscreen, handleKeyDown]);
 
-  const handleImageLoad = useCallback(() => {
-    setIsImageLoaded(true);
-    setIsLoading(false);
-    setHasImageError(false);
+  const handleThumbnailLoad = useCallback(() => {
+    setIsThumbnailLoaded(true);
+    setHasThumbnailError(false);
   }, []);
 
-  const handleImageError = useCallback(() => {
-    setIsLoading(false);
-    setHasImageError(true);
-    setIsImageLoaded(false);
+  const handleThumbnailError = useCallback(() => {
+    setIsThumbnailLoaded(false);
+    setHasThumbnailError(true);
+  }, []);
+
+  const handleFullscreenLoad = useCallback(() => {
+    setIsFullscreenLoaded(true);
+    setHasFullscreenError(false);
+  }, []);
+
+  const handleFullscreenError = useCallback(() => {
+    setIsFullscreenLoaded(false);
+    setHasFullscreenError(true);
   }, []);
 
   return (
@@ -93,8 +100,8 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
         alt={alt}
         className={`cursor-zoom-in transition-transform duration-200 hover:scale-[1.02] ${className}`}
         onClick={handleImageClick}
-        onLoad={handleImageLoad}
-        onError={handleImageError}
+        onLoad={handleThumbnailLoad}
+        onError={handleThumbnailError}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
@@ -108,12 +115,16 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         style={{
-          filter: hasImageError ? "none" : isImageLoaded ? "none" : "blur(5px)",
+          filter: hasThumbnailError
+            ? "none"
+            : isThumbnailLoaded
+              ? "none"
+              : "blur(5px)",
         }}
       />
 
-      {/* Error state */}
-      {hasImageError && (
+      {}
+      {hasThumbnailError && (
         <div className="flex flex-col items-center justify-center p-4 text-center">
           <div className="mb-2 text-red-500">
             <svg
@@ -149,7 +160,7 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
             aria-labelledby="fullscreen-image-title"
             aria-describedby="fullscreen-image-description"
           >
-            {/* Close Button */}
+            {}
             <motion.button
               ref={closeButtonRef}
               className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
@@ -174,7 +185,7 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
               </svg>
             </motion.button>
 
-            {/* Image Container */}
+            {}
             <motion.div
               className="relative max-h-[90vh] max-w-[90vw]"
               initial={{ scale: 0.8, opacity: 0 }}
@@ -187,25 +198,49 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
                 alt={alt}
                 className="max-h-[90vh] max-w-[90vw] object-contain"
                 style={{
-                  filter: hasImageError
+                  filter: hasFullscreenError
                     ? "none"
-                    : isImageLoaded
+                    : isFullscreenLoaded
                       ? "none"
                       : "blur(10px)",
                 }}
-                onLoad={handleImageLoad}
-                onError={handleImageError}
+                onLoad={handleFullscreenLoad}
+                onError={handleFullscreenError}
                 id="fullscreen-image-title"
               />
 
-              {/* Loading Indicator */}
-              {!isImageLoaded && (
+              {}
+              {hasFullscreenError && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 p-4 text-white">
+                  <div className="mb-2 text-red-400">
+                    <svg
+                      width="48"
+                      height="48"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="15" y1="9" x2="9" y2="15" />
+                      <line x1="9" y1="9" x2="15" y2="15" />
+                    </svg>
+                  </div>
+                  <p className="text-sm">Failed to load image</p>
+                  {alt && (
+                    <p className="text-xs text-gray-300">Alt text: {alt}</p>
+                  )}
+                </div>
+              )}
+
+              {}
+              {!isFullscreenLoaded && !hasFullscreenError && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/30 border-t-white" />
                 </div>
               )}
 
-              {/* Alt Text */}
+              {}
               {alt && (
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-center text-white backdrop-blur-sm"
@@ -219,7 +254,7 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
               )}
             </motion.div>
 
-            {/* Instructions */}
+            {}
             <motion.div
               className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-white/70"
               initial={{ y: 20, opacity: 0 }}
