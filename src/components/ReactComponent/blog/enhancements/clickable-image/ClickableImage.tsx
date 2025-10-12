@@ -68,7 +68,7 @@ const ClickableImage = memo(function ClickableImage({
     if (isFullscreen) {
       document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
-      
+
       return () => {
         document.removeEventListener("keydown", handleKeyDown);
         document.body.style.overflow = "unset";
