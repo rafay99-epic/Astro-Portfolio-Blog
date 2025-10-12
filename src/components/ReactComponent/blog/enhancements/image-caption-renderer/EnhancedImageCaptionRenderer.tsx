@@ -115,7 +115,14 @@ const EnhancedImageCaptionRenderer = memo(
         document.body.style.overflow = "hidden";
 
         // Close handlers
+        const handleKeyDown = (e: KeyboardEvent) => {
+          if (e.key === "Escape") {
+            closeFullscreen();
+          }
+        };
+
         const closeFullscreen = () => {
+          document.removeEventListener("keydown", handleKeyDown);
           document.body.removeChild(fullscreenContainer);
           document.body.style.overflow = "unset";
         };
@@ -127,22 +134,7 @@ const EnhancedImageCaptionRenderer = memo(
           }
         });
 
-        const handleKeyDown = (e: KeyboardEvent) => {
-          if (e.key === "Escape") {
-            closeFullscreen();
-            document.removeEventListener("keydown", handleKeyDown);
-          }
-        };
-
         document.addEventListener("keydown", handleKeyDown);
-
-        // Cleanup function
-        const cleanup = () => {
-          document.removeEventListener("keydown", handleKeyDown);
-        };
-
-        // Store cleanup function for later use
-        (fullscreenContainer as any).cleanup = cleanup;
       });
 
       // Style the original image
