@@ -10,9 +10,6 @@ import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 import ImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/ImageCaptionRenderer";
 import BlogNavigation from "@react/blog/layout/BlogNavigation";
-// import TableOfContents from "@react/blog/enhancements/table-of-compoent/TableOfContents";
-import ReadingProgressBar from "@components/ReactComponent/blog/enhancements/progress-reading/ReadingProgressBar";
-import ImageZoom from "@react/blog/enhancements/image-zoom/ImageZoom";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -342,11 +339,7 @@ const {
         />
       )
     }
-    {
-      tags?.map((tag: string | URL | null | undefined) => (
-        <meta property="og:tag" content={tag} />
-      ))
-    }
+    {tags?.map((tag: string) => <meta property="og:tag" content={tag} />)}
 
     <meta name="twitter:label1" content="Reading time" />
     <meta name="twitter:data1" content={readTime || "5 min read"} />
@@ -372,12 +365,10 @@ const {
   </head>
   <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
-    <ReadingProgressBar client:visible />
 
     <main
       class="main-content pt-15 mx-auto w-full max-w-4xl overflow-x-hidden px-6 py-8 md:py-12"
     >
-      <!-- <TableOfContents client:load /> -->
       <header class="mb-12 text-center">
         <div
           class="mb-4 flex items-center justify-center gap-4 text-sm text-[#565f89]"
@@ -413,8 +404,6 @@ const {
       <MermaidRenderer client:load />
       <!-- Render Image Captions -->
       <ImageCaptionRenderer client:load />
-      <!-- Render Image Zoom -->
-      <ImageZoom client:visible />
       <!-- Render Code Copy -->
       <CodeCopySimple client:load />
       <!-- Render Blog Navigation -->
