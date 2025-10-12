@@ -16,16 +16,29 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
 }: FullscreenImageViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [hasImageError, setHasImageError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const imgRef = useRef<HTMLImageElement>(null);
   const fullscreenRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleImageClick = useCallback(() => {
     setIsFullscreen(true);
     onImageClick?.();
+    // Focus the close button when fullscreen opens
+    setTimeout(() => {
+      if (closeButtonRef.current) {
+        closeButtonRef.current.focus();
+      }
+    }, 100);
   }, [onImageClick]);
 
   const handleCloseFullscreen = useCallback(() => {
     setIsFullscreen(false);
+    // Return focus to the original image
+    if (imgRef.current) {
+      imgRef.current.focus();
+    }
   }, []);
 
   const handleKeyDown = useCallback(
@@ -62,6 +75,14 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
 
   const handleImageLoad = useCallback(() => {
     setIsImageLoaded(true);
+    setIsLoading(false);
+    setHasImageError(false);
+  }, []);
+
+  const handleImageError = useCallback(() => {
+    setIsLoading(false);
+    setHasImageError(true);
+    setIsImageLoaded(false);
   }, []);
 
   return (
@@ -73,10 +94,45 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
         className={`cursor-zoom-in transition-transform duration-200 hover:scale-[1.02] ${className}`}
         onClick={handleImageClick}
         onLoad={handleImageLoad}
+        onError={handleImageError}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleImageClick();
+          }
+        }}
         loading="lazy"
+        tabIndex={0}
+        role="button"
+        aria-label={`Open ${alt} in fullscreen`}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
+        style={{
+          filter: hasImageError ? "none" : isImageLoaded ? "none" : "blur(5px)",
+        }}
       />
+
+      {/* Error state */}
+      {hasImageError && (
+        <div className="flex flex-col items-center justify-center p-4 text-center">
+          <div className="mb-2 text-red-500">
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="15" y1="9" x2="9" y2="15" />
+              <line x1="9" y1="9" x2="15" y2="15" />
+            </svg>
+          </div>
+          <p className="text-sm text-gray-500">Failed to load image</p>
+          {alt && <p className="text-xs text-gray-400">Alt text: {alt}</p>}
+        </div>
+      )}
 
       <AnimatePresence>
         {isFullscreen && (
@@ -88,14 +144,20 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
             onClick={handleBackdropClick}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="fullscreen-image-title"
+            aria-describedby="fullscreen-image-description"
           >
             {/* Close Button */}
             <motion.button
+              ref={closeButtonRef}
               className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
               onClick={handleCloseFullscreen}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               aria-label="Close fullscreen"
+              autoFocus
             >
               <svg
                 width="24"
@@ -125,9 +187,15 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
                 alt={alt}
                 className="max-h-[90vh] max-w-[90vw] object-contain"
                 style={{
-                  filter: isImageLoaded ? "none" : "blur(10px)",
+                  filter: hasImageError
+                    ? "none"
+                    : isImageLoaded
+                      ? "none"
+                      : "blur(10px)",
                 }}
                 onLoad={handleImageLoad}
+                onError={handleImageError}
+                id="fullscreen-image-title"
               />
 
               {/* Loading Indicator */}
@@ -144,6 +212,7 @@ const FullscreenImageViewer = memo(function FullscreenImageViewer({
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
+                  id="fullscreen-image-description"
                 >
                   <p className="text-sm">{alt}</p>
                 </motion.div>

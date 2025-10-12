@@ -53,6 +53,16 @@ const EnhancedImageCaptionRenderer = memo(
         "max-w-full h-auto rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl";
       enhancedImg.setAttribute("data-enhanced-processed", "true");
 
+      // Add error handling for the enhanced image
+      enhancedImg.addEventListener("error", () => {
+        console.warn("Enhanced image failed to load:", enhancedImg.src);
+        // Fallback: show original image without enhancement
+        const parent = enhancedImg.parentNode;
+        if (parent) {
+          parent.replaceChild(img, enhancedImg);
+        }
+      });
+
       // Create caption
       const caption = document.createElement("p");
       caption.className = "mt-2 text-sm text-[#a9b1d6] italic";
@@ -71,9 +81,14 @@ const EnhancedImageCaptionRenderer = memo(
 
       // Add click event for fullscreen
       imageContainer.addEventListener("click", () => {
+        // Prevent multiple fullscreen modals
+        if (document.querySelector(".fullscreen-modal-active")) {
+          return;
+        }
+
         const fullscreenContainer = document.createElement("div");
         fullscreenContainer.className =
-          "fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm";
+          "fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm fullscreen-modal-active";
         fullscreenContainer.style.cursor = "zoom-out";
 
         const imageWrapper = document.createElement("div");
@@ -123,7 +138,10 @@ const EnhancedImageCaptionRenderer = memo(
 
         const closeFullscreen = () => {
           document.removeEventListener("keydown", handleKeyDown);
-          document.body.removeChild(fullscreenContainer);
+          // Safely remove the modal
+          if (fullscreenContainer && fullscreenContainer.parentNode) {
+            fullscreenContainer.parentNode.removeChild(fullscreenContainer);
+          }
           document.body.style.overflow = "unset";
         };
 

@@ -21,6 +21,7 @@ const OptimizedFullscreenViewer = memo(function OptimizedFullscreenViewer({
 }: OptimizedFullscreenViewerProps) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [hasImageError, setHasImageError] = useState(false);
   const fullscreenRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -46,6 +47,12 @@ const OptimizedFullscreenViewer = memo(function OptimizedFullscreenViewer({
 
   const handleImageLoad = useCallback(() => {
     setIsImageLoaded(true);
+    setHasImageError(false);
+  }, []);
+
+  const handleImageError = useCallback(() => {
+    setIsImageLoaded(false);
+    setHasImageError(true);
   }, []);
 
   const handleMouseEnter = useCallback(() => {
@@ -81,11 +88,38 @@ const OptimizedFullscreenViewer = memo(function OptimizedFullscreenViewer({
             alt={alt}
             className={`h-auto max-w-full rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl ${className}`}
             onLoad={handleImageLoad}
+            onError={handleImageError}
             loading="lazy"
             style={{
-              filter: isImageLoaded ? "none" : "blur(5px)",
+              filter: hasImageError
+                ? "none"
+                : isImageLoaded
+                  ? "none"
+                  : "blur(5px)",
             }}
           />
+
+          {/* Error state */}
+          {hasImageError && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4">
+              <div className="mb-2 text-red-500">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-600">Failed to load image</p>
+              {alt && <p className="text-xs text-gray-500">Alt text: {alt}</p>}
+            </div>
+          )}
 
           {/* Hover overlay with zoom icon */}
           <AnimatePresence>
@@ -193,9 +227,14 @@ const OptimizedFullscreenViewer = memo(function OptimizedFullscreenViewer({
                 alt={imageData.alt}
                 className="max-h-[90vh] max-w-[90vw] object-contain"
                 style={{
-                  filter: isImageLoaded ? "none" : "blur(10px)",
+                  filter: hasImageError
+                    ? "none"
+                    : isImageLoaded
+                      ? "none"
+                      : "blur(10px)",
                 }}
                 onLoad={handleImageLoad}
+                onError={handleImageError}
               />
 
               {/* Alt Text */}

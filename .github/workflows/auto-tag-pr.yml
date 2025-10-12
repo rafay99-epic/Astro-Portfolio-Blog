@@ -29,16 +29,52 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
 
+          # Check if version changed from base branch
+          BASE_VERSION=""
+          if [ "${{ github.event.pull_request.base.ref }}" != "null" ]; then
+            git fetch origin ${{ github.event.pull_request.base.ref }}
+            if git show origin/${{ github.event.pull_request.base.ref }}:package.json > /dev/null 2>&1; then
+              BASE_VERSION=$(git show origin/${{ github.event.pull_request.base.ref }}:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
+            fi
+          fi
+
+          echo "base_version=$BASE_VERSION" >> $GITHUB_OUTPUT
+          echo "Base version: $BASE_VERSION"
+
+          # Determine if version changed
+          if [ "$VERSION" = "$BASE_VERSION" ]; then
+            echo "version_changed=false" >> $GITHUB_OUTPUT
+            echo "Version unchanged from base branch"
+          else
+            echo "version_changed=true" >> $GITHUB_OUTPUT
+            echo "Version changed from $BASE_VERSION to $VERSION"
+          fi
+
       - name: Add version tag to PR
+        if: steps.extract-version.outputs.version_changed == 'true'
         uses: actions/github-script@v7
         with:
           script: |
             const version = '${{ steps.extract-version.outputs.version }}';
             const tagName = `v${version}`;
 
-            console.log(`Adding tag "${tagName}" to PR #${{ github.event.pull_request.number }}`);
+            console.log(`Checking if tag "${tagName}" already exists on PR #${{ github.event.pull_request.number }}`);
 
             try {
+              // Get current PR labels
+              const pr = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+              });
+
+              const existingLabels = pr.data.labels.map(label => label.name);
+              
+              if (existingLabels.includes(tagName)) {
+                console.log(`Tag "${tagName}" already exists on this PR. Skipping.`);
+                return;
+              }
+
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -52,26 +88,52 @@ jobs:
             }
 
       - name: Create or update PR comment with version info
+        if: steps.extract-version.outputs.version_changed == 'true'
         uses: actions/github-script@v7
         with:
           script: |
             const version = '${{ steps.extract-version.outputs.version }}';
             const tagName = `v${version}`;
 
-            const comment = `🚀 **Version Detected**: \`${version}\`
+            const commentBody = `🚀 **Version Detected**: \`${version}\`
 
             This PR has been automatically tagged with: \`${tagName}\`
 
             *This tag was automatically applied based on the version in package.json*`;
 
             try {
+              // Check if a version comment already exists
+              const comments = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+              });
+
+              const existingComment = comments.data.find(comment => 
+                comment.user.type === 'Bot' && 
+                comment.body.includes('Version Detected') &&
+                comment.body.includes(version)
+              );
+
+              if (existingComment) {
+                console.log(`Version comment already exists for version ${version}. Skipping.`);
+                return;
+              }
+
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.payload.pull_request.number,
-                body: comment
+                body: commentBody
               });
               console.log(`Added version comment to PR`);
             } catch (error) {
               console.log(`Failed to add comment: ${error.message}`);
             }
+
+      - name: Skip notification
+        if: steps.extract-version.outputs.version_changed == 'false'
+        run: |
+          echo "✅ Version unchanged from base branch. No action needed."
+          echo "Current version: ${{ steps.extract-version.outputs.version }}"
+          echo "Base version: ${{ steps.extract-version.outputs.base_version }}"

@@ -41,11 +41,11 @@ const ImageWrapper = memo(function ImageWrapper({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isFullscreen) {
+      if (event.key === "Escape") {
         handleCloseFullscreen();
       }
     },
-    [isFullscreen, handleCloseFullscreen],
+    [handleCloseFullscreen],
   );
 
   const handleBackdropClick = useCallback(
@@ -75,14 +75,14 @@ const ImageWrapper = memo(function ImageWrapper({
     if (isFullscreen) {
       document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
+
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = "unset";
+      };
     } else {
       document.body.style.overflow = "unset";
     }
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "unset";
-    };
   }, [isFullscreen, handleKeyDown]);
 
   const imageProps = {

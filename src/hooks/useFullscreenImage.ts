@@ -34,11 +34,11 @@ export function useFullscreenImage(options: UseFullscreenImageOptions = {}) {
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isFullscreen) {
+      if (event.key === "Escape") {
         closeFullscreen();
       }
     },
-    [isFullscreen, closeFullscreen],
+    [closeFullscreen],
   );
 
   const handleBackdropClick = useCallback(
@@ -59,18 +59,18 @@ export function useFullscreenImage(options: UseFullscreenImageOptions = {}) {
       if (preventBodyScroll) {
         document.body.style.overflow = "hidden";
       }
+
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+        if (preventBodyScroll) {
+          document.body.style.overflow = "unset";
+        }
+      };
     } else {
       if (preventBodyScroll) {
         document.body.style.overflow = "unset";
       }
     }
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      if (preventBodyScroll) {
-        document.body.style.overflow = "unset";
-      }
-    };
   }, [isFullscreen, handleKeyDown, preventBodyScroll]);
 
   // Cleanup timeout on unmount
