@@ -8,7 +8,7 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { getCollection } from "astro:content";
 import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
-import ImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/ImageCaptionRenderer";
+import EnhancedImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/EnhancedImageCaptionRenderer";
 import BlogNavigation from "@react/blog/layout/BlogNavigation";
 export const prerender = true;
 import { SEO } from "astro-seo";
@@ -391,7 +391,7 @@ const {
 
       <MermaidRenderer client:load />
 
-      <ImageCaptionRenderer client:load />
+      <EnhancedImageCaptionRenderer client:load />
 
       <CodeCopySimple client:load />
 
