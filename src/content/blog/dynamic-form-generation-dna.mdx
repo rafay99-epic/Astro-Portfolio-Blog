@@ -42,15 +42,14 @@ featured: true
 excerpt: "Every once in a while you inherit a greenfield problem that feels equal parts thrilling and terrifying. Ours was simple to describe and brutal to execute: build a vendor onboarding experience where no field is hardcoded, every service type defines its own rules, and UI + validation + submission logic are all generated from server-delivered JSON that we lovingly called DNA. This is the story of how that system came to life inside `webapp_frontend`, what it looks like today, and the lessons learned while making it production-ready."
 canonicalUrl: /blog/dynamic-form-generation-dna
 ---
-  
+
 Every once in a while, you inherit a greenfield problem that feels equal parts thrilling and mildly panic-inducing. And before we even get into it… yes, I know. I haven’t written a blog post in almost two months. Turns out once you get an actual job and start shipping real features (and occasionally breaking production 🤫), time disappears faster than your console logs during a refactor.
 
 But I’m a “real dev” now — pushing code, fixing bugs, summoning TypeScript errors like Pokémon — so naturally, my first post after this drought had to be about something dramatic.
 
-And ours *was* dramatic: build a vendor onboarding experience where **nothing is hardcoded**, every service type invents its own rules, and the UI, validation, and submission logic all magically assemble themselves from server-delivered JSON we lovingly called **DNA**.
+And ours _was_ dramatic: build a vendor onboarding experience where **nothing is hardcoded**, every service type invents its own rules, and the UI, validation, and submission logic all magically assemble themselves from server-delivered JSON we lovingly called **DNA**.
 
 This is the story of how that system came to life inside `webapp_frontend`, what it looks like today, and what I learned while making it production-ready (and not crying… most days).
-
 
 ## The Blank Canvas (But Make It Relatable)
 
@@ -58,9 +57,9 @@ When we kicked things off, there was no schema, no wizard, and definitely no gua
 
 Product came to us with requirements that basically said:
 
-* “We have dozens of service categories, each with their own weird personality quirks — custom fields, custom pricing knobs, custom documents, custom everything.”
-* “Also, the APIs will evolve weekly because business is still figuring out what they want.”
-* “Oh, and the UX needs to look premium. Not like one of those sad online form builders from 2010.”
+- “We have dozens of service categories, each with their own weird personality quirks — custom fields, custom pricing knobs, custom documents, custom everything.”
+- “Also, the APIs will evolve weekly because business is still figuring out what they want.”
+- “Oh, and the UX needs to look premium. Not like one of those sad online form builders from 2010.”
 
 In other words:
 **Do not hardcode anything**
@@ -77,10 +76,10 @@ DNA is fetched per service type through `useDNALoader`, and it arrives wrapped a
 
 It defines things like:
 
-* **`base_fields`** — all the random inputs: strings, numbers, booleans, selects, regex validations, placeholders, existential crises, etc.
-* **`pricing_rules`** — which pricing fields matter and under what mode (hourly, fixed, hybrid, pick-your-own-nightmare).
-* **`location_rules`** — whether the service is on-site, remote, or "it depends," and what fields (lat, lng, radius, address) become required.
-* **`required_documents`** and **availability** — because sometimes you need an ID card, sometimes you need a portfolio, and sometimes you need *both sides* of something for reasons nobody remembers.
+- **`base_fields`** — all the random inputs: strings, numbers, booleans, selects, regex validations, placeholders, existential crises, etc.
+- **`pricing_rules`** — which pricing fields matter and under what mode (hourly, fixed, hybrid, pick-your-own-nightmare).
+- **`location_rules`** — whether the service is on-site, remote, or "it depends," and what fields (lat, lng, radius, address) become required.
+- **`required_documents`** and **availability** — because sometimes you need an ID card, sometimes you need a portfolio, and sometimes you need _both sides_ of something for reasons nobody remembers.
 
 Since React doesn’t know (or care) what service type is being registered, the entire personality of the form comes from interpreting this DNA.
 
@@ -128,7 +127,13 @@ useEffect(() => {
   setPricingFields((prev) => prev ?? buildInitialPricingFields());
   setDocuments((prev) => prev ?? buildInitialDocuments());
   setAvailability((prev) => prev ?? buildInitialAvailability());
-}, [dnaConfig, buildInitialBaseFields, buildInitialPricingFields, buildInitialDocuments, buildInitialAvailability]);
+}, [
+  dnaConfig,
+  buildInitialBaseFields,
+  buildInitialPricingFields,
+  buildInitialDocuments,
+  buildInitialAvailability,
+]);
 
 const steps = useMemo(() => {
   const base = ["details"];
@@ -174,7 +179,9 @@ export function useDNALoader(serviceTypeId?: number) {
       const raw = await getDNALoader(serviceTypeId);
       setDnaConfig(raw.data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load DNA configuration");
+      setError(
+        err instanceof Error ? err.message : "Failed to load DNA configuration",
+      );
     } finally {
       setLoading(false);
     }
@@ -189,22 +196,24 @@ Once DNA arrives, **`useDnaFormConfig` puts on the lab coat** and starts prepari
 
 ```ts
 const filteredBaseFields = useMemo(
-  () => dnaConfig?.base_fields.filter((f) => !LOCATION_FIELD_NAMES.has(f.name)) ?? [],
+  () =>
+    dnaConfig?.base_fields.filter((f) => !LOCATION_FIELD_NAMES.has(f.name)) ??
+    [],
   [dnaConfig],
 );
 ```
 
-We keep all builders inside this hook so when the backend introduces some new exotic field type (yes, it’ll happen), we update *one* place — the entire app becomes fluent instantly.
+We keep all builders inside this hook so when the backend introduces some new exotic field type (yes, it’ll happen), we update _one_ place — the entire app becomes fluent instantly.
 
 ### 2. State Scaffolding & Wizard Navigation (The Self-Assembling UI)
 
 `DynamicServiceFormStep` is the conductor.
-Every step of the wizard is dynamically generated *from DNA*, meaning the UI literally builds itself.
+Every step of the wizard is dynamically generated _from DNA_, meaning the UI literally builds itself.
 
-* No pricing in DNA? Pricing step disappears.
-* No documents? No documents step.
-* Remote-only? Location logic calms down.
-* Availability required? Boom — availability step appears.
+- No pricing in DNA? Pricing step disappears.
+- No documents? No documents step.
+- Remote-only? Location logic calms down.
+- Availability required? Boom — availability step appears.
 
 It feels handcrafted for every service type… but it’s all data-driven.
 
@@ -215,11 +224,11 @@ It’s the place where every weird option, placeholder, boolean, regex, integer,
 
 Highlights:
 
-* Strings-with-options silently become full dropdowns.
-* Number fields allow temporary empty strings (a must-have for UX sanity).
-* Boolean fields fall back to chatty radio groups.
-* Checkbox fields with options become multi-select arrays.
-* File fields gracefully handle single/multi uploads.
+- Strings-with-options silently become full dropdowns.
+- Number fields allow temporary empty strings (a must-have for UX sanity).
+- Boolean fields fall back to chatty radio groups.
+- Checkbox fields with options become multi-select arrays.
+- File fields gracefully handle single/multi uploads.
 
 And yes — the renderer solves headless UI quirks like a champ.
 
@@ -227,10 +236,10 @@ And yes — the renderer solves headless UI quirks like a champ.
 
 Some domains break all the rules, so we isolate them:
 
-* **PricingFields** (hourly, fixed, hybrid — all DNA-driven)
-* **LocationFields** (pins, geocoding, radius, toggles)
-* **DocumentUploadField** (file sides: front/back/both)
-* **AvailabilityCollection** (time slots that don’t break)
+- **PricingFields** (hourly, fixed, hybrid — all DNA-driven)
+- **LocationFields** (pins, geocoding, radius, toggles)
+- **DocumentUploadField** (file sides: front/back/both)
+- **AvailabilityCollection** (time slots that don’t break)
 
 Each one keeps UX high-level while offloading the rules into `useDnaFormConfig`. One source of truth, zero surprises.
 
@@ -240,12 +249,12 @@ Before the “Next” button does anything:
 
 ### `validateAll` checks everything:
 
-* Required base fields
-* Number ranges
-* Regex patterns
-* Pricing invariants (based on pricing mode)
-* Location requirements (lat/lng + address)
-* Document requirements (front/back/both)
+- Required base fields
+- Number ranges
+- Regex patterns
+- Pricing invariants (based on pricing mode)
+- Location requirements (lat/lng + address)
+- Document requirements (front/back/both)
 
 No step moves unless the data is clean.
 
@@ -264,25 +273,23 @@ Complex structures? Flattened but not mangled.
 
 It’s deterministic, predictable, and very hard to break accidentally.
 
-
 ## Guardrails, Battle Scars & Lessons Learned
 
-* Don’t render forms before DNA loads — UI gets cranky.
-* Type coercion will betray you, so we centralized every helper.
-* Location flows are strict on purpose (broken pins = broken orders).
-* Redux persistence saves vendors from rage-quitting on refresh.
-* New field types are a 5-step checklist, not a rewrite.
-
+- Don’t render forms before DNA loads — UI gets cranky.
+- Type coercion will betray you, so we centralized every helper.
+- Location flows are strict on purpose (broken pins = broken orders).
+- Redux persistence saves vendors from rage-quitting on refresh.
+- New field types are a 5-step checklist, not a rewrite.
 
 ## What This Architecture Actually Proves
 
 This system demonstrates:
 
-* Clean separation of configuration (DNA) and rendering logic.
-* A scalable, zero-hardcoding dynamic form engine.
-* An onboarding flow that self-adapts as business rules evolve.
-* A validation + serialization pipeline that guarantees backend compatibility.
-* Hooks that encapsulate async, derived state, and rule logic so components stay readable.
+- Clean separation of configuration (DNA) and rendering logic.
+- A scalable, zero-hardcoding dynamic form engine.
+- An onboarding flow that self-adapts as business rules evolve.
+- A validation + serialization pipeline that guarantees backend compatibility.
+- Hooks that encapsulate async, derived state, and rule logic so components stay readable.
 
 And honestly?
 It shows we can take a chaotic requirement like:
@@ -291,17 +298,16 @@ It shows we can take a chaotic requirement like:
 
 …and deliver something robust enough to become **the backbone of the vendor onboarding flow**.
 
-
 ## Conclusion: Why This Architecture Was Worth Every Late Night
 
 At the end of the day, this whole DNA-driven system isn’t just a clever trick — it’s a survival strategy. When the business keeps evolving, when service types multiply like Pokémon, and when backend rules shift faster than product can finalize documentation, this architecture becomes the difference between scaling gracefully… and drowning in hard-coded forms.
 
 By pushing all variability into DNA and letting the UI self-assemble, we built something that is:
 
-* **Flexible enough** to support dozens of service categories without rewriting components.
-* **Strict enough** to guarantee clean validation and correct API payloads every single time.
-* **Extensible enough** that adding new field types or pricing models feels like adding a new Lego piece — not rebuilding the entire castle.
-* **Reliable enough** that vendors feel like each flow was handcrafted for them, even though the renderer did all the heavy lifting.
+- **Flexible enough** to support dozens of service categories without rewriting components.
+- **Strict enough** to guarantee clean validation and correct API payloads every single time.
+- **Extensible enough** that adding new field types or pricing models feels like adding a new Lego piece — not rebuilding the entire castle.
+- **Reliable enough** that vendors feel like each flow was handcrafted for them, even though the renderer did all the heavy lifting.
 
 And the best part?
 
@@ -314,4 +320,3 @@ This is why the architecture matters.**
 
 The DNA engine isn’t just a form builder — it’s a foundation.
 One that will keep absorbing complexity so the product team can keep dreaming, the backend can keep iterating, and the UI will always stay in sync without ever falling apart.
-
