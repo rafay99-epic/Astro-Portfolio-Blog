@@ -1,0 +1,255 @@
+---
+title: Flutter Didn’t Fail Me — But React Native Woke Me Up
+description: >-
+  I avoided React Native for years because Flutter felt safe. But one evening
+  with Expo Router and Bun changed my mind. This isn't a framework war—it's a
+  look at how thinking in "URLs" instead of "Widgets" can simplify your mobile
+  architecture. Here is what a Flutter dev learned from the other side.
+pubDate: 2025-12-14T00:00:00.000Z
+draft: true
+heroImage: /BlogImages/Flutter Didn’t Fail Me—ButReactNativeWokeMeUp.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - Bun
+  - Mobile App Architecture
+  - Expo Router
+  - Developer Experience
+  - Mental Models
+  - File-based Routing
+  - NativeWind
+  - React Native Hooks
+  - MobileDevelopment
+featured: true
+excerpt: >-
+  Flutter didn’t fail me, but React Native’s Expo Router woke me up. A die-hard
+  Flutter dev explores why trading Widgets for URLs and Hooks changed
+  everything.
+---
+
+If you’ve been shipping mobile apps for more than five minutes, you know the feeling.
+
+Your tech stack works. Your apps ship. Nothing is arguably *broken*… yet something keeps tapping you on the shoulder.
+
+Flutter was that safe house for me. For years, it was my default answer for Android and iOS. It was fast, strongly typed, and honestly hard to argue against. I shipped apps, billed clients, and never felt like Flutter was the bottleneck. So when the Twitter (X) tech influencers kept shouting *“You have to try React Native now, it’s different!”*, my reaction was a standard developer eye-roll.
+
+**Why?**
+
+Rebuilding an app in a new framework just to “see the vibes” is a terrible way to burn a weekend. Refactoring for curiosity doesn’t pay the bills. And React Native? It always felt like that chaotic JavaScript thing I’d get to *eventually*.
+
+Until one Tuesday evening, bored and over-caffeinated, I finally bit the bullet.
+
+What started as a "quick experiment" with Expo turned into a complete existential crisis regarding how I handle navigation, styling, and my mental model of mobile development. No hype. No "Flutter is dead" clickbait. Just a genuine *“Oh… I’ve been making this harder than it needs to be”* moment.
+
+In this post, we’re cutting through the fanboy noise to look at:
+
+* **The "Context Hell"** taking a vacation: How Expo Router fixed my brain.
+* **The Styling Shock:** Why CSS-ish styling felt oddly refreshing after years of Widget trees.
+* **The Verdict:** What Flutter devs can steal from React Native without actually switching.
+
+This isn’t a breakup letter to Flutter. It’s more like admitting I cheated on my main stack and learned some new tricks.
+
+## Flutter Was My "Comfort Hoodie"
+
+Flutter didn’t just work—it *fit*.
+
+One codebase. Google-backed stability. Strong opinions baked into the framework. Once you swallow the pill of "Everything is a Widget," life is predictable.
+
+Navigation? Sure, it’s verbose, but it’s explicit. You know the drill:
+
+```dart
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => const SecondPage(
+      message: 'Please don\\'t lose context',
+    ),
+  ),
+);
+
+```
+
+There’s no mystery here. You are grabbing the `context` by the throat, building a route, and shoving it onto the stack. It’s disciplined. It’s safe.
+
+And styling? You don’t "style" a button; you *construct* it. Padding inside a Container inside a Row inside a Column. It’s a deep tree, but at least you know exactly where the padding is coming from (spoiler: it’s always the parent widget you forgot about).
+
+So when people talk about Flutter "falling behind," I laugh. Flutter is fine. It’s great, actually.
+
+Which is exactly why React Native never felt urgent. I didn’t need "faster hot reload" (Flutter’s is fine). I didn’t need JavaScript (I actually like types, thanks).
+
+From the outside, React Native looked like the Wild West. `npm install` roulette? dealing with Bridge issues? No thanks. I stayed in my typed, compiled, widget-safe lane.
+
+Until curiosity—and boredom—won.
+
+## Why React Native Never Clicked… Until It Did
+
+I’d heard the pitch:
+
+* "Expo makes it easy."
+* "Over-the-air (OTA) updates are a cheat code."
+* "It's just React."
+
+Cool. Still didn't care.
+
+The blocker wasn't the tech; it was the **setup tax**. I didn't want to wrestle with Xcode versions or Gradle daemons just to render "Hello World."
+
+But then I tried **Bun**.
+
+If you haven't used Bun, it's what Node.js wishes it was. Fast. absurdly fast. I initialized an Expo project using Bun, fully expecting to spend 30 minutes debugging environment variables.
+
+Instead, the app was running on my phone in seconds.
+
+I opened the project file structure and immediately felt that specific developer panic: **"Where is the `main` file?"**
+
+There was a `tabs` folder. A `layout.tsx`. Files that looked like URL routes. Nothing resembled the `main.dart` entry point I worshipped. In Flutter, I build the screens, I define the routes, I control the universe. Here, it felt like the file system was controlling *me*.
+
+So I did the standard procedure:
+
+1. Panic.
+2. Google "Expo Router wtf".
+3. Ask ChatGPT to explain it to me like I'm 5.
+
+And then it clicked.
+
+**Stop thinking about it as a Mobile App.Start thinking about it as a Website.**
+
+The moment I realized Expo’s folder structure is basically the **Next.js App Router**, the headache vanished. Files aren't just code; they are **URLs**. Layouts aren't wrappers; they are persistent UI shells.
+
+That was the first crack in my Flutter armor.
+
+## The Expo Router Epiphany: Files *Are* The Roadmap
+
+Once I stopped fighting the folder structure, I realized how much boilerplate I had been writing in Flutter.
+
+In an Expo Router project, your file system **is** your navigation map.
+
+```
+app/
+ ├─ _layout.tsx      <-- The Wrapper (think Scaffold)
+ ├─ index.tsx        → route: /
+ ├─ login.tsx        → route: /login
+ └─ (tabs)/
+    ├─ _layout.tsx   <-- Tab Bar Logic
+    ├─ profile.tsx   → route: /profile
+    └─ settings.tsx  → route: /settings
+
+```
+
+If you’ve touched Next.js, you’re nodding your head. If you’re a Flutter dev, you’re probably squinting. *“Where is the Route definition map?”*
+
+There isn’t one. You just make a file.
+
+### Navigation Without the Ceremony
+
+In Flutter, moving between screens is a grand event. You need the `context`, you need the class name, you need the params.
+
+In Expo Router, you just… change the URL.
+
+```tsx
+import { router } from 'expo-router';
+
+// Look ma, no context!
+router.push('/home');
+router.replace('/login');
+router.back();
+
+```
+
+No `BuildContext`. No generic type arguments. No importing the screen widget file.
+
+You aren't pushing a screen. **You are changing location.**
+
+This sounds like semantics, but it changes everything. Authentication redirects? Just check the user state and replace the URL to `/login`. Deep linking? It works out of the box because *every screen is already a URL*.
+
+In Flutter, Deep Links are a configured nightmare in `AndroidManifest.xml` and `Info.plist`. In Expo, they just... work.
+
+***
+
+## Styling: The "Utility First" Shock
+
+Flutter developers take pride in the Widget Tree. We love our `Padding(child: Center(child: ...))`.
+
+React Native (specifically with **NativeWind**, which is just Tailwind for mobile) feels like cheating.
+
+**Flutter:**
+
+```dart
+Container(
+  padding: const EdgeInsets.all(16.0),
+  decoration: BoxDecoration(
+    color: Colors.blue,
+    borderRadius: BorderRadius.circular(8),
+  ),
+  child: const Text('Click Me'),
+)
+
+```
+
+**React Native + NativeWind:**
+
+```tsx
+<View className="p-4 bg-blue-500 rounded-lg">
+  <Text>Click Me</Text>
+</View>
+
+```
+
+Is it "cleaner"? Debatable. The HTML/CSS purists hate it.
+Is it faster to write? **Absolutely.**
+
+Separating style from logic (even if it's just utility classes) felt weirdly liberating. I wasn't fighting the nesting indentation hell that complex Flutter layouts sometimes turn into.
+
+## The Side-by-Side: Logic & State
+
+This is where the "Web DNA" of React Native shines.
+
+In Flutter, state management is a religion. Are you Team Provider? Team Riverpod? Team Bloc? Team "GetX is the devil"?
+
+React Native just uses **Hooks**.
+
+```jsx
+export default function Counter() {
+  // It's just React.
+  const [count, setCount] = useState(0);
+
+  return (
+    <Button title="Increment" onPress={() => setCount(count + 1)} />
+  );
+}
+
+```
+
+Local state is trivial. Global state? Wrap the root layout in a Context Provider. Async stuff? `useEffect` (just don't forget the dependency array, or you'll infinite loop your API quota).
+
+For backend, I threw in **Convex** and **Firebase**.
+
+* **Flutter:** Requires platform channels, specific packages, and sometimes native configuration.
+* **React Native:** It’s basically just JavaScript. If it works on the web, it probably works here.
+
+## What Flutter Devs Can Learn (Without Switching)
+
+Look, I’m not saying "Delete your Flutter repo." Flutter is still king for performance-heavy, animation-rich, custom UI apps.
+
+But React Native taught me:
+
+1. **URL-Based Thinking is Superior:** Even in Flutter, try to model your navigation state as a "path" rather than a stack of cards. It makes deep linking and web support much less painful later.
+2. **Less Boilerplate is Okay:** We sometimes over-engineer Flutter apps with "Clean Architecture" for a simple To-Do list. React Native’s "just write the component" attitude is a good reminder to ship faster.
+3. **The Web ecosystem is massive:** React Native lets you piggyback on the entire JavaScript npm ecosystem. Flutter is catching up, but JS libraries are infinite.
+
+## Conclusion: Use Whatever Ships the App
+
+Flutter isn’t going anywhere. It’s solid. It’s compiled. It’s Google.
+
+React Native isn’t perfect. `node_modules` is still the heaviest object in the universe, and sometimes the bridge between JS and Native code acts up.
+
+But **Expo has closed the gap.**
+
+If you are a Flutter developer, this isn't a "switch or die" warning. It’s a suggestion to peek over the fence.
+
+Go create a folder. Run `npx create-expo-app@latest`. Get confused by the folder routing. Scream at a missing dependency.
+
+But then, watch the lightbulb turn on when you realize you just built a cross-platform app with fully working deep links in 20 minutes.
+
+Because at the end of the day, users don't care about your `StatelessWidget` or your `useEffect`. They care about the app on their home screen.
+
+Now, go build something.
