@@ -99,7 +99,7 @@ const Playground = ({
 
   return (
     <motion.div 
-      className="my-12 flex flex-col gap-4 overflow-hidden rounded-2xl border border-[#414868]/30 bg-[#1a1b26]/50 shadow-2xl backdrop-blur-sm"
+      className="my-12 flex flex-col gap-0 overflow-hidden rounded-2xl border border-[#414868]/30 bg-[#1a1b26]/50 shadow-2xl backdrop-blur-sm"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -141,7 +141,7 @@ const Playground = ({
         className="relative"
         style={{ height: height }}
       >
-        <div className={`h-full w-full p-4 ${activeTab === 'code' ? 'block' : 'hidden'}`}>
+        <div className={`h-full w-full ${activeTab === 'code' ? 'block' : 'hidden'}`}>
            <PlaygroundEditor 
             code={code} 
             onChange={(val) => setCode(val || "")} 
@@ -149,7 +149,7 @@ const Playground = ({
           />
         </div>
         
-        <div className={`h-full w-full p-4 ${activeTab === 'preview' ? 'block' : 'hidden'}`}>
+        <div className={`h-full w-full ${activeTab === 'preview' ? 'block' : 'hidden'}`}>
           <PlaygroundPreview 
             code={code} 
             language={language}

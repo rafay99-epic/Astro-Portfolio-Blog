@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, memo } from "react";
 import { transform } from "sucrase";
 import * as ReactNative from "react-native-web";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,14 +8,16 @@ interface PlaygroundPreviewProps {
   language?: string;
 }
 
-const PlaygroundPreview = ({ code, language = "typescript" }: PlaygroundPreviewProps) => {
+const PlaygroundPreview = memo(function PlaygroundPreview({ code, language = "typescript" }: PlaygroundPreviewProps) {
   const [Component, setComponent] = useState<React.ComponentType | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [dartSyncKey, setDartSyncKey] = useState(0);
-  const [activeDartCode, setActiveDartCode] = useState(code);
+  
+  // Use deferred value for React preview to unblock typing
+  // This makes the editor feel "blazing fast" even if transpilation takes a few ms
+  const deferredCode = React.useDeferredValue(code);
 
-  // Initialize activeDartCode on mount if it's empty, or keeping it independent
-  // We don't want to sync automatically on code change to prevent reload loops
+  const [activeDartCode, setActiveDartCode] = useState(code);
   
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -31,7 +33,7 @@ const PlaygroundPreview = ({ code, language = "typescript" }: PlaygroundPreviewP
           observer.disconnect();
         }
       },
-      { rootMargin: "100px" } // Load slightly before view
+      { rootMargin: "100px" } 
     );
 
     if (containerRef.current) {
@@ -42,90 +44,93 @@ const PlaygroundPreview = ({ code, language = "typescript" }: PlaygroundPreviewP
   }, [language]);
 
   // Encode code for DartPad
+  // Robustness Fix: Ensure we never send an empty code query if possible, 
+  // though activeDartCode is initialized. 'run=true' combined with lazy load
+  // ensures it runs when visible.
   const dartPadUrl = useMemo(() => {
-    if (language !== "dart") return "";
+    if (language !== "dart" || !activeDartCode) return "";
+    
     const encoded = encodeURIComponent(activeDartCode);
-    // split=0 maximizes the output panel, hiding the internal editor
+    // split=0 maximizes the output panel
+    // theme=dark matches the UI
     return `https://dartpad.dev/embed-inline.html?id=&split=0&theme=dark&run=true&code=${encoded}&key=${dartSyncKey}`;
   }, [activeDartCode, language, dartSyncKey]);
 
   useEffect(() => {
-    // ... rest of React logic
+    // If not visible or not React, skip complex logic
     if (language === "dart") {
       setComponent(null);
       setError(null);
       return;
     }
-    // ...
 
+    // React Compilation Logic
+    // We use deferredCode here to deprioritize this heavy calculation
     const timer = setTimeout(() => {
       try {
-        // Transpile TSX/JSX to JS, including imports transform
-        const compiled = transform(code, {
+        const compiled = transform(deferredCode, {
           transforms: ["typescript", "jsx", "imports"],
           jsxRuntime: "classic",
         }).code;
 
-        // Create a safe execution environment
-        // We avoid destructuring scope into local variables to prevent collisions with user-defined variables
         const scope: any = {
-          React,
-          ...ReactNative,
-          motion,
-          AnimatePresence,
-          require: (moduleName: string) => {
-            if (moduleName === 'react') return React;
-            if (moduleName === 'react-native') return ReactNative;
-            if (moduleName === 'framer-motion') return { motion, AnimatePresence };
-            throw new Error(`Module "${moduleName}" not found in playground scope.`);
-          },
-          exports: {},
-          console: {
-            log: (...args: any[]) => console.log("Playground:", ...args),
-            error: (...args: any[]) => console.error("Playground Error:", ...args),
-          },
-        };
-
-        // Execution wrapper that provides modules via require rather than locals
-        const wrappedCode = `
-          const require = scope.require;
-          const exports = scope.exports;
-          const React = scope.React;
-          ${compiled}
-          return exports.default || (typeof App !== 'undefined' ? App : null);
-        `;
-
-        const renderFunc = new Function("scope", wrappedCode);
-        const ExecutedComponent = renderFunc(scope);
-
-        if (ExecutedComponent && (typeof ExecutedComponent === 'function' || (typeof ExecutedComponent === 'object' && ExecutedComponent.$$typeof))) {
-          setComponent(() => typeof ExecutedComponent === 'function' ? ExecutedComponent : () => ExecutedComponent);
-          setError(null);
-        } else {
-          setError("No valid default export or 'App' component found. Make sure to export your component (e.g., 'export default function App() { ... }').");
-        }
+            React,
+            ...ReactNative,
+            motion,
+            AnimatePresence,
+            require: (moduleName: string) => {
+              if (moduleName === 'react') return React;
+              if (moduleName === 'react-native') return ReactNative;
+              if (moduleName === 'framer-motion') return { motion, AnimatePresence };
+              throw new Error(`Module "${moduleName}" not found in playground scope.`);
+            },
+            exports: {},
+            console: {
+              log: (...args: any[]) => console.log("Playground:", ...args),
+              error: (...args: any[]) => console.error("Playground Error:", ...args),
+            },
+          };
+  
+          const wrappedCode = `
+            const require = scope.require;
+            const exports = scope.exports;
+            const React = scope.React;
+            ${compiled}
+            return exports.default || (typeof App !== 'undefined' ? App : null);
+          `;
+  
+          const renderFunc = new Function("scope", wrappedCode);
+          const ExecutedComponent = renderFunc(scope);
+  
+          if (ExecutedComponent && (typeof ExecutedComponent === 'function' || (typeof ExecutedComponent === 'object' && ExecutedComponent.$$typeof))) {
+            setComponent(() => typeof ExecutedComponent === 'function' ? ExecutedComponent : () => ExecutedComponent);
+            setError(null);
+          } else {
+            setError("No valid default export or 'App' component found. Make sure to export your component.");
+          }
       } catch (err: any) {
         setError(err.message);
       }
-    }, 500);
+    }, 200); // Reduced debounce to 200ms feels snappier
 
     return () => clearTimeout(timer);
-  }, [code, language]);
+  }, [deferredCode, language]);
 
   if (language === "dart") {
+    // ... same Dart rendering ...
     return (
       <div 
         ref={containerRef}
-        className="relative h-full flex flex-col overflow-hidden rounded-xl bg-[#1a1b26]"
+        className="relative h-full flex flex-col overflow-hidden bg-[#0C141D]"
       >
-        <div className="flex items-center justify-between border-b border-[#414868]/30 bg-[#1f2335] px-4 py-2">
+        <div className="flex items-center justify-between border-b border-[#414868]/30 bg-[#1f2335] px-4 py-2 relative z-10">
           <span className="text-xs font-bold uppercase tracking-wider text-[#7aa2f7]">Live Dart Preview</span>
           <button 
             onClick={() => {
               setActiveDartCode(code);
               setDartSyncKey(k => k + 1);
             }}
-            className="flex items-center gap-1.5 rounded bg-[#7aa2f7] px-3 py-1.5 text-[10px] font-bold text-[#1a1b26] transition-all hover:bg-[#7aa2f7]/90 shadow-lg shadow-[#7aa2f7]/20"
+            className="flex items-center gap-1.5 rounded bg-[#7aa2f7] px-3 py-1 text-[10px] font-bold text-[#1a1b26] transition-all hover:bg-[#7aa2f7]/90 shadow-lg shadow-[#7aa2f7]/20"
           >
             <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
@@ -133,12 +138,13 @@ const PlaygroundPreview = ({ code, language = "typescript" }: PlaygroundPreviewP
             Run Code
           </button>
         </div>
-        <div className="flex-1 bg-[#1a1b26]">
+        <div className="flex-1 bg-[#0C141D] relative overflow-hidden">
           {isVisible ? (
             <iframe
               src={dartPadUrl}
-              className="w-full h-full border-0"
+              className="absolute left-[-10px] top-[-10px] w-[calc(100%+40px)] h-[calc(100%+20px)] border-0"
               title="DartPad Preview"
+              sandbox="allow-scripts allow-top-navigation allow-popups allow-popups-to-escape-sandbox allow-same-origin"
             />
           ) : (
              <div className="flex h-full items-center justify-center text-[#565f89]">
@@ -150,15 +156,17 @@ const PlaygroundPreview = ({ code, language = "typescript" }: PlaygroundPreviewP
     );
   }
 
+  // ... React rendering ...
   return (
-    <div className="relative h-full flex flex-col overflow-hidden rounded-xl bg-[#24283b]">
+    <div className="relative h-full flex flex-col overflow-hidden bg-[#24283b]">
       <div className="flex items-center justify-between border-b border-[#414868]/30 bg-[#1f2335] px-4 py-2">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#7aa2f7]">Live Preview</span>
-        <div className="flex gap-1.5">
-          <div className="h-2.5 w-2.5 rounded-full bg-[#f7768e]/50" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#e0af68]/50" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#9ece6a]/50" />
-        </div>
+         {/* ... Header content ... */}
+         <span className="text-xs font-bold uppercase tracking-wider text-[#7aa2f7]">Live Preview</span>
+         <div className="flex gap-1.5">
+           <div className="h-2.5 w-2.5 rounded-full bg-[#f7768e]/50" />
+           <div className="h-2.5 w-2.5 rounded-full bg-[#e0af68]/50" />
+           <div className="h-2.5 w-2.5 rounded-full bg-[#9ece6a]/50" />
+         </div>
       </div>
       
       <div className="flex-1 overflow-auto p-4 flex items-center justify-center min-h-[300px]">
@@ -182,7 +190,9 @@ const PlaygroundPreview = ({ code, language = "typescript" }: PlaygroundPreviewP
       </div>
     </div>
   );
-};
+});
+
+export default PlaygroundPreview;
 
 // Simple Error Boundary to catch runtime errors in the user's code
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: any }> {
@@ -214,4 +224,3 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   }
 }
 
-export default PlaygroundPreview;
