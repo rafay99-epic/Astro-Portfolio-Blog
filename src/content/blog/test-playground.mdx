@@ -1,0 +1,250 @@
+---
+title: "Testing Playground Feature"
+description: Meta post to verify the new interactive code playground.
+pubDate: 2025-12-25 21:00:00+00:00
+draft: false
+heroImage: /BlogImages/react-render.webp
+authorName: "Antigravity"
+tags:
+  - Meta
+  - Playground
+---
+
+import Playground from "@react/blog/enhancements/Playground/Playground";
+
+# React Native Examples
+
+## 1. Interactive Counter with Animation
+A simple counter app demonstrating `useState` and Framer Motion animations.
+
+<Playground 
+  title="Animated Counter" 
+  client:only="react"
+  height="500px"
+  initialCode={`import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { motion } from 'framer-motion';
+
+export default function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <View style={styles.container}>
+      <motion.div
+        animate={{ 
+          scale: [1, 1.2, 1],
+          rotate: [0, 10, -10, 0]
+        }}
+        transition={{ duration: 0.5 }}
+        key={count} // Re-animate on count change
+      >
+        <Text style={styles.counter}>{count}</Text>
+      </motion.div>
+      
+      <Text style={styles.label}>Taps</Text>
+
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={() => setCount(c => c + 1)}
+      >
+        <Text style={styles.buttonText}>Tap Me!</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 20,
+  },
+  counter: {
+    fontSize: 72,
+    fontWeight: 'bold',
+    color: '#7aa2f7',
+  },
+  label: {
+    fontSize: 18,
+    color: '#565f89',
+    marginBottom: 30,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+  },
+  button: {
+    backgroundColor: '#394b70',
+    paddingHorizontal: 40,
+    paddingVertical: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#7aa2f7',
+    shadowColor: '#7aa2f7',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+  },
+  buttonText: {
+    color: '#c0caf5',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+});`}
+/>
+
+## 2. Dynamic List with Cards
+Renders a scrollable list of items with custom card styling, demonstrating functional components and props.
+
+<Playground 
+  title="Profile Cards List" 
+  client:only="react" 
+  height="600px"
+  initialCode={`import React from 'react';
+import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
+
+const profiles = [
+  { id: 1, name: "Sarah Connor", role: "Resistance Leader", color: "#f7768e" },
+  { id: 2, name: "John Wick", role: "Professional", color: "#9ece6a" },
+  { id: 3, name: "Neo", role: "The One", color: "#7dcfff" },
+  { id: 4, name: "Ellen Ripley", role: "Officer", color: "#bb9af7" },
+];
+
+const Card = ({ name, role, color }) => (
+  <View style={[styles.card, { borderLeftColor: color }]}>
+    <View>
+      <Text style={styles.name}>{name}</Text>
+      <Text style={[styles.role, { color }]}>{role}</Text>
+    </View>
+    <View style={[styles.badge, { backgroundColor: color }]}>
+      <Text style={styles.initials}>{name.charAt(0)}</Text>
+    </View>
+  </View>
+);
+
+export default function App() {
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.header}>Team Members</Text>
+      {profiles.map(p => (
+        <Card key={p.id} {...p} />
+      ))}
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#e0af68',
+    marginBottom: 20,
+    marginLeft: 4,
+  },
+  card: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'rgba(26, 27, 38, 0.8)',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    borderLeftWidth: 4,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#c0caf5',
+  },
+  role: {
+    fontSize: 14,
+    marginTop: 4,
+  },
+  badge: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  initials: {
+    color: '#1a1b26',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+});`}
+/>
+
+---
+
+# Dart / Flutter Examples
+
+## 3. Basic Dart Loop & Logic
+A standard algorithmic example demonstrating loops and lists in Dart.
+
+<Playground 
+  title="Fibonacci Generator" 
+  language="dart"
+  client:only="react" 
+  height="400px"
+  initialCode={`void main() {
+  print('Generating Fibonacci Sequence:');
+  
+  var n = 10;
+  var a = 0, b = 1;
+  
+  print('Step 1: $a');
+  print('Step 2: $b');
+  
+  for (var i = 2; i < n; i++) {
+    var next = a + b;
+    print('Step \${i + 1}: \$next');
+    a = b;
+    b = next;
+  }
+}`}
+/>
+
+## 4. Object-Oriented Dart
+Demonstrating classes, methods, and string interpolation in Dart.
+
+<Playground 
+  title="SpaceShip Class" 
+  language="dart"
+  client:only="react" 
+  height="450px"
+  initialCode={`class SpaceShip {
+  String name;
+  int fuel;
+  
+  SpaceShip(this.name, this.fuel);
+  
+  void launch() {
+    if (fuel > 20) {
+      print('🚀 $name launched successfully!');
+      fuel -= 20;
+    } else {
+      print('❌ $name failed to launch. Not enough fuel.');
+    }
+  }
+  
+  void refuel(int amount) {
+    fuel += amount;
+    print('⛽ Refueled $amount units. Current fuel: $fuel');
+  }
+}
+
+void main() {
+  var ship = SpaceShip('Apollo 11', 10);
+  
+  ship.launch();
+  ship.refuel(50);
+  ship.launch();
+  ship.launch();
+  ship.launch(); // Should fail
+}`}
+/>
