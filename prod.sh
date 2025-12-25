@@ -143,13 +143,21 @@ else
   exit 1
 fi
 
-# ===== STEP 4: Commit & Push =====
+# ===== STEP 5: Commit & Push =====
 echo ""
-read -r "commit_choice?Do you want to commit the changes? (yes/no): "
+# Default to Yes (Y) if user just hits Enter
+read -r "commit_choice?Do you want to commit the changes? [Y/n]: "
+commit_choice=${commit_choice:-y}
 
 case "$commit_choice" in
-  y|Y|yes|YES|Sure|sure)
+  [yY]*|Sure|sure|ok|OK)
     read -r "commit_message?Enter commit message: "
+    # Default commit message if empty
+    if [[ -z "$commit_message" ]]; then
+        commit_message="Update portfolio"
+        warn "No message provided. Using default: '$commit_message'"
+    fi
+    
     log "Committing with message: '$commit_message'"
     git add .
     if git commit -m "$commit_message"; then
@@ -158,9 +166,12 @@ case "$commit_choice" in
       warn "Nothing to commit, working tree clean."
     fi
 
-    read -r "push_choice?Do you want to push the changes? (yes/no): "
+    # Push Prompt
+    read -r "push_choice?Do you want to push the changes? [Y/n]: "
+    push_choice=${push_choice:-y}
+    
     case "$push_choice" in
-      y|Y|yes|YES|Sure|sure)
+      [yY]*|Sure|sure|ok|OK)
         log "Pushing changes to remote..."
         if git push; then
           success "Code pushed successfully."
@@ -168,13 +179,19 @@ case "$commit_choice" in
           error "Failed to push changes."
         fi
         ;;
-      *)
+      [nN]*)
         warn "Skipping push."
+        ;;
+      *)
+        warn "Invalid input '$push_choice'. Skipping push."
         ;;
     esac
     ;;
-  *)
+  [nN]*)
     warn "Skipping commit & push."
+    ;;
+  *)
+    warn "Invalid input '$commit_choice'. Skipping commit."
     ;;
 esac
 
