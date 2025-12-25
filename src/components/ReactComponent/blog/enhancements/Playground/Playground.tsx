@@ -94,11 +94,14 @@ const Playground = ({
   title = "Interactive Playground",
   height = "500px",
 }: PlaygroundProps) => {
-  const [code, setCode] = useState(initialCode || (language === "dart" ? DEFAULT_DART_CODE : DEFAULT_REACT_CODE));
+  const [code, setCode] = useState(
+    initialCode ||
+      (language === "dart" ? DEFAULT_DART_CODE : DEFAULT_REACT_CODE),
+  );
   const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
 
   return (
-    <motion.div 
+    <motion.div
       className="my-12 flex flex-col gap-0 overflow-hidden rounded-2xl border border-[#414868]/30 bg-[#1a1b26]/50 shadow-2xl backdrop-blur-sm"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -107,53 +110,53 @@ const Playground = ({
       {/* Header with Tabs */}
       <div className="flex items-center justify-between border-b border-[#414868]/30 bg-[#1f2335]/80 px-6 py-3">
         <div className="flex items-center gap-4">
-          <h3 className="text-sm font-bold tracking-tight text-[#c0caf5]">{title}</h3>
+          <h3 className="text-sm font-bold tracking-tight text-[#c0caf5]">
+            {title}
+          </h3>
           <div className="flex rounded-lg bg-[#24283b] p-1">
             <button
               onClick={() => setActiveTab("preview")}
-              className={`px-4 py-1.5 text-xs font-semibold transition-all rounded-md ${
-                activeTab === "preview" 
-                ? "bg-[#7aa2f7] text-white shadow-lg" 
-                : "text-[#565f89] hover:text-[#7aa2f7]"
+              className={`rounded-md px-4 py-1.5 text-xs font-semibold transition-all ${
+                activeTab === "preview"
+                  ? "bg-[#7aa2f7] text-white shadow-lg"
+                  : "text-[#565f89] hover:text-[#7aa2f7]"
               }`}
             >
               Preview
             </button>
             <button
               onClick={() => setActiveTab("code")}
-              className={`px-4 py-1.5 text-xs font-semibold transition-all rounded-md ${
-                activeTab === "code" 
-                ? "bg-[#7aa2f7] text-white shadow-lg" 
-                : "text-[#565f89] hover:text-[#7aa2f7]"
+              className={`rounded-md px-4 py-1.5 text-xs font-semibold transition-all ${
+                activeTab === "code"
+                  ? "bg-[#7aa2f7] text-white shadow-lg"
+                  : "text-[#565f89] hover:text-[#7aa2f7]"
               }`}
             >
               Code
             </button>
           </div>
         </div>
-        <span className="rounded-md bg-[#414868]/30 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-widest text-[#7aa2f7]">
+        <span className="rounded-md bg-[#414868]/30 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-[#7aa2f7]">
           {language}
         </span>
       </div>
 
       {/* Content Area */}
-      <div 
-        className="relative"
-        style={{ height: height }}
-      >
-        <div className={`h-full w-full ${activeTab === 'code' ? 'block' : 'hidden'}`}>
-           <PlaygroundEditor 
-            code={code} 
-            onChange={(val) => setCode(val || "")} 
+      <div className="relative" style={{ height: height }}>
+        <div
+          className={`h-full w-full ${activeTab === "code" ? "block" : "hidden"}`}
+        >
+          <PlaygroundEditor
+            code={code}
+            onChange={(val) => setCode(val || "")}
             language={language === "dart" ? "dart" : "typescript"}
           />
         </div>
-        
-        <div className={`h-full w-full ${activeTab === 'preview' ? 'block' : 'hidden'}`}>
-          <PlaygroundPreview 
-            code={code} 
-            language={language}
-          />
+
+        <div
+          className={`h-full w-full ${activeTab === "preview" ? "block" : "hidden"}`}
+        >
+          <PlaygroundPreview code={code} language={language} />
         </div>
       </div>
     </motion.div>

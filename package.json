@@ -1,7 +1,7 @@
 {
   "name": "rafay99.com",
   "type": "module",
-  "version": "9.5.1",
+  "version": "9.6.0",
   "scripts": {
     "dev": "tinacms dev -c \"astro dev\"",
     "production_build": "tinacms build && astro build",
@@ -34,6 +34,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "astro": "^5.16.6",
+    "astro-icon": "^1.1.5",
     "astro-opengraph-images": "^1.13.1",
     "astro-robots-txt": "^1.0.0",
     "astro-seo": "^0.8.4",
@@ -70,9 +71,11 @@
   },
   "devDependencies": {
     "@gsap/react": "^2.1.2",
+    "@iconify-json/lucide": "^1.2.82",
     "@tinacms/cli": "^1.11.0",
     "@types/node": "^22.18.10",
     "babel-plugin-react-compiler": "^19.0.0-beta-ebf51a3-20250411",
+    "baseline-browser-mapping": "^2.9.11",
     "eslint-plugin-react-compiler": "^19.0.0-beta-ebf51a3-20250411",
     "react-scan": "^0.3.6"
   },

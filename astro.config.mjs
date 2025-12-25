@@ -3,7 +3,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 import dotenv from "dotenv";
 import robotsTxt from "astro-robots-txt";
 dotenv.config();
@@ -11,6 +11,8 @@ import partytown from "@astrojs/partytown";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
 
 import playformCompress from "@playform/compress";
+
+import icon from "astro-icon";
 
 export default defineConfig({
   site: "https://www.rafay99.com",
@@ -104,6 +106,7 @@ export default defineConfig({
       SVG: true,
       Logger: 2,
     }),
+    icon(),
   ],
   adapter: vercel({
     webAnalytics: {

@@ -1,99 +1,34 @@
 ---
 import authorConfig from "@config/siteConfig/info.json";
 
-const stats = [
-  { label: "Years Experience", value: "3+" },
-  { label: "Projects Completed", value: "50+" },
-  { label: "Technologies", value: "15+" },
-  { label: "Happy Clients", value: "25+" },
-];
-
-const highlights = [
-  "Full Stack Engineer",
-  "Flutter Developer",
-  "React Specialist",
-  "Problem Solver",
-];
+const stats = authorConfig.stats;
 ---
 
 <style>
-  .hero-animate {
+  .fade-in {
     opacity: 0;
-    transform: translateY(30px);
-    animation: heroSlideIn 0.8s ease-out forwards;
+    animation: fadeIn 0.8s ease-out forwards;
   }
 
-  @keyframes heroSlideIn {
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .slide-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.8s ease-out forwards;
+  }
+
+  @keyframes slideUp {
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
 
-  /* Stats animations */
-  .stat-item {
-    opacity: 0;
-    transform: scale(0.8);
-    animation: statPopIn 0.6s ease-out forwards;
-  }
-
-  .stat-item:nth-child(1) {
-    animation-delay: 0.2s;
-  }
-  .stat-item:nth-child(2) {
-    animation-delay: 0.3s;
-  }
-  .stat-item:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-  .stat-item:nth-child(4) {
-    animation-delay: 0.5s;
-  }
-
-  @keyframes statPopIn {
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  /* Highlight animations */
-  .highlight-item {
-    opacity: 0;
-    transform: translateX(-20px);
-    animation: highlightSlideIn 0.6s ease-out forwards;
-  }
-
-  .highlight-item:nth-child(1) {
-    animation-delay: 0.6s;
-  }
-  .highlight-item:nth-child(2) {
-    animation-delay: 0.7s;
-  }
-  .highlight-item:nth-child(3) {
-    animation-delay: 0.8s;
-  }
-  .highlight-item:nth-child(4) {
-    animation-delay: 0.9s;
-  }
-
-  @keyframes highlightSlideIn {
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  /* Profile image hover effect */
-  .profile-container:hover .profile-image {
-    transform: scale(1.05);
-  }
-
-  .profile-container:hover .profile-overlay {
-    opacity: 1;
-  }
-
-  /* Gradient text animation */
   .gradient-text {
     background: linear-gradient(135deg, #7aa2f7, #bb9af7, #9ece6a);
     background-size: 200% 200%;
@@ -113,17 +48,45 @@ const highlights = [
     }
   }
 
-  /* Floating elements */
+  .profile-image {
+    transition: transform 0.5s ease;
+  }
+
+  .profile-wrapper:hover .profile-image {
+    transform: scale(1.05);
+  }
+
+  .glass-card {
+    background: rgba(36, 40, 59, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .stat-card {
+    opacity: 0;
+    transform: scale(0.9);
+    animation: statPop 0.6s ease-out forwards;
+  }
+
+  .stat-card:nth-child(1) {
+    animation-delay: 0.2s;
+  }
+  .stat-card:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  .stat-card:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes statPop {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
   .floating {
     animation: float 6s ease-in-out infinite;
-  }
-
-  .floating:nth-child(2) {
-    animation-delay: -2s;
-  }
-
-  .floating:nth-child(3) {
-    animation-delay: -4s;
   }
 
   @keyframes float {
@@ -135,83 +98,10 @@ const highlights = [
       transform: translateY(-20px);
     }
   }
-
-  .cta-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 20px 40px rgba(122, 162, 247, 0.3);
-  }
-
-  .glass-card {
-    background: rgba(36, 40, 59, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .glass-card-hover:hover {
-    background: rgba(36, 40, 59, 0.4);
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 768px) {
-    .hero-animate {
-      animation-delay: 0.1s;
-    }
-
-    .stat-item {
-      animation-delay: 0.3s !important;
-    }
-
-    .highlight-item {
-      animation-delay: 0.5s !important;
-    }
-
-    .profile-image {
-      width: 200px !important;
-      height: 200px !important;
-    }
-
-    .gradient-text {
-      font-size: 2.5rem !important;
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(2, 1fr) !important;
-      gap: 0.75rem !important;
-    }
-
-    .highlights-container {
-      gap: 0.75rem !important;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .profile-image {
-      width: 180px !important;
-      height: 180px !important;
-    }
-
-    .gradient-text {
-      font-size: 2rem !important;
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(2, 1fr) !important;
-      gap: 0.5rem !important;
-    }
-
-    .stat-value {
-      font-size: 1.25rem !important;
-    }
-
-    .highlight-text {
-      font-size: 1rem !important;
-    }
-  }
 </style>
 
-<section
-  class="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-8 sm:py-12 lg:py-16"
->
+<section class="relative min-h-screen overflow-hidden px-4 py-16 lg:py-24">
+  <!-- Background Effects -->
   <div class="absolute inset-0">
     <div
       class="floating from-[#7aa2f7]/8 to-[#bb9af7]/8 absolute left-10 top-20 h-32 w-32 rounded-full bg-gradient-to-r blur-3xl"
@@ -219,124 +109,175 @@ const highlights = [
     </div>
     <div
       class="floating from-[#bb9af7]/8 to-[#9ece6a]/8 absolute bottom-20 right-10 h-40 w-40 rounded-full bg-gradient-to-r blur-3xl"
-    >
-    </div>
-    <div
-      class="floating from-[#9ece6a]/6 to-[#7aa2f7]/6 absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-gradient-to-r blur-2xl"
+      style="animation-delay: -2s;"
     >
     </div>
   </div>
 
-  <div class="container relative z-10 mx-auto max-w-6xl">
-    <div class="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-16">
-      <div class="space-y-8">
-        <div class="hero-animate text-center lg:text-left">
-          <div class="relative mb-8 inline-block">
-            <div
-              class="profile-container relative mx-auto h-64 w-64 sm:h-72 sm:w-72 lg:mx-0 lg:h-80 lg:w-80"
-            >
-              <img
-                src={authorConfig?.picture ?? ""}
-                alt="Profile"
-                class="profile-image h-full w-full rounded-3xl object-cover shadow-2xl transition-all duration-500"
-                loading="eager"
-              />
-              <div
-                class="profile-overlay absolute inset-0 rounded-3xl bg-gradient-to-br from-[#7aa2f7]/10 to-[#bb9af7]/10 opacity-0 transition-opacity duration-500"
-              >
-              </div>
-
-              <div
-                class="absolute -bottom-3 -right-3 rounded-full bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] px-4 py-2 text-sm font-semibold text-white shadow-lg"
-              >
-                Available
-              </div>
-            </div>
-          </div>
-
-          <h1
-            class="gradient-text mb-4 text-4xl font-black sm:text-5xl lg:text-6xl"
-          >
-            About Me
-          </h1>
-          <p class="mx-auto max-w-md text-lg text-[#a9b1d6] sm:text-xl lg:mx-0">
-            Crafting digital experiences with passion and precision
-          </p>
-        </div>
-
-        <div class="stats-grid grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {
-            stats.map((stat, _index) => (
-              <div class="stat-item glass-card glass-card-hover rounded-xl p-4 text-center transition-all duration-300">
-                <div class="stat-value mb-1 text-2xl font-bold text-[#7aa2f7] lg:text-3xl">
-                  {stat.value}
-                </div>
-                <div class="text-xs text-[#a9b1d6]">{stat.label}</div>
-              </div>
-            ))
-          }
+  <div class="container relative z-10 mx-auto max-w-5xl">
+    <!-- Hero Section -->
+    <div class="fade-in mb-12 text-center">
+      <div class="profile-wrapper relative mx-auto mb-8 inline-block">
+        <img
+          src={authorConfig?.picture ?? ""}
+          alt={authorConfig.name}
+          class="profile-image h-64 w-64 rounded-3xl object-cover shadow-2xl sm:h-80 sm:w-80 lg:h-96 lg:w-96"
+          loading="eager"
+        />
+        <div
+          class="absolute -bottom-4 -right-4 rounded-full bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] px-6 py-3 text-base font-semibold text-white shadow-lg"
+        >
+          Available for Work
         </div>
       </div>
 
-      <div class="space-y-6 lg:space-y-8">
-        <div class="highlights-container space-y-3 lg:space-y-4">
-          {
-            highlights.map((highlight, _index) => (
-              <div class="highlight-item glass-card glass-card-hover flex items-center space-x-3 rounded-xl p-4 transition-all duration-300">
-                <div class="h-2 w-2 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]" />
-                <span class="highlight-text text-base font-semibold text-[#c0caf5] lg:text-lg">
-                  {highlight}
-                </span>
-              </div>
-            ))
-          }
-        </div>
+      <h1
+        class="gradient-text mb-4 font-poppins text-5xl font-black sm:text-6xl lg:text-7xl"
+      >
+        {authorConfig.name}
+      </h1>
+      <p
+        class="mb-3 font-poppins text-xl font-semibold text-[#7aa2f7] sm:text-2xl lg:text-3xl"
+      >
+        {authorConfig.jobTitle}
+      </p>
+      <p
+        class="mx-auto max-w-2xl font-poppins text-lg text-[#a9b1d6] sm:text-xl"
+      >
+        {authorConfig.tag_line}
+      </p>
+    </div>
 
-        <div class="highlight-item glass-card rounded-2xl p-6">
-          <p class="text-sm leading-relaxed text-[#a9b1d6] lg:text-base">
-            Full Stack Engineer specializing in Flutter and React. I build
-            scalable, user-centered applications that make a difference.
+    <!-- Stats Row -->
+    <div class="slide-up mb-16 grid grid-cols-3 gap-4 lg:gap-6">
+      {
+        stats.map((stat) => (
+          <div class="stat-card glass-card rounded-2xl p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:transform hover:bg-[#24283b]/40">
+            <div class="mb-2 font-poppins text-4xl font-black text-[#7aa2f7] lg:text-5xl">
+              {stat.value}
+            </div>
+            <div class="font-poppins text-sm text-[#a9b1d6]">{stat.label}</div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Bio Content -->
+    <div
+      class="slide-up glass-card rounded-3xl p-8 lg:p-12"
+      style="animation-delay: 0.3s;"
+    >
+      <div class="space-y-10">
+        <!-- The Engineer Section -->
+        <div>
+          <div class="mb-5 flex items-center">
+            <div
+              class="mr-4 h-1 w-16 rounded-full bg-gradient-to-r from-[#7aa2f7] to-transparent"
+            >
+            </div>
+            <h2
+              class="font-poppins text-2xl font-bold text-[#7aa2f7] lg:text-3xl"
+            >
+              The Engineer
+            </h2>
+          </div>
+          <p
+            class="font-poppins text-lg leading-[1.9] text-[#c0caf5] lg:text-xl"
+          >
+            {authorConfig.about.whoAmI}
           </p>
         </div>
 
-        <div class="highlight-item space-y-4">
-          <a
-            href="/contact-me"
-            aria-label="Contact Abdul Rafay"
-            class="cta-button inline-flex cursor-pointer items-center space-x-2 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-6 py-3 font-semibold text-white shadow-lg transition-all duration-300 lg:px-8 lg:py-4"
-          >
-            <span class="text-sm lg:text-base">Let's Work Together</span>
-            <svg
-              class="h-4 w-4 lg:h-5 lg:w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-            </svg>
-          </a>
+        <!-- Divider -->
+        <div
+          class="h-px bg-gradient-to-r from-transparent via-[#414868]/40 to-transparent"
+        >
+        </div>
 
-          <div
-            class="flex flex-col items-start space-y-2 text-xs text-[#a9b1d6] sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0 lg:text-sm"
-          >
-            <div class="flex items-center space-x-2">
-              <div class="h-2 w-2 animate-pulse rounded-full bg-[#9ece6a]">
-              </div>
-              <span>Open to opportunities</span>
+        <!-- Beyond the Screen Section -->
+        <div>
+          <div class="mb-5 flex items-center">
+            <div
+              class="mr-4 h-1 w-16 rounded-full bg-gradient-to-r from-[#bb9af7] to-transparent"
+            >
             </div>
-            <div class="flex items-center space-x-2">
-              <div
-                class="h-2 w-2 animate-pulse rounded-full bg-[#7aa2f7]"
-                style="animation-delay: 0.5s;"
-              >
-              </div>
-              <span>Remote friendly</span>
-            </div>
+            <h2
+              class="font-poppins text-2xl font-bold text-[#bb9af7] lg:text-3xl"
+            >
+              Beyond the Screen
+            </h2>
           </div>
+          <p
+            class="font-poppins text-lg leading-[1.9] text-[#c0caf5] lg:text-xl"
+          >
+            {authorConfig.about.lifeBeyondCode}
+          </p>
+        </div>
+
+        <!-- Divider -->
+        <div
+          class="h-px bg-gradient-to-r from-transparent via-[#414868]/40 to-transparent"
+        >
+        </div>
+
+        <!-- Continuous Growth Section -->
+        <div>
+          <div class="mb-5 flex items-center">
+            <div
+              class="mr-4 h-1 w-16 rounded-full bg-gradient-to-r from-[#9ece6a] to-transparent"
+            >
+            </div>
+            <h2
+              class="font-poppins text-2xl font-bold text-[#9ece6a] lg:text-3xl"
+            >
+              Continuous Growth
+            </h2>
+          </div>
+          <p
+            class="font-poppins text-lg leading-[1.9] text-[#c0caf5] lg:text-xl"
+          >
+            {authorConfig.about.continuousLearning}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="slide-up mt-12 text-center" style="animation-delay: 0.5s;">
+      <a
+        href="/contact-me"
+        aria-label="Contact Abdul Rafay"
+        class="inline-flex items-center space-x-3 rounded-2xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-10 py-5 font-poppins text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:transform hover:shadow-2xl"
+      >
+        <span>Let's Work Together</span>
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </a>
+
+      <div
+        class="mt-6 flex flex-col items-center justify-center space-y-2 font-poppins text-sm text-[#a9b1d6] sm:flex-row sm:space-x-6 sm:space-y-0"
+      >
+        <div class="flex items-center space-x-2">
+          <div class="h-2 w-2 animate-pulse rounded-full bg-[#9ece6a]"></div>
+          <span>Open to opportunities</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div
+            class="h-2 w-2 animate-pulse rounded-full bg-[#7aa2f7]"
+            style="animation-delay: 0.5s;"
+          >
+          </div>
+          <span>Remote friendly</span>
         </div>
       </div>
     </div>
