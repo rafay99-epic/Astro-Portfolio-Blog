@@ -11,10 +11,12 @@ export async function getStaticPaths() {
   const projects = await getCollection("projects");
 
   const filteredProjects = import.meta.env.PROD
-    ? projects.filter((project) => !project.data.draft)
+    ? projects.filter(
+        (project: CollectionEntry<"projects">) => !project.data.draft,
+      )
     : projects;
 
-  return filteredProjects.map((project) => ({
+  return filteredProjects.map((project: CollectionEntry<"projects">) => ({
     params: { slug: project.slug },
     props: project,
   }));

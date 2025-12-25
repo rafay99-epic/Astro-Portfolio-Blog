@@ -2,14 +2,15 @@
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import authorConfig from "@config/siteConfig/info.json";
 import SearchReactComponent from "@react/blog/metadata/SearchField/SearchField";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
 const posts = featureFlags.showBlog
   ? (await getCollection("blog")).sort(
-      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+      (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+        a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
     )
   : [];
 

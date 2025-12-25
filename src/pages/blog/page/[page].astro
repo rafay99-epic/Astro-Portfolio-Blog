@@ -3,7 +3,7 @@ import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 const postsPerPage = 9;
@@ -16,8 +16,11 @@ if (isNaN(currentPage) || currentPage < 1) {
 }
 
 const allPosts = (await getCollection("blog"))
-  .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  .filter((post: CollectionEntry<"blog">) => !post.data.draft)
+  .sort(
+    (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+      b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  );
 
 const totalPosts = allPosts.length;
 const totalPages = Math.ceil(totalPosts / postsPerPage);
@@ -73,18 +76,20 @@ try {
             url: "https://rafay99.com/favicon.webp",
           },
         },
-        blogPost: posts.map((post, _index) => ({
-          "@type": "BlogPosting",
-          headline: post.data.title,
-          description: post.data.description,
-          author: {
-            "@type": "Person",
-            name: post.data.authorName,
-          },
-          datePublished: post.data.pubDate.toISOString(),
-          url: `https://rafay99.com/blog/${post.slug}`,
-          keywords: post.data.tags?.join(", ") || "blog, technology",
-        })),
+        blogPost: posts.map(
+          (post: CollectionEntry<"blog">, _index: number) => ({
+            "@type": "BlogPosting",
+            headline: post.data.title,
+            description: post.data.description,
+            author: {
+              "@type": "Person",
+              name: post.data.authorName,
+            },
+            datePublished: post.data.pubDate.toISOString(),
+            url: `https://rafay99.com/blog/${post.slug}`,
+            keywords: post.data.tags?.join(", ") || "blog, technology",
+          }),
+        ),
       })}
     />
   </head>

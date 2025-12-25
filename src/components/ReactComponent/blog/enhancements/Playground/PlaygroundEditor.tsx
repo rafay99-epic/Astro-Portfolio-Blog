@@ -10,7 +10,7 @@ interface PlaygroundEditorProps {
 // Pre-configure Monaco
 loader.config({
   paths: {
-    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs",
+    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.55.1/min/vs",
   },
 });
 

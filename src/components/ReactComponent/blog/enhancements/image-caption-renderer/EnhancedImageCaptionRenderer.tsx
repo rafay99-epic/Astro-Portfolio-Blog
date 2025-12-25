@@ -1,5 +1,4 @@
 import { useEffect, memo, useCallback } from "react";
-import FullscreenImageViewer from "../fullscreen-image-viewer/FullscreenImageViewer";
 
 const EnhancedImageCaptionRenderer = memo(
   function EnhancedImageCaptionRenderer() {

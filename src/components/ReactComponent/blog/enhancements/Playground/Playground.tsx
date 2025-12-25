@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PlaygroundEditor from "./PlaygroundEditor";
 import PlaygroundPreview from "./PlaygroundPreview";
 import { motion } from "framer-motion";
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   counter: {
     fontSize: 48,
-    color: '#white',
+    color: 'white',
     marginVertical: 20,
   },
   button: {

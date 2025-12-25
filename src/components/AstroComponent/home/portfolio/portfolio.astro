@@ -1,10 +1,11 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 const allProjects = await getCollection("projects");
-const topProjects = allProjects
-  .filter((project) => !project.data.draft)
-  .sort((a, b) => {
+type ProjectEntry = CollectionEntry<"projects">;
+const topProjects: ProjectEntry[] = allProjects
+  .filter((project: ProjectEntry) => !project.data.draft)
+  .sort((a: ProjectEntry, b: ProjectEntry) => {
     const rankingA = parseInt(a.data.ProjectRanking || "9999", 10);
     const rankingB = parseInt(b.data.ProjectRanking || "9999", 10);
     return rankingA - rankingB;
@@ -76,11 +77,13 @@ const topProjects = allProjects
               {project.data.ProjectTech &&
                 project.data.ProjectTech.length > 0 && (
                   <div class="mb-4 flex flex-wrap gap-2">
-                    {project.data.ProjectTech.slice(0, 3).map((tech) => (
-                      <span class="rounded-md border border-[#414868]/30 bg-[#1a1b26]/50 px-2 py-1 text-xs text-[#a9b1d6]">
-                        {tech}
-                      </span>
-                    ))}
+                    {project.data.ProjectTech.slice(0, 3).map(
+                      (tech: string) => (
+                        <span class="rounded-md border border-[#414868]/30 bg-[#1a1b26]/50 px-2 py-1 text-xs text-[#a9b1d6]">
+                          {tech}
+                        </span>
+                      ),
+                    )}
                     {project.data.ProjectTech.length > 3 && (
                       <span class="rounded-md border border-[#7aa2f7]/30 bg-[#7aa2f7]/20 px-2 py-1 text-xs text-[#7aa2f7]">
                         +{project.data.ProjectTech.length - 3} more

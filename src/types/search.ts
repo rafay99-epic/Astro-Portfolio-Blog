@@ -3,11 +3,11 @@ import { PostSchema } from "./articles";
 
 export const SearchInputPropsSchema = z.object({
   query: z.string(),
-  setQuery: z.any(), // Function type - validated at TypeScript level
+  setQuery: z.function().args(z.string()).returns(z.void()),
   isSearchFocused: z.boolean(),
-  setIsSearchFocused: z.any(), // Function type - validated at TypeScript level
-  setShowSearchTips: z.any(), // Function type - validated at TypeScript level
-  setSelectedResultIndex: z.any(), // Function type - validated at TypeScript level
+  setIsSearchFocused: z.function().args(z.boolean()).returns(z.void()),
+  setShowSearchTips: z.function().args(z.boolean()).returns(z.void()),
+  setSelectedResultIndex: z.function().args(z.number()).returns(z.void()),
   isMobile: z.boolean(),
   resultsLength: z.number(),
 });
@@ -15,7 +15,7 @@ export const SearchInputPropsSchema = z.object({
 export const SearchTipsPropsSchema = z.object({
   showSearchTips: z.boolean(),
   query: z.string(),
-  setQuery: z.any(), // Function type - validated at TypeScript level
+  setQuery: z.function().args(z.string()).returns(z.void()),
 });
 
 export const SearchStatsDataSchema = z.object({
@@ -35,16 +35,16 @@ export const SearchResultsPropsSchema = z.object({
   query: z.string(),
   results: z.array(PostSchema),
   selectedResultIndex: z.number(),
-  setSelectedResultIndex: z.any(), // Function type - validated at TypeScript level
+  setSelectedResultIndex: z.function().args(z.number()).returns(z.void()),
 });
 
 export const SearchStateSchema = z.object({
   query: z.string(),
-  setQuery: z.any(), // Function type - validated at TypeScript level
+  setQuery: z.function().args(z.string()).returns(z.void()),
   results: z.array(PostSchema),
   searchStats: SearchStatsDataSchema,
   searchHistory: z.array(z.string()),
-  clearHistory: z.any(), // Function type - validated at TypeScript level
+  clearHistory: z.function().args().returns(z.void()),
 });
 
 export const SearchCacheSchema = z.object({

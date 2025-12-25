@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
@@ -11,14 +11,23 @@ import { featureFlags } from "../../config/featureFlag/featureFlag.json";
 export const prerender = true;
 
 const allPosts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+    b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const publishedPosts = allPosts.filter((post) => !post.data.draft);
+const publishedPosts = allPosts.filter(
+  (post: CollectionEntry<"blog">) => !post.data.draft,
+);
 
 const allTags = Array.from(
-  new Set(publishedPosts.flatMap((post) => post.data.tags || [])),
-).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
+  new Set(
+    publishedPosts.flatMap(
+      (post: CollectionEntry<"blog">) => post.data.tags || [],
+    ),
+  ),
+).sort((a: string, b: string) =>
+  (a as string).localeCompare(b as string),
+) as string[];
 
 const selectedTag = null;
 const currentPage = 1;

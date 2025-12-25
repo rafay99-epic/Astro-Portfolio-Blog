@@ -1,6 +1,7 @@
 import { useCallback, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 import type { UseCopyButtonProps } from "types/codeblock";
+import type { ToastOptions } from "react-hot-toast";
 
 export const useCopyButton = ({
   buttonRef,
@@ -28,9 +29,15 @@ export const useCopyButton = ({
     if (success) {
       setIsCopied(true);
       timeoutRef.current = window.setTimeout(() => setIsCopied(false), 2000);
-      toast.success("Code copied to clipboard", toastStyles.success);
+      toast.success(
+        "Code copied to clipboard",
+        toastStyles.success as Partial<ToastOptions>,
+      );
     } else {
-      toast.error("Failed to copy code", toastStyles.error);
+      toast.error(
+        "Failed to copy code",
+        toastStyles.error as Partial<ToastOptions>,
+      );
     }
     onCopy();
   }, [buttonRef, codeText, onCopy, toastStyles]);

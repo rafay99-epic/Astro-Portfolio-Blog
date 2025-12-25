@@ -3,7 +3,7 @@ import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import SubjectGrid from "@react/personal/Subjects/subjectGride";
 
@@ -15,10 +15,16 @@ const publishedNotes = await getCollection(
 );
 
 const subjects = Array.from(
-  new Set(publishedNotes.map((note) => note.data.subject)),
-).map((subject) => ({
+  new Set(
+    publishedNotes.map(
+      (note: CollectionEntry<"ms_notes">) => note.data.subject,
+    ),
+  ),
+).map((subject: string) => ({
   name: subject as string,
-  noteCount: publishedNotes.filter((n) => n.data.subject === subject).length,
+  noteCount: publishedNotes.filter(
+    (n: CollectionEntry<"ms_notes">) => n.data.subject === subject,
+  ).length,
 }));
 
 try {

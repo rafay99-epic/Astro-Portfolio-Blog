@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { RefObject, TouchEvent } from "react";
+import type { RefObject } from "react";
 
 export const AspectRatioSchema = z.enum(["square", "video", "wide", "auto"]);
 export const LayoutSchema = z.enum([

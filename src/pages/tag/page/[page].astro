@@ -5,7 +5,7 @@ import Footer from "@astro/footer/Footer.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import TagFilterDisplay from "@astro/blog/comments/TagFilterDisplay.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 export const prerender = true;
 
@@ -15,12 +15,19 @@ export async function getStaticPaths() {
   }
 
   const allPosts = (await getCollection("blog"))
-    .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    .filter((post: CollectionEntry<"blog">) => !post.data.draft)
+    .sort(
+      (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+        b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+    );
 
   const allTags = Array.from(
-    new Set(allPosts.flatMap((post) => post.data.tags || [])),
-  ).sort((a, b) => (a as string).localeCompare(b as string)) as string[];
+    new Set(
+      allPosts.flatMap((post: CollectionEntry<"blog">) => post.data.tags || []),
+    ),
+  ).sort((a: string, b: string) =>
+    (a as string).localeCompare(b as string),
+  ) as string[];
 
   const paths: any[] = [];
   const postsPerPage = 10;

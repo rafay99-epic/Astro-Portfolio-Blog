@@ -30,12 +30,14 @@ error() {
 generate_report() {
   local lint_output="$1"
   local check_output="$2"
+  local lint_status="$3"
+  local check_status="$4"
   
   echo "# 🚨 Validation Error Report" > "$LOG_FILE"
   echo "Generated on: $(date)" >> "$LOG_FILE"
   echo "" >> "$LOG_FILE"
   
-  if [ -n "$lint_output" ]; then
+  if [ "$lint_status" -ne 0 ]; then
     echo "## ❌ Linting Errors (Prettier/ESLint)" >> "$LOG_FILE"
     echo "\`\`\`" >> "$LOG_FILE"
     echo "$lint_output" >> "$LOG_FILE"
@@ -43,16 +45,28 @@ generate_report() {
     echo "" >> "$LOG_FILE"
   else
     echo "## ✅ Linting Passed" >> "$LOG_FILE"
+    if [ -n "$lint_output" ]; then
+      echo "### Output:" >> "$LOG_FILE"
+      echo "\`\`\`" >> "$LOG_FILE"
+      echo "$lint_output" >> "$LOG_FILE"
+      echo "\`\`\`" >> "$LOG_FILE"
+    fi
     echo "" >> "$LOG_FILE"
   fi
 
-  if [ -n "$check_output" ]; then
+  if [ "$check_status" -ne 0 ]; then
     echo "## ❌ Type Check Errors (Astro/TypeScript)" >> "$LOG_FILE"
     echo "\`\`\`" >> "$LOG_FILE"
     echo "$check_output" >> "$LOG_FILE"
     echo "\`\`\`" >> "$LOG_FILE"
   else
     echo "## ✅ Type Check Passed" >> "$LOG_FILE"
+    if [ -n "$check_output" ]; then
+      echo "### Output:" >> "$LOG_FILE"
+      echo "\`\`\`" >> "$LOG_FILE"
+      echo "$check_output" >> "$LOG_FILE"
+      echo "\`\`\`" >> "$LOG_FILE"
+    fi
   fi
 }
 
@@ -60,12 +74,16 @@ run_checks() {
   local has_errors=0
   local lint_out=""
   local check_out=""
+  local lint_status=0
+  local check_status=0
 
   log "Running validation checks..."
 
   # 1. Run Lint
   echo "  > Checking code style (lint)..."
-  if ! lint_out=$(bun run lint 2>&1); then
+  lint_out=$(bun run lint 2>&1)
+  lint_status=$?
+  if [ $lint_status -ne 0 ]; then
     error "Lint check failed."
     has_errors=1
   else
@@ -74,7 +92,9 @@ run_checks() {
 
   # 2. Run Type Check
   echo "  > Checking types (astro check)..."
-  if ! check_out=$(bun run check 2>&1); then
+  check_out=$(bun run check 2>&1)
+  check_status=$?
+  if [ $check_status -ne 0 ]; then
     error "Type check failed."
     has_errors=1
   else
@@ -83,7 +103,7 @@ run_checks() {
 
   # If errors, generate report
   if [ $has_errors -eq 1 ]; then
-    generate_report "$lint_out" "$check_out"
+    generate_report "$lint_out" "$check_out" "$lint_status" "$check_status"
     return 1
   fi
 
@@ -143,7 +163,7 @@ else
   exit 1
 fi
 
-# ===== STEP 5: Commit & Push =====
+# ===== STEP 4: Commit & Push =====
 echo ""
 # Default to Yes (Y) if user just hits Enter
 read -r "commit_choice?Do you want to commit the changes? [Y/n]: "
