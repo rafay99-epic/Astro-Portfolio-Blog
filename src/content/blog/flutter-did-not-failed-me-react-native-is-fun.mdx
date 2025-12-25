@@ -26,31 +26,32 @@ excerpt: >-
   Flutter dev explores why trading Widgets for URLs and Hooks changed
   everything.
 ---
+
 If you’ve been shipping mobile apps for more than five minutes, you know the feeling.
 
-Your tech stack works. Your apps ship. Nothing is arguably *broken*… yet something keeps tapping you on the shoulder.
+Your tech stack works. Your apps ship. Nothing is arguably _broken_… yet something keeps tapping you on the shoulder.
 
-Flutter was that safe house for me. For years, it was my default answer for Android and iOS. It was fast, strongly typed, and honestly hard to argue against. I shipped apps, billed clients, and never felt like Flutter was the bottleneck. So when the Twitter (X) tech influencers kept shouting *“You have to try React Native now, it’s different!”*, my reaction was a standard developer eye-roll.
+Flutter was that safe house for me. For years, it was my default answer for Android and iOS. It was fast, strongly typed, and honestly hard to argue against. I shipped apps, billed clients, and never felt like Flutter was the bottleneck. So when the Twitter (X) tech influencers kept shouting _“You have to try React Native now, it’s different!”_, my reaction was a standard developer eye-roll.
 
 **Why?**
 
-Rebuilding an app in a new framework just to “see the vibes” is a terrible way to burn a weekend. Refactoring for curiosity doesn’t pay the bills. And React Native? It always felt like that chaotic JavaScript thing I’d get to *eventually*.
+Rebuilding an app in a new framework just to “see the vibes” is a terrible way to burn a weekend. Refactoring for curiosity doesn’t pay the bills. And React Native? It always felt like that chaotic JavaScript thing I’d get to _eventually_.
 
 Until one Tuesday evening, bored and over-caffeinated, I finally bit the bullet.
 
-What started as a "quick experiment" with Expo turned into a complete existential crisis regarding how I handle navigation, styling, and my mental model of mobile development. No hype. No "Flutter is dead" clickbait. Just a genuine *“Oh… I’ve been making this harder than it needs to be”* moment.
+What started as a "quick experiment" with Expo turned into a complete existential crisis regarding how I handle navigation, styling, and my mental model of mobile development. No hype. No "Flutter is dead" clickbait. Just a genuine _“Oh… I’ve been making this harder than it needs to be”_ moment.
 
 In this post, we’re cutting through the fanboy noise to look at:
 
-* **The "Context Hell"** taking a vacation: How Expo Router fixed my brain.
-* **The Styling Shock:** Why CSS-ish styling felt oddly refreshing after years of Widget trees.
-* **The Verdict:** What Flutter devs can steal from React Native without actually switching.
+- **The "Context Hell"** taking a vacation: How Expo Router fixed my brain.
+- **The Styling Shock:** Why CSS-ish styling felt oddly refreshing after years of Widget trees.
+- **The Verdict:** What Flutter devs can steal from React Native without actually switching.
 
 This isn’t a breakup letter to Flutter. It’s more like admitting I cheated on my main stack and learned some new tricks.
 
 ## Flutter Was My "Comfort Hoodie"
 
-Flutter didn’t just work—it *fit*.
+Flutter didn’t just work—it _fit_.
 
 One codebase. Google-backed stability. Strong opinions baked into the framework. Once you swallow the pill of "Everything is a Widget," life is predictable.
 
@@ -70,7 +71,7 @@ Navigator.push(
 
 There’s no mystery here. You are grabbing the `context` by the throat, building a route, and shoving it onto the stack. It’s disciplined. It’s safe.
 
-And styling? You don’t "style" a button; you *construct* it. Padding inside a Container inside a Row inside a Column. It’s a deep tree, but at least you know exactly where the padding is coming from (spoiler: it’s always the parent widget you forgot about).
+And styling? You don’t "style" a button; you _construct_ it. Padding inside a Container inside a Row inside a Column. It’s a deep tree, but at least you know exactly where the padding is coming from (spoiler: it’s always the parent widget you forgot about).
 
 So when people talk about Flutter "falling behind," I laugh. Flutter is fine. It’s great, actually.
 
@@ -84,9 +85,9 @@ Until curiosity—and boredom—won.
 
 I’d heard the pitch:
 
-* "Expo makes it easy."
-* "Over-the-air (OTA) updates are a cheat code."
-* "It's just React."
+- "Expo makes it easy."
+- "Over-the-air (OTA) updates are a cheat code."
+- "It's just React."
 
 Cool. Still didn't care.
 
@@ -100,7 +101,7 @@ Instead, the app was running on my phone in seconds.
 
 I opened the project file structure and immediately felt that specific developer panic: **"Where is the `main` file?"**
 
-There was a `tabs` folder. A `layout.tsx`. Files that looked like URL routes. Nothing resembled the `main.dart` entry point I worshipped. In Flutter, I build the screens, I define the routes, I control the universe. Here, it felt like the file system was controlling *me*.
+There was a `tabs` folder. A `layout.tsx`. Files that looked like URL routes. Nothing resembled the `main.dart` entry point I worshipped. In Flutter, I build the screens, I define the routes, I control the universe. Here, it felt like the file system was controlling _me_.
 
 So I did the standard procedure:
 
@@ -116,7 +117,7 @@ The moment I realized Expo’s folder structure is basically the **Next.js App R
 
 That was the first crack in my Flutter armor.
 
-## The Expo Router Epiphany: Files *Are* The Roadmap
+## The Expo Router Epiphany: Files _Are_ The Roadmap
 
 Once I stopped fighting the folder structure, I realized how much boilerplate I had been writing in Flutter.
 
@@ -134,7 +135,7 @@ app/
 
 ```
 
-If you’ve touched Next.js, you’re nodding your head. If you’re a Flutter dev, you’re probably squinting. *“Where is the Route definition map?”*
+If you’ve touched Next.js, you’re nodding your head. If you’re a Flutter dev, you’re probably squinting. _“Where is the Route definition map?”_
 
 There isn’t one. You just make a file.
 
@@ -145,24 +146,23 @@ In Flutter, moving between screens is a grand event. You need the `context`, you
 In Expo Router, you just… change the URL.
 
 ```tsx
-import { router } from 'expo-router';
+import { router } from "expo-router";
 
 // Look ma, no context!
-router.push('/home');
-router.replace('/login');
+router.push("/home");
+router.replace("/login");
 router.back();
-
 ```
 
 No `BuildContext`. No generic type arguments. No importing the screen widget file.
 
 You aren't pushing a screen. **You are changing location.**
 
-This sounds like semantics, but it changes everything. Authentication redirects? Just check the user state and replace the URL to `/login`. Deep linking? It works out of the box because *every screen is already a URL*.
+This sounds like semantics, but it changes everything. Authentication redirects? Just check the user state and replace the URL to `/login`. Deep linking? It works out of the box because _every screen is already a URL_.
 
 In Flutter, Deep Links are a configured nightmare in `AndroidManifest.xml` and `Info.plist`. In Expo, they just... work.
 
-***
+---
 
 ## Styling: The "Utility First" Shock
 
@@ -187,10 +187,9 @@ Container(
 **React Native + NativeWind:**
 
 ```tsx
-<View className="p-4 bg-blue-500 rounded-lg">
+<View className="rounded-lg bg-blue-500 p-4">
   <Text>Click Me</Text>
 </View>
-
 ```
 
 Is it "cleaner"? Debatable. The HTML/CSS purists hate it.
@@ -211,19 +210,16 @@ export default function Counter() {
   // It's just React.
   const [count, setCount] = useState(0);
 
-  return (
-    <Button title="Increment" onPress={() => setCount(count + 1)} />
-  );
+  return <Button title="Increment" onPress={() => setCount(count + 1)} />;
 }
-
 ```
 
 Local state is trivial. Global state? Wrap the root layout in a Context Provider. Async stuff? `useEffect` (just don't forget the dependency array, or you'll infinite loop your API quota).
 
 For backend, I threw in **Convex** and **Firebase**.
 
-* **Flutter:** Requires platform channels, specific packages, and sometimes native configuration.
-* **React Native:** It’s basically just JavaScript. If it works on the web, it probably works here.
+- **Flutter:** Requires platform channels, specific packages, and sometimes native configuration.
+- **React Native:** It’s basically just JavaScript. If it works on the web, it probably works here.
 
 ## What Flutter Devs Can Learn (Without Switching)
 
