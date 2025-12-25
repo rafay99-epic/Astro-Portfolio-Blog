@@ -14,13 +14,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           pip install PyYAML
           pip install typing-extensions
@@ -35,7 +37,6 @@ jobs:
         id: git_check
         run: |
           # Check if there are any changes (staged or unstaged) in the blog directory
-          # Use --ignore-space-change to potentially avoid triggering on whitespace-only changes
           if git diff --quiet --exit-code --ignore-space-change ${{ github.workspace }}/src/content/blog; then
             echo "No changes detected in blog posts."
             echo "changes_detected=false" >> $GITHUB_OUTPUT
@@ -44,21 +45,62 @@ jobs:
             echo "changes_detected=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Setup Bun
+        if: steps.git_check.outputs.changes_detected == 'true'
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: bun install
+
+      - name: Format code with Prettier
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: bunx prettier --write .
+
+      - name: Check Prettier formatting
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: bunx prettier --check . || (echo "Prettier check failed" && exit 1)
+
+      - name: TypeScript type checking
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: bunx tsc --noEmit --skipLibCheck || (echo "TypeScript check failed" && exit 1)
+
+      - name: Validate JSON files
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: |
+          # Validate featureFlag.json
+          node -e "try { JSON.parse(require('fs').readFileSync('src/config/featureFlag/featureFlag.json', 'utf8')); console.log('✓ featureFlag.json is valid'); } catch(e) { console.error('✗ featureFlag.json is invalid:', e.message); process.exit(1); }"
+
+          # Validate info.json if it exists
+          if [ -f "src/config/siteConfig/info.json" ]; then
+            node -e "try { JSON.parse(require('fs').readFileSync('src/config/siteConfig/info.json', 'utf8')); console.log('✓ info.json is valid'); } catch(e) { console.error('✗ info.json is invalid:', e.message); process.exit(1); }"
+          fi
+
+      - name: Build Astro project
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: bun run build || (echo "Build failed" && exit 1)
+
       - name: Configure Git user
         if: steps.git_check.outputs.changes_detected == 'true'
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Stage, Commit, and Push changes
+      - name: Stage all changes (including formatting fixes)
         if: steps.git_check.outputs.changes_detected == 'true'
         run: |
-          git add src/content/blog/ # Stage changes specifically in the blog dir
+          git add -A
+
+      - name: Commit and Push changes
+        if: steps.git_check.outputs.changes_detected == 'true'
+        run: |
           # Check if staging resulted in actual changes to commit
           if ! git diff --staged --quiet; then
-             git commit -m "Auto-publish scheduled blog posts with SEO enhancements and alt text"
-             echo "Pushing changes..."
-             git push origin HEAD:${{ github.ref_name }} # Push to the branch the workflow ran on
+            git commit -m "Auto-publish scheduled blog posts with SEO enhancements and alt text" -m "- Validated with Prettier formatting" -m "- TypeScript type checking passed" -m "- JSON validation passed" -m "- Build successful"
+            echo "Pushing validated changes..."
+            git push origin HEAD:${{ github.ref_name }}
           else
-             echo "No effective changes staged after running script, skipping commit/push."
+            echo "No effective changes staged after validation, skipping commit/push."
           fi

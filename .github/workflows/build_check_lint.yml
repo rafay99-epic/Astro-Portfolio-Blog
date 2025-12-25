@@ -29,9 +29,12 @@ jobs:
 
       - name: Validate JSON files
         run: |
-          bunx jsonlint src/config/featureFlag/featureFlag.json
+          # Validate featureFlag.json
+          node -e "try { JSON.parse(require('fs').readFileSync('src/config/featureFlag/featureFlag.json', 'utf8')); console.log('✓ featureFlag.json is valid'); } catch(e) { console.error('✗ featureFlag.json is invalid:', e.message); process.exit(1); }"
+
+          # Validate info.json if it exists
           if [ -f "src/config/siteConfig/info.json" ]; then
-            bunx jsonlint src/config/siteConfig/info.json
+            node -e "try { JSON.parse(require('fs').readFileSync('src/config/siteConfig/info.json', 'utf8')); console.log('✓ info.json is valid'); } catch(e) { console.error('✗ info.json is invalid:', e.message); process.exit(1); }"
           fi
 
       - name: Build Astro project

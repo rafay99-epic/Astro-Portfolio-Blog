@@ -22,6 +22,9 @@ export default defineConfig({
   prefetch: {
     prefetchAll: false,
   },
+  experimental: {
+    svgo: true,
+  },
   markdown: {
     syntaxHighlight: {
       excludeLangs: ["mermaid"],
