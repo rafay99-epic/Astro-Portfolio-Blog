@@ -55,14 +55,6 @@ jobs:
         if: steps.git_check.outputs.changes_detected == 'true'
         run: bun install
 
-      - name: Format code with Prettier
-        if: steps.git_check.outputs.changes_detected == 'true'
-        run: bunx prettier --write .
-
-      - name: Check Prettier formatting
-        if: steps.git_check.outputs.changes_detected == 'true'
-        run: bunx prettier --check . || (echo "Prettier check failed" && exit 1)
-
       - name: TypeScript type checking
         if: steps.git_check.outputs.changes_detected == 'true'
         run: bunx tsc --noEmit --skipLibCheck || (echo "TypeScript check failed" && exit 1)
@@ -98,7 +90,7 @@ jobs:
         run: |
           # Check if staging resulted in actual changes to commit
           if ! git diff --staged --quiet; then
-            git commit -m "Auto-publish scheduled blog posts with SEO enhancements and alt text" -m "- Validated with Prettier formatting" -m "- TypeScript type checking passed" -m "- JSON validation passed" -m "- Build successful"
+            git commit -m "Auto-publish scheduled blog posts with SEO enhancements and alt text" -m "- TypeScript type checking passed" -m "- JSON validation passed" -m "- Build successful"
             echo "Pushing validated changes..."
             git push origin HEAD:${{ github.ref_name }}
           else

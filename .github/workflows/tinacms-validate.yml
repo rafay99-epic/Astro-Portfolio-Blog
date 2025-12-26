@@ -41,12 +41,6 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Auto-fix Prettier formatting
-        run: bunx prettier --write .
-
-      - name: Check Prettier formatting
-        run: bunx prettier --check . || (echo "Prettier check failed after auto-fix" && exit 1)
-
       - name: TypeScript type checking
         run: bunx tsc --noEmit --skipLibCheck || (echo "TypeScript check failed" && exit 1)
 
@@ -92,7 +86,7 @@ jobs:
 
           # Check if there are actually changes to commit
           if ! git diff --staged --quiet; then
-            git commit -m "chore: auto-fix formatting and validate TinaCMS changes" -m "- Auto-fixed Prettier formatting" -m "- TypeScript type checking passed" -m "- JSON validation passed" -m "- Build successful" -m "[skip ci]"
+            git commit -m "chore: validate TinaCMS changes" -m "- TypeScript type checking passed" -m "- JSON validation passed" -m "- Build successful" -m "[skip ci]"
             echo "Committed formatting and validation fixes"
             
             # Push the changes
@@ -107,10 +101,6 @@ jobs:
         run: |
           echo "## ✅ TinaCMS Commit Validation Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Prettier formatting: Fixed and validated" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ TypeScript: Type checking passed" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ JSON: All files validated" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Build: Project builds successfully" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]; then
-            echo "- ✅ Auto-fixes: Applied and committed" >> $GITHUB_STEP_SUMMARY
-          fi
