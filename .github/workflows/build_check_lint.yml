@@ -22,29 +22,16 @@ jobs:
         run: bun install
 
       - name: Lint Prettier Code
-        run: |
-          echo "Checking Prettier formatting..."
-          if ! bunx prettier --check .; then
-            echo "❌ Prettier check failed. Files that need formatting:"
-            bunx prettier --check . --list-different || true
-            echo ""
-            echo "To fix locally, run: npm run lint:fix"
-            echo "Or: bunx prettier --write ."
-            exit 1
-          fi
-          echo "✅ All files are properly formatted"
+        run: bunx prettier --check .
 
       - name: Lint TypeScript Code
         run: bunx tsc --noEmit --skipLibCheck
 
       - name: Validate JSON files
         run: |
-          # Validate featureFlag.json
-          node -e "try { JSON.parse(require('fs').readFileSync('src/config/featureFlag/featureFlag.json', 'utf8')); console.log('✓ featureFlag.json is valid'); } catch(e) { console.error('✗ featureFlag.json is invalid:', e.message); process.exit(1); }"
-
-          # Validate info.json if it exists
+          bunx jsonlint src/config/featureFlag/featureFlag.json
           if [ -f "src/config/siteConfig/info.json" ]; then
-            node -e "try { JSON.parse(require('fs').readFileSync('src/config/siteConfig/info.json', 'utf8')); console.log('✓ info.json is valid'); } catch(e) { console.error('✗ info.json is invalid:', e.message); process.exit(1); }"
+            bunx jsonlint src/config/siteConfig/info.json
           fi
 
       - name: Build Astro project
