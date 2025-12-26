@@ -22,7 +22,17 @@ jobs:
         run: bun install
 
       - name: Lint Prettier Code
-        run: bunx prettier --check .
+        run: |
+          echo "Checking Prettier formatting..."
+          if ! bunx prettier --check .; then
+            echo "❌ Prettier check failed. Files that need formatting:"
+            bunx prettier --check . --list-different || true
+            echo ""
+            echo "To fix locally, run: npm run lint:fix"
+            echo "Or: bunx prettier --write ."
+            exit 1
+          fi
+          echo "✅ All files are properly formatted"
 
       - name: Lint TypeScript Code
         run: bunx tsc --noEmit --skipLibCheck
