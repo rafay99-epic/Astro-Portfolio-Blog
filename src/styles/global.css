@@ -1,3 +1,5 @@
+@import "devicon/devicon.min.css";
+
 :root {
   /* Legacy variables for backward compatibility - will be migrated gradually */
   --accent: var(--color-primary, #7aa2f7);

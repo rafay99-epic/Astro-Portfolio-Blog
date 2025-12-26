@@ -3,7 +3,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 import dotenv from "dotenv";
 import robotsTxt from "astro-robots-txt";
 dotenv.config();
@@ -11,6 +11,8 @@ import partytown from "@astrojs/partytown";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
 
 import playformCompress from "@playform/compress";
+
+import icon from "astro-icon";
 
 export default defineConfig({
   site: "https://www.rafay99.com",
@@ -21,6 +23,9 @@ export default defineConfig({
   },
   prefetch: {
     prefetchAll: false,
+  },
+  experimental: {
+    svgo: true,
   },
   markdown: {
     syntaxHighlight: {
@@ -101,6 +106,7 @@ export default defineConfig({
       SVG: true,
       Logger: 2,
     }),
+    icon(),
   ],
   adapter: vercel({
     webAnalytics: {
@@ -129,6 +135,18 @@ export default defineConfig({
       },
       chunkSizeWarningLimit: 1500,
       rollupOptions: {
+        onwarn(warning, warn) {
+          // Suppress empty chunk warnings for mermaid dependencies
+          // These are harmless - tree-shaking removes unused code from dependencies
+          if (
+            warning.code === "EMPTY_BUNDLE" ||
+            (warning.message &&
+              warning.message.includes("Generated an empty chunk"))
+          ) {
+            return;
+          }
+          warn(warning);
+        },
         output: {
           experimentalMinChunkSize: 30000,
           manualChunks(id) {
@@ -140,6 +158,21 @@ export default defineConfig({
                 id.includes("framer-motion")
               ) {
                 return "ui-components";
+              }
+              // Group mermaid and its dependencies together to reduce empty chunks
+              if (
+                id.includes("mermaid") ||
+                id.includes("d3-") ||
+                id.includes("@chevrotain") ||
+                id.includes("lowlight") ||
+                id.includes("delaunator") ||
+                id.includes("robust-predicates") ||
+                id.includes("fault") ||
+                id.includes("format") ||
+                id.includes("debug") ||
+                id.includes("/ms")
+              ) {
+                return "vendor-mermaid";
               }
               const rel = id.split("node_modules/")[1] || "";
               const parts = rel.split("/");

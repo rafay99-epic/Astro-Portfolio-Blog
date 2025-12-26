@@ -1,4 +1,6 @@
 ---
+import authorConfig from "@config/siteConfig/info.json";
+
 interface SocialLinks {
   twitter: string;
   github: string;
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const { name, jobTitle, picture, socialLinks } = Astro.props as Props;
+const stats = authorConfig.stats;
 ---
 
 <style is:global>
@@ -173,11 +176,13 @@ const { name, jobTitle, picture, socialLinks } = Astro.props as Props;
             class="animate-fade-up max-w-2xl text-lg font-medium leading-relaxed text-[#a9b1d6] sm:text-xl md:text-2xl"
             style="animation-delay: 0.6s;"
           >
-            <span class="text-[#7aa2f7]">{jobTitle}</span> passionate about creating
-            digital experiences that matter.
+            <span class="text-[#7aa2f7]">{jobTitle}</span> crafting software through
+            thoughtful design and engineering.
             <br />
-            I build <span class="text-[#bb9af7]">high-performance</span> web & mobile
-            apps that <span class="text-[#bb9af7]">scale</span>.
+            <br />
+            I collaborate, lead, and build <span class="text-[#bb9af7]"
+              >scalable
+            </span>web & mobile systems that grow with users.
           </p>
         </div>
 
@@ -186,18 +191,28 @@ const { name, jobTitle, picture, socialLinks } = Astro.props as Props;
           style="animation-delay: 0.8s;"
         >
           <div class="text-center">
-            <div class="text-xl font-bold text-[#7aa2f7] sm:text-2xl">50+</div>
-            <div class="text-xs text-[#a9b1d6] sm:text-sm">Projects</div>
+            <div class="text-xl font-bold text-[#7aa2f7] sm:text-2xl">
+              {stats[0].value}
+            </div>
+            <div class="text-xs text-[#a9b1d6] sm:text-sm">
+              {stats[0].label}
+            </div>
           </div>
           <div class="text-center">
             <div class="text-xl font-bold text-[#7aa2f7] sm:text-2xl">
-              3+ Years
+              {stats[1].value}
             </div>
-            <div class="text-xs text-[#a9b1d6] sm:text-sm">Experience</div>
+            <div class="text-xs text-[#a9b1d6] sm:text-sm">
+              {stats[1].label}
+            </div>
           </div>
           <div class="text-center">
-            <div class="text-xl font-bold text-[#7aa2f7] sm:text-2xl">25+</div>
-            <div class="text-xs text-[#a9b1d6] sm:text-sm">Happy Clients</div>
+            <div class="text-xl font-bold text-[#7aa2f7] sm:text-2xl">
+              {stats[2].value}
+            </div>
+            <div class="text-xs text-[#a9b1d6] sm:text-sm">
+              {stats[2].label}
+            </div>
           </div>
         </div>
 

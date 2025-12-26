@@ -30,12 +30,17 @@ try {
 
 const BlogPosts = featureFlags.showBlog
   ? (await getCollection("blog"))
-      .filter((post) => !post.data.draft)
-      .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
+      .filter((post: CollectionEntry<"blog">) => !post.data.draft)
+      .sort(
+        (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+          a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+      )
   : [];
 
 const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
-const currentBlog = BlogPosts.find((post) => post.slug === currentSlug);
+const currentBlog = BlogPosts.find(
+  (post: CollectionEntry<"blog">) => post.slug === currentSlug,
+);
 
 if (!currentBlog) {
   return Astro.redirect("/access-denied");
@@ -251,17 +256,19 @@ const {
         const faqMatches = blogContent.match(/^#{2,6}\s+(.+)$/gm);
         if (!faqMatches || faqMatches.length < 3) return null;
 
-        const faqItems = faqMatches.slice(0, 5).map((heading, _index) => {
-          const text = heading.replace(/^#{2,6}\s+/, "");
-          return {
-            "@type": "Question",
-            name: text,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `This section covers ${text.toLowerCase()}. Read the full article for detailed information.`,
-            },
-          };
-        });
+        const faqItems = faqMatches
+          .slice(0, 5)
+          .map((heading: string, _index: number) => {
+            const text = heading.replace(/^#{2,6}\s+/, "");
+            return {
+              "@type": "Question",
+              name: text,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: `This section covers ${text.toLowerCase()}. Read the full article for detailed information.`,
+              },
+            };
+          });
 
         return (
           <script

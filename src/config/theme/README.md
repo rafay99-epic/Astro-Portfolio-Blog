@@ -247,34 +247,37 @@ All these variables are automatically available in your CSS:
 ```css
 /* Primary Colors */
 --color-primary
+```
+
 --color-secondary
 --color-accent
 
-/* Backgrounds */
+/_ Backgrounds _/
 --color-bg-primary
 --color-bg-secondary
 --color-bg-card
 
-/* Text */
+/_ Text _/
 --color-text-primary
 --color-text-secondary
 --color-text-muted
 
-/* Borders */
+/_ Borders _/
 --color-border-primary
 --color-border-accent
 
-/* Gradients */
+/_ Gradients _/
 --gradient-primary
 --gradient-accent
 --gradient-rainbow
 
-/* Social Colors */
+/_ Social Colors _/
 --color-twitter
 --color-whatsapp
 --color-github
-/* ... and more */
-```
+/_ ... and more _/
+
+````
 
 ## 🔄 Migration Guide
 
@@ -288,7 +291,7 @@ const styles = {
   color: "#c0caf5",
   border: "1px solid #565f89",
 };
-```
+````
 
 #### After (Theme Variables)
 

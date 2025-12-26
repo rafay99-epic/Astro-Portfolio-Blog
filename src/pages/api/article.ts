@@ -1,5 +1,6 @@
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import { PostSchema } from "../../types/articles";
 
 export async function GET({}: { request: Request }) {
   const headers = {
@@ -22,9 +23,29 @@ export async function GET({}: { request: Request }) {
 
     const posts = await getCollection("blog");
 
-    const filteredPosts = posts.filter((post) => !post.data.draft);
+    const filteredPosts = posts.filter(
+      (post: CollectionEntry<"blog">) => !post.data.draft,
+    );
 
-    return new Response(JSON.stringify(filteredPosts), {
+    // Validate posts with Zod before returning
+    const validatedPosts = filteredPosts.map(
+      (post: CollectionEntry<"blog">) => {
+        try {
+          return PostSchema.parse({
+            id: post.id,
+            slug: post.slug,
+            body: post.body,
+            collection: post.collection,
+            data: post.data,
+          });
+        } catch (error) {
+          console.error("Validation error for post:", post.slug, error);
+          throw error;
+        }
+      },
+    );
+
+    return new Response(JSON.stringify(validatedPosts), {
       status: 200,
       headers: headers,
     });

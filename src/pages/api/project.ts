@@ -1,5 +1,6 @@
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import { ProjectSchema } from "../../types/ProjectTypes";
 
 export async function GET({}: { request: Request }) {
   const headers = {
@@ -20,9 +21,26 @@ export async function GET({}: { request: Request }) {
     }
 
     const posts = await getCollection("projects");
-    const filteredPosts = posts.filter((post) => !post.data.draft);
+    const filteredPosts = posts.filter(
+      (post: CollectionEntry<"projects">) => !post.data.draft,
+    );
 
-    return new Response(JSON.stringify(filteredPosts), {
+    // Validate projects with Zod before returning
+    const validatedProjects = filteredPosts.map(
+      (project: CollectionEntry<"projects">) => {
+        try {
+          return ProjectSchema.parse({
+            slug: project.slug,
+            data: project.data,
+          });
+        } catch (error) {
+          console.error("Validation error for project:", project.slug, error);
+          throw error;
+        }
+      },
+    );
+
+    return new Response(JSON.stringify(validatedProjects), {
       status: 200,
       headers: headers,
     });

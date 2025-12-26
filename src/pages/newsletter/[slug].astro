@@ -12,13 +12,17 @@ export async function getStaticPaths() {
   const newsletters = await getCollection("newsletter");
 
   const filteredNewsletters = import.meta.env.PROD
-    ? newsletters.filter((newsletter) => !newsletter.data.draft)
+    ? newsletters.filter(
+        (newsletter: CollectionEntry<"newsletter">) => !newsletter.data.draft,
+      )
     : newsletters;
 
-  return filteredNewsletters.map((newsletter) => ({
-    params: { slug: newsletter.slug },
-    props: newsletter,
-  }));
+  return filteredNewsletters.map(
+    (newsletter: CollectionEntry<"newsletter">) => ({
+      params: { slug: newsletter.slug },
+      props: newsletter,
+    }),
+  );
 }
 
 type Props = CollectionEntry<"newsletter">;

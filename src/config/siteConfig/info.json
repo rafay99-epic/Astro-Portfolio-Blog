@@ -16,21 +16,64 @@
     "whatsNumber": "+923035650798"
   },
   "about": {
-    "whoAmI": "I'm a Full Stack Engineer with a passion for building intuitive and impactful digital experiences. By day, I specialize in developing robust Flutter applications, turning ideas into seamless mobile solutions. Outside my 9-to-5, I wear my freelancer hat—crafting fast, responsive, and modern web applications using React, Astro, and JavaScript. Whether it's mobile or web, my focus is always on delivering scalable, user-centered products that exceed expectations.",
-    "lifeBeyondCode": "Away from the screen, I recharge through life's simple joys—sipping coffee, diving into competitive video games, and exploring new experiences. This balance keeps me energized and brings a fresh, creative edge to the problems I solve every day.",
-    "continuousLearning": "I thrive on continuous learning and self-improvement. The fast-paced evolution of the tech industry excites me, and I'm always expanding my skills to stay ahead. Whether it's adopting new frameworks or refining my problem-solving toolkit, I'm driven by curiosity and a commitment to excellence."
+    "whoAmI": "I am a Full Stack Software Engineer and Team Lead who builds production-ready web and mobile applications used by real users. My work sits at the intersection of clean architecture, performance, and delivery. I have led engineering teams, owned critical systems, and shipped applications across Android, iOS, and the web using modern stacks like React, Next.js, Flutter, and Node.js. I don’t just build features—I think through system design, edge cases, scalability, and long-term maintainability to create software teams can confidently build on.",
+    "lifeBeyondCode": "Outside of work, I enjoy challenges that demand focus and strategic thinking. Competitive gaming plays a big role in how I recharge, sharpening decision-making, teamwork, and adaptability under pressure. Exploring new experiences helps me reset and maintain balance, which directly influences how I approach problem-solving and collaboration in my professional life.",
+    "continuousLearning": "I treat learning as a core part of my work. I continuously refine my skills by adopting new tools, revisiting architectural decisions, and improving how systems are built and maintained. My learning is driven by real problems such as scaling applications, improving performance, reducing complexity, and helping teams work more effectively together. Through mentorship, collaboration, and technical leadership, I focus on building software that lasts."
   },
+  "coreStack": [
+    {
+      "name": "React & Next.js",
+      "icon": "react",
+      "context": "3+ years building production web apps",
+      "color": "#7aa2f7"
+    },
+    {
+      "name": "Flutter & Dart",
+      "icon": "flutter",
+      "context": "Cross-platform mobile development",
+      "color": "#bb9af7"
+    },
+    {
+      "name": "Node.js & Express",
+      "icon": "nodejs",
+      "context": "Backend APIs and microservices",
+      "color": "#9ece6a"
+    },
+    {
+      "name": "TypeScript",
+      "icon": "typescript",
+      "context": "Type-safe application development",
+      "color": "#7aa2f7"
+    },
+    {
+      "name": "PostgreSQL",
+      "icon": "postgresql",
+      "context": "Database design and optimization",
+      "color": "#bb9af7"
+    },
+    {
+      "name": "Tailwind CSS",
+      "icon": "tailwindcss",
+      "context": "Modern UI development",
+      "color": "#9ece6a"
+    },
+    {
+      "name": "Docker & AWS",
+      "icon": "docker",
+      "context": "Cloud deployment and DevOps",
+      "color": "#7aa2f7"
+    },
+    {
+      "name": "Git & GitHub",
+      "icon": "git",
+      "context": "Version control and collaboration",
+      "color": "#bb9af7"
+    }
+  ],
   "techStack": [
     {
       "category": "App Development",
-      "tools": [
-        "flutter",
-        "android",
-        "androidstudio",
-        "xcode",
-        "vscode",
-        "dart"
-      ]
+      "tools": ["flutter", "androidstudio", "xcode", "vscode", "react native"]
     },
     {
       "category": "Frontend Development",
@@ -40,7 +83,6 @@
         "nodejs",
         "react",
         "typescript",
-        "javascript",
         "nextjs"
       ]
     },
@@ -48,8 +90,6 @@
       "category": "Backend Development",
       "tools": [
         "firebase",
-        "mongodb",
-        "sqlite",
         "supabase",
         "postgresql",
         "prisma",
@@ -61,7 +101,7 @@
     },
     {
       "category": "Cloud Computing",
-      "tools": ["vercel", "linux", "netlify", "aws", "docker"]
+      "tools": ["vercel", "netlify", "aws", "docker"]
     },
     {
       "category": "Scripting",
@@ -70,14 +110,24 @@
   ],
   "workExperience": [
     {
-      "companyName": "Future Tech Technologies",
+      "companyName": "Tudo Num Tech Lab",
       "position": "Senior Software Engineer & Team Lead",
-      "employmentTime": "2nd June, 2025 - Present",
+      "employmentTime": "2nd August, 2025 - Present",
       "roles": [
-        "Building Stunning looking Web Applications using Astro, React, Nodejs,NextJs, and Tailwindcss",
+        "Building Stunning looking Web Applications using React, Nodejs,NextJs, and Tailwindcss",
         "Testing Multiple Applications",
         "Making sure the production does not go down",
-        "Building Stunning looking Web Applications using Astro, React, Nodejs,NextJs, and Tailwindcss",
+        "Building full backend using Nodejs, Express, and SQL with Prisma",
+        "Managing a team of 5+ developers"
+      ],
+      "toolsUsed": ["React", "Nodejs", "NextJs", "Tailwindcss", "Prisma", "SQL"]
+    },
+    {
+      "companyName": "Future Tech Technologies",
+      "position": "Senior Software Engineer & Team Lead",
+      "employmentTime": "2nd June, 2025 - 2nd August, 2025",
+      "roles": [
+        "Building Stunning looking Web Applications using React, Nodejs,NextJs, and Tailwindcss",
         "Testing Multiple Applications",
         "Making sure the production does not go down",
         "Building full backend using Nodejs, Express, and SQL with Prisma",
@@ -318,5 +368,10 @@
         "GitHub Actions"
       ]
     }
+  ],
+  "stats": [
+    { "label": "Years Experience", "value": "3+" },
+    { "label": "Technologies", "value": "15+" },
+    { "label": "Happy Clients", "value": "25+" }
   ]
 }

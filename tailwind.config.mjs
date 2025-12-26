@@ -20,15 +20,23 @@ export default {
         fadeSlideIn: "fadeSlideIn 0.8s ease-out forwards",
       },
       screens: {
-        mobile: { max: "767px" },
+        mobile: {
+          max: "767px",
+        },
       },
       maxWidth: {
         "7.5xl": "85rem",
       },
       keyframes: {
         fadeSlideIn: {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+          "0%": {
+            opacity: "0",
+            transform: "translateY(20px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
         },
       },
       boxShadow: {
