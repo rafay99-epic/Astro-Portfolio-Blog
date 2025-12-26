@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PlaygroundEditor from "./PlaygroundEditor";
 import PlaygroundPreview from "./PlaygroundPreview";
 import { motion } from "framer-motion";
 
 interface PlaygroundProps {
   initialCode?: string;
-  language?: "typescript" | "javascript" | "dart";
+  language?: "typescript" | "javascript" | "dart" | "bash" | "python";
   title?: string;
   height?: string;
 }
@@ -94,11 +94,26 @@ const Playground = ({
   title = "Interactive Playground",
   height = "500px",
 }: PlaygroundProps) => {
-  const [code, setCode] = useState(
-    initialCode ||
-      (language === "dart" ? DEFAULT_DART_CODE : DEFAULT_REACT_CODE),
-  );
+  const defaultCode =
+    language === "dart" ? DEFAULT_DART_CODE : DEFAULT_REACT_CODE;
+  const [code, setCode] = useState(initialCode || defaultCode);
   const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
+
+  // Sync code state when initialCode prop changes
+  useEffect(() => {
+    if (initialCode !== undefined) {
+      setCode(initialCode);
+    }
+  }, [initialCode]);
+
+  // Reset to default code when language changes (if no initialCode provided)
+  useEffect(() => {
+    if (initialCode === undefined) {
+      const newDefaultCode =
+        language === "dart" ? DEFAULT_DART_CODE : DEFAULT_REACT_CODE;
+      setCode(newDefaultCode);
+    }
+  }, [language, initialCode]);
 
   return (
     <motion.div
@@ -149,7 +164,7 @@ const Playground = ({
           <PlaygroundEditor
             code={code}
             onChange={(val) => setCode(val || "")}
-            language={language === "dart" ? "dart" : "typescript"}
+            language={language}
           />
         </div>
 

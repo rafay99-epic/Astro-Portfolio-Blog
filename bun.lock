@@ -13,7 +13,7 @@
         "@astrojs/ts-plugin": "^1.10.6",
         "@astrojs/vercel": "^9.0.2",
         "@fontsource/poppins": "^5.2.7",
-        "@monaco-editor/react": "^4.7.0",
+        "@monaco-editor/react": "^4.6.0",
         "@playform/compress": "^0.2.0",
         "@rollup/plugin-yaml": "^4.1.2",
         "@tailwindcss/typography": "^0.5.19",
@@ -35,12 +35,14 @@
         "framer-motion": "^11.18.2",
         "fuse.js": "^7.1.0",
         "highlight.js": "^11.11.1",
+        "livecodes": "^0.12.0",
         "mdast-util-to-string": "^4.0.0",
         "mermaid": "^11.12.0",
         "parse-entities": "^4.0.2",
         "prettier": "^3.6.2",
         "prettier-plugin-astro": "^0.14.1",
         "prettier-plugin-tailwindcss": "^0.6.14",
+        "pyodide": "^0.25.0",
         "react": "19.1.0",
         "react-compiler-runtime": "^19.0.0-beta-ebf51a3-20250411",
         "react-dom": "19.1.0",
@@ -1958,6 +1960,8 @@
 
     "linkify-it": ["linkify-it@3.0.3", "", { "dependencies": { "uc.micro": "^1.0.1" } }, "sha512-ynTsyrFSdE5oZ/O9GEf00kPngmOfVwazR5GKDq6EYfhlpFug3J2zybX56a2PRRpc9P+FuSoGNAwjlbDs9jJBPQ=="],
 
+    "livecodes": ["livecodes@0.12.0", "", {}, "sha512-qDK12wLThvdfAoDLyCDSn7hQ6Ii7/BkG8YQOlYuM5LjxOSNkJvh9F2Lm6BOS0dNy2uBXRSvWm3XAph3QgBdlOw=="],
+
     "local-pkg": ["local-pkg@1.1.2", "", { "dependencies": { "mlly": "^1.7.4", "pkg-types": "^2.3.0", "quansync": "^0.2.11" } }, "sha512-arhlxbFRmoQHl33a0Zkle/YWlmNwoyt6QNZEIJcqNbdrsix5Lvc4HyyI3EnwxTYlZYc32EbYrQ8SzEZ7dqgg9A=="],
 
     "locate-path": ["locate-path@6.0.0", "", { "dependencies": { "p-locate": "^5.0.0" } }, "sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw=="],
@@ -2417,6 +2421,8 @@
     "punycode": ["punycode@2.3.1", "", {}, "sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg=="],
 
     "punycode.js": ["punycode.js@2.3.1", "", {}, "sha512-uxFIHU0YlHYhDQtV4R9J6a52SLx28BCjT+4ieh7IGbgwVJWO+km431c4yRlREUAsAmt/uMjQUyQHNEPf0M39CA=="],
+
+    "pyodide": ["pyodide@0.25.1", "", { "dependencies": { "base-64": "^1.0.0", "ws": "^8.5.0" } }, "sha512-y0nJ/fLA3bxD2iZRzvVTbP2O+wp4Ewm2wThfV4HF0BytQ6hsoqTJFLNY4usLOcCVBrK8TTWqFqrmsVPzHe4rsw=="],
 
     "qs": ["qs@6.13.0", "", { "dependencies": { "side-channel": "^1.0.6" } }, "sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg=="],
 
