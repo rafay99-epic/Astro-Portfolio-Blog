@@ -127,7 +127,7 @@ const useSearch = (posts: Post[]): UseSearchResult => {
   );
 
   const filteredPosts = useMemo(
-    () => posts.filter((post) => !post.data.draft),
+    () => posts.filter((post) => !post.data.draft && !post.data.archived),
     [posts],
   );
 

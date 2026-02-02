@@ -5,9 +5,11 @@ import authorConfig from "@config/siteConfig/info.json";
 export async function GET(context) {
   const posts = await getCollection("blog");
 
-  const sortedPosts = posts.sort(
-    (a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate),
-  );
+  const sortedPosts = posts
+    .filter((post) => !post.data.draft && !post.data.archived)
+    .sort(
+      (a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate),
+    );
 
   return rss({
     stylesheet: "/rss/stylesheet.xsl",

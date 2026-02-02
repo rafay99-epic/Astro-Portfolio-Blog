@@ -28,7 +28,7 @@ try {
   return Astro.redirect("/404");
 }
 
-const BlogPosts = featureFlags.showBlog
+const allPublishedPosts = featureFlags.showBlog
   ? (await getCollection("blog"))
       .filter((post: CollectionEntry<"blog">) => !post.data.draft)
       .sort(
@@ -37,8 +37,12 @@ const BlogPosts = featureFlags.showBlog
       )
   : [];
 
+const visiblePosts = allPublishedPosts.filter(
+  (post: CollectionEntry<"blog">) => !post.data.archived,
+);
+
 const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
-const currentBlog = BlogPosts.find(
+const currentBlog = allPublishedPosts.find(
   (post: CollectionEntry<"blog">) => post.slug === currentSlug,
 );
 
@@ -405,7 +409,7 @@ const {
       <BlogNavigation
         client:load
         currentSlug={currentSlug || ""}
-        allPosts={BlogPosts}
+        allPosts={visiblePosts}
       />
 
       <div class="comments-section">

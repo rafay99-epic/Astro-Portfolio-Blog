@@ -24,7 +24,8 @@ export async function GET({}: { request: Request }) {
     const posts = await getCollection("blog");
 
     const filteredPosts = posts.filter(
-      (post: CollectionEntry<"blog">) => !post.data.draft,
+      (post: CollectionEntry<"blog">) =>
+        !post.data.draft && !post.data.archived,
     );
 
     // Validate posts with Zod before returning
