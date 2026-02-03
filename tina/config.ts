@@ -84,6 +84,10 @@ export default defineConfig({
             ui: {
               component: "tags",
             },
+            // Canonical high-level tags (unified across the app):
+            // AI, WebDevelopment, MobileDevelopment, OS, DevOps, Linux,
+            // DesktopApps, ThoughtsProcess, DevelopmentTools,
+            // Startup, Google, CES-2025, Bun, Other
           },
           {
             type: "string",

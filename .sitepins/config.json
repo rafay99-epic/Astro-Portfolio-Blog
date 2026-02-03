@@ -2,10 +2,7 @@
   "content": "src/content",
   "media": "public",
   "public": "public",
-  "configs": [
-    "src/config/siteConfig",
-    "src/config/featureFlag"
-  ],
+  "configs": ["src/config/siteConfig", "src/config/featureFlag"],
   "custom-commit": false,
   "arrangement": []
 }

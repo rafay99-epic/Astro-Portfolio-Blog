@@ -7,8 +7,8 @@ heroImage: /BlogImages/Secure-Linux-3.webp
 authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
-  - Linux
   - DevOps
+  - Linux
 keywords:
   - programming
   - linux security
@@ -23,6 +23,7 @@ keywords:
 featured: false
 excerpt: Security is a Journey not a destination
 canonicalUrl: /blog/secure-linux-the-3-biggest-security-mistakes-linux-users-make
+archived: false
 ---
 
 After using a Linux system for a while, I've noticed that there are some common mistakes people make that can compromise the security of their Linux installations. In this blog post, I will address the three most significant security mistakes that Linux users often make. These mistakes can be exploited by hackers, making them essential points to consider for basic security layers.
@@ -134,7 +135,7 @@ Adding untrusted repositories can lead to serious security issues. It's crucial 
 
 On Debian-based systems, you can set priority preferences for repositories. Example: **_volian.pref_**
 
-```conf
+```ini
 Package: *
 Pin: origin deb.volian.org
 Pin-Priority: 100

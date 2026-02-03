@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Astro 5 portfolio and blog site (rafay99.com) with React 19 islands, TinaCMS for content management, Tailwind CSS styling, and Vercel deployment with ISR.
 
 **Important workflow guidelines for assistants:**
+
 - **Use Bun only**: Always use `bun` as the package manager (`bun run ...`, `bun x ...`). Do **not** introduce other package managers (npm, pnpm, yarn) or change the existing tooling.
 - **Dev server lifecycle**: Assume the dev server is already running during normal work sessions. Do **not** start or restart `bun run dev` unless explicitly asked, or when required after a TinaCMS config/schema change.
 - **Validate your changes**: After non-trivial code changes, you may verify your work with:
@@ -44,6 +45,7 @@ bun run changelog        # Generate changelog via ./scripts/generate-changelog.s
 **Islands Architecture**: Astro components handle static content; React components (under `ReactComponent/`) provide client-side interactivity. React integration only includes files matching `**/ReactComponent/**` and `**/*.{jsx,tsx}`.
 
 **Content Collections**: Four Zod-validated collections in `src/content/`:
+
 - `blog/` (MDX) - articles with draft/archived/featured flags, tags, SEO fields
 - `projects/` (MDX) - portfolio items with tech stack, categories, links
 - `newsletter/` (MDX) - newsletter archives

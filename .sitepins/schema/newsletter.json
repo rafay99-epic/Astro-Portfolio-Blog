@@ -1,36 +1,37 @@
 {
-    "file": "src/content/newsletter/wordpress-vs-wpEngin.mdx",
-    "name": "newsletter",
-    "fileType": "mdx",
-    "fmType": "yaml",
-    "template": [{
-            "name": "title",
-            "label": "Title",
-            "type": "string",
-            "value": "",
-            "defaultValue": ""
-        },
-        {
-            "name": "summary",
-            "label": "Summary",
-            "type": "string",
-            "value": "",
-            "defaultValue": ""
-        },
-        {
-            "name": "pubDate",
-            "label": "PubDate",
-            "type": "Date",
-            "value": "",
-            "defaultValue": "",
-            "alwaysUseCurrentDate": true
-        },
-        {
-            "name": "draft",
-            "label": "Draft",
-            "type": "boolean",
-            "value": false,
-            "defaultValue": false
-        }
-    ]
+  "file": "src/content/newsletter/wordpress-vs-wpEngin.mdx",
+  "name": "newsletter",
+  "fileType": "mdx",
+  "fmType": "yaml",
+  "template": [
+    {
+      "name": "title",
+      "label": "Title",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "summary",
+      "label": "Summary",
+      "type": "string",
+      "value": "",
+      "defaultValue": ""
+    },
+    {
+      "name": "pubDate",
+      "label": "PubDate",
+      "type": "Date",
+      "value": "",
+      "defaultValue": "",
+      "alwaysUseCurrentDate": true
+    },
+    {
+      "name": "draft",
+      "label": "Draft",
+      "type": "boolean",
+      "value": false,
+      "defaultValue": false
+    }
+  ]
 }

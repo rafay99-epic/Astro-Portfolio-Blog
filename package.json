@@ -12,7 +12,8 @@
     "scan": "npx react-scan@latest http://localhost:4321",
     "changelog": "./scripts/generate-changelog.sh",
     "lint": "prettier --check . &&  tsc --noEmit --skipLibCheck",
-    "lint:fix": "prettier --write ."
+    "lint:fix": "prettier --write .",
+    "normalize:tags": "node scripts/normalize-tags.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
