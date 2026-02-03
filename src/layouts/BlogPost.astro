@@ -998,6 +998,14 @@ const formattedWordCount =
         const tocRoot = document.getElementById("post-toc");
         const tocEmpty = tocRoot?.querySelector("[data-toc-empty]") || null;
         const postContent = document.getElementById("post-content");
+        const setActive = (id) => {
+          (tocRoot?.querySelectorAll("a") || []).forEach((link) => {
+            link.classList.toggle(
+              "is-active",
+              link.getAttribute("href") === `#${id}`,
+            );
+          });
+        };
 
         const slugCounts = new Map();
         const slugify = (text) => {
@@ -1057,15 +1065,6 @@ const formattedWordCount =
           requestAnimationFrame(() => {
             const retryHeadings = buildToc();
             if (retryHeadings.length > 0 && "IntersectionObserver" in window) {
-              const tocLinks = Array.from(tocRoot?.querySelectorAll("a") || []);
-              const setActive = (id) => {
-                tocLinks.forEach((link) => {
-                  link.classList.toggle(
-                    "is-active",
-                    link.getAttribute("href") === `#${id}`,
-                  );
-                });
-              };
               const observer = new IntersectionObserver(
                 (entries) => {
                   entries.forEach((entry) => {
@@ -1080,19 +1079,6 @@ const formattedWordCount =
             }
           });
         }
-
-        const tocLinks = tocRoot
-          ? Array.from(tocRoot.querySelectorAll("a"))
-          : [];
-
-        const setActive = (id) => {
-          tocLinks.forEach((link) => {
-            link.classList.toggle(
-              "is-active",
-              link.getAttribute("href") === `#${id}`,
-            );
-          });
-        };
 
         if (headings.length > 0 && "IntersectionObserver" in window) {
           const observer = new IntersectionObserver(
