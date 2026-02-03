@@ -1,5 +1,21 @@
 import "https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js";
 
+const updateGtagConsent = ({ analytics, ads }) => {
+    if (typeof gtag !== "function") return;
+    gtag("consent", "update", {
+        analytics_storage: analytics ? "granted" : "denied",
+        ad_storage: ads ? "granted" : "denied",
+    });
+};
+
+const applyConsentState = (cookie) => {
+    const categories = cookie?.categories ?? [];
+    const analytics = categories.includes("analytics");
+    const ads = categories.includes("ads");
+
+    updateGtagConsent({ analytics, ads });
+};
+
 CookieConsent.run({
     guiOptions: {
         consentModal: {
@@ -73,5 +89,26 @@ CookieConsent.run({
                 },
             },
         },
+    },
+    onConsent: ({ cookie }) => {
+        applyConsentState(cookie);
+    },
+    onChange: ({ cookie, changedCategories }) => {
+        const relevantChanges = changedCategories.filter((category) =>
+            ["analytics", "ads"].includes(category),
+        );
+
+        if (relevantChanges.length === 0) return;
+
+        const shouldReload = relevantChanges.some(
+            (category) => !CookieConsent.acceptedCategory(category),
+        );
+
+        if (shouldReload) {
+            window.location.reload();
+            return;
+        }
+
+        applyConsentState(cookie);
     },
 });
