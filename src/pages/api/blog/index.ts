@@ -2,13 +2,13 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { PostSchema } from "../../../types/articles";
+import { createHash } from "node:crypto";
 
-export async function GET({}: { request: Request }) {
-  const headers = {
+export async function GET() {
+  const errorHeaders = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "https://www.rafay99.com",
-    "Cache-Control": "public, max-age=3600",
-    ETag: crypto.randomUUID(),
+    "Cache-Control": "no-store, no-cache",
   };
 
   try {
@@ -17,7 +17,7 @@ export async function GET({}: { request: Request }) {
         JSON.stringify({ error: "Blog feature is disabled" }),
         {
           status: 403,
-          headers: headers,
+          headers: errorHeaders,
         },
       );
     }
@@ -46,9 +46,17 @@ export async function GET({}: { request: Request }) {
       },
     );
 
-    return new Response(JSON.stringify(validatedPosts), {
+    const responseBody = JSON.stringify(validatedPosts);
+    const successHeaders = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "https://www.rafay99.com",
+      "Cache-Control": "public, max-age=3600",
+      ETag: `"${createHash("sha1").update(responseBody).digest("hex")}"`,
+    };
+
+    return new Response(responseBody, {
       status: 200,
-      headers: headers,
+      headers: successHeaders,
     });
   } catch (error) {
     console.error("Error fetching blog posts:", error);
@@ -56,7 +64,7 @@ export async function GET({}: { request: Request }) {
       JSON.stringify({ error: "Failed to fetch blog posts" }),
       {
         status: 500,
-        headers: headers,
+        headers: errorHeaders,
       },
     );
   }

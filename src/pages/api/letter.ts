@@ -2,7 +2,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { NewsletterSchema } from "../../types/newsletter_types";
 
-export async function GET({}: { request: Request }) {
+export async function GET() {
   const header = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "https://www.rafay99.com",
