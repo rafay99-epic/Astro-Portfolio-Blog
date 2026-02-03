@@ -384,12 +384,16 @@ const {
     <main class="main-content relative z-10 flex flex-1 flex-col">
       {
         heroImage && (
-          <div class="mx-auto w-full max-w-5xl md:-mb-10 lg:-mb-12 xl:-mb-16">
+          <div class="relative mx-auto w-full max-w-5xl md:-mb-10 lg:-mb-12 xl:-mb-16">
+            <div
+              class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(187,154,247,0.3)_0%,_rgba(122,162,247,0.15)_40%,_transparent_70%)]"
+              aria-hidden="true"
+            />
             <img
               src={heroImage}
               alt=""
               loading="eager"
-              class="min-h-[240px] w-full object-cover"
+              class="relative min-h-[300px] w-full object-cover md:min-h-[400px] lg:min-h-[500px]"
             />
           </div>
         )
@@ -405,7 +409,7 @@ const {
         <div
           class:list={[
             "mx-auto w-fit max-w-full bg-[#1a1b26] px-6 py-8 md:px-10 md:py-12 lg:px-12 lg:py-16 xl:px-16 xl:py-20",
-            { "md:border-t md:border-[#565f89]/10": heroImage },
+            { "md:border-t-2 md:border-[#bb9af7]/40": heroImage },
           ]}
         >
           <header class="mx-auto w-full max-w-prose text-center">
@@ -479,7 +483,7 @@ const {
             }
           </header>
 
-          <hr class="-mx-16 my-8 border-[#565f89]/20 lg:my-16" />
+          <hr class="-mx-16 my-8 border-[#565f89]/50 lg:my-16" />
 
           <div class="flex max-w-prose flex-wrap gap-y-12 lg:gap-y-16">
             <article class="prose w-full">
