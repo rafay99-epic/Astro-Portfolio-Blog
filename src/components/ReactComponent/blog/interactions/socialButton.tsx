@@ -5,6 +5,7 @@ import { generateShareUrls } from "types/shareUtils";
 interface ShareButtonsProps {
   url: string;
   pagetitle: string;
+  compact?: boolean;
 }
 
 const sharePlatforms = [
@@ -37,8 +38,34 @@ const sharePlatforms = [
 const ShareButtons = memo(function ShareButtons({
   url,
   pagetitle,
+  compact = false,
 }: ShareButtonsProps) {
   const shareUrls = generateShareUrls(url);
+
+  if (compact) {
+    return (
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        {sharePlatforms.map((platform) => {
+          const IconComponent = platform.icon;
+          return (
+            <a
+              key={platform.id}
+              href={shareUrls[platform.id]}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Share on ${platform.label}`}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#565f89]/40 bg-[#24283b]/60 text-[#a9b1d6] transition-all duration-200 hover:scale-105 hover:border-[#7aa2f7]/50 hover:text-[#c0caf5]"
+            >
+              <IconComponent
+                className="h-4 w-4"
+                style={{ color: platform.color }}
+              />
+            </a>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <div className="mt-12">

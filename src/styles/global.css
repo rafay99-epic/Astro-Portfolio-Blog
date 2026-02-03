@@ -710,11 +710,7 @@ html {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(122, 162, 247, 0.03) 0%,
-    rgba(187, 154, 247, 0.03) 100%
-  );
+  background: transparent;
   pointer-events: none;
 }
 
@@ -726,6 +722,9 @@ html {
 }
 
 .comments-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 2.5rem;
   font-weight: bold;
   background: linear-gradient(135deg, #7aa2f7, #bb9af7);
@@ -733,6 +732,13 @@ html {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 0.5rem;
+}
+
+.comments-title-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  -webkit-text-fill-color: initial;
+  color: #bb9af7;
 }
 
 @media (max-width: 600px) {

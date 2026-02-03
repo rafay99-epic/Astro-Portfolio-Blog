@@ -5,6 +5,7 @@ import Footer from "@astro/footer/Footer.astro";
 import ArticleHeader from "@astro/blog/layout/ArticleHeader.astro";
 import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
 import PostComment from "@astro/blog/comments/PostComment.astro";
+import { Icon } from "astro-icon/components";
 import ShareButtons from "@react/blog/interactions/socialButton";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
@@ -146,6 +147,9 @@ try {
       }
 
       .comments-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
         font-size: 1.8rem;
         font-weight: bold;
         background: linear-gradient(135deg, #9ece6a, #bb9af7);
@@ -204,7 +208,15 @@ try {
         <div class="comments-section">
           <div class="comments-container">
             <div class="comments-header">
-              <h2 class="comments-title">💬 Join the Discussion</h2>
+              <h2 class="comments-title">
+                <Icon
+                  name="lucide:message-circle"
+                  class="comments-title-icon"
+                  size="1em"
+                  aria-hidden
+                />
+                Join the Discussion
+              </h2>
               <p class="text-sm text-[#a9b1d6]">
                 Share your thoughts and engage with the community
               </p>
