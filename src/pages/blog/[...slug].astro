@@ -28,17 +28,26 @@ type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
 
-const { remarkPluginFrontmatter } = await render(post);
-
-const { Content } = featureFlags.showBlog
-  ? await post.render()
-  : { Content: null };
+const renderResult = featureFlags.showBlog ? await render(post) : null;
+const {
+  Content,
+  headings = [],
+  remarkPluginFrontmatter,
+} = renderResult ?? {
+  Content: null,
+  headings: [],
+  remarkPluginFrontmatter: { minutesRead: undefined },
+};
 ---
 
 {
   featureFlags.showBlog ? (
     Content ? (
-      <BlogPost {...post.data} readTime={remarkPluginFrontmatter.minutesRead}>
+      <BlogPost
+        {...post.data}
+        readTime={remarkPluginFrontmatter.minutesRead}
+        headings={headings}
+      >
         <Content />
       </BlogPost>
     ) : (

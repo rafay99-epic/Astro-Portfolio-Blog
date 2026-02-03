@@ -1,0 +1,156 @@
+/* Cookie consent – Tokyo Night theme (matches app color scheme) */
+#cc-main {
+  --cc-font-family:
+    Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  --cc-modal-border-radius: 18px;
+  --cc-btn-border-radius: 999px;
+
+  /* Background & surfaces */
+  --cc-bg: #1a1b26;
+  --cc-primary-color: #c0caf5;
+  --cc-secondary-color: #a9b1d6;
+
+  /* Primary buttons (Accept all, Save preferences) */
+  --cc-btn-primary-bg: #7aa2f7;
+  --cc-btn-primary-color: #1a1b26;
+  --cc-btn-primary-border-color: rgba(122, 162, 247, 0.4);
+  --cc-btn-primary-hover-bg: #6a92e6;
+  --cc-btn-primary-hover-color: #1a1b26;
+  --cc-btn-primary-hover-border-color: rgba(122, 162, 247, 0.6);
+
+  /* Secondary buttons (Reject non-essential, Close) */
+  --cc-btn-secondary-bg: rgba(36, 40, 59, 0.6);
+  --cc-btn-secondary-color: #c0caf5;
+  --cc-btn-secondary-border-color: rgba(86, 95, 137, 0.4);
+  --cc-btn-secondary-hover-bg: rgba(122, 162, 247, 0.2);
+  --cc-btn-secondary-hover-color: #7aa2f7;
+  --cc-btn-secondary-hover-border-color: rgba(122, 162, 247, 0.6);
+
+  /* Links */
+  --cc-link-color: #7aa2f7;
+
+  /* Separators & borders */
+  --cc-separator-border-color: rgba(86, 95, 137, 0.35);
+
+  /* Toggles */
+  --cc-toggle-on-bg: #7aa2f7;
+  --cc-toggle-off-bg: #565f89;
+  --cc-toggle-on-knob-bg: #1a1b26;
+  --cc-toggle-off-knob-bg: #c0caf5;
+  --cc-toggle-enabled-icon-color: #1a1b26;
+  --cc-toggle-disabled-icon-color: #c0caf5;
+  --cc-toggle-readonly-bg: rgba(86, 95, 137, 0.35);
+  --cc-toggle-readonly-knob-bg: #565f89;
+  --cc-toggle-readonly-knob-icon-color: #1a1b26;
+
+  /* Category blocks (preferences modal) */
+  --cc-section-category-border: rgba(86, 95, 137, 0.35);
+  --cc-cookie-category-block-bg: rgba(36, 40, 59, 0.4);
+  --cc-cookie-category-block-border: rgba(86, 95, 137, 0.25);
+  --cc-cookie-category-block-hover-bg: rgba(122, 162, 247, 0.1);
+  --cc-cookie-category-block-hover-border: rgba(122, 162, 247, 0.35);
+  --cc-cookie-category-expanded-block-bg: transparent;
+  --cc-cookie-category-expanded-block-hover-bg: rgba(86, 95, 137, 0.2);
+
+  /* Overlay */
+  --cc-overlay-bg: rgba(10, 12, 20, 0.65);
+
+  /* Footer (consent modal links) */
+  --cc-footer-bg: rgba(36, 40, 59, 0.5);
+  --cc-footer-color: #565f89;
+  --cc-footer-border-color: rgba(86, 95, 137, 0.35);
+
+  /* Scrollbar */
+  --cc-webkit-scrollbar-bg: rgba(86, 95, 137, 0.35);
+  --cc-webkit-scrollbar-hover-bg: #7aa2f7;
+}
+
+/* Slight shadow to match app cards */
+#cc-main .cm,
+#cc-main .pm {
+  box-shadow: 0 14px 40px rgba(10, 12, 20, 0.45);
+  border: 1px solid rgba(86, 95, 137, 0.25);
+}
+
+/* Spacing: preferences modal */
+#cc-main .pm__body,
+#cc-main .pm__footer,
+#cc-main .pm__header {
+  padding: 1.25rem 1.5rem;
+}
+
+#cc-main .pm__body {
+  padding-top: 1rem;
+  padding-bottom: 1.25rem;
+}
+
+#cc-main .pm__section {
+  padding: 1.25rem 1.35rem;
+  margin-bottom: 0.85rem;
+}
+
+#cc-main .pm__section:first-child {
+  margin-bottom: 2rem;
+  padding: 0;
+}
+
+#cc-main .pm__section--toggle .pm__section-title {
+  padding: 1.25rem 5.4rem 1.25rem 1.35rem;
+  min-height: 3.25rem;
+}
+
+#cc-main .pm__section--toggle .pm__section-desc-wrapper {
+  padding-top: 0.25rem;
+}
+
+#cc-main .pm__section--toggle .pm__section-desc {
+  padding: 1.1rem 1.35rem;
+  margin-top: 0;
+}
+
+#cc-main .pm__section-toggles + .pm__section {
+  margin-top: 2.25rem;
+}
+
+#cc-main .pm__section--toggle {
+  margin-bottom: 0.85rem;
+}
+
+#cc-main .pm__footer {
+  padding-top: 1.25rem;
+  padding-bottom: 1.35rem;
+}
+
+#cc-main .pm__btn + .pm__btn,
+#cc-main .pm__btn-group + .pm__btn-group {
+  margin-left: 0.65rem;
+}
+
+/* Spacing: consent modal (first-time box) */
+#cc-main .cm__desc,
+#cc-main .cm__title {
+  padding: 0 1.4rem;
+}
+
+#cc-main .cm__desc {
+  padding-bottom: 1.25em;
+}
+
+#cc-main .cm__title + .cm__desc {
+  margin-top: 1rem;
+}
+
+#cc-main .cm__btns,
+#cc-main .cm__links {
+  padding: 1.2rem 1.4rem;
+}
+
+#cc-main .cm__texts {
+  padding: 1rem 0 0;
+}
+
+#cc-main .cm__btn + .cm__btn,
+#cc-main .cm__btn-group + .cm__btn-group {
+  margin-top: 0.5rem;
+}

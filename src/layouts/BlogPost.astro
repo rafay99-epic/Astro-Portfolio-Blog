@@ -10,6 +10,8 @@ import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 import EnhancedImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/EnhancedImageCaptionRenderer";
 import BlogNavigation from "@react/blog/layout/BlogNavigation";
+import ShareButtons from "@react/blog/interactions/socialButton";
+import { Icon } from "astro-icon/components";
 export const prerender = true;
 import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
@@ -20,6 +22,7 @@ const openGraphImageUrl = getImagePath({ url, site });
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"] & {
   isArchive?: boolean;
+  headings?: import("astro").MarkdownHeading[];
 };
 const isArchive = (Astro.props as Props).isArchive === true;
 
@@ -77,7 +80,15 @@ const {
   canonicalUrl,
   featured,
   excerpt,
+  headings: tocHeadings = [],
 } = Astro.props as Props;
+const lead = excerpt || description;
+const tocEntries = tocHeadings.filter((h) => h.depth === 2 || h.depth === 3);
+const wordCount = blogContent
+  ? blogContent.trim().split(/\s+/).filter(Boolean).length
+  : 0;
+const formattedWordCount =
+  wordCount > 0 ? new Intl.NumberFormat("en-US").format(wordCount) : "";
 ---
 
 <html lang="en">
@@ -90,43 +101,6 @@ const {
     />
 
     <style>
-      #scroll-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          #7aa2f7 0%,
-          #bb9af7 50%,
-          #9ece6a 100%
-        );
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.1s linear;
-        width: 100%;
-        z-index: 50;
-        pointer-events: none;
-        box-shadow: 0 2px 12px rgba(122, 162, 247, 0.4);
-      }
-
-      #scroll-progress::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(
-          90deg,
-          rgba(122, 162, 247, 0.8) 0%,
-          rgba(187, 154, 247, 0.8) 50%,
-          rgba(158, 206, 106, 0.8) 100%
-        );
-        filter: blur(2px);
-        z-index: -1;
-      }
-
       /* Prevent white flash - Critical styles */
       html {
         background-color: #1a1b26 !important;
@@ -151,6 +125,393 @@ const {
       }
       #__astro {
         background-color: #1a1b26 !important;
+      }
+    </style>
+
+    <style>
+      .blog-container .main-content {
+        margin: 0;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .post-shell {
+        position: relative;
+        z-index: 1;
+        width: min(92vw, 86rem);
+        margin: 5rem auto 0;
+        padding: 3.5rem 0 4rem;
+      }
+
+      .ads-section {
+        width: min(92vw, 72ch);
+        margin: 3rem auto 0;
+      }
+
+      .ads-section--rail {
+        width: 100%;
+        margin: 0;
+      }
+
+      .ads-slot {
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed rgba(86, 95, 137, 0.35);
+        border-radius: 12px;
+        background: rgba(36, 40, 59, 0.2);
+      }
+
+      .ads-section--rail .ads-slot {
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .ads-section--rail .ads-slot .adsbygoogle {
+        max-width: 100%;
+      }
+
+      .ads-section-title {
+        font-size: 0.75rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #565f89;
+        margin-bottom: 1rem;
+      }
+
+      .comments-section {
+        width: min(92vw, 86rem);
+        margin: 3rem auto 0;
+        padding-bottom: 4rem;
+      }
+
+      .post-header {
+        background: #1a1b26;
+        border: 1px solid rgba(86, 95, 137, 0.35);
+        border-radius: 26px;
+        padding: 2.75rem 2.5rem;
+        box-shadow: 0 20px 60px rgba(10, 12, 20, 0.55);
+      }
+
+      .post-eyebrow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem 1.5rem;
+        color: #565f89;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .post-title {
+        margin: 1rem 0 0.75rem;
+        font-size: clamp(2.3rem, 4vw, 3.75rem);
+        line-height: 1.1;
+      }
+
+      .post-lead {
+        margin-top: 0.75rem;
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: #a9b1d6;
+        max-width: 60ch;
+      }
+
+      .post-byline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.5rem;
+        align-items: center;
+        margin-top: 1.5rem;
+        color: #a9b1d6;
+        font-size: 0.95rem;
+      }
+
+      .post-author {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        color: #c0caf5;
+      }
+
+      .post-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.75rem;
+      }
+
+      .post-tag {
+        border-radius: 999px;
+        border: 1px solid rgba(122, 162, 247, 0.35);
+        background: rgba(122, 162, 247, 0.12);
+        color: #7aa2f7;
+        padding: 0.35rem 0.8rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .post-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 999px;
+        border: 1px solid rgba(187, 154, 247, 0.35);
+        background: rgba(36, 40, 59, 0.75);
+        color: #bb9af7;
+        padding: 0.35rem 0.85rem;
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
+      }
+
+      .post-grid {
+        display: grid;
+        gap: 2.5rem;
+        margin-top: 2.75rem;
+      }
+
+      .post-rail {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .post-card {
+        background: #1a1b26;
+        border: 1px solid rgba(86, 95, 137, 0.25);
+        border-radius: 18px;
+        padding: 1.5rem;
+        box-shadow: 0 14px 40px rgba(10, 12, 20, 0.45);
+      }
+
+      .post-card-title {
+        font-size: 0.75rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #565f89;
+        margin-bottom: 1rem;
+      }
+
+      .post-stat {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #a9b1d6;
+        margin-bottom: 0.65rem;
+      }
+
+      .post-stat strong {
+        color: #c0caf5;
+        font-weight: 600;
+      }
+
+      .post-progress {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+      }
+
+      .post-progress-track {
+        flex: 1;
+        height: 6px;
+        background: rgba(86, 95, 137, 0.35);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .post-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #7aa2f7, #bb9af7, #9ece6a);
+        transform: scaleX(0);
+        transform-origin: left;
+      }
+
+      .post-progress-label {
+        font-size: 0.75rem;
+        color: #565f89;
+        min-width: 2.5rem;
+        text-align: right;
+      }
+
+      .post-actions {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .post-actions-share {
+        margin-top: 0.25rem;
+      }
+
+      .post-action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.55rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid rgba(86, 95, 137, 0.4);
+        background: rgba(36, 40, 59, 0.6);
+        color: #c0caf5;
+        font-size: 0.85rem;
+        transition:
+          border-color 0.2s ease,
+          color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .post-action-btn:hover {
+        border-color: rgba(122, 162, 247, 0.6);
+        color: #7aa2f7;
+        transform: translateY(-1px);
+      }
+
+      .post-action-btn.post-action-btn--success {
+        border-color: rgba(158, 206, 106, 0.6);
+        color: #9ece6a;
+      }
+
+      .post-action-status {
+        display: block;
+        margin-top: 0.75rem;
+        font-size: 0.75rem;
+        color: #565f89;
+        min-height: 1rem;
+      }
+
+      .post-content {
+        width: 100%;
+        max-width: 72ch;
+        margin: 0 auto;
+      }
+
+      .post-toc {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        max-height: 50vh;
+        overflow: auto;
+        padding-right: 0.25rem;
+      }
+
+      .post-toc .toc-link {
+        display: block;
+        color: #565f89;
+        text-decoration: none;
+        padding-left: 0.75rem;
+        border-left: 2px solid transparent;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .post-toc .toc-link:hover {
+        color: #c0caf5;
+      }
+
+      .post-toc .toc-link.is-active {
+        color: #7aa2f7;
+        border-color: #7aa2f7;
+      }
+
+      .post-toc .toc-h3 {
+        padding-left: 1.5rem;
+        font-size: 0.8rem;
+      }
+
+      .post-toc-empty {
+        color: #565f89;
+        font-size: 0.8rem;
+      }
+
+      :global(.blog-prose) {
+        font-size: 1.05rem;
+        line-height: 1.85;
+        color: #c0caf5;
+      }
+
+      :global(.blog-prose h2),
+      :global(.blog-prose h3) {
+        scroll-margin-top: 120px;
+      }
+
+      :global(.blog-prose h2) {
+        margin-top: 3rem;
+        font-size: 1.8rem;
+        border-left: 2px solid rgba(122, 162, 247, 0.4);
+        padding-left: 0.9rem;
+      }
+
+      :global(.blog-prose h3) {
+        margin-top: 2.25rem;
+        font-size: 1.4rem;
+        border-left: 2px solid rgba(187, 154, 247, 0.35);
+        padding-left: 0.85rem;
+      }
+
+      :global(.blog-prose a) {
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
+
+      @media (min-width: 1024px) {
+        .post-grid {
+          grid-template-columns: minmax(0, 16rem) minmax(0, 72ch) minmax(
+              0,
+              16rem
+            );
+          align-items: start;
+        }
+
+        .post-rail {
+          position: sticky;
+          top: 6.5rem;
+        }
+
+        .post-content {
+          margin: 0;
+        }
+      }
+
+      @media (max-width: 1023px) {
+        .post-rail--left {
+          order: 2;
+        }
+
+        .post-content {
+          order: 1;
+        }
+
+        .post-rail--right {
+          order: 3;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .post-shell {
+          margin-top: 4rem;
+          padding: 2.5rem 0 3.5rem;
+        }
+
+        .post-header {
+          padding: 2.25rem 1.75rem;
+        }
+
+        .post-title {
+          font-size: clamp(2rem, 7vw, 2.8rem);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .post-header {
+          padding: 2rem 1.5rem;
+        }
       }
     </style>
 
@@ -181,10 +542,17 @@ const {
 
     <script
       is:inline
-      type="text/partytown"
       async
+      type="text/plain"
+      data-category="analytics"
+      data-type="text/partytown"
       src="https://www.googletagmanager.com/gtag/js?id=G-DKPL4VGM52"></script>
-    <script is:inline type="text/partytown">
+    <script
+      is:inline
+      type="text/plain"
+      data-category="analytics"
+      data-type="text/partytown"
+    >
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -331,8 +699,6 @@ const {
     {featured && <meta name="article:featured" content="true" />}
     {excerpt && <meta name="description" content={excerpt} />}
 
-    {heroImage && <link rel="preload" as="image" href={heroImage} />}
-
     <meta name="revisit-after" content="7 days" />
     <meta name="rating" content="general" />
     <meta name="distribution" content="global" />
@@ -376,47 +742,21 @@ const {
       http-equiv="Content-Security-Policy"
       content="upgrade-insecure-requests"
     />
+
+    <script
+      is:inline
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
+      crossorigin="anonymous"></script>
   </head>
   <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
-    <div id="scroll-progress"></div>
 
     <main class="main-content relative z-10 flex flex-1 flex-col">
-      {
-        heroImage && (
-          <div class="relative mx-auto w-full max-w-5xl md:-mb-10 lg:-mb-12 xl:-mb-16">
-            <div
-              class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(187,154,247,0.3)_0%,_rgba(122,162,247,0.15)_40%,_transparent_70%)]"
-              aria-hidden="true"
-            />
-            <img
-              src={heroImage}
-              alt=""
-              loading="eager"
-              class="relative min-h-[300px] w-full object-cover md:min-h-[400px] lg:min-h-[500px]"
-            />
-          </div>
-        )
-      }
-
-      <div
-        class:list={[
-          "relative mx-auto w-full max-w-5xl overflow-visible",
-          { "md:z-10": heroImage },
-          { "pt-20": !heroImage },
-        ]}
-      >
-        <div
-          class:list={[
-            "mx-auto w-fit max-w-full bg-[#1a1b26] px-6 py-8 md:px-10 md:py-12 lg:px-12 lg:py-16 xl:px-16 xl:py-20",
-            { "md:border-t-2 md:border-[#bb9af7]/40": heroImage },
-          ]}
-        >
-          <header class="mx-auto w-full max-w-prose text-center">
-            <time
-              datetime={pubDate.toISOString()}
-              class="font-mono text-sm tracking-wide text-[#565f89]"
-            >
+      <section class="post-shell">
+        <header class="post-header">
+          <div class="post-eyebrow">
+            <time datetime={pubDate.toISOString()}>
               {
                 new Date(pubDate).toLocaleDateString("en-US", {
                   year: "numeric",
@@ -425,73 +765,181 @@ const {
                 })
               }
             </time>
+            {
+              isArchive && (
+                <span class="post-badge">
+                  Archived article &middot; may be outdated
+                </span>
+              )
+            }
+          </div>
 
-            <h1
-              class="mb-4 mt-2 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-3xl leading-tight text-transparent sm:mb-5 sm:mt-3 md:text-5xl"
-            >
-              {title}
-            </h1>
+          <h1
+            class="post-title bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+          >
+            {title}
+          </h1>
 
-            <div
-              class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-sm text-[#565f89] md:gap-y-4"
-            >
-              <span>By</span>
-              <div class="flex items-center gap-2">
-                {
-                  authorAvatar ? (
-                    <img
-                      src={authorAvatar}
-                      alt=""
-                      aria-hidden="true"
-                      class="inline-block h-6 w-6 rounded-full border border-[#565f89]/30 object-cover md:h-10 md:w-10"
-                      loading="eager"
-                    />
-                  ) : (
-                    <div class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#24283b] text-xs font-medium text-[#7aa2f7] ring-1 ring-[#565f89]/30 md:h-10 md:w-10">
-                      {authorName?.charAt(0)?.toUpperCase()}
-                    </div>
-                  )
-                }
-                <span class="text-[#c0caf5]">{authorName}</span>
-              </div>
+          {lead && <p class="post-lead">{lead}</p>}
+
+          <div class="post-byline">
+            <div class="post-author">
               {
-                readTime && (
-                  <span class="text-[#565f89]">&middot; {readTime}</span>
+                authorAvatar ? (
+                  <img
+                    src={authorAvatar}
+                    alt=""
+                    aria-hidden="true"
+                    class="inline-block h-8 w-8 rounded-full border border-[#565f89]/30 object-cover"
+                    loading="eager"
+                  />
+                ) : (
+                  <div class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#24283b] text-xs font-medium text-[#7aa2f7] ring-1 ring-[#565f89]/30">
+                    {authorName?.charAt(0)?.toUpperCase()}
+                  </div>
                 )
               }
+              <span>{authorName}</span>
             </div>
-
+            {readTime && <span>{readTime}</span>}
             {
               currentBlog.data.updatedDate && (
-                <div class="mt-3 text-xs text-[#565f89]">
-                  Last updated on{" "}
+                <span>
+                  Updated{" "}
                   {currentBlog.data.updatedDate.toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}
-                </div>
+                </span>
               )
             }
-
-            {
-              isArchive && (
-                <div class="mx-auto mt-4 w-fit rounded-full border border-[#bb9af7]/40 bg-[#24283b]/70 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[#bb9af7]">
-                  Archived article &middot; may be outdated
-                </div>
-              )
-            }
-          </header>
-
-          <hr class="-mx-16 my-8 border-[#565f89]/50 lg:my-16" />
-
-          <div class="flex max-w-prose flex-wrap gap-y-12 lg:gap-y-16">
-            <article class="prose w-full">
-              <slot />
-            </article>
           </div>
+
+          {
+            tags && tags.length > 0 && (
+              <div class="post-tags">
+                {tags.map((tag: string) => (
+                  <span class="post-tag">{tag}</span>
+                ))}
+              </div>
+            )
+          }
+        </header>
+
+        <div class="post-grid">
+          <aside class="post-rail post-rail--left">
+            <div class="post-card">
+              <div class="post-card-title">Reading</div>
+              <div class="post-stat">
+                <span>Reading time</span>
+                <strong>{readTime || "5 min read"}</strong>
+              </div>
+              {
+                wordCount > 0 && (
+                  <div class="post-stat">
+                    <span>Word count</span>
+                    <strong>{formattedWordCount}</strong>
+                  </div>
+                )
+              }
+              <div class="post-progress">
+                <div
+                  class="post-progress-track"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow="0"
+                  data-read-progress-track
+                >
+                  <div class="post-progress-fill" data-read-progress-fill></div>
+                </div>
+                <span class="post-progress-label" data-read-progress-label>
+                  0%
+                </span>
+              </div>
+            </div>
+
+            <div class="post-card">
+              <div class="post-card-title">Quick actions</div>
+              <div class="post-actions">
+                <button
+                  class="post-action-btn"
+                  type="button"
+                  data-copy-link
+                  data-copy-label="Copy link"
+                  data-copy-done="Copied!"
+                >
+                  Copy link
+                </button>
+                <div class="post-actions-share" aria-label="Share on social">
+                  <ShareButtons
+                    url={pageUrl}
+                    pagetitle="Article"
+                    client:visible
+                    compact={true}
+                  />
+                </div>
+              </div>
+              <span
+                class="post-action-status"
+                data-copy-status
+                aria-live="polite"></span>
+            </div>
+          </aside>
+
+          <article class="post-content prose blog-prose" id="post-content">
+            <slot />
+          </article>
+
+          <aside class="post-rail post-rail--right">
+            <div class="post-card">
+              <div class="post-card-title">On this page</div>
+              <nav class="post-toc" id="post-toc" aria-label="On this page">
+                {
+                  tocEntries.length > 0 ? (
+                    tocEntries.map((h) => (
+                      <a
+                        class={h.depth === 3 ? "toc-link toc-h3" : "toc-link"}
+                        href={`#${h.slug}`}
+                      >
+                        {h.text}
+                      </a>
+                    ))
+                  ) : (
+                    <span class="post-toc-empty" data-toc-empty>
+                      No sections yet
+                    </span>
+                  )
+                }
+              </nav>
+            </div>
+            {
+              !isArchive && (
+                <div class="post-card">
+                  <section
+                    class="ads-section ads-section--rail"
+                    aria-label="Ads"
+                  >
+                    <h2 class="ads-section-title">Ads</h2>
+                    <div id="blog-ads" class="ads-slot">
+                      <ins
+                        class="adsbygoogle"
+                        style="display:inline-block;width:336px;height:280px"
+                        data-ad-client="ca-pub-2480387803052595"
+                        data-ad-slot="3981831087"
+                      />
+                      <script is:inline>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                      </script>
+                    </div>
+                  </section>
+                </div>
+              )
+            }
+          </aside>
         </div>
-      </div>
+      </section>
 
       {
         !isArchive ? (
@@ -512,7 +960,15 @@ const {
             <div class="comments-section">
               <div class="comments-container">
                 <div class="comments-header">
-                  <h2 class="comments-title">💬 Join the Discussion</h2>
+                  <h2 class="comments-title">
+                    <Icon
+                      name="lucide:message-circle"
+                      class="comments-title-icon"
+                      size="1em"
+                      aria-hidden
+                    />
+                    Join the Discussion
+                  </h2>
                   <p class="text-sm text-[#a9b1d6]">
                     Share your thoughts and engage with the community
                   </p>
@@ -596,13 +1052,180 @@ const {
         history.scrollRestoration = "manual";
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
           window.scrollTo(0, 0);
         }, 0);
+
+        const progressLabel = document.querySelector(
+          "[data-read-progress-label]",
+        );
+        const progressFill = document.querySelector(
+          "[data-read-progress-fill]",
+        );
+        const progressTrack = document.querySelector(
+          "[data-read-progress-track]",
+        );
+        const copyLinkBtn = document.querySelector("[data-copy-link]");
+        const copyStatus = document.querySelector("[data-copy-status]");
+        const tocRoot = document.getElementById("post-toc");
+        const tocEmpty = tocRoot?.querySelector("[data-toc-empty]") || null;
+        const postContent = document.getElementById("post-content");
+        const setActive = (id) => {
+          (tocRoot?.querySelectorAll("a") || []).forEach((link) => {
+            link.classList.toggle(
+              "is-active",
+              link.getAttribute("href") === `#${id}`,
+            );
+          });
+        };
+
+        const slugCounts = new Map();
+        const slugify = (text) => {
+          const base = text
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-");
+          const count = slugCounts.get(base) || 0;
+          slugCounts.set(base, count + 1);
+          return count ? `${base}-${count + 1}` : base;
+        };
+
+        const buildToc = () => {
+          const headings = Array.from(
+            postContent
+              ? postContent.querySelectorAll("h2, h3")
+              : document.querySelectorAll(".blog-prose h2, .blog-prose h3"),
+          );
+
+          if (!tocRoot) return headings;
+
+          tocRoot.innerHTML = "";
+          if (headings.length === 0) {
+            if (tocEmpty) {
+              tocRoot.appendChild(tocEmpty);
+            }
+          } else {
+            headings.forEach((heading) => {
+              if (!heading.id) {
+                heading.id = slugify(heading.textContent || "section");
+              }
+              const link = document.createElement("a");
+              link.href = `#${heading.id}`;
+              link.textContent = heading.textContent || heading.id;
+              link.className =
+                heading.tagName === "H3" ? "toc-link toc-h3" : "toc-link";
+              tocRoot.appendChild(link);
+            });
+          }
+          return headings;
+        };
+
+        const hasServerToc =
+          tocRoot && tocRoot.querySelectorAll("a.toc-link").length > 0;
+        const headings = hasServerToc
+          ? Array.from(tocRoot.querySelectorAll("a.toc-link"))
+              .map((a) => {
+                const slug = (a.getAttribute("href") || "").replace(/^#/, "");
+                return document.getElementById(slug);
+              })
+              .filter(Boolean)
+          : buildToc();
+
+        if (!hasServerToc && headings.length === 0 && postContent) {
+          requestAnimationFrame(() => {
+            const retryHeadings = buildToc();
+            if (retryHeadings.length > 0 && "IntersectionObserver" in window) {
+              const observer = new IntersectionObserver(
+                (entries) => {
+                  entries.forEach((entry) => {
+                    if (entry.isIntersecting && entry.target.id) {
+                      setActive(entry.target.id);
+                    }
+                  });
+                },
+                { rootMargin: "0px 0px -65% 0px" },
+              );
+              retryHeadings.forEach((h) => observer.observe(h));
+            }
+          });
+        }
+
+        if (headings.length > 0 && "IntersectionObserver" in window) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.target.id) {
+                  setActive(entry.target.id);
+                }
+              });
+            },
+            { rootMargin: "0px 0px -65% 0px" },
+          );
+          headings.forEach((heading) => observer.observe(heading));
+        }
+
+        let rafId = 0;
+        const updateProgress = () => {
+          rafId = 0;
+          const totalHeight = document.body.scrollHeight - window.innerHeight;
+          const scrollTop =
+            window.scrollY || document.documentElement.scrollTop;
+          const progress =
+            totalHeight > 0
+              ? Math.min(Math.max(scrollTop / totalHeight, 0), 1)
+              : 0;
+
+          if (progressFill) {
+            progressFill.style.transform = `scaleX(${progress})`;
+          }
+          if (progressLabel) {
+            progressLabel.textContent = `${Math.round(progress * 100)}%`;
+          }
+          if (progressTrack) {
+            progressTrack.setAttribute(
+              "aria-valuenow",
+              `${Math.round(progress * 100)}`,
+            );
+          }
+        };
+
+        const onScroll = () => {
+          if (rafId) return;
+          rafId = requestAnimationFrame(updateProgress);
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        updateProgress();
+
+        if (copyLinkBtn && copyStatus) {
+          const label =
+            copyLinkBtn.getAttribute("data-copy-label") || "Copy link";
+          const doneText =
+            copyLinkBtn.getAttribute("data-copy-done") || "Copied!";
+          copyLinkBtn.addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(window.location.href);
+              copyStatus.textContent = "Link copied";
+              copyLinkBtn.textContent = doneText;
+              copyLinkBtn.classList.add("post-action-btn--success");
+              setTimeout(() => {
+                copyLinkBtn.textContent = label;
+                copyLinkBtn.classList.remove("post-action-btn--success");
+                copyStatus.textContent = "";
+              }, 2000);
+            } catch (error) {
+              copyStatus.textContent = "Copy failed";
+              setTimeout(() => {
+                copyStatus.textContent = "";
+              }, 2000);
+            }
+          });
+        }
       });
     </script>
-    <script is:inline type="text/partytown" src="/js/progressbar.js"></script>
     <Footer />
   </body>
 </html>

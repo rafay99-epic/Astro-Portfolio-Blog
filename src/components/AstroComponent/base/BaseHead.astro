@@ -129,17 +129,23 @@ declare global {
 
 <link rel="sitemap" href="/sitemap-index.xml" />
 
-<!-- <script
+<!-- Google AdSense -->
+<script
+  is:inline
   async
+  type="text/plain"
+  data-category="ads"
   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
-  crossorigin="anonymous"></script> -->
+  crossorigin="anonymous"></script>
 
 <!-- Google tag (gtag.js) -->
 <script
   is:inline
   async
+  type="text/plain"
+  data-category="ads"
   src="https://www.googletagmanager.com/gtag/js?id=AW-17413331660"></script>
-<script is:inline>
+<script is:inline type="text/plain" data-category="ads">
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     dataLayer.push(arguments);
@@ -162,6 +168,17 @@ declare global {
     "https://chimpstatic.com/mcjs-connected/js/users/7316a11f3072ef061881d3279/8a20bb2ae5d1ecc66bfff068a.js",
   );
 </script>
+
+<!-- Cookie consent: default styles + Tokyo Night theme -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css"
+/>
+<link rel="stylesheet" href="/css/cookieconsent-theme.css" />
+<script is:inline>
+  document.documentElement.classList.add("cc--darkmode");
+</script>
+<script is:inline type="module" src="/js/cookieconsent-config.js"></script>
 
 <!-- <script is:inline type="text/partytown">
   (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
