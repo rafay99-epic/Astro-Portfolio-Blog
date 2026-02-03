@@ -26,14 +26,6 @@
             "alwaysUseCurrentDate": true
         },
         {
-            "name": "updatedDate",
-            "label": "Updated Date",
-            "type": "Date",
-            "value": "",
-            "defaultValue": "",
-            "alwaysUseCurrentDate": true
-        },
-        {
             "name": "draft",
             "label": "Draft",
             "type": "boolean",
@@ -92,13 +84,6 @@
         {
             "name": "excerpt",
             "label": "Excerpt",
-            "type": "string",
-            "value": "",
-            "defaultValue": ""
-        },
-        {
-            "name": "readTime",
-            "label": "Read Time",
             "type": "string",
             "value": "",
             "defaultValue": ""
