@@ -24,7 +24,7 @@ const totalPages = Math.ceil(totalPosts / postsPerPage);
 
 const currentPage = 1;
 
-const posts = allPosts.slice(0, postsPerPage);
+const posts: CollectionEntry<"blog">[] = allPosts.slice(0, postsPerPage);
 
 try {
   if (!featureFlags.showBlog) {

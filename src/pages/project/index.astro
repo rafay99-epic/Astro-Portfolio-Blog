@@ -17,7 +17,7 @@ try {
   return Astro.redirect("/404");
 }
 
-const filteredProjects = projects
+const filteredProjects: CollectionEntry<"projects">[] = projects
   .filter((project: CollectionEntry<"projects">) => !project.data.draft)
   .sort((a: CollectionEntry<"projects">, b: CollectionEntry<"projects">) => {
     const rankingA = parseInt(a.data.ProjectRanking || "9999", 10);

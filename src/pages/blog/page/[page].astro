@@ -33,7 +33,7 @@ if (currentPage > totalPages && totalPages > 0) {
 
 const startIndex = (currentPage - 1) * postsPerPage;
 const endIndex = startIndex + postsPerPage;
-const posts = allPosts.slice(startIndex, endIndex);
+const posts: CollectionEntry<"blog">[] = allPosts.slice(startIndex, endIndex);
 
 try {
   if (!featureFlags.showBlog) {
