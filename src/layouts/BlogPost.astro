@@ -233,7 +233,7 @@ const {
           tags?.join(", ") ||
           "blog, technology, programming",
         articleSection: tags?.[0] || "Technology",
-        wordCount: blogContent.length,
+        wordCount: blogContent ? blogContent.length : 0,
         timeRequired: readTime || "5 min read",
       })}
     />
