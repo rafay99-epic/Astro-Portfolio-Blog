@@ -135,7 +135,9 @@ try {
   <body class="flex min-h-screen flex-col bg-[#1a1b26] text-[#a9b1d6]">
     <Header />
 
-    <main class="blog-shell mx-auto w-full max-w-7xl flex-1 px-4 pb-20 pt-12 sm:px-6 lg:px-10">
+    <main
+      class="blog-shell mx-auto w-full max-w-7xl flex-1 px-4 pb-20 pt-12 sm:px-6 lg:px-10"
+    >
       <section class="blog-hero">
         <div class="hero-glow" aria-hidden="true">
           <span class="hero-orb hero-orb--one"></span>
@@ -143,10 +145,14 @@ try {
           <span class="hero-orb hero-orb--three"></span>
         </div>
 
-        <div class="relative z-10 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        <div
+          class="relative z-10 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+        >
           <div>
             <p class="eyebrow fade-up">Studio Journal</p>
-            <h1 class="hero-title fade-up delay-1">Articles, deep dives, and build notes.</h1>
+            <h1 class="hero-title fade-up delay-1">
+              Articles, deep dives, and build notes.
+            </h1>
             <p class="hero-sub fade-up delay-2">
               A curated stream of engineering stories, product explorations, and
               opinionated guides. Written with clarity, built for people who
@@ -154,20 +160,32 @@ try {
             </p>
             <div class="hero-actions fade-up delay-3">
               <a href="/blog/archive" class="btn btn-primary">View archive</a>
-              {showSearch && (
-                <a href="/search" class="btn btn-ghost">Search articles</a>
-              )}
-              {showTags && (
-                <a href="/tag" class="btn btn-ghost">Browse tags</a>
-              )}
+              {
+                showSearch && (
+                  <a href="/search" class="btn btn-ghost">
+                    Search articles
+                  </a>
+                )
+              }
+              {
+                showTags && (
+                  <a href="/tag" class="btn btn-ghost">
+                    Browse tags
+                  </a>
+                )
+              }
             </div>
-            {showTags && topTags.length > 0 && (
-              <div class="tag-rail fade-up delay-4">
-                {topTags.map((tag) => (
-                  <a href={`/tag/${tag}`} class="tag-pill">#{tag}</a>
-                ))}
-              </div>
-            )}
+            {
+              showTags && topTags.length > 0 && (
+                <div class="tag-rail fade-up delay-4">
+                  {topTags.map((tag) => (
+                    <a href={`/tag/${tag}`} class="tag-pill">
+                      #{tag}
+                    </a>
+                  ))}
+                </div>
+              )
+            }
           </div>
 
           <div class="hero-stats fade-up delay-2">
@@ -191,65 +209,117 @@ try {
         </div>
       </section>
 
-      {posts.length === 0 && (
-        <div class="empty-state">
-          <p>No published articles yet. Check back soon.</p>
-        </div>
-      )}
-
-      {featuredPost && (
-        <section class="mt-14 grid gap-8 lg:grid-cols-12">
-          <div class="lg:col-span-7">
-            <a
-              href={`/blog/${featuredPost.slug}`}
-              class="featured-card group"
-            >
-              <div class="media-frame media-frame--hero">
-                {featuredPost.data.heroImage ? (
-                  <img
-                    src={featuredPost.data.heroImage}
-                    alt={featuredPost.data.title}
-                    loading="eager"
-                    decoding="async"
-                  />
-                ) : (
-                  <div class="media-fallback" aria-hidden="true"></div>
-                )}
-                <div class="media-overlay"></div>
-              </div>
-              <div class="featured-body">
-                <span class="featured-kicker">Featured story</span>
-                <div class="meta-line">
-                  <span>{formatDate(featuredPost.data.pubDate)}</span>
-                  {featuredPost.data.readTime && (
-                    <span>• {featuredPost.data.readTime}</span>
-                  )}
-                  {featuredPost.data.tags?.[0] && (
-                    <span>• #{featuredPost.data.tags[0]}</span>
-                  )}
-                </div>
-                <h2 class="featured-title">{featuredPost.data.title}</h2>
-                <p class="featured-desc line-clamp-3">
-                  {featuredPost.data.excerpt || featuredPost.data.description}
-                </p>
-                <div class="featured-cta">
-                  <span>Read story</span>
-                  <span class="cta-arrow">→</span>
-                </div>
-              </div>
-            </a>
+      {
+        posts.length === 0 && (
+          <div class="empty-state">
+            <p>No published articles yet. Check back soon.</p>
           </div>
+        )
+      }
 
-          {quickReads.length > 0 && (
-            <aside class="lg:col-span-5">
-              <div class="section-heading">
-                <h2>Quick reads</h2>
-                <p>Shorter entries for fast context.</p>
-              </div>
-              <div class="quick-list">
-                {quickReads.map((post) => (
-                  <a href={`/blog/${post.slug}`} class="quick-card">
-                    <div class="media-frame media-frame--square">
+      {
+        featuredPost && (
+          <section class="mt-14 grid gap-8 lg:grid-cols-12">
+            <div class="lg:col-span-7">
+              <a
+                href={`/blog/${featuredPost.slug}`}
+                class="featured-card group"
+              >
+                <div class="media-frame media-frame--hero">
+                  {featuredPost.data.heroImage ? (
+                    <img
+                      src={featuredPost.data.heroImage}
+                      alt={featuredPost.data.title}
+                      loading="eager"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div class="media-fallback" aria-hidden="true" />
+                  )}
+                  <div class="media-overlay" />
+                </div>
+                <div class="featured-body">
+                  <span class="featured-kicker">Featured story</span>
+                  <div class="meta-line">
+                    <span>{formatDate(featuredPost.data.pubDate)}</span>
+                    {featuredPost.data.readTime && (
+                      <span>• {featuredPost.data.readTime}</span>
+                    )}
+                    {featuredPost.data.tags?.[0] && (
+                      <span>• #{featuredPost.data.tags[0]}</span>
+                    )}
+                  </div>
+                  <h2 class="featured-title">{featuredPost.data.title}</h2>
+                  <p class="featured-desc line-clamp-3">
+                    {featuredPost.data.excerpt || featuredPost.data.description}
+                  </p>
+                  <div class="featured-cta">
+                    <span>Read story</span>
+                    <span class="cta-arrow">→</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            {quickReads.length > 0 && (
+              <aside class="lg:col-span-5">
+                <div class="section-heading">
+                  <h2>Quick reads</h2>
+                  <p>Shorter entries for fast context.</p>
+                </div>
+                <div class="quick-list">
+                  {quickReads.map((post) => (
+                    <a href={`/blog/${post.slug}`} class="quick-card">
+                      <div class="media-frame media-frame--square">
+                        {post.data.heroImage ? (
+                          <img
+                            src={post.data.heroImage}
+                            alt={post.data.title}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div class="media-fallback" aria-hidden="true" />
+                        )}
+                      </div>
+                      <div>
+                        <p class="quick-meta">
+                          {formatDate(post.data.pubDate)}
+                        </p>
+                        <h3 class="quick-title line-clamp-2">
+                          {post.data.title}
+                        </h3>
+                        <p class="quick-desc line-clamp-2">
+                          {post.data.excerpt || post.data.description}
+                        </p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </aside>
+            )}
+          </section>
+        )
+      }
+
+      {
+        mosaicPosts.length > 0 && (
+          <section class="mt-14">
+            <div class="section-heading">
+              <h2>Latest articles</h2>
+              <p>Fresh insights and practical experiments.</p>
+            </div>
+
+            <div class="mosaic-grid">
+              {mosaicPosts.map((post, index) => (
+                <article
+                  class:list={[
+                    "mosaic-card group",
+                    index === 0 && "mosaic-card--hero",
+                  ]}
+                >
+                  <a href={`/blog/${post.slug}`} class="mosaic-link">
+                    <div class="media-frame media-frame--tile">
                       {post.data.heroImage ? (
                         <img
                           src={post.data.heroImage}
@@ -258,110 +328,70 @@ try {
                           decoding="async"
                         />
                       ) : (
-                        <div class="media-fallback" aria-hidden="true"></div>
+                        <div class="media-fallback" aria-hidden="true" />
                       )}
+                      <div class="media-overlay" />
                     </div>
-                    <div>
-                      <p class="quick-meta">{formatDate(post.data.pubDate)}</p>
-                      <h3 class="quick-title line-clamp-2">
+                    <div class="mosaic-body">
+                      <div class="meta-line">
+                        <span>{formatDate(post.data.pubDate)}</span>
+                        {post.data.readTime && (
+                          <span>• {post.data.readTime}</span>
+                        )}
+                      </div>
+                      <h3 class="mosaic-title line-clamp-2">
                         {post.data.title}
                       </h3>
-                      <p class="quick-desc line-clamp-2">
+                      <p class="mosaic-desc line-clamp-3">
                         {post.data.excerpt || post.data.description}
                       </p>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </aside>
-          )}
-        </section>
-      )}
-
-      {mosaicPosts.length > 0 && (
-        <section class="mt-14">
-          <div class="section-heading">
-            <h2>Latest articles</h2>
-            <p>Fresh insights and practical experiments.</p>
-          </div>
-
-          <div class="mosaic-grid">
-            {mosaicPosts.map((post, index) => (
-              <article
-                class:list={[
-                  "mosaic-card group",
-                  index === 0 && "mosaic-card--hero",
-                ]}
-              >
-                <a href={`/blog/${post.slug}`} class="mosaic-link">
-                  <div class="media-frame media-frame--tile">
-                    {post.data.heroImage ? (
-                      <img
-                        src={post.data.heroImage}
-                        alt={post.data.title}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    ) : (
-                      <div class="media-fallback" aria-hidden="true"></div>
-                    )}
-                    <div class="media-overlay"></div>
-                  </div>
-                  <div class="mosaic-body">
-                    <div class="meta-line">
-                      <span>{formatDate(post.data.pubDate)}</span>
-                      {post.data.readTime && (
-                        <span>• {post.data.readTime}</span>
+                      {post.data.tags?.length && (
+                        <div class="tag-row">
+                          {post.data.tags.slice(0, 3).map((tag) => (
+                            <span class="tag-pill tag-pill--muted">#{tag}</span>
+                          ))}
+                        </div>
                       )}
                     </div>
-                    <h3 class="mosaic-title line-clamp-2">
-                      {post.data.title}
-                    </h3>
-                    <p class="mosaic-desc line-clamp-3">
-                      {post.data.excerpt || post.data.description}
-                    </p>
-                    {post.data.tags?.length && (
-                      <div class="tag-row">
-                        {post.data.tags.slice(0, 3).map((tag) => (
-                          <span class="tag-pill tag-pill--muted">#{tag}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </a>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
+                  </a>
+                </article>
+              ))}
+            </div>
+          </section>
+        )
+      }
 
-      {totalPages > 1 && (
-        <nav class="pagination" aria-label="Pagination">
-          <a
-            href={currentPage > 1 ? `/blog/page/${currentPage - 1}` : "#"}
-            class:list={[
-              "pagination-link",
-              currentPage > 1 ? "pagination-active" : "pagination-disabled",
-            ]}
-          >
-            <span>Previous</span>
-          </a>
-          <div class="pagination-pill">Page {currentPage} of {totalPages}</div>
-          <a
-            href={
-              currentPage < totalPages ? `/blog/page/${currentPage + 1}` : "#"
-            }
-            class:list={[
-              "pagination-link",
-              currentPage < totalPages
-                ? "pagination-active"
-                : "pagination-disabled",
-            ]}
-          >
-            <span>Next</span>
-          </a>
-        </nav>
-      )}
+      {
+        totalPages > 1 && (
+          <nav class="pagination" aria-label="Pagination">
+            <a
+              href={currentPage > 1 ? `/blog/page/${currentPage - 1}` : "#"}
+              class:list={[
+                "pagination-link",
+                currentPage > 1 ? "pagination-active" : "pagination-disabled",
+              ]}
+            >
+              <span>Previous</span>
+            </a>
+            <div class="pagination-pill">
+              Page {currentPage} of {totalPages}
+            </div>
+            <a
+              href={
+                currentPage < totalPages ? `/blog/page/${currentPage + 1}` : "#"
+              }
+              class:list={[
+                "pagination-link",
+                currentPage < totalPages
+                  ? "pagination-active"
+                  : "pagination-disabled",
+              ]}
+            >
+              <span>Next</span>
+            </a>
+          </nav>
+        )
+      }
     </main>
 
     <Footer />
@@ -373,23 +403,7 @@ try {
       }
 
       .blog-shell::before {
-        content: "";
-        position: absolute;
-        inset: -120px 0 auto 0;
-        height: 360px;
-        background: radial-gradient(
-            circle at 20% 30%,
-            rgba(122, 162, 247, 0.18),
-            transparent 55%
-          ),
-          radial-gradient(
-            circle at 80% 10%,
-            rgba(187, 154, 247, 0.2),
-            transparent 50%
-          );
-        opacity: 0.8;
-        pointer-events: none;
-        z-index: 0;
+        content: none;
       }
 
       .blog-hero {
@@ -397,7 +411,8 @@ try {
         overflow: hidden;
         border-radius: 32px;
         border: 1px solid rgba(86, 95, 137, 0.35);
-        background: linear-gradient(
+        background:
+          linear-gradient(
             160deg,
             rgba(36, 40, 59, 0.9),
             rgba(26, 27, 38, 0.95)
@@ -485,8 +500,11 @@ try {
         border-radius: 999px;
         font-size: 0.9rem;
         font-weight: 600;
-        transition: transform 0.3s ease, box-shadow 0.3s ease,
-          border-color 0.3s ease, color 0.3s ease;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease,
+          border-color 0.3s ease,
+          color 0.3s ease;
       }
 
       .btn-primary {
@@ -527,7 +545,9 @@ try {
         font-size: 0.75rem;
         color: var(--color-text-secondary, #a9b1d6);
         background: rgba(26, 27, 38, 0.6);
-        transition: border-color 0.3s ease, color 0.3s ease;
+        transition:
+          border-color 0.3s ease,
+          color 0.3s ease;
       }
 
       .tag-pill:hover {
@@ -654,7 +674,9 @@ try {
         border: 1px solid rgba(86, 95, 137, 0.4);
         background: rgba(36, 40, 59, 0.7);
         overflow: hidden;
-        transition: transform 0.35s ease, border-color 0.35s ease,
+        transition:
+          transform 0.35s ease,
+          border-color 0.35s ease,
           box-shadow 0.35s ease;
       }
 
@@ -717,7 +739,9 @@ try {
         border-radius: 18px;
         border: 1px solid rgba(86, 95, 137, 0.35);
         background: rgba(26, 27, 38, 0.7);
-        transition: border-color 0.3s ease, transform 0.3s ease;
+        transition:
+          border-color 0.3s ease,
+          transform 0.3s ease;
       }
 
       .quick-card:hover {
@@ -753,7 +777,9 @@ try {
         border: 1px solid rgba(86, 95, 137, 0.35);
         background: rgba(36, 40, 59, 0.6);
         overflow: hidden;
-        transition: transform 0.3s ease, border-color 0.3s ease,
+        transition:
+          transform 0.3s ease,
+          border-color 0.3s ease,
           box-shadow 0.3s ease;
       }
 
@@ -806,7 +832,9 @@ try {
         border: 1px solid rgba(86, 95, 137, 0.4);
         font-size: 0.85rem;
         font-weight: 600;
-        transition: border-color 0.3s ease, color 0.3s ease;
+        transition:
+          border-color 0.3s ease,
+          color 0.3s ease;
       }
 
       .pagination-active {
