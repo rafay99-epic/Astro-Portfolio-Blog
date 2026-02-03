@@ -1,3 +1,4 @@
+// NOTE: Search excludes archived posts to keep results aligned with public blog listings.
 import { useState, useEffect, useMemo, useCallback } from "react";
 import Fuse from "fuse.js";
 import type { Post } from "types/articles";
@@ -156,7 +157,7 @@ const useSearch = (posts: Post[]): SearchState => {
   );
 
   const filteredPosts = useMemo(
-    () => posts.filter((post) => !post.data.draft),
+    () => posts.filter((post) => !post.data.draft && !post.data.archived),
     [posts],
   );
 

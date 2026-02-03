@@ -1,4 +1,5 @@
 ---
+// NOTE: Archived posts render under /blog/archive to keep them out of /blog.
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import BlogPost from "@layouts/BlogPost.astro";
@@ -11,14 +12,11 @@ export async function getStaticPaths() {
 
   const posts = await getCollection("blog");
 
-  const filteredPosts = import.meta.env.PROD
-    ? posts.filter(
-        (post: CollectionEntry<"blog">) =>
-          !post.data.draft && !post.data.archived,
-      )
-    : posts.filter((post: CollectionEntry<"blog">) => !post.data.archived);
+  const archivedPosts = posts.filter(
+    (post: CollectionEntry<"blog">) => !post.data.draft && post.data.archived,
+  );
 
-  return filteredPosts.map((post: CollectionEntry<"blog">) => ({
+  return archivedPosts.map((post: CollectionEntry<"blog">) => ({
     params: { slug: post.slug },
     props: post,
   }));
@@ -38,7 +36,11 @@ const { Content } = featureFlags.showBlog
 {
   featureFlags.showBlog ? (
     Content ? (
-      <BlogPost {...post.data} readTime={remarkPluginFrontmatter.minutesRead}>
+      <BlogPost
+        {...post.data}
+        readTime={remarkPluginFrontmatter.minutesRead}
+        isArchive={true}
+      >
         <Content />
       </BlogPost>
     ) : (

@@ -16,7 +16,7 @@ const allPosts = (await getCollection("blog")).sort(
 );
 
 const publishedPosts = allPosts.filter(
-  (post: CollectionEntry<"blog">) => !post.data.draft,
+  (post: CollectionEntry<"blog">) => !post.data.draft && !post.data.archived,
 );
 
 const allTags = Array.from(

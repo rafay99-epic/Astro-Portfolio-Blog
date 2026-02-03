@@ -1,14 +1,14 @@
 // NOTE: Archived posts stay out of the public blog API/search and only appear in /api/blog/archive.
 import { getCollection, type CollectionEntry } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { PostSchema } from "../../types/articles";
+import { PostSchema } from "../../../types/articles";
+import { createHash } from "node:crypto";
 
 export async function GET() {
-  const headers = {
+  const errorHeaders = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "https://www.rafay99.com",
-    "Cache-Control": "public, max-age=3600",
-    ETag: crypto.randomUUID(),
+    "Cache-Control": "no-store, no-cache",
   };
 
   try {
@@ -17,7 +17,7 @@ export async function GET() {
         JSON.stringify({ error: "Blog feature is disabled" }),
         {
           status: 403,
-          headers: headers,
+          headers: errorHeaders,
         },
       );
     }
@@ -29,7 +29,6 @@ export async function GET() {
         !post.data.draft && !post.data.archived,
     );
 
-    // Validate posts with Zod before returning
     const validatedPosts = filteredPosts.map(
       (post: CollectionEntry<"blog">) => {
         try {
@@ -47,9 +46,17 @@ export async function GET() {
       },
     );
 
-    return new Response(JSON.stringify(validatedPosts), {
+    const responseBody = JSON.stringify(validatedPosts);
+    const successHeaders = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "https://www.rafay99.com",
+      "Cache-Control": "public, max-age=3600",
+      ETag: `"${createHash("sha1").update(responseBody).digest("hex")}"`,
+    };
+
+    return new Response(responseBody, {
       status: 200,
-      headers: headers,
+      headers: successHeaders,
     });
   } catch (error) {
     console.error("Error fetching blog posts:", error);
@@ -57,7 +64,7 @@ export async function GET() {
       JSON.stringify({ error: "Failed to fetch blog posts" }),
       {
         status: 500,
-        headers: headers,
+        headers: errorHeaders,
       },
     );
   }
