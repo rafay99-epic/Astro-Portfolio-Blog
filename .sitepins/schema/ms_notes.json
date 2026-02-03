@@ -1,0 +1,57 @@
+{
+    "file": "src/content/ms_notes/example.mdx",
+    "name": "ms_notes",
+    "fileType": "mdx",
+    "fmType": "yaml",
+    "template": [{
+            "name": "lecture_title",
+            "label": "Lecture Title",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "lecture_description",
+            "label": "Lecture Description",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "pubDate",
+            "label": "PubDate",
+            "type": "Date",
+            "value": "",
+            "defaultValue": "",
+            "alwaysUseCurrentDate": false
+        },
+        {
+            "name": "lecture_draft",
+            "label": "Lecture Draft",
+            "type": "boolean",
+            "value": false,
+            "defaultValue": false
+        },
+        {
+            "name": "readTime",
+            "label": "Read Time",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "lectureNumber",
+            "label": "Lecture Number",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "subject",
+            "label": "Subject",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        }
+    ]
+}

@@ -1,100 +1,114 @@
 {
-  "file": "src/content/blog/ai-code-generation-free-tools-full-apps.mdx",
-  "name": "blog",
-  "fileType": "mdx",
-  "fmType": "yaml",
-  "template": [
-    {
-      "name": "title",
-      "label": "Title",
-      "type": "string",
-      "value": "",
-      "defaultValue": ""
-    },
-    {
-      "name": "description",
-      "label": "Description",
-      "type": "string",
-      "value": "",
-      "defaultValue": ""
-    },
-    {
-      "name": "pubDate",
-      "label": "PubDate",
-      "type": "Date",
-      "value": "",
-      "defaultValue": "",
-      "alwaysUseCurrentDate": false
-    },
-    {
-      "name": "draft",
-      "label": "Draft",
-      "type": "boolean",
-      "value": false,
-      "defaultValue": false
-    },
-    {
-      "name": "heroImage",
-      "label": "HeroImage",
-      "type": "media",
-      "value": "",
-      "defaultValue": ""
-    },
-    {
-      "name": "authorName",
-      "label": "AuthorName",
-      "type": "string",
-      "value": "",
-      "defaultValue": ""
-    },
-    {
-      "name": "authorAvatar",
-      "label": "AuthorAvatar",
-      "type": "media",
-      "value": "",
-      "defaultValue": ""
-    },
-    {
-      "name": "tags",
-      "label": "Tags",
-      "type": "Array",
-      "value": [],
-      "defaultValue": ""
-    },
-    {
-      "name": "keywords",
-      "label": "Keywords",
-      "type": "Array",
-      "value": [],
-      "defaultValue": ""
-    },
-    {
-      "name": "canonicalUrl",
-      "label": "CanonicalUrl",
-      "type": "string",
-      "value": "",
-      "defaultValue": ""
-    },
-    {
-      "name": "featured",
-      "label": "Featured",
-      "type": "boolean",
-      "value": false,
-      "defaultValue": false
-    },
-    {
-      "name": "excerpt",
-      "label": "Excerpt",
-      "type": "string",
-      "value": "",
-      "defaultValue": ""
-    },
-    {
-      "name": "archived",
-      "label": "Archived",
-      "type": "boolean",
-      "value": false,
-      "defaultValue": false
-    }
-  ]
+    "file": "src/content/blog/ai-code-generation-free-tools-full-apps.mdx",
+    "name": "blog",
+    "fileType": "mdx",
+    "fmType": "yaml",
+    "template": [{
+            "name": "title",
+            "label": "Title",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "description",
+            "label": "Description",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "pubDate",
+            "label": "PubDate",
+            "type": "Date",
+            "value": "",
+            "defaultValue": "",
+            "alwaysUseCurrentDate": false
+        },
+        {
+            "name": "updatedDate",
+            "label": "Updated Date",
+            "type": "Date",
+            "value": "",
+            "defaultValue": "",
+            "alwaysUseCurrentDate": false
+        },
+        {
+            "name": "draft",
+            "label": "Draft",
+            "type": "boolean",
+            "value": false,
+            "defaultValue": false
+        },
+        {
+            "name": "heroImage",
+            "label": "HeroImage",
+            "type": "media",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "authorName",
+            "label": "AuthorName",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "authorAvatar",
+            "label": "AuthorAvatar",
+            "type": "media",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "tags",
+            "label": "Tags",
+            "type": "Array",
+            "value": [],
+            "defaultValue": ["blog"]
+        },
+        {
+            "name": "keywords",
+            "label": "Keywords",
+            "type": "Array",
+            "value": [],
+            "defaultValue": []
+        },
+        {
+            "name": "canonicalUrl",
+            "label": "CanonicalUrl",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "featured",
+            "label": "Featured",
+            "type": "boolean",
+            "value": false,
+            "defaultValue": false
+        },
+        {
+            "name": "excerpt",
+            "label": "Excerpt",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "readTime",
+            "label": "Read Time",
+            "type": "string",
+            "value": "",
+            "defaultValue": ""
+        },
+        {
+            "name": "archived",
+            "label": "Archived",
+            "type": "boolean",
+            "value": false,
+            "defaultValue": false
+        }
+    ]
 }
