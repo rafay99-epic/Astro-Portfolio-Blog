@@ -143,6 +143,29 @@ const formattedWordCount =
         padding: 3.5rem 0 4rem;
       }
 
+      .ads-section {
+        width: min(92vw, 72ch);
+        margin: 3rem auto 0;
+      }
+
+      .ads-slot {
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed rgba(86, 95, 137, 0.35);
+        border-radius: 12px;
+        background: rgba(36, 40, 59, 0.2);
+      }
+
+      .ads-section-title {
+        font-size: 0.75rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #565f89;
+        margin-bottom: 1rem;
+      }
+
       .comments-section {
         width: min(92vw, 86rem);
         margin: 3rem auto 0;
@@ -698,6 +721,12 @@ const formattedWordCount =
       http-equiv="Content-Security-Policy"
       content="upgrade-insecure-requests"
     />
+
+    <script
+      is:inline
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480387803052595"
+      crossorigin="anonymous"></script>
   </head>
   <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
     <Header />
@@ -883,6 +912,21 @@ const formattedWordCount =
               allPosts={BlogPosts}
               basePath="/blog"
             />
+
+            <section class="ads-section" aria-label="Ads">
+              <h2 class="ads-section-title">Ads</h2>
+              <div id="blog-ads" class="ads-slot">
+                <ins
+                  class="adsbygoogle"
+                  style="display:inline-block;width:336px;height:280px"
+                  data-ad-client="ca-pub-2480387803052595"
+                  data-ad-slot="3981831087"
+                />
+                <script is:inline>
+                  (window.adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+              </div>
+            </section>
 
             <div class="comments-section">
               <div class="comments-container">
