@@ -3,7 +3,6 @@
   "media": "public",
   "public": "public",
   "configs": [
-    "src/config",
     "src/config/siteConfig",
     "src/config/featureFlag"
   ],
