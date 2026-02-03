@@ -23,7 +23,7 @@
             "type": "Date",
             "value": "",
             "defaultValue": "",
-            "alwaysUseCurrentDate": false
+            "alwaysUseCurrentDate": true
         },
         {
             "name": "lecture_draft",

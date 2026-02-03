@@ -384,7 +384,7 @@ const {
     >
       <header class="mb-12 text-center">
         <div
-          class="mb-4 flex items-center justify-center gap-4 text-sm text-[#565f89]"
+          class="mb-2 flex items-center justify-center gap-4 text-sm text-[#565f89]"
         >
           <time datetime={pubDate.toISOString()}>
             {
@@ -400,6 +400,18 @@ const {
           <span>•</span>
           <span>{readTime}</span>
         </div>
+        {
+          currentBlog.data.updatedDate && (
+            <div class="mb-4 text-xs text-[#565f89]">
+              Last updated on{" "}
+              {currentBlog.data.updatedDate.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </div>
+          )
+        }
         {
           isArchive && (
             <div class="mx-auto mb-6 w-fit rounded-full border border-[#bb9af7]/40 bg-[#24283b]/70 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[#bb9af7]">

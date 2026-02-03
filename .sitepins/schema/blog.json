@@ -23,7 +23,7 @@
             "type": "Date",
             "value": "",
             "defaultValue": "",
-            "alwaysUseCurrentDate": false
+            "alwaysUseCurrentDate": true
         },
         {
             "name": "updatedDate",
@@ -31,7 +31,7 @@
             "type": "Date",
             "value": "",
             "defaultValue": "",
-            "alwaysUseCurrentDate": false
+            "alwaysUseCurrentDate": true
         },
         {
             "name": "draft",

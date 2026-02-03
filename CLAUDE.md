@@ -6,22 +6,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Astro 5 portfolio and blog site (rafay99.com) with React 19 islands, TinaCMS for content management, Tailwind CSS styling, and Vercel deployment with ISR.
 
+**Important workflow guidelines for assistants:**
+- **Use Bun only**: Always use `bun` as the package manager (`bun run ...`, `bun x ...`). Do **not** introduce other package managers (npm, pnpm, yarn) or change the existing tooling.
+- **Dev server lifecycle**: Assume the dev server is already running during normal work sessions. Do **not** start or restart `bun run dev` unless explicitly asked, or when required after a TinaCMS config/schema change.
+- **Validate your changes**: After non-trivial code changes, you may verify your work with:
+  - `bun run lint` / `bun run lint:fix` (Prettier + TypeScript type check)
+  - `bun run check` (Astro diagnostics for components/templates)
+- **TinaCMS config changes**: If you modify anything in `tina/config.ts` or related TinaCMS collections, you **must** run `bun run dev` once locally to regenerate TinaCMS types and sync schema with the Tina cloud backend.
+- **.sitepins CMS prototype**: A second, experimental CMS is configured under `.sitepins/` (see `.sitepins/config.json` and `.sitepins/schema/*.json`). Treat this as a prototype: keep schemas in sync with `src/content/config.ts`, and do not remove or radically change it unless explicitly requested.
+
 ## Commands
 
 ```bash
 # Development
-npm run dev              # Start dev server with TinaCMS (requires TINA_TOKEN)
-npm run dev:local        # Start dev server without CMS (use this for local-only work)
-npm run preview          # Preview production build locally
+bun run dev              # Start dev server with TinaCMS (requires TINA_TOKEN)
+bun run dev:local        # Start dev server without CMS (local-only work)
+bun run preview          # Preview production build locally
 
 # Building
-npm run build            # Astro build only
-npm run production_build # TinaCMS build + Astro build (full production)
+bun run build            # Astro build only
+bun run production_build # TinaCMS build + Astro build (full production)
 
 # Code quality
-npm run lint             # Prettier check + TypeScript type check (tsc --noEmit)
-npm run lint:fix         # Auto-format with Prettier
-npm run check            # Astro diagnostics (template/component checks)
+bun run lint             # TypeScript type check (tsc --noEmit) + formatting check
+bun run lint:fix         # Auto-format with Prettier
+bun run check            # Astro diagnostics (template/component checks)
+
+# Performance / tooling
+bun run scan             # Run react-scan against local dev server
+bun run changelog        # Generate changelog via ./scripts/generate-changelog.sh
 ```
 
 ## Architecture
