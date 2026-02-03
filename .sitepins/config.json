@@ -1,0 +1,12 @@
+{
+  "content": "src/content",
+  "media": "public",
+  "public": "public",
+  "configs": [
+    "src/config",
+    "src/config/siteConfig",
+    "src/config/featureFlag"
+  ],
+  "custom-commit": false,
+  "arrangement": []
+}
