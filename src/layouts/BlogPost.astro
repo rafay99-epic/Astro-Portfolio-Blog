@@ -269,6 +269,8 @@ const {
 
     {
       (() => {
+        if (!blogContent) return null;
+
         const faqMatches = blogContent.match(/^#{2,6}\s+(.+)$/gm);
         if (!faqMatches || faqMatches.length < 3) return null;
 
