@@ -57,9 +57,19 @@ const ms_notes = defineCollection({
   }),
 });
 
+const legal = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    lastUpdated: z.coerce.date().optional(),
+  }),
+});
+
 export const collections = {
   blog: blog,
   newsletter: newsletter,
   projects: projects,
   ms_notes: ms_notes,
+  legal: legal,
 };
