@@ -148,6 +148,11 @@ const formattedWordCount =
         margin: 3rem auto 0;
       }
 
+      .ads-section--rail {
+        width: 100%;
+        margin: 0;
+      }
+
       .ads-slot {
         min-height: 280px;
         display: flex;
@@ -156,6 +161,15 @@ const formattedWordCount =
         border: 1px dashed rgba(86, 95, 137, 0.35);
         border-radius: 12px;
         background: rgba(36, 40, 59, 0.2);
+      }
+
+      .ads-section--rail .ads-slot {
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .ads-section--rail .ads-slot .adsbygoogle {
+        max-width: 100%;
       }
 
       .ads-section-title {
@@ -893,6 +907,30 @@ const formattedWordCount =
                 }
               </nav>
             </div>
+            {
+              !isArchive && (
+                <div class="post-card">
+                  <section
+                    class="ads-section ads-section--rail"
+                    aria-label="Ads"
+                  >
+                    <h2 class="ads-section-title">Ads</h2>
+                    <div id="blog-ads" class="ads-slot">
+                      <ins
+                        class="adsbygoogle"
+                        style="display:inline-block;width:336px;height:280px"
+                        data-ad-client="ca-pub-2480387803052595"
+                        data-ad-slot="3981831087"
+                      />
+                      <script is:inline>
+                        (window.adsbygoogle = window.adsbygoogle || []).push({}
+                        );
+                      </script>
+                    </div>
+                  </section>
+                </div>
+              )
+            }
           </aside>
         </div>
       </section>
@@ -912,21 +950,6 @@ const formattedWordCount =
               allPosts={BlogPosts}
               basePath="/blog"
             />
-
-            <section class="ads-section" aria-label="Ads">
-              <h2 class="ads-section-title">Ads</h2>
-              <div id="blog-ads" class="ads-slot">
-                <ins
-                  class="adsbygoogle"
-                  style="display:inline-block;width:336px;height:280px"
-                  data-ad-client="ca-pub-2480387803052595"
-                  data-ad-slot="3981831087"
-                />
-                <script is:inline>
-                  (window.adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-              </div>
-            </section>
 
             <div class="comments-section">
               <div class="comments-container">

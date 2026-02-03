@@ -165,6 +165,17 @@ declare global {
   );
 </script>
 
+<!-- Cookie consent: default styles + Tokyo Night theme -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css"
+/>
+<link rel="stylesheet" href="/css/cookieconsent-theme.css" />
+<script is:inline>
+  document.documentElement.classList.add("cc--darkmode");
+</script>
+<script is:inline type="module" src="/js/cookieconsent-config.js"></script>
+
 <!-- <script is:inline type="text/partytown">
   (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
   .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
