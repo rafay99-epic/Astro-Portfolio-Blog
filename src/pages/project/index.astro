@@ -2,6 +2,7 @@
 import BaseHead from "@astro/base/BaseHead.astro";
 import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
+import ProjectShowcase from "@astro/projects/ProjectShowcase.astro";
 import authorConfig from "@config/siteConfig/info.json";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
@@ -39,126 +40,17 @@ const filteredProjects: CollectionEntry<"projects">[] = projects
     style="overflow-x: hidden; overflow-y: auto;"
   >
     <Header />
-    <main class="min-h-screen px-4 py-16 md:px-8">
-      <div class="container mx-auto max-w-7xl">
-        <div class="mb-12 text-center">
-          <h1
-            class="mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-4xl font-extrabold text-transparent md:text-6xl lg:text-7xl"
-          >
-            My Creations
-          </h1>
-          <p class="mx-auto max-w-3xl text-lg text-[#a9b1d6] md:text-xl">
-            A curated collection of innovative projects, showcasing my passion
-            for problem-solving and software craftsmanship.
-          </p>
-          <div
-            class="mx-auto mt-6 h-1 w-48 rounded-full bg-gradient-to-r from-transparent via-[#7aa2f7] to-transparent md:w-64"
-          >
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          {
-            filteredProjects.map((project) => (
-              <div class="group relative">
-                <div class="relative overflow-hidden rounded-xl border border-[#3b4261]/50 bg-[#24283b]/70 transition-all duration-300 hover:border-[#7aa2f7]">
-                  <div class="relative h-64 overflow-hidden">
-                    <img
-                      src={project.data.ProjectImage}
-                      alt={project.data.Projecttitle}
-                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#1a1b26]/90" />
-                  </div>
-
-                  <div class="p-6">
-                    <div class="mb-4 flex items-center justify-between">
-                      <h3 class="text-2xl font-bold text-[#c0caf5]">
-                        {project.data.Projecttitle}
-                      </h3>
-                      <span class="rounded-full bg-[#7aa2f7]/20 px-3 py-1 text-sm text-[#7aa2f7]">
-                        Rank #{project.data.ProjectRanking}
-                      </span>
-                    </div>
-
-                    <p class="mb-6 line-clamp-2 text-[#a9b1d6]">
-                      {project.data.ProjectDescription}
-                    </p>
-
-                    {project.data.ProjectTech &&
-                      project.data.ProjectTech.length > 0 && (
-                        <div class="mb-6 flex flex-wrap gap-2">
-                          {project.data.ProjectTech.slice(0, 5).map(
-                            (tech: string) => (
-                              <span class="rounded-full border border-[#3b4261]/50 bg-[#24283b] px-3 py-1 text-xs">
-                                {tech}
-                              </span>
-                            ),
-                          )}
-                        </div>
-                      )}
-
-                    <div class="flex items-center justify-between border-t border-[#3b4261]/30 pt-4">
-                      <div class="flex gap-4">
-                        {project.data.ProjectGithubLink && (
-                          <a
-                            href={project.data.ProjectGithubLink}
-                            class="flex items-center gap-2 text-[#c0caf5] transition-colors hover:text-[#bb9af7]"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <i class="fas fa-code text-lg" />
-                            <span>Source</span>
-                          </a>
-                        )}
-                        {project.data.ProjectDeployedLink && (
-                          <a
-                            href={project.data.ProjectDeployedLink}
-                            class="flex items-center gap-2 text-[#c0caf5] transition-colors hover:text-[#bb9af7]"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <i class="fas fa-external-link-alt text-lg" />
-                            <span>Live Demo</span>
-                          </a>
-                        )}
-                      </div>
-
-                      <a
-                        href={`/project/${project.slug}`}
-                        class="flex items-center gap-2 text-[#7aa2f7] transition-colors hover:text-[#bb9af7]"
-                      >
-                        <span>View Details</span>
-                        <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))
-          }
-        </div>
-      </div>
+    <main
+      class="min-h-screen"
+      style="margin: 0; padding: 0; max-width: 100%;"
+    >
+      <ProjectShowcase
+        projects={filteredProjects}
+        title="Project Archive"
+        subtitle="A complete index of my builds, experiments, and production-grade launches."
+        eyebrow="All Projects"
+      />
     </main>
-    <script is:inline>
-      document
-        .querySelectorAll('.project-card a[target="_blank"]')
-        .forEach((link) => {
-          link.addEventListener("click", (e) => {
-            e.stopPropagation();
-          });
-        });
-
-      if ("scrollRestoration" in history) {
-        history.scrollRestoration = "manual";
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-        }, 0);
-      });
-    </script>
 
     <Footer />
   </body>
