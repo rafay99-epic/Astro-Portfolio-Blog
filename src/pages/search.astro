@@ -8,10 +8,15 @@ import SearchReactComponent from "@react/blog/metadata/SearchField/SearchField";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 export const prerender = true;
 const posts = featureFlags.showBlog
-  ? (await getCollection("blog")).sort(
-      (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
-        a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
-    )
+  ? (await getCollection("blog"))
+      .filter(
+        (post: CollectionEntry<"blog">) =>
+          !post.data.draft && !post.data.archived,
+      )
+      .sort(
+        (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+          a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+      )
   : [];
 
 try {

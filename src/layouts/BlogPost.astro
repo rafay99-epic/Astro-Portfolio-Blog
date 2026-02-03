@@ -18,7 +18,10 @@ const { url, site } = Astro;
 const openGraphImageUrl = getImagePath({ url, site });
 
 const pageUrl = Astro.url.href;
-type Props = CollectionEntry<"blog">["data"];
+type Props = CollectionEntry<"blog">["data"] & {
+  isArchive?: boolean;
+};
+const isArchive = (Astro.props as Props).isArchive === true;
 
 try {
   if (!featureFlags.showBlog) {
@@ -30,7 +33,11 @@ try {
 
 const BlogPosts = featureFlags.showBlog
   ? (await getCollection("blog"))
-      .filter((post: CollectionEntry<"blog">) => !post.data.draft)
+      .filter(
+        (post: CollectionEntry<"blog">) =>
+          !post.data.draft &&
+          (isArchive ? post.data.archived : !post.data.archived),
+      )
       .sort(
         (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
           a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
@@ -45,6 +52,16 @@ const currentBlog = BlogPosts.find(
 if (!currentBlog) {
   return Astro.redirect("/access-denied");
 }
+
+const currentIndex = BlogPosts.findIndex(
+  (post: CollectionEntry<"blog">) => post.slug === currentSlug,
+);
+const prevPost =
+  currentIndex > 0 ? BlogPosts[currentIndex - 1] : undefined;
+const nextPost =
+  currentIndex >= 0 && currentIndex < BlogPosts.length - 1
+    ? BlogPosts[currentIndex + 1]
+    : undefined;
 
 const blogContent = currentBlog.body;
 
@@ -61,7 +78,7 @@ const {
   canonicalUrl,
   featured,
   excerpt,
-} = Astro.props;
+} = Astro.props as Props;
 ---
 
 <html lang="en">
@@ -384,6 +401,13 @@ const {
           <span>•</span>
           <span>{readTime}</span>
         </div>
+        {
+          isArchive && (
+            <div class="mx-auto mb-6 w-fit rounded-full border border-[#bb9af7]/40 bg-[#24283b]/70 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[#bb9af7]">
+              Archived article • may be outdated
+            </div>
+          )
+        }
 
         <h1
           class="mb-8 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-4xl leading-tight text-transparent md:text-5xl"
@@ -396,31 +420,102 @@ const {
         <slot />
       </div>
 
-      <MermaidRenderer client:load />
+      {
+        !isArchive ? (
+          <>
+            <MermaidRenderer client:load />
 
-      <EnhancedImageCaptionRenderer client:load />
+            <EnhancedImageCaptionRenderer client:load />
 
-      <CodeCopySimple client:load />
+            <CodeCopySimple client:load />
 
-      <BlogNavigation
-        client:load
-        currentSlug={currentSlug || ""}
-        allPosts={BlogPosts}
-      />
+            <BlogNavigation
+              client:load
+              currentSlug={currentSlug || ""}
+              allPosts={BlogPosts}
+              basePath="/blog"
+            />
 
-      <div class="comments-section">
-        <div class="comments-container">
-          <div class="comments-header">
-            <h2 class="comments-title">💬 Join the Discussion</h2>
-            <p class="text-sm text-[#a9b1d6]">
-              Share your thoughts and engage with the community
-            </p>
+            <div class="comments-section">
+              <div class="comments-container">
+                <div class="comments-header">
+                  <h2 class="comments-title">💬 Join the Discussion</h2>
+                  <p class="text-sm text-[#a9b1d6]">
+                    Share your thoughts and engage with the community
+                  </p>
+                </div>
+                <div class="z-1 relative">
+                  <PostComment />
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div class="mx-auto mt-10 flex w-full max-w-4xl items-center justify-between border-t border-[#565f89]/20 px-6 py-8">
+            {prevPost ? (
+              <a
+                href={`/blog/archive/${prevPost.slug}`}
+                class="group flex max-w-xs items-center gap-3 text-left"
+              >
+                <div class="flex flex-col">
+                  <span class="text-xs font-medium uppercase tracking-wide text-[#565f89]">
+                    Previous
+                  </span>
+                  <span class="line-clamp-2 text-sm text-[#a9b1d6] transition-colors duration-200 group-hover:text-[#7aa2f7]">
+                    {prevPost.data.title}
+                  </span>
+                </div>
+                <svg
+                  class="h-4 w-4 flex-shrink-0 text-[#565f89] transition-colors duration-200 group-hover:text-[#7aa2f7]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </a>
+            ) : (
+              <div></div>
+            )}
+
+            {nextPost ? (
+              <a
+                href={`/blog/archive/${nextPost.slug}`}
+                class="group flex max-w-xs items-center gap-3 text-right"
+              >
+                <svg
+                  class="h-4 w-4 flex-shrink-0 text-[#565f89] transition-colors duration-200 group-hover:text-[#7aa2f7]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+                <div class="flex flex-col">
+                  <span class="text-xs font-medium uppercase tracking-wide text-[#565f89]">
+                    Next
+                  </span>
+                  <span class="line-clamp-2 text-sm text-[#a9b1d6] transition-colors duration-200 group-hover:text-[#7aa2f7]">
+                    {nextPost.data.title}
+                  </span>
+                </div>
+              </a>
+            ) : (
+              <div></div>
+            )}
           </div>
-          <div class="z-1 relative">
-            <PostComment />
-          </div>
-        </div>
-      </div>
+        )
+      }
     </main>
 
     <script is:inline>

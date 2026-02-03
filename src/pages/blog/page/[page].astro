@@ -16,7 +16,10 @@ if (isNaN(currentPage) || currentPage < 1) {
 }
 
 const allPosts = (await getCollection("blog"))
-  .filter((post: CollectionEntry<"blog">) => !post.data.draft)
+  .filter(
+    (post: CollectionEntry<"blog">) =>
+      !post.data.draft && !post.data.archived,
+  )
   .sort(
     (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
       b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),

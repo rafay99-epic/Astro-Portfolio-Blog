@@ -12,12 +12,17 @@ interface BlogPost {
 interface BlogNavigationProps {
   currentSlug: string;
   allPosts: BlogPost[];
+  basePath?: string;
 }
 
 const BlogNavigation: React.FC<BlogNavigationProps> = ({
   currentSlug,
   allPosts,
+  basePath = "/blog",
 }) => {
+  const normalizedBasePath = basePath.endsWith("/")
+    ? basePath.slice(0, -1)
+    : basePath;
   const currentIndex = allPosts.findIndex((post) => post.slug === currentSlug);
 
   if (currentIndex === -1) {
@@ -34,7 +39,7 @@ const BlogNavigation: React.FC<BlogNavigationProps> = ({
     <div className="mx-auto flex w-full max-w-4xl items-center justify-between border-t border-[#565f89]/20 px-6 py-8">
       {prevPost ? (
         <motion.a
-          href={`/blog/${prevPost.slug}`}
+          href={`${normalizedBasePath}/${prevPost.slug}`}
           className="group flex max-w-xs items-center gap-3 text-left"
           whileHover={{ x: -5 }}
           transition={{ duration: 0.2 }}
@@ -67,7 +72,7 @@ const BlogNavigation: React.FC<BlogNavigationProps> = ({
 
       {nextPost ? (
         <motion.a
-          href={`/blog/${nextPost.slug}`}
+          href={`${normalizedBasePath}/${nextPost.slug}`}
           className="group flex max-w-xs items-center gap-3 text-right"
           whileHover={{ x: 5 }}
           transition={{ duration: 0.2 }}

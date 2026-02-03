@@ -11,7 +11,10 @@ export const prerender = false;
 const postsPerPage = 9;
 
 const allPosts = (await getCollection("blog"))
-  .filter((post: CollectionEntry<"blog">) => !post.data.draft)
+  .filter(
+    (post: CollectionEntry<"blog">) =>
+      !post.data.draft && !post.data.archived,
+  )
   .sort(
     (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
       b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -111,6 +114,14 @@ try {
         <p class="mx-auto max-w-xl text-lg text-[#a9b1d6]">
           Explore insights, tutorials, and thoughts on development
         </p>
+        <div class="mt-4 flex items-center justify-center gap-3 text-sm">
+          <a
+            href="/blog/archive"
+            class="rounded-full border border-[#565f89]/40 px-4 py-2 text-[#a9b1d6] transition-colors duration-200 hover:border-[#7aa2f7]/60 hover:text-[#c0caf5]"
+          >
+            View Archive
+          </a>
+        </div>
         <div
           class="mx-auto mt-4 h-0.5 w-20 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]"
         >

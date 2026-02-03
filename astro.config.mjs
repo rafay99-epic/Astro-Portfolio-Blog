@@ -192,6 +192,7 @@ export default defineConfig({
       exclude: ["@astrojs/image", "sharp"],
     },
     resolve: {
+      dedupe: ["react", "react-dom"],
       alias: {
         "@assets": "/src/assets",
         "@components": "/src/components",

@@ -1,0 +1,164 @@
+---
+// NOTE: Dedicated archive page avoids /blog/archive hitting the catch-all route.
+import BaseHead from "@astro/base/BaseHead.astro";
+import Header from "@astro/header/Header.astro";
+import Footer from "@astro/footer/Footer.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+
+type BlogCollectionEntry = CollectionEntry<"blog">;
+
+export const prerender = true;
+
+const archivedPosts = (await getCollection("blog"))
+  .filter(
+    (post: CollectionEntry<"blog">) => !post.data.draft && post.data.archived,
+  )
+  .sort(
+    (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+      b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  );
+
+try {
+  if (!featureFlags.showBlog) {
+    return Astro.redirect("/access-denied");
+  }
+} catch (error) {
+  return Astro.redirect("/404");
+}
+---
+
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`Archive | ${authorConfig.SiteName}`}
+      description={`Browse archived articles on ${authorConfig.SiteName}.`}
+    />
+
+    <style is:inline>
+      html {
+        background-color: #1a1b26 !important;
+      }
+      body {
+        background-color: #1a1b26 !important;
+      }
+      #__astro {
+        background-color: #1a1b26 !important;
+      }
+    </style>
+
+    <style>
+      /* Prevent white flash */
+      html {
+        background-color: #1a1b26 !important;
+      }
+
+      body {
+        background-color: #1a1b26 !important;
+        transition: none !important;
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen flex-col bg-[#1a1b26] text-[#a9b1d6]">
+    <Header />
+
+    <main class="mx-auto max-w-7xl flex-1 px-8 py-16">
+      <div class="mb-12 text-center">
+        <h1
+          class="mb-3 bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-4xl text-transparent lg:text-5xl"
+        >
+          Archive
+        </h1>
+        <p class="mx-auto max-w-xl text-lg text-[#a9b1d6]">
+          Older articles kept for reference and context
+        </p>
+        <div
+          class="mx-auto mt-4 h-0.5 w-20 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]"
+        >
+        </div>
+      </div>
+
+      {
+        archivedPosts.length ? (
+          <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
+            {archivedPosts.map((post: BlogCollectionEntry) => (
+              <article>
+                <a href={`/blog/archive/${post.slug}`} class="block">
+                  <div class="mb-6 h-64 overflow-hidden rounded-xl">
+                    <img
+                      src={post.data.heroImage || "/default-image.jpg"}
+                      alt={post.data.title}
+                      class="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  <div class="text-center">
+                    <time
+                      datetime={post.data.pubDate.toISOString()}
+                      class="mb-4 block text-xs text-[#565f89]"
+                    >
+                      {new Date(post.data.pubDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </time>
+
+                    <h2 class="mb-6 line-clamp-2 text-xl leading-tight text-white transition-colors duration-200 hover:text-[#7aa2f7]">
+                      {post.data.title}
+                    </h2>
+
+                    <div class="flex items-center justify-center text-sm font-medium text-[#7aa2f7] transition-colors duration-200 hover:text-[#bb9af7]">
+                      <span>Read article</span>
+                      <svg
+                        class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div class="mx-auto max-w-2xl rounded-2xl border border-[#565f89]/30 bg-[#24283b]/60 p-8 text-center shadow-2xl backdrop-blur-xl">
+            <h2 class="mb-2 text-xl font-semibold text-white">
+              No archived articles yet
+            </h2>
+            <p class="text-[#a9b1d6]">
+              When you archive posts, they will appear here.
+            </p>
+          </div>
+        )
+      }
+    </main>
+
+    <Footer />
+
+    <style>
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    </style>
+  </body>
+</html>
