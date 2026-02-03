@@ -381,56 +381,112 @@ const {
     <Header />
     <div id="scroll-progress"></div>
 
-    <main
-      class="main-content pt-15 mx-auto w-full max-w-4xl overflow-x-hidden px-6 py-8 md:py-12"
-    >
-      <header class="mb-12 text-center">
+    <main class="main-content relative z-10 flex flex-1 flex-col">
+      {
+        heroImage && (
+          <div class="mx-auto w-full max-w-5xl md:-mb-10 lg:-mb-12 xl:-mb-16">
+            <img
+              src={heroImage}
+              alt=""
+              loading="eager"
+              class="min-h-[240px] w-full object-cover"
+            />
+          </div>
+        )
+      }
+
+      <div
+        class:list={[
+          "relative mx-auto w-full max-w-5xl overflow-visible",
+          { "md:z-10": heroImage },
+          { "pt-20": !heroImage },
+        ]}
+      >
         <div
-          class="mb-2 flex items-center justify-center gap-4 text-sm text-[#565f89]"
+          class:list={[
+            "mx-auto w-fit max-w-full bg-[#1a1b26] px-6 py-8 md:px-10 md:py-12 lg:px-12 lg:py-16 xl:px-16 xl:py-20",
+            { "md:border-t md:border-[#565f89]/10": heroImage },
+          ]}
         >
-          <time datetime={pubDate.toISOString()}>
+          <header class="mx-auto w-full max-w-prose text-center">
+            <time
+              datetime={pubDate.toISOString()}
+              class="font-mono text-sm tracking-wide text-[#565f89]"
+            >
+              {
+                new Date(pubDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              }
+            </time>
+
+            <h1
+              class="mb-4 mt-2 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-3xl leading-tight text-transparent sm:mb-5 sm:mt-3 md:text-5xl"
+            >
+              {title}
+            </h1>
+
+            <div
+              class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-sm text-[#565f89] md:gap-y-4"
+            >
+              <span>By</span>
+              <div class="flex items-center gap-2">
+                {
+                  authorAvatar ? (
+                    <img
+                      src={authorAvatar}
+                      alt=""
+                      aria-hidden="true"
+                      class="inline-block h-6 w-6 rounded-full border border-[#565f89]/30 object-cover md:h-10 md:w-10"
+                      loading="eager"
+                    />
+                  ) : (
+                    <div class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#24283b] text-xs font-medium text-[#7aa2f7] ring-1 ring-[#565f89]/30 md:h-10 md:w-10">
+                      {authorName?.charAt(0)?.toUpperCase()}
+                    </div>
+                  )
+                }
+                <span class="text-[#c0caf5]">{authorName}</span>
+              </div>
+              {
+                readTime && (
+                  <span class="text-[#565f89]">&middot; {readTime}</span>
+                )
+              }
+            </div>
+
             {
-              new Date(pubDate).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
+              currentBlog.data.updatedDate && (
+                <div class="mt-3 text-xs text-[#565f89]">
+                  Last updated on{" "}
+                  {currentBlog.data.updatedDate.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </div>
+              )
             }
-          </time>
-          <span>•</span>
-          <span>Written by {authorName}</span>
-          <span>•</span>
-          <span>{readTime}</span>
+
+            {
+              isArchive && (
+                <div class="mx-auto mt-4 w-fit rounded-full border border-[#bb9af7]/40 bg-[#24283b]/70 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[#bb9af7]">
+                  Archived article &middot; may be outdated
+                </div>
+              )
+            }
+          </header>
+
+          <hr class="-mx-16 my-8 border-[#565f89]/20 lg:my-16" />
+
+          <div class="flex max-w-prose flex-wrap gap-y-12 lg:gap-y-16">
+            <article class="prose w-full">
+              <slot />
+            </article>
+          </div>
         </div>
-        {
-          currentBlog.data.updatedDate && (
-            <div class="mb-4 text-xs text-[#565f89]">
-              Last updated on{" "}
-              {currentBlog.data.updatedDate.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </div>
-          )
-        }
-        {
-          isArchive && (
-            <div class="mx-auto mb-6 w-fit rounded-full border border-[#bb9af7]/40 bg-[#24283b]/70 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[#bb9af7]">
-              Archived article • may be outdated
-            </div>
-          )
-        }
-
-        <h1
-          class="mb-8 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-4xl leading-tight text-transparent md:text-5xl"
-        >
-          {title}
-        </h1>
-      </header>
-
-      <div class="w-full">
-        <slot />
       </div>
 
       {
