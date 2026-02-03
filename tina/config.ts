@@ -50,6 +50,14 @@ export default defineConfig({
             required: true,
           },
           {
+            type: "boolean",
+            name: "archived",
+            label: "Archived",
+            required: true,
+            description:
+              "Archive posts to move them under /blog/archive and hide from regular listings/search.",
+          },
+          {
             type: "image",
             name: "heroImage",
             label: "Thumbnail Image",
