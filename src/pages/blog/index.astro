@@ -184,7 +184,10 @@ try {
               showTags && topTags.length > 0 && (
                 <div class="tag-rail fade-up delay-4">
                   {topTags.map((tag) => (
-                    <a href={`/tag/${tag}`} class="tag-pill">
+                    <a
+                      href={`/tag/${encodeURIComponent(tag)}`}
+                      class="tag-pill"
+                    >
                       #{tag}
                     </a>
                   ))}
