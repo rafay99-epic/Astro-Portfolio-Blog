@@ -1,5 +1,6 @@
 ---
-title: "Autonomous Execution Is Here: What OpenAI Codex Means for Production Security"
+title: "I Gave OpenAI Codex the Keys to My Codebase for a Week. I’m Not Giving
+  Them Back."
 description: "OpenAI Codex shifts AI from suggestion-based pair programming to
   autonomous execution environments, forcing a fundamental restructuring of how
   we validate, sandbox, and trust machine-generated code."
@@ -19,12 +20,95 @@ featured: true
 excerpt: ""
 archived: false
 ---
-Not too long ago, AI Coding was every where, i have heard so much good about the Claude models and Open AI Codex model, but these things and subscriptions are expensives plus comes with limit as well. I just recentely bough the claude code subscription and I was loving, i Could debugging logical stuff, create stunning looking AI by giving very specific colors scheme, formate and reference matter, and I did not add any skills or any thing to the claude code, Just Claude.md file and then done. I will tell my problem and it fixes it very well.&#x20;
+When OpenAI dropped the Codex app for macOS, I didn't just install it—I stress-tested it against the exact workflows that make me want to throw my laptop: scaffolding Convex schemas from Figma designs, refactoring legacy navigation stacks in my Astro portfolio, and hunting hydration mismatches in React islands. I ran it for a week across four intensity tiers—Low, Medium, High, and Extra High—and shipped four production pull requests to my live site.
 
-​
+My verdict? **This isn't a better Copilot. This is a senior engineering team that doesn't sleep, doesn't context-switch, and—at the right intensity setting—doesn't touch code that isn't part of the mission.**
 
-But then Like tommoror Open AI Just released Codex App, for there coding moding Codex-hight. Low, thinking. Yeah I know the namning of product and names of the model sucks, that is so confussing, there is codex AI model, there Cloud Codex, Code Agent and much more as well, this is the jus the begining of there stuff.&#x20;
+## The Paradigm Shift: From Suggestion to Delegation
 
-​
+Here's what the press releases won't tell you: Codex isn't "AI pair programming." It's **agentic execution with verifiable outputs.**
 
-But with this release&#x20;
+The old workflow: You write a prompt, AI suggests code, you copy-paste, you debug, you hate yourself.
+
+The Codex workflow: You define the task ("Migrate the blog's color system from hardcoded CSS to Tailwind config"), spin up an isolated git worktree, and let the agent loop run. It reads your codebase, executes shell commands, runs your actual test suite, fails, debugs from `stderr`, retries, and returns a diff with full execution logs.
+
+**The kicker:** It runs in parallel. I had three agents working simultaneously last Tuesday—one migrating TypeScript types in my Astro portfolio, one generating a Flutter widget from a Figma URL, and one hunting memory leaks in a React Native bridge. All isolated. All auditable.
+
+## Skills: When Code Agents Learn to Actually _Do_ Things
+
+The "Skills" feature is where this stops being a toy. Codex can invoke Figma to pull design tokens, deploy to Vercel via CLI, or generate GPT-4o images for UI mockups. I built a "Convex Schema Generator" skill in 20 minutes. Now I paste a Figma link, and Codex extracts the component structure, generates the `convex/schema.ts` definitions, writes the mutation functions, and opens a PR. It took me longer to write the commit message than to generate the entire backend.
+
+## The Intensity Spectrum: Why "Extra High" Isn't Just "More Smart"
+
+Here is where my week got interesting. OpenAI gives you four **intensity levels**: Low, Medium, High, and Extra High. Most assume this is token budget or model size. It isn't.
+
+**This is about scope aggression.**
+
+I ran identical prompts across all four tiers on my production Astro portfolio. The results were so divergent that I shipped them as separate pull requests to document the behavioral differences:
+
+**Low: The Paranoid Intern (\[Not shipped—too useless to PR])**\
+_Task:_ Update the color system to match a Figma palette and apply it to the Tailwind config.
+_Behavior:_ It read `tailwind.config.ts`, updated three hex codes, and stopped. It ignored the Figma integration entirely and didn't touch the Convex schema for theme storage. Safe. Boring. Useless for real work.
+
+**Medium: The "Helpful" Destroyer (**[**PR #128**](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/128)**)**&#x53;ame task. Codex decided my utility functions "needed consistency," refactored my Astro content collections schema, and renamed variables across 12 files. It touched what wasn't broken. I rejected the PR. **Medium tier is more dangerous than High because it confuses helpfulness with scope creep.**
+
+**High: The Surgeon (**[**PR #126**](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/126) **&** [**PR #130**](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/130)**)**&#x54;his is the sweet spot. When I asked it to redesign the blog layout with new typography, it touched exactly three files: `BaseHead.astro` for meta tags, created `ReadingProgress.svelte` (island architecture), and updated the route transition logic. It ignored my Markdown parsing, didn't refactor my React islands, and resisted the urge to "improve" my working code. **High tier identifies the minimal viable file set and does not exceed it.**
+
+**Extra High: The Exhaustive Auditor (**[**PR #127**](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/127)**)**\
+_Task:_ Complex UI surgery—redesign blog layout with responsive images and theme persistence.
+_Behavior:_ It mapped the entire dependency chain. It read the `src/` directory to understand component-level color usage, checked `package.json` for conflicting CSS-in-JS libraries, scanned the Convex schema for type safety, and caught a hardcoded hex value hiding in a `dangerouslySetInnerHTML` block that High tier missed. 200k+ tokens, 4x the cost, but it caught the edge case that would have broken mobile hydration.
+
+### The Critical Insight
+
+**Codex has intensity-calibrated file greediness.** Lower tiers are defensive (useless); Medium is optimistic (dangerous); High is surgical (production-ready); Extra High is exhaustive (for architecture changes).
+
+If you tell High-tier Codex to "go read the colors of the app," it finds the three files that define your design tokens and ignores the 400 components consuming them. This restraint is the superpower. As a Full Stack Engineer who finds reading textbooks boring but lives for solving novel problems, this behavior is nirvana—I delegate the boilerplate archaeology while keeping the architecture decisions.
+
+**My recommendation:** Skip Low and Medium. Use **High** for 90% of tasks. Use **Extra High** only when touching auth, payments, or schema migrations—where "I didn't know that file existed" equals a security breach.
+
+## The Honest Truth: Where It Frays
+
+You asked me not to sugarcoat it.
+
+**1. Token economics are brutal.**&#x54;hat agent loop is expensive. Every tool call—every `ls`, every `npm test`, every `git status`—round-trips through the API. A 30-minute Extra High session can burn 200k+ tokens. Those "doubled rate limits" on Plus evaporate fast.
+
+**2. Verification is the new bottleneck.**&#x57;hen AI writes code, you review it. When AI _executes_ code autonomously, you must **audit the execution trail**. I caught Codex "fixing" a Convex query by removing a pagination limit—technically passing the test, functionally wrong for production. The logs are comprehensive, but you still have to read them.
+
+**3. The "personality" toggle is gimmicky.**&#x54;erse vs. conversational modes change verbosity, not output quality. I leave it on terse because time is money.
+
+## Final Conclusion: The Verification Shift
+
+After shipping four PRs in one week while maintaining my role at Tudo Tech Lab, I've stopped thinking about "AI coding assistants." That category is dead. **We are now in the era of scoped agentic execution.**
+
+The discovery isn't that Codex writes good React (it does) or that it sandboxes safely (it mostly does). The discovery is that **intensity calibration changes the fundamental contract between human and machine.** At High tier, Codex exhibits restraint—it resists refactoring working code, resists "improving" abstractions, and solves the specific problem in the specific files, then stops.
+
+This is the behavior that makes it production-ready. Not the parallelism. Not the skills. The restraint.
+
+**The workflow that actually works:**
+
+1. **High tier** for 90% of tasks—surgical, fast, minimal diff
+2. **Extra High** only for auth, payments, or schema migrations—expensive but exhaustive
+3. **Never Medium**—the "helpful refactorer" is your enemy
+4. **Never Low**—the "too scared to touch anything" agent wastes your time
+
+The token economics sting, but compared to engineering hours spent context-switching between Convex schema design and Astro island hydration debugging? The math is brutal in Codex's favor.
+
+## Final Thought: The Editor vs. The Executor
+
+We spent years treating AI as an _editor_—something that suggests, hints, nudges. That made sense when hallucinations were high and context windows were small. But Codex with High/Extra High intensity isn't an editor. It's an _executor_ with configurable scope aggression.
+
+**The mental shift:** You're no longer curating suggestions. You're writing specs for autonomous agents and auditing execution trails. The skill that matters now isn't syntax knowledge—it's **task decomposition and verification discipline.** Can you write a prompt tight enough that High-tier Codex knows exactly which 3 files matter? Can you read a git diff fast enough to spot when Extra High overreached?
+
+If you can, you just gained a parallelized engineering team that doesn't context-switch, doesn't get tired, and—at High intensity—doesn't mess with code that isn't part of the mission.
+
+**Stop vibe coding. Start delegating with precision.**
+
+## TL;DR
+
+**Codex isn't "smarter" at higher intensities—it becomes more surgically greedy with file access.** Low tier touches nothing; Medium "helpfully" destroys your architecture ([PR #128 rejected](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/128)); High tier identifies the exact 3 files needed without touching 400 components ([PR #126](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/126), [#130](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/130)); Extra High maps the entire dependency chain to catch edge cases like hydration mismatches ([PR #127](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/127)).
+
+**The verdict:** One developer can run parallelized agents with scope-calibrated precision. Token costs are real (4x jump from Low to Extra High), verification is mandatory, but shipping 4 production PRs in a week while holding down a full-time job? That's the leverage. Skip Low and Medium. Start with High.
+
+**Get on the waitlist. Calibrate your intensity. Audit the diffs.**
+
+
