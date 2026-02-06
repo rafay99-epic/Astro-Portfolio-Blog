@@ -1,7 +1,8 @@
 {
   "content": "src/content",
-  "media": "public",
+  "media": "public/BlogImages",
   "public": "public",
+  "publicPath": "/BlogImages",
   "configs": ["src/config/siteConfig", "src/config/featureFlag"],
   "custom-commit": false,
   "arrangement": []
