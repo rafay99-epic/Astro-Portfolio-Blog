@@ -1,5 +1,13 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
+import {
+  LuArrowLeft,
+  LuMail,
+  LuPalette,
+  LuRocket,
+  LuWrench,
+  LuZap,
+} from "react-icons/lu";
 
 interface ComingSoonProps {
   featureName: string;
@@ -56,7 +64,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
 
       <motion.div
         variants={containerVariants}
-        initial="hidden"
+        initial={false}
         animate="visible"
         className="relative z-10 w-full max-w-5xl"
       >
@@ -76,7 +84,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
               <div className="relative">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] opacity-50 blur-lg" />
                 <div className="relative rounded-2xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] p-6 text-6xl">
-                  🚀
+                  <LuRocket className="h-12 w-12 text-white" />
                 </div>
               </div>
             </motion.div>
@@ -111,16 +119,18 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
               className="mx-auto mt-8 grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-3"
             >
               {[
-                { icon: "⚡", text: "Lightning Fast" },
-                { icon: "🎨", text: "Beautiful Design" },
-                { icon: "🔧", text: "Powerful Features" },
+                { icon: LuZap, text: "Lightning Fast" },
+                { icon: LuPalette, text: "Beautiful Design" },
+                { icon: LuWrench, text: "Powerful Features" },
               ].map((feature, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05, y: -2 }}
                   className="rounded-xl border border-[#565f89]/20 bg-[#1a1b26]/40 p-4 backdrop-blur-md transition-all duration-300 hover:border-[#7aa2f7]/40"
                 >
-                  <div className="mb-2 text-2xl">{feature.icon}</div>
+                  <div className="mb-2">
+                    <feature.icon className="mx-auto h-7 w-7 text-[#7aa2f7]" />
+                  </div>
                   <div className="text-sm font-medium text-[#a9b1d6]">
                     {feature.text}
                   </div>
@@ -149,7 +159,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
                   }}
                   className="relative text-xl"
                 >
-                  ←
+                  <LuArrowLeft className="h-5 w-5" />
                 </motion.span>
               </motion.a>
             </motion.div>
@@ -164,9 +174,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
               </div>
               <div className="h-3 w-full overflow-hidden rounded-full bg-[#1a1b26]/60">
                 <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: "65%" }}
-                  transition={{ duration: 2, delay: 1 }}
+                  style={{ width: "65%" }}
                   className="relative h-full rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]"
                 >
                   <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -185,11 +193,11 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
           <p>Want to be notified when this feature launches?</p>
           <motion.a
             whileHover={{ scale: 1.05 }}
-            href="/newsletter-subscribe"
+            href="/contact-me"
             className="mt-2 inline-flex items-center gap-2 text-[#7aa2f7] transition-colors duration-300 hover:text-[#bb9af7]"
           >
-            <span>Subscribe to our newsletter</span>
-            <span>📧</span>
+            <span>Contact me for updates</span>
+            <LuMail className="h-4 w-4" />
           </motion.a>
         </motion.div>
       </motion.div>

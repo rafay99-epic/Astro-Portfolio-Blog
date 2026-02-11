@@ -1,25 +1,4 @@
 {
-  "SiteName": "Abdul Rafay",
-  "SiteDescription": "Hey there! Welcome to my space where I share coding adventures, explore new tech, and dive into open-source projects. Grab a coffee and join me on this journey through the world of software development!",
-  "name": "Abdul Rafay",
-  "jobTitle": "Software Engineer",
-  "position": "Full Stack Developer",
-  "picture": "/author.webp",
-  "avator": "/favicon.png",
-  "tag_line": "I build high-performance web & mobile apps that scale.",
-  "socialLinks": {
-    "twitter": "https://x.com/abdul_rafay99",
-    "linkedin": "abdul-rafay1999",
-    "github": "https://github.com/rafay99-epic",
-    "upwork": "https://www.upwork.com/freelancers/~018c78c37a53bf3cac",
-    "youtube": "https://www.youtube.com/@buildwithrafay",
-    "whatsNumber": "+923035650798"
-  },
-  "about": {
-    "whoAmI": "I am a Full Stack Software Engineer and Team Lead who builds production-ready web and mobile applications used by real users. My work sits at the intersection of clean architecture, performance, and delivery. I have led engineering teams, owned critical systems, and shipped applications across Android, iOS, and the web using modern stacks like React, Next.js, Flutter, and Node.js. I don’t just build features—I think through system design, edge cases, scalability, and long-term maintainability to create software teams can confidently build on.",
-    "lifeBeyondCode": "Outside of work, I enjoy challenges that demand focus and strategic thinking. Competitive gaming plays a big role in how I recharge, sharpening decision-making, teamwork, and adaptability under pressure. Exploring new experiences helps me reset and maintain balance, which directly influences how I approach problem-solving and collaboration in my professional life.",
-    "continuousLearning": "I treat learning as a core part of my work. I continuously refine my skills by adopting new tools, revisiting architectural decisions, and improving how systems are built and maintained. My learning is driven by real problems such as scaling applications, improving performance, reducing complexity, and helping teams work more effectively together. Through mentorship, collaboration, and technical leadership, I focus on building software that lasts."
-  },
   "coreStack": [
     {
       "name": "React & Next.js",
@@ -70,6 +49,41 @@
       "color": "#bb9af7"
     }
   ],
+  "stats": [
+    {
+      "label": "Years Experience",
+      "value": "3+"
+    },
+    {
+      "label": "Technologies",
+      "value": "15+"
+    },
+    {
+      "label": "Happy Clients",
+      "value": "25+"
+    }
+  ],
+  "SiteName": "Abdul Rafay",
+  "SiteDescription": "Hey there! Welcome to my space where I share coding adventures, explore new tech, and dive into open-source projects. Grab a coffee and join me on this journey through the world of software development!",
+  "name": "Abdul Rafay",
+  "jobTitle": "Software Engineer",
+  "position": "Full Stack Developer",
+  "picture": "/author.webp",
+  "avator": "/favicon.png",
+  "tag_line": "I build high-performance web & mobile apps that scale.",
+  "socialLinks": {
+    "twitter": "https://x.com/abdul_rafay99",
+    "linkedin": "abdul-rafay1999",
+    "github": "https://github.com/rafay99-epic",
+    "upwork": "https://www.upwork.com/freelancers/~018c78c37a53bf3cac",
+    "youtube": "https://www.youtube.com/@buildwithrafay",
+    "whatsNumber": "+923035650798"
+  },
+  "about": {
+    "whoAmI": "I am a Full Stack Software Engineer and Team Lead who builds production-ready web and mobile applications used by real users. My work sits at the intersection of clean architecture, performance, and delivery. I have led engineering teams, owned critical systems, and shipped applications across Android, iOS, and the web using modern stacks like React, Next.js, Flutter, and Node.js. I don’t just build features—I think through system design, edge cases, scalability, and long-term maintainability to create software teams can confidently build on.",
+    "lifeBeyondCode": "Outside of work, I enjoy challenges that demand focus and strategic thinking. Competitive gaming plays a big role in how I recharge, sharpening decision-making, teamwork, and adaptability under pressure. Exploring new experiences helps me reset and maintain balance, which directly influences how I approach problem-solving and collaboration in my professional life.",
+    "continuousLearning": "I treat learning as a core part of my work. I continuously refine my skills by adopting new tools, revisiting architectural decisions, and improving how systems are built and maintained. My learning is driven by real problems such as scaling applications, improving performance, reducing complexity, and helping teams work more effectively together. Through mentorship, collaboration, and technical leadership, I focus on building software that lasts."
+  },
   "techStack": [
     {
       "category": "App Development",
@@ -288,7 +302,7 @@
     {
       "title": "Mobile App Development",
       "description": "Building native and cross-platform mobile applications with Flutter and React Native. From concept to deployment, I create intuitive, high-performance apps for iOS and Android.",
-      "icon": "📱",
+      "icon": "mobile",
       "features": [
         "Cross-platform development with Flutter",
         "Native Android development",
@@ -308,7 +322,7 @@
     {
       "title": "Web Development",
       "description": "Creating modern, responsive web applications using cutting-edge technologies. From simple landing pages to complex web applications with full-stack capabilities.",
-      "icon": "🌐",
+      "icon": "globe",
       "features": [
         "Frontend development with React & Astro",
         "Backend API development",
@@ -329,7 +343,7 @@
     {
       "title": "Full-Stack Solutions",
       "description": "End-to-end development services from database design to user interface. Complete solutions that scale with your business needs.",
-      "icon": "⚡",
+      "icon": "zap",
       "features": [
         "Complete application architecture",
         "Database design and management",
@@ -350,7 +364,7 @@
     {
       "title": "Cloud & DevOps",
       "description": "Setting up scalable cloud infrastructure and implementing CI/CD pipelines for reliable, automated deployments.",
-      "icon": "☁️",
+      "icon": "cloud",
       "features": [
         "Cloud infrastructure setup",
         "CI/CD pipeline implementation",
@@ -368,10 +382,5 @@
         "GitHub Actions"
       ]
     }
-  ],
-  "stats": [
-    { "label": "Years Experience", "value": "3+" },
-    { "label": "Technologies", "value": "15+" },
-    { "label": "Happy Clients", "value": "25+" }
   ]
 }

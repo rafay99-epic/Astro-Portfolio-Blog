@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { LuSearch } from "react-icons/lu";
+import { LuSearch, LuX } from "react-icons/lu";
 import type { SearchInputProps } from "types/search";
 
 const SearchInput = memo(function SearchInput({
@@ -104,7 +104,7 @@ const ClearButton = memo(function ClearButton({
       onClick={onClick}
       aria-label="Clear search"
     >
-      ✕
+      <LuX className="h-4 w-4" />
     </button>
   );
 });

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { memo } from "react";
+import { LuChartColumn } from "react-icons/lu";
 import { CloseIcon, CopyIcon, CheckIcon } from "../icons";
 
 interface FullscreenModalProps {
@@ -44,7 +45,7 @@ const FullscreenModal = memo(
         >
           <div className="flex items-center justify-between border-b border-[#565f89]/20 bg-[#24283b] p-4">
             <h3 className="flex items-center gap-2 text-lg font-semibold text-[#c0caf5]">
-              <span>📊</span>
+              <LuChartColumn className="h-5 w-5 text-[#7aa2f7]" />
               {diagramType ? `${diagramType} Diagram` : "Diagram Viewer"}
             </h3>
             <div className="flex items-center gap-4">

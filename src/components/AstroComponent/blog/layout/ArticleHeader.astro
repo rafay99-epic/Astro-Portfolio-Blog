@@ -1,5 +1,6 @@
 ---
 import FormattedDate from "@components/FormattedDate.astro";
+import { LuBookOpen, LuCalendarDays, LuClock3 } from "react-icons/lu";
 
 interface Props {
   title: string;
@@ -11,7 +12,7 @@ interface Props {
     icon: string;
   };
   subject?: string;
-  type?: "notes" | "newsletter" | "blog" | "project" | "wiki";
+  type?: "notes" | "blog" | "project" | "wiki";
   transitionName?: string;
 }
 
@@ -149,14 +150,16 @@ const {
 
     <div class="meta-info">
       <div class="meta-item">
-        <div class="meta-icon">📅</div>
+        <div class="meta-icon"><LuCalendarDays className="h-3 w-3" /></div>
         <FormattedDate date={pubDate} />
       </div>
 
       {
         readTime && (
           <div class="meta-item">
-            <div class="meta-icon">⏱️</div>
+            <div class="meta-icon">
+              <LuClock3 className="h-3 w-3" />
+            </div>
             <span>{readTime}</span>
           </div>
         )
@@ -165,7 +168,7 @@ const {
       {
         subject && (
           <div class="subject-tag">
-            <span>📖</span>
+            <LuBookOpen className="inline h-4 w-4" />
             {subject}
           </div>
         )

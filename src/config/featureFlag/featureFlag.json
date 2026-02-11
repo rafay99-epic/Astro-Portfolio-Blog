@@ -8,17 +8,13 @@
     "showTags": true,
     "showExperience": true,
     "showSearch": true,
-    "showNewsletter": false,
     "showPrivacy": true,
     "showTermsOfService": true,
-    "showSubNewsletter": true,
     "showTrendingPosts": false,
     "showTermsandConditions": true,
     "showPrivacyPolicy": true,
     "showWiki": true,
-    "showNotes": true,
     "showWhatsNew": true,
-    "enableViewTransation": false,
     "enableCoreServices": true,
     "enableProcessShowcase": true,
     "enablePortfolioSection": true,
@@ -27,7 +23,6 @@
     "enableContactMap": true
   },
   "FeatureFlagsApi": {
-    "enableauthorInfoAPI": true,
-    "enableNewsletterSubscription": true
+    "enableauthorInfoAPI": true
   }
 }

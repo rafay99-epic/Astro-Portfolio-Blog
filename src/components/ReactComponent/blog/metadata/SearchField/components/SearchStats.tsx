@@ -29,7 +29,6 @@ const SearchStats = memo(function SearchStats({
             )}
           </span>
         </div>
-        {/* simplified search: no matched fields breakdown */}
       </div>
     </div>
   );

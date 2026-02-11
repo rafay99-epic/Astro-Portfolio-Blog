@@ -1,25 +1,28 @@
 ---
-title: "I Gave OpenAI Codex the Keys to My Codebase for a Week. I’m Not Giving
-  Them Back."
-description: "OpenAI Codex shifts AI from suggestion-based pair programming to
-  autonomous execution environments, forcing a fundamental restructuring of how
-  we validate, sandbox, and trust machine-generated code."
+title: >-
+  I Gave OpenAI Codex the Keys to My Codebase for a Week. I’m Not Giving Them
+  Back.
+description: >-
+  OpenAI Codex shifts AI from suggestion-based pair programming to autonomous
+  execution environments, forcing a fundamental restructuring of how we
+  validate, sandbox, and trust machine-generated code.
 pubDate: 2026-02-06T07:00:00.000Z
 draft: false
-heroImage: "/BlogImages/codex-image-desktop.webp"
-authorName: "Abdul Rafay"
-authorAvatar: "/author.webp"
+archived: false
+heroImage: /BlogImages/codex-image-desktop.webp
+authorName: Abdul Rafay
+authorAvatar: /author.webp
 tags:
   - ThoughsProcess
 keywords:
   - OpenAI Codex
   - autonomous coding agent
   - AI code execution sandbox
-canonicalUrl: "/resources/codex-security-checklist"
+canonicalUrl: /resources/codex-security-checklist
 featured: true
 excerpt: ""
-archived: false
 ---
+
 When OpenAI dropped the Codex app for macOS, I didn't just install it—I stress-tested it against the exact workflows that make me want to throw my laptop: scaffolding Convex schemas from Figma designs, refactoring legacy navigation stacks in my Astro portfolio, and hunting hydration mismatches in React islands. I ran it for a week across four intensity tiers—Low, Medium, High, and Extra High—and shipped four production pull requests to my live site.
 
 My verdict? **This isn't a better Copilot. This is a senior engineering team that doesn't sleep, doesn't context-switch, and—at the right intensity setting—doesn't touch code that isn't part of the mission.**
@@ -50,11 +53,11 @@ I ran identical prompts across all four tiers on my production Astro portfolio. 
 _Task:_ Update the color system to match a Figma palette and apply it to the Tailwind config.
 _Behavior:_ It read `tailwind.config.ts`, updated three hex codes, and stopped. It ignored the Figma integration entirely and didn't touch the Convex schema for theme storage. Safe. Boring. Useless for real work.
 
-**Medium: The "Helpful" Destroyer (**[**PR #128**](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/128)**)**&#x53;ame task. Codex decided my utility functions "needed consistency," refactored my Astro content collections schema, and renamed variables across 12 files. It touched what wasn't broken. I rejected the PR. **Medium tier is more dangerous than High because it confuses helpfulness with scope creep.**
+**Medium: The "Helpful" Destroyer ([PR #128](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/128))**Same task. Codex decided my utility functions "needed consistency," refactored my Astro content collections schema, and renamed variables across 12 files. It touched what wasn't broken. I rejected the PR. **Medium tier is more dangerous than High because it confuses helpfulness with scope creep.**
 
-**High: The Surgeon (**[**PR #126**](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/126) **&** [**PR #130**](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/130)**)**&#x54;his is the sweet spot. When I asked it to redesign the blog layout with new typography, it touched exactly three files: `BaseHead.astro` for meta tags, created `ReadingProgress.svelte` (island architecture), and updated the route transition logic. It ignored my Markdown parsing, didn't refactor my React islands, and resisted the urge to "improve" my working code. **High tier identifies the minimal viable file set and does not exceed it.**
+**High: The Surgeon ([PR #126](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/126)** **&** **[PR #130](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/130))**This is the sweet spot. When I asked it to redesign the blog layout with new typography, it touched exactly three files: `BaseHead.astro` for meta tags, created `ReadingProgress.svelte` (island architecture), and updated the route transition logic. It ignored my Markdown parsing, didn't refactor my React islands, and resisted the urge to "improve" my working code. **High tier identifies the minimal viable file set and does not exceed it.**
 
-**Extra High: The Exhaustive Auditor (**[**PR #127**](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/127)**)**\
+**Extra High: The Exhaustive Auditor ([PR #127](https://github.com/rafay99-epic/Astro-Portfolio-Blog/pull/127))**\
 _Task:_ Complex UI surgery—redesign blog layout with responsive images and theme persistence.
 _Behavior:_ It mapped the entire dependency chain. It read the `src/` directory to understand component-level color usage, checked `package.json` for conflicting CSS-in-JS libraries, scanned the Convex schema for type safety, and caught a hardcoded hex value hiding in a `dangerouslySetInnerHTML` block that High tier missed. 200k+ tokens, 4x the cost, but it caught the edge case that would have broken mobile hydration.
 
@@ -70,11 +73,11 @@ If you tell High-tier Codex to "go read the colors of the app," it finds the thr
 
 You asked me not to sugarcoat it.
 
-**1. Token economics are brutal.**&#x54;hat agent loop is expensive. Every tool call—every `ls`, every `npm test`, every `git status`—round-trips through the API. A 30-minute Extra High session can burn 200k+ tokens. Those "doubled rate limits" on Plus evaporate fast.
+**1. Token economics are brutal.**That agent loop is expensive. Every tool call—every `ls`, every `npm test`, every `git status`—round-trips through the API. A 30-minute Extra High session can burn 200k+ tokens. Those "doubled rate limits" on Plus evaporate fast.
 
-**2. Verification is the new bottleneck.**&#x57;hen AI writes code, you review it. When AI _executes_ code autonomously, you must **audit the execution trail**. I caught Codex "fixing" a Convex query by removing a pagination limit—technically passing the test, functionally wrong for production. The logs are comprehensive, but you still have to read them.
+**2. Verification is the new bottleneck.**When AI writes code, you review it. When AI _executes_ code autonomously, you must **audit the execution trail**. I caught Codex "fixing" a Convex query by removing a pagination limit—technically passing the test, functionally wrong for production. The logs are comprehensive, but you still have to read them.
 
-**3. The "personality" toggle is gimmicky.**&#x54;erse vs. conversational modes change verbosity, not output quality. I leave it on terse because time is money.
+**3. The "personality" toggle is gimmicky.**Terse vs. conversational modes change verbosity, not output quality. I leave it on terse because time is money.
 
 ## Final Conclusion: The Verification Shift
 

@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { FaWhatsapp, FaTwitter, FaFacebook, FaLinkedin } from "react-icons/fa";
+import { LuSend } from "react-icons/lu";
 import { generateShareUrls } from "types/shareUtils";
 
 interface ShareButtonsProps {
@@ -73,7 +74,7 @@ const ShareButtons = memo(function ShareButtons({
         <div className="mb-8 text-center">
           <div className="mb-4 flex items-center justify-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7]">
-              <span className="text-lg text-white">📤</span>
+              <LuSend className="h-5 w-5 text-white" />
             </div>
             <h3 className="text-xl font-bold">
               <span className="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent">

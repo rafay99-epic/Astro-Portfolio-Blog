@@ -19,16 +19,6 @@ const blog = defineCollection({
     excerpt: z.string().optional(),
   }),
 });
-const newsletter = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string(),
-    summary: z.string(),
-    pubDate: z.coerce.date(),
-    draft: z.boolean().default(true),
-  }),
-});
-
 const projects = defineCollection({
   type: "content",
   schema: z.object({
@@ -44,19 +34,6 @@ const projects = defineCollection({
   }),
 });
 
-const ms_notes = defineCollection({
-  type: "content",
-  schema: z.object({
-    lecture_title: z.string(),
-    lecture_description: z.string(),
-    pubDate: z.coerce.date(),
-    lecture_draft: z.boolean().default(true),
-    readTime: z.string().optional(),
-    lectureNumber: z.string(),
-    subject: z.string(),
-  }),
-});
-
 const legal = defineCollection({
   type: "content",
   schema: z.object({
@@ -68,8 +45,6 @@ const legal = defineCollection({
 
 export const collections = {
   blog: blog,
-  newsletter: newsletter,
   projects: projects,
-  ms_notes: ms_notes,
   legal: legal,
 };
