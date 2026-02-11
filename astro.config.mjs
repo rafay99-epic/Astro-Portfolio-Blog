@@ -8,6 +8,7 @@ import robotsTxt from "astro-robots-txt";
 import dotenv from "dotenv";
 
 dotenv.config();
+const enableHeavyCompression = process.env.HEAVY_COMPRESS === "true";
 
 import partytown from "@astrojs/partytown";
 import playformCompress from "@playform/compress";
@@ -83,7 +84,8 @@ export default defineConfig({
 			host: "www.rafay99.com",
 		}),
 		playformCompress({
-			CSS: true,
+			// Keep compression lightweight by default for faster builds.
+			CSS: false,
 			HTML: {
 				"html-minifier-terser": {
 					removeAttributeQuotes: false,
@@ -91,19 +93,21 @@ export default defineConfig({
 					removeComments: true,
 				},
 			},
-			Image: {
-				quality: 80,
-				avif: {
-					quality: 80,
-					effort: 7,
-				},
-				webp: {
-					quality: 80,
-					effort: 5,
-				},
-			},
-			JavaScript: true,
-			SVG: true,
+			Image: enableHeavyCompression
+				? {
+						quality: 80,
+						avif: {
+							quality: 80,
+							effort: 7,
+						},
+						webp: {
+							quality: 80,
+							effort: 5,
+						},
+					}
+				: false,
+			JavaScript: false,
+			SVG: false,
 			Logger: 2,
 		}),
 		icon(),
@@ -122,17 +126,7 @@ export default defineConfig({
 	vite: {
 		build: {
 			cssMinify: true,
-			minify: "terser",
-			terserOptions: {
-				compress: {
-					drop_console: true,
-					drop_debugger: true,
-					passes: 3,
-				},
-				mangle: {
-					toplevel: true,
-				},
-			},
+			minify: "esbuild",
 			chunkSizeWarningLimit: 1500,
 			rollupOptions: {
 				onwarn(warning, warn) {
@@ -149,36 +143,19 @@ export default defineConfig({
 				output: {
 					experimentalMinChunkSize: 30000,
 					manualChunks(id) {
-						if (id.includes("node_modules")) {
-							if (id.includes("react")) return "react-vendor";
-							if (
-								id.includes("@headlessui") ||
-								id.includes("@heroicons") ||
-								id.includes("framer-motion")
-							) {
-								return "ui-components";
-							}
-							// Group mermaid and its dependencies together to reduce empty chunks
-							if (
-								id.includes("mermaid") ||
-								id.includes("d3-") ||
-								id.includes("@chevrotain") ||
-								id.includes("lowlight") ||
-								id.includes("delaunator") ||
-								id.includes("robust-predicates") ||
-								id.includes("fault") ||
-								id.includes("format") ||
-								id.includes("debug") ||
-								id.includes("/ms")
-							) {
-								return "vendor-mermaid";
-							}
-							const rel = id.split("node_modules/")[1] || "";
-							const parts = rel.split("/");
-							const pkg = rel.startsWith("@")
-								? `${parts[0]}/${parts[1]}`
-								: parts[0];
-							return `vendor-${pkg}`;
+						if (!id.includes("node_modules")) return;
+						// Keep manual chunking narrow; broad package-level splitting
+						// can create circular chunk graphs for Astro/MDX/Mermaid trees.
+						if (id.includes("react") || id.includes("scheduler")) {
+							return "react-vendor";
+						}
+						if (
+							id.includes("mermaid") ||
+							id.includes("d3-") ||
+							id.includes("@chevrotain") ||
+							id.includes("langium")
+						) {
+							return "vendor-mermaid";
 						}
 					},
 				},
