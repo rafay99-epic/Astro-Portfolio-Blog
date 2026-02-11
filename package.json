@@ -1,7 +1,7 @@
 {
   "name": "rafay99.com",
   "type": "module",
-  "version": "9.8.3",
+  "version": "9.8.4",
   "scripts": {
     "dev": "tinacms dev -c \"astro dev\"",
     "production_build": "tinacms build && astro build",
@@ -72,7 +72,7 @@
     "@gsap/react": "^2.1.2",
     "@iconify-json/lucide": "^1.2.82",
     "@tinacms/cli": "^1.11.0",
-    "@types/node": "^22.18.10",
+    "@types/node": "^25.2.3",
     "babel-plugin-react-compiler": "^19.0.0-beta-ebf51a3-20250411",
     "baseline-browser-mapping": "^2.9.19",
     "eslint-plugin-react-compiler": "^19.0.0-beta-ebf51a3-20250411",
