@@ -13,7 +13,7 @@
 		"showTrendingPosts": false,
 		"showTermsandConditions": true,
 		"showPrivacyPolicy": true,
-		"showWiki": true,
+		"showWiki": false,
 		"showWhatsNew": true,
 		"enableCoreServices": true,
 		"enableProcessShowcase": true,

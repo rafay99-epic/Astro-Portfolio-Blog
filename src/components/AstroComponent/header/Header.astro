@@ -167,56 +167,56 @@ import {
           )
         }
 
-        <div class="relative" id="more-dropdown-container">
-          <button
-            aria-haspopup="true"
-            id="more-dropdown-button"
-            class="more-dropdown-button flex items-center rounded-lg px-3 py-2 text-[#c0caf5] transition-colors duration-300 hover:bg-[#24283b]/50 hover:text-[#7aa2f7]"
-            aria-expanded="false"
-          >
-            <MoreHorizontal className="h-4 w-4" />
-            <ChevronDown
-              id="more-dropdown-chevron"
-              className="ml-1 h-3 w-3 transition-transform duration-300"
-            />
-          </button>
+        {
+          (featureFlags.showTrendingPosts || featureFlags.showWiki) && (
+            <div class="relative" id="more-dropdown-container">
+              <button
+                aria-haspopup="true"
+                id="more-dropdown-button"
+                class="more-dropdown-button flex items-center rounded-lg px-3 py-2 text-[#c0caf5] transition-colors duration-300 hover:bg-[#24283b]/50 hover:text-[#7aa2f7]"
+                aria-expanded="false"
+              >
+                <MoreHorizontal className="h-4 w-4" />
+                <ChevronDown
+                  id="more-dropdown-chevron"
+                  className="ml-1 h-3 w-3 transition-transform duration-300"
+                />
+              </button>
 
-          <div
-            id="more-dropdown-menu"
-            class="more-dropdown absolute right-0 z-50 mt-2 w-56 rounded-xl border border-[#565f89]/30 bg-[#24283b] py-2 shadow-2xl"
-          >
-            <div class="space-y-1 px-2">
-              {
-                featureFlags.showTrendingPosts && (
-                  <a
-                    role="menuitem"
-                    href="/trending"
-                    class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
-                  >
-                    <TrendingUp className="w-4 h-4 text-[#f7768e]" />
-                    <span class="font-medium">Trending Articles</span>
-                    <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
-                  </a>
-                )
-              }
-              {
-                featureFlags.showWiki && (
-                  <a
-                    role="menuitem"
-                    href="https://rafay99-docs.vercel.app/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
-                  >
-                    <Globe className="w-4 h-4 text-[#9ece6a]" />
-                    <span class="font-medium">Website Wiki</span>
-                    <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
-                  </a>
-                )
-              }
+              <div
+                id="more-dropdown-menu"
+                class="more-dropdown absolute right-0 z-50 mt-2 w-56 rounded-xl border border-[#565f89]/30 bg-[#24283b] py-2 shadow-2xl"
+              >
+                <div class="space-y-1 px-2">
+                  {featureFlags.showTrendingPosts && (
+                    <a
+                      role="menuitem"
+                      href="/trending"
+                      class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
+                    >
+                      <TrendingUp className="w-4 h-4 text-[#f7768e]" />
+                      <span class="font-medium">Trending Articles</span>
+                      <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
+                    </a>
+                  )}
+                  {featureFlags.showWiki && (
+                    <a
+                      role="menuitem"
+                      href="https://rafay99-docs.vercel.app/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
+                    >
+                      <Globe className="w-4 h-4 text-[#9ece6a]" />
+                      <span class="font-medium">Website Wiki</span>
+                      <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )
+        }
       </nav>
 
       <button
