@@ -1,27 +1,23 @@
 ---
+import NavLink from "@astro/header/NavLink.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
-import NavLink from "./NavLink.astro";
-
 import {
-  LuMenu as Menu,
-  LuX as X,
-  LuSearch as Search,
-  LuTag as Tag,
-  LuEllipsis as MoreHorizontal,
-  LuHouse as Home,
-  LuBookOpen as BookOpen,
-  LuMail as Mail,
-  LuUser as User,
-  LuBriefcase as Briefcase,
-  LuRocket as Rocket,
-  LuNewspaper as Newspaper,
-  LuTrendingUp as TrendingUp,
-  LuStickyNote as StickyNote,
-  LuGlobe as Globe,
-  LuChevronDown as ChevronDown,
-  LuExternalLink as ExternalLink,
-} from "react-icons/lu";
+	BookOpen,
+	Briefcase,
+	ChevronDown,
+	ExternalLink,
+	Globe,
+	Home,
+	Menu,
+	MoreHorizontal,
+	Rocket,
+	Search,
+	Tag,
+	TrendingUp,
+	User,
+	X,
+} from "lucide-react";
 ---
 
 <style is:global>
@@ -138,14 +134,6 @@ import {
         }
 
         {
-          featureFlags.showNewsletter && (
-            <NavLink href="/newsletter-subscribe" icon={Mail}>
-              Newsletter
-            </NavLink>
-          )
-        }
-
-        {
           featureFlags.showAbout && (
             <NavLink href="/about" icon={User}>
               About
@@ -199,19 +187,6 @@ import {
           >
             <div class="space-y-1 px-2">
               {
-                featureFlags.showNewsletter && (
-                  <a
-                    role="menuitem"
-                    href="/newsletter"
-                    class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
-                  >
-                    <Newspaper className="w-4 h-4 text-[#7aa2f7]" />
-                    <span class="font-medium">Newsletter Archive</span>
-                    <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
-                  </a>
-                )
-              }
-              {
                 featureFlags.showTrendingPosts && (
                   <a
                     role="menuitem"
@@ -220,19 +195,6 @@ import {
                   >
                     <TrendingUp className="w-4 h-4 text-[#f7768e]" />
                     <span class="font-medium">Trending Articles</span>
-                    <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
-                  </a>
-                )
-              }
-              {
-                featureFlags.showNotes && (
-                  <a
-                    role="menuitem"
-                    href="/ms_notes"
-                    class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
-                  >
-                    <StickyNote className="w-4 h-4 text-[#e0af68]" />
-                    <span class="font-medium">MS Notes</span>
                     <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
                   </a>
                 )
@@ -319,14 +281,6 @@ import {
     }
 
     {
-      featureFlags.showNewsletter && (
-        <NavLink href="/newsletter-subscribe" icon={Mail}>
-          Newsletter
-        </NavLink>
-      )
-    }
-
-    {
       featureFlags.showAbout && (
         <NavLink href="/about" icon={User}>
           About
@@ -367,27 +321,14 @@ import {
     }
 
     {
-      (featureFlags.showNewsletter ||
-        featureFlags.showTrendingPosts ||
-        featureFlags.showNotes ||
-        featureFlags.showWiki) && (
+      (featureFlags.showTrendingPosts || featureFlags.showWiki) && (
         <div class="pt-4">
           <div class="border-t border-[#565f89]/20 pt-4">
             <h3 class="mb-3 px-4 text-sm font-semibold text-[#a9b1d6]">More</h3>
             <div class="space-y-2">
-              {featureFlags.showNewsletter && (
-                <NavLink href="/newsletter" icon={Newspaper}>
-                  Newsletter Archive
-                </NavLink>
-              )}
               {featureFlags.showTrendingPosts && (
                 <NavLink href="/trending" icon={TrendingUp}>
                   Trending Articles
-                </NavLink>
-              )}
-              {featureFlags.showNotes && (
-                <NavLink href="/ms_notes" icon={StickyNote}>
-                  MS Notes
                 </NavLink>
               )}
               {featureFlags.showWiki && (

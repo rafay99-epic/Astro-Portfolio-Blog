@@ -1,33 +1,33 @@
 {
-  "include": ["**/*"],
-  "exclude": ["dist", "astro/tsconfigs/base", "node_modules", "tina/"],
-  "compilerOptions": {
-    "plugins": [
-      {
-        "name": "@astrojs/ts-plugin"
-      }
-    ],
-    "baseUrl": "./src",
-    "paths": {
-      "@assets/*": ["assets/*"],
-      "@components/*": ["components/*"],
-      "@astro/*": ["components/AstroComponent/*"],
-      "@react/*": ["components/ReactComponent/*"],
-      "@content/*": ["content/*"],
-      "@layouts/*": ["layouts/*"],
-      "@pages/*": ["pages/*"],
-      "@styles/*": ["styles/*"],
-      "@types/*": ["types/*"],
-      "@util/*": ["util/*"],
-      "@config/*": ["config/*"],
-      "@hooks/*": ["hooks/*"],
-      "@package.json": ["./package.json"]
-    },
-    "strictNullChecks": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
-    "types": ["react", "react-dom", "astro/client", "node"],
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true
-  }
+	"include": ["**/*"],
+	"exclude": ["dist", "astro/tsconfigs/base", "node_modules", "tina/"],
+	"compilerOptions": {
+		"plugins": [
+			{
+				"name": "@astrojs/ts-plugin"
+			}
+		],
+		"baseUrl": "./src",
+		"paths": {
+			"@assets/*": ["assets/*"],
+			"@components/*": ["components/*"],
+			"@astro/*": ["components/AstroComponent/*"],
+			"@react/*": ["components/ReactComponent/*"],
+			"@content/*": ["content/*"],
+			"@layouts/*": ["layouts/*"],
+			"@pages/*": ["pages/*"],
+			"@styles/*": ["styles/*"],
+			"@types/*": ["types/*"],
+			"@util/*": ["util/*"],
+			"@config/*": ["config/*"],
+			"@hooks/*": ["hooks/*"],
+			"@package.json": ["./package.json"]
+		},
+		"strictNullChecks": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "react",
+		"types": ["react", "react-dom", "astro/client", "node"],
+		"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true
+	}
 }

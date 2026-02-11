@@ -1,7 +1,8 @@
 ---
-import BaseHead from "@astro/base/BaseHead.astro";
+import BaseHead from "@components/AstroComponent/base/BaseHead.astro";
+import ComingSoon from "@components/ReactComponent/error/ComingSoon";
 import authorConfig from "@config/siteConfig/info.json";
-import ComingSoon from "@react/error/ComingSoon";
+
 const featureName = Astro.url.searchParams.get("feature") ?? "Exciting Feature";
 export const prerender = true;
 ---
@@ -16,7 +17,7 @@ export const prerender = true;
   </head>
   <body>
     <main class="pt-15 mt-0">
-      <ComingSoon featureName={featureName} client:visible />
+      <ComingSoon featureName={featureName} client:load />
     </main>
   </body>
 </html>

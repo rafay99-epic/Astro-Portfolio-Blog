@@ -1,16 +1,16 @@
-import { memo } from "react";
-import { useMermaidRenderer } from "@hooks/useMermaidRenderer";
 import { useDiagramRenderer } from "@hooks/useDiagramRenderer";
+import { useMermaidRenderer } from "@hooks/useMermaidRenderer";
+import { memo } from "react";
 
 const MermaidRenderer = memo(function MermaidRenderer() {
-  const { mermaidInitialized, extractDiagramType } = useMermaidRenderer();
+	const { mermaidInitialized, extractDiagramType } = useMermaidRenderer();
 
-  useDiagramRenderer({
-    mermaidInitialized,
-    extractDiagramType,
-  });
+	useDiagramRenderer({
+		mermaidInitialized,
+		extractDiagramType,
+	});
 
-  return null;
+	return null;
 });
 
 export default MermaidRenderer;

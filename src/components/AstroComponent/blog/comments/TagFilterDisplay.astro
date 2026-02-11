@@ -1,27 +1,34 @@
 ---
+import {
+	LuCalendarDays,
+	LuCheck,
+	LuFileText,
+	LuTag,
+	LuUser,
+} from "react-icons/lu";
 import type { Post } from "types/articles";
 
 const { allTags, paginatedPosts, selectedTag, currentPage, totalPages } =
-  Astro.props;
+	Astro.props;
 
 const getTagUrl = (tag: string | null) => {
-  if (tag) {
-    return `/tag/${tag}`;
-  }
-  return "/tag";
+	if (tag) {
+		return `/tag/${tag}`;
+	}
+	return "/tag";
 };
 
 const getPageUrl = (page: number) => {
-  if (selectedTag) {
-    if (page === 1) {
-      return `/tag/${selectedTag}`;
-    }
-    return `/tag/${selectedTag}/page/${page}`;
-  }
-  if (page === 1) {
-    return "/tag";
-  }
-  return `/tag/page/${page}`;
+	if (selectedTag) {
+		if (page === 1) {
+			return `/tag/${selectedTag}`;
+		}
+		return `/tag/${selectedTag}/page/${page}`;
+	}
+	if (page === 1) {
+		return "/tag";
+	}
+	return `/tag/page/${page}`;
 };
 ---
 
@@ -108,7 +115,7 @@ const getPageUrl = (page: number) => {
             <span class="flex items-center gap-2">
               <span class="text-lg">#</span>
               <span>All</span>
-              {selectedTag === null && <span class="text-sm">✓</span>}
+              {selectedTag === null && <LuCheck className="h-4 w-4" />}
             </span>
           </a>
 
@@ -127,7 +134,7 @@ const getPageUrl = (page: number) => {
                 <span class="flex items-center gap-2">
                   <span class="text-lg">#</span>
                   <span>{tag}</span>
-                  {selectedTag === tag && <span class="text-sm">✓</span>}
+                  {selectedTag === tag && <LuCheck className="h-4 w-4" />}
                 </span>
               </a>
             ))
@@ -174,18 +181,18 @@ const getPageUrl = (page: number) => {
 
                         <div class="mb-3 flex flex-wrap items-center gap-4">
                           <div class="flex items-center gap-1 text-sm text-[#a9b1d6]">
-                            <span class="text-base">📅</span>
+                            <LuCalendarDays className="h-4 w-4" />
                             <span>
                               {new Date(post.data.pubDate).toLocaleDateString()}
                             </span>
                           </div>
                           <div class="flex items-center gap-1 text-sm text-[#a9b1d6]">
-                            <span class="text-base">👤</span>
+                            <LuUser className="h-4 w-4" />
                             <span>{post.data.authorName}</span>
                           </div>
                           {post.data.tags && (
                             <div class="flex items-center gap-1 text-sm text-[#a9b1d6]">
-                              <span class="text-base">🏷️</span>
+                              <LuTag className="h-4 w-4" />
                               <span>
                                 {post.data.tags.length} tag
                                 {post.data.tags.length !== 1 ? "s" : ""}
@@ -240,7 +247,9 @@ const getPageUrl = (page: number) => {
           ) : (
             <div class="py-12 text-center">
               <div class="rounded-2xl border border-[#565f89]/30 bg-[#24283b]/50 p-8 shadow-xl backdrop-blur-xl">
-                <div class="mb-4 text-6xl">📝</div>
+                <div class="mb-4 flex justify-center">
+                  <LuFileText className="h-14 w-14 text-[#7aa2f7]" />
+                </div>
                 <h3 class="mb-2 text-lg font-semibold text-[#c0caf5] sm:text-xl">
                   No articles found
                 </h3>

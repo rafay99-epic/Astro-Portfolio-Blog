@@ -55,9 +55,9 @@ jobs:
         if: steps.git_check.outputs.changes_detected == 'true'
         run: bun install
 
-      - name: TypeScript type checking
+      - name: Biome + TypeScript lint
         if: steps.git_check.outputs.changes_detected == 'true'
-        run: bunx tsc --noEmit --skipLibCheck || (echo "TypeScript check failed" && exit 1)
+        run: bun run lint || (echo "Lint check failed" && exit 1)
 
       - name: Validate JSON files
         if: steps.git_check.outputs.changes_detected == 'true'

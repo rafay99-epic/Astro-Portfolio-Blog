@@ -1,20 +1,22 @@
 ---
 import "@styles/global.css";
 import "@styles/theme.css";
-interface Props {
-  title: string;
-  description: string;
-  image?: string;
-  keywords?: string[];
-}
 import { SEOMetadata } from "astro-seo-metadata";
+
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+	keywords?: string[];
+}
+
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = "/Rafay99.webp", keywords } = Astro.props;
 
 declare global {
-  interface Window {
-    adsbygoogle: any[];
-  }
+	interface Window {
+		adsbygoogle: unknown[];
+	}
 }
 ---
 

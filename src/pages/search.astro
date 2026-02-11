@@ -1,30 +1,31 @@
 ---
+import { type CollectionEntry, getCollection } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
+import Header from "@astro/header/Header.astro";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
 import SearchReactComponent from "@react/blog/metadata/SearchField/SearchField";
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
+
 export const prerender = true;
 const posts = featureFlags.showBlog
-  ? (await getCollection("blog"))
-      .filter(
-        (post: CollectionEntry<"blog">) =>
-          !post.data.draft && !post.data.archived,
-      )
-      .sort(
-        (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
-          a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
-      )
-  : [];
+	? (await getCollection("blog"))
+			.filter(
+				(post: CollectionEntry<"blog">) =>
+					!post.data.draft && !post.data.archived,
+			)
+			.sort(
+				(a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+					a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+			)
+	: [];
 
 try {
-  if (!featureFlags.showSearch) {
-    return Astro.redirect("/access-denied");
-  }
-} catch (error) {
-  return Astro.redirect("/404");
+	if (!featureFlags.showSearch) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
 }
 ---
 

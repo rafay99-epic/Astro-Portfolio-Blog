@@ -1,11 +1,11 @@
 ---
 interface Props {
-  href: string;
-  icon?: astroHTML.JSX.Element | (() => astroHTML.JSX.Element);
-  className?: string;
-  "aria-label"?: string;
-  target?: string;
-  rel?: string;
+	href: string;
+	icon?: astroHTML.JSX.Element | (() => astroHTML.JSX.Element);
+	className?: string;
+	"aria-label"?: string;
+	target?: string;
+	rel?: string;
 }
 
 const { href, icon: Icon, className = "", ...rest } = Astro.props;

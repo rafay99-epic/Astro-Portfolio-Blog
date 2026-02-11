@@ -1,23 +1,23 @@
 ---
+import { type CollectionEntry, getCollection } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import authorConfig from "@config/siteConfig/info.json";
-import { getCollection, type CollectionEntry } from "astro:content";
+import Header from "@astro/header/Header.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import authorConfig from "@config/siteConfig/info.json";
 
 export const prerender = false;
 
 const postsPerPage = 9;
 
 const allPosts = (await getCollection("blog"))
-  .filter(
-    (post: CollectionEntry<"blog">) => !post.data.draft && !post.data.archived,
-  )
-  .sort(
-    (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
-      b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-  );
+	.filter(
+		(post: CollectionEntry<"blog">) => !post.data.draft && !post.data.archived,
+	)
+	.sort(
+		(a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+			b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	);
 
 const totalPosts = allPosts.length;
 const totalPages = Math.ceil(totalPosts / postsPerPage);
@@ -27,48 +27,48 @@ const currentPage = 1;
 const posts: CollectionEntry<"blog">[] = allPosts.slice(0, postsPerPage);
 const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
 const remainingPosts = featuredPost
-  ? posts.filter((post) => post !== featuredPost)
-  : [];
+	? posts.filter((post) => post !== featuredPost)
+	: [];
 const quickReads = remainingPosts.slice(0, 3);
 const mosaicPosts = remainingPosts.slice(3);
 
 const tagCounts = new Map();
 for (const post of allPosts) {
-  for (const tag of post.data.tags || []) {
-    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
-  }
+	for (const tag of post.data.tags || []) {
+		tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+	}
 }
 
 const topTags = Array.from(tagCounts.entries())
-  .sort((a, b) => b[1] - a[1])
-  .slice(0, 5)
-  .map(([tag]) => tag);
+	.sort((a, b) => b[1] - a[1])
+	.slice(0, 5)
+	.map(([tag]) => tag);
 
 const latestPostDate = allPosts[0]?.data.pubDate;
 const latestPostLabel = latestPostDate
-  ? new Date(latestPostDate).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
-  : "—";
+	? new Date(latestPostDate).toLocaleDateString("en-US", {
+			month: "short",
+			day: "numeric",
+			year: "numeric",
+		})
+	: "—";
 
 const formatDate = (date: Date) =>
-  new Date(date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+	new Date(date).toLocaleDateString("en-US", {
+		month: "short",
+		day: "numeric",
+		year: "numeric",
+	});
 
 const showTags = featureFlags.showTags;
 const showSearch = featureFlags.showSearch;
 
 try {
-  if (!featureFlags.showBlog) {
-    return Astro.redirect("/access-denied");
-  }
-} catch (error) {
-  return Astro.redirect("/404");
+	if (!featureFlags.showBlog) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
 }
 ---
 
@@ -355,7 +355,7 @@ try {
                       </p>
                       {post.data.tags?.length && (
                         <div class="tag-row">
-                          {post.data.tags.slice(0, 3).map((tag) => (
+                          {post.data.tags.slice(0, 3).map((tag: string) => (
                             <span class="tag-pill tag-pill--muted">#{tag}</span>
                           ))}
                         </div>

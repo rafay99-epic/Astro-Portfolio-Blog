@@ -1,46 +1,46 @@
 ---
 import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import ShareButtons from "@react/blog/interactions/socialButton";
+import Header from "@astro/header/Header.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
+import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
+import ShareButtons from "@react/blog/interactions/socialButton";
 
 const pageUrl = Astro.url.href;
 export const prerender = true;
 
 type Props = {
-  Projecttitle: string;
-  ProjectDescription: string;
-  ProjectTech?: string[];
-  ProjectImage?: string;
-  ProjectGithubLink?: string;
-  ProjectDeployedLink?: string;
-  ProjectCategory?: string[];
-  ProjectRanking?: string;
+	Projecttitle: string;
+	ProjectDescription: string;
+	ProjectTech?: string[];
+	ProjectImage?: string;
+	ProjectGithubLink?: string;
+	ProjectDeployedLink?: string;
+	ProjectCategory?: string[];
+	ProjectRanking?: string;
 };
 
 const {
-  Projecttitle,
-  ProjectDescription,
-  ProjectTech,
-  ProjectImage,
-  ProjectGithubLink,
-  ProjectDeployedLink,
-  ProjectCategory,
-  ProjectRanking,
+	Projecttitle,
+	ProjectDescription,
+	ProjectTech,
+	ProjectImage,
+	ProjectGithubLink,
+	ProjectDeployedLink,
+	ProjectCategory,
+	ProjectRanking,
 } = Astro.props as Props;
 
 const primaryCategory = ProjectCategory?.[0];
 const stackCount = ProjectTech?.length ?? 0;
 
 try {
-  if (!featureFlags.showProjects) {
-    return Astro.redirect("/access-denied");
-  }
-} catch (error) {
-  return Astro.redirect("/404");
+	if (!featureFlags.showProjects) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
 }
 ---
 

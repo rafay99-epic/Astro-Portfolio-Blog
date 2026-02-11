@@ -1,0 +1,82 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"includes": [
+			"src/**",
+			"scripts/**",
+			"astro.config.mjs",
+			"tailwind.config.mjs",
+			"remark-reading-time.mjs",
+			"package.json",
+			"tsconfig.json",
+			"!!.astro",
+			"!!.vercel",
+			"!!.sitepins",
+			"!!.vscode",
+			"!!public",
+			"!!dist",
+			"!!node_modules"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab"
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"a11y": {
+				"noSvgWithoutTitle": "error",
+				"noStaticElementInteractions": "error",
+				"useAltText": "error",
+				"useButtonType": "error",
+				"useKeyWithClickEvents": "error",
+				"useMediaCaption": "error",
+				"useSemanticElements": "error"
+			},
+			"correctness": {
+				"noUnusedFunctionParameters": "error",
+				"noUnusedVariables": "error",
+				"useExhaustiveDependencies": "error"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "error",
+				"noExplicitAny": "error",
+				"noShadowRestrictedNames": "error"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double"
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.astro"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedImports": "off",
+						"noUnusedFunctionParameters": "off",
+						"noUnusedVariables": "off"
+					}
+				}
+			}
+		}
+	]
+}

@@ -44,20 +44,18 @@ bun run changelog        # Generate changelog via ./scripts/generate-changelog.s
 
 **Islands Architecture**: Astro components handle static content; React components (under `ReactComponent/`) provide client-side interactivity. React integration only includes files matching `**/ReactComponent/**` and `**/*.{jsx,tsx}`.
 
-**Content Collections**: Four Zod-validated collections in `src/content/`:
+**Content Collections**: Two Zod-validated collections in `src/content/`:
 
 - `blog/` (MDX) - articles with draft/archived/featured flags, tags, SEO fields
 - `projects/` (MDX) - portfolio items with tech stack, categories, links
-- `newsletter/` (MDX) - newsletter archives
-- `ms_notes/` (MD) - lecture notes with subject and lecture number
 
 **TinaCMS**: Config in `tina/config.ts`. Also manages feature flags and site configuration as JSON collections. Admin UI at `/admin`.
 
-**Feature Flags**: `src/config/featureFlag/featureFlag.json` toggles site sections (blog, projects, newsletter, wiki, etc.) and API endpoints. Check these flags when adding new pages or sections.
+**Feature Flags**: `src/config/featureFlag/featureFlag.json` toggles site sections (blog, projects, wiki, etc.) and API endpoints. Check these flags when adding new pages or sections.
 
-**API Routes**: `src/pages/api/` contains server endpoints (article, author, project, letter, ms_notes, subscribe). These are Astro API routes returning JSON.
+**API Routes**: `src/pages/api/` contains server endpoints (article, author, project). These are Astro API routes returning JSON.
 
-**Layouts**: `src/layouts/` has per-content-type layouts (BlogPost, Project, Newsletter, MSNotes). `BaseHead.astro` in `src/components/AstroComponent/base/` handles shared `<head>` metadata.
+**Layouts**: `src/layouts/` has per-content-type layouts (BlogPost, Project). `BaseHead.astro` in `src/components/AstroComponent/base/` handles shared `<head>` metadata.
 
 ## Path Aliases
 

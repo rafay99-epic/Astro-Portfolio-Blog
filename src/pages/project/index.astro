@@ -1,30 +1,30 @@
 ---
+import { type CollectionEntry, getCollection } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
+import Header from "@astro/header/Header.astro";
 import ProjectShowcase from "@astro/projects/ProjectShowcase.astro";
-import authorConfig from "@config/siteConfig/info.json";
-import { getCollection, type CollectionEntry } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import authorConfig from "@config/siteConfig/info.json";
 
 const projects = await getCollection("projects");
 export const prerender = true;
 
 try {
-  if (!featureFlags.showProjects) {
-    return Astro.redirect("/access-denied");
-  }
-} catch (error) {
-  return Astro.redirect("/404");
+	if (!featureFlags.showProjects) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
 }
 
 const filteredProjects: CollectionEntry<"projects">[] = projects
-  .filter((project: CollectionEntry<"projects">) => !project.data.draft)
-  .sort((a: CollectionEntry<"projects">, b: CollectionEntry<"projects">) => {
-    const rankingA = parseInt(a.data.ProjectRanking || "9999", 10);
-    const rankingB = parseInt(b.data.ProjectRanking || "9999", 10);
-    return rankingA - rankingB;
-  });
+	.filter((project: CollectionEntry<"projects">) => !project.data.draft)
+	.sort((a: CollectionEntry<"projects">, b: CollectionEntry<"projects">) => {
+		const rankingA = parseInt(a.data.ProjectRanking || "9999", 10);
+		const rankingB = parseInt(b.data.ProjectRanking || "9999", 10);
+		return rankingA - rankingB;
+	});
 ---
 
 <html lang="en">

@@ -1,19 +1,19 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome & Astro",
-      "url": "http://localhost:4321",
-      "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "Start Astro Dev"
-    }
-  ],
-  "compounds": [
-    {
-      "name": "Launch Chrome & Server",
-      "configurations": ["Launch Chrome & Astro"]
-    }
-  ]
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "chrome",
+			"request": "launch",
+			"name": "Launch Chrome & Astro",
+			"url": "http://localhost:4321",
+			"webRoot": "${workspaceFolder}",
+			"preLaunchTask": "Start Astro Dev"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Launch Chrome & Server",
+			"configurations": ["Launch Chrome & Astro"]
+		}
+	]
 }

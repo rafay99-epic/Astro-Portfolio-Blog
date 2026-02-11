@@ -1,90 +1,91 @@
 ---
+import { type CollectionEntry, getCollection } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
-import Footer from "@astro/footer/Footer.astro";
-import authorConfig from "@config/siteConfig/info.json";
 import TagFilterDisplay from "@astro/blog/comments/TagFilterDisplay.astro";
+import Footer from "@astro/footer/Footer.astro";
+import Header from "@astro/header/Header.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { getCollection, type CollectionEntry } from "astro:content";
+import authorConfig from "@config/siteConfig/info.json";
+import type { Post } from "types/articles";
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  if (!featureFlags.showTags) {
-    return [];
-  }
+	if (!featureFlags.showTags) {
+		return [];
+	}
 
-  const allPosts = (await getCollection("blog"))
-    .filter(
-      (post: CollectionEntry<"blog">) =>
-        !post.data.draft && !post.data.archived,
-    )
-    .sort(
-      (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
-        b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-    );
+	const allPosts = (await getCollection("blog"))
+		.filter(
+			(post: CollectionEntry<"blog">) =>
+				!post.data.draft && !post.data.archived,
+		)
+		.sort(
+			(a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+				b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+		);
 
-  const allTags = Array.from(
-    new Set(
-      allPosts.flatMap((post: CollectionEntry<"blog">) => post.data.tags || []),
-    ),
-  ).sort((a: string, b: string) =>
-    (a as string).localeCompare(b as string),
-  ) as string[];
+	const allTags = Array.from(
+		new Set(
+			allPosts.flatMap((post: CollectionEntry<"blog">) => post.data.tags || []),
+		),
+	).sort((a: string, b: string) =>
+		(a as string).localeCompare(b as string),
+	) as string[];
 
-  const paths: Array<{
-    params: { tag: string; page: string };
-    props: {
-      tag: string;
-      page: number;
-      totalPages: number;
-      postsPerPage: number;
-      allPosts: typeof allPosts;
-      allTags: string[];
-    };
-  }> = [];
-  const postsPerPage = 10;
+	const paths: Array<{
+		params: { tag: string; page: string };
+		props: {
+			tag: string;
+			page: number;
+			totalPages: number;
+			postsPerPage: number;
+			allPosts: typeof allPosts;
+			allTags: string[];
+		};
+	}> = [];
+	const postsPerPage = 10;
 
-  for (const tag of allTags) {
-    const filteredPosts = allPosts.filter((post: CollectionEntry<"blog">) =>
-      post.data.tags?.includes(tag),
-    );
-    const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+	for (const tag of allTags) {
+		const filteredPosts = allPosts.filter((post: CollectionEntry<"blog">) =>
+			post.data.tags?.includes(tag),
+		);
+		const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
-    for (let page = 1; page <= totalPages; page++) {
-      paths.push({
-        params: { tag, page: page.toString() },
-        props: {
-          tag,
-          page,
-          totalPages,
-          postsPerPage,
-          allPosts,
-          allTags,
-        },
-      });
-    }
-  }
+		for (let page = 1; page <= totalPages; page++) {
+			paths.push({
+				params: { tag, page: page.toString() },
+				props: {
+					tag,
+					page,
+					totalPages,
+					postsPerPage,
+					allPosts,
+					allTags,
+				},
+			});
+		}
+	}
 
-  return paths;
+	return paths;
 }
 
 const { tag, page, totalPages, postsPerPage, allPosts, allTags } = Astro.props;
 const currentPage = page;
 
 const filteredPosts = allPosts.filter((post: CollectionEntry<"blog">) =>
-  post.data.tags?.includes(tag),
+	post.data.tags?.includes(tag),
 );
 const startIndex = (currentPage - 1) * postsPerPage;
 const endIndex = startIndex + postsPerPage;
-const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
+const paginatedPosts = filteredPosts.slice(startIndex, endIndex) as Post[];
 
 try {
-  if (!featureFlags.showTags) {
-    return Astro.redirect("/access-denied");
-  }
-} catch (error) {
-  return Astro.redirect("/404");
+	if (!featureFlags.showTags) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
 }
 ---
 

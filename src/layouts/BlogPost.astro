@@ -1,112 +1,115 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
-import Footer from "@astro/footer/Footer.astro";
-import PostComment from "@astro/blog/comments/PostComment.astro";
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { getCollection } from "astro:content";
+import BaseHead from "@astro/base/BaseHead.astro";
+import PostComment from "@astro/blog/comments/PostComment.astro";
+import Footer from "@astro/footer/Footer.astro";
+import Header from "@astro/header/Header.astro";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
 import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 import EnhancedImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/EnhancedImageCaptionRenderer";
-import BlogNavigation from "@react/blog/layout/BlogNavigation";
 import ShareButtons from "@react/blog/interactions/socialButton";
+import BlogNavigation from "@react/blog/layout/BlogNavigation";
 import { Icon } from "astro-icon/components";
-export const prerender = true;
-import { SEO } from "astro-seo";
 import { getImagePath } from "astro-opengraph-images";
+import { SEO } from "astro-seo";
+
+export const prerender = true;
 
 const { url, site } = Astro;
 const openGraphImageUrl = getImagePath({ url, site });
 
 const pageUrl = Astro.url.href;
 type Props = CollectionEntry<"blog">["data"] & {
-  isArchive?: boolean;
-  headings?: import("astro").MarkdownHeading[];
+	isArchive?: boolean;
+	headings?: import("astro").MarkdownHeading[];
 };
 const isArchive = (Astro.props as Props).isArchive === true;
 
 try {
-  if (!featureFlags.showBlog) {
-    return Astro.redirect("/access-denied");
-  }
-} catch (error) {
-  return Astro.redirect("/404");
+	if (!featureFlags.showBlog) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
 }
 
 const BlogPosts = featureFlags.showBlog
-  ? (await getCollection("blog"))
-      .filter(
-        (post: CollectionEntry<"blog">) =>
-          !post.data.draft &&
-          (isArchive ? post.data.archived : !post.data.archived),
-      )
-      .sort(
-        (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
-          a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
-      )
-  : [];
+	? (await getCollection("blog"))
+			.filter(
+				(post: CollectionEntry<"blog">) =>
+					!post.data.draft &&
+					(isArchive ? post.data.archived : !post.data.archived),
+			)
+			.sort(
+				(a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+					a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+			)
+	: [];
 
 const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
 const currentBlog = BlogPosts.find(
-  (post: CollectionEntry<"blog">) => post.slug === currentSlug,
+	(post: CollectionEntry<"blog">) => post.slug === currentSlug,
 );
 
 if (!currentBlog) {
-  return Astro.redirect("/access-denied");
+	return Astro.redirect("/access-denied");
 }
 
 const currentIndex = BlogPosts.findIndex(
-  (post: CollectionEntry<"blog">) => post.slug === currentSlug,
+	(post: CollectionEntry<"blog">) => post.slug === currentSlug,
 );
 const prevPost = currentIndex > 0 ? BlogPosts[currentIndex - 1] : undefined;
 const nextPost =
-  currentIndex >= 0 && currentIndex < BlogPosts.length - 1
-    ? BlogPosts[currentIndex + 1]
-    : undefined;
+	currentIndex >= 0 && currentIndex < BlogPosts.length - 1
+		? BlogPosts[currentIndex + 1]
+		: undefined;
 
 const blogContent = currentBlog.body;
 
 const {
-  title,
-  description,
-  pubDate,
-  heroImage,
-  authorName,
-  authorAvatar,
-  tags,
-  readTime,
-  keywords,
-  canonicalUrl,
-  featured,
-  excerpt,
-  headings: tocHeadings = [],
+	title,
+	description,
+	pubDate,
+	heroImage,
+	authorName,
+	authorAvatar,
+	tags,
+	readTime,
+	keywords,
+	canonicalUrl,
+	featured,
+	excerpt,
+	headings: tocHeadings = [],
 } = Astro.props as Props;
 const lead = excerpt || description;
-const tocEntries = tocHeadings.filter((h) => h.depth === 2 || h.depth === 3);
+const tocEntries = tocHeadings.filter(
+	(h: import("astro").MarkdownHeading) => h.depth === 2 || h.depth === 3,
+);
 const wordCount = blogContent
-  ? blogContent.trim().split(/\s+/).filter(Boolean).length
-  : 0;
+	? blogContent.trim().split(/\s+/).filter(Boolean).length
+	: 0;
 const formattedWordCount =
-  wordCount > 0 ? new Intl.NumberFormat("en-US").format(wordCount) : "";
+	wordCount > 0 ? new Intl.NumberFormat("en-US").format(wordCount) : "";
 const markdownDate = pubDate.toISOString().slice(0, 10);
 const markdownBody = blogContent?.trim() || "";
 const markdownPayload = [
-  `# ${title}`,
-  "",
-  `Source: ${pageUrl}`,
-  `Published: ${markdownDate}`,
-  "",
-  ...(lead ? [lead, ""] : []),
-  "---",
-  "",
-  markdownBody,
-  "",
+	`# ${title}`,
+	"",
+	`Source: ${pageUrl}`,
+	`Published: ${markdownDate}`,
+	"",
+	...(lead ? [lead, ""] : []),
+	"---",
+	"",
+	markdownBody,
+	"",
 ].join("\n");
 const postActionPayload = JSON.stringify({
-  title,
-  url: pageUrl,
-  markdown: markdownPayload,
+	title,
+	url: pageUrl,
+	markdown: markdownPayload,
 }).replace(/</g, "\\u003c");
 ---
 
@@ -1244,7 +1247,7 @@ const postActionPayload = JSON.stringify({
               <nav class="post-toc" id="post-toc" aria-label="On this page">
                 {
                   tocEntries.length > 0 ? (
-                    tocEntries.map((h) => (
+                    tocEntries.map((h: import("astro").MarkdownHeading) => (
                       <a
                         class={h.depth === 3 ? "toc-link toc-h3" : "toc-link"}
                         href={`#${h.slug}`}
