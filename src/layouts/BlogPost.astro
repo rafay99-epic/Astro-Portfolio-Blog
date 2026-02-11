@@ -91,7 +91,26 @@ const wordCount = blogContent
 	? blogContent.trim().split(/\s+/).filter(Boolean).length
 	: 0;
 const formattedWordCount =
-	wordCount > 0 ? new Intl.NumberFormat("en-US").format(wordCount) : "";
+  wordCount > 0 ? new Intl.NumberFormat("en-US").format(wordCount) : "";
+const markdownDate = pubDate.toISOString().slice(0, 10);
+const markdownBody = blogContent?.trim() || "";
+const markdownPayload = [
+  `# ${title}`,
+  "",
+  `Source: ${pageUrl}`,
+  `Published: ${markdownDate}`,
+  "",
+  ...(lead ? [lead, ""] : []),
+  "---",
+  "",
+  markdownBody,
+  "",
+].join("\n");
+const postActionPayload = JSON.stringify({
+  title,
+  url: pageUrl,
+  markdown: markdownPayload,
+}).replace(/</g, "\\u003c");
 ---
 
 <html lang="en">
@@ -350,32 +369,272 @@ const formattedWordCount =
         margin-top: 0.25rem;
       }
 
-      .post-action-btn {
+      .post-action-menu {
+        position: relative;
+      }
+
+      .post-action-split {
+        display: flex;
+        align-items: stretch;
+        border-radius: 18px;
+        border: 1px solid rgba(86, 95, 137, 0.48);
+        background: rgba(36, 40, 59, 0.62);
+        box-shadow: 0 10px 24px rgba(10, 12, 20, 0.35);
+        overflow: hidden;
+      }
+
+      .post-action-main,
+      .post-action-toggle {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: #c0caf5;
+        cursor: pointer;
+        transition:
+          color 0.2s ease,
+          background-color 0.2s ease;
+      }
+
+      .post-action-main {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        flex: 1;
+        padding: 0.7rem 0.9rem;
+        font-size: 0.95rem;
+        text-align: left;
+        overflow: hidden;
+      }
+
+      .post-action-main::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          110deg,
+          transparent 0%,
+          rgba(122, 162, 247, 0.22) 50%,
+          transparent 100%
+        );
+        transform: translateX(-120%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .post-action-main:hover,
+      .post-action-toggle:hover {
+        background: rgba(122, 162, 247, 0.1);
+        color: #7aa2f7;
+      }
+
+      .post-action-main.is-loading::after {
+        opacity: 1;
+        animation: post-action-shimmer 1.2s linear infinite;
+      }
+
+      .post-action-main.is-loading {
+        color: #7aa2f7;
+      }
+
+      .post-action-main.is-loading .post-action-main-icon {
+        opacity: 0.55;
+      }
+
+      .post-action-main.is-loading .post-action-main-loader {
+        opacity: 1;
+        transform: scale(1);
+        animation: post-action-spin 0.85s linear infinite;
+      }
+
+      .post-action-main.is-success {
+        color: #9ece6a;
+        background: rgba(158, 206, 106, 0.1);
+        animation: post-action-success-pop 0.4s ease;
+      }
+
+      .post-action-main.is-success .post-action-main-icon {
+        color: #9ece6a;
+      }
+
+      .post-action-main-icon {
+        display: inline-flex;
+        width: 1.05rem;
+        height: 1.05rem;
+        color: #c0caf5;
+        flex-shrink: 0;
+        transition:
+          color 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+      .post-action-main-label {
+        flex: 1;
+      }
+
+      .post-action-main-loader {
+        width: 0.9rem;
+        height: 0.9rem;
+        border-radius: 999px;
+        border: 2px solid rgba(122, 162, 247, 0.25);
+        border-top-color: #7aa2f7;
+        opacity: 0;
+        transform: scale(0.8);
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .post-action-toggle {
+        width: 2.6rem;
+        border-left: 1px solid rgba(86, 95, 137, 0.5);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
-        padding: 0.55rem 0.9rem;
-        border-radius: 999px;
-        border: 1px solid rgba(86, 95, 137, 0.4);
-        background: rgba(36, 40, 59, 0.6);
-        color: #c0caf5;
-        font-size: 0.85rem;
+      }
+
+      .post-action-chevron {
+        display: inline-flex;
+        font-size: 0.78rem;
+        color: #565f89;
         transition:
-          border-color 0.2s ease,
           color 0.2s ease,
           transform 0.2s ease;
       }
 
-      .post-action-btn:hover {
-        border-color: rgba(122, 162, 247, 0.6);
+      .post-action-menu.is-open .post-action-chevron {
         color: #7aa2f7;
-        transform: translateY(-1px);
+        transform: rotate(180deg);
       }
 
-      .post-action-btn.post-action-btn--success {
-        border-color: rgba(158, 206, 106, 0.6);
+      .post-action-menu.is-open .post-action-toggle {
+        background: rgba(122, 162, 247, 0.12);
+      }
+
+      .post-action-dropdown {
+        position: absolute;
+        top: calc(100% + 0.6rem);
+        left: 0;
+        right: 0;
+        z-index: 12;
+        display: grid;
+        gap: 0.3rem;
+        padding: 0.45rem;
+        border-radius: 14px;
+        border: 1px solid rgba(86, 95, 137, 0.45);
+        background: rgba(26, 27, 38, 0.98);
+        box-shadow: 0 16px 35px rgba(10, 12, 20, 0.55);
+      }
+
+      .post-action-dropdown[hidden] {
+        display: none;
+      }
+
+      .post-action-option {
+        position: relative;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.55rem;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: #c0caf5;
+        font-size: 0.82rem;
+        padding: 0.5rem 0.65rem;
+        text-align: left;
+        overflow: hidden;
+        transition:
+          border-color 0.2s ease,
+          color 0.2s ease,
+          background-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .post-action-option::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          115deg,
+          transparent 0%,
+          rgba(122, 162, 247, 0.2) 50%,
+          transparent 100%
+        );
+        transform: translateX(-120%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .post-action-option:hover {
+        border-color: rgba(122, 162, 247, 0.45);
+        color: #7aa2f7;
+        background: rgba(122, 162, 247, 0.1);
+      }
+
+      .post-action-option-icon {
+        display: inline-flex;
+        width: 0.95rem;
+        height: 0.95rem;
+        color: #7aa2f7;
+        opacity: 0.92;
+        flex-shrink: 0;
+      }
+
+      .post-action-option-label {
+        flex: 1;
+      }
+
+      .post-action-option-loader {
+        width: 0.9rem;
+        height: 0.9rem;
+        border-radius: 999px;
+        border: 2px solid rgba(122, 162, 247, 0.25);
+        border-top-color: #7aa2f7;
+        opacity: 0;
+        transform: scale(0.8);
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .post-action-option.is-loading {
+        border-color: rgba(122, 162, 247, 0.5);
+        background: rgba(122, 162, 247, 0.1);
+      }
+
+      .post-action-option.is-loading::after {
+        opacity: 1;
+        animation: post-action-shimmer 1.2s linear infinite;
+      }
+
+      .post-action-option.is-loading .post-action-option-loader {
+        opacity: 1;
+        transform: scale(1);
+        animation: post-action-spin 0.85s linear infinite;
+      }
+
+      .post-action-option.is-loading .post-action-option-icon {
+        opacity: 0.55;
+      }
+
+      .post-action-option.is-success {
+        border-color: rgba(158, 206, 106, 0.52);
+        background: rgba(158, 206, 106, 0.12);
         color: #9ece6a;
+        animation: post-action-success-pop 0.4s ease;
+      }
+
+      .post-action-option.is-success .post-action-option-icon {
+        color: #9ece6a;
+      }
+
+      .post-action-option:focus-visible,
+      .post-action-main:focus-visible,
+      .post-action-toggle:focus-visible {
+        outline: 2px solid rgba(122, 162, 247, 0.8);
+        outline-offset: 2px;
       }
 
       .post-action-status {
@@ -430,6 +689,30 @@ const formattedWordCount =
       .post-toc-empty {
         color: #565f89;
         font-size: 0.8rem;
+      }
+
+      @keyframes post-action-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes post-action-shimmer {
+        to {
+          transform: translateX(120%);
+        }
+      }
+
+      @keyframes post-action-success-pop {
+        0% {
+          transform: scale(0.98);
+        }
+        60% {
+          transform: scale(1.02);
+        }
+        100% {
+          transform: scale(1);
+        }
       }
 
       :global(.blog-prose) {
@@ -866,15 +1149,78 @@ const formattedWordCount =
             <div class="post-card">
               <div class="post-card-title">Quick actions</div>
               <div class="post-actions">
-                <button
-                  class="post-action-btn"
-                  type="button"
-                  data-copy-link
-                  data-copy-label="Copy link"
-                  data-copy-done="Copied!"
-                >
-                  Copy link
-                </button>
+                <div class="post-action-menu" data-post-action-menu>
+                  <div class="post-action-split">
+                    <button
+                      class="post-action-main"
+                      type="button"
+                      data-copy-page-primary
+                    >
+                      <Icon
+                        name="lucide:copy"
+                        class="post-action-main-icon"
+                        aria-hidden="true"
+                      />
+                      <span class="post-action-main-label">Copy page</span>
+                      <span class="post-action-main-loader" aria-hidden="true"
+                      ></span>
+                    </button>
+                    <button
+                      class="post-action-toggle"
+                      type="button"
+                      aria-haspopup="menu"
+                      aria-expanded="false"
+                      aria-controls="post-markdown-actions"
+                      data-post-action-toggle
+                    >
+                      <span class="post-action-chevron" aria-hidden="true">
+                        ▾
+                      </span>
+                    </button>
+                  </div>
+                  <div
+                    class="post-action-dropdown"
+                    id="post-markdown-actions"
+                    role="menu"
+                    aria-label="Copy page actions"
+                    data-post-action-dropdown
+                    hidden
+                  >
+                    <button
+                      class="post-action-option"
+                      type="button"
+                      role="menuitem"
+                      data-open-markdown
+                    >
+                      <Icon
+                        name="lucide:external-link"
+                        class="post-action-option-icon"
+                        aria-hidden="true"
+                      />
+                      <span class="post-action-option-label">Open Markdown</span
+                      >
+                      <span class="post-action-option-loader" aria-hidden="true"
+                      ></span>
+                    </button>
+                    <button
+                      class="post-action-option"
+                      type="button"
+                      role="menuitem"
+                      data-ask-chatgpt
+                    >
+                      <Icon
+                        name="lucide:sparkles"
+                        class="post-action-option-icon"
+                        aria-hidden="true"
+                      />
+                      <span class="post-action-option-label">
+                        Ask ChatGPT
+                      </span>
+                      <span class="post-action-option-loader" aria-hidden="true"
+                      ></span>
+                    </button>
+                  </div>
+                </div>
                 <div class="post-actions-share" aria-label="Share on social">
                   <ShareButtons
                     url={pageUrl}
@@ -1050,6 +1396,13 @@ const formattedWordCount =
       }
     </main>
 
+    <script
+      is:inline
+      id="post-action-data"
+      type="application/json"
+      set:html={postActionPayload}
+    />
+
     <script is:inline>
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
@@ -1069,11 +1422,119 @@ const formattedWordCount =
         const progressTrack = document.querySelector(
           "[data-read-progress-track]",
         );
-        const copyLinkBtn = document.querySelector("[data-copy-link]");
         const copyStatus = document.querySelector("[data-copy-status]");
+        const actionMenu = document.querySelector("[data-post-action-menu]");
+        const copyPagePrimaryBtn = document.querySelector(
+          "[data-copy-page-primary]",
+        );
+        const actionMenuToggle = document.querySelector(
+          "[data-post-action-toggle]",
+        );
+        const actionMenuDropdown = document.querySelector(
+          "[data-post-action-dropdown]",
+        );
+        const openMarkdownBtn = document.querySelector("[data-open-markdown]");
+        const askChatGptBtn = document.querySelector("[data-ask-chatgpt]");
+        const postActionData = document.getElementById("post-action-data");
         const tocRoot = document.getElementById("post-toc");
         const tocEmpty = tocRoot?.querySelector("[data-toc-empty]") || null;
         const postContent = document.getElementById("post-content");
+        const wait = (durationMs) =>
+          new Promise((resolve) => window.setTimeout(resolve, durationMs));
+        const postActionDataRaw = postActionData?.textContent || "{}";
+        let postActionMeta = {
+          title: document.title,
+          url: window.location.href,
+          markdown: "",
+        };
+        try {
+          postActionMeta = {
+            ...postActionMeta,
+            ...JSON.parse(postActionDataRaw),
+          };
+        } catch (error) {
+          postActionMeta = { ...postActionMeta };
+        }
+
+        const markdownText =
+          postActionMeta.markdown ||
+          `# ${postActionMeta.title}\n\nSource: ${postActionMeta.url}\n`;
+        const chatPrompt = [
+          "Analyze this blog post and help me understand it.",
+          "Share: 1) concise summary, 2) key takeaways, 3) practical suggestions.",
+          "",
+          `Title: ${postActionMeta.title}`,
+          `URL: ${postActionMeta.url}`,
+          "",
+          "Markdown:",
+          markdownText,
+        ].join("\n");
+
+        let statusTimer = 0;
+        const setStatus = (message, delay = 2200) => {
+          if (!copyStatus) return;
+          copyStatus.textContent = message;
+          if (statusTimer) {
+            clearTimeout(statusTimer);
+          }
+          if (!message || delay <= 0) return;
+          statusTimer = window.setTimeout(() => {
+            copyStatus.textContent = "";
+          }, delay);
+        };
+
+        const runOptionAction = async (button, action) => {
+          if (!button || button.getAttribute("data-loading") === "true") {
+            return false;
+          }
+
+          button.setAttribute("data-loading", "true");
+          button.setAttribute("aria-busy", "true");
+          button.classList.add("is-loading");
+
+          let succeeded = false;
+          const startedAt = performance.now();
+
+          try {
+            await action();
+            succeeded = true;
+          } catch (error) {
+            succeeded = false;
+          }
+
+          const elapsed = performance.now() - startedAt;
+          if (elapsed < 320) {
+            await wait(320 - elapsed);
+          }
+
+          button.classList.remove("is-loading");
+          button.removeAttribute("data-loading");
+          button.removeAttribute("aria-busy");
+
+          if (succeeded) {
+            button.classList.add("is-success");
+            window.setTimeout(() => {
+              button.classList.remove("is-success");
+            }, 650);
+          }
+
+          return succeeded;
+        };
+
+        const openActionMenu = () => {
+          if (!actionMenu || !actionMenuDropdown || !actionMenuToggle) return;
+          actionMenu.classList.add("is-open");
+          actionMenuDropdown.hidden = false;
+          actionMenuToggle.setAttribute("aria-expanded", "true");
+        };
+
+        const closeActionMenu = () => {
+          if (!actionMenu || !actionMenuDropdown || !actionMenuToggle) return;
+          actionMenu.classList.remove("is-open");
+          actionMenuDropdown.hidden = true;
+          actionMenuToggle.setAttribute("aria-expanded", "false");
+        };
+
         const setActive = (id) => {
           (tocRoot?.querySelectorAll("a") || []).forEach((link) => {
             link.classList.toggle(
@@ -1203,28 +1664,115 @@ const formattedWordCount =
         window.addEventListener("scroll", onScroll, { passive: true });
         updateProgress();
 
-        if (copyLinkBtn && copyStatus) {
-          const label =
-            copyLinkBtn.getAttribute("data-copy-label") || "Copy link";
-          const doneText =
-            copyLinkBtn.getAttribute("data-copy-done") || "Copied!";
-          copyLinkBtn.addEventListener("click", async () => {
-            try {
-              await navigator.clipboard.writeText(window.location.href);
-              copyStatus.textContent = "Link copied";
-              copyLinkBtn.textContent = doneText;
-              copyLinkBtn.classList.add("post-action-btn--success");
-              setTimeout(() => {
-                copyLinkBtn.textContent = label;
-                copyLinkBtn.classList.remove("post-action-btn--success");
-                copyStatus.textContent = "";
-              }, 2000);
-            } catch (error) {
-              copyStatus.textContent = "Copy failed";
-              setTimeout(() => {
-                copyStatus.textContent = "";
-              }, 2000);
+        if (actionMenu && actionMenuToggle) {
+          actionMenuToggle.addEventListener("click", () => {
+            const isExpanded =
+              actionMenuToggle.getAttribute("aria-expanded") === "true";
+            if (isExpanded) {
+              closeActionMenu();
+            } else {
+              openActionMenu();
             }
+          });
+
+          document.addEventListener("click", (event) => {
+            const target = event.target;
+            if (!(target instanceof Node)) return;
+            if (!actionMenu.contains(target)) {
+              closeActionMenu();
+            }
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+              closeActionMenu();
+            }
+          });
+        }
+
+        if (copyPagePrimaryBtn) {
+          copyPagePrimaryBtn.addEventListener("click", async () => {
+            const didCopy = await runOptionAction(
+              copyPagePrimaryBtn,
+              async () => {
+                await navigator.clipboard.writeText(markdownText);
+                setStatus("Page copied as Markdown");
+              },
+            );
+
+            if (!didCopy) {
+              setStatus("Copy failed");
+            }
+          });
+        }
+
+        if (openMarkdownBtn) {
+          openMarkdownBtn.addEventListener("click", async () => {
+            const openedMarkdown = await runOptionAction(
+              openMarkdownBtn,
+              async () => {
+                const markdownBlob = new Blob([markdownText], {
+                  type: "text/markdown;charset=utf-8",
+                });
+                const markdownUrl = URL.createObjectURL(markdownBlob);
+                const markdownTab = window.open(
+                  markdownUrl,
+                  "_blank",
+                  "noopener,noreferrer",
+                );
+
+                window.setTimeout(
+                  () => URL.revokeObjectURL(markdownUrl),
+                  20000,
+                );
+
+                if (!markdownTab) {
+                  throw new Error("popup-blocked");
+                }
+
+                setStatus("Opened markdown in a new tab");
+              },
+            );
+
+            if (!openedMarkdown) {
+              setStatus("Popup blocked while opening markdown");
+            }
+
+            closeActionMenu();
+          });
+        }
+
+        if (askChatGptBtn) {
+          askChatGptBtn.addEventListener("click", async () => {
+            const openedChat = await runOptionAction(
+              askChatGptBtn,
+              async () => {
+                try {
+                  await navigator.clipboard.writeText(chatPrompt);
+                  setStatus("Prompt copied. Opening ChatGPT...");
+                } catch (error) {
+                  setStatus("Opening ChatGPT (clipboard blocked)");
+                }
+
+                const chatWindow = window.open(
+                  `https://chatgpt.com/?q=${encodeURIComponent(
+                    `Help me with this blog post: ${postActionMeta.title} ${postActionMeta.url}`,
+                  )}`,
+                  "_blank",
+                  "noopener,noreferrer",
+                );
+
+                if (!chatWindow) {
+                  throw new Error("popup-blocked");
+                }
+              },
+            );
+
+            if (!openedChat) {
+              setStatus("Popup blocked while opening ChatGPT");
+            }
+
+            closeActionMenu();
           });
         }
       });
