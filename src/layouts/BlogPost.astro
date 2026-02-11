@@ -91,25 +91,25 @@ const wordCount = blogContent
 	? blogContent.trim().split(/\s+/).filter(Boolean).length
 	: 0;
 const formattedWordCount =
-  wordCount > 0 ? new Intl.NumberFormat("en-US").format(wordCount) : "";
+	wordCount > 0 ? new Intl.NumberFormat("en-US").format(wordCount) : "";
 const markdownDate = pubDate.toISOString().slice(0, 10);
 const markdownBody = blogContent?.trim() || "";
 const markdownPayload = [
-  `# ${title}`,
-  "",
-  `Source: ${pageUrl}`,
-  `Published: ${markdownDate}`,
-  "",
-  ...(lead ? [lead, ""] : []),
-  "---",
-  "",
-  markdownBody,
-  "",
+	`# ${title}`,
+	"",
+	`Source: ${pageUrl}`,
+	`Published: ${markdownDate}`,
+	"",
+	...(lead ? [lead, ""] : []),
+	"---",
+	"",
+	markdownBody,
+	"",
 ].join("\n");
 const postActionPayload = JSON.stringify({
-  title,
-  url: pageUrl,
-  markdown: markdownPayload,
+	title,
+	url: pageUrl,
+	markdown: markdownPayload,
 }).replace(/</g, "\\u003c");
 ---
 
