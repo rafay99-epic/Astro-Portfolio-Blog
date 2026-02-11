@@ -1,8 +1,9 @@
 ---
-import BaseHead from "@astro/base/BaseHead.astro";
-import authorConfig from "@config/siteConfig/info.json";
-import ErrorPageCompeont from "@react/error/404-Compoent";
 export const prerender = true;
+
+import BaseHead from "@components/AstroComponent/base/BaseHead.astro";
+import authorConfig from "@config/siteConfig/info.json";
+import NotFoundPage from "@react/error/404-Compoent";
 ---
 
 <!doctype html>
@@ -19,7 +20,7 @@ export const prerender = true;
         class="flex w-full flex-col justify-center text-center md:w-1/2 md:text-left"
       >
         <div class="animated-text-container">
-          <ErrorPageCompeont client:load />
+          <NotFoundPage client:load />
         </div>
       </div>
     </main>

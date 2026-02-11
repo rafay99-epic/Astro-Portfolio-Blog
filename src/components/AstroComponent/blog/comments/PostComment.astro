@@ -2,11 +2,11 @@
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 try {
-  if (!featureFlags.showBlog) {
-    return Astro.redirect("/access-denied");
-  }
-} catch (error) {
-  return Astro.redirect("/404");
+	if (!featureFlags.showBlog) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
 }
 
 export const prerender = true;

@@ -6,11 +6,11 @@ const workExperience = experienceData.workExperience;
 
 const totalPositions = workExperience.length;
 const totalTechnologies = new Set(
-  workExperience.flatMap((job) => job.toolsUsed),
+	workExperience.flatMap((job) => job.toolsUsed),
 ).size;
 const totalResponsibilities = workExperience.reduce(
-  (total, job) => total + job.roles.length,
-  0,
+	(total, job) => total + job.roles.length,
+	0,
 );
 ---
 

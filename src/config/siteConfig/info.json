@@ -1,386 +1,386 @@
 {
-  "coreStack": [
-    {
-      "name": "React & Next.js",
-      "icon": "react",
-      "context": "3+ years building production web apps",
-      "color": "#7aa2f7"
-    },
-    {
-      "name": "Flutter & Dart",
-      "icon": "flutter",
-      "context": "Cross-platform mobile development",
-      "color": "#bb9af7"
-    },
-    {
-      "name": "Node.js & Express",
-      "icon": "nodejs",
-      "context": "Backend APIs and microservices",
-      "color": "#9ece6a"
-    },
-    {
-      "name": "TypeScript",
-      "icon": "typescript",
-      "context": "Type-safe application development",
-      "color": "#7aa2f7"
-    },
-    {
-      "name": "PostgreSQL",
-      "icon": "postgresql",
-      "context": "Database design and optimization",
-      "color": "#bb9af7"
-    },
-    {
-      "name": "Tailwind CSS",
-      "icon": "tailwindcss",
-      "context": "Modern UI development",
-      "color": "#9ece6a"
-    },
-    {
-      "name": "Docker & AWS",
-      "icon": "docker",
-      "context": "Cloud deployment and DevOps",
-      "color": "#7aa2f7"
-    },
-    {
-      "name": "Git & GitHub",
-      "icon": "git",
-      "context": "Version control and collaboration",
-      "color": "#bb9af7"
-    }
-  ],
-  "stats": [
-    {
-      "label": "Years Experience",
-      "value": "3+"
-    },
-    {
-      "label": "Technologies",
-      "value": "15+"
-    },
-    {
-      "label": "Happy Clients",
-      "value": "25+"
-    }
-  ],
-  "SiteName": "Abdul Rafay",
-  "SiteDescription": "Hey there! Welcome to my space where I share coding adventures, explore new tech, and dive into open-source projects. Grab a coffee and join me on this journey through the world of software development!",
-  "name": "Abdul Rafay",
-  "jobTitle": "Software Engineer",
-  "position": "Full Stack Developer",
-  "picture": "/author.webp",
-  "avator": "/favicon.png",
-  "tag_line": "I build high-performance web & mobile apps that scale.",
-  "socialLinks": {
-    "twitter": "https://x.com/abdul_rafay99",
-    "linkedin": "abdul-rafay1999",
-    "github": "https://github.com/rafay99-epic",
-    "upwork": "https://www.upwork.com/freelancers/~018c78c37a53bf3cac",
-    "youtube": "https://www.youtube.com/@buildwithrafay",
-    "whatsNumber": "+923035650798"
-  },
-  "about": {
-    "whoAmI": "I am a Full Stack Software Engineer and Team Lead who builds production-ready web and mobile applications used by real users. My work sits at the intersection of clean architecture, performance, and delivery. I have led engineering teams, owned critical systems, and shipped applications across Android, iOS, and the web using modern stacks like React, Next.js, Flutter, and Node.js. I don’t just build features—I think through system design, edge cases, scalability, and long-term maintainability to create software teams can confidently build on.",
-    "lifeBeyondCode": "Outside of work, I enjoy challenges that demand focus and strategic thinking. Competitive gaming plays a big role in how I recharge, sharpening decision-making, teamwork, and adaptability under pressure. Exploring new experiences helps me reset and maintain balance, which directly influences how I approach problem-solving and collaboration in my professional life.",
-    "continuousLearning": "I treat learning as a core part of my work. I continuously refine my skills by adopting new tools, revisiting architectural decisions, and improving how systems are built and maintained. My learning is driven by real problems such as scaling applications, improving performance, reducing complexity, and helping teams work more effectively together. Through mentorship, collaboration, and technical leadership, I focus on building software that lasts."
-  },
-  "techStack": [
-    {
-      "category": "App Development",
-      "tools": ["flutter", "androidstudio", "xcode", "vscode", "react native"]
-    },
-    {
-      "category": "Frontend Development",
-      "tools": [
-        "astro",
-        "tailwindcss",
-        "nodejs",
-        "react",
-        "typescript",
-        "nextjs"
-      ]
-    },
-    {
-      "category": "Backend Development",
-      "tools": [
-        "firebase",
-        "supabase",
-        "postgresql",
-        "prisma",
-        "convex",
-        "nodejs",
-        "express",
-        "sql"
-      ]
-    },
-    {
-      "category": "Cloud Computing",
-      "tools": ["vercel", "netlify", "aws", "docker"]
-    },
-    {
-      "category": "Scripting",
-      "tools": ["powershell", "bash", "python"]
-    }
-  ],
-  "workExperience": [
-    {
-      "companyName": "Tudo Num Tech Lab",
-      "position": "Senior Software Engineer & Team Lead",
-      "employmentTime": "2nd August, 2025 - Present",
-      "roles": [
-        "Building Stunning looking Web Applications using React, Nodejs,NextJs, and Tailwindcss",
-        "Testing Multiple Applications",
-        "Making sure the production does not go down",
-        "Building full backend using Nodejs, Express, and SQL with Prisma",
-        "Managing a team of 5+ developers"
-      ],
-      "toolsUsed": ["React", "Nodejs", "NextJs", "Tailwindcss", "Prisma", "SQL"]
-    },
-    {
-      "companyName": "Future Tech Technologies",
-      "position": "Senior Software Engineer & Team Lead",
-      "employmentTime": "2nd June, 2025 - 2nd August, 2025",
-      "roles": [
-        "Building Stunning looking Web Applications using React, Nodejs,NextJs, and Tailwindcss",
-        "Testing Multiple Applications",
-        "Making sure the production does not go down",
-        "Building full backend using Nodejs, Express, and SQL with Prisma",
-        "Managing a team of 5+ developers and full UI and UX of the application"
-      ],
-      "toolsUsed": [
-        "Astro",
-        "React",
-        "Nodejs",
-        "NextJs",
-        "Tailwindcss",
-        "Prisma",
-        "SQL"
-      ]
-    },
-    {
-      "companyName": "Freelancer",
-      "position": "Full Stack Developer",
-      "employmentTime": "1st April, 2024 - 1st June, 2025",
-      "roles": [
-        "Building Stunning looking Web Applications using Astro, React, Nodejs,NextJs, and Tailwindcss",
-        "Managing Projects and Clients",
-        "Hiring and Training New Developers",
-        "Testing and Deploying Applications for Clients and in free lancer platform"
-      ],
-      "toolsUsed": [
-        "Flutter",
-        "Dart",
-        "Firebase",
-        "Superbase",
-        "MongoDB",
-        "Convex",
-        "SQL",
-        "Prisma",
-        "Nodejs",
-        "Express",
-        "Astro",
-        "React",
-        "Tailwindcss"
-      ]
-    },
-    {
-      "companyName": "Daxno Technology",
-      "position": "Flutter Developer",
-      "employmentTime": "1st December, 2023 - 1st  April, 2024",
-      "roles": [
-        "Building Stunning looking Android Applications",
-        "Testing Multiple Applications",
-        "Making sure the production does not go down"
-      ],
-      "toolsUsed": [
-        "Flutter",
-        "VS Code",
-        "Git",
-        "Android Studio",
-        "Firebase",
-        "Superbase"
-      ]
-    },
-    {
-      "companyName": "Swam Technology",
-      "position": "Machine Learning Engineer",
-      "employmentTime": "Sep, 2022 - Dec, 2023",
-      "roles": [
-        "Expert in software design and machine learning model development",
-        "Specialized in text analysis for abusive language detection",
-        "Proven ability to apply machine learning to real-world problems",
-        "Versatile skill set that bridges software engineering and advanced analytics."
-      ],
-      "toolsUsed": [
-        "Python",
-        "Flusk",
-        "SQL Lite",
-        "MongoDB",
-        "Git",
-        "TensorFlow"
-      ]
-    },
-    {
-      "companyName": "Swam Technology",
-      "position": "Full Stack Web Developer",
-      "employmentTime": "Sep, 2022 - Dec, 2023",
-      "roles": [
-        "Incorporated design principles to enhance navigation and readability.",
-        "Implemented user-friendly CMS for law firm.",
-        "Empowered non-technical users to manage website content seamlessly.",
-        "Ensured intuitive design for easy content updates."
-      ],
-      "toolsUsed": [
-        "HTML5",
-        "JavaScript",
-        "React",
-        "NodeJs",
-        "MongoDB",
-        "Firebase"
-      ]
-    },
-    {
-      "companyName": "Innovation Tech",
-      "position": "Intern",
-      "employmentTime": "2021",
-      "roles": [
-        "Code review and testing responsibilities.",
-        "Design of multiple user interfaces.",
-        "Acquisition of significant knowledge through project involvement.",
-        "Extensive test writing for various applications."
-      ],
-      "toolsUsed": ["Java", "XML", "Figma", "Firebase", "SQL Lite"]
-    }
-  ],
-  "testimonials": [
-    {
-      "id": 1,
-      "name": "Sarah Johnson",
-      "position": "CEO",
-      "company": "TechStart Inc.",
-      "avatar": "/api/placeholder/80/80",
-      "rating": 5,
-      "testimonial": "Working with this developer was an absolute game-changer for our startup. They delivered a robust, scalable solution that exceeded our expectations. The attention to detail and technical expertise is unmatched.",
-      "project": "E-commerce Platform",
-      "technologies": ["React", "Node.js", "MongoDB"]
-    },
-    {
-      "id": 2,
-      "name": "Michael Chen",
-      "position": "CTO",
-      "company": "Digital Solutions Ltd.",
-      "avatar": "/api/placeholder/80/80",
-      "rating": 5,
-      "testimonial": "Exceptional work on our enterprise application. The code quality is outstanding, and the project was delivered on time and within budget. Communication throughout the process was excellent.",
-      "project": "Enterprise Dashboard",
-      "technologies": ["Vue.js", "Python", "PostgreSQL"]
-    },
-    {
-      "id": 3,
-      "name": "Emily Rodriguez",
-      "position": "Product Manager",
-      "company": "InnovateCorp",
-      "avatar": "/api/placeholder/80/80",
-      "rating": 5,
-      "testimonial": "From concept to deployment, the entire experience was seamless. They understood our vision perfectly and brought it to life with modern, efficient code. Highly recommend for any serious project.",
-      "project": "Mobile App Backend",
-      "technologies": ["React Native", "Express.js", "AWS"]
-    },
-    {
-      "id": 4,
-      "name": "David Thompson",
-      "position": "Founder",
-      "company": "StartupHub",
-      "avatar": "/api/placeholder/80/80",
-      "rating": 5,
-      "testimonial": "Outstanding technical skills combined with great communication. They helped us scale our platform to handle thousands of users. The performance improvements were remarkable.",
-      "project": "Platform Optimization",
-      "technologies": ["Next.js", "Redis", "Docker"]
-    }
-  ],
-  "services": [
-    {
-      "title": "Mobile App Development",
-      "description": "Building native and cross-platform mobile applications with Flutter and React Native. From concept to deployment, I create intuitive, high-performance apps for iOS and Android.",
-      "icon": "mobile",
-      "features": [
-        "Cross-platform development with Flutter",
-        "Native Android development",
-        "UI/UX design implementation",
-        "App store deployment",
-        "Performance optimization",
-        "Real-time data integration"
-      ],
-      "technologies": [
-        "Flutter",
-        "Dart",
-        "Android Studio",
-        "Firebase",
-        "Supabase"
-      ]
-    },
-    {
-      "title": "Web Development",
-      "description": "Creating modern, responsive web applications using cutting-edge technologies. From simple landing pages to complex web applications with full-stack capabilities.",
-      "icon": "globe",
-      "features": [
-        "Frontend development with React & Astro",
-        "Backend API development",
-        "Database design and optimization",
-        "Cloud deployment and hosting",
-        "Performance optimization",
-        "SEO and accessibility"
-      ],
-      "technologies": [
-        "React",
-        "Astro",
-        "Node.js",
-        "TypeScript",
-        "Tailwind CSS",
-        "Next.js"
-      ]
-    },
-    {
-      "title": "Full-Stack Solutions",
-      "description": "End-to-end development services from database design to user interface. Complete solutions that scale with your business needs.",
-      "icon": "zap",
-      "features": [
-        "Complete application architecture",
-        "Database design and management",
-        "API development and integration",
-        "Authentication and security",
-        "Cloud infrastructure setup",
-        "DevOps and deployment"
-      ],
-      "technologies": [
-        "Node.js",
-        "Express",
-        "MongoDB",
-        "PostgreSQL",
-        "AWS",
-        "Docker"
-      ]
-    },
-    {
-      "title": "Cloud & DevOps",
-      "description": "Setting up scalable cloud infrastructure and implementing CI/CD pipelines for reliable, automated deployments.",
-      "icon": "cloud",
-      "features": [
-        "Cloud infrastructure setup",
-        "CI/CD pipeline implementation",
-        "Container orchestration",
-        "Monitoring and logging",
-        "Security best practices",
-        "Cost optimization"
-      ],
-      "technologies": [
-        "AWS",
-        "Google Cloud",
-        "Docker",
-        "Vercel",
-        "Netlify",
-        "GitHub Actions"
-      ]
-    }
-  ]
+	"coreStack": [
+		{
+			"name": "React & Next.js",
+			"icon": "react",
+			"context": "3+ years building production web apps",
+			"color": "#7aa2f7"
+		},
+		{
+			"name": "Flutter & Dart",
+			"icon": "flutter",
+			"context": "Cross-platform mobile development",
+			"color": "#bb9af7"
+		},
+		{
+			"name": "Node.js & Express",
+			"icon": "nodejs",
+			"context": "Backend APIs and microservices",
+			"color": "#9ece6a"
+		},
+		{
+			"name": "TypeScript",
+			"icon": "typescript",
+			"context": "Type-safe application development",
+			"color": "#7aa2f7"
+		},
+		{
+			"name": "PostgreSQL",
+			"icon": "postgresql",
+			"context": "Database design and optimization",
+			"color": "#bb9af7"
+		},
+		{
+			"name": "Tailwind CSS",
+			"icon": "tailwindcss",
+			"context": "Modern UI development",
+			"color": "#9ece6a"
+		},
+		{
+			"name": "Docker & AWS",
+			"icon": "docker",
+			"context": "Cloud deployment and DevOps",
+			"color": "#7aa2f7"
+		},
+		{
+			"name": "Git & GitHub",
+			"icon": "git",
+			"context": "Version control and collaboration",
+			"color": "#bb9af7"
+		}
+	],
+	"stats": [
+		{
+			"label": "Years Experience",
+			"value": "3+"
+		},
+		{
+			"label": "Technologies",
+			"value": "15+"
+		},
+		{
+			"label": "Happy Clients",
+			"value": "25+"
+		}
+	],
+	"SiteName": "Abdul Rafay",
+	"SiteDescription": "Hey there! Welcome to my space where I share coding adventures, explore new tech, and dive into open-source projects. Grab a coffee and join me on this journey through the world of software development!",
+	"name": "Abdul Rafay",
+	"jobTitle": "Software Engineer",
+	"position": "Full Stack Developer",
+	"picture": "/author.webp",
+	"avator": "/favicon.png",
+	"tag_line": "I build high-performance web & mobile apps that scale.",
+	"socialLinks": {
+		"twitter": "https://x.com/abdul_rafay99",
+		"linkedin": "abdul-rafay1999",
+		"github": "https://github.com/rafay99-epic",
+		"upwork": "https://www.upwork.com/freelancers/~018c78c37a53bf3cac",
+		"youtube": "https://www.youtube.com/@buildwithrafay",
+		"whatsNumber": "+923035650798"
+	},
+	"about": {
+		"whoAmI": "I am a Full Stack Software Engineer and Team Lead who builds production-ready web and mobile applications used by real users. My work sits at the intersection of clean architecture, performance, and delivery. I have led engineering teams, owned critical systems, and shipped applications across Android, iOS, and the web using modern stacks like React, Next.js, Flutter, and Node.js. I don’t just build features—I think through system design, edge cases, scalability, and long-term maintainability to create software teams can confidently build on.",
+		"lifeBeyondCode": "Outside of work, I enjoy challenges that demand focus and strategic thinking. Competitive gaming plays a big role in how I recharge, sharpening decision-making, teamwork, and adaptability under pressure. Exploring new experiences helps me reset and maintain balance, which directly influences how I approach problem-solving and collaboration in my professional life.",
+		"continuousLearning": "I treat learning as a core part of my work. I continuously refine my skills by adopting new tools, revisiting architectural decisions, and improving how systems are built and maintained. My learning is driven by real problems such as scaling applications, improving performance, reducing complexity, and helping teams work more effectively together. Through mentorship, collaboration, and technical leadership, I focus on building software that lasts."
+	},
+	"techStack": [
+		{
+			"category": "App Development",
+			"tools": ["flutter", "androidstudio", "xcode", "vscode", "react native"]
+		},
+		{
+			"category": "Frontend Development",
+			"tools": [
+				"astro",
+				"tailwindcss",
+				"nodejs",
+				"react",
+				"typescript",
+				"nextjs"
+			]
+		},
+		{
+			"category": "Backend Development",
+			"tools": [
+				"firebase",
+				"supabase",
+				"postgresql",
+				"prisma",
+				"convex",
+				"nodejs",
+				"express",
+				"sql"
+			]
+		},
+		{
+			"category": "Cloud Computing",
+			"tools": ["vercel", "netlify", "aws", "docker"]
+		},
+		{
+			"category": "Scripting",
+			"tools": ["powershell", "bash", "python"]
+		}
+	],
+	"workExperience": [
+		{
+			"companyName": "Tudo Num Tech Lab",
+			"position": "Senior Software Engineer & Team Lead",
+			"employmentTime": "2nd August, 2025 - Present",
+			"roles": [
+				"Building Stunning looking Web Applications using React, Nodejs,NextJs, and Tailwindcss",
+				"Testing Multiple Applications",
+				"Making sure the production does not go down",
+				"Building full backend using Nodejs, Express, and SQL with Prisma",
+				"Managing a team of 5+ developers"
+			],
+			"toolsUsed": ["React", "Nodejs", "NextJs", "Tailwindcss", "Prisma", "SQL"]
+		},
+		{
+			"companyName": "Future Tech Technologies",
+			"position": "Senior Software Engineer & Team Lead",
+			"employmentTime": "2nd June, 2025 - 2nd August, 2025",
+			"roles": [
+				"Building Stunning looking Web Applications using React, Nodejs,NextJs, and Tailwindcss",
+				"Testing Multiple Applications",
+				"Making sure the production does not go down",
+				"Building full backend using Nodejs, Express, and SQL with Prisma",
+				"Managing a team of 5+ developers and full UI and UX of the application"
+			],
+			"toolsUsed": [
+				"Astro",
+				"React",
+				"Nodejs",
+				"NextJs",
+				"Tailwindcss",
+				"Prisma",
+				"SQL"
+			]
+		},
+		{
+			"companyName": "Freelancer",
+			"position": "Full Stack Developer",
+			"employmentTime": "1st April, 2024 - 1st June, 2025",
+			"roles": [
+				"Building Stunning looking Web Applications using Astro, React, Nodejs,NextJs, and Tailwindcss",
+				"Managing Projects and Clients",
+				"Hiring and Training New Developers",
+				"Testing and Deploying Applications for Clients and in free lancer platform"
+			],
+			"toolsUsed": [
+				"Flutter",
+				"Dart",
+				"Firebase",
+				"Superbase",
+				"MongoDB",
+				"Convex",
+				"SQL",
+				"Prisma",
+				"Nodejs",
+				"Express",
+				"Astro",
+				"React",
+				"Tailwindcss"
+			]
+		},
+		{
+			"companyName": "Daxno Technology",
+			"position": "Flutter Developer",
+			"employmentTime": "1st December, 2023 - 1st  April, 2024",
+			"roles": [
+				"Building Stunning looking Android Applications",
+				"Testing Multiple Applications",
+				"Making sure the production does not go down"
+			],
+			"toolsUsed": [
+				"Flutter",
+				"VS Code",
+				"Git",
+				"Android Studio",
+				"Firebase",
+				"Superbase"
+			]
+		},
+		{
+			"companyName": "Swam Technology",
+			"position": "Machine Learning Engineer",
+			"employmentTime": "Sep, 2022 - Dec, 2023",
+			"roles": [
+				"Expert in software design and machine learning model development",
+				"Specialized in text analysis for abusive language detection",
+				"Proven ability to apply machine learning to real-world problems",
+				"Versatile skill set that bridges software engineering and advanced analytics."
+			],
+			"toolsUsed": [
+				"Python",
+				"Flusk",
+				"SQL Lite",
+				"MongoDB",
+				"Git",
+				"TensorFlow"
+			]
+		},
+		{
+			"companyName": "Swam Technology",
+			"position": "Full Stack Web Developer",
+			"employmentTime": "Sep, 2022 - Dec, 2023",
+			"roles": [
+				"Incorporated design principles to enhance navigation and readability.",
+				"Implemented user-friendly CMS for law firm.",
+				"Empowered non-technical users to manage website content seamlessly.",
+				"Ensured intuitive design for easy content updates."
+			],
+			"toolsUsed": [
+				"HTML5",
+				"JavaScript",
+				"React",
+				"NodeJs",
+				"MongoDB",
+				"Firebase"
+			]
+		},
+		{
+			"companyName": "Innovation Tech",
+			"position": "Intern",
+			"employmentTime": "2021",
+			"roles": [
+				"Code review and testing responsibilities.",
+				"Design of multiple user interfaces.",
+				"Acquisition of significant knowledge through project involvement.",
+				"Extensive test writing for various applications."
+			],
+			"toolsUsed": ["Java", "XML", "Figma", "Firebase", "SQL Lite"]
+		}
+	],
+	"testimonials": [
+		{
+			"id": 1,
+			"name": "Sarah Johnson",
+			"position": "CEO",
+			"company": "TechStart Inc.",
+			"avatar": "/api/placeholder/80/80",
+			"rating": 5,
+			"testimonial": "Working with this developer was an absolute game-changer for our startup. They delivered a robust, scalable solution that exceeded our expectations. The attention to detail and technical expertise is unmatched.",
+			"project": "E-commerce Platform",
+			"technologies": ["React", "Node.js", "MongoDB"]
+		},
+		{
+			"id": 2,
+			"name": "Michael Chen",
+			"position": "CTO",
+			"company": "Digital Solutions Ltd.",
+			"avatar": "/api/placeholder/80/80",
+			"rating": 5,
+			"testimonial": "Exceptional work on our enterprise application. The code quality is outstanding, and the project was delivered on time and within budget. Communication throughout the process was excellent.",
+			"project": "Enterprise Dashboard",
+			"technologies": ["Vue.js", "Python", "PostgreSQL"]
+		},
+		{
+			"id": 3,
+			"name": "Emily Rodriguez",
+			"position": "Product Manager",
+			"company": "InnovateCorp",
+			"avatar": "/api/placeholder/80/80",
+			"rating": 5,
+			"testimonial": "From concept to deployment, the entire experience was seamless. They understood our vision perfectly and brought it to life with modern, efficient code. Highly recommend for any serious project.",
+			"project": "Mobile App Backend",
+			"technologies": ["React Native", "Express.js", "AWS"]
+		},
+		{
+			"id": 4,
+			"name": "David Thompson",
+			"position": "Founder",
+			"company": "StartupHub",
+			"avatar": "/api/placeholder/80/80",
+			"rating": 5,
+			"testimonial": "Outstanding technical skills combined with great communication. They helped us scale our platform to handle thousands of users. The performance improvements were remarkable.",
+			"project": "Platform Optimization",
+			"technologies": ["Next.js", "Redis", "Docker"]
+		}
+	],
+	"services": [
+		{
+			"title": "Mobile App Development",
+			"description": "Building native and cross-platform mobile applications with Flutter and React Native. From concept to deployment, I create intuitive, high-performance apps for iOS and Android.",
+			"icon": "mobile",
+			"features": [
+				"Cross-platform development with Flutter",
+				"Native Android development",
+				"UI/UX design implementation",
+				"App store deployment",
+				"Performance optimization",
+				"Real-time data integration"
+			],
+			"technologies": [
+				"Flutter",
+				"Dart",
+				"Android Studio",
+				"Firebase",
+				"Supabase"
+			]
+		},
+		{
+			"title": "Web Development",
+			"description": "Creating modern, responsive web applications using cutting-edge technologies. From simple landing pages to complex web applications with full-stack capabilities.",
+			"icon": "globe",
+			"features": [
+				"Frontend development with React & Astro",
+				"Backend API development",
+				"Database design and optimization",
+				"Cloud deployment and hosting",
+				"Performance optimization",
+				"SEO and accessibility"
+			],
+			"technologies": [
+				"React",
+				"Astro",
+				"Node.js",
+				"TypeScript",
+				"Tailwind CSS",
+				"Next.js"
+			]
+		},
+		{
+			"title": "Full-Stack Solutions",
+			"description": "End-to-end development services from database design to user interface. Complete solutions that scale with your business needs.",
+			"icon": "zap",
+			"features": [
+				"Complete application architecture",
+				"Database design and management",
+				"API development and integration",
+				"Authentication and security",
+				"Cloud infrastructure setup",
+				"DevOps and deployment"
+			],
+			"technologies": [
+				"Node.js",
+				"Express",
+				"MongoDB",
+				"PostgreSQL",
+				"AWS",
+				"Docker"
+			]
+		},
+		{
+			"title": "Cloud & DevOps",
+			"description": "Setting up scalable cloud infrastructure and implementing CI/CD pipelines for reliable, automated deployments.",
+			"icon": "cloud",
+			"features": [
+				"Cloud infrastructure setup",
+				"CI/CD pipeline implementation",
+				"Container orchestration",
+				"Monitoring and logging",
+				"Security best practices",
+				"Cost optimization"
+			],
+			"technologies": [
+				"AWS",
+				"Google Cloud",
+				"Docker",
+				"Vercel",
+				"Netlify",
+				"GitHub Actions"
+			]
+		}
+	]
 }

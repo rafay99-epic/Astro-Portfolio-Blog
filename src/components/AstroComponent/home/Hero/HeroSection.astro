@@ -2,20 +2,20 @@
 import authorConfig from "@config/siteConfig/info.json";
 
 interface SocialLinks {
-  twitter: string;
-  github: string;
-  upwork: string;
-  youtube: string;
-  whatsNumber: string;
-  linkedin: string;
+	twitter: string;
+	github: string;
+	upwork: string;
+	youtube: string;
+	whatsNumber: string;
+	linkedin: string;
 }
 
 interface Props {
-  name: string;
-  jobTitle: string;
-  position: string;
-  picture: string;
-  socialLinks: SocialLinks;
+	name: string;
+	jobTitle: string;
+	position: string;
+	picture: string;
+	socialLinks: SocialLinks;
 }
 
 const { name, jobTitle, picture, socialLinks } = Astro.props as Props;

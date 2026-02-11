@@ -1,46 +1,70 @@
 ---
 import authorConfig from "@config/siteConfig/info.json";
-import GithubSVG from "@assets/svg/github.svg";
-import TwitterSVG from "@assets/svg/twitter.svg";
-import WhatsNumberSVG from "@assets/svg/whatsapps.svg";
-import YoutubeSVG from "@assets/svg/youtube.svg";
-import UpworkSVG from "@assets/svg/upwork.svg";
-import LinkinedInSVG from "@assets/svg/linkined.svg";
+import {
+	Briefcase,
+	Github,
+	Linkedin,
+	MessageCircle,
+	Send,
+	Youtube,
+} from "lucide-react";
 
 const { socialLinks } = authorConfig;
 ---
 
 <div class="flex space-x-4">
-  <a href={socialLinks.twitter} target="_blank" class="flex items-center">
+  <a
+    href={socialLinks.twitter}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="flex items-center"
+  >
     <span class="sr-only">Follow me on Twitter</span>
-    <TwitterSVG />
+    <Send className="h-5 w-5" />
   </a>
-  <a href={socialLinks.github} target="_blank" class="flex items-center">
+  <a
+    href={socialLinks.github}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="flex items-center"
+  >
     <span class="sr-only">GitHub Profile</span>
-    <GithubSVG />
+    <Github className="h-5 w-5" />
   </a>
 
-  <a href={socialLinks.upwork} target="_blank" class="flex items-center">
+  <a
+    href={socialLinks.upwork}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="flex items-center"
+  >
     <span class="sr-only">Upwork Profile</span>
-    <UpworkSVG />
+    <Briefcase className="h-5 w-5" />
   </a>
 
-  <a href={socialLinks.youtube} target="_blank" class="flex items-center">
+  <a
+    href={socialLinks.youtube}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="flex items-center"
+  >
     <span class="sr-only">YouTube Channel</span>
-    <YoutubeSVG />
+    <Youtube className="h-5 w-5" />
   </a>
   <a
     href={`https://wa.me/${socialLinks.whatsNumber}?text=Hello%20there!`}
     target="_blank"
+    rel="noopener noreferrer"
     class="flex items-center"
   >
-    <WhatsNumberSVG />
+    <MessageCircle className="h-5 w-5" />
   </a>
   <a
     href={`https://www.linkedin.com/in/${socialLinks.linkedin}`}
     target="_blank"
+    rel="noopener noreferrer"
     class="flex items-center"
   >
-    <LinkinedInSVG />
+    <Linkedin className="h-5 w-5" />
   </a>
 </div>

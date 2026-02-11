@@ -1,25 +1,25 @@
 ---
+import { type CollectionEntry, getCollection, render } from "astro:content";
 // NOTE: Archived posts render under /blog/archive to keep them out of /blog.
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
-import { type CollectionEntry, getCollection, render } from "astro:content";
 import BlogPost from "@layouts/BlogPost.astro";
 export const prerender = true;
 
 export async function getStaticPaths() {
-  if (!featureFlags.showBlog) {
-    return [];
-  }
+	if (!featureFlags.showBlog) {
+		return [];
+	}
 
-  const posts = await getCollection("blog");
+	const posts = await getCollection("blog");
 
-  const archivedPosts = posts.filter(
-    (post: CollectionEntry<"blog">) => !post.data.draft && post.data.archived,
-  );
+	const archivedPosts = posts.filter(
+		(post: CollectionEntry<"blog">) => !post.data.draft && post.data.archived,
+	);
 
-  return archivedPosts.map((post: CollectionEntry<"blog">) => ({
-    params: { slug: post.slug },
-    props: post,
-  }));
+	return archivedPosts.map((post: CollectionEntry<"blog">) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
 }
 
 type Props = CollectionEntry<"blog">;
@@ -28,13 +28,13 @@ const post = Astro.props;
 
 const renderResult = featureFlags.showBlog ? await render(post) : null;
 const {
-  Content,
-  headings = [],
-  remarkPluginFrontmatter,
+	Content,
+	headings = [],
+	remarkPluginFrontmatter,
 } = renderResult ?? {
-  Content: null,
-  headings: [],
-  remarkPluginFrontmatter: { minutesRead: undefined },
+	Content: null,
+	headings: [],
+	remarkPluginFrontmatter: { minutesRead: undefined },
 };
 ---
 

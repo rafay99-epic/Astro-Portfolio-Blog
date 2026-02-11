@@ -1,24 +1,23 @@
 ---
+import NavLink from "@astro/header/NavLink.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
-import NavLink from "./NavLink.astro";
-
 import {
-  LuMenu as Menu,
-  LuX as X,
-  LuSearch as Search,
-  LuTag as Tag,
-  LuEllipsis as MoreHorizontal,
-  LuHouse as Home,
-  LuBookOpen as BookOpen,
-  LuUser as User,
-  LuBriefcase as Briefcase,
-  LuRocket as Rocket,
-  LuTrendingUp as TrendingUp,
-  LuGlobe as Globe,
-  LuChevronDown as ChevronDown,
-  LuExternalLink as ExternalLink,
-} from "react-icons/lu";
+	BookOpen,
+	Briefcase,
+	ChevronDown,
+	ExternalLink,
+	Globe,
+	Home,
+	Menu,
+	MoreHorizontal,
+	Rocket,
+	Search,
+	Tag,
+	TrendingUp,
+	User,
+	X,
+} from "lucide-react";
 ---
 
 <style is:global>

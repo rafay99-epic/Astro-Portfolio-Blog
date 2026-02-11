@@ -4,39 +4,41 @@ import type { CollectionEntry } from "astro:content";
 type ProjectEntry = CollectionEntry<"projects">;
 
 interface Props {
-  projects: ProjectEntry[];
-  title?: string;
-  subtitle?: string;
-  eyebrow?: string;
-  showViewAll?: boolean;
-  viewAllHref?: string;
-  viewAllLabel?: string;
+	projects: ProjectEntry[];
+	title?: string;
+	subtitle?: string;
+	eyebrow?: string;
+	showViewAll?: boolean;
+	viewAllHref?: string;
+	viewAllLabel?: string;
 }
 
 const {
-  projects,
-  title = "Selected Work",
-  subtitle = "A curated selection of projects where product thinking meets sharp execution.",
-  eyebrow = "Projects",
-  showViewAll = false,
-  viewAllHref = "/project",
-  viewAllLabel = "View All Projects",
+	projects,
+	title = "Selected Work",
+	subtitle = "A curated selection of projects where product thinking meets sharp execution.",
+	eyebrow = "Projects",
+	showViewAll = false,
+	viewAllHref = "/project",
+	viewAllLabel = "View All Projects",
 } = Astro.props as Props;
 
 const uniqueTech = new Set<string>();
 const uniqueCategories = new Set<string>();
 
 projects.forEach((project) => {
-  project.data.ProjectTech?.forEach((tech) => uniqueTech.add(tech));
-  project.data.ProjectCategory?.forEach((category) =>
-    uniqueCategories.add(category),
-  );
+	project.data.ProjectTech?.forEach((tech) => {
+		uniqueTech.add(tech);
+	});
+	project.data.ProjectCategory?.forEach((category) => {
+		uniqueCategories.add(category);
+	});
 });
 
 const stats = [
-  { label: "Projects", value: projects.length },
-  { label: "Stacks", value: uniqueTech.size },
-  { label: "Categories", value: uniqueCategories.size },
+	{ label: "Projects", value: projects.length },
+	{ label: "Stacks", value: uniqueTech.size },
+	{ label: "Categories", value: uniqueCategories.size },
 ];
 ---
 

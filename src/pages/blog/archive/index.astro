@@ -1,31 +1,30 @@
 ---
-// NOTE: Dedicated archive page avoids /blog/archive hitting the catch-all route.
+import { type CollectionEntry, getCollection } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
 import Footer from "@astro/footer/Footer.astro";
-import authorConfig from "@config/siteConfig/info.json";
-import { getCollection, type CollectionEntry } from "astro:content";
+import Header from "@astro/header/Header.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import authorConfig from "@config/siteConfig/info.json";
 
 type BlogCollectionEntry = CollectionEntry<"blog">;
 
 export const prerender = true;
 
 const archivedPosts = (await getCollection("blog"))
-  .filter(
-    (post: CollectionEntry<"blog">) => !post.data.draft && post.data.archived,
-  )
-  .sort(
-    (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
-      b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-  );
+	.filter(
+		(post: CollectionEntry<"blog">) => !post.data.draft && post.data.archived,
+	)
+	.sort(
+		(a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+			b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	);
 
 try {
-  if (!featureFlags.showBlog) {
-    return Astro.redirect("/access-denied");
-  }
-} catch (error) {
-  return Astro.redirect("/404");
+	if (!featureFlags.showBlog) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
 }
 ---
 

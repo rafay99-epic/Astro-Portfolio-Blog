@@ -1,34 +1,34 @@
 ---
-import type { Post } from "types/articles";
 import {
-  LuCalendarDays,
-  LuCheck,
-  LuFileText,
-  LuTag,
-  LuUser,
+	LuCalendarDays,
+	LuCheck,
+	LuFileText,
+	LuTag,
+	LuUser,
 } from "react-icons/lu";
+import type { Post } from "types/articles";
 
 const { allTags, paginatedPosts, selectedTag, currentPage, totalPages } =
-  Astro.props;
+	Astro.props;
 
 const getTagUrl = (tag: string | null) => {
-  if (tag) {
-    return `/tag/${tag}`;
-  }
-  return "/tag";
+	if (tag) {
+		return `/tag/${tag}`;
+	}
+	return "/tag";
 };
 
 const getPageUrl = (page: number) => {
-  if (selectedTag) {
-    if (page === 1) {
-      return `/tag/${selectedTag}`;
-    }
-    return `/tag/${selectedTag}/page/${page}`;
-  }
-  if (page === 1) {
-    return "/tag";
-  }
-  return `/tag/page/${page}`;
+	if (selectedTag) {
+		if (page === 1) {
+			return `/tag/${selectedTag}`;
+		}
+		return `/tag/${selectedTag}/page/${page}`;
+	}
+	if (page === 1) {
+		return "/tag";
+	}
+	return `/tag/page/${page}`;
 };
 ---
 

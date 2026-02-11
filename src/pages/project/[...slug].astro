@@ -1,25 +1,25 @@
 ---
-import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { type CollectionEntry, getCollection } from "astro:content";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import Project from "@layouts/Project.astro";
 export const prerender = true;
 export async function getStaticPaths() {
-  if (!featureFlags.showProjects) {
-    return [];
-  }
+	if (!featureFlags.showProjects) {
+		return [];
+	}
 
-  const projects = await getCollection("projects");
+	const projects = await getCollection("projects");
 
-  const filteredProjects = import.meta.env.PROD
-    ? projects.filter(
-        (project: CollectionEntry<"projects">) => !project.data.draft,
-      )
-    : projects;
+	const filteredProjects = import.meta.env.PROD
+		? projects.filter(
+				(project: CollectionEntry<"projects">) => !project.data.draft,
+			)
+		: projects;
 
-  return filteredProjects.map((project: CollectionEntry<"projects">) => ({
-    params: { slug: project.slug },
-    props: project,
-  }));
+	return filteredProjects.map((project: CollectionEntry<"projects">) => ({
+		params: { slug: project.slug },
+		props: project,
+	}));
 }
 
 type Props = CollectionEntry<"projects">;

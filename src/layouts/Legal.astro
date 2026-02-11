@@ -1,27 +1,27 @@
 ---
 import BaseHead from "@astro/base/BaseHead.astro";
-import Header from "@astro/header/Header.astro";
-import Footer from "@astro/footer/Footer.astro";
 import ContentContainer from "@astro/blog/layout/ContentContainer.astro";
+import Footer from "@astro/footer/Footer.astro";
+import Header from "@astro/header/Header.astro";
 import authorConfig from "@config/siteConfig/info.json";
 
 export const prerender = true;
 
 interface Props {
-  title: string;
-  description: string;
-  lastUpdated?: Date;
+	title: string;
+	description: string;
+	lastUpdated?: Date;
 }
 
 const { title, description, lastUpdated } = Astro.props;
 
 const formattedUpdated = lastUpdated
-  ? new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }).format(lastUpdated)
-  : null;
+	? new Intl.DateTimeFormat("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		}).format(lastUpdated)
+	: null;
 ---
 
 <html lang="en">

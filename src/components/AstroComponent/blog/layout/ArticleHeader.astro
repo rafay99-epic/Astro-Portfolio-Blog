@@ -1,29 +1,26 @@
 ---
-import FormattedDate from "@components/FormattedDate.astro";
-import { LuBookOpen, LuCalendarDays, LuClock3 } from "react-icons/lu";
-
 interface Props {
-  title: string;
-  description?: string;
-  pubDate: Date;
-  readTime?: string;
-  badge?: {
-    text: string;
-    icon: string;
-  };
-  subject?: string;
-  type?: "notes" | "blog" | "project" | "wiki";
-  transitionName?: string;
+	title: string;
+	description?: string;
+	pubDate: Date;
+	readTime?: string;
+	badge?: {
+		text: string;
+		icon: string;
+	};
+	subject?: string;
+	type?: "notes" | "blog" | "project" | "wiki";
+	transitionName?: string;
 }
 
 const {
-  title,
-  description,
-  pubDate,
-  readTime,
-  badge,
-  subject,
-  transitionName,
+	title,
+	description,
+	pubDate,
+	readTime,
+	badge,
+	subject,
+	transitionName,
 } = Astro.props;
 ---
 
