@@ -9,7 +9,6 @@
 		"dev:local": "astro dev",
 		"preview": "astro preview",
 		"check": "astro check",
-		"scan": "npx react-scan@latest http://localhost:4321",
 		"lint": "biome check . && tsc --noEmit --skipLibCheck",
 		"lint:fix": "biome check --write . && tsc --noEmit --skipLibCheck",
 		"format": "biome format --write .",

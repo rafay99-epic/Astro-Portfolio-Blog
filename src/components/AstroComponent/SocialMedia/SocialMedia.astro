@@ -1,13 +1,7 @@
 ---
 import authorConfig from "@config/siteConfig/info.json";
-import {
-	Briefcase,
-	Github,
-	Linkedin,
-	MessageCircle,
-	Send,
-	Youtube,
-} from "lucide-react";
+import { Briefcase, Linkedin, MessageCircle, Send } from "lucide-react";
+import { FaGithub, FaYoutube } from "react-icons/fa6";
 
 const { socialLinks } = authorConfig;
 ---
@@ -29,7 +23,7 @@ const { socialLinks } = authorConfig;
     class="flex items-center"
   >
     <span class="sr-only">GitHub Profile</span>
-    <Github className="h-5 w-5" />
+    <FaGithub className="h-5 w-5" />
   </a>
 
   <a
@@ -49,7 +43,7 @@ const { socialLinks } = authorConfig;
     class="flex items-center"
   >
     <span class="sr-only">YouTube Channel</span>
-    <Youtube className="h-5 w-5" />
+    <FaYoutube className="h-5 w-5" />
   </a>
   <a
     href={`https://wa.me/${socialLinks.whatsNumber}?text=Hello%20there!`}

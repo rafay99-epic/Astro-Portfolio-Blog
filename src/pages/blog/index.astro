@@ -355,7 +355,7 @@ try {
                       </p>
                       {post.data.tags?.length && (
                         <div class="tag-row">
-                          {post.data.tags.slice(0, 3).map((tag) => (
+                          {post.data.tags.slice(0, 3).map((tag: string) => (
                             <span class="tag-pill tag-pill--muted">#{tag}</span>
                           ))}
                         </div>

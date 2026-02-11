@@ -27,10 +27,10 @@ const uniqueTech = new Set<string>();
 const uniqueCategories = new Set<string>();
 
 projects.forEach((project) => {
-	project.data.ProjectTech?.forEach((tech) => {
+	project.data.ProjectTech?.forEach((tech: string) => {
 		uniqueTech.add(tech);
 	});
-	project.data.ProjectCategory?.forEach((category) => {
+	project.data.ProjectCategory?.forEach((category: string) => {
 		uniqueCategories.add(category);
 	});
 });

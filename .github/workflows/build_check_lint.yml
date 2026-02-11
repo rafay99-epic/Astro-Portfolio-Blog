@@ -6,7 +6,7 @@ on:
     branches: ["main"]
 
 jobs:
-  build-and-check:
+  lint-check:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,6 +24,9 @@ jobs:
       - name: Biome + TypeScript lint
         run: bun run lint
 
+      - name: Astro check
+        run: bun run check
+
       - name: Validate JSON files
         run: |
           # Validate featureFlag.json
@@ -33,6 +36,21 @@ jobs:
           if [ -f "src/config/siteConfig/info.json" ]; then
             node -e "try { JSON.parse(require('fs').readFileSync('src/config/siteConfig/info.json', 'utf8')); console.log('✓ info.json is valid'); } catch(e) { console.error('✗ info.json is invalid:', e.message); process.exit(1); }"
           fi
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
 
       - name: Build Astro project
         run: bun run build

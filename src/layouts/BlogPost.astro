@@ -84,7 +84,9 @@ const {
 	headings: tocHeadings = [],
 } = Astro.props as Props;
 const lead = excerpt || description;
-const tocEntries = tocHeadings.filter((h) => h.depth === 2 || h.depth === 3);
+const tocEntries = tocHeadings.filter(
+	(h: import("astro").MarkdownHeading) => h.depth === 2 || h.depth === 3,
+);
 const wordCount = blogContent
 	? blogContent.trim().split(/\s+/).filter(Boolean).length
 	: 0;
@@ -899,7 +901,7 @@ const formattedWordCount =
               <nav class="post-toc" id="post-toc" aria-label="On this page">
                 {
                   tocEntries.length > 0 ? (
-                    tocEntries.map((h) => (
+                    tocEntries.map((h: import("astro").MarkdownHeading) => (
                       <a
                         class={h.depth === 3 ? "toc-link toc-h3" : "toc-link"}
                         href={`#${h.slug}`}
