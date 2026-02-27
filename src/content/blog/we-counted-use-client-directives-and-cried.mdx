@@ -1,5 +1,6 @@
 ---
-title: "The 487 Lies We Told Ourselves: A Next.js Intervention Story"
+title: "We Killed Our Next.js Server at 3am — And Honestly, It Was the Best
+  Decision We Ever Made"
 description: "What happens when you grep your Next.js codebase and realize
   you're just running a SPA in a full-stack framework? An intervention."
 pubDate: 2026-02-27T00:00:00.000Z
@@ -26,137 +27,579 @@ excerpt: "What happens when you grep your Next.js codebase and find 487 \"use
   is solving problems you don’t have, it might be time for an intervention."
 archived: false
 ---
-## **The Grep Command That Ended a Marriage**
+> _This is a five-part engineering story. Grab a coffee. Grab two if you've ever received an AWS bill that made you question your life choices and your framework choices simultaneously._
 
-It started with a stupid bet.
+## Prologue: The Moment We Knew Something Had to Change
 
-I was arguing with our staff engineer, Marco, about whether we were “actually using” the App Router or just pretending. He claimed we were “leaning into Server Components.” I claimed we were lying to ourselves. So I ran this:
+There were actually two moments.
 
-```bash
-grep -r "\"use client\"" src/ | wc -l
+The first was a regular sprint planning. The product manager drops a new feature request on the board. The senior engineer picks it up, opens the file, and types `"use client"` at the top — _for the 488th time_.
+
+He stops. Stares at it. Then turns to the team and says, very calmly:
+
+**"Why are we using Next.js again?"**
+
+Nobody had a good answer.
+
+The second moment was quieter. It was the monthly AWS bill review. Someone opened the EC2 cost breakdown, scrolled to the line item for the Next.js server instances, and said nothing for about five seconds.
+
+Then: **"We're paying this much to run a Node.js server whose entire job is to serve HTML that's immediately hydrated into a client-side React app?"**
+
+Still nobody had a good answer.
+
+That combination — the code smell and the money smell — kicked off weeks of architectural debate, one very large migration, several white screens, at least one CORS meltdown, and ultimately a codebase that the whole team is genuinely happier working in.
+
+This is that story. We're telling it because we searched the internet for exactly this kind of post when we were about to make the jump — and mostly found either "Next.js is amazing, trust the framework!" or theoretical migration guides that clearly hadn't migrated anything real, or paid for anything real, or deployed anything real on AWS without Vercel holding their hand.
+
+This is the real one.
+
+## A Quick Introduction (Who Is This For?)
+
+**If you're new to web dev elopment:** Don't worry. We'll explain the jargon as we go. Think of this as a story about a team that realized they were using a Swiss Army knife to butter their toast — it works, but there's a better tool, and the Swiss Army knife charges by the hour.
+
+**If you're an intermediate developer:** You've probably used Next.js. You've probably also typed `"use client"` and wondered why you even have Next.js at that point. This post is directly for you.
+
+**If you're a senior engineer or DevOps person:** You already know the punchline. But stay for the cost section and the RAM story. They're gratifying in a way that only resonates once you've held the pager during an OOM kill.
+
+# Part 1: Why We Broke Up With Next.js
+
+## (It's Not You, It's Us — Actually, It Mostly Is You)
+
+### What Is TudoNum?
+
+TudoNum is a marketplace platform. Think of it as the connective tissue between people who need things done and people who do those things professionally — home repairs, cleaning services, tutoring, on-demand skilled labor. It also has food delivery, ride-hailing, and e-commerce verticals either in production or in development.
+
+The app is not small. At migration time:
+
+* **1,076 TypeScript files**
+* **40+ feature directories** of React components
+* **11 Redux slices** managing user session, auth, bookings, cart, wallet, vendor orders, and more
+* **Multiple user roles**: customers, vendors, and admins — each with different views, permissions, and entirely different workflows
+* **45 backend API service files** talking to a Django REST backend
+
+We were running all of this on **Next.js 16 with the App Router**.
+
+And we were deploying it ourselves. On AWS. Without Vercel.
+
+### The Deployment Setup That Started to Hurt
+
+Here's something the Next.js documentation doesn't put on the homepage: **Next.js, in production, runs a Node.js server.** Always. Even if your app is 90% client-side React. Even if your "server" does almost nothing except hold the process open and serve pre-rendered HTML. The Node.js runtime is running, consuming memory, and costing money 24 hours a day.
+
+On Vercel — the company that builds and maintains Next.js — this is mostly invisible. Vercel handles the infrastructure. You push code, Vercel figures out the rest. The bill arrives, you pay it, the lights stay on.
+
+We are not on Vercel. We never were. We're a team building a custom solution on AWS, deploying on our own infrastructure, managing our own EC2 instances, and making cost-aware engineering decisions. That means the Node.js server is our problem. Its RAM is our RAM. Its uptime is our bill.
+
+And that bill had a conversation with us that we couldn't ignore.
+
+### The RAM Problem Nobody Talks About
+
+Let's talk about what a production Next.js deployment actually looks like on self-managed infrastructure.
+
+Next.js needs a Node.js process to run. That Node.js process loads your entire application — all the compiled routes, the server component renderer, the middleware, the build output — into memory when it starts. A medium-sized Next.js app in production typically sits at **300–600MB of RAM** at idle. Under load, it climbs.
+
+For context: the application we're talking about here is not medium-sized. It has 93 routes, 11 Redux slices, dozens of data-fetching patterns, multiple user roles, and complex layouts. Our Next.js instance was comfortably using **400–500MB of RAM just sitting there**, before a single request came in.
+
+Now multiply that by the number of instances you need for availability. You run at least two — one primary, one for failover. Preferably more in an auto-scaling group. Now you're at 1–2GB of RAM reserved just to keep Next.js alive and ready.
+
+**For newcomers:** RAM is the working memory your server uses. More RAM = more money. AWS charges for RAM by the hour. A process that uses 500MB at idle is a process that requires a larger, more expensive server.
+
+**For everyone:** Here's the thing that finally broke us. After all that RAM usage, all that Node.js process overhead, all that infrastructure complexity — what was the server actually _doing_? It was:
+
+1. Receiving an HTTP request for a URL
+2. Rendering some HTML
+3. Sending that HTML to the browser
+4. The browser immediately downloading the JavaScript bundle
+5. React hydrating the HTML, replacing the server rendering with client-side rendering
+6. Every subsequent navigation being handled entirely client-side anyway
+
+In other words: the server was running expensive Node.js infrastructure to produce an initial HTML document that was **immediately overwritten by the client-side React app**. For a marketplace with user-specific dashboards, dynamic data, and complex auth requirements — almost none of that initial HTML was even useful. Users were staring at loading states until the client-side data fetched anyway.
+
+We were running a Node.js server to produce HTML that we immediately discarded. Paying for the privilege of doing that at scale.
+
+### The AWS Cost Reality Check
+
+We're going to be specific here because vague "it was expensive" stories help nobody.
+
+Running a Next.js application on AWS without Vercel means you're paying for:
+
+**EC2 instances** to run the Node.js processes. For the memory requirements above, you're looking at `t3.medium` instances at minimum ($33/month each), more likely `t3.large` ($67/month each) with buffer for traffic spikes. With two instances for availability, that's $66–$134/month just for the base compute — before your database, your Django backend, your S3 buckets, your CDN, your load balancer, or anything else.
+
+**Elastic Load Balancer** to distribute traffic across your Next.js instances: \~\$18/month base.
+
+**Operational overhead**: deployment pipelines, rolling updates that account for the long Next.js startup time, health checks, memory monitoring, instance restarts when memory climbs too high under load. All of this is engineering time, which is not free.
+
+Now compare that to what we run now:
+
+A React SPA built with Vite produces **pure static files** — HTML, CSS, JavaScript. No server process required. You put the files in an S3 bucket and point CloudFront at it.
+
+**S3**: essentially free for static file storage at our scale. We're talking cents per month.
+
+**CloudFront**: pay per request and per data transfer. For a typical month, this is **\$10–20/month** total — including global CDN distribution, HTTPS, and automatic compression.
+
+**No EC2 instances to keep running.** No Node.js processes eating RAM. No rolling deployments with startup delays. No memory monitoring. No OOM kills at 3am.
+
+The infrastructure bill dropped significantly. That money went back into product development.
+
+**For newcomers:** S3 is Amazon's file storage service. CloudFront is Amazon's global content delivery network (CDN) — it copies your files to servers around the world so users everywhere get fast load times. Together, they serve a React SPA for almost nothing compared to running actual servers.
+
+### The Deployment Experience Was Also Just... Not Great
+
+Here's something we don't see discussed enough: deploying a self-hosted Next.js app on AWS is _annoying_ in ways that compound over time.
+
+**Cold starts are slow.** The Next.js production server takes time to start — not the 10 seconds of the dev server, but still several seconds before it starts serving traffic. This matters for rolling deployments: you need to keep the old instance alive, start the new one, wait for it to be healthy, shift traffic, shut down the old one. The window where you're running double instances (and double the cost) is longer than it needs to be.
+
+**Memory leaks are a real threat.** Node.js processes in long-running production environments can develop memory leaks over time — especially with complex server-side rendering, request handling, and caching. We'd had incidents where a Next.js instance would slowly climb from 450MB to 800MB over 48 hours and eventually need to be restarted. Monitoring this, alerting on it, automating the recovery — all of that is infrastructure work that adds no user-visible value.
+
+**There's no "just deploy the files."** When you deploy a Next.js app, you're not just copying files. You're restarting a server process. That process has state. It needs to load your application into memory before it can serve traffic. A deployment is a production event, every time.
+
+With a static React SPA: deploying is copying files to S3. It's instantaneous. The previous version serves traffic until CloudFront picks up the new files. Zero downtime, zero drama, zero 3am pager alerts.
+
+### The Audit That Confirmed It
+
+With the deployment problems and cost problems already on the table, we ran the code audit to answer: "But do we actually _need_ Next.js for the server-rendering capabilities?"
+
+We searched the codebase for `"use client"`. We wanted to know how many files were opting out of the server component model.
+
+The answer was **487 files**.
+
+_Four hundred and eighty-seven._
+
+Out of roughly 1,076 total TypeScript files. Almost every single component in the app was explicitly a client component. The App Router's server component infrastructure was delivering value to approximately... 10 async page wrapper files that fetched data server-side.
+
+We were paying for:
+
+* A Node.js server running 24/7
+* 400–500MB of idle RAM minimum
+* Complex rolling deployments on AWS
+* The cognitive overhead of the server/client boundary
+* All of the App Router mental model
+
+In exchange for: server-side rendering on 10 pages that immediately showed loading states anyway because they depended on user-specific dynamic data.
+
+We were paying full rent for a mansion but only living in the kitchen. And the kitchen had a gas leak.
+
+### So What Was Next.js Actually Doing For Us?
+
+We made a list. Be honest with yourself, we told each other. What does Next.js actually provide that we couldn't get elsewhere?
+
+**1. Server Actions** — We had 45 files under `src/actions/`. Their entire job was making HTTP calls to our external Django backend using authentication cookies. Next.js was a middleman between the browser and our real API. An expensive, RAM-hungry middleman.
+
+**2. `next/image`** — Automatic image optimization. Genuinely useful! Except our Django backend already serves optimized images at the correct sizes. We were paying for a feature solving a problem we didn't have.
+
+**3. `next/navigation`** — The `useRouter()`, `usePathname()`, `useParams()` hooks. These are nice. But TanStack Router has all of these, they're _fully type-safe_ in ways Next.js still isn't, and it doesn't require a Node.js process.
+
+**4. The build system and dev server** — Vite does everything Next.js does for a client-side app, faster, with a smaller footprint and more configuration control. Dev server starts in under a second. No Node.js runtime in production.
+
+That was the full list. Four things. Three replaceable with better alternatives. One (Server Actions for auth) that we needed to redesign properly — and actually _should have_ redesigned properly regardless of the framework switch.
+
+### The Real Reason Teams Don't Migrate
+
+Let's be honest about something: the real reason teams stay on frameworks they've outgrown isn't always technical. Sometimes it's psychological. Sometimes it's the sunk cost fallacy wearing a technical justification costume.
+
+**The "it works right now" trap.** The app is running in production. Users are using it. Why introduce risk? This is a rational fear. But there are two kinds of risk: the acute risk of migration, and the chronic risk of staying. The chronic one is sneaky — it shows up as a slightly higher AWS bill every month, a slightly harder deployment every sprint, a slightly longer `"use client"` discussion every code review. It doesn't hurt all at once. It just never stops hurting.
+
+**The "we'll deal with it later" trap.** Yes. And "later" is now. It's always now, eventually.
+
+**The "what if we need SSR someday" trap.** If you need SSR someday, you can add it someday. Architectural decisions should match current needs, not hypothetical future requirements. We did not need SSR. We needed a fast, cheap, maintainable client-side React application deployed on AWS with predictable costs and zero-drama deployments.
+
+**The "Vercel makes it easy" trap — when you're not on Vercel.** This one is particularly important. A lot of Next.js best-practice content is written by people deploying on Vercel, for people deploying on Vercel. If you're on Vercel, Vercel handles the Node.js runtime, the scaling, the cold starts, the memory. You pay Vercel for that convenience. But if you've decided to go custom on AWS — as we did, for cost and control reasons — you inherit all of that complexity yourself. The "Next.js is easy to deploy" assumption breaks down completely the moment you're not on the platform it was designed for.
+
+We weren't on that platform. We made the choice to own our infrastructure. And owning it meant being honest about what it actually cost to run.
+
+We decided to migrate. Here's what we built instead.
+
+# Part 2: The Stack We Built (And Why Every Piece Earns Its Place)
+
+## React's Greatest Hits, No Filler, No Server
+
+```
+React 19  +  Vite 7  +  TanStack Router  +  TanStack Query  +  Redux Toolkit
 ```
 
-The terminal blinked.
-**487.**
+### React 19 — The Star of the Show
 
-Four hundred and eighty-seven files had that little directive at the top—the one that screams _“I give up, just run this in the browser.”_ That’s nearly 90% of our React components. We had built a Single Page Application inside a Full-Stack Framework like a hermit crab wearing a tank tread.
+We went straight to React 19. Not because it was shiny, but because we were starting fresh and there was no reason to anchor to an older version.
 
-Marco went very quiet. Then he said, _“We’re paying \$400 a month for Vercel to statically serve a SPA that thinks it’s a server.”_
+The React Compiler (`babel-plugin-react-compiler`) is already sitting in our devDependencies, waiting for when it hits stable. When it does, a significant chunk of our `useMemo` and `useCallback` calls become unnecessary — React will handle memoization automatically. That's free performance, waiting for us to unlock it.
 
-That was the moment we decided to kill the king.
+**For newcomers:** React is the library that builds the UI. Think of it as the engine. Version 19 is the latest engine. We're using it because it's the best.
 
-***
+### Vite 7 — The Build Tool That Made Everyone Smile
 
-## **The Gaslighting of Modern Web Development**
+Vite replaced Next.js's build pipeline. The improvement was immediate.
 
-Here’s the dirty secret they don’t put in the Next.js docs: **Server Components are a beautiful theory that dies the moment you touch `window` or `localStorage` or, god forbid, Redux.**
+| ​                       | Next.js 16                 | Vite 7                 |
+| ----------------------- | -------------------------- | ---------------------- |
+| Dev server cold start   | \~10 seconds               | \~0.8 seconds          |
+| Hot module replacement  | Noticeable lag             | Effectively instant    |
+| Production build        | \~90 seconds               | \~45 seconds           |
+| Production RAM usage    | 400–500MB (Node.js server) | **0MB** (static files) |
+| Server process required | Yes, always                | No, never              |
 
-We were running TudoNum—a marketplace juggling ride-hailing, food delivery, and on-demand plumbers (yes, really)—on Next.js 16. On paper, we were “edge-deployed” and “server-first.” In reality, our architecture looked like this:
+That last row is the one that matters most. Vite builds files. Files sit on S3. CloudFront serves them. No server. No RAM. No bill for keeping a process alive.
 
-1. Browser asks for page
-2. Next.js server wakes up, renders a shell
-3. Shell immediately hydrates into 487 client components
-4. Those components immediately fetch from our Django API anyway
-5. We pay for the Node.js server to sit there like a very expensive traffic cone
+We also wrote a custom chunk-splitting strategy to control the production bundle:
 
-We weren’t using Server Components for SEO (the app is behind auth). We weren’t using them for performance (the client took over in 200ms). We were using them because… well, because the framework told us to, and we’re all just a little bit obedient when we see a Vercel sponsorship.
-
-It was time to admit we were in a toxic relationship with our build tool.
-
-***
-
-## **The Heist: Planning the Escape**
-
-If you’re going to migrate 1,076 files without downtime, you don’t “refactor.” You perform a heist. You need a plan, a getaway car, and someone to watch the auth layer while you drill the vault.
-
-**The Getaway Car:** Vite 7.
-Cold start time dropped from _“I checked Slack and forgot what I was doing”_ (10 seconds) to _“I blinked and missed it”_ (0.8 seconds). HMR became instant. It felt like taking off a weighted vest.
-
-**The New Identity:** TanStack Router.
-File-based routing with TypeScript inference so tight it squeaks. Imagine `useParams()` returning `{ id: string }` instead of `any` or, worse, `string | string[]`. I actually shed a tear the first time IntelliSense auto-completed a route parameter. It was the first time in years a router didn’t feel like it was gaslighting me about whether a route existed.
-
-**The Vault:** Auth.
-This was the hard part. Next.js had us hooked on `cookies()` from `next/headers`—a server-only API that made our auth logic live in some quantum superposition between the edge and the database. We had to redesign it from atoms.
-
-We built a pattern so clean it’s almost criminal:
-
-* **Access token:** Lives in a JavaScript singleton (in memory, XSS-proof, dies on refresh)
-* **Refresh token:** HttpOnly cookie, backend-controlled, SameSite=Strict
-* **The Interceptor:** A single Axios instance that handles 401s like a bouncer. If three requests fail at once, it debounces the refresh call—only one request goes out, the others wait like polite British people in a queue.
-
-The first time we logged in and saw the token exist only in RAM, floating there like a ghost, I felt like we’d invented something illegal. We hadn’t. We’d just removed the middleware.
-
-***
-
-## **The 3 AM Horror Stories**
-
-No migration is complete without the kind of bugs that make you question your career choices. These weren’t “oops, typo” bugs. These were _cosmic_ bugs.
-
-### **The White Screen of Absolute Silence**
-
-Day three. The app builds. No errors. I open `localhost:5173`.
-
-White.
-Void.
-Nothing in the console.
-
-Just a blank, accusatory white screen and the sound of my own heartbeat. I added an ErrorBoundary to `__root.tsx` (which I should have done on day one, but hubris is a hell of a drug) and finally saw it:
-
-```javascript
-process is not defined
+```typescript
+manualChunks(id) {
+  if (id.includes('/react/'))          return 'vendor-react'    // cached forever
+  if (id.includes('@tanstack/'))       return 'vendor-router'   // cached until router update
+  if (id.includes('@reduxjs/'))        return 'vendor-redux'    // separate cache key
+  if (id.includes('framer-motion'))    return 'vendor-motion'   // big library, own chunk
+  if (id.includes('@stripe/'))         return 'vendor-stripe'   // payment pages only
+  if (id.includes('leaflet'))          return 'vendor-maps'     // map pages only
+  // ... etc
+}
 ```
 
-Vite doesn’t polyfill Node’s `process` object. It’s a browser environment, not a Node environment. But our `logger.ts` had `process.env.NODE_ENV` hardcoded like it was 2019. We’d been so careful about the big changes, we forgot that `process` is a lie we tell ourselves.
+**For newcomers:** This means when we update our app code, users don't re-download React. Their browser already has React cached. Only the parts that changed get downloaded fresh. Users on slow connections especially benefit from this.
 
-**The fix:** `import.meta.env.DEV`.
-**The emotional damage:** Permanent.
+### TanStack Router — Type-Safe Routing That Next.js Still Can't Match
 
-### **CORS: The Revenge of the Server**
+In Next.js App Router, `useParams()` returns `{ [key: string]: string | string[] }`. Always. You always cast it, check it, or suppress the TypeScript warning. The router has no idea what parameters your route actually expects.
 
-In the old world, our login flow was:
-Browser → Next.js Server → Django API.
+In TanStack Router with file-based routing, `useParams()` for a route at `/services/$id` returns exactly `{ id: string }`. TypeScript knows every route. TypeScript knows every parameter. If you navigate to a route without the required parameter, it tells you before you run the code.
 
-In the new world:
-Browser → Django API.
+```typescript
+// TanStack Router — TypeScript catches mistakes at compile time ✅
+<Link to="/tudo-hub/services/$id" params={{ id: service.id }} />View Service</Link>
 
-Seems simpler, right? **Wrong.** The browser saw `api.tudonum.co` and said, _“I don’t know her.”_ CORS policy blocked us immediately. We were pointing our API client at the absolute URL like tourists trying to pay with the wrong currency.
+// Next.js — TypeScript has no idea if this route exists ❌
+<Link href={`/tudo-hub/services/${service.id}`} />View Service</Link>
+```
 
-The fix was embarrassingly simple: use Vite’s proxy. Set `VITE_API_BASE_URL=/api/v1`, let the dev server forward it, pretend to the browser that it’s all same-origin. In production, CloudFront does the same dance.
+Route guards are clean and co-located with the route:
 
-But for three hours, I thought we’d have to rewrite our entire auth flow. I may have screamed into a pillow.
+```typescript
+export const Route = createFileRoute('/tudo-hub/orders')({
+  beforeLoad: () => requireAuth(),
+  component: OrdersPageClient,
+})
+```
 
-### **The Circular Import of Doom**
+No middleware file to track down. No regex matching. The intent is right there, next to the route it protects.
 
-We had `src/services/auth.ts` (a file) and we created `src/services/auth/` (a directory) to organize the new code. TypeScript’s module resolver saw both and had a complete existential breakdown. It started throwing errors like `SendSignupOtpResult is not exported` even though it clearly was.
+### The AWS Deployment That Actually Makes Sense Now
 
-It took two hours to realize: **You cannot have `foo.ts` and `foo/` coexisting.** It’s like matter and antimatter. The universe won’t allow it. We moved `auth.ts` into `auth/session.ts`, and the errors vanished like we’d performed an exorcism.
+Here's what our deployment looks like post-migration:
 
-***
+**Build:** `bun run build` produces a `dist/` folder with HTML, CSS, and JavaScript files. These are static files. They have no runtime dependencies. They do not need a server.
 
-## **The Aftermath: We’re So Back**
+**Deploy:** Copy `dist/` to an S3 bucket. Invalidate the CloudFront distribution cache. Done.
 
-Here’s the part where I show you the spreadsheet porn:
+**The CloudFront distribution** sits in front of S3, handles HTTPS, compresses assets, and distributes them from edge locations globally. This is standard AWS static hosting.
 
-| Metric            | Before (Next.js) | After (React 19 + Vite)  | How It Feels                       |
-| ----------------- | ---------------- | ------------------------ | ---------------------------------- |
-| Dev cold start    | \~10 seconds     | \~0.8 seconds            | Like taking off ski boots          |
-| Production build  | \~90 seconds     | \~45 seconds             | CI runners stopped hate-cranking   |
-| Deployment        | Node.js server   | S3 + CloudFront          | Scales to infinity for pennies     |
-| `"use client"`    | 487              | 0                        | **Dignity restored**               |
-| Route type safety | `params: any`    | `params: { id: string }` | God is real and He uses TypeScript |
+**API routing:** Nginx (or an Application Load Balancer rule) proxies `/api/*` requests to the Django backend. The React app never makes cross-origin requests — to the browser, it's all the same origin.
 
-But the numbers don’t capture the _vibe shift_.
+The result:
 
-New developers onboard in an afternoon. No one asks why they can’t use `useEffect` in a Server Component (because there are no Server Components). No one explains the hydration boundary to a junior dev who just wants to build a button. We just… build. The framework stopped being a character in our story and became infrastructure.
+* **Zero Node.js processes** running in production
+* **Zero RAM** reserved for the frontend server
+* **Zero rolling deployments** — new files are just files
+* **Zero pager alerts** for frontend memory issues
+* **Deployment time:** 60–90 seconds (build + S3 upload + CloudFront invalidation)
+* **Rollback:** point CloudFront at the previous S3 deployment. Instant.
 
-## **Conclusion: The Costume Is Off**
+**For newcomers:** Think of it like the difference between a restaurant that cooks every meal when you order it (Next.js server) vs. a grocery store that puts pre-made meals on the shelf (static files on S3). The grocery store can serve more people, at lower cost, with no chef standing by. The restaurant model only makes sense if you need fresh, customized food — which our app didn't.
 
-Here’s the uncomfortable truth I want you to sit with: **If 90% of your components are `"use client"`, you don’t have a Next.js app. You have a React app that’s cosplaying as a full-stack framework.**
+### The Platform vs. Modules Architecture
 
-And that’s fine! Next.js is brilliant for actual full-stack applications—things with colocated databases, heavy SSR needs, SEO-driven content. But we were using it to proxy HTTP requests to a Django backend while serving static assets. We were paying the complexity tax of the App Router mental model—server/client boundaries, cache semantics, the `use server` directive—for literally zero return on investment.
+The most important architectural decision beyond the stack itself was formalizing the separation between what's shared and what's vertical-specific.
 
-The migration wasn’t just about speed (though, _chef’s kiss_, that dev server). It was about **intellectual honesty**. We looked at what we were actually building—a thick-client React app talking to an external API—and chose tools that matched that reality instead of fighting it.
+TudoNum is not one app. It's multiple business verticals on one platform:
 
-So run the grep command. Count your `"use client"` directives. If the number makes you uncomfortable, maybe it’s time to ask: are you building what you think you’re building? Or are you just wearing a very expensive costume?
+* Professional Services (live)
+* Food Delivery (in progress)
+* Taxi / Ride-Hailing (in development)
+* E-commerce (coming)
 
-Take it off. The air feels great.
+Each vertical has its own domain logic, its own API endpoints, its own UI flows. But they all share authentication, wallet, user profile, reviews, affiliate referrals, and geographic services.
+
+```
+src/services/
+├── platform/         ← shared by every vertical
+│   ├── auth/         ← login, logout, OTP, session
+│   ├── wallet/       ← balance, transactions
+│   ├── payments/     ← Stripe, Amwal
+│   ├── profile/      ← user profile, password, timezone
+│   ├── reviews/      ← ratings system
+│   ├── affiliate/    ← referral codes
+│   └── admin/        ← analytics dashboards
+│
+└── modules/          ← vertical-specific
+    └── professional-services/
+        ├── catalog/          ← browse, search, service profiles
+        ├── booking/          ← availability, quotes
+        ├── orders/           ← buyer & vendor order management
+        ├── quotes/           ← quote request and approval
+        ├── vendor-profile/   ← portfolio, packages, settings
+        ├── vendor-onboarding/ ← provider registration
+        └── feedback/         ← post-service reviews
+```
+
+The rule: if every vertical needs it, it goes in `platform/`. If only one vertical needs it, it goes in `modules/`. When food delivery is fully built, it sits alongside `professional-services/` as a sibling, plugging into all platform services without modifying them.
+
+### The Auth Redesign — The Scary Part That Turned Out Fine
+
+The auth redesign was the hardest part of the migration and the most important to get right.
+
+**Before:** Server Actions read/write HttpOnly cookies via `cookies()` from `next/headers`. Auth lived entirely server-side. Removing Next.js meant removing auth.
+
+**After:** In-memory access token + HttpOnly refresh cookie managed by the backend.
+
+In plain English:
+
+1. User logs in → backend returns `access_token` in the response body + sets `refresh_token` as an HttpOnly cookie via `Set-Cookie`
+2. `access_token` goes into a JavaScript module-level variable — never `localStorage`, never a cookie we control
+3. Every API request automatically gets `Authorization: Bearer <token>`
+4. On 401: call the refresh endpoint; browser auto-sends the HttpOnly cookie; get new token; retry
+5. On page reload: try refresh immediately; if cookie is valid, session is silently recovered; user never sees a login screen
+
+**For newcomers:** It's a hotel key card system. The access token is your key card — it opens doors but expires quickly. The refresh cookie is the booking record the hotel keeps in their system. You can always get a new key card without checking in again.
+
+The implementation handles a subtle concurrency problem: if three API calls all get 401 at the same time, only one refresh request goes to the backend. The other two wait and retry once the refresh completes. No thundering herd of simultaneous refresh calls.
+
+# Part 3: The Migration — Phase by Phase, Wart by Wart
+
+## Eight Phases. Real Work. No Hand-Waving.
+
+Here's the full scale:
+
+| What We Migrated                   | Count       |
+| ---------------------------------- | ----------- |
+| Total TypeScript files             | 1,076       |
+| `"use client"` directives removed  | 487         |
+| Server Actions → API services      | 45          |
+| Pages → TanStack Router routes     | 93          |
+| Layout files converted             | 11          |
+| `next/navigation` imports replaced | \~100 files |
+| `next/image` imports replaced      | \~104 files |
+| `next/link` imports replaced       | \~27 files  |
+
+### Phase 1: Build the Skeleton (Don't Touch the App Yet)
+
+First rule of large migrations: **get the new infrastructure working before touching a single line of business logic.**
+
+Created `vite.config.ts`, got a "Hello World" rendering, configured the dev proxy:
+
+```typescript
+server: {
+  proxy: {
+    '/api': {
+      target: 'https://api.tudonum.co',
+      changeOrigin: true,
+    }
+  }
+}
+```
+
+The proxy is critical. In Next.js, API calls were server-to-server — no CORS enforcement. In the browser, direct calls to `api.tudonum.app` from `localhost:5173` are blocked. The Vite proxy routes `/api/*` through the dev server. In production, the same proxy configuration lives in Nginx, sitting in front of both the static files on S3 and the Django backend.
+
+### Phase 2: Auth First
+
+Before touching any component: write `tokenStore.ts`, rewrite `axiosInstance.ts`, write the route guards. Test login → API call → 401 → refresh → retry → logout end-to-end. Only then, move forward.
+
+### Phase 3: 45 Server Actions, One Pattern
+
+Strip `"use server"`, remove `cookies()`, replace `makeAuthenticatedRequest()` with `axiosInstance.get/post/put/delete()`, keep function signatures identical. With identical signatures, the query hooks that called these functions didn't change at all — only the import paths.
+
+### Phase 4: 93 Pages, File-Based Routes
+
+TanStack Router's file naming conventions:
+
+* `(auth)` route group → `_auth`
+* `[id]` dynamic segment → `$id`
+* `layout.tsx` → `route.tsx` with `<Outlet/>`
+
+Each route file is 5–15 lines of routing config. The page component it imports is untouched.
+
+### Phase 5: Batch Replace Everything `next/*`
+
+Four compat shims. One find-replace per category. 250+ import statements updated in under an hour without touching component logic. The shims ensured component code didn't change — only where the import came from.
+
+### Phase 6: Kill What Shouldn't Exist
+
+Three Next.js API proxy routes eliminated. `middleware.ts` deleted. Route guards in `beforeLoad` replace it. `sharp` (server-side image processing) removed — replaced with `browser-image-compression`, already in the project. Geocoding proxy removed — Nominatim supports CORS directly.
+
+### Phases 7 & 8: Cleanup and Celebrate
+
+Deleted `next.config.ts`, `middleware.ts`, `next-env.d.ts`. Removed `next`, `eslint-config-next`, `sharp`, `@vercel/analytics` from `package.json`. Removed SSR guards from Redux store. Removed the server-side branch from QueryClient. Ran the build. Green.
+
+Removing code is one of the best feelings in software. We removed a lot of it.
+
+# Part 4: The Bugs — Our Hall of Shame
+
+## Everyone Has These. We're Just Honest About Them.
+
+### Bug #1: The Circular Import That Made TypeScript Lie (It Wasn't Lying)
+
+We had `src/services/auth.ts` (a file) and we created `src/services/auth/` (a directory with the same name). The module resolver didn't know which to use and created a silent circular dependency.
+
+**Symptom:** `SendSignupOtpResult is not exported from module` — even though it clearly was.
+
+**Fix:** Delete `auth.ts`. Move its contents to `auth/session.ts`. No ambiguity, no circular import, no lies.
+
+**Lesson:** When creating a directory with the same stem as an existing file, delete the file first.
+
+### Bug #2: The Generic That Was Too Clever
+
+Our `dynamic()` compat shim had a generic with `extends Record<string, unknown>`. TypeScript got strict about it in a way that was technically correct but practically useless. Components with specific prop types couldn't be passed to `dynamic()`.
+
+**Fix:** Changed to `P = any`. The generic threads the type through. The constraint was removed. Problem solved.
+
+### Bug #3: The White Screen That Questioned Everything
+
+_This is the important one._
+
+App loads. White screen. No UI. No error. No console messages.
+
+We added an `ErrorBoundary` to `__root.tsx`. Refreshed.
+
+Red text appeared:
+
+```
+Uncaught ReferenceError: process is not defined
+    at logger.ts:48
+```
+
+**What happened:** In Next.js (webpack), `process.env.NODE_ENV` is replaced at build time with a literal string. By the time the code runs, `process` is gone — it never reaches the browser.
+
+In Vite, `process` simply does not exist in the browser. Vite only replaces `import.meta.env.*`. Our `logger.ts` ran at module initialization time using `process.env`. The error killed the entire React tree before a single component mounted.
+
+```typescript
+// Before — works in webpack/Next.js, explodes in Vite
+const isDevelopment = process.env.NODE_ENV === 'development'
+
+// After — works in Vite and every browser
+const isDevelopment = import.meta.env.DEV
+```
+
+This pattern was hiding in 5 files: `logger.ts`, `dev-config.ts`, `featureFlags.ts`, a signup page component, and `StripePaymentForm.tsx`.
+
+**Lesson:** Search your entire codebase for `process.env` before running the Vite dev server for the first time. Every occurrence needs attention. Also, add an `ErrorBoundary` to your root component. A silent white screen is a debugging nightmare. An error boundary turns it into a stack trace.
+
+### Bug #4: The CORS Error That Seemed Catastrophic but Wasn't
+
+Login attempt. Network error. CORS policy violation. The word "CORS" in big red letters in the browser console.
+
+Initial instinct: "The backend team needs to reconfigure CORS. This is going to take days."
+
+Actual cause: `VITE_API_BASE_URL` was set to the full absolute URL, bypassing the Vite proxy entirely. The browser made a direct cross-origin request. CORS enforcement kicked in correctly.
+
+**Fix:** Change the env var to a relative path:
+
+```
+VITE_API_BASE_URL=/api/v1
+```
+
+Now the browser calls `localhost:5173/api/v1/...`, Vite proxies it, the backend sees a server-to-server request. No CORS. No backend ticket needed.
+
+**Time from panic to fix:** 25 minutes. 20 of those were disbelief.
+
+### Bug #5–7: Quick Hits
+
+**`redirect()` takes an object, not a string.** TanStack Router's `redirect()` is for throwing in `beforeLoad`, not calling in components. For component-level redirects: use `<Navigate to="..."/>`.
+
+**`vite.config.ts` not in the TypeScript project.** `tsconfig.json` included `src/**/*` but not the config file at the project root. Added it to `include`. Red squiggles went away.
+
+**`useParams` type mismatch in compat shim.** Used `{ strict: false } as any` inside the shim to satisfy TanStack Router's type requirements while preserving the generic return type for components. The `as any` is contained to one line inside one shim file.
+
+# Part 5: What's Next — The Ongoing Work and Honest Lessons
+
+## The Code Quality System
+
+After the migration stabilized, we tightened code quality.
+
+**Prettier** — consistent formatting across 1,076 files, `.prettierignore` excludes the auto-generated `routeTree.gen.ts`, `bun run format` keeps everything in sync.
+
+**ESLint 9 flat config** — `argsIgnorePattern: "^_"` for underscore-prefixed unused parameters (common in event handlers), `eslint-config-prettier` to prevent formatting conflicts, zero-warnings enforced in CI.
+
+**GitHub Actions CI:** type-check → lint (`--max-warnings 0`) → build. Every PR. No exceptions.
+
+**Husky pre-commit hook:** warns on `console.log` before it reaches CI.
+
+## What's Still on the Roadmap
+
+**Remove the compat shims gradually.** The `src/lib/compat/` shims for `next/navigation`, `next/link`, `next/image`, `next/dynamic` were migration tools, not permanent architecture. Replacing each one with direct TanStack Router equivalents is a healthy ongoing refactor, one component at a time.
+
+**Enable the React Compiler.** It's already in devDependencies. When it hits stable, we enable it and remove most manual `useMemo`/`useCallback` calls.
+
+**Virtualize heavy lists.** Several pages render large lists — service catalogs, order history, vendor portfolios. `react-window` is already installed. Applying it to the heaviest pages cuts DOM node count significantly.
+
+**Eliminate barrel exports in query hooks.** A few `index.ts` re-export files survived the migration. The team rule is now to always import from the specific file (`@/hooks/query/platform/wallet/useWallet`), not from an index. The remaining barrels will be removed gradually.
+
+## The Lessons. The Real Ones.
+
+**"Run the cost math before the technical audit."**
+
+We got lucky that both the code smell and the cost smell appeared at the same time. But the cost math is actually faster to run. Open your AWS bill, find the EC2 line item for your Next.js servers, multiply by 12. Ask whether you're getting that much value from server-side rendering. If the answer is "we're mostly `'use client'` anyway" — you have your answer before writing a single line of migration code.
+
+**"If you're on AWS managing your own infrastructure, Next.js is not a free choice."**
+
+Vercel makes Next.js feel free because they absorb the operational cost in your subscription fee. When you're self-hosting, you absorb it in EC2 bills, on-call rotations, and deployment complexity. That's a legitimate tradeoff if SSR is delivering real value. It's not a legitimate tradeoff if 90% of your components are already `"use client"`.
+
+**"Static files on S3 + CloudFront are radically simpler to operate than a Node.js server."**
+
+Deployments become file copies. Rollbacks become pointing at old files. RAM monitoring disappears. OOM kill alerts disappear. Middle-of-the-night "the Next.js process is eating 800MB and needs to be restarted" pages disappear. The operational simplicity alone is worth the migration, independent of any performance or cost argument.
+
+**"Design auth first. Touch nothing else until auth works."**
+
+Auth touches every page. If auth is broken, you cannot verify anything. We spent the first phase entirely on auth infrastructure and test it exhaustively before moving on. Every subsequent phase was faster because we could trust the foundation.
+
+**"Add an `ErrorBoundary` to your root component. Today."**
+
+Before the migration, before anything. A white screen with no error message is not debugging — it's staring at a wall. An error boundary turns every failure into a readable stack trace. This should be standard practice, not a migration hack.
+
+**"Search for `process.env` before running Vite for the first time."**
+
+Twenty minutes of find-replace saves two hours of white-screen debugging and career questioning.
+
+**"Use a relative URL for the API. Configure the proxy on day one."**
+
+`VITE_API_BASE_URL=/api/v1`. That's it. Requests go through the proxy. No CORS. No backend tickets. No panic.
+
+**"The migration pays off faster than you expect."**
+
+Within one sprint: dev server under a second. HMR instant. Deployments boring (that's a compliment). AWS bill smaller. New developers onboarding faster because the architecture matches what the app actually is.
+
+The compounding cost of the wrong tool is real. So is the compounding benefit of the right one.
+
+## The Final Numbers
+
+| ​                            | Before (Next.js on EC2)                | After (Vite + React on S3 + CloudFront) |
+| ---------------------------- | -------------------------------------- | --------------------------------------- |
+| Dev server cold start        | \~10 seconds                           | \~0.8 seconds                           |
+| Production build time        | \~90 seconds                           | \~45 seconds                            |
+| Production RAM (frontend)    | 400–500MB (Node.js)                    | 0MB — no server process                 |
+| Deployment type              | Rolling server restart                 | File copy to S3                         |
+| Deployment drama             | Medium (startup delays, health checks) | None                                    |
+| Rollback                     | Redeploy previous build                | Point CloudFront at old files           |
+| Infrastructure cost          | EC2 + ELB + monitoring                 | S3 + CloudFront only                    |
+| Route type safety            | None                                   | Full TypeScript inference               |
+| `"use client"` in codebase   | 487                                    | 0                                       |
+| `next/*` imports in codebase | \~250                                  | 0                                       |
+
+## So, Should You Do This?
+
+Here's the honest answer: **it depends on whether you're on Vercel.**
+
+If you're on Vercel — Next.js is an excellent product. They've built the ideal infrastructure for it. The operational complexity we described doesn't affect you. Server components and the App Router are genuinely powerful for the right use case. Stay.
+
+If you're self-hosting on AWS (or GCP, or DigitalOcean, or anywhere) and you've decided to build a custom infrastructure solution — be honest with yourself about what you're actually getting from the framework. Count your `"use client"` directives. Look at the RAM your Node.js process consumes. Look at your deployment pipeline. Ask whether that complexity is paying rent.
+
+If your app is:
+
+* Mostly client-side React already
+* Backed by an external API that's not a Next.js advantage
+* Deployed on infrastructure you manage yourself
+* Not receiving meaningful SEO benefit from SSR (marketplace dashboards, authenticated pages, user-specific data)
+
+...then you might be wearing the same costume we were.
+
+The migration was not small. 1,076 files, 8 phases, 4 major bugs, and real engineering hours. But the result is an app that costs less to run, deploys without drama, starts in under a second in development, and is architecturally honest about what it actually is.
+
+Sometimes the right move is knowing when the tool you're using is solving a problem you don't have — and billing you for the privilege.
+
+_TudoNum is building the infrastructure for on-demand professional services, food delivery, and transportation across multiple markets. The frontend runs on React 19, Vite 7, TanStack Router, TanStack Query, and Redux Toolkit. The backend is Django REST. The whole thing runs on AWS infrastructure we manage ourselves, which is exactly why this migration happened._
+
+_If you're on the same journey — self-hosted, AWS, building a custom solution and watching the bill — we hope this helped. The grass is actually greener on the static files side._
