@@ -1,16 +1,164 @@
 ---
 title: "The 487 Lies We Told Ourselves: A Next.js Intervention Story"
-description: ""
-pubDate: 2026-02-27
+description: "We grep'd our Next.js production app, found 487 'use client'
+  directives proving we were just cosplaying as full-stack, and spent three
+  weeks migrating 1,076 files to React 19 + Vite just to get our dev server
+  under one second and our dignity back."
+pubDate: 2026-02-27T00:00:00.000Z
 draft: false
-heroImage: ""
-authorName: ""
-authorAvatar: ""
-tags: []
-keywords: []
-canonicalUrl: ""
-featured: false
-excerpt: ""
+heroImage: "/BlogImages/ The487LiesWeToldOurselvesANext.jsInterventionStory.webp"
+authorName: "Abdul Rafay"
+authorAvatar: "/BlogImages/IMG-20221105-WA0007.jpg"
+tags:
+  - ThoughsProcess
+  - WebDevelopment
+keywords:
+  - React
+  - NextJS
+  - "Migration "
+canonicalUrl: "we-counted-use-client-directives-and-cried"
+featured: true
+excerpt: "What happens when you grep your Next.js codebase and find 487 \"use
+  client\" directives? You realize you’re running a SPA inside a full-stack
+  framework—and paying for the privilege. This is the story of migrating
+  TudoNum, a multi-vertical marketplace, from Next.js 16 to React 19 with Vite.
+  We cover the auth redesign that replaced Server Actions, the 3 AM debugging
+  horror stories (white screens, CORS rage, circular imports), and the
+  liberation of deleting 1,076 files worth of technical debt. If your framework
+  is solving problems you don’t have, it might be time for an intervention."
 archived: false
 ---
+## **The Grep Command That Ended a Marriage**
 
+It started with a stupid bet.
+
+I was arguing with our staff engineer, Marco, about whether we were “actually using” the App Router or just pretending. He claimed we were “leaning into Server Components.” I claimed we were lying to ourselves. So I ran this:
+
+```bash
+grep -r "\"use client\"" src/ | wc -l
+```
+
+The terminal blinked.
+**487.**
+
+Four hundred and eighty-seven files had that little directive at the top—the one that screams _“I give up, just run this in the browser.”_ That’s nearly 90% of our React components. We had built a Single Page Application inside a Full-Stack Framework like a hermit crab wearing a tank tread.
+
+Marco went very quiet. Then he said, _“We’re paying \$400 a month for Vercel to statically serve a SPA that thinks it’s a server.”_
+
+That was the moment we decided to kill the king.
+
+***
+
+## **The Gaslighting of Modern Web Development**
+
+Here’s the dirty secret they don’t put in the Next.js docs: **Server Components are a beautiful theory that dies the moment you touch `window` or `localStorage` or, god forbid, Redux.**
+
+We were running TudoNum—a marketplace juggling ride-hailing, food delivery, and on-demand plumbers (yes, really)—on Next.js 16. On paper, we were “edge-deployed” and “server-first.” In reality, our architecture looked like this:
+
+1. Browser asks for page
+2. Next.js server wakes up, renders a shell
+3. Shell immediately hydrates into 487 client components
+4. Those components immediately fetch from our Django API anyway
+5. We pay for the Node.js server to sit there like a very expensive traffic cone
+
+We weren’t using Server Components for SEO (the app is behind auth). We weren’t using them for performance (the client took over in 200ms). We were using them because… well, because the framework told us to, and we’re all just a little bit obedient when we see a Vercel sponsorship.
+
+It was time to admit we were in a toxic relationship with our build tool.
+
+***
+
+## **The Heist: Planning the Escape**
+
+If you’re going to migrate 1,076 files without downtime, you don’t “refactor.” You perform a heist. You need a plan, a getaway car, and someone to watch the auth layer while you drill the vault.
+
+**The Getaway Car:** Vite 7.
+Cold start time dropped from _“I checked Slack and forgot what I was doing”_ (10 seconds) to _“I blinked and missed it”_ (0.8 seconds). HMR became instant. It felt like taking off a weighted vest.
+
+**The New Identity:** TanStack Router.
+File-based routing with TypeScript inference so tight it squeaks. Imagine `useParams()` returning `{ id: string }` instead of `any` or, worse, `string | string[]`. I actually shed a tear the first time IntelliSense auto-completed a route parameter. It was the first time in years a router didn’t feel like it was gaslighting me about whether a route existed.
+
+**The Vault:** Auth.
+This was the hard part. Next.js had us hooked on `cookies()` from `next/headers`—a server-only API that made our auth logic live in some quantum superposition between the edge and the database. We had to redesign it from atoms.
+
+We built a pattern so clean it’s almost criminal:
+
+* **Access token:** Lives in a JavaScript singleton (in memory, XSS-proof, dies on refresh)
+* **Refresh token:** HttpOnly cookie, backend-controlled, SameSite=Strict
+* **The Interceptor:** A single Axios instance that handles 401s like a bouncer. If three requests fail at once, it debounces the refresh call—only one request goes out, the others wait like polite British people in a queue.
+
+The first time we logged in and saw the token exist only in RAM, floating there like a ghost, I felt like we’d invented something illegal. We hadn’t. We’d just removed the middleware.
+
+***
+
+## **The 3 AM Horror Stories**
+
+No migration is complete without the kind of bugs that make you question your career choices. These weren’t “oops, typo” bugs. These were _cosmic_ bugs.
+
+### **The White Screen of Absolute Silence**
+
+Day three. The app builds. No errors. I open `localhost:5173`.
+
+White.
+Void.
+Nothing in the console.
+
+Just a blank, accusatory white screen and the sound of my own heartbeat. I added an ErrorBoundary to `__root.tsx` (which I should have done on day one, but hubris is a hell of a drug) and finally saw it:
+
+```javascript
+process is not defined
+```
+
+Vite doesn’t polyfill Node’s `process` object. It’s a browser environment, not a Node environment. But our `logger.ts` had `process.env.NODE_ENV` hardcoded like it was 2019. We’d been so careful about the big changes, we forgot that `process` is a lie we tell ourselves.
+
+**The fix:** `import.meta.env.DEV`.
+**The emotional damage:** Permanent.
+
+### **CORS: The Revenge of the Server**
+
+In the old world, our login flow was:
+Browser → Next.js Server → Django API.
+
+In the new world:
+Browser → Django API.
+
+Seems simpler, right? **Wrong.** The browser saw `api.tudonum.co` and said, _“I don’t know her.”_ CORS policy blocked us immediately. We were pointing our API client at the absolute URL like tourists trying to pay with the wrong currency.
+
+The fix was embarrassingly simple: use Vite’s proxy. Set `VITE_API_BASE_URL=/api/v1`, let the dev server forward it, pretend to the browser that it’s all same-origin. In production, CloudFront does the same dance.
+
+But for three hours, I thought we’d have to rewrite our entire auth flow. I may have screamed into a pillow.
+
+### **The Circular Import of Doom**
+
+We had `src/services/auth.ts` (a file) and we created `src/services/auth/` (a directory) to organize the new code. TypeScript’s module resolver saw both and had a complete existential breakdown. It started throwing errors like `SendSignupOtpResult is not exported` even though it clearly was.
+
+It took two hours to realize: **You cannot have `foo.ts` and `foo/` coexisting.** It’s like matter and antimatter. The universe won’t allow it. We moved `auth.ts` into `auth/session.ts`, and the errors vanished like we’d performed an exorcism.
+
+***
+
+## **The Aftermath: We’re So Back**
+
+Here’s the part where I show you the spreadsheet porn:
+
+| Metric            | Before (Next.js) | After (React 19 + Vite)  | How It Feels                       |
+| ----------------- | ---------------- | ------------------------ | ---------------------------------- |
+| Dev cold start    | \~10 seconds     | \~0.8 seconds            | Like taking off ski boots          |
+| Production build  | \~90 seconds     | \~45 seconds             | CI runners stopped hate-cranking   |
+| Deployment        | Node.js server   | S3 + CloudFront          | Scales to infinity for pennies     |
+| `"use client"`    | 487              | 0                        | **Dignity restored**               |
+| Route type safety | `params: any`    | `params: { id: string }` | God is real and He uses TypeScript |
+
+But the numbers don’t capture the _vibe shift_.
+
+New developers onboard in an afternoon. No one asks why they can’t use `useEffect` in a Server Component (because there are no Server Components). No one explains the hydration boundary to a junior dev who just wants to build a button. We just… build. The framework stopped being a character in our story and became infrastructure.
+
+## **Conclusion: The Costume Is Off**
+
+Here’s the uncomfortable truth I want you to sit with: **If 90% of your components are `"use client"`, you don’t have a Next.js app. You have a React app that’s cosplaying as a full-stack framework.**
+
+And that’s fine! Next.js is brilliant for actual full-stack applications—things with colocated databases, heavy SSR needs, SEO-driven content. But we were using it to proxy HTTP requests to a Django backend while serving static assets. We were paying the complexity tax of the App Router mental model—server/client boundaries, cache semantics, the `use server` directive—for literally zero return on investment.
+
+The migration wasn’t just about speed (though, _chef’s kiss_, that dev server). It was about **intellectual honesty**. We looked at what we were actually building—a thick-client React app talking to an external API—and chose tools that matched that reality instead of fighting it.
+
+So run the grep command. Count your `"use client"` directives. If the number makes you uncomfortable, maybe it’s time to ask: are you building what you think you’re building? Or are you just wearing a very expensive costume?
+
+Take it off. The air feels great.
