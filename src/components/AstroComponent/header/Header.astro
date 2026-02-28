@@ -10,7 +10,6 @@ import {
 	Globe,
 	Home,
 	Menu,
-	MoreHorizontal,
 	Rocket,
 	Search,
 	Tag,
@@ -22,24 +21,42 @@ import {
 
 <style is:global>
   header {
-    background-color: #1a1b26 !important;
+    background-color: transparent !important;
     transition: none !important;
   }
 
   ::view-transition-old(header),
   ::view-transition-new(header) {
-    background-color: #1a1b26 !important;
+    background-color: transparent !important;
     animation: none !important;
   }
 
-  .backdrop-blur-xl {
-    background-color: rgba(26, 27, 38, 0.9) !important;
+  /* Floating nav bar */
+  .nav-float {
+    background: rgba(26, 27, 38, 0.82);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid rgba(86, 95, 137, 0.2);
+    box-shadow:
+      0 2px 12px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(192, 202, 245, 0.03);
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
+  .nav-float.is-scrolled {
+    background: rgba(26, 27, 38, 0.94);
+    border-color: rgba(86, 95, 137, 0.25);
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(192, 202, 245, 0.04);
+  }
+
+  /* Mobile menu */
   .mobile-menu-overlay {
-    transition:
-      opacity 0.3s ease-in-out,
-      transform 0.3s ease-in-out;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateX(100%);
   }
 
@@ -48,7 +65,7 @@ import {
   }
 
   .mobile-menu-backdrop {
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.25s ease;
     opacity: 0;
   }
 
@@ -56,114 +73,54 @@ import {
     opacity: 1;
   }
 
+  /* More dropdown */
   .more-dropdown {
     opacity: 0;
-    transform: translateY(-10px) scale(0.95);
-    transition: all 0.2s ease-out;
+    transform: translateY(-4px);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
     pointer-events: none;
   }
 
   .more-dropdown.is-open {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
     pointer-events: auto;
-  }
-
-  .more-dropdown-button:hover {
-    transform: scale(1.01);
-  }
-
-  .more-dropdown-button:active {
-    transform: scale(0.99);
-  }
-
-  .more-dropdown-item {
-    transition: all 0.2s ease-out;
-  }
-
-  .more-dropdown-item:hover {
-    transform: translateX(3px);
-  }
-
-  .more-dropdown-external-link {
-    opacity: 0;
-    transition: opacity 0.3s ease-out;
-  }
-
-  .more-dropdown-item:hover .more-dropdown-external-link {
-    opacity: 1;
   }
 </style>
 
 <header
-  class="fixed left-0 right-0 top-0 z-50 bg-[#1a1b26]"
+  class="fixed left-0 right-0 top-0 z-50"
   style={{ viewTransitionName: "header" }}
 >
-  <div class="container mx-auto px-4 sm:px-6">
-    <div class="flex items-center justify-between py-4">
-      <a href="/" class="group flex items-center">
-        <div class="relative">
-          <img
-            src={authorConfig.avator}
-            class="h-10 w-10 rounded-full border-2 border-[#7aa2f7]/30 transition-all duration-300 group-hover:border-[#7aa2f7] sm:h-12 sm:w-12"
-          />
-          <div
-            class="absolute inset-0 rounded-full bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-100"
-          >
-          </div>
-        </div>
-        <div class="ml-3 hidden sm:block">
-          <h1
-            class="bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-lg font-bold text-transparent transition-transform duration-200 ease-out hover:scale-[1.01]"
-          >
-            {authorConfig.SiteName}
-          </h1>
-          <p class="text-xs text-[#a9b1d6]">Developer & Creator</p>
-        </div>
+  <div class="mx-auto max-w-5xl px-3 pt-3 sm:px-4 sm:pt-4">
+    <nav
+      class="nav-float relative flex h-11 items-center justify-center rounded-2xl px-4 sm:px-5"
+      id="nav-float"
+    >
+      <!-- Site name (left side) -->
+      <a href="/" class="absolute left-4 hidden text-[13px] font-medium text-[#a9b1d6] sm:left-5 lg:block">
+        {authorConfig.SiteName}
       </a>
 
-      <nav class="hidden items-center space-x-2 lg:flex">
-        <NavLink href="/" icon={Home}> Home </NavLink>
+      <!-- Desktop nav links (centered) -->
+      <div class="hidden items-center gap-0.5 lg:flex">
+        <NavLink href="/">Home</NavLink>
 
-        {
-          featureFlags.showBlog && (
-            <NavLink href="/blog" icon={BookOpen}>
-              Articles
-            </NavLink>
-          )
-        }
+        {featureFlags.showBlog && <NavLink href="/blog">Articles</NavLink>}
 
-        {
-          featureFlags.showAbout && (
-            <NavLink href="/about" icon={User}>
-              About
-            </NavLink>
-          )
-        }
+        {featureFlags.showAbout && <NavLink href="/about">About</NavLink>}
 
         {
           featureFlags.showExperience && (
-            <NavLink href="/experience" icon={Briefcase}>
-              Experience
-            </NavLink>
+            <NavLink href="/experience">Experience</NavLink>
           )
         }
 
         {
           featureFlags.showProjects && (
-            <NavLink href="/project" icon={Rocket}>
-              Projects
-            </NavLink>
-          )
-        }
-        {
-          featureFlags.showTags && (
-            <NavLink href="/tag" icon={Tag} aria-label="Tags" />
-          )
-        }
-        {
-          featureFlags.showSearch && (
-            <NavLink href="/search" icon={Search} aria-label="Search" />
+            <NavLink href="/project">Projects</NavLink>
           )
         }
 
@@ -173,175 +130,199 @@ import {
               <button
                 aria-haspopup="true"
                 id="more-dropdown-button"
-                class="more-dropdown-button flex items-center rounded-lg px-3 py-2 text-[#c0caf5] transition-colors duration-300 hover:bg-[#24283b]/50 hover:text-[#7aa2f7]"
+                class="flex h-8 items-center gap-0.5 px-3 text-[13px] text-[#565f89] transition-colors duration-150 hover:text-[#c0caf5]"
                 aria-expanded="false"
               >
-                <MoreHorizontal className="h-4 w-4" />
+                More
                 <ChevronDown
                   id="more-dropdown-chevron"
-                  className="ml-1 h-3 w-3 transition-transform duration-300"
+                  className="h-3 w-3 transition-transform duration-200"
                 />
               </button>
 
               <div
                 id="more-dropdown-menu"
-                class="more-dropdown absolute right-0 z-50 mt-2 w-56 rounded-xl border border-[#565f89]/30 bg-[#24283b] py-2 shadow-2xl"
+                class="more-dropdown absolute right-0 z-50 mt-2 w-48 rounded-lg border border-[#565f89]/15 bg-[#1a1b26]/95 py-1 shadow-lg backdrop-blur-md"
               >
-                <div class="space-y-1 px-2">
-                  {featureFlags.showTrendingPosts && (
-                    <a
-                      role="menuitem"
-                      href="/trending"
-                      class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
-                    >
-                      <TrendingUp className="w-4 h-4 text-[#f7768e]" />
-                      <span class="font-medium">Trending Articles</span>
-                      <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
-                    </a>
-                  )}
-                  {featureFlags.showWiki && (
-                    <a
-                      role="menuitem"
-                      href="https://rafay99-docs.vercel.app/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="more-dropdown-item group flex items-center gap-3 rounded-lg px-3 py-2 text-[#c0caf5] transition-all duration-300 hover:bg-[#1a1b26]/60 hover:text-[#7aa2f7]"
-                    >
-                      <Globe className="w-4 h-4 text-[#9ece6a]" />
-                      <span class="font-medium">Website Wiki</span>
-                      <ExternalLink className="more-dropdown-external-link ml-auto w-3 h-3" />
-                    </a>
-                  )}
-                </div>
+                {featureFlags.showTrendingPosts && (
+                  <a
+                    role="menuitem"
+                    href="/trending"
+                    class="flex items-center gap-2.5 px-3 py-2 text-[13px] text-[#a9b1d6] transition-colors duration-150 hover:bg-[#24283b]/50 hover:text-[#c0caf5]"
+                  >
+                    <TrendingUp className="w-3.5 h-3.5 text-[#565f89]" />
+                    Trending
+                  </a>
+                )}
+                {featureFlags.showWiki && (
+                  <a
+                    role="menuitem"
+                    href="https://rafay99-docs.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center gap-2.5 px-3 py-2 text-[13px] text-[#a9b1d6] transition-colors duration-150 hover:bg-[#24283b]/50 hover:text-[#c0caf5]"
+                  >
+                    <Globe className="w-3.5 h-3.5 text-[#565f89]" />
+                    Wiki
+                    <ExternalLink className="ml-auto w-3 h-3 text-[#414868]" />
+                  </a>
+                )}
               </div>
             </div>
           )
         }
-      </nav>
+      </div>
 
-      <button
-        aria-label="Toggle menu"
-        aria-haspopup="menu"
-        id="mobile-menu-button"
-        aria-expanded="false"
-        class="rounded-lg p-2 text-[#c0caf5] transition-colors duration-300 hover:bg-[#24283b]/50 hover:text-[#7aa2f7] lg:hidden"
-      >
-        <Menu id="menu-icon" className="h-6 w-6" />
-        <X id="close-icon" className="hidden h-6 w-6" />
-      </button>
-    </div>
+      <!-- Right side: utility icons + mobile toggle -->
+      <div class="absolute right-3 flex items-center gap-0.5 sm:right-4">
+        {
+          featureFlags.showTags && (
+            <NavLink
+              href="/tag"
+              icon={Tag}
+              aria-label="Tags"
+              className="hidden lg:flex"
+            />
+          )
+        }
+        {
+          featureFlags.showSearch && (
+            <NavLink
+              href="/search"
+              icon={Search}
+              aria-label="Search"
+              className="hidden lg:flex"
+            />
+          )
+        }
+
+        <button
+          aria-label="Toggle menu"
+          aria-haspopup="menu"
+          id="mobile-menu-button"
+          aria-expanded="false"
+          class="flex h-8 w-8 items-center justify-center rounded-md text-[#565f89] transition-colors duration-150 hover:text-[#a9b1d6] lg:hidden"
+        >
+          <Menu id="menu-icon" className="h-5 w-5" />
+          <X id="close-icon" className="hidden h-5 w-5" />
+        </button>
+      </div>
+    </nav>
   </div>
 </header>
 
+<!-- Mobile backdrop -->
 <div
   id="mobile-menu-backdrop"
-  class="mobile-menu-backdrop fixed inset-0 z-[90] hidden bg-black/50 lg:hidden"
+  class="mobile-menu-backdrop fixed inset-0 z-[90] hidden bg-black/40 backdrop-blur-sm lg:hidden"
 >
 </div>
 
+<!-- Mobile slide-out menu -->
 <nav
   id="mobile-menu"
-  class="mobile-menu-overlay fixed right-0 top-0 z-[100] h-full w-80 max-w-[85vw] overflow-y-auto border-l border-[#565f89]/30 bg-[#1a1b26] lg:hidden"
+  class="mobile-menu-overlay fixed right-0 top-0 z-[100] flex h-full w-72 max-w-[80vw] flex-col bg-[#1a1b26] lg:hidden"
 >
-  <div
-    class="flex items-center justify-between border-b border-[#565f89]/20 p-6"
-  >
-    <div class="flex items-center gap-3">
-      <img
-        src={authorConfig.avator}
-        alt="Author Avatar"
-        class="h-10 w-10 rounded-full border-2 border-[#7aa2f7]/30"
-      />
-      <div>
-        <h2
-          class="bg-gradient-to-r from-[#c0caf5] to-[#a9b1d6] bg-clip-text text-lg font-bold text-transparent"
-        >
-          {authorConfig.SiteName}
-        </h2>
-        <p class="text-xs text-[#a9b1d6]">Developer & Creator</p>
-      </div>
-    </div>
+  <!-- Mobile menu header -->
+  <div class="flex items-center justify-between px-4 py-3.5 border-b border-[#565f89]/10">
+    <a href="/" class="flex items-center gap-2.5">
+      <span class="flex h-7 w-7 shrink-0 overflow-hidden rounded-full">
+        <img
+          src="/rafay99-avatar.jpg"
+          alt={authorConfig.SiteName}
+          class="h-full w-full object-cover"
+        />
+      </span>
+      <span class="text-[13px] leading-none font-medium text-[#a9b1d6]">
+        {authorConfig.SiteName}
+      </span>
+    </a>
     <button
       id="close-mobile-menu"
-      class="rounded-lg p-2 text-[#c0caf5] transition-colors duration-300 hover:bg-[#24283b]/50 hover:text-[#7aa2f7]"
+      class="rounded-md p-1.5 text-[#565f89] transition-colors duration-150 hover:text-[#a9b1d6]"
+      aria-label="Close menu"
     >
-      <X className="h-5 w-5" />
+      <X className="h-4 w-4" />
     </button>
   </div>
 
-  <div class="space-y-2 p-6">
-    <NavLink href="/" icon={Home}> Home </NavLink>
+  <!-- Mobile nav links -->
+  <div class="flex-1 overflow-y-auto px-3 py-3">
+    <div class="space-y-0.5">
+      <NavLink href="/" icon={Home} mobile>Home</NavLink>
 
-    {
-      featureFlags.showBlog && (
-        <NavLink href="/blog" icon={BookOpen}>
-          Articles
-        </NavLink>
-      )
-    }
+      {
+        featureFlags.showBlog && (
+          <NavLink href="/blog" icon={BookOpen} mobile>
+            Articles
+          </NavLink>
+        )
+      }
 
-    {
-      featureFlags.showAbout && (
-        <NavLink href="/about" icon={User}>
-          About
-        </NavLink>
-      )
-    }
+      {
+        featureFlags.showAbout && (
+          <NavLink href="/about" icon={User} mobile>
+            About
+          </NavLink>
+        )
+      }
 
-    {
-      featureFlags.showExperience && (
-        <NavLink href="/experience" icon={Briefcase}>
-          Experience
-        </NavLink>
-      )
-    }
+      {
+        featureFlags.showExperience && (
+          <NavLink href="/experience" icon={Briefcase} mobile>
+            Experience
+          </NavLink>
+        )
+      }
 
-    {
-      featureFlags.showProjects && (
-        <NavLink href="/project" icon={Rocket}>
-          Projects
-        </NavLink>
-      )
-    }
+      {
+        featureFlags.showProjects && (
+          <NavLink href="/project" icon={Rocket} mobile>
+            Projects
+          </NavLink>
+        )
+      }
 
-    {
-      featureFlags.showTags && (
-        <NavLink href="/tag" icon={Tag}>
-          Tags
-        </NavLink>
-      )
-    }
+      {
+        featureFlags.showTags && (
+          <NavLink href="/tag" icon={Tag} mobile>
+            Tags
+          </NavLink>
+        )
+      }
 
-    {
-      featureFlags.showSearch && (
-        <NavLink href="/search" icon={Search}>
-          Search
-        </NavLink>
-      )
-    }
+      {
+        featureFlags.showSearch && (
+          <NavLink href="/search" icon={Search} mobile>
+            Search
+          </NavLink>
+        )
+      }
+    </div>
 
     {
       (featureFlags.showTrendingPosts || featureFlags.showWiki) && (
-        <div class="pt-4">
-          <div class="border-t border-[#565f89]/20 pt-4">
-            <h3 class="mb-3 px-4 text-sm font-semibold text-[#a9b1d6]">More</h3>
-            <div class="space-y-2">
-              {featureFlags.showTrendingPosts && (
-                <NavLink href="/trending" icon={TrendingUp}>
-                  Trending Articles
-                </NavLink>
-              )}
-              {featureFlags.showWiki && (
-                <NavLink
-                  href="https://rafay99-docs.vercel.app/"
-                  icon={Globe}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Website Wiki
-                </NavLink>
-              )}
-            </div>
+        <div class="mt-4 border-t border-[#565f89]/10 pt-4">
+          <p class="mb-2 px-3 text-[11px] font-medium uppercase tracking-wider text-[#414868]">
+            More
+          </p>
+          <div class="space-y-0.5">
+            {featureFlags.showTrendingPosts && (
+              <NavLink href="/trending" icon={TrendingUp} mobile>
+                Trending
+              </NavLink>
+            )}
+            {featureFlags.showWiki && (
+              <NavLink
+                href="https://rafay99-docs.vercel.app/"
+                icon={Globe}
+                target="_blank"
+                rel="noopener noreferrer"
+                mobile
+              >
+                Wiki
+              </NavLink>
+            )}
           </div>
         </div>
       )
@@ -356,8 +337,21 @@ import {
   const closeMobileMenuButton = document.getElementById("close-mobile-menu");
   const menuIcon = document.getElementById("menu-icon");
   const closeIcon = document.getElementById("close-icon");
+  const navFloat = document.getElementById("nav-float");
 
   let isMobileMenuOpen = false;
+
+  // Scroll state for nav background
+  const updateNavScroll = () => {
+    if (!navFloat) return;
+    if (window.scrollY > 8) {
+      navFloat.classList.add("is-scrolled");
+    } else {
+      navFloat.classList.remove("is-scrolled");
+    }
+  };
+  window.addEventListener("scroll", updateNavScroll, { passive: true });
+  updateNavScroll();
 
   const toggleMobileMenu = () => {
     isMobileMenuOpen = !isMobileMenuOpen;
@@ -376,7 +370,7 @@ import {
 
       setTimeout(() => {
         mobileMenuBackdrop.classList.add("hidden");
-      }, 300);
+      }, 250);
       menuIcon.classList.remove("hidden");
       closeIcon.classList.add("hidden");
       document.body.style.overflow = "";
@@ -409,6 +403,7 @@ import {
 
   document.addEventListener("astro:after-swap", closeMobileMenu);
 
+  // More dropdown
   const moreDropdownButton = document.getElementById("more-dropdown-button");
   const moreDropdownMenu = document.getElementById("more-dropdown-menu");
   const moreDropdownChevron = document.getElementById("more-dropdown-chevron");
