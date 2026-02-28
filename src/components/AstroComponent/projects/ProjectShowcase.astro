@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
 type ProjectEntry = CollectionEntry<"projects">;
@@ -75,9 +76,11 @@ const stats = [
               <div class="project-card">
                 <div class="project-media">
                   {project.data.ProjectImage ? (
-                    <img
+                    <Image
                       src={project.data.ProjectImage}
                       alt={project.data.Projecttitle}
+                      width={640}
+                      height={400}
                       loading="lazy"
                     />
                   ) : (

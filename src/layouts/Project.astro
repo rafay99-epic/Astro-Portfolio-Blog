@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import BaseHead from "@astro/base/BaseHead.astro";
 import Footer from "@astro/footer/Footer.astro";
 import Header from "@astro/header/Header.astro";
@@ -573,7 +574,7 @@ try {
           {
             ProjectImage && (
               <div class="project-hero__media">
-                <img src={ProjectImage} alt={Projecttitle} loading="eager" />
+                <Image src={ProjectImage} alt={Projecttitle} width={800} height={600} loading="eager" />
               </div>
             )
           }

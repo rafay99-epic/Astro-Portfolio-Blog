@@ -18,6 +18,9 @@ import { remarkReadingTime } from "./remark-reading-time.mjs";
 export default defineConfig({
 	site: "https://www.rafay99.com",
 	output: "server",
+	image: {
+		remotePatterns: [{ protocol: "https", hostname: "7huqjqx8yo.ufs.sh" }],
+	},
 	build: {
 		concurrency: 10,
 		format: "directory",
