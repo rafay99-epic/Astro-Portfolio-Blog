@@ -1,60 +1,18 @@
 ---
 import authorConfig from "@config/siteConfig/info.json";
 
-// Get core stack from config
 const coreStack = authorConfig.coreStack;
 ---
 
 <style>
   .tech-card {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.6s ease-out forwards;
+    transition: all 0.3s ease;
   }
 
-  .tech-card:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-  .tech-card:nth-child(2) {
-    animation-delay: 0.15s;
-  }
-  .tech-card:nth-child(3) {
-    animation-delay: 0.2s;
-  }
-  .tech-card:nth-child(4) {
-    animation-delay: 0.25s;
-  }
-  .tech-card:nth-child(5) {
-    animation-delay: 0.3s;
-  }
-  .tech-card:nth-child(6) {
-    animation-delay: 0.35s;
-  }
-  .tech-card:nth-child(7) {
-    animation-delay: 0.4s;
-  }
-  .tech-card:nth-child(8) {
-    animation-delay: 0.45s;
-  }
-
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .header-animate {
-    opacity: 0;
-    transform: translateY(-20px);
-    animation: headerFadeIn 0.8s ease-out forwards;
-  }
-
-  @keyframes headerFadeIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .tech-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(65, 72, 104, 0.4);
+    background-color: rgba(36, 40, 59, 0.5);
   }
 
   .tech-icon {
@@ -62,84 +20,48 @@ const coreStack = authorConfig.coreStack;
   }
 
   .tech-card:hover .tech-icon {
-    transform: scale(1.1);
-  }
-
-  .tech-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(122, 162, 247, 0.15);
+    transform: scale(1.08);
   }
 </style>
 
-<section class="relative overflow-hidden px-4 py-16 lg:py-20">
-  <!-- Background Effects -->
-  <div class="absolute inset-0 opacity-10">
-    <div
-      class="absolute left-10 top-20 h-32 w-32 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] blur-3xl"
-    >
-    </div>
-    <div
-      class="absolute bottom-20 right-20 h-32 w-32 rounded-full bg-gradient-to-r from-[#bb9af7] to-[#9ece6a] blur-3xl"
-    >
-    </div>
-  </div>
-
-  <div class="container relative z-10 mx-auto max-w-6xl">
-    <!-- Header -->
-    <div class="header-animate mb-12 text-center">
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
+  <div class="mx-auto max-w-6xl">
+    <!-- Section header -->
+    <div class="mb-8 text-center sm:mb-10">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+        Technologies
+      </p>
       <h2
-        class="mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text font-poppins text-4xl font-bold text-transparent md:text-5xl lg:text-6xl"
+        style="font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.2;"
+        class="mb-4 font-bold text-[#c0caf5]"
       >
-        Core Tech Stack
+        Core Tech
+        <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+          Stack
+        </span>
       </h2>
-      <p
-        class="mx-auto max-w-2xl font-poppins text-lg text-[#a9b1d6] md:text-xl"
-      >
+      <p class="mx-auto max-w-lg text-[#a9b1d6]" style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);">
         Technologies I use daily to build production-ready applications
       </p>
     </div>
 
-    <!-- Tech Grid -->
-    <div
-      class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-    >
+    <!-- Tech grid -->
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
       {
         coreStack.map((tech) => (
-          <div class="tech-card group">
-            <div class="relative h-full rounded-2xl border border-[#565f89]/30 bg-gradient-to-br from-[#1a1b26]/80 to-[#24283b]/80 p-6 backdrop-blur-sm transition-all duration-300">
-              {/* Hover Gradient Overlay */}
-              <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#7aa2f7]/5 via-[#bb9af7]/5 to-[#9ece6a]/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-              <div class="relative z-10 flex flex-col items-center text-center">
-                {/* Icon */}
-                <div class="mb-4">
-                  <i
-                    class={`devicon-${tech.icon}-plain colored tech-icon text-6xl`}
-                    style={`color: ${tech.color};`}
-                  />
-                </div>
-
-                {/* Technology Name */}
-                <h3 class="mb-2 font-poppins text-lg font-bold text-[#c0caf5]">
-                  {tech.name}
-                </h3>
-
-                {/* Context */}
-                <p class="font-poppins text-sm text-[#a9b1d6]">
-                  {tech.context}
-                </p>
-              </div>
-
-              {/* Corner Accent Dots */}
-              <div
-                class="absolute right-3 top-3 h-1.5 w-1.5 rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                style={`background-color: ${tech.color};`}
-              />
-              <div
-                class="absolute bottom-3 left-3 h-1.5 w-1.5 rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                style={`background-color: ${tech.color};`}
+          <div class="tech-card rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-4 text-center sm:p-6">
+            <div class="mb-3">
+              <i
+                class={`devicon-${tech.icon}-plain colored tech-icon text-4xl sm:text-5xl`}
+                style={`color: ${tech.color};`}
               />
             </div>
+            <h3 class="mb-1 text-sm font-semibold text-[#c0caf5]">
+              {tech.name}
+            </h3>
+            <p class="text-xs text-[#565f89]">
+              {tech.context}
+            </p>
           </div>
         ))
       }
@@ -147,15 +69,15 @@ const coreStack = authorConfig.coreStack;
 
     <!-- CTA -->
     <div class="mt-12 text-center">
-      <p class="font-poppins text-base text-[#a9b1d6]">
-        See these technologies in action →
-        <a
-          href="/project"
-          class="ml-2 font-semibold text-[#7aa2f7] transition-colors hover:text-[#bb9af7]"
-        >
-          View Projects
-        </a>
-      </p>
+      <a
+        href="/project"
+        class="inline-flex items-center gap-2 text-sm font-medium text-[#565f89] transition-colors duration-300 hover:text-[#7aa2f7]"
+      >
+        See these technologies in action
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+        </svg>
+      </a>
     </div>
   </div>
 </section>

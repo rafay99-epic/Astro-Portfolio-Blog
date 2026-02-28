@@ -210,8 +210,15 @@ const stats = [
 <style>
   .project-showcase {
     position: relative;
-    padding: clamp(4rem, 7vw, 7.5rem) 1.5rem;
+    padding: clamp(3.5rem, 5vw, 5rem) 1rem;
     background: var(--color-bg-primary);
+  }
+
+  @media (min-width: 640px) {
+    .project-showcase {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
   }
 
   .project-inner {
