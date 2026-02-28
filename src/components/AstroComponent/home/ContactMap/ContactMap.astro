@@ -307,24 +307,30 @@
     ftypes[7] = "address";
     fnames[8] = "BIRTHDAY";
     ftypes[8] = "birthday";
-  })();
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("mc-embedded-subscribe-form");
-    const successMessage = document.getElementById("custom-success-message");
+    function initContactForm() {
+      var form = document.getElementById("mc-embedded-subscribe-form");
+      var successMessage = document.getElementById("custom-success-message");
 
-    if (form) {
-      form.addEventListener("submit", function () {
-        successMessage.classList.remove("hidden");
+      if (form) {
+        form.addEventListener("submit", function () {
+          if (successMessage) successMessage.classList.remove("hidden");
 
-        setTimeout(() => {
-          form.reset();
-
-          setTimeout(() => {
-            successMessage.classList.add("hidden");
-          }, 5000);
-        }, 1000);
-      });
+          setTimeout(function () {
+            form.reset();
+            setTimeout(function () {
+              if (successMessage) successMessage.classList.add("hidden");
+            }, 5000);
+          }, 1000);
+        });
+      }
     }
-  });
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initContactForm);
+    } else {
+      initContactForm();
+    }
+    document.addEventListener("astro:after-swap", initContactForm);
+  })();
 </script>

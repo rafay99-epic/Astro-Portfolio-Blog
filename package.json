@@ -1,7 +1,7 @@
 {
 	"name": "rafay99.com",
 	"type": "module",
-	"version": "9.9.0",
+	"version": "9.10.0",
 	"scripts": {
 		"dev": "astro dev",
 		"dev:local": "astro dev",
@@ -33,7 +33,7 @@
 		"@types/react-dom": "19.1.6",
 		"@types/react-syntax-highlighter": "^15.5.13",
 		"@vercel/speed-insights": "^1.2.0",
-		"astro": "5.17.1",
+		"astro": "^5.18.0",
 		"astro-icon": "^1.1.5",
 		"astro-opengraph-images": "^1.13.1",
 		"astro-robots-txt": "^1.0.0",

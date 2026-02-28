@@ -225,8 +225,18 @@ const { theme = "dark" } = Astro.props;
       }
     }
 
-    const giscusManager = new GiscusManager();
-    giscusManager.init();
+    function initGiscus() {
+      var manager = new GiscusManager();
+      manager.init();
+    }
+
+    initGiscus();
+    document.addEventListener("astro:after-swap", function () {
+      // Only re-init if the giscus container is on the new page
+      if (document.getElementById("giscus-container")) {
+        initGiscus();
+      }
+    });
   </script>
 
   <style>

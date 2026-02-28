@@ -759,3 +759,71 @@ html {
 	opacity: 1;
 	transition: none;
 }
+
+/* ============================================================
+   View Transitions — Premium page navigation animations
+   ============================================================ */
+
+/* Prevent white/transparent flash during transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+	background-color: #1a1b26;
+}
+
+/* --- Default page transition: fade + subtle lift --- */
+@keyframes vt-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes vt-fade-out {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+}
+
+::view-transition-old(root) {
+	animation: vt-fade-out 0.2s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+	animation: vt-fade-in 0.3s cubic-bezier(0, 0, 0.2, 1) 0.1s both;
+}
+
+/* --- Header: stay perfectly still during transitions --- */
+::view-transition-old(header),
+::view-transition-new(header) {
+	animation: none !important;
+	mix-blend-mode: normal;
+	background-color: transparent !important;
+}
+
+/* --- Footer: gentle crossfade, no movement --- */
+::view-transition-old(footer),
+::view-transition-new(footer) {
+	animation-duration: 0.2s;
+	animation-timing-function: ease;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-old(root),
+	::view-transition-new(root),
+	::view-transition-old(header),
+	::view-transition-new(header),
+	::view-transition-old(footer),
+	::view-transition-new(footer) {
+		animation: none !important;
+	}
+}

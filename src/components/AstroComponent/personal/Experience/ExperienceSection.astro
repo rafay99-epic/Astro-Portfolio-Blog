@@ -1,8 +1,19 @@
 ---
 import experienceData from "@config/siteConfig/info.json";
-import { Icon } from "astro-icon/components";
+import {
+	ArrowRight,
+	Briefcase,
+	Calendar,
+	ChevronRight,
+	ClipboardList,
+	Code2,
+	Cpu,
+	Layers,
+	Send,
+	Wrench,
+} from "lucide-react";
 
-const workExperience = experienceData.workExperience;
+const { workExperience, techStack } = experienceData;
 
 const totalPositions = workExperience.length;
 const totalTechnologies = new Set(
@@ -12,373 +23,447 @@ const totalResponsibilities = workExperience.reduce(
 	(total, job) => total + job.roles.length,
 	0,
 );
+
+const accentColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
+
+const categoryMeta: Record<string, { color: string }> = {
+	"App Development": { color: "#bb9af7" },
+	"Frontend Development": { color: "#7aa2f7" },
+	"Backend Development": { color: "#9ece6a" },
+	"Cloud Computing": { color: "#7aa2f7" },
+	Scripting: { color: "#bb9af7" },
+};
+
+const deviconMap: Record<string, string> = {
+	flutter: "flutter",
+	androidstudio: "androidstudio",
+	xcode: "xcode",
+	vscode: "vscode",
+	"react native": "react",
+	astro: "astro",
+	tailwindcss: "tailwindcss",
+	nodejs: "nodejs",
+	react: "react",
+	typescript: "typescript",
+	nextjs: "nextjs",
+	firebase: "firebase",
+	supabase: "supabase",
+	postgresql: "postgresql",
+	prisma: "prisma",
+	convex: "convex",
+	sql: "azuresqldatabase",
+	express: "express",
+	vercel: "vercel",
+	netlify: "netlify",
+	aws: "amazonwebservices",
+	docker: "docker",
+	powershell: "powershell",
+	bash: "bash",
+	python: "python",
+};
 ---
 
 <style>
-  /* Timeline animations */
-  .timeline-item {
+  /* Shared animations (matches About page) */
+  .fade-up {
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInUp 0.6s ease-out forwards;
   }
-
-  .timeline-item:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-  .timeline-item:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  .timeline-item:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-  .timeline-item:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-  .timeline-item:nth-child(5) {
-    animation-delay: 0.5s;
-  }
-  .timeline-item:nth-child(6) {
-    animation-delay: 0.6s;
-  }
-
   @keyframes fadeInUp {
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
 
-  /* Header animation */
-  .header-animate {
+  /* Timeline item stagger */
+  .tl-item {
     opacity: 0;
-    transform: translateY(-20px);
-    animation: headerFadeIn 0.8s ease-out forwards;
+    transform: translateY(24px);
+    animation: fadeInUp 0.6s ease-out forwards;
   }
+  .tl-item:nth-child(1) { animation-delay: 0.1s; }
+  .tl-item:nth-child(2) { animation-delay: 0.2s; }
+  .tl-item:nth-child(3) { animation-delay: 0.3s; }
+  .tl-item:nth-child(4) { animation-delay: 0.4s; }
+  .tl-item:nth-child(5) { animation-delay: 0.5s; }
+  .tl-item:nth-child(6) { animation-delay: 0.6s; }
+  .tl-item:nth-child(7) { animation-delay: 0.7s; }
 
-  @keyframes headerFadeIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Stats animation */
-  .stats-animate {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: statsFadeIn 0.8s ease-out 0.5s forwards;
-  }
-
-  @keyframes statsFadeIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Card hover effects */
-  .experience-card {
+  /* Timeline card hover */
+  .tl-card {
     transition: all 0.3s ease-out;
   }
-
-  .experience-card:hover {
+  .tl-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 20px 40px rgba(122, 162, 247, 0.1);
+    box-shadow: 0 20px 40px rgba(122, 162, 247, 0.08);
   }
 
-  /* Timeline dot glow effect */
-  .timeline-dot {
-    box-shadow: 0 0 15px rgba(122, 162, 247, 0.5);
-    animation: pulse 2s infinite;
+  /* Timeline dot pulse */
+  .tl-dot-glow {
+    animation: dotPulse 3s ease-in-out infinite;
+  }
+  @keyframes dotPulse {
+    0%, 100% { box-shadow: 0 0 8px currentColor; }
+    50% { box-shadow: 0 0 16px currentColor; }
   }
 
-  @keyframes pulse {
-    0%,
-    100% {
-      box-shadow: 0 0 15px rgba(122, 162, 247, 0.5);
+  /* Tech pill hover */
+  .tech-pill {
+    transition: all 0.2s ease-out;
+  }
+  .tech-pill:hover {
+    transform: scale(1.05);
+    background-color: rgba(122, 162, 247, 0.15);
+  }
+
+  /* Category card hover */
+  .category-card {
+    transition: all 0.3s ease-out;
+  }
+  .category-card:hover {
+    transform: translateY(-2px);
+    background-color: rgba(36, 40, 59, 0.5);
+  }
+
+  /* Floating blobs */
+  .floating {
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  /* Stats pop */
+  .stat-pop {
+    opacity: 0;
+    transform: scale(0.9);
+    animation: statPop 0.6s ease-out forwards;
+  }
+  .stat-pop:nth-child(1) { animation-delay: 0.1s; }
+  .stat-pop:nth-child(2) { animation-delay: 0.2s; }
+  .stat-pop:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes statPop {
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
-    50% {
-      box-shadow: 0 0 25px rgba(122, 162, 247, 0.8);
-    }
   }
 
-  /* Bottom accent line animation */
+  /* Bottom accent line on hover */
   .accent-line {
     width: 0;
     transition: width 0.5s ease-out;
   }
-
-  .experience-card:hover .accent-line {
+  .tl-card:hover .accent-line {
     width: 100%;
-  }
-
-  /* Technology tag hover */
-  .tech-tag {
-    transition: all 0.2s ease-out;
-  }
-
-  .tech-tag:hover {
-    transform: scale(1.05);
-    background-color: rgba(122, 162, 247, 0.2) !important;
-  }
-
-  /* Responsive timeline */
-  @media (max-width: 768px) {
-    .timeline-line {
-      left: 1rem;
-    }
-
-    .timeline-dot {
-      left: 0.625rem;
-    }
-
-    .timeline-item {
-      padding-left: 3rem;
-    }
-  }
-
-  @media (min-width: 769px) {
-    .timeline-line {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .timeline-dot {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .timeline-item:nth-child(odd) {
-      flex-direction: row;
-    }
-
-    .timeline-item:nth-child(even) {
-      flex-direction: row-reverse;
-    }
   }
 </style>
 
-<section class="relative px-4 py-8">
-  <div class="absolute inset-0 overflow-hidden opacity-15">
+<!-- ============================================================
+     Section 1: Hero Header + Stats Strip
+     ============================================================ -->
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 pb-10 pt-20 sm:px-8 sm:pb-14 sm:pt-28 lg:px-12">
+  <!-- Background blobs -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden">
     <div
-      class="absolute left-1/4 top-1/4 h-64 w-64 rounded-full blur-3xl"
-      style="background-color: #7aa2f7;"
-    >
-    </div>
+      class="floating absolute left-10 top-20 h-32 w-32 rounded-full bg-gradient-to-r from-[#7aa2f7]/8 to-[#bb9af7]/8 blur-3xl"
+    ></div>
     <div
-      class="absolute bottom-1/4 right-1/4 h-56 w-56 rounded-full blur-3xl"
-      style="background-color: #bb9af7;"
-    >
-    </div>
+      class="floating absolute bottom-20 right-10 h-40 w-40 rounded-full bg-gradient-to-r from-[#bb9af7]/8 to-[#9ece6a]/8 blur-3xl"
+      style="animation-delay: -2s;"
+    ></div>
   </div>
 
-  <div class="container relative z-10 mx-auto max-w-7xl">
-    <div class="header-animate mb-8 text-center">
-      <h2
-        class="mb-4 flex items-center justify-center gap-3 text-2xl font-bold md:text-4xl lg:text-5xl"
-        style="background: linear-gradient(135deg, #7aa2f7, #bb9af7, #9ece6a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
+  <div class="relative z-10 mx-auto max-w-6xl">
+    <!-- Section header -->
+    <div class="mb-10 text-center sm:mb-12">
+      <p class="fade-up mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+        Career Path
+      </p>
+      <h1
+        style="font-size: clamp(2.25rem, 4.5vw, 3.75rem); line-height: 1.15;"
+        class="fade-up delay-1 mb-4 font-bold text-[#c0caf5]"
       >
-        <Icon
-          name="lucide:briefcase"
-          class="h-8 w-8 md:h-12 md:w-12"
-          style="color: #7aa2f7;"
-        />
-        <span>Professional Experience</span>
-      </h2>
-      <p class="mx-auto max-w-2xl text-sm md:text-lg" style="color: #a9b1d6;">
-        My journey through various roles and technologies in software
-        development
+        Professional
+        <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+          Experience
+        </span>
+      </h1>
+      <p
+        class="fade-up delay-2 mx-auto max-w-xl text-[#a9b1d6]"
+        style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);"
+      >
+        Building, leading, and shipping production applications across the full stack.
       </p>
     </div>
 
-    <div class="relative">
-      <div
-        class="timeline-line absolute h-full w-0.5 opacity-30"
-        style="background: linear-gradient(to bottom, #7aa2f7, #bb9af7, #9ece6a);"
-      >
-      </div>
-
-      {
-        workExperience.map((job, index) => (
-          <div
-            class={`timeline-item relative mb-12 flex items-center ${
-              index % 2 === 0 ? "flex-row" : "flex-row-reverse"
-            }`}
-          >
-            <div
-              class="timeline-dot absolute z-20 h-4 w-4 rounded-full shadow-lg"
-              style="background: linear-gradient(135deg, #7aa2f7, #bb9af7);"
-            />
-
-            <div
-              class={`absolute top-1/2 z-10 h-0.5 w-8 -translate-y-0.5 transform ${
-                index % 2 === 0 ? "left-1/2 ml-2" : "right-1/2 mr-2"
-              }`}
-              style={`background: linear-gradient(${
-                index % 2 === 0 ? "to right" : "to left"
-              }, #7aa2f7, #bb9af7);`}
-            />
-
-            <div class={`w-full md:w-[calc(50%-3rem)]`}>
-              <div
-                class="experience-card group relative rounded-xl border p-6 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
-                style="background-color: rgba(45, 49, 66, 0.6); border-color: rgba(86, 95, 137, 0.4);"
-              >
-                <div
-                  class="absolute right-0 top-0 h-20 w-20 rounded-bl-3xl rounded-tr-xl opacity-20"
-                  style="background: linear-gradient(to bottom left, #7aa2f7, transparent);"
-                />
-
-                <div class="relative z-10 mb-4">
-                  <div class="mb-3 flex items-start gap-3">
-                    <div
-                      class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110"
-                      style="background: linear-gradient(135deg, #7aa2f7, #bb9af7);"
-                    >
-                      <Icon
-                        name="lucide:building-2"
-                        class="h-6 w-6 text-white"
-                      />
-                    </div>
-                    <div class="min-w-0 flex-1">
-                      <h3
-                        class="text-lg font-bold leading-tight"
-                        style="color: #c0caf5;"
-                      >
-                        {job.position}
-                      </h3>
-                      <p
-                        class="text-base font-semibold"
-                        style="color: #bb9af7;"
-                      >
-                        @ {job.companyName}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-2 text-xs">
-                    <Icon
-                      name="lucide:calendar"
-                      class="h-3 w-3"
-                      style="color: #9ece6a;"
-                    />
-                    <span style="color: #a9b1d6;">{job.employmentTime}</span>
-                  </div>
-                </div>
-
-                <div class="relative z-10 mb-4">
-                  <h4
-                    class="mb-2 flex items-center gap-2 text-sm font-semibold"
-                    style="color: #c0caf5;"
-                  >
-                    <Icon
-                      name="lucide:clipboard-list"
-                      class="h-4 w-4"
-                      style="color: #7aa2f7;"
-                    />
-                    Key Responsibilities
-                  </h4>
-                  <ul class="space-y-1">
-                    {job.roles.slice(0, 3).map((role) => (
-                      <li
-                        class="flex items-start gap-2 text-xs leading-relaxed"
-                        style="color: #a9b1d6;"
-                      >
-                        <span class="mt-0.5 text-xs" style="color: #9ece6a;">
-                          ▸
-                        </span>
-                        <span>{role}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div class="relative z-10">
-                  <h4
-                    class="mb-2 flex items-center gap-2 text-sm font-semibold"
-                    style="color: #c0caf5;"
-                  >
-                    <Icon
-                      name="lucide:code-2"
-                      class="h-4 w-4"
-                      style="color: #bb9af7;"
-                    />
-                    Technologies
-                  </h4>
-                  <div class="flex flex-wrap gap-1">
-                    {job.toolsUsed.slice(0, 6).map((tech) => (
-                      <span
-                        class="tech-tag rounded border px-2 py-1 text-xs"
-                        style="background-color: rgba(26, 27, 38, 0.6); border-color: rgba(86, 95, 137, 0.4); color: #7aa2f7;"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {job.toolsUsed.length > 6 && (
-                      <span
-                        class="rounded border px-2 py-1 text-xs"
-                        style="background-color: rgba(36, 40, 59, 0.6); border-color: rgba(86, 95, 137, 0.4); color: #565f89;"
-                      >
-                        +{job.toolsUsed.length - 6}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div
-                  class="accent-line absolute bottom-0 left-0 h-0.5 rounded-b-xl"
-                  style="background: linear-gradient(90deg, #7aa2f7, #bb9af7);"
-                />
-              </div>
-            </div>
+    <!-- Stats strip -->
+    <div class="fade-up delay-3 rounded-2xl border border-[#414868]/20 bg-[#24283b]/20 p-6 backdrop-blur-sm">
+      <div class="grid grid-cols-3 gap-6 sm:gap-0">
+        <div class="stat-pop flex flex-col items-center border-r border-[#414868]/20 text-center">
+          <div class="mb-2 text-[#7aa2f7]">
+            <Briefcase className="h-5 w-5" />
           </div>
-        ))
-      }
+          <div class="text-2xl font-black text-[#c0caf5] sm:text-3xl">{totalPositions}</div>
+          <div class="mt-1 text-xs uppercase tracking-wider text-[#565f89]">Positions</div>
+        </div>
+        <div class="stat-pop flex flex-col items-center border-r border-[#414868]/20 text-center">
+          <div class="mb-2 text-[#bb9af7]">
+            <Code2 className="h-5 w-5" />
+          </div>
+          <div class="text-2xl font-black text-[#c0caf5] sm:text-3xl">{totalTechnologies}</div>
+          <div class="mt-1 text-xs uppercase tracking-wider text-[#565f89]">Technologies</div>
+        </div>
+        <div class="stat-pop flex flex-col items-center text-center">
+          <div class="mb-2 text-[#9ece6a]">
+            <Layers className="h-5 w-5" />
+          </div>
+          <div class="text-2xl font-black text-[#c0caf5] sm:text-3xl">{totalResponsibilities}</div>
+          <div class="mt-1 text-xs uppercase tracking-wider text-[#565f89]">Responsibilities</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 2: Left-Aligned Vertical Timeline
+     ============================================================ -->
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
+  <div class="mx-auto max-w-6xl">
+    <!-- Section header -->
+    <div class="mb-10 text-center sm:mb-12">
+      <p class="fade-up mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+        Timeline
+      </p>
+      <h2
+        style="font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.2;"
+        class="fade-up delay-1 mb-4 font-bold text-[#c0caf5]"
+      >
+        Work
+        <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+          History
+        </span>
+      </h2>
+      <p
+        class="fade-up delay-2 mx-auto max-w-lg text-[#a9b1d6]"
+        style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);"
+      >
+        Every role, every responsibility, every technology.
+      </p>
     </div>
 
-    <div class="stats-animate mt-12">
-      <div
-        class="rounded-xl border p-6 backdrop-blur-sm"
-        style="background-color: rgba(45, 49, 66, 0.4); border-color: rgba(86, 95, 137, 0.3);"
+    <!-- Timeline -->
+    <div class="relative ml-4 pl-8 sm:ml-6 sm:pl-10">
+      <!-- Gradient vertical line -->
+      <div class="absolute bottom-0 left-0 top-0 w-0.5 rounded-full bg-gradient-to-b from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] opacity-30"></div>
+
+      {workExperience.map((job, index) => {
+        const dotColor = accentColors[index % accentColors.length];
+        return (
+          <div class="tl-item relative mb-10 last:mb-0">
+            {/* Timeline dot */}
+            <div
+              class="tl-dot-glow absolute -left-8 top-6 h-3.5 w-3.5 rounded-full border-2 border-[#1a1b26] sm:-left-10 sm:h-4 sm:w-4"
+              style={`background-color: ${dotColor}; color: ${dotColor};`}
+            />
+
+            {/* Card */}
+            <div
+              class="tl-card relative rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-5 sm:p-6 hover:border-[#7aa2f7]/20 hover:bg-[#24283b]/50"
+              style={`border-left: 4px solid ${dotColor};`}
+            >
+              {/* Header */}
+              <div class="mb-4">
+                <h3 class="text-lg font-bold text-[#c0caf5] sm:text-xl">
+                  {job.position}
+                </h3>
+                <p class="text-base font-semibold" style={`color: ${dotColor};`}>
+                  @ {job.companyName}
+                </p>
+                <div class="mt-2 inline-flex items-center gap-1.5 rounded-full bg-[#1a1b26]/60 px-3 py-1 text-xs text-[#a9b1d6]">
+                  <Calendar className="h-3 w-3 text-[#9ece6a]" />
+                  {job.employmentTime}
+                </div>
+              </div>
+
+              {/* Responsibilities — ALL roles, no truncation */}
+              <div class="mb-5">
+                <h4 class="mb-2.5 flex items-center gap-2 text-sm font-semibold text-[#c0caf5]">
+                  <ClipboardList className="h-4 w-4 text-[#7aa2f7]" />
+                  Key Responsibilities
+                </h4>
+                <ul class="space-y-1.5">
+                  {job.roles.map((role: string) => (
+                    <li class="flex items-start gap-2 text-sm leading-relaxed text-[#a9b1d6]">
+                      <ChevronRight className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-[#9ece6a]" />
+                      <span>{role}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Technologies — ALL tools, no truncation */}
+              <div>
+                <h4 class="mb-2.5 flex items-center gap-2 text-sm font-semibold text-[#c0caf5]">
+                  <Wrench className="h-4 w-4 text-[#bb9af7]" />
+                  Technologies
+                </h4>
+                <div class="flex flex-wrap gap-1.5">
+                  {job.toolsUsed.map((tech: string) => (
+                    <span class="tech-pill rounded-full border border-[#414868]/30 bg-[#1a1b26]/60 px-3 py-1 text-xs text-[#7aa2f7]">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bottom accent line */}
+              <div
+                class="accent-line absolute bottom-0 left-0 h-0.5 rounded-b-2xl"
+                style={`background: linear-gradient(90deg, ${dotColor}, transparent);`}
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 3: Full Tech Stack by Category
+     ============================================================ -->
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
+  <div class="mx-auto max-w-6xl">
+    <!-- Section header -->
+    <div class="mb-10 text-center sm:mb-12">
+      <p class="fade-up mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+        Tech Arsenal
+      </p>
+      <h2
+        style="font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.2;"
+        class="fade-up delay-1 mb-4 font-bold text-[#c0caf5]"
       >
-        <div class="grid grid-cols-1 gap-6 text-center md:grid-cols-3">
-          <div>
-            <div
-              class="mb-1 text-xl font-bold md:text-3xl"
-              style="color: #7aa2f7;"
-            >
-              {totalPositions}
-            </div>
-            <div class="text-xs md:text-base" style="color: #a9b1d6;">
-              Positions
-            </div>
-          </div>
+        Complete
+        <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+          Stack
+        </span>
+      </h2>
+      <p
+        class="fade-up delay-2 mx-auto max-w-lg text-[#a9b1d6]"
+        style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);"
+      >
+        Every tool and technology across five disciplines.
+      </p>
+    </div>
+
+    <!-- Category grid -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {techStack.map((cat, index) => {
+        const color = categoryMeta[cat.category]?.color ?? "#7aa2f7";
+        return (
           <div
-            class="md:border-l md:border-r"
-            style="border-color: rgba(86, 95, 137, 0.3);"
+            class="category-card fade-up rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-5 hover:border-[#7aa2f7]/20 hover:bg-[#24283b]/50"
+            style={`border-left: 4px solid ${color}; animation-delay: ${index * 0.1}s;`}
           >
-            <div
-              class="mb-1 text-xl font-bold md:text-3xl"
-              style="color: #bb9af7;"
-            >
-              {totalTechnologies}
-            </div>
-            <div class="text-xs md:text-base" style="color: #a9b1d6;">
-              Technologies
-            </div>
-          </div>
-          <div>
-            <div
-              class="mb-1 text-xl font-bold md:text-3xl"
-              style="color: #9ece6a;"
-            >
-              {totalResponsibilities}
-            </div>
-            <div class="text-xs md:text-base" style="color: #a9b1d6;">
-              Responsibilities
+            <h3 class="mb-4 flex items-center gap-2 text-base font-bold text-[#c0caf5]">
+              <Cpu className="h-4 w-4" style={{ color }} />
+              {cat.category}
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {cat.tools.map((tool: string) => {
+                const iconClass = deviconMap[tool];
+                return (
+                  <span class="tech-pill inline-flex items-center gap-1.5 rounded-full border border-[#414868]/30 bg-[#1a1b26]/60 px-3 py-1.5 text-xs text-[#a9b1d6]">
+                    {iconClass && (
+                      <i class={`devicon-${iconClass}-plain colored text-sm`} style={`color: ${color};`} />
+                    )}
+                    {tool}
+                  </span>
+                );
+              })}
             </div>
           </div>
-        </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 4: CTA Closer
+     ============================================================ -->
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-16 sm:px-8 sm:py-20 lg:px-12">
+  <!-- Background blobs -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden">
+    <div
+      class="floating absolute right-1/4 top-1/4 h-48 w-48 rounded-full bg-[#7aa2f7]/5 blur-3xl"
+    ></div>
+    <div
+      class="floating absolute bottom-1/4 left-1/4 h-40 w-40 rounded-full bg-[#bb9af7]/5 blur-3xl"
+      style="animation-delay: -3s;"
+    ></div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-3xl text-center">
+    <p class="fade-up mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+      What's Next
+    </p>
+    <h2
+      style="font-size: clamp(1.875rem, 3.5vw, 2.5rem); line-height: 1.2;"
+      class="fade-up delay-1 mb-4 font-bold text-[#c0caf5]"
+    >
+      Ready to work
+      <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+        together?
+      </span>
+    </h2>
+    <p
+      class="fade-up delay-2 mx-auto mb-8 max-w-lg text-[#a9b1d6]"
+      style="font-size: clamp(0.875rem, 1.2vw, 1rem);"
+    >
+      I bring hands-on engineering leadership and a full-stack skill set to every project.
+    </p>
+
+    <!-- CTA buttons -->
+    <div class="fade-up delay-3 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="/contact-me"
+        class="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-[#7aa2f7]/20 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
+      >
+        Get in Touch
+        <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+      </a>
+      <a
+        href="/project"
+        class="inline-flex items-center gap-2 rounded-full border border-[#414868]/40 px-7 py-3 text-sm font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#7aa2f7]/40 hover:text-[#c0caf5]"
+      >
+        View Projects
+        <ArrowRight className="h-4 w-4" />
+      </a>
+    </div>
+
+    <!-- Availability badges -->
+    <div class="fade-up delay-4 mt-8 flex flex-col items-center justify-center gap-4 text-sm text-[#a9b1d6] sm:flex-row">
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#9ece6a] opacity-60"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-[#9ece6a]"></span>
+        </span>
+        Open to opportunities
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-2 w-2 animate-pulse rounded-full bg-[#7aa2f7]"></span>
+        Remote friendly
       </div>
     </div>
   </div>

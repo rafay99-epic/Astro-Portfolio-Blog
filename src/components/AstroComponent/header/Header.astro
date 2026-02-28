@@ -331,131 +331,145 @@ import {
 </nav>
 
 <script is:inline>
-  const mobileMenuButton = document.getElementById("mobile-menu-button");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const mobileMenuBackdrop = document.getElementById("mobile-menu-backdrop");
-  const closeMobileMenuButton = document.getElementById("close-mobile-menu");
-  const menuIcon = document.getElementById("menu-icon");
-  const closeIcon = document.getElementById("close-icon");
-  const navFloat = document.getElementById("nav-float");
+  (function () {
+    // Track current cleanup functions so we don't leak listeners
+    let cleanup = null;
 
-  let isMobileMenuOpen = false;
+    function initHeader() {
+      // Clean up previous listeners if re-initializing after navigation
+      if (cleanup) cleanup();
 
-  // Scroll state for nav background
-  const updateNavScroll = () => {
-    if (!navFloat) return;
-    if (window.scrollY > 8) {
-      navFloat.classList.add("is-scrolled");
-    } else {
-      navFloat.classList.remove("is-scrolled");
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const mobileMenuBackdrop = document.getElementById("mobile-menu-backdrop");
+      const closeMobileMenuButton = document.getElementById("close-mobile-menu");
+      const menuIcon = document.getElementById("menu-icon");
+      const closeIcon = document.getElementById("close-icon");
+      const navFloat = document.getElementById("nav-float");
+      const moreDropdownButton = document.getElementById("more-dropdown-button");
+      const moreDropdownMenu = document.getElementById("more-dropdown-menu");
+      const moreDropdownChevron = document.getElementById("more-dropdown-chevron");
+      const moreDropdownContainer = document.getElementById("more-dropdown-container");
+
+      let isMobileMenuOpen = false;
+      let isMoreDropdownOpen = false;
+
+      // Scroll state for nav background
+      const updateNavScroll = () => {
+        if (!navFloat) return;
+        if (window.scrollY > 8) {
+          navFloat.classList.add("is-scrolled");
+        } else {
+          navFloat.classList.remove("is-scrolled");
+        }
+      };
+      updateNavScroll();
+
+      const toggleMobileMenu = () => {
+        isMobileMenuOpen = !isMobileMenuOpen;
+        if (mobileMenuButton) mobileMenuButton.setAttribute("aria-expanded", isMobileMenuOpen.toString());
+
+        if (isMobileMenuOpen) {
+          if (mobileMenu) mobileMenu.classList.add("is-open");
+          if (mobileMenuBackdrop) {
+            mobileMenuBackdrop.classList.add("is-open");
+            mobileMenuBackdrop.classList.remove("hidden");
+          }
+          if (menuIcon) menuIcon.classList.add("hidden");
+          if (closeIcon) closeIcon.classList.remove("hidden");
+          document.body.style.overflow = "hidden";
+        } else {
+          if (mobileMenu) mobileMenu.classList.remove("is-open");
+          if (mobileMenuBackdrop) {
+            mobileMenuBackdrop.classList.remove("is-open");
+            setTimeout(() => {
+              if (mobileMenuBackdrop) mobileMenuBackdrop.classList.add("hidden");
+            }, 250);
+          }
+          if (menuIcon) menuIcon.classList.remove("hidden");
+          if (closeIcon) closeIcon.classList.add("hidden");
+          document.body.style.overflow = "";
+        }
+      };
+
+      const closeMobileMenu = () => {
+        if (isMobileMenuOpen) toggleMobileMenu();
+      };
+
+      const toggleMoreDropdown = () => {
+        isMoreDropdownOpen = !isMoreDropdownOpen;
+        if (moreDropdownButton) moreDropdownButton.setAttribute("aria-expanded", isMoreDropdownOpen.toString());
+
+        if (isMoreDropdownOpen) {
+          if (moreDropdownMenu) moreDropdownMenu.classList.add("is-open");
+          if (moreDropdownChevron) moreDropdownChevron.style.transform = "rotate(180deg)";
+        } else {
+          if (moreDropdownMenu) moreDropdownMenu.classList.remove("is-open");
+          if (moreDropdownChevron) moreDropdownChevron.style.transform = "rotate(0deg)";
+        }
+      };
+
+      const closeMoreDropdown = () => {
+        if (isMoreDropdownOpen) {
+          isMoreDropdownOpen = false;
+          if (moreDropdownButton) moreDropdownButton.setAttribute("aria-expanded", "false");
+          if (moreDropdownMenu) moreDropdownMenu.classList.remove("is-open");
+          if (moreDropdownChevron) moreDropdownChevron.style.transform = "rotate(0deg)";
+        }
+      };
+
+      // Attach element-level listeners
+      const onMobileMenuClick = () => toggleMobileMenu();
+      const onCloseMenuClick = () => closeMobileMenu();
+      const onBackdropClick = () => closeMobileMenu();
+      const onMoreClick = (e) => { e.stopPropagation(); toggleMoreDropdown(); };
+
+      if (mobileMenuButton) mobileMenuButton.addEventListener("click", onMobileMenuClick);
+      if (closeMobileMenuButton) closeMobileMenuButton.addEventListener("click", onCloseMenuClick);
+      if (mobileMenuBackdrop) mobileMenuBackdrop.addEventListener("click", onBackdropClick);
+      if (moreDropdownButton) moreDropdownButton.addEventListener("click", onMoreClick);
+
+      // Window-level listeners (use named functions for cleanup)
+      const onScroll = () => updateNavScroll();
+      const onPopstate = () => closeMobileMenu();
+      const onResize = () => {
+        if (window.innerWidth >= 1024 && isMobileMenuOpen) closeMobileMenu();
+      };
+      const onDocClick = (e) => {
+        if (moreDropdownContainer && !moreDropdownContainer.contains(e.target)) closeMoreDropdown();
+      };
+      const onKeydown = (e) => {
+        if (e.key === "Escape" && isMoreDropdownOpen) closeMoreDropdown();
+      };
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("popstate", onPopstate);
+      window.addEventListener("resize", onResize);
+      document.addEventListener("click", onDocClick);
+      document.addEventListener("keydown", onKeydown);
+
+      // Store cleanup function to remove listeners on next init
+      cleanup = () => {
+        if (mobileMenuButton) mobileMenuButton.removeEventListener("click", onMobileMenuClick);
+        if (closeMobileMenuButton) closeMobileMenuButton.removeEventListener("click", onCloseMenuClick);
+        if (mobileMenuBackdrop) mobileMenuBackdrop.removeEventListener("click", onBackdropClick);
+        if (moreDropdownButton) moreDropdownButton.removeEventListener("click", onMoreClick);
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("popstate", onPopstate);
+        window.removeEventListener("resize", onResize);
+        document.removeEventListener("click", onDocClick);
+        document.removeEventListener("keydown", onKeydown);
+        // Ensure menu is closed and body scroll is restored
+        document.body.style.overflow = "";
+      };
     }
-  };
-  window.addEventListener("scroll", updateNavScroll, { passive: true });
-  updateNavScroll();
 
-  const toggleMobileMenu = () => {
-    isMobileMenuOpen = !isMobileMenuOpen;
-    mobileMenuButton.setAttribute("aria-expanded", isMobileMenuOpen.toString());
+    // Run on initial page load
+    initHeader();
 
-    if (isMobileMenuOpen) {
-      mobileMenu.classList.add("is-open");
-      mobileMenuBackdrop.classList.add("is-open");
-      mobileMenuBackdrop.classList.remove("hidden");
-      menuIcon.classList.add("hidden");
-      closeIcon.classList.remove("hidden");
-      document.body.style.overflow = "hidden";
-    } else {
-      mobileMenu.classList.remove("is-open");
-      mobileMenuBackdrop.classList.remove("is-open");
-
-      setTimeout(() => {
-        mobileMenuBackdrop.classList.add("hidden");
-      }, 250);
-      menuIcon.classList.remove("hidden");
-      closeIcon.classList.add("hidden");
-      document.body.style.overflow = "";
-    }
-  };
-
-  const closeMobileMenu = () => {
-    if (isMobileMenuOpen) {
-      toggleMobileMenu();
-    }
-  };
-
-  if (mobileMenuButton) {
-    mobileMenuButton.addEventListener("click", toggleMobileMenu);
-  }
-  if (closeMobileMenuButton) {
-    closeMobileMenuButton.addEventListener("click", closeMobileMenu);
-  }
-  if (mobileMenuBackdrop) {
-    mobileMenuBackdrop.addEventListener("click", closeMobileMenu);
-  }
-
-  window.addEventListener("popstate", closeMobileMenu);
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth >= 1024 && isMobileMenuOpen) {
-      closeMobileMenu();
-    }
-  });
-
-  document.addEventListener("astro:after-swap", closeMobileMenu);
-
-  // More dropdown
-  const moreDropdownButton = document.getElementById("more-dropdown-button");
-  const moreDropdownMenu = document.getElementById("more-dropdown-menu");
-  const moreDropdownChevron = document.getElementById("more-dropdown-chevron");
-  const moreDropdownContainer = document.getElementById(
-    "more-dropdown-container",
-  );
-
-  let isMoreDropdownOpen = false;
-
-  const toggleMoreDropdown = () => {
-    isMoreDropdownOpen = !isMoreDropdownOpen;
-    moreDropdownButton.setAttribute(
-      "aria-expanded",
-      isMoreDropdownOpen.toString(),
-    );
-
-    if (isMoreDropdownOpen) {
-      moreDropdownMenu.classList.add("is-open");
-      moreDropdownChevron.style.transform = "rotate(180deg)";
-    } else {
-      moreDropdownMenu.classList.remove("is-open");
-      moreDropdownChevron.style.transform = "rotate(0deg)";
-    }
-  };
-
-  const closeMoreDropdown = () => {
-    if (isMoreDropdownOpen) {
-      isMoreDropdownOpen = false;
-      moreDropdownButton.setAttribute("aria-expanded", "false");
-      moreDropdownMenu.classList.remove("is-open");
-      moreDropdownChevron.style.transform = "rotate(0deg)";
-    }
-  };
-
-  if (moreDropdownButton) {
-    moreDropdownButton.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleMoreDropdown();
+    // Re-run after view transition navigation (DOM is swapped, need fresh references)
+    document.addEventListener("astro:after-swap", () => {
+      initHeader();
     });
-  }
-
-  document.addEventListener("click", (e) => {
-    if (moreDropdownContainer && !moreDropdownContainer.contains(e.target)) {
-      closeMoreDropdown();
-    }
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && isMoreDropdownOpen) {
-      closeMoreDropdown();
-    }
-  });
-
-  document.addEventListener("astro:after-swap", closeMoreDropdown);
+  })();
 </script>
