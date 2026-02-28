@@ -170,7 +170,7 @@ const deviconMap: Record<string, string> = {
 <!-- ============================================================
      Section 1: Hero Header + Stats Strip
      ============================================================ -->
-<section class="relative overflow-hidden bg-[#1a1b26] px-4 pb-10 pt-20 sm:px-8 sm:pb-14 sm:pt-28 lg:px-12">
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 pb-12 pt-24 sm:px-8 sm:pb-16 sm:pt-32 lg:px-12">
   <!-- Background blobs -->
   <div class="pointer-events-none absolute inset-0 overflow-hidden">
     <div
@@ -206,28 +206,34 @@ const deviconMap: Record<string, string> = {
     </div>
 
     <!-- Stats strip -->
-    <div class="fade-up delay-3 rounded-2xl border border-[#414868]/20 bg-[#24283b]/20 p-6 backdrop-blur-sm">
-      <div class="grid grid-cols-3 gap-6 sm:gap-0">
+    <div class="fade-up delay-3 rounded-2xl border border-[#414868]/20 bg-[#24283b]/20 p-4 backdrop-blur-sm sm:p-6">
+      <div class="grid grid-cols-3 gap-4 sm:gap-0">
         <div class="stat-pop flex flex-col items-center border-r border-[#414868]/20 text-center">
-          <div class="mb-2 text-[#7aa2f7]">
-            <Briefcase className="h-5 w-5" />
+          <div class="mb-1.5 text-[#7aa2f7] sm:mb-2">
+            <Briefcase className="h-4 w-4 sm:h-5 sm:w-5" />
           </div>
-          <div class="text-2xl font-black text-[#c0caf5] sm:text-3xl">{totalPositions}</div>
-          <div class="mt-1 text-xs uppercase tracking-wider text-[#565f89]">Positions</div>
+          <div class="text-xl font-black text-[#c0caf5] sm:text-3xl">{totalPositions}</div>
+          <div class="mt-1 text-[10px] uppercase tracking-wide text-[#565f89] sm:text-xs sm:tracking-wider">Positions</div>
         </div>
         <div class="stat-pop flex flex-col items-center border-r border-[#414868]/20 text-center">
-          <div class="mb-2 text-[#bb9af7]">
-            <Code2 className="h-5 w-5" />
+          <div class="mb-1.5 text-[#bb9af7] sm:mb-2">
+            <Code2 className="h-4 w-4 sm:h-5 sm:w-5" />
           </div>
-          <div class="text-2xl font-black text-[#c0caf5] sm:text-3xl">{totalTechnologies}</div>
-          <div class="mt-1 text-xs uppercase tracking-wider text-[#565f89]">Technologies</div>
+          <div class="text-xl font-black text-[#c0caf5] sm:text-3xl">{totalTechnologies}</div>
+          <div class="mt-1 text-[10px] uppercase tracking-wide text-[#565f89] sm:text-xs sm:tracking-wider">
+            <span class="hidden sm:inline">Technologies</span>
+            <span class="sm:hidden">Tech</span>
+          </div>
         </div>
         <div class="stat-pop flex flex-col items-center text-center">
-          <div class="mb-2 text-[#9ece6a]">
-            <Layers className="h-5 w-5" />
+          <div class="mb-1.5 text-[#9ece6a] sm:mb-2">
+            <Layers className="h-4 w-4 sm:h-5 sm:w-5" />
           </div>
-          <div class="text-2xl font-black text-[#c0caf5] sm:text-3xl">{totalResponsibilities}</div>
-          <div class="mt-1 text-xs uppercase tracking-wider text-[#565f89]">Responsibilities</div>
+          <div class="text-xl font-black text-[#c0caf5] sm:text-3xl">{totalResponsibilities}</div>
+          <div class="mt-1 text-[10px] uppercase tracking-wide text-[#565f89] sm:text-xs sm:tracking-wider">
+            <span class="hidden sm:inline">Responsibilities</span>
+            <span class="sm:hidden">Roles</span>
+          </div>
         </div>
       </div>
     </div>
@@ -278,7 +284,7 @@ const deviconMap: Record<string, string> = {
 
             {/* Card */}
             <div
-              class="tl-card relative rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-5 sm:p-6 hover:border-[#7aa2f7]/20 hover:bg-[#24283b]/50"
+              class="tl-card relative rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-4 sm:p-6 hover:border-[#7aa2f7]/20 hover:bg-[#24283b]/50"
               style={`border-left: 4px solid ${dotColor};`}
             >
               {/* Header */}
@@ -303,8 +309,8 @@ const deviconMap: Record<string, string> = {
                 </h4>
                 <ul class="space-y-1.5">
                   {job.roles.map((role: string) => (
-                    <li class="flex items-start gap-2 text-sm leading-relaxed text-[#a9b1d6]">
-                      <ChevronRight className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-[#9ece6a]" />
+                    <li class="flex items-start gap-2 text-xs leading-relaxed text-[#a9b1d6] sm:text-sm">
+                      <ChevronRight className="mt-0.5 h-3 w-3 flex-shrink-0 text-[#9ece6a] sm:h-3.5 sm:w-3.5" />
                       <span>{role}</span>
                     </li>
                   ))}

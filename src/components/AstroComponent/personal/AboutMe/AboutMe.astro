@@ -154,7 +154,7 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
 <!-- ============================================================
      Section 1: Hero — Split Layout
      ============================================================ -->
-<section class="relative overflow-hidden bg-[#1a1b26] px-4 pb-10 pt-20 sm:px-8 sm:pb-14 sm:pt-28 lg:px-12">
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 pb-12 pt-24 sm:px-8 sm:pb-16 sm:pt-32 lg:px-12">
   <!-- Background blobs -->
   <div class="pointer-events-none absolute inset-0 overflow-hidden">
     <div
@@ -167,7 +167,7 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
   </div>
 
   <div class="relative z-10 mx-auto max-w-6xl">
-    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
       <!-- Left: Photo -->
       <div class="fade-up flex justify-center lg:justify-start">
         <div class="profile-wrapper relative inline-block">
@@ -175,7 +175,7 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
             <img
               src={picture}
               alt={name}
-              class="profile-image h-64 w-64 rounded-3xl object-cover sm:h-80 sm:w-80"
+              class="profile-image h-56 w-56 rounded-3xl object-cover sm:h-72 sm:w-72 lg:h-80 lg:w-80"
               loading="eager"
             />
           </div>
@@ -268,20 +268,20 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
 <!-- ============================================================
      Section 2: Stats Bar
      ============================================================ -->
-<div class="border-y border-[#414868]/20 bg-[#24283b]/20 px-4 py-8 backdrop-blur-sm sm:px-8 sm:py-10">
-  <div class="mx-auto grid max-w-6xl grid-cols-3 gap-6 sm:gap-0">
+<div class="border-y border-[#414868]/20 bg-[#24283b]/20 px-4 py-6 backdrop-blur-sm sm:px-8 sm:py-10">
+  <div class="mx-auto grid max-w-6xl grid-cols-3 gap-4 sm:gap-0">
     {stats.map((stat, index) => {
       const IconComponent = statIcons[index];
       const color = statColors[index];
       return (
-        <div class="stat-item flex flex-col items-center text-center border-r border-[#414868]/20 px-4 last:border-r-0">
-          <div class="mb-2" style={`color: ${color};`}>
-            <IconComponent className="h-5 w-5" />
+        <div class="stat-item flex flex-col items-center text-center border-r border-[#414868]/20 px-2 last:border-r-0 sm:px-4">
+          <div class="mb-1.5 sm:mb-2" style={`color: ${color};`}>
+            <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" />
           </div>
-          <div class="text-3xl font-black text-[#c0caf5] sm:text-4xl">
+          <div class="text-2xl font-black text-[#c0caf5] sm:text-4xl">
             {stat.value}
           </div>
-          <div class="mt-1 text-xs uppercase tracking-wider text-[#565f89]">
+          <div class="mt-1 text-[10px] uppercase tracking-wide text-[#565f89] sm:text-xs sm:tracking-wider">
             {stat.label}
           </div>
         </div>
@@ -315,7 +315,7 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
     </div>
 
     <!-- Card grid -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
       <!-- The Engineer -->
       <div class="story-card fade-up delay-1 rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-6 transition-all duration-300 hover:border-[#7aa2f7]/20 hover:bg-[#24283b]/50" style="border-left: 4px solid #7aa2f7;">
         <div class="mb-4 flex items-center gap-3">

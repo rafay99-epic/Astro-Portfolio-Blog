@@ -23,10 +23,19 @@ try {
       title={`Experience | ${authorConfig.SiteName}`}
       description={`Learn more about my experience.`}
     />
+
+    <style>
+      main[data-page="experience"] {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+    </style>
   </head>
-  <body class="pt-15 mt-0">
+  <body class="bg-[#1a1b26]">
     <Header />
-    <main>
+    <main data-page="experience">
       <ExperienceSection />
     </main>
     <Footer />
