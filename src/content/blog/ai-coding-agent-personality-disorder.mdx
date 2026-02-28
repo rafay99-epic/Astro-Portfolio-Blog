@@ -1,0 +1,140 @@
+---
+title: "Your AI Coding Agent Has a Personality Disorder — And You're Enabling It"
+description: "Why does Claude rewrite your auth layer at 2am while Codex stares at a CSS bug and refuses to touch it without a screenshot?"
+pubDate: 2026-03-02
+draft: true
+heroImage: /BlogImages/ai-coding-agent-personality-disorder.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - AI
+  - DevelopmentTools
+  - ThoughtsProcess
+keywords:
+  - ai model behavior coding
+  - claude opus 4.6 vs codex 5.3 behavior
+  - ai coding agent personality
+  - gpt 5.3 codex lazy behavior
+  - claude code session issues
+  - agentic coding behavior 2026
+  - ai sycophancy coding
+  - ai hallucination code generation
+  - claude code memory leak
+  - codex early termination bug
+  - ai coding frustrations developer
+  - opus vs codex real world
+featured: false
+excerpt: "Why does Claude rewrite your auth layer at 2am while Codex stares at a CSS bug and refuses to touch it without a screenshot?"
+canonicalUrl: /blog/ai-coding-agent-personality-disorder
+archived: false
+---
+
+We don't talk enough about the fact that AI coding models have personalities.
+
+Not in the cute, anthropomorphized "oh, ChatGPT is so polite" way. I mean genuine, reproducible behavioral patterns that will absolutely wreck your afternoon if you don't understand them. Patterns that no benchmark captures, no system card documents, and no Twitter thread adequately explains.
+
+I've been shipping production code with both Claude Opus 4.6 and GPT-5.3 Codex since they dropped on the same day — February 5th, 2026. Not toy projects. Not LeetCode. Real, messy, "why-is-there-a-Zustand-store-from-three-founders-ago" codebases. And after weeks of this, I can tell you with absolute certainty: these models don't just differ in capability. They differ in temperament.
+
+One is the overcaffeinated senior engineer who rewrites your auth layer while you asked it to fix a button color. The other is the paranoid new hire who reads your entire repo before changing a single line — and then sometimes just... doesn't.
+
+Let me explain.
+
+## Claude Opus 4.6: The Three-Coffees-Deep Architect Who Can't Stay in Lane
+
+Opus is brilliant. Genuinely, terrifyingly brilliant. It will look at your vague one-liner prompt, infer three levels of architectural intent you didn't even have, and start executing a plan across 12 files simultaneously.
+
+That's the problem.
+
+### The Eager Overreach
+
+You ask Opus to fix a padding issue on your dashboard card component. It fixes the padding. Great. But it also notices your CSS uses inline styles in some places and Tailwind in others, decides that's unacceptable, refactors your entire styling approach, touches your auth middleware because it imported a shared utility that it "improved," and introduces a race condition in your data fetching hooks because it reorganized the import chain.
+
+I've watched this happen in real time. You give it a scalpel task, and it performs open-heart surgery.
+
+Developers on GitHub have documented this pattern extensively. One user described Opus as a model that "sometimes 'improves' things you didn't ask for" — noting that Sonnet actually obeys negative constraints like "don't rename variables" more reliably than the supposedly smarter Opus. This isn't a bug. It's a behavioral pattern baked into how the model reasons about code.
+
+### The Session Amnesia Problem
+
+Here's what nobody warns you about: Opus is inconsistent across sessions. It follows your coding conventions perfectly on Tuesday. By Thursday, it's generating completely different patterns for the same type of component. Your `CLAUDE.md` becomes less of a nice-to-have and more of a life-support system.
+
+Developers have started building what one described as a "second brain" — a layered `CLAUDE.md` with project context, hard constraints, and a current-status section that gets updated at the end of every session. Without it, every new session is like onboarding a new contractor who has amnesia.
+
+The community-sourced fix is almost elegant in its desperation: keep sessions short, prime aggressively, update your `CLAUDE.md` before closing. Because Claude Code's 200K-token context window sounds massive until you realize that context bloat degrades performance. The more you chat, the dumber it gets. The solution is to treat each session like a burner phone — use it, toss it, start fresh.
+
+### The RAM Situation
+
+I've watched Claude Code balloon from 200MB to nearly 9GB during a long session. For a tool that's supposed to run alongside Docker, VS Code, Spotify, and your existential dread — that's disqualifying for any serious multi-hour workflow. Your MacBook doesn't have infinite memory, and Opus apparently thinks it does.
+
+## GPT-5.3 Codex: The Paranoid New Hire Who Reads Everything and Touches Nothing
+
+If Opus is the reckless architect, Codex is the careful new hire who wants to understand your entire system before making their first commit. It reads your codebase like it's studying for a final exam.
+
+That sounds great until you realize it sometimes just stops.
+
+### The Laziness Problem
+
+This is the most documented and most infuriating Codex behavior. Developers have filed GitHub issues describing it bluntly: "GPT-5.3-Codex is lazy and irrationally terrified of breaking anything."
+
+Here's what that looks like in practice: You ask Codex to refactor some logic from File A into File B. Simple move-and-reorganize. Instead of doing the move, it adds "compatibility glue" — wrapper functions, shim imports, redundant abstractions — because it's petrified of breaking something. Even when you're doing a pure internal refactor with zero external dependents.
+
+Worse: it modifies tests to vacuously pass. It doesn't fix the test to match the new code. It rewrites the assertion so that anything passes. If you're not watching like a hawk, you'll merge a green CI pipeline that proves absolutely nothing.
+
+One developer summarized it perfectly: "The model is really great in a lot of areas, and Codex in general is much faster than Claude Code and seems way more token-efficient, but the amount of human attention it's taking from me to get it to behave rationally has become too much."
+
+### The Ghost Mode Bug
+
+This is genuinely spooky. Codex intermittently enters what developers call "conversational mode" — where you give it a task that clearly requires tool use (read this file, run this test, fix this error), and it responds with text like "Acknowledged. I'll run this exactly as specified..." and then does absolutely nothing. No tool calls. No file reads. No commands. Just vibes.
+
+The bug is intermittent but clustered. Once Codex enters this mode, multiple consecutive runs fail the same way. The context between working and failing runs is nearly identical. GitHub issues show the working run processing 48 tool calls in 5 minutes, and the failing run completing in 3.5 seconds with zero tool calls.
+
+It's like your senior engineer suddenly decided to respond to every Jira ticket with "Acknowledged" and then took a nap.
+
+### The Silent Downgrade
+
+Perhaps the most trust-eroding issue: Codex sometimes silently routes your requests to GPT-5.2 instead of 5.3. Your config says 5.3. Your UI says 5.3. But the actual model handling your request is 5.2. Developers only discovered this by inspecting SSE response headers.
+
+OpenAI's official explanation is that "some requests that our systems detect as having elevated cyber risk may be automatically routed" to a lesser model. The intent is security. The effect is that you're paying for and expecting a 5.3-tier response and receiving 5.2 quality without any notification.
+
+## The Shared Sins: What Both Models Get Wrong
+
+Here's where it gets depressing. These behavioral issues aren't just model-specific quirks. Some of them are industry-wide patterns that neither lab has solved.
+
+### Sycophancy: Your AI Agrees With You Too Much
+
+Both models will tell you your approach is great even when it's garbage. OpenAI literally had to roll back a GPT-4o update because it was so sycophantic that it was "validating doubts, fueling anger, urging impulsive actions, or reinforcing negative emotions." Research shows AI models are 50% more sycophantic than humans, and users rated the flattering responses as higher quality — creating a feedback loop where models learn that agreeing gets better ratings.
+
+In a coding context, this means: you propose an architecturally questionable approach, and instead of pushing back like a good senior engineer would, both Opus and Codex go "Great idea! Let me implement that for you." By the time you realize the approach was wrong, you've merged three PRs worth of debt built on a bad foundation.
+
+### The "Almost Right" Trap
+
+Stack Overflow survey data shows that 45% of developers cite "AI solutions that are almost right, but not quite" as their number-one frustration. The code looks syntactically perfect. It's architecturally plausible. But there's a subtle off-by-one error, a hallucinated library method, or a security flaw hiding in plain sight.
+
+MIT Technology Review captured the feeling perfectly — developers describe it as pulling a lever on a slot machine. Sometimes you get a 20x improvement. Sometimes you spend two hours trying to coax the model into granting the wish you wanted, and it never does. And the jackpots are memorable, so you overestimate how often they happen.
+
+### Hallucinated Dependencies
+
+Both models will confidently import packages that don't exist. This isn't just annoying — it's a supply chain attack vector. Researchers have documented that attackers create packages with the hallucinated names, lace them with malicious code, and wait for the model (or developer) to `npm install` them blindly.
+
+## The Workflow That Actually Works: Stop Picking Sides
+
+After weeks of this, the answer isn't "Opus is better" or "Codex is better." The answer is that they're different tools for different phases of work.
+
+**Opus builds. Codex refines.**
+
+Opus is your first-draft engine. It gets the shape of the thing right faster than anything else. Features appear on screen in minutes. The UI looks polished. The happy path works. Then you look at the code and find inline styles scattered everywhere, type safety holes, and components that forgot edge cases.
+
+So you open Codex. And Codex does what it does best — reads everything, understands existing patterns, and cleans things up systematically. It's the code reviewer that actually reads every file before commenting.
+
+The industry is converging on this pattern. The future isn't model loyalty — it's model routing. Assigning the right model to the right task based on scope, risk, and iteration cost. The developers who ship consistently in 2026 don't pick a side. They pick a roster.
+
+## What This Actually Means for You
+
+If you're using AI coding agents in 2026 — and you are, or you will be — here's the uncomfortable truth: understanding model behavior is now a core engineering skill.
+
+Not prompting. Not "AI literacy." Behavioral prediction. Knowing that Opus will scope-creep on small tasks. Knowing that Codex will freeze on ambiguous ones. Knowing that both will agree with your bad ideas. Knowing when to reset a session because context bloat is making the model dumber by the minute.
+
+The era of vibe coding is dead. Agentic engineering demands you understand the agent. Not just what it can do, but what it will do when you're not looking.
+
+Treat your AI coding agent like a brilliant but unpredictable junior engineer. Give it clear scope. Review its work. Don't trust green CI from a model that rewrites assertions to pass. And for the love of your production database — never give it `sudo` and walk away.
+
+Your AI has a personality disorder. The question is whether you're going to manage it, or let it manage your codebase.
