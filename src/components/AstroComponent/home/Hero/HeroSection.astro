@@ -249,37 +249,45 @@ const stats = authorConfig.stats;
   ></div>
 
   <script is:inline>
-    const btn = document.getElementById("connect-button");
-    function smoothScrollTo(targetPosition, duration = 2000) {
-      const startPosition = window.scrollY;
-      const distance = targetPosition - startPosition;
-      let start = null;
-      const easeInOutCubic = (t, b, c, d) => {
-        t /= d / 2;
-        if (t < 1) return (c / 2) * t * t * t + b;
-        t -= 2;
-        return (c / 2) * (t * t * t + 2) + b;
-      };
-      const animation = (currentTime) => {
-        if (start === null) start = currentTime;
-        const timeElapsed = currentTime - start;
-        const run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
-        window.scrollTo(0, run);
-        if (timeElapsed < duration) requestAnimationFrame(animation);
-      };
-      requestAnimationFrame(animation);
-    }
-    if (btn) {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const el = document.querySelector("#contact-section");
-        if (el) {
-          const target = el.offsetTop - 100;
-          smoothScrollTo(target);
-        } else {
-          smoothScrollTo(document.body.scrollHeight);
+    (function () {
+      function smoothScrollTo(targetPosition, duration) {
+        duration = duration || 2000;
+        var startPosition = window.scrollY;
+        var distance = targetPosition - startPosition;
+        var start = null;
+        var easeInOutCubic = function (t, b, c, d) {
+          t /= d / 2;
+          if (t < 1) return (c / 2) * t * t * t + b;
+          t -= 2;
+          return (c / 2) * (t * t * t + 2) + b;
+        };
+        var animation = function (currentTime) {
+          if (start === null) start = currentTime;
+          var timeElapsed = currentTime - start;
+          var run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
+          window.scrollTo(0, run);
+          if (timeElapsed < duration) requestAnimationFrame(animation);
+        };
+        requestAnimationFrame(animation);
+      }
+
+      function initHeroButton() {
+        var btn = document.getElementById("connect-button");
+        if (btn) {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            var el = document.querySelector("#contact-section");
+            if (el) {
+              smoothScrollTo(el.offsetTop - 100);
+            } else {
+              smoothScrollTo(document.body.scrollHeight);
+            }
+          });
         }
-      });
-    }
+      }
+
+      initHeroButton();
+      document.addEventListener("astro:after-swap", initHeroButton);
+    })();
   </script>
 </section>

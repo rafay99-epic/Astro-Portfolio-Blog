@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import BaseHead from "@astro/base/BaseHead.astro";
 import Footer from "@astro/footer/Footer.astro";
 import Header from "@astro/header/Header.astro";
@@ -573,7 +574,7 @@ try {
           {
             ProjectImage && (
               <div class="project-hero__media">
-                <img src={ProjectImage} alt={Projecttitle} loading="eager" />
+                <Image src={ProjectImage} alt={Projecttitle} width={800} height={600} loading="eager" />
               </div>
             )
           }
@@ -672,78 +673,83 @@ try {
     <CodeCopySimple client:visible />
 
     <script is:inline>
-      const content = document.getElementById("project-content");
-      const toc = document.getElementById("project-toc");
-      const tocCard = document.querySelector(".project-card--toc");
+      (function () {
+        var currentObserver = null;
 
-      if (content && toc) {
-        const headings = Array.from(content.querySelectorAll("h2, h3"));
-        const slugCounts = new Map();
-
-        const slugify = (text) => {
-          return text
-            .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/(^-|-$)/g, "");
-        };
-
-        headings.forEach((heading, index) => {
-          if (!heading.id) {
-            let slug = slugify(heading.textContent || "section");
-            if (!slug) {
-              slug = `section-${index + 1}`;
-            }
-            const count = slugCounts.get(slug) || 0;
-            slugCounts.set(slug, count + 1);
-            if (count > 0) {
-              slug = `${slug}-${count + 1}`;
-            }
-            heading.id = slug;
+        function initProjectToc() {
+          if (currentObserver) {
+            currentObserver.disconnect();
+            currentObserver = null;
           }
 
-          const link = document.createElement("a");
-          link.href = `#${heading.id}`;
-          link.textContent = heading.textContent || "";
-          link.dataset.level = heading.tagName.toLowerCase();
-          toc.appendChild(link);
-        });
+          var content = document.getElementById("project-content");
+          var toc = document.getElementById("project-toc");
+          var tocCard = document.querySelector(".project-card--toc");
 
-        if (!headings.length && tocCard) {
-          tocCard.style.display = "none";
+          if (content && toc) {
+            toc.innerHTML = "";
+            var headings = Array.from(content.querySelectorAll("h2, h3"));
+            var slugCounts = new Map();
+
+            var slugify = function (text) {
+              return text
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)/g, "");
+            };
+
+            headings.forEach(function (heading, index) {
+              if (!heading.id) {
+                var slug = slugify(heading.textContent || "section");
+                if (!slug) slug = "section-" + (index + 1);
+                var count = slugCounts.get(slug) || 0;
+                slugCounts.set(slug, count + 1);
+                if (count > 0) slug = slug + "-" + (count + 1);
+                heading.id = slug;
+              }
+
+              var link = document.createElement("a");
+              link.href = "#" + heading.id;
+              link.textContent = heading.textContent || "";
+              link.dataset.level = heading.tagName.toLowerCase();
+              toc.appendChild(link);
+            });
+
+            if (!headings.length && tocCard) {
+              tocCard.style.display = "none";
+            }
+
+            var links = Array.from(toc.querySelectorAll("a"));
+
+            currentObserver = new IntersectionObserver(
+              function (entries) {
+                entries.forEach(function (entry) {
+                  if (!entry.isIntersecting) return;
+                  var id = entry.target.id;
+                  links.forEach(function (link) {
+                    link.dataset.active =
+                      link.getAttribute("href") === "#" + id ? "true" : "false";
+                  });
+                });
+              },
+              { rootMargin: "-20% 0px -70% 0px", threshold: 0.1 },
+            );
+
+            headings.forEach(function (heading) {
+              currentObserver.observe(heading);
+            });
+          }
+
+          if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+          }
+          window.scrollTo(0, 0);
         }
 
-        const links = Array.from(toc.querySelectorAll("a"));
-
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-              const id = entry.target.id;
-              links.forEach((link) => {
-                link.dataset.active =
-                  link.getAttribute("href") === `#${id}` ? "true" : "false";
-              });
-            });
-          },
-          {
-            rootMargin: "-20% 0px -70% 0px",
-            threshold: 0.1,
-          },
-        );
-
-        headings.forEach((heading) => observer.observe(heading));
-      }
-
-      if ("scrollRestoration" in history) {
-        history.scrollRestoration = "manual";
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-        }, 0);
-      });
+        initProjectToc();
+        document.addEventListener("astro:after-swap", initProjectToc);
+      })();
     </script>
 
     <Footer />

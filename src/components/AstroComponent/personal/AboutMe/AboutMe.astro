@@ -1,83 +1,108 @@
 ---
 import authorConfig from "@config/siteConfig/info.json";
+import {
+	ArrowRight,
+	Briefcase,
+	Cloud,
+	Code2,
+	Gamepad2,
+	Globe,
+	Layers,
+	MessageCircle,
+	Rocket,
+	Send,
+	Smartphone,
+	Zap,
+} from "lucide-react";
+import { FaGithub, FaLinkedin, FaYoutube } from "react-icons/fa6";
 
-const stats = authorConfig.stats;
+const {
+	name,
+	jobTitle,
+	position,
+	picture,
+	tag_line,
+	socialLinks,
+	stats,
+	about,
+	coreStack,
+	services,
+} = authorConfig;
+
+const linkedinUrl = `https://www.linkedin.com/in/${socialLinks.linkedin}`;
+const whatsappUrl = `https://wa.me/${socialLinks.whatsNumber}?text=Hello%20there!`;
+
+const serviceIcons: Record<string, typeof Smartphone> = {
+	mobile: Smartphone,
+	globe: Globe,
+	zap: Zap,
+	cloud: Cloud,
+};
+const serviceColors = ["#7aa2f7", "#bb9af7", "#9ece6a", "#7aa2f7"];
+
+const engineerSnippet = `${about.whoAmI.split(". ").slice(0, 2).join(". ")}.`;
+const lifestyleSnippet = `${about.lifeBeyondCode.split(". ").slice(0, 2).join(". ")}.`;
+const learningSnippet = `${about.continuousLearning.split(". ").slice(0, 2).join(". ")}.`;
+
+const statIcons = [Briefcase, Code2, Layers];
+const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
 ---
 
 <style>
-  .fade-in {
+  /* Shared animations */
+  .fade-up {
     opacity: 0;
-    animation: fadeIn 0.8s ease-out forwards;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
   }
-
-  @keyframes fadeIn {
-    to {
-      opacity: 1;
-    }
-  }
-
-  .slide-up {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: slideUp 0.8s ease-out forwards;
-  }
-
-  @keyframes slideUp {
+  @keyframes fadeInUp {
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
 
-  .gradient-text {
-    background: linear-gradient(135deg, #7aa2f7, #bb9af7, #9ece6a);
-    background-size: 200% 200%;
-    background-clip: text;
+  /* Hero */
+  .gradient-name {
+    background: linear-gradient(135deg, #7aa2f7, #bb9af7, #7aa2f7);
+    background-size: 200% auto;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: gradientShift 3s ease-in-out infinite;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards, nameGradient 6s ease infinite;
   }
-
-  @keyframes gradientShift {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
+  @keyframes nameGradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
-
+  .profile-glow {
+    box-shadow:
+      0 0 60px rgba(122, 162, 247, 0.15),
+      0 0 120px rgba(187, 154, 247, 0.08);
+  }
   .profile-image {
     transition: transform 0.5s ease;
   }
-
   .profile-wrapper:hover .profile-image {
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
 
-  .glass-card {
-    background: rgba(36, 40, 59, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .stat-card {
+  /* Stats */
+  .stat-item {
     opacity: 0;
     transform: scale(0.9);
     animation: statPop 0.6s ease-out forwards;
   }
-
-  .stat-card:nth-child(1) {
-    animation-delay: 0.2s;
-  }
-  .stat-card:nth-child(2) {
-    animation-delay: 0.3s;
-  }
-  .stat-card:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-
+  .stat-item:nth-child(1) { animation-delay: 0.1s; }
+  .stat-item:nth-child(2) { animation-delay: 0.2s; }
+  .stat-item:nth-child(3) { animation-delay: 0.3s; }
   @keyframes statPop {
     to {
       opacity: 1;
@@ -85,200 +110,448 @@ const stats = authorConfig.stats;
     }
   }
 
+  /* Story cards */
+  .story-card {
+    transition: all 0.3s ease-out;
+  }
+  .story-card:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Tech cards */
+  .tech-card {
+    transition: all 0.3s ease;
+  }
+  .tech-card:hover {
+    transform: translateY(-2px);
+    background-color: rgba(36, 40, 59, 0.5);
+  }
+  .tech-icon {
+    transition: transform 0.3s ease;
+  }
+  .tech-card:hover .tech-icon {
+    transform: scale(1.08);
+  }
+
+  /* Service cards */
+  .service-card {
+    transition: all 0.3s ease-out;
+  }
+  .service-card:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Floating blobs */
   .floating {
     animation: float 6s ease-in-out infinite;
   }
-
   @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-20px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
   }
 </style>
 
-<section class="relative min-h-screen overflow-hidden px-4 py-16 lg:py-24">
-  <!-- Background Effects -->
-  <div class="absolute inset-0">
+<!-- ============================================================
+     Section 1: Hero — Split Layout
+     ============================================================ -->
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 pb-12 pt-24 sm:px-8 sm:pb-16 sm:pt-32 lg:px-12">
+  <!-- Background blobs -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden">
     <div
-      class="floating from-[#7aa2f7]/8 to-[#bb9af7]/8 absolute left-10 top-20 h-32 w-32 rounded-full bg-gradient-to-r blur-3xl"
-    >
-    </div>
+      class="floating absolute left-10 top-20 h-32 w-32 rounded-full bg-gradient-to-r from-[#7aa2f7]/8 to-[#bb9af7]/8 blur-3xl"
+    ></div>
     <div
-      class="floating from-[#bb9af7]/8 to-[#9ece6a]/8 absolute bottom-20 right-10 h-40 w-40 rounded-full bg-gradient-to-r blur-3xl"
+      class="floating absolute bottom-20 right-10 h-40 w-40 rounded-full bg-gradient-to-r from-[#bb9af7]/8 to-[#9ece6a]/8 blur-3xl"
       style="animation-delay: -2s;"
-    >
-    </div>
+    ></div>
   </div>
 
-  <div class="container relative z-10 mx-auto max-w-5xl">
-    <!-- Hero Section -->
-    <div class="fade-in mb-12 text-center">
-      <div class="profile-wrapper relative mx-auto mb-8 inline-block">
-        <img
-          src={authorConfig?.picture ?? ""}
-          alt={authorConfig.name}
-          class="profile-image h-64 w-64 rounded-3xl object-cover shadow-2xl sm:h-80 sm:w-80 lg:h-96 lg:w-96"
-          loading="eager"
-        />
-        <div
-          class="absolute -bottom-4 -right-4 rounded-full bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] px-6 py-3 text-base font-semibold text-white shadow-lg"
-        >
-          Available for Work
+  <div class="relative z-10 mx-auto max-w-6xl">
+    <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
+      <!-- Left: Photo -->
+      <div class="fade-up flex justify-center lg:justify-start">
+        <div class="profile-wrapper relative inline-block">
+          <div class="profile-glow rounded-3xl p-1">
+            <img
+              src={picture}
+              alt={name}
+              class="profile-image h-56 w-56 rounded-3xl object-cover sm:h-72 sm:w-72 lg:h-80 lg:w-80"
+              loading="eager"
+            />
+          </div>
+          <div
+            class="absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] px-5 py-2.5 text-sm font-semibold text-white shadow-lg"
+          >
+            <span class="relative flex h-2 w-2">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-60"></span>
+              <span class="relative inline-flex h-2 w-2 rounded-full bg-white"></span>
+            </span>
+            Available for Work
+          </div>
         </div>
       </div>
 
-      <h1
-        class="gradient-text mb-4 font-poppins text-5xl font-black sm:text-6xl lg:text-7xl"
-      >
-        {authorConfig.name}
-      </h1>
-      <p
-        class="mb-3 font-poppins text-xl font-semibold text-[#7aa2f7] sm:text-2xl lg:text-3xl"
-      >
-        {authorConfig.jobTitle}
-      </p>
-      <p
-        class="mx-auto max-w-2xl font-poppins text-lg text-[#a9b1d6] sm:text-xl"
-      >
-        {authorConfig.tag_line}
-      </p>
-    </div>
+      <!-- Right: Text -->
+      <div class="text-center lg:text-left">
+        <p class="fade-up delay-1 mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+          {jobTitle}
+        </p>
+        <h1
+          class="gradient-name mb-3 font-black"
+          style="font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; animation-delay: 0.2s;"
+        >
+          {name}
+        </h1>
+        <p class="fade-up delay-2 mb-2 text-lg font-medium text-[#a9b1d6] sm:text-xl">
+          {position}
+        </p>
+        <p class="fade-up delay-3 mx-auto mb-6 max-w-md text-[#565f89] lg:mx-0" style="font-size: clamp(0.875rem, 1.2vw, 1rem);">
+          {tag_line}
+        </p>
 
-    <!-- Stats Row -->
-    <div class="slide-up mb-16 grid grid-cols-3 gap-4 lg:gap-6">
-      {
-        stats.map((stat) => (
-          <div class="stat-card glass-card rounded-2xl p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:transform hover:bg-[#24283b]/40">
-            <div class="mb-2 font-poppins text-4xl font-black text-[#7aa2f7] lg:text-5xl">
-              {stat.value}
-            </div>
-            <div class="font-poppins text-sm text-[#a9b1d6]">{stat.label}</div>
+        <!-- Social icons -->
+        <div class="fade-up delay-3 mb-8 flex items-center justify-center gap-1 lg:justify-start">
+          <a href={socialLinks.github} target="_blank" rel="noopener noreferrer"
+            class="flex h-9 w-9 items-center justify-center rounded-lg text-[#565f89] transition-colors duration-200 hover:text-[#c0caf5]"
+            aria-label="GitHub">
+            <FaGithub className="h-[18px] w-[18px]" />
+          </a>
+          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer"
+            class="flex h-9 w-9 items-center justify-center rounded-lg text-[#565f89] transition-colors duration-200 hover:text-[#7aa2f7]"
+            aria-label="LinkedIn">
+            <FaLinkedin className="h-[18px] w-[18px]" />
+          </a>
+          <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer"
+            class="flex h-9 w-9 items-center justify-center rounded-lg text-[#565f89] transition-colors duration-200 hover:text-[#bb9af7]"
+            aria-label="Twitter">
+            <Send className="h-[18px] w-[18px]" />
+          </a>
+          <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer"
+            class="flex h-9 w-9 items-center justify-center rounded-lg text-[#565f89] transition-colors duration-200 hover:text-[#9ece6a]"
+            aria-label="YouTube">
+            <FaYoutube className="h-[18px] w-[18px]" />
+          </a>
+          <a href={socialLinks.upwork} target="_blank" rel="noopener noreferrer"
+            class="flex h-9 w-9 items-center justify-center rounded-lg text-[#565f89] transition-colors duration-200 hover:text-[#7aa2f7]"
+            aria-label="Upwork">
+            <Briefcase className="h-[18px] w-[18px]" />
+          </a>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
+            class="flex h-9 w-9 items-center justify-center rounded-lg text-[#565f89] transition-colors duration-200 hover:text-[#9ece6a]"
+            aria-label="WhatsApp">
+            <MessageCircle className="h-[18px] w-[18px]" />
+          </a>
+        </div>
+
+        <!-- CTAs -->
+        <div class="fade-up delay-4 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+          <a
+            href="/contact-me"
+            class="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-[#7aa2f7]/20 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
+          >
+            Get in Touch
+            <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+          </a>
+          <a
+            href="/project"
+            class="inline-flex items-center gap-2 rounded-full border border-[#414868]/40 px-7 py-3 text-sm font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#7aa2f7]/40 hover:text-[#c0caf5]"
+          >
+            View My Work
+            <ArrowRight className="h-4 w-4" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 2: Stats Bar
+     ============================================================ -->
+<div class="border-y border-[#414868]/20 bg-[#24283b]/20 px-4 py-6 backdrop-blur-sm sm:px-8 sm:py-10">
+  <div class="mx-auto grid max-w-6xl grid-cols-3 gap-4 sm:gap-0">
+    {stats.map((stat, index) => {
+      const IconComponent = statIcons[index];
+      const color = statColors[index];
+      return (
+        <div class="stat-item flex flex-col items-center text-center border-r border-[#414868]/20 px-2 last:border-r-0 sm:px-4">
+          <div class="mb-1.5 sm:mb-2" style={`color: ${color};`}>
+            <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" />
           </div>
-        ))
-      }
+          <div class="text-2xl font-black text-[#c0caf5] sm:text-4xl">
+            {stat.value}
+          </div>
+          <div class="mt-1 text-[10px] uppercase tracking-wide text-[#565f89] sm:text-xs sm:tracking-wider">
+            {stat.label}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
+<!-- ============================================================
+     Section 3: My Story — Three Card Grid
+     ============================================================ -->
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
+  <div class="mx-auto max-w-6xl">
+    <!-- Section header -->
+    <div class="mb-8 text-center sm:mb-10">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+        My Story
+      </p>
+      <h2
+        style="font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.2;"
+        class="mb-4 font-bold text-[#c0caf5]"
+      >
+        The Person
+        <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+          Behind the Code
+        </span>
+      </h2>
+      <p class="mx-auto max-w-lg text-[#a9b1d6]" style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);">
+        Engineer, builder, and continuous learner.
+      </p>
     </div>
 
-    <!-- Bio Content -->
+    <!-- Card grid -->
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+      <!-- The Engineer -->
+      <div class="story-card fade-up delay-1 rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-6 transition-all duration-300 hover:border-[#7aa2f7]/20 hover:bg-[#24283b]/50" style="border-left: 4px solid #7aa2f7;">
+        <div class="mb-4 flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#7aa2f7]/10 text-[#7aa2f7]">
+            <Code2 className="h-5 w-5" />
+          </div>
+          <h3 class="text-lg font-bold text-[#c0caf5]">The Engineer</h3>
+        </div>
+        <p class="text-sm leading-relaxed text-[#a9b1d6]">
+          {engineerSnippet}
+        </p>
+      </div>
+
+      <!-- Beyond the Screen -->
+      <div class="story-card fade-up delay-2 rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-6 transition-all duration-300 hover:border-[#bb9af7]/20 hover:bg-[#24283b]/50" style="border-left: 4px solid #bb9af7;">
+        <div class="mb-4 flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#bb9af7]/10 text-[#bb9af7]">
+            <Gamepad2 className="h-5 w-5" />
+          </div>
+          <h3 class="text-lg font-bold text-[#c0caf5]">Beyond the Screen</h3>
+        </div>
+        <p class="text-sm leading-relaxed text-[#a9b1d6]">
+          {lifestyleSnippet}
+        </p>
+      </div>
+
+      <!-- Always Learning -->
+      <div class="story-card fade-up delay-3 rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-6 transition-all duration-300 hover:border-[#9ece6a]/20 hover:bg-[#24283b]/50" style="border-left: 4px solid #9ece6a;">
+        <div class="mb-4 flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#9ece6a]/10 text-[#9ece6a]">
+            <Rocket className="h-5 w-5" />
+          </div>
+          <h3 class="text-lg font-bold text-[#c0caf5]">Always Learning</h3>
+        </div>
+        <p class="text-sm leading-relaxed text-[#a9b1d6]">
+          {learningSnippet}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 4: Core Stack — Tech Grid
+     ============================================================ -->
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
+  <div class="mx-auto max-w-6xl">
+    <!-- Section header -->
+    <div class="mb-8 text-center sm:mb-10">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+        Tech Stack
+      </p>
+      <h2
+        style="font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.2;"
+        class="mb-4 font-bold text-[#c0caf5]"
+      >
+        Core
+        <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+          Technologies
+        </span>
+      </h2>
+      <p class="mx-auto max-w-lg text-[#a9b1d6]" style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);">
+        The tools and frameworks I build with daily.
+      </p>
+    </div>
+
+    <!-- Tech grid -->
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
+      {coreStack.map((tech) => (
+        <div
+          class="tech-card rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-4 sm:p-5"
+          style={`border-left: 4px solid ${tech.color};`}
+        >
+          <div class="mb-3">
+            <i
+              class={`devicon-${tech.icon}-plain colored tech-icon text-3xl sm:text-4xl`}
+              style={`color: ${tech.color};`}
+            />
+          </div>
+          <h3 class="mb-1 text-sm font-semibold text-[#c0caf5]">{tech.name}</h3>
+          <p class="text-xs text-[#565f89]">{tech.context}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA link -->
+    <div class="mt-8 text-center">
+      <a
+        href="/experience"
+        class="inline-flex items-center gap-2 text-sm font-medium text-[#565f89] transition-colors duration-300 hover:text-[#7aa2f7]"
+      >
+        View full experience
+        <ArrowRight className="h-4 w-4" />
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 5: Services — What I Do
+     ============================================================ -->
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
+  <div class="mx-auto max-w-6xl">
+    <!-- Section header -->
+    <div class="mb-8 text-center sm:mb-10">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+        What I Do
+      </p>
+      <h2
+        style="font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.2;"
+        class="mb-4 font-bold text-[#c0caf5]"
+      >
+        Services I
+        <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+          Offer
+        </span>
+      </h2>
+      <p class="mx-auto max-w-lg text-[#a9b1d6]" style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);">
+        End-to-end development for web, mobile, and cloud.
+      </p>
+    </div>
+
+    <!-- Services grid -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      {services.map((service, index) => {
+        const IconComponent = serviceIcons[service.icon] ?? Zap;
+        const color = serviceColors[index];
+        return (
+          <div
+            class="service-card fade-up rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-6 hover:border-[#7aa2f7]/20 hover:bg-[#24283b]/50"
+            style={`border-left: 4px solid ${color}; animation-delay: ${index * 0.1}s;`}
+          >
+            <div class="mb-4 flex items-center gap-3">
+              <div
+                class="flex h-10 w-10 items-center justify-center rounded-xl"
+                style={`background: ${color}15; color: ${color};`}
+              >
+                <IconComponent className="h-5 w-5" />
+              </div>
+              <h3 class="text-lg font-bold text-[#c0caf5]">{service.title}</h3>
+            </div>
+
+            <p class="mb-4 text-sm leading-relaxed text-[#a9b1d6]">
+              {service.description}
+            </p>
+
+            {/* Feature highlights */}
+            <ul class="mb-4 space-y-1.5">
+              {service.features.slice(0, 4).map((feature: string) => (
+                <li class="flex items-start gap-2 text-xs text-[#565f89]">
+                  <span class="mt-0.5 text-[#9ece6a]">&#9657;</span>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Tech pills */}
+            <div class="flex flex-wrap gap-1.5">
+              {service.technologies.map((tech: string) => (
+                <span class="rounded-full bg-[#1a1b26]/60 px-2.5 py-1 text-xs text-[#565f89]">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     Section 6: CTA — Full Width Closer
+     ============================================================ -->
+<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-16 sm:px-8 sm:py-20 lg:px-12">
+  <!-- Subtle background blobs -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden">
     <div
-      class="slide-up glass-card rounded-3xl p-8 lg:p-12"
-      style="animation-delay: 0.3s;"
+      class="floating absolute right-1/4 top-1/4 h-48 w-48 rounded-full bg-[#7aa2f7]/5 blur-3xl"
+    ></div>
+    <div
+      class="floating absolute bottom-1/4 left-1/4 h-40 w-40 rounded-full bg-[#bb9af7]/5 blur-3xl"
+      style="animation-delay: -3s;"
+    ></div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-3xl text-center">
+    <p class="fade-up mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
+      Open to Opportunities
+    </p>
+    <h2
+      style="font-size: clamp(1.875rem, 3.5vw, 2.5rem); line-height: 1.2;"
+      class="fade-up delay-1 mb-4 font-bold text-[#c0caf5]"
     >
-      <div class="space-y-10">
-        <!-- The Engineer Section -->
-        <div>
-          <div class="mb-5 flex items-center">
-            <div
-              class="mr-4 h-1 w-16 rounded-full bg-gradient-to-r from-[#7aa2f7] to-transparent"
-            >
-            </div>
-            <h2
-              class="font-poppins text-2xl font-bold text-[#7aa2f7] lg:text-3xl"
-            >
-              The Engineer
-            </h2>
-          </div>
-          <p
-            class="font-poppins text-lg leading-[1.9] text-[#c0caf5] lg:text-xl"
-          >
-            {authorConfig.about.whoAmI}
-          </p>
-        </div>
+      Let's build something
+      <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
+        together
+      </span>
+    </h2>
+    <p
+      class="fade-up delay-2 mx-auto mb-8 max-w-lg text-[#a9b1d6]"
+      style="font-size: clamp(0.875rem, 1.2vw, 1rem);"
+    >
+      {tag_line}
+    </p>
 
-        <!-- Divider -->
-        <div
-          class="h-px bg-gradient-to-r from-transparent via-[#414868]/40 to-transparent"
-        >
-        </div>
-
-        <!-- Beyond the Screen Section -->
-        <div>
-          <div class="mb-5 flex items-center">
-            <div
-              class="mr-4 h-1 w-16 rounded-full bg-gradient-to-r from-[#bb9af7] to-transparent"
-            >
-            </div>
-            <h2
-              class="font-poppins text-2xl font-bold text-[#bb9af7] lg:text-3xl"
-            >
-              Beyond the Screen
-            </h2>
-          </div>
-          <p
-            class="font-poppins text-lg leading-[1.9] text-[#c0caf5] lg:text-xl"
-          >
-            {authorConfig.about.lifeBeyondCode}
-          </p>
-        </div>
-
-        <!-- Divider -->
-        <div
-          class="h-px bg-gradient-to-r from-transparent via-[#414868]/40 to-transparent"
-        >
-        </div>
-
-        <!-- Continuous Growth Section -->
-        <div>
-          <div class="mb-5 flex items-center">
-            <div
-              class="mr-4 h-1 w-16 rounded-full bg-gradient-to-r from-[#9ece6a] to-transparent"
-            >
-            </div>
-            <h2
-              class="font-poppins text-2xl font-bold text-[#9ece6a] lg:text-3xl"
-            >
-              Continuous Growth
-            </h2>
-          </div>
-          <p
-            class="font-poppins text-lg leading-[1.9] text-[#c0caf5] lg:text-xl"
-          >
-            {authorConfig.about.continuousLearning}
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- CTA Section -->
-    <div class="slide-up mt-12 text-center" style="animation-delay: 0.5s;">
+    <!-- CTA buttons -->
+    <div class="fade-up delay-3 flex flex-wrap items-center justify-center gap-4">
       <a
         href="/contact-me"
-        aria-label="Contact Abdul Rafay"
-        class="inline-flex items-center space-x-3 rounded-2xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-10 py-5 font-poppins text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:transform hover:shadow-2xl"
+        class="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-[#7aa2f7]/20 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
       >
-        <span>Let's Work Together</span>
-        <svg
-          class="h-6 w-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-        </svg>
+        Get in Touch
+        <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
       </a>
-
-      <div
-        class="mt-6 flex flex-col items-center justify-center space-y-2 font-poppins text-sm text-[#a9b1d6] sm:flex-row sm:space-x-6 sm:space-y-0"
+      <a
+        href="/project"
+        class="inline-flex items-center gap-2 rounded-full border border-[#414868]/40 px-7 py-3 text-sm font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#7aa2f7]/40 hover:text-[#c0caf5]"
       >
-        <div class="flex items-center space-x-2">
-          <div class="h-2 w-2 animate-pulse rounded-full bg-[#9ece6a]"></div>
-          <span>Open to opportunities</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <div
-            class="h-2 w-2 animate-pulse rounded-full bg-[#7aa2f7]"
-            style="animation-delay: 0.5s;"
-          >
-          </div>
-          <span>Remote friendly</span>
-        </div>
+        View My Work
+        <ArrowRight className="h-4 w-4" />
+      </a>
+    </div>
+
+    <!-- Availability badges -->
+    <div class="fade-up delay-4 mt-8 flex flex-col items-center justify-center gap-4 text-sm text-[#a9b1d6] sm:flex-row">
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#9ece6a] opacity-60"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-[#9ece6a]"></span>
+        </span>
+        Open to opportunities
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-2 w-2 animate-pulse rounded-full bg-[#7aa2f7]"></span>
+        Remote friendly
       </div>
     </div>
   </div>

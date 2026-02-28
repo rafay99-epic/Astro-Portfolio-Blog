@@ -1440,10 +1440,8 @@ const postActionPayload = JSON.stringify({
         history.scrollRestoration = "manual";
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-        }, 0);
+      function initBlogPost() {
+        window.scrollTo(0, 0);
 
         const progressLabel = document.querySelector(
           "[data-read-progress-label]",
@@ -1807,7 +1805,14 @@ const postActionPayload = JSON.stringify({
             closeActionMenu();
           });
         }
-      });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initBlogPost);
+      } else {
+        initBlogPost();
+      }
+      document.addEventListener("astro:after-swap", initBlogPost);
     </script>
     <Footer />
   </body>

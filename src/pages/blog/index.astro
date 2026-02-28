@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { type CollectionEntry, getCollection } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
 import Footer from "@astro/footer/Footer.astro";
@@ -235,9 +236,11 @@ try {
               >
                 <div class="media-frame media-frame--hero">
                   {featuredPost.data.heroImage ? (
-                    <img
+                    <Image
                       src={featuredPost.data.heroImage}
                       alt={featuredPost.data.title}
+                      width={800}
+                      height={440}
                       loading="eager"
                       decoding="async"
                     />
@@ -280,9 +283,11 @@ try {
                     <a href={`/blog/${post.slug}`} class="quick-card">
                       <div class="media-frame media-frame--square">
                         {post.data.heroImage ? (
-                          <img
+                          <Image
                             src={post.data.heroImage}
                             alt={post.data.title}
+                            width={200}
+                            height={200}
                             loading="lazy"
                             decoding="async"
                           />
@@ -329,9 +334,11 @@ try {
                   <a href={`/blog/${post.slug}`} class="mosaic-link">
                     <div class="media-frame media-frame--tile">
                       {post.data.heroImage ? (
-                        <img
+                        <Image
                           src={post.data.heroImage}
                           alt={post.data.title}
+                          width={600}
+                          height={372}
                           loading="lazy"
                           decoding="async"
                         />

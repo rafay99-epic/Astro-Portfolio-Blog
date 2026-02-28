@@ -1,6 +1,7 @@
 ---
 import "@styles/global.css";
 import "@styles/theme.css";
+import { ClientRouter } from "astro:transitions";
 import { SEOMetadata } from "astro-seo-metadata";
 
 interface Props {
@@ -23,6 +24,9 @@ declare global {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.webp" />
+
+<!-- Site-wide view transitions for smooth page navigation -->
+<ClientRouter fallback="swap" />
 <meta name="generator" content={Astro.generator} />
 
 <link

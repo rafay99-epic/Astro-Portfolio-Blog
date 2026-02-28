@@ -24,10 +24,19 @@ try {
       title={`About Me | ${authorConfig.SiteName}`}
       description={`Learn more about me and my journey.`}
     />
+
+    <style>
+      main[data-page="about"] {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+    </style>
   </head>
-  <body class="mt-0 pt-0">
+  <body class="bg-[#1a1b26]">
     <Header />
-    <main class="pt-15 mt-0">
+    <main data-page="about">
       <AboutMe />
     </main>
     <Footer class="mt-auto" />
