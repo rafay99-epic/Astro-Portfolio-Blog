@@ -6,32 +6,61 @@ interface Props {
 	"aria-label"?: string;
 	target?: string;
 	rel?: string;
+	mobile?: boolean;
 }
 
-const { href, icon: Icon, className = "", ...rest } = Astro.props;
+const {
+	href,
+	icon: Icon,
+	className = "",
+	mobile = false,
+	...rest
+} = Astro.props;
+const hasLabel = Astro.slots.has("default");
 ---
 
-<a
-  href={href}
-  class={`group flex items-center transition-all duration-300 text-[#c0caf5] hover:text-[#7aa2f7] px-3 py-2 rounded-lg hover:bg-[#24283b]/50 hover:scale-[1.01] active:scale-[0.99] ${className}`}
-  {...rest}
->
-  {
-    Icon && (
-      <span
-        class={`${
-          Astro.slots.has("default") ? "mr-3" : ""
-        } text-[#7aa2f7] transition-colors duration-300 group-hover:text-[#bb9af7]`}
-      >
-        <Icon class="h-4 w-4" />
-      </span>
-    )
-  }
-  {
-    Astro.slots.has("default") && (
-      <span class="text-sm font-medium">
-        <slot />
-      </span>
-    )
-  }
-</a>
+{
+	mobile ? (
+		<a
+			href={href}
+			class:list={[
+				"flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#a9b1d6] transition-colors duration-150 hover:bg-[#24283b]/40 hover:text-[#c0caf5]",
+				className,
+			]}
+			{...rest}
+		>
+			{Icon && (
+				<span class="text-[#565f89]">
+					<Icon class="h-4 w-4" />
+				</span>
+			)}
+			{hasLabel && (
+				<span class="text-sm">
+					<slot />
+				</span>
+			)}
+		</a>
+	) : hasLabel ? (
+		<a
+			href={href}
+			class:list={[
+				"flex h-8 items-center px-3 text-[13px] text-[#565f89] transition-colors duration-150 hover:text-[#c0caf5]",
+				className,
+			]}
+			{...rest}
+		>
+			<slot />
+		</a>
+	) : (
+		<a
+			href={href}
+			class:list={[
+				"flex h-8 w-8 items-center justify-center rounded-md text-[#414868] transition-colors duration-150 hover:text-[#a9b1d6]",
+				className,
+			]}
+			{...rest}
+		>
+			{Icon && <Icon class="h-4 w-4" />}
+		</a>
+	)
+}
