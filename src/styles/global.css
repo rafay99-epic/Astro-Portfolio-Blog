@@ -804,9 +804,9 @@ html {
 /* --- Header: stay perfectly still during transitions --- */
 ::view-transition-old(header),
 ::view-transition-new(header) {
-	animation: none !important;
+	animation: none;
 	mix-blend-mode: normal;
-	background-color: transparent !important;
+	background-color: transparent;
 }
 
 /* --- Footer: gentle crossfade, no movement --- */
@@ -824,6 +824,6 @@ html {
 	::view-transition-new(header),
 	::view-transition-old(footer),
 	::view-transition-new(footer) {
-		animation: none !important;
+		animation: none;
 	}
 }

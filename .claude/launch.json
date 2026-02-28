@@ -8,12 +8,6 @@
       "port": 4321
     },
     {
-      "name": "dev:local",
-      "runtimeExecutable": "bun",
-      "runtimeArgs": ["run", "dev:local"],
-      "port": 4321
-    },
-    {
       "name": "preview",
       "runtimeExecutable": "bun",
       "runtimeArgs": ["run", "preview"],
