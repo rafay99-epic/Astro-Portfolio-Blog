@@ -168,7 +168,12 @@ const EnhancedImageCaptionRenderer = memo(
 		}, []);
 
 		const processImages = useCallback(() => {
-			const images = document.querySelectorAll(
+			const mainContent = document.querySelector(
+				"main, .main-content, .blog-typography",
+			);
+			if (!mainContent) return;
+
+			const images = mainContent.querySelectorAll(
 				"img[alt]:not([data-enhanced-processed]):not([data-caption-processed])",
 			) as NodeListOf<HTMLImageElement>;
 
