@@ -1,192 +1,331 @@
 <div align="center">
-  <img src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ0vJwX0UyjPi0LTu2YFIrUpwecAbsgvfR1zoN" alt="Website Preview" width="700"/>
-  <h1>My Personal Blog & Portfolio</h1>
-  <p>
-    <strong>Showcasing my professional journey, projects, and personal interests. Built with Astro for a lightning-fast, dynamic experience.</strong>
-  </p>
-  <p>
-    <a href="https://www.rafay99.com"><strong>Visit Live Site »</strong></a>
-  </p>
-  <p>
-    <a href="https://github.com/rafay99-epic/Personal-Blog/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/rafay99-epic/Personal-Blog/issues">Request Feature</a>
-  </p>
-  <p>
-    <img src="https://img.shields.io/badge/Astro-Powered-purple?style=for-the-badge&logo=astro" alt="Astro Powered">
-    <img src="https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel" alt="Vercel Deployed">
-    <img src="https://img.shields.io/github/license/rafay99-epic/Personal-Blog?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/github/stars/rafay99-epic/Personal-Blog?style=for-the-badge&logo=github" alt="GitHub Stars">
-  </p>
+  <img src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ0vJwX0UyjPi0LTu2YFIrUpwecAbsgvfR1zoN" alt="rafay99.com — Portfolio & Blog" width="720" />
+
+  <br />
+  <br />
+
+  # rafay99.com
+
+  **A blazing-fast portfolio, blog, and digital garden built with modern web technologies.**
+
+  <br />
+
+  [![Live Site](https://img.shields.io/badge/Live_Site-rafay99.com-FF5D01?style=for-the-badge&logo=astro&logoColor=white)](https://www.rafay99.com)
+
+  <br />
+
+  [![Astro](https://img.shields.io/badge/Astro_5-FF5D01?style=flat-square&logo=astro&logoColor=white)](https://astro.build/)
+  [![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+  [![Sitepins](https://img.shields.io/badge/Sitepins_CMS-4F46E5?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiPjxwYXRoIGQ9Ik0xMiAyTDIgN2wxMCA1IDEwLTUtMTAtNXoiLz48cGF0aCBkPSJNMiAxN2wxMCA1IDEwLTUiLz48cGF0aCBkPSJNMiAxMmwxMCA1IDEwLTUiLz48L3N2Zz4=&logoColor=white)](https://sitepins.com/)
+  [![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/)
+
+  <br />
+
+  [![GitHub Stars](https://img.shields.io/github/stars/rafay99-epic/Astro-Portfolio-Blog?style=flat-square&logo=github&label=Stars)](https://github.com/rafay99-epic/Astro-Portfolio-Blog)
+  [![License](https://img.shields.io/github/license/rafay99-epic/Astro-Portfolio-Blog?style=flat-square&label=License)](LICENSE)
+  [![Last Commit](https://img.shields.io/github/last-commit/rafay99-epic/Astro-Portfolio-Blog?style=flat-square&label=Last%20Commit)](https://github.com/rafay99-epic/Astro-Portfolio-Blog/commits/main)
+
+  <br />
+
+  [Report Bug](https://github.com/rafay99-epic/Astro-Portfolio-Blog/issues) &middot; [Request Feature](https://github.com/rafay99-epic/Astro-Portfolio-Blog/issues)
+
 </div>
 
-## ✨ Why This Project?
-
-This website serves as my digital resume, project showcase, and a space to share insights and thoughts through my blog. It's built with modern web technologies to be fast, accessible, and SEO-friendly.
+<br />
 
 ---
 
-## 🚀 Core Features
+## Table of Contents
 
-| Badge                                                               | Feature                | Description                            |
-| ------------------------------------------------------------------- | ---------------------- | -------------------------------------- |
-| ![Responsive](https://img.shields.io/badge/Responsive-Design-blue)  | **Responsive Design**  | Seamless experience on all devices.    |
-| ![Blog](https://img.shields.io/badge/Dynamic-Blog-orange)           | **Dynamic Blog**       | Regular updates and industry insights. |
-| ![Portfolio](https://img.shields.io/badge/Portfolio-Showcase-green) | **Portfolio Showcase** | Highlights my best projects.           |
-| ![Contact](https://img.shields.io/badge/Contact-Form-red)           | **Web3Forms Contact**  | Easy and reliable communication.       |
-| ![Astro](https://img.shields.io/badge/Astro-Optimized-purple)       | **Astro-Powered**      | Blazing fast performance & SEO.        |
-| ![SEO](https://img.shields.io/badge/SEO-Optimized-blue)             | **SEO Optimized**      | Enhanced search engine visibility.     |
-| ![RSS](https://img.shields.io/badge/RSS-Feed-yellow)                | **RSS Feed & Sitemap** | Stay updated, improved indexing.       |
-| ![Search](https://img.shields.io/badge/Search-Enabled-lightblue)    | **Pagefind Search**    | Powerful on-site content search.       |
-
----
-
-## 🛠️ Tech Stack
-
-This project leverages a modern stack for optimal performance and developer experience:
-
-| Category          | Technology / Tool                                                                                                                                                                                                                                              |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Framework**     | ![Astro](https://img.shields.io/badge/Astro-Static_Site_Generator-FF5D01?logo=astro)                                                                                                                                                                           |
-| **Styling**       | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white) |
-| **Interactivity** | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)                                                                                   |
-| **Services**      | ![Web3Forms](https://img.shields.io/badge/Web3Forms-Contact_Form-FF4F8B) ![Pagefind](https://img.shields.io/badge/Pagefind-Site_Search-1E90FF)                                                                                                                 |
-| **DevOps**        | ![Vercel](https://img.shields.io/badge/Vercel-Deployment-000000?logo=vercel&logoColor=white) ![Playwright](https://img.shields.io/badge/Playwright-E2E_Testing-2EAD33?logo=playwright)                                                                         |
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Scripts Reference](#scripts-reference)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [Documentation & Resources](#documentation--resources)
+- [License](#license)
+- [Contact](#contact)
 
 ---
 
-## 📂 Project Structure
+## Overview
 
-A glimpse into the organization of the codebase:
+A server-side rendered personal website that serves as a digital resume, project showcase, and writing platform. Built with [Astro 5](https://docs.astro.build/) using the Islands Architecture — static content ships zero JavaScript, while [React 19](https://react.dev/) islands handle interactivity. Content is managed through [Sitepins](https://sitepins.com/), a Git-based headless CMS with a visual editor, and the site is deployed on [Vercel](https://vercel.com/) with ISR caching for near-instant page loads.
 
-```bash
-Personal-Blog/
-├── public/                     # Static assets (favicon, images, etc.)
-│   ├── favicon.ico
-│   └── images/
-├── src/                        # Core source code
-│   ├── components/             # Reusable Astro/React components
-│   ├── layouts/                # Page layouts
-│   ├── pages/                  # Site pages & API endpoints
-│   ├── styles/                 # Global styles and Tailwind config
-│   └── content/                # Markdown content for blog posts, projects (example)
-├── .gitignore
-├── astro.config.mjs            # Astro configuration
-├── package.json
-├── tsconfig.json               # TypeScript configuration
-└── README.md
+**Pages:** Home &middot; Blog &middot; Projects &middot; About &middot; Experience &middot; Contact &middot; Search &middot; RSS &middot; Wiki
+
+---
+
+## Features
+
+<table>
+  <tr>
+    <td width="50%">
+
+**Islands Architecture**
+Astro handles static content with zero JS overhead. React 19 islands power interactive components with the [React Compiler](https://react.dev/learn/react-compiler) enabled for automatic optimization.
+
+  </td>
+    <td width="50%">
+
+**Visual Content Editing**
+[Sitepins](https://sitepins.com/) provides a Git-based visual editing experience with media management, role-based access control, and AI-assisted content generation — all version-controlled through Git.
+
+  </td>
+  </tr>
+  <tr>
+    <td>
+
+**Content Collections**
+MDX-based blog posts and project pages validated with [Zod](https://zod.dev/) schemas. Supports drafts, archived status, featured flags, tags, and SEO metadata.
+
+  </td>
+    <td>
+
+**Full-Text Search**
+On-site content search powered by [Fuse.js](https://www.fusejs.io/) with fuzzy matching for fast, typo-tolerant results across all content.
+
+  </td>
+  </tr>
+  <tr>
+    <td>
+
+**SEO & Performance**
+Auto-generated sitemap, RSS feed, OpenGraph images, and structured metadata. [Terser](https://terser.org/) minification strips all console statements in production. Manual chunk splitting for optimal loading.
+
+  </td>
+    <td>
+
+**Feature Flags**
+JSON-driven toggles to enable/disable site sections and API endpoints without code changes. Managed through Sitepins or direct file editing.
+
+  </td>
+  </tr>
+  <tr>
+    <td>
+
+**Responsive Design**
+Mobile-first layout with a custom Tokyo Night-inspired color system, [Poppins](https://fonts.google.com/specimen/Poppins) typography, and smooth [Framer Motion](https://www.framer.com/motion/) animations.
+
+  </td>
+    <td>
+
+**Developer Experience**
+[Bun](https://bun.sh/) for fast installs, [Biome](https://biomejs.dev/) for linting and formatting, TypeScript strict mode, and path aliases for clean imports.
+
+  </td>
+  </tr>
+</table>
+
+**Also includes:** Web3Forms contact form &middot; GDPR cookie consent &middot; Mermaid diagram rendering &middot; Shiki syntax highlighting (Tokyo Night) &middot; API routes for articles, authors & projects &middot; Vercel Speed Insights
+
+---
+
+## Tech Stack
+
+| Layer | Technology | Docs |
+|:---|:---|:---|
+| **Framework** | Astro 5 (SSR mode, ISR) | [docs.astro.build](https://docs.astro.build/) |
+| **UI** | React 19, Framer Motion, Lucide Icons | [react.dev](https://react.dev/) |
+| **Styling** | Tailwind CSS, Typography plugin | [tailwindcss.com/docs](https://tailwindcss.com/docs) |
+| **CMS** | Sitepins (Git-based headless CMS) | [docs.sitepins.com](https://docs.sitepins.com/) |
+| **Content** | MDX, Zod schemas | [mdxjs.com/docs](https://mdxjs.com/docs/) |
+| **Language** | TypeScript (strict) | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/) |
+| **Runtime** | Bun | [bun.sh/docs](https://bun.sh/docs) |
+| **Linting** | Biome (lint + format) | [biomejs.dev/docs](https://biomejs.dev/) |
+| **Hosting** | Vercel (ISR + Speed Insights) | [vercel.com/docs](https://vercel.com/docs) |
+| **Syntax** | Shiki (Tokyo Night theme) | [shiki.style](https://shiki.style/) |
+| **Diagrams** | Mermaid (client-side rendered) | [mermaid.js.org](https://mermaid.js.org/) |
+
+---
+
+## Architecture
+
+```
+                    ┌─────────────────────────────────┐
+                    │           Vercel (SSR + ISR)     │
+                    └──────────────┬──────────────────┘
+                                   │
+                    ┌──────────────▼──────────────────┐
+                    │         Astro 5 Framework        │
+                    │    (Islands Architecture)        │
+                    └──┬────────────────────────┬─────┘
+                       │                        │
+          ┌────────────▼────────┐  ┌────────────▼────────────┐
+          │  Astro Components   │  │   React 19 Islands      │
+          │  (Static, 0 JS)     │  │   (Interactive, Hydrated)│
+          └─────────────────────┘  └─────────────────────────┘
+                       │                        │
+          ┌────────────▼────────────────────────▼─────┐
+          │          Content Collections (MDX)         │
+          │    blog/ (posts)  ·  projects/ (portfolio) │
+          └──────────────┬────────────────────────────┘
+                         │
+          ┌──────────────▼──────────────────┐
+          │    Sitepins (Git-based CMS)      │
+          │  Visual Editor · Media Mgmt      │
+          └─────────────────────────────────┘
 ```
 
-_Note: The `src/content/` directory is a common pattern with Astro for collections, adjust if your structure differs._
+---
+
+## Project Structure
+
+```
+Astro-Portfolio-Blog/
+├── public/                        # Static assets (favicons, images, fonts)
+├── src/
+│   ├── assets/                    # Processed assets (images optimized by Astro)
+│   ├── components/
+│   │   ├── AstroComponent/        # Static Astro components (zero JS)
+│   │   └── ReactComponent/        # Interactive React islands (hydrated)
+│   ├── config/
+│   │   ├── featureFlag/           # Feature flag definitions (JSON)
+│   │   └── theme/                 # Tokyo Night color system & tokens
+│   ├── content/
+│   │   ├── blog/                  # MDX blog posts
+│   │   └── projects/              # MDX project pages
+│   ├── hooks/                     # Custom React hooks
+│   ├── layouts/                   # Page layouts (BlogPost, Project, Base)
+│   ├── pages/
+│   │   ├── api/                   # Server API routes (article, author, project)
+│   │   ├── blog/                  # Blog listing & individual posts
+│   │   ├── project/               # Project listing & detail pages
+│   │   ├── tag/                   # Tag-based content filtering
+│   │   └── ...                    # Home, About, Experience, Contact, Search
+│   ├── styles/                    # Global styles & Tailwind utilities
+│   └── types/                     # Shared TypeScript type definitions
+├── .sitepins/                     # Sitepins CMS configuration & schemas
+├── scripts/                       # Build & utility scripts
+├── astro.config.mjs               # Astro configuration
+├── tailwind.config.mjs            # Tailwind CSS configuration
+├── biome.json                     # Biome linter/formatter config
+└── tsconfig.json                  # TypeScript configuration
+```
 
 ---
 
-## 🏁 Getting Started
-
-To get a local copy up and running, follow these simple steps.
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (v18 or newer recommended)
-- npm (comes with Node.js)
+| Tool | Version | Install |
+|:---|:---|:---|
+| **Bun** | v1.0+ | [bun.sh](https://bun.sh/) |
+| **Sitepins Account** | — | Optional. Only for CMS features. [Sign up here](https://sitepins.com/) |
 
-### Installation
+### Quick Start
 
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/rafay99-epic/Personal-Blog.git
-    ```
-2.  **Navigate to the project directory**:
-    ```bash
-    cd Personal-Blog # Or Astro-Portfolio-Blog if that's the cloned folder name
-    ```
-3.  **Install dependencies**:
-    ```bash
-    npm install
-    ```
+```bash
+# 1. Clone the repository
+git clone https://github.com/rafay99-epic/Astro-Portfolio-Blog.git
+cd Astro-Portfolio-Blog
 
-### Running Locally
+# 2. Install dependencies
+bun install
 
-1.  **Start the development server**:
-    ```bash
-    npm run dev
-    ```
-    Open [http://localhost:4321](http://localhost:4321) (or the port shown in your terminal) to view it in your browser.
+# 3. Start the dev server
+bun run dev
 
-### Building for Production
+# 4. Open in browser
+open http://localhost:4321
+```
 
-1.  **Build the site**:
-
-    ```bash
-    npm run build
-    ```
-
-    This will create a production-ready build in the `./dist` directory (or `./vercel/output/static` as per your original config for Vercel).
-
-2.  **Preview the production build**:
-    ```bash
-    npm run preview
-    ```
+> Content is managed via [Sitepins](https://sitepins.com/) — a cloud-based CMS that connects directly to your Git repository. No local token required.
 
 ---
 
-## 🌐 Deployment
+## Scripts Reference
 
-The website is live on Vercel, with automatic deployments configured.
-
-- 🌍 **Production:** [rafay99.com](https://www.rafay99.com)
-  - This is the main, live version of the website, deployed from the `main` branch.
-- 🧪 **Feature Previews:**
-  - Vercel automatically creates preview deployments for pull requests. This allows testing changes in a production-like environment before merging to `main`.
-
----
-
-## 🤝 Contributing
-
-Contributions make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**!
-
-1.  **Fork the Project**
-2.  **Create your Feature Branch**:
-    ```bash
-    git checkout -b feature/AmazingFeature
-    ```
-3.  **Commit your Changes**:
-    ```bash
-    git commit -m 'Add some AmazingFeature'
-    ```
-4.  **Push to the Branch**:
-    ```bash
-    git push origin feature/AmazingFeature
-    ```
-5.  **Open a Pull Request**:
-    - Please target the **`testing`** branch for your pull requests. PRs to `main` will be redirected or closed.
-
-We value your input!
+| Command | Description |
+|:---|:---|
+| `bun run dev` | Start development server |
+| `bun run build` | Astro production build |
+| `bun run production_build` | Full production build |
+| `bun run preview` | Preview the production build locally |
+| `bun run lint` | Run Biome checks + TypeScript type check |
+| `bun run lint:fix` | Auto-fix lint issues with Biome |
+| `bun run check` | Astro diagnostics (template/component checks) |
+| `bun run scan` | Run [react-scan](https://github.com/niccolocao/react-scan) against local dev server |
 
 ---
 
-## 📜 License
+## Deployment
 
-Distributed under the MIT License. See `LICENSE` file for more information.
+Deployed on [Vercel](https://vercel.com/) with automatic deployments from the `main` branch.
+
+| Environment | URL | Branch |
+|:---|:---|:---|
+| **Production** | [rafay99.com](https://www.rafay99.com) | `main` |
+| **Previews** | Auto-generated | Every PR |
 
 ---
 
-## 📬 Get in Touch
+## Contributing
 
-I'm always open to connecting, collaborating, or just chatting. Feel free to reach out!
+Contributions are welcome. Please follow these steps:
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/your-feature`
+3. **Commit** your changes: `git commit -m 'feat: add your feature'`
+4. **Push** to the branch: `git push origin feature/your-feature`
+5. **Open** a Pull Request targeting the **`testing`** branch
+
+> **Note:** PRs should target `testing`, not `main`. PRs to `main` will be redirected.
+
+---
+
+## Documentation & Resources
+
+Official docs for the technologies used in this project:
+
+| Technology | Documentation |
+|:---|:---|
+| Astro | [docs.astro.build](https://docs.astro.build/en/getting-started/) |
+| React | [react.dev/learn](https://react.dev/learn) |
+| React Compiler | [react.dev/learn/react-compiler](https://react.dev/learn/react-compiler) |
+| Sitepins | [docs.sitepins.com](https://docs.sitepins.com/) |
+| Sitepins Developer Docs | [developer.sitepins.com](https://developer.sitepins.com/) |
+| Sitepins + Astro Guide | [docs.astro.build/en/guides/cms/sitepins](https://docs.astro.build/en/guides/cms/sitepins/) |
+| Tailwind CSS | [tailwindcss.com/docs](https://tailwindcss.com/docs) |
+| TypeScript | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/) |
+| Bun | [bun.sh/docs](https://bun.sh/docs) |
+| Biome | [biomejs.dev](https://biomejs.dev/) |
+| Framer Motion | [motion.dev/docs](https://motion.dev/docs) |
+| Zod | [zod.dev](https://zod.dev/) |
+| MDX | [mdxjs.com/docs](https://mdxjs.com/docs/) |
+| Mermaid | [mermaid.js.org/intro](https://mermaid.js.org/intro/) |
+| Shiki | [shiki.style](https://shiki.style/) |
+| Vercel | [vercel.com/docs](https://vercel.com/docs) |
+| Shields.io (badges) | [shields.io](https://shields.io/) |
+
+---
+
+## License
+
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for full details.
+
+---
+
+## Contact
 
 <div align="center">
 
-[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:99marafay@gmail.com)
-&nbsp;&nbsp;
-[![Website Contact](https://img.shields.io/badge/Website-Contact_Me-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://rafay99.com/contact)
-&nbsp;&nbsp;
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/abdul-rafay1999/)
+  [![Website](https://img.shields.io/badge/Website-rafay99.com-FF5D01?style=for-the-badge&logo=astro&logoColor=white)](https://rafay99.com/contact)
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-Abdul_Rafay-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/abdul-rafay1999/)
+  [![Email](https://img.shields.io/badge/Email-99marafay@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:99marafay@gmail.com)
+
+  <br />
+  <br />
+
+  **If you found this project helpful, consider giving it a star!**
+
+  [![Star this repo](https://img.shields.io/github/stars/rafay99-epic/Astro-Portfolio-Blog?style=social)](https://github.com/rafay99-epic/Astro-Portfolio-Blog)
 
 </div>
-
----
-
-<p align="center">
-  <em>If you like this project, please consider giving it a 🌟 on GitHub!</em>
-</p>
