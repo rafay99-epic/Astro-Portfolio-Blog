@@ -8,17 +8,17 @@ const searchTips: Array<{
 	description: string;
 }> = [
 	{
-		Icon: (p) => <LuSearch {...p} />,
+		Icon: LuSearch,
 		tip: "your keywords",
 		description: "Type title or author",
 	},
 	{
-		Icon: (p) => <LuUser {...p} />,
+		Icon: LuUser,
 		tip: "author name",
 		description: "Search by author name",
 	},
 	{
-		Icon: (p) => <LuCalendar {...p} />,
+		Icon: LuCalendar,
 		tip: "2024-06",
 		description: "Search by year/month/day",
 	},

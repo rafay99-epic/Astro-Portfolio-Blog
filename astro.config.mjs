@@ -87,8 +87,7 @@ export default defineConfig({
 			host: "www.rafay99.com",
 		}),
 		playformCompress({
-			// Keep compression lightweight by default for faster builds.
-			CSS: false,
+			CSS: true,
 			HTML: {
 				"html-minifier-terser": {
 					removeAttributeQuotes: false,
@@ -130,14 +129,14 @@ export default defineConfig({
 		build: {
 			cssMinify: true,
 			minify: "esbuild",
-			chunkSizeWarningLimit: 1500,
+			chunkSizeWarningLimit: 2500,
 			rollupOptions: {
 				onwarn(warning, warn) {
-					// Suppress empty chunk warnings for mermaid dependencies
-					// These are harmless - tree-shaking removes unused code from dependencies
 					if (
 						warning.code === "EMPTY_BUNDLE" ||
-						warning.message?.includes("Generated an empty chunk")
+						warning.code === "CIRCULAR_DEPENDENCY" ||
+						warning.message?.includes("Generated an empty chunk") ||
+						warning.message?.includes("Circular chunk")
 					) {
 						return;
 					}
@@ -147,11 +146,8 @@ export default defineConfig({
 					experimentalMinChunkSize: 30000,
 					manualChunks(id) {
 						if (!id.includes("node_modules")) return;
-						// Keep manual chunking narrow; broad package-level splitting
-						// can create circular chunk graphs for Astro/MDX/Mermaid trees.
-						if (id.includes("react") || id.includes("scheduler")) {
-							return "react-vendor";
-						}
+						// Mermaid + its heavy deps checked first to avoid
+						// colliding with the broader "react" match below.
 						if (
 							id.includes("mermaid") ||
 							id.includes("d3-") ||
@@ -159,6 +155,13 @@ export default defineConfig({
 							id.includes("langium")
 						) {
 							return "vendor-mermaid";
+						}
+						if (
+							id.includes("/react/") ||
+							id.includes("/react-dom/") ||
+							id.includes("/scheduler/")
+						) {
+							return "react-vendor";
 						}
 					},
 				},
