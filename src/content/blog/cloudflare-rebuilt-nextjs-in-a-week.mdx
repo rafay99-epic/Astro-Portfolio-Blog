@@ -34,14 +34,13 @@ excerpt: "One engineer, $1,100 in AI tokens, and seven days. Cloudflare's vinext
 canonicalUrl: /blog/cloudflare-rebuilt-nextjs-in-a-week
 archived: false
 ---
-
 I was doing my usual thing — scrolling through tech Twitter, half-reading blog posts, avoiding my actual work — when I saw a headline that made me stop mid-scroll.
 
 _"How we rebuilt Next.js with AI in one week."_
 
 That's from Cloudflare. Not some random indie dev. Not a weekend hackathon project. Cloudflare — the company that sits in front of like half the internet.
 
-One engineering manager. Claude as the AI model. 800+ coding sessions. $1,100 in API tokens. Seven days. And the result? A drop-in replacement for Next.js called **vinext** (pronounced "vee-next") that builds up to 4.4x faster and produces bundles 57% smaller than the real thing. Already running in production on a government website.
+One engineering manager. Claude as the AI model. 800+ coding sessions. \$1,100 in API tokens. Seven days. And the result? A drop-in replacement for Next.js called **vinext** (pronounced "vee-next") that builds up to 4.4x faster and produces bundles 57% smaller than the real thing. Already running in production on a government website.
 
 I read the whole blog post. Then I read it again. Then I went down the rabbit hole — GitHub issues, Hacker News threads, security disclosures, hot takes, cold takes. And I have thoughts. A lot of them.
 
@@ -71,14 +70,14 @@ Cloudflare published benchmarks against Next.js 16 using a 33-route App Router a
 
 **Build times:**
 
-- Next.js 16 with Turbopack: 7.38 seconds
-- vinext with Vite 7 (Rollup): 4.64 seconds — 1.6x faster
-- vinext with Vite 8 (Rolldown): 1.67 seconds — **4.4x faster**
+* Next.js 16 with Turbopack: 7.38 seconds
+* vinext with Vite 7 (Rollup): 4.64 seconds — 1.6x faster
+* vinext with Vite 8 (Rolldown): 1.67 seconds — **4.4x faster**
 
 **Client bundle size (gzipped):**
 
-- Next.js 16: 168.9 KB
-- vinext with Rolldown: 72.9 KB — **57% smaller**
+* Next.js 16: 168.9 KB
+* vinext with Rolldown: 72.9 KB — **57% smaller**
 
 Now, look — benchmarks are benchmarks. This is one test app, early days, take it with a grain of salt. Cloudflare themselves say these are "directional, not definitive." But a 57% reduction in bundle size? That directly impacts your Core Web Vitals. Smaller bundles mean faster First Contentful Paint, lower Largest Contentful Paint, better SEO. For a content-heavy site, that's not a nice-to-have — that's the difference between ranking and not ranking.
 
@@ -86,7 +85,7 @@ Now, look — benchmarks are benchmarks. This is one test app, early days, take 
 
 Here's where it gets really interesting. And honestly, a bit unsettling.
 
-Almost every line of code in vinext was written by AI. One person — Steve Faulkner, who is technically an engineering manager, not even a full-time developer on this — directed Claude through 800+ sessions in OpenCode. The total cost was about $1,100 in API tokens.
+Almost every line of code in vinext was written by AI. One person — Steve Faulkner, who is technically an engineering manager, not even a full-time developer on this — directed Claude through 800+ sessions in OpenCode. The total cost was about \$1,100 in API tokens.
 
 The workflow was surprisingly straightforward:
 
@@ -201,13 +200,13 @@ Me? I'm excited. And a little terrified. Which, honestly, is exactly how enginee
 
 ## References & Further Reading
 
-- [Cloudflare Blog: How we rebuilt Next.js with AI in one week](https://blog.cloudflare.com/how-we-rebuilt-next-js-with-ai-in-one-week)
-- [vinext GitHub Repository](https://github.com/nicolo-ribaudo/vinext)
-- [vinext Official Site](https://vinext.dev)
-- [Hacktron: Vibe-Hacking Cloudflare's Vibe-Coded Next.js Replacement](https://hacktron.io/blog/vibe-hacking-vinext)
-- [paddo.dev: Vinext and the $1,100 Rewrite](https://paddo.dev/vinext-and-the-1100-rewrite)
-- [The Register: Cloudflare vibe codes 94% of Next.js API](https://theregister.com/2026/02/28/cloudflare-vinext)
-- [OfficeChai: Vercel Discloses 7 Bugs in vinext](https://officechai.com/vercel-vinext-bugs)
-- [NxCode: Complete Guide to vinext](https://nxcode.dev/guide-to-vinext)
-- [DEV Community: Inside Cloudflare Vinext](https://dev.to/inside-cloudflare-vinext)
-- [GitHub Issue #21: How serious is this project?](https://github.com/nicolo-ribaudo/vinext/issues/21)
+* [Cloudflare Blog: How we rebuilt Next.js with AI in one week](https://blog.cloudflare.com/how-we-rebuilt-next-js-with-ai-in-one-week)
+* [vinext GitHub Repository](https://github.com/nicolo-ribaudo/vinext)
+* [vinext Official Site](https://vinext.dev)
+* [Hacktron: Vibe-Hacking Cloudflare's Vibe-Coded Next.js Replacement](https://hacktron.io/blog/vibe-hacking-vinext)
+* [paddo.dev: Vinext and the \$1,100 Rewrite](https://paddo.dev/vinext-and-the-1100-rewrite)
+* [The Register: Cloudflare vibe codes 94% of Next.js API](https://theregister.com/2026/02/28/cloudflare-vinext)
+* [OfficeChai: Vercel Discloses 7 Bugs in vinext](https://officechai.com/vercel-vinext-bugs)
+* [NxCode: Complete Guide to vinext](https://nxcode.dev/guide-to-vinext)
+* [DEV Community: Inside Cloudflare Vinext](https://dev.to/inside-cloudflare-vinext)
+* [GitHub Issue #21: How serious is this project?](https://github.com/nicolo-ribaudo/vinext/issues/21)
