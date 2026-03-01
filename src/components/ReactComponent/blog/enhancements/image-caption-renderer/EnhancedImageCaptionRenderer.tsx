@@ -111,7 +111,10 @@ const EnhancedImageCaptionRenderer = memo(
 				const altText = document.createElement("div");
 				altText.className =
 					"absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-center text-white backdrop-blur-sm";
-				altText.innerHTML = `<p class="text-sm">${alt}</p>`;
+				const altParagraph = document.createElement("p");
+				altParagraph.className = "text-sm";
+				altParagraph.textContent = alt;
+				altText.appendChild(altParagraph);
 
 				const instructions = document.createElement("div");
 				instructions.className =
@@ -168,7 +171,12 @@ const EnhancedImageCaptionRenderer = memo(
 		}, []);
 
 		const processImages = useCallback(() => {
-			const images = document.querySelectorAll(
+			const mainContent = document.querySelector(
+				"main, .main-content, .blog-typography",
+			);
+			if (!mainContent) return;
+
+			const images = mainContent.querySelectorAll(
 				"img[alt]:not([data-enhanced-processed]):not([data-caption-processed])",
 			) as NodeListOf<HTMLImageElement>;
 
