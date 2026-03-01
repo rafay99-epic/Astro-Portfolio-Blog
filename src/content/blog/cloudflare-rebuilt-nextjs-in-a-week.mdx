@@ -1,0 +1,208 @@
+---
+title: "Cloudflare Just Rebuilt Next.js in a Week — And the Internet Lost Its Mind"
+description: "One engineer, $1,100 in AI tokens, and seven days. Cloudflare's vinext is a full reimplementation of the Next.js API built on Vite — and it's already running a government website in production. Here's why this matters way more than the hype suggests."
+pubDate: 2026-03-01
+draft: false
+heroImage: /BlogImages/cloudflare_next_js.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - AI
+  - Development
+  - Next.js
+  - Cloudflare
+  - Vite
+  - Thoughts
+keywords:
+  - cloudflare
+  - next.js
+  - vinext
+  - vite
+  - ai development
+  - vibe coding
+  - vercel
+  - web development
+  - frontend frameworks
+  - react server components
+featured: true
+excerpt: "One engineer, $1,100 in AI tokens, and seven days. Cloudflare's vinext is a full reimplementation of the Next.js API built on Vite — and it's already running a government website in production."
+canonicalUrl: /blog/cloudflare-rebuilt-nextjs-in-a-week
+archived: false
+---
+
+I was doing my usual thing — scrolling through tech Twitter, half-reading blog posts, avoiding my actual work — when I saw a headline that made me stop mid-scroll.
+
+_"How we rebuilt Next.js with AI in one week."_
+
+That's from Cloudflare. Not some random indie dev. Not a weekend hackathon project. Cloudflare — the company that sits in front of like half the internet.
+
+One engineering manager. Claude as the AI model. 800+ coding sessions. $1,100 in API tokens. Seven days. And the result? A drop-in replacement for Next.js called **vinext** (pronounced "vee-next") that builds up to 4.4x faster and produces bundles 57% smaller than the real thing. Already running in production on a government website.
+
+I read the whole blog post. Then I read it again. Then I went down the rabbit hole — GitHub issues, Hacker News threads, security disclosures, hot takes, cold takes. And I have thoughts. A lot of them.
+
+## What Even Is vinext?
+
+Let me break this down before we get into the spicy stuff.
+
+If you've ever tried deploying a Next.js app anywhere that isn't Vercel, you know the pain. Next.js is incredible for developer experience — routing, server rendering, React Server Components, the whole package. But the moment you try to run it on Cloudflare Workers, Netlify, or AWS Lambda, you enter adapter hell.
+
+The existing solution was called **OpenNext** — a project that reverse-engineers Next.js's build output and reshapes it so other platforms can run it. Multiple companies, including Cloudflare, have poured engineering effort into OpenNext. It works... but it's fragile. Every time Vercel pushes a new Next.js version, the internals can change, and OpenNext breaks. It's a constant game of whack-a-mole.
+
+vinext takes a fundamentally different approach. Instead of wrapping Next.js output, it **reimplements the entire Next.js API surface on top of Vite**. Same `app/` directory. Same `pages/` directory. Same `next.config.js`. You literally swap `next` with `vinext` in your `package.json` scripts, and everything else stays the same.
+
+```bash
+npm install vinext
+
+vinext dev          # Development server with HMR
+vinext build        # Production build
+vinext deploy       # Build and deploy to Cloudflare Workers
+```
+
+That's it. No reshaping build output. No reverse-engineering internals. A clean reimplementation of the public API.
+
+## The Numbers That Made Me Do a Double Take
+
+Cloudflare published benchmarks against Next.js 16 using a 33-route App Router application. They disabled TypeScript checking and ESLint in Next.js's build to keep the comparison fair — just measuring raw bundler and compilation speed.
+
+**Build times:**
+
+- Next.js 16 with Turbopack: 7.38 seconds
+- vinext with Vite 7 (Rollup): 4.64 seconds — 1.6x faster
+- vinext with Vite 8 (Rolldown): 1.67 seconds — **4.4x faster**
+
+**Client bundle size (gzipped):**
+
+- Next.js 16: 168.9 KB
+- vinext with Rolldown: 72.9 KB — **57% smaller**
+
+Now, look — benchmarks are benchmarks. This is one test app, early days, take it with a grain of salt. Cloudflare themselves say these are "directional, not definitive." But a 57% reduction in bundle size? That directly impacts your Core Web Vitals. Smaller bundles mean faster First Contentful Paint, lower Largest Contentful Paint, better SEO. For a content-heavy site, that's not a nice-to-have — that's the difference between ranking and not ranking.
+
+## The Part Everyone Is Talking About — AI Built This
+
+Here's where it gets really interesting. And honestly, a bit unsettling.
+
+Almost every line of code in vinext was written by AI. One person — Steve Faulkner, who is technically an engineering manager, not even a full-time developer on this — directed Claude through 800+ sessions in OpenCode. The total cost was about $1,100 in API tokens.
+
+The workflow was surprisingly straightforward:
+
+1. Spend a couple of hours defining the architecture with Claude
+2. Define a task ("implement the `next/navigation` shim")
+3. Let the AI write the implementation and tests
+4. Run the test suite
+5. If tests pass, merge. If not, feed the error back to the AI
+6. Repeat
+
+They even had AI agents doing code reviews. When a PR was opened, an agent reviewed it. When review comments came back, another agent addressed them. The feedback loop was mostly automated.
+
+But here's the thing Faulkner was honest about — it didn't work perfectly every time. The AI would confidently implement something that seemed right but didn't match actual Next.js behavior. Architecture decisions, prioritization, knowing when the AI was heading down a dead end — that was all human. The AI was the engine, but the human was steering.
+
+## Why This Specific Problem Was Perfect for AI
+
+I've written before about AI coding tools and their quirks — the eager overreach, the confident wrongness, the tendency to rewrite things that don't need rewriting. So why did it work so well here?
+
+Faulkner identified four things that all had to be true at the same time:
+
+**Next.js is extremely well-documented.** Years of Stack Overflow answers, tutorials, official docs. The API surface is all over the training data. When you ask Claude how `getServerSideProps` works, it doesn't hallucinate. It knows.
+
+**Next.js has a massive public test suite.** Thousands of E2E tests covering every feature and edge case. These tests functioned as a machine-readable specification. The AI didn't need to understand intent — it implemented against a contract. Cloudflare ported tests directly from the Next.js repo and used them as verification.
+
+**Vite is an excellent foundation.** Vite handles the hard parts — fast HMR, native ESM, a clean plugin API, production bundling. They didn't have to build a bundler. They just had to teach Vite to speak Next.js.
+
+**The models got good enough.** Faulkner said he doesn't think this would have been possible even a few months ago. Earlier models couldn't sustain coherence across a codebase this size. Current models can hold the full architecture in context, reason about module interactions, and produce correct code often enough to maintain momentum.
+
+Take any one of those away — unclear documentation, no test suite, a worse build tool, or a weaker model — and this project doesn't happen. That's an important nuance that a lot of the hot takes are missing.
+
+## Then Vercel Showed Up — And Things Got Spicy
+
+The vinext blog post dropped on February 24th. Within days, Guillermo Rauch — the CEO of Vercel, the company that created and maintains Next.js — announced that his team had found seven security vulnerabilities in vinext. Two critical, two high, two medium, one low.
+
+He called it a "vibe-coded framework."
+
+That term — _vibe-coded_ — is doing a lot of heavy lifting here. It's basically calling vinext an AI toy project that shouldn't be trusted with real production traffic. And honestly? The security findings are real. They're not FUD.
+
+A security research firm called Hacktron also ran automated scans against vinext and found some nasty stuff. The worst one? vinext's fetch caching built cache keys from the URL, HTTP method, and request body — but **not from request headers**. So a request with `Authorization: Bearer alice` and one with `Authorization: Bearer bob` to the same URL would produce the same cache key. The first user's response gets served to everyone.
+
+In Next.js, there's an undocumented heuristic — if a request contains `Authorization` or `Cookie` headers, it automatically opts out of shared caching. That behavior evolved from years of production incidents. It's not in any API docs. It's an invisible invariant. When you reimplement from the spec, that rule doesn't exist.
+
+Another bug: vinext silently excludes `/api` routes from middleware by default. In Next.js, if you don't define a matcher, middleware runs on all routes, including API routes. That's how global auth works. Migrating from Next.js to vinext? Your API endpoints are suddenly wide open.
+
+This is the catch with AI-generated code at this scale. The tests encode known scenarios. Production reveals unknown ones. As one Hacker News commenter put it — "passing all the tests means you duplicated something. That's a naive understanding of the reality of tests."
+
+## The Bigger Picture — Test Suites as Blueprints
+
+But here's what I can't stop thinking about — and this is bigger than vinext or Cloudflare or Vercel.
+
+A brilliant analysis on paddo.dev framed it perfectly: if your competitive advantage depends on implementation complexity, and your test suite is public, you've published the blueprint for your own replacement.
+
+Vercel's implicit defense against alternatives was that Next.js's internals are complex and change unpredictably. OpenNext had to reverse-engineer build output every release. That moat worked against human engineers. It doesn't work against an AI that can reimplement the public API from scratch in a week.
+
+Think about that for a second. Next.js has 2,000+ unit tests and 400+ E2E tests. Those tests describe, in machine-executable detail, what the framework should do in thousands of scenarios. Route resolution, middleware chaining, RSC streaming, cache invalidation — all encoded as assertions. They're not just tests. They're a spec.
+
+People on Hacker News predicted that frameworks will start treating their test suites as proprietary. SQLite already does this — the database itself is public domain, but the test suite is closed source. Whether Next.js follows that path depends on how seriously Vercel takes vinext as a threat.
+
+And here's the kicker — if Cloudflare's vinext gets popular, its test suite becomes a spec too. Any platform could reimplement vinext's API surface using the same method. The pattern commoditizes whatever it touches.
+
+## Traffic-Aware Pre-Rendering — The Actually Innovative Part
+
+Everyone is talking about the AI story and the Vercel drama, but I think the most interesting technical innovation is getting buried under the noise.
+
+vinext introduced something called **Traffic-Aware Pre-Rendering (TPR)**.
+
+Here's the problem with Next.js pre-rendering: if you have 10,000 product pages, Next.js renders all 10,000 at build time, even though 99% of them might never get a request. Your build time scales linearly with page count. That's why large Next.js sites end up with 30-minute builds.
+
+TPR flips this. Cloudflare is already the reverse proxy for your site. They have your traffic data. They know which pages actually get visited. So instead of pre-rendering everything, vinext queries Cloudflare's zone analytics at deploy time and pre-renders only the pages that matter.
+
+For a site with 100,000 product pages, the power law means 90% of traffic usually goes to 50–200 pages. Those get pre-rendered in seconds. Everything else falls back to on-demand SSR and gets cached via ISR after the first request. Pages that go viral get picked up automatically on the next deploy.
+
+No `generateStaticParams()`. No coupling your build to your production database. Just... let the traffic data tell you what matters.
+
+That's genuinely clever. And it's the kind of thing that could only come from a CDN provider that already sits in the request path.
+
+## What This Means for Us Developers
+
+Okay, so — developer-to-developer — what do we actually do with all this information?
+
+**If you're deploying Next.js on Cloudflare Workers today:** Don't switch to vinext in production yet. It's a week old. Security vulnerabilities have already been found and patched. The team at NxCode recommends sticking with OpenNext for production workloads but starting to experiment with vinext. I agree.
+
+**If you're evaluating frameworks for a new project:** This is worth watching. The 94% API compatibility and automated migration tools mean trying vinext is low-risk. The performance gains are real if they hold up at scale. But "experimental" means experimental.
+
+**If you're thinking about the bigger picture:** The era of framework moats built on implementation complexity is ending. When reimplementation becomes cheap, the competitive advantage shifts from "we built it first" to "we maintain it best" and "our ecosystem is stickiest." If you're building a product on top of a single vendor's framework, think hard about your exit strategy.
+
+## The Wrapper Story Continues
+
+I wrote a post a while back about how everything in software is a wrapper. Vinext is a fascinating new chapter in that story — because it's essentially saying that the wrapper itself can be reimplemented. The abstraction layer isn't sacred. If the API surface is well-documented and the test suite is comprehensive, the implementation underneath is just... replaceable.
+
+Faulkner put it in a way that genuinely made me pause:
+
+> "Most abstractions in software exist because humans need help. We couldn't hold the whole system in our heads, so we built layers to manage the complexity for us. AI doesn't have the same limitation. It can hold the whole system in context and just write the code."
+
+That's a profound statement about where software is heading. Which of our beloved abstractions are truly foundational, and which were just crutches for human cognition? That line is about to shift massively.
+
+## My Honest Take
+
+Here's where I land on all of this.
+
+**vinext as a product?** Too early to judge. It might thrive, it might die in three months if Cloudflare loses interest. There's already a GitHub issue literally titled "How serious is this project?" — which, fair question.
+
+**vinext as a proof of concept?** Absolutely extraordinary. A single person used AI to reimplement the most popular frontend framework in under a week, for the cost of a nice dinner. Even with the security issues, even with the missing features, even with the caveats — the pattern is what matters.
+
+**The Vercel drama?** Both sides have points. The security findings are legitimate and important. But calling it "vibe-coded" to dismiss the entire approach is a defensive move from a company that just watched its competitive moat get breached in seven days. First human-written code is just as fragile as first AI-written code. The difference is the speed at which it was produced.
+
+**And the implications for AI-assisted development?** This is the data point I've been waiting for. Not a todo app. Not a demo. A production-grade framework reimplementation with 1,700+ tests, running on a government website. Flawed, yes. Incomplete, yes. But real.
+
+We're living through a moment where the cost of building software is collapsing in real time. Whether that excites you or terrifies you probably depends on where you sit in the stack.
+
+Me? I'm excited. And a little terrified. Which, honestly, is exactly how engineering should feel.
+
+## References & Further Reading
+
+- [Cloudflare Blog: How we rebuilt Next.js with AI in one week](https://blog.cloudflare.com/how-we-rebuilt-next-js-with-ai-in-one-week)
+- [vinext GitHub Repository](https://github.com/nicolo-ribaudo/vinext)
+- [vinext Official Site](https://vinext.dev)
+- [Hacktron: Vibe-Hacking Cloudflare's Vibe-Coded Next.js Replacement](https://hacktron.io/blog/vibe-hacking-vinext)
+- [paddo.dev: Vinext and the $1,100 Rewrite](https://paddo.dev/vinext-and-the-1100-rewrite)
+- [The Register: Cloudflare vibe codes 94% of Next.js API](https://theregister.com/2026/02/28/cloudflare-vinext)
+- [OfficeChai: Vercel Discloses 7 Bugs in vinext](https://officechai.com/vercel-vinext-bugs)
+- [NxCode: Complete Guide to vinext](https://nxcode.dev/guide-to-vinext)
+- [DEV Community: Inside Cloudflare Vinext](https://dev.to/inside-cloudflare-vinext)
+- [GitHub Issue #21: How serious is this project?](https://github.com/nicolo-ribaudo/vinext/issues/21)

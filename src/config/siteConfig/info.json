@@ -52,7 +52,7 @@
 	"stats": [
 		{
 			"label": "Years Experience",
-			"value": "3+"
+			"value": "4+"
 		},
 		{
 			"label": "Technologies",
@@ -67,7 +67,7 @@
 	"SiteDescription": "Hey there! Welcome to my space where I share coding adventures, explore new tech, and dive into open-source projects. Grab a coffee and join me on this journey through the world of software development!",
 	"name": "Abdul Rafay",
 	"jobTitle": "Software Engineer",
-	"position": "Full Stack Developer",
+	"position": "Full Stack  & Team Lead",
 	"picture": "/author.webp",
 	"avator": "/favicon.png",
 	"tag_line": "I build high-performance web & mobile apps that scale.",
