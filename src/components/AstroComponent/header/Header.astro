@@ -99,8 +99,29 @@ import {
       class="nav-float relative flex h-11 items-center justify-center rounded-2xl px-4 sm:px-5"
       id="nav-float"
     >
-      <!-- Site name (left side) -->
-      <a href="/" class="absolute left-4 hidden text-[13px] font-medium text-[#a9b1d6] sm:left-5 lg:block">
+      <!-- Site name (left side) — desktop -->
+      <a
+        href="/"
+        class="absolute left-4 hidden items-center gap-2 text-[13px] font-medium text-[#a9b1d6] sm:left-5 lg:flex"
+      >
+        <img
+          src={authorConfig.avator}
+          alt={authorConfig.name}
+          class="h-6 w-6 translate-y-[5px] rounded-full border border-[#565f89]/30"
+        />
+        {authorConfig.SiteName}
+      </a>
+
+      <!-- Site name (left side) — mobile/tablet -->
+      <a
+        href="/"
+        class="absolute left-4 flex items-center gap-2 text-[13px] font-medium text-[#a9b1d6] lg:hidden"
+      >
+        <img
+          src={authorConfig.avator}
+          alt={authorConfig.name}
+          class="h-6 w-6 translate-y-[5px] rounded-full border border-[#565f89]/30"
+        />
         {authorConfig.SiteName}
       </a>
 
@@ -224,15 +245,15 @@ import {
   class="mobile-menu-overlay fixed right-0 top-0 z-[100] flex h-full w-72 max-w-[80vw] flex-col bg-[#1a1b26] lg:hidden"
 >
   <!-- Mobile menu header -->
-  <div class="flex items-center justify-between px-4 py-3.5 border-b border-[#565f89]/10">
+  <div
+    class="flex items-center justify-between px-4 py-3.5 border-b border-[#565f89]/10"
+  >
     <a href="/" class="flex items-center gap-2.5">
-      <span class="flex h-7 w-7 shrink-0 overflow-hidden rounded-full">
-        <img
-          src="/rafay99-avatar.jpg"
-          alt={authorConfig.SiteName}
-          class="h-full w-full object-cover"
-        />
-      </span>
+      <img
+        src={authorConfig.avator}
+        alt={authorConfig.name}
+        class="h-7 w-7 shrink-0 translate-y-[5px] rounded-full border border-[#565f89]/30"
+      />
       <span class="text-[13px] leading-none font-medium text-[#a9b1d6]">
         {authorConfig.SiteName}
       </span>
@@ -341,15 +362,24 @@ import {
 
       const mobileMenuButton = document.getElementById("mobile-menu-button");
       const mobileMenu = document.getElementById("mobile-menu");
-      const mobileMenuBackdrop = document.getElementById("mobile-menu-backdrop");
-      const closeMobileMenuButton = document.getElementById("close-mobile-menu");
+      const mobileMenuBackdrop = document.getElementById(
+        "mobile-menu-backdrop",
+      );
+      const closeMobileMenuButton =
+        document.getElementById("close-mobile-menu");
       const menuIcon = document.getElementById("menu-icon");
       const closeIcon = document.getElementById("close-icon");
       const navFloat = document.getElementById("nav-float");
-      const moreDropdownButton = document.getElementById("more-dropdown-button");
+      const moreDropdownButton = document.getElementById(
+        "more-dropdown-button",
+      );
       const moreDropdownMenu = document.getElementById("more-dropdown-menu");
-      const moreDropdownChevron = document.getElementById("more-dropdown-chevron");
-      const moreDropdownContainer = document.getElementById("more-dropdown-container");
+      const moreDropdownChevron = document.getElementById(
+        "more-dropdown-chevron",
+      );
+      const moreDropdownContainer = document.getElementById(
+        "more-dropdown-container",
+      );
 
       let isMobileMenuOpen = false;
       let isMoreDropdownOpen = false;
@@ -367,7 +397,11 @@ import {
 
       const toggleMobileMenu = () => {
         isMobileMenuOpen = !isMobileMenuOpen;
-        if (mobileMenuButton) mobileMenuButton.setAttribute("aria-expanded", isMobileMenuOpen.toString());
+        if (mobileMenuButton)
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            isMobileMenuOpen.toString(),
+          );
 
         if (isMobileMenuOpen) {
           if (mobileMenu) mobileMenu.classList.add("is-open");
@@ -383,7 +417,8 @@ import {
           if (mobileMenuBackdrop) {
             mobileMenuBackdrop.classList.remove("is-open");
             setTimeout(() => {
-              if (mobileMenuBackdrop) mobileMenuBackdrop.classList.add("hidden");
+              if (mobileMenuBackdrop)
+                mobileMenuBackdrop.classList.add("hidden");
             }, 250);
           }
           if (menuIcon) menuIcon.classList.remove("hidden");
@@ -398,23 +433,31 @@ import {
 
       const toggleMoreDropdown = () => {
         isMoreDropdownOpen = !isMoreDropdownOpen;
-        if (moreDropdownButton) moreDropdownButton.setAttribute("aria-expanded", isMoreDropdownOpen.toString());
+        if (moreDropdownButton)
+          moreDropdownButton.setAttribute(
+            "aria-expanded",
+            isMoreDropdownOpen.toString(),
+          );
 
         if (isMoreDropdownOpen) {
           if (moreDropdownMenu) moreDropdownMenu.classList.add("is-open");
-          if (moreDropdownChevron) moreDropdownChevron.style.transform = "rotate(180deg)";
+          if (moreDropdownChevron)
+            moreDropdownChevron.style.transform = "rotate(180deg)";
         } else {
           if (moreDropdownMenu) moreDropdownMenu.classList.remove("is-open");
-          if (moreDropdownChevron) moreDropdownChevron.style.transform = "rotate(0deg)";
+          if (moreDropdownChevron)
+            moreDropdownChevron.style.transform = "rotate(0deg)";
         }
       };
 
       const closeMoreDropdown = () => {
         if (isMoreDropdownOpen) {
           isMoreDropdownOpen = false;
-          if (moreDropdownButton) moreDropdownButton.setAttribute("aria-expanded", "false");
+          if (moreDropdownButton)
+            moreDropdownButton.setAttribute("aria-expanded", "false");
           if (moreDropdownMenu) moreDropdownMenu.classList.remove("is-open");
-          if (moreDropdownChevron) moreDropdownChevron.style.transform = "rotate(0deg)";
+          if (moreDropdownChevron)
+            moreDropdownChevron.style.transform = "rotate(0deg)";
         }
       };
 
@@ -422,12 +465,19 @@ import {
       const onMobileMenuClick = () => toggleMobileMenu();
       const onCloseMenuClick = () => closeMobileMenu();
       const onBackdropClick = () => closeMobileMenu();
-      const onMoreClick = (e) => { e.stopPropagation(); toggleMoreDropdown(); };
+      const onMoreClick = (e) => {
+        e.stopPropagation();
+        toggleMoreDropdown();
+      };
 
-      if (mobileMenuButton) mobileMenuButton.addEventListener("click", onMobileMenuClick);
-      if (closeMobileMenuButton) closeMobileMenuButton.addEventListener("click", onCloseMenuClick);
-      if (mobileMenuBackdrop) mobileMenuBackdrop.addEventListener("click", onBackdropClick);
-      if (moreDropdownButton) moreDropdownButton.addEventListener("click", onMoreClick);
+      if (mobileMenuButton)
+        mobileMenuButton.addEventListener("click", onMobileMenuClick);
+      if (closeMobileMenuButton)
+        closeMobileMenuButton.addEventListener("click", onCloseMenuClick);
+      if (mobileMenuBackdrop)
+        mobileMenuBackdrop.addEventListener("click", onBackdropClick);
+      if (moreDropdownButton)
+        moreDropdownButton.addEventListener("click", onMoreClick);
 
       // Window-level listeners (use named functions for cleanup)
       const onScroll = () => updateNavScroll();
@@ -436,7 +486,8 @@ import {
         if (window.innerWidth >= 1024 && isMobileMenuOpen) closeMobileMenu();
       };
       const onDocClick = (e) => {
-        if (moreDropdownContainer && !moreDropdownContainer.contains(e.target)) closeMoreDropdown();
+        if (moreDropdownContainer && !moreDropdownContainer.contains(e.target))
+          closeMoreDropdown();
       };
       const onKeydown = (e) => {
         if (e.key === "Escape" && isMoreDropdownOpen) closeMoreDropdown();
@@ -450,10 +501,14 @@ import {
 
       // Store cleanup function to remove listeners on next init
       cleanup = () => {
-        if (mobileMenuButton) mobileMenuButton.removeEventListener("click", onMobileMenuClick);
-        if (closeMobileMenuButton) closeMobileMenuButton.removeEventListener("click", onCloseMenuClick);
-        if (mobileMenuBackdrop) mobileMenuBackdrop.removeEventListener("click", onBackdropClick);
-        if (moreDropdownButton) moreDropdownButton.removeEventListener("click", onMoreClick);
+        if (mobileMenuButton)
+          mobileMenuButton.removeEventListener("click", onMobileMenuClick);
+        if (closeMobileMenuButton)
+          closeMobileMenuButton.removeEventListener("click", onCloseMenuClick);
+        if (mobileMenuBackdrop)
+          mobileMenuBackdrop.removeEventListener("click", onBackdropClick);
+        if (moreDropdownButton)
+          moreDropdownButton.removeEventListener("click", onMoreClick);
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("popstate", onPopstate);
         window.removeEventListener("resize", onResize);
