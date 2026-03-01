@@ -148,33 +148,33 @@ h6 {
 
 h1 {
 	font-size: 2.5em;
-	color: #c0caf5;
+	color: var(--color-text-primary, #c0caf5);
 }
 
 h2 {
 	font-size: 2em;
-	color: #7aa2f7;
+	color: var(--color-text-accent, #7aa2f7);
 }
 
 h3 {
 	font-size: 1.6em;
-	color: #7aa2f7;
+	color: var(--color-text-accent, #7aa2f7);
 }
 
 h4 {
 	font-size: 1.3em;
-	color: #c0caf5;
+	color: var(--color-text-primary, #c0caf5);
 }
 
 h5 {
 	font-size: 1.1em;
-	color: #a9b1d6;
+	color: var(--color-text-secondary, #a9b1d6);
 }
 
 h6 {
 	font-size: 0.9em;
 	font-weight: 500;
-	color: #a9b1d6;
+	color: var(--color-text-secondary, #a9b1d6);
 }
 
 @media (max-width: 768px) {

@@ -111,7 +111,10 @@ const EnhancedImageCaptionRenderer = memo(
 				const altText = document.createElement("div");
 				altText.className =
 					"absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-center text-white backdrop-blur-sm";
-				altText.innerHTML = `<p class="text-sm">${alt}</p>`;
+				const altParagraph = document.createElement("p");
+				altParagraph.className = "text-sm";
+				altParagraph.textContent = alt;
+				altText.appendChild(altParagraph);
 
 				const instructions = document.createElement("div");
 				instructions.className =
