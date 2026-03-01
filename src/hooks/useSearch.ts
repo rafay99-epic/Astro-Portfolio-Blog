@@ -1,176 +1,221 @@
 // NOTE: Search excludes archived posts to keep results aligned with public blog listings.
 
-import Fuse from "fuse.js";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import Fuse, { type FuseResultMatch, type IFuseOptions } from "fuse.js";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Post } from "types/articles";
 import type { SearchCache, SearchState } from "types/search";
 
-type EnhancedPost = Post & {
-	relevanceScore: number;
-	matchedFields: string[];
-};
-
-const searchCache = new Map<string, SearchCache>();
+// --- Constants ---
 
 const CACHE_DURATION = 5 * 60 * 1000;
+const MAX_CACHE_SIZE = 50;
 const MAX_HISTORY_ITEMS = 10;
 const SEARCH_HISTORY_KEY = "search_history";
+const DEBOUNCE_MS = 250;
+const HISTORY_COMMIT_MS = 1000;
+const SCORE_THRESHOLD = 0.6;
 
-const loadSearchHistory = (): string[] => {
-	try {
-		const history = localStorage.getItem(SEARCH_HISTORY_KEY);
-		return history ? JSON.parse(history) : [];
-	} catch {
-		return [];
-	}
-};
+// --- Fuse Configuration ---
+// NOTE: `body` is intentionally excluded. Fuzzy-matching full article text
+// with ignoreLocation is O(n*m) per post and dominates search time. Title,
+// description, tags, and author cover the vast majority of search intents.
 
-const saveSearchHistory = (history: string[]) => {
-	try {
-		localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
-	} catch {}
-};
-
-const calculateRelevance = (
-	result: { score?: number; item: Post },
-	searchIntent: ReturnType<typeof detectSearchIntent>,
-) => {
-	const baseScore = 1 - (result.score || 0);
-	const intentBonus = searchIntent.type !== "general" ? 0.2 : 0;
-	const freshness =
-		(Date.now() - new Date(result.item.data.pubDate).getTime()) /
-		(1000 * 60 * 60 * 24 * 365);
-	const freshnessBoost = Math.min(0.2, 1 / (1 + freshness));
-
-	return baseScore + intentBonus + freshnessBoost;
-};
-
-const UNIFIED_SEARCH_CONFIG = {
+const FUSE_CONFIG: IFuseOptions<Post> = {
 	keys: [
-		{
-			name: "data.title",
-			weight: 2.0,
-		},
-		{
-			name: "data.description",
-			weight: 1.5,
-		},
-		{
-			name: "data.tags",
-			weight: 1.8,
-		},
-		{
-			name: "data.authorName",
-			weight: 1.2,
-		},
-		{
-			name: "body",
-			weight: 1.0,
-		},
+		{ name: "data.title", weight: 2.0 },
+		{ name: "data.description", weight: 1.5 },
+		{ name: "data.tags", weight: 1.8 },
+		{ name: "data.authorName", weight: 1.2 },
 		{
 			name: "data.pubDate",
-			weight: 1.5,
+			weight: 1.0,
 			getFn: (obj: Post) => {
 				const date = new Date(obj.data.pubDate);
-				return (
-					date.toLocaleDateString() +
-					" " +
-					date.toLocaleString("default", { month: "long", year: "numeric" })
-				);
+				const iso = date.toISOString().slice(0, 10);
+				const long = date.toLocaleString("en-US", {
+					month: "long",
+					year: "numeric",
+				});
+				return `${iso} ${long}`;
 			},
 		},
 	],
 	threshold: 0.4,
 	includeScore: true,
+	includeMatches: true,
 	useExtendedSearch: true,
 	ignoreLocation: true,
 	fieldNormWeight: 1.5,
 	shouldSort: true,
 };
 
-const detectSearchIntent = (query: string) => {
-	const patterns = {
-		date: /^(date:|on:)?\s*(\d{4}(-\d{2})?(-\d{2})?|yesterday|today|last\s+week|last\s+month|this\s+month)/i,
-		tag: /^(tag:|tags:|#)\s*\w+/i,
-		author: /^(author:|by:)\s*\w+/i,
-	};
+// --- Search Intent Detection ---
 
-	if (patterns.date.test(query)) {
-		return { type: "date", weight: 2.0 };
-	}
-	if (patterns.tag.test(query)) {
-		return { type: "tag", weight: 2.0 };
-	}
-	if (patterns.author.test(query)) {
-		return { type: "author", weight: 2.0 };
-	}
-	return { type: "general", weight: 1.0 };
+const INTENT_PATTERNS: Record<string, RegExp> = {
+	date: /^(date:|on:)?\s*(\d{4}(-\d{2})?(-\d{2})?|yesterday|today|last\s+week|last\s+month|this\s+month)/i,
+	tag: /^(tag:|tags:|#)\s*\w+/i,
+	author: /^(author:|by:)\s*\w+/i,
 };
 
+const PREFIX_PATTERN = /^(date:|tag:|tags:|#|author:|by:|on:)\s*/;
+
+type SearchIntentType = "date" | "tag" | "author" | "general";
+
+const detectSearchIntent = (query: string): SearchIntentType => {
+	for (const [type, pattern] of Object.entries(INTENT_PATTERNS)) {
+		if (pattern.test(query)) return type as SearchIntentType;
+	}
+	return "general";
+};
+
+const stripIntentPrefix = (query: string): string =>
+	query.replace(PREFIX_PATTERN, "");
+
+// --- Search Syntax Processing ---
+
+const processSearchTerms = (query: string): string =>
+	query
+		.split(" ")
+		.filter((term) => term.length > 0)
+		.map((term) => {
+			if (term.startsWith('"') && term.endsWith('"') && term.length > 2)
+				return `=${term.slice(1, -1)}`;
+			if (term.startsWith("-") && term.length > 1) return `!${term.slice(1)}`;
+			if (term.startsWith("+") && term.length > 1) return `'${term.slice(1)}`;
+			return term;
+		})
+		.join(" ");
+
+// --- Relevance Scoring ---
+
+const calculateRelevance = (
+	fuseScore: number,
+	pubDate: Date,
+	intentType: SearchIntentType,
+): number => {
+	const baseScore = 1 - fuseScore;
+
+	// Linear decay: 0.15 for brand-new posts → 0 at 5 years old
+	const ageInDays = (Date.now() - pubDate.getTime()) / (1000 * 60 * 60 * 24);
+	const freshnessBoost = Math.max(0, 0.15 * (1 - ageInDays / (5 * 365)));
+
+	const intentBonus = intentType !== "general" ? 0.1 : 0;
+
+	return baseScore + freshnessBoost + intentBonus;
+};
+
+// --- Cache Management (module-level, survives re-renders) ---
+
+const searchCache = new Map<string, SearchCache>();
+
+const getFromCache = (query: string): SearchCache | null => {
+	const cached = searchCache.get(query);
+	if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+		return cached;
+	}
+	if (cached) searchCache.delete(query);
+	return null;
+};
+
+const addToCache = (
+	query: string,
+	searchResults: Post[],
+	stats: SearchState["searchStats"],
+): void => {
+	// Delete first to update insertion order (LRU behavior)
+	searchCache.delete(query);
+	if (searchCache.size >= MAX_CACHE_SIZE) {
+		const oldestKey = searchCache.keys().next().value;
+		if (oldestKey !== undefined) searchCache.delete(oldestKey);
+	}
+	searchCache.set(query, {
+		results: searchResults,
+		stats,
+		timestamp: Date.now(),
+	});
+};
+
+// --- localStorage Helpers (with shape validation) ---
+
+const loadSearchHistory = (): string[] => {
+	try {
+		const raw = localStorage.getItem(SEARCH_HISTORY_KEY);
+		if (!raw) return [];
+		const parsed: unknown = JSON.parse(raw);
+		if (!Array.isArray(parsed)) return [];
+		return parsed
+			.filter((item): item is string => typeof item === "string")
+			.slice(0, MAX_HISTORY_ITEMS);
+	} catch {
+		return [];
+	}
+};
+
+const saveSearchHistory = (history: string[]): void => {
+	try {
+		localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
+	} catch {
+		// localStorage might be full or disabled
+	}
+};
+
+// --- Extract matched fields from Fuse results ---
+
+const extractMatchedFields = (
+	matches: readonly FuseResultMatch[] | undefined,
+): string[] => {
+	if (!matches) return [];
+	const fields = new Set<string>();
+	for (const match of matches) {
+		if (match.key) fields.add(match.key);
+	}
+	return Array.from(fields);
+};
+
+// --- Hook ---
+
 const useSearch = (posts: Post[]): SearchState => {
-	const [query, setQuery] = useState<string>("");
+	const [query, setQuery] = useState("");
 	const [results, setResults] = useState<Post[]>([]);
-	const [searchStats, setSearchStats] = useState({
+	const [searchStats, setSearchStats] = useState<SearchState["searchStats"]>({
 		totalResults: 0,
 		searchTime: 0,
 		relevanceScore: 0,
-		matchedFields: [] as string[],
+		matchedFields: [],
 	});
-	const [searchHistory, setSearchHistory] = useState<string[]>(() =>
-		loadSearchHistory(),
+	const [searchHistory, setSearchHistory] =
+		useState<string[]>(loadSearchHistory);
+	const historyTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+		undefined,
 	);
 
-	const clearHistory = useCallback(() => {
-		setSearchHistory([]);
-		saveSearchHistory([]);
-	}, []);
-
-	const updateSearchHistory = useCallback((newQuery: string) => {
-		if (!newQuery.trim()) return;
-
-		setSearchHistory((prev) => {
-			const newHistory = [
-				newQuery,
-				...prev.filter((q) => q !== newQuery),
-			].slice(0, MAX_HISTORY_ITEMS);
-
-			saveSearchHistory(newHistory);
-			return newHistory;
-		});
-	}, []);
-
-	const checkCache = useCallback((searchQuery: string) => {
-		const cached = searchCache.get(searchQuery);
-		if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-			return cached;
-		}
-		return null;
-	}, []);
-
-	const updateCache = useCallback(
-		(
-			searchQuery: string,
-			results: Post[],
-			stats: SearchState["searchStats"],
-		) => {
-			searchCache.set(searchQuery, {
-				results,
-				stats,
-				timestamp: Date.now(),
-			});
-		},
-		[],
-	);
-
+	// Safety net: filter drafts/archived even if caller already did
 	const filteredPosts = useMemo(
 		() => posts.filter((post) => !post.data.draft && !post.data.archived),
 		[posts],
 	);
 
 	const fuse = useMemo(
-		() => new Fuse(filteredPosts, UNIFIED_SEARCH_CONFIG),
+		() => new Fuse(filteredPosts, FUSE_CONFIG),
 		[filteredPosts],
 	);
+
+	const commitToHistory = useCallback((searchQuery: string) => {
+		if (!searchQuery.trim()) return;
+		setSearchHistory((prev) => {
+			const updated = [
+				searchQuery,
+				...prev.filter((q) => q !== searchQuery),
+			].slice(0, MAX_HISTORY_ITEMS);
+			saveSearchHistory(updated);
+			return updated;
+		});
+	}, []);
+
+	const clearHistory = useCallback(() => {
+		setSearchHistory([]);
+		saveSearchHistory([]);
+	}, []);
 
 	const performSearch = useCallback(
 		(searchQuery: string) => {
@@ -185,7 +230,7 @@ const useSearch = (posts: Post[]): SearchState => {
 				return;
 			}
 
-			const cached = checkCache(searchQuery);
+			const cached = getFromCache(searchQuery);
 			if (cached) {
 				setResults(cached.results);
 				setSearchStats(cached.stats);
@@ -193,89 +238,70 @@ const useSearch = (posts: Post[]): SearchState => {
 			}
 
 			const startTime = performance.now();
-			const searchIntent = detectSearchIntent(searchQuery);
+			const intentType = detectSearchIntent(searchQuery);
 
 			let processedQuery = searchQuery;
-			if (searchIntent.type !== "general") {
-				processedQuery = searchQuery.replace(
-					/^(date:|tag:|tags:|#|author:|by:|on:)\s*/,
-					"",
-				);
+			if (intentType !== "general") {
+				processedQuery = stripIntentPrefix(searchQuery);
 			}
+			processedQuery = processSearchTerms(processedQuery);
 
-			const terms = processedQuery.split(" ").map((term) => {
-				if (term.startsWith('"') && term.endsWith('"')) {
-					return `=${term.slice(1, -1)}`;
-				}
-				if (term.startsWith("-")) {
-					return `!${term.slice(1)}`;
-				}
-				if (term.startsWith("+")) {
-					return `'${term.slice(1)}`;
-				}
-				return term;
-			});
+			const fuseResults = fuse.search(processedQuery);
 
-			const searchResults = fuse.search(terms.join(" "));
+			const scoredResults = fuseResults
+				.filter((r) => r.score != null && r.score < SCORE_THRESHOLD)
+				.map((r) => ({
+					post: r.item,
+					relevance: calculateRelevance(
+						r.score ?? 0,
+						r.item.data.pubDate,
+						intentType,
+					),
+					matchedFields: extractMatchedFields(r.matches),
+				}))
+				.sort((a, b) => b.relevance - a.relevance);
 
-			const enhancedResults = searchResults
-				.filter((result) => result.score && result.score < 0.6)
-				.map((result) => {
-					const relevanceScore = calculateRelevance(result, searchIntent);
-					const matchedFields = UNIFIED_SEARCH_CONFIG.keys
-						.map((key) => (typeof key === "string" ? key : key.name))
-						.filter((key) => {
-							const value = key
-								.split(".")
-								.reduce((obj, k) => obj?.[k], result.item);
-							return (
-								value &&
-								String(value)
-									.toLowerCase()
-									.includes(processedQuery.toLowerCase())
-							);
-						});
+			const rankedPosts = scoredResults.map((r) => r.post);
+			const allMatchedFields = Array.from(
+				new Set(scoredResults.flatMap((r) => r.matchedFields)),
+			);
+			const avgRelevance = scoredResults.length
+				? scoredResults.reduce((sum, r) => sum + r.relevance, 0) /
+					scoredResults.length
+				: 0;
 
-					return {
-						...result.item,
-						relevanceScore,
-						matchedFields,
-					} as EnhancedPost;
-				})
-				.sort((a, b) => b.relevanceScore - a.relevanceScore);
-
-			const endTime = performance.now();
-			const searchTime = endTime - startTime;
-
-			const stats = {
-				totalResults: enhancedResults.length,
-				searchTime: Math.round(searchTime),
-				relevanceScore: enhancedResults.length
-					? enhancedResults.reduce(
-							(acc, curr) => acc + curr.relevanceScore,
-							0,
-						) / enhancedResults.length
-					: 0,
-				matchedFields: Array.from(
-					new Set(enhancedResults.flatMap((r) => r.matchedFields)),
-				),
+			const searchTime = Math.round(performance.now() - startTime);
+			const stats: SearchState["searchStats"] = {
+				totalResults: rankedPosts.length,
+				searchTime,
+				relevanceScore: avgRelevance,
+				matchedFields: allMatchedFields,
 			};
 
-			setResults(enhancedResults);
+			setResults(rankedPosts);
 			setSearchStats(stats);
-			updateCache(searchQuery, enhancedResults, stats);
-			updateSearchHistory(searchQuery);
+			addToCache(searchQuery, rankedPosts, stats);
 		},
-		[checkCache, updateCache, updateSearchHistory, fuse],
+		[fuse],
 	);
 
+	// Debounced search execution
 	useEffect(() => {
-		const timeoutId = setTimeout(() => {
-			performSearch(query);
-		}, 150);
-
-		return () => clearTimeout(timeoutId);
+		const id = setTimeout(() => performSearch(query), DEBOUNCE_MS);
+		return () => clearTimeout(id);
 	}, [query, performSearch]);
+
+	// Delayed history commit: only saves after user stops typing for 1s
+	useEffect(() => {
+		clearTimeout(historyTimerRef.current);
+		if (query.trim()) {
+			historyTimerRef.current = setTimeout(
+				() => commitToHistory(query),
+				HISTORY_COMMIT_MS,
+			);
+		}
+		return () => clearTimeout(historyTimerRef.current);
+	}, [query, commitToHistory]);
 
 	return {
 		query,

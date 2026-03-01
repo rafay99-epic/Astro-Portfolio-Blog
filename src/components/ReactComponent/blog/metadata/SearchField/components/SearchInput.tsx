@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import { LuSearch, LuX } from "react-icons/lu";
 import type { SearchInputProps } from "types/search";
 
@@ -12,6 +12,27 @@ const SearchInput = memo(function SearchInput({
 	isMobile,
 	resultsLength,
 }: SearchInputProps) {
+	const blurTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+		undefined,
+	);
+
+	// Delay blur so click events on result items fire before focus state clears
+	const handleBlur = useCallback(() => {
+		clearTimeout(blurTimerRef.current);
+		blurTimerRef.current = setTimeout(() => setIsSearchFocused(false), 150);
+	}, [setIsSearchFocused]);
+
+	const handleFocus = useCallback(() => {
+		clearTimeout(blurTimerRef.current);
+		setIsSearchFocused(true);
+		setShowSearchTips(true);
+	}, [setIsSearchFocused, setShowSearchTips]);
+
+	// Clean up blur timer on unmount
+	useEffect(() => {
+		return () => clearTimeout(blurTimerRef.current);
+	}, []);
+
 	return (
 		<div className="relative mb-4 flex items-center">
 			<div
@@ -25,11 +46,8 @@ const SearchInput = memo(function SearchInput({
 				type="text"
 				value={query}
 				onChange={(e) => setQuery(e.target.value)}
-				onFocus={() => {
-					setIsSearchFocused(true);
-					setShowSearchTips(true);
-				}}
-				onBlur={() => setIsSearchFocused(false)}
+				onFocus={handleFocus}
+				onBlur={handleBlur}
 				placeholder="Type title or author"
 				aria-label="Search articles"
 				className={`w-full rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 text-[#c0caf5] placeholder-[#a9b1d6] transition-all duration-300 focus:border-[#7aa2f7] focus:shadow-lg focus:shadow-[#7aa2f7]/20 focus:outline-none ${

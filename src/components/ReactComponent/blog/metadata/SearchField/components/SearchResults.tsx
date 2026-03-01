@@ -49,7 +49,7 @@ const SearchResults = memo(function SearchResults({
 						key={post.slug}
 						post={post}
 						index={index}
-						selectedResultIndex={selectedResultIndex}
+						isSelected={selectedResultIndex === index}
 						setSelectedResultIndex={setSelectedResultIndex}
 					/>
 				))}
@@ -61,50 +61,48 @@ const SearchResults = memo(function SearchResults({
 const SearchResultItem = memo(function SearchResultItem({
 	post,
 	index,
-	selectedResultIndex,
+	isSelected,
 	setSelectedResultIndex,
 }: {
 	post: SearchResultsProps["results"][0];
 	index: number;
-	selectedResultIndex: number;
+	isSelected: boolean;
 	setSelectedResultIndex: (index: number) => void;
 }) {
 	return (
-		<motion.div
+		<motion.a
 			data-result-index={index}
+			href={`/blog/${post.slug}`}
 			variants={itemVariants}
-			className={`group relative ${
-				selectedResultIndex === index
-					? "ring-2 ring-[#7aa2f7] ring-opacity-50"
-					: ""
+			className={`group block rounded-2xl border bg-[#24283b]/60 p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-[#7aa2f7]/40 hover:bg-[#24283b]/80 hover:shadow-2xl hover:shadow-[#7aa2f7]/10 ${
+				isSelected
+					? "border-[#7aa2f7]/50 shadow-lg shadow-[#7aa2f7]/10"
+					: "border-[#565f89]/30"
 			}`}
 			whileHover={{ scale: 1.01 }}
+			onMouseEnter={() => setSelectedResultIndex(index)}
 			role="option"
-			aria-selected={selectedResultIndex === index}
+			aria-selected={isSelected}
 		>
-			<a
-				href={`/blog/${post.slug}`}
-				className="block rounded-2xl border border-[#565f89]/30 bg-[#24283b]/60 p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:shadow-2xl hover:shadow-[#7aa2f7]/10"
-				onMouseEnter={() => setSelectedResultIndex(index)}
-			>
-				<h3 className="mb-2 text-xl font-bold text-[#c0caf5] transition-colors group-hover:text-[#7aa2f7]">
-					{post.data.title}
-				</h3>
-				<p className="mb-4 text-[#a9b1d6]">{post.data.description}</p>
-				{post.data.tags && (
-					<div className="flex flex-wrap gap-2">
-						{post.data.tags.map((tag) => (
-							<span
-								key={tag}
-								className="rounded bg-[#1a1b26] px-2 py-1 text-xs text-[#7aa2f7]"
-							>
-								#{tag}
-							</span>
-						))}
-					</div>
-				)}
-			</a>
-		</motion.div>
+			<h3 className="mb-2 text-xl font-bold text-[#c0caf5] transition-colors group-hover:text-[#7aa2f7]">
+				{post.data.title}
+			</h3>
+			<p className="mb-4 text-sm leading-relaxed text-[#a9b1d6]">
+				{post.data.description}
+			</p>
+			{post.data.tags && (
+				<div className="flex flex-wrap gap-2">
+					{post.data.tags.map((tag) => (
+						<span
+							key={tag}
+							className="rounded-lg bg-[#1a1b26]/80 px-2.5 py-1 text-xs text-[#7aa2f7] transition-colors group-hover:bg-[#1a1b26] group-hover:text-[#bb9af7]"
+						>
+							#{tag}
+						</span>
+					))}
+				</div>
+			)}
+		</motion.a>
 	);
 });
 

@@ -8,6 +8,13 @@ import authorConfig from "@config/siteConfig/info.json";
 import SearchReactComponent from "@react/blog/metadata/SearchField/SearchField";
 
 export const prerender = true;
+
+if (!featureFlags.showSearch) {
+	return Astro.redirect("/access-denied");
+}
+
+// Strip `body` before sending to client — full article text is not searched
+// or displayed, so shipping it as serialized JSON wastes significant bandwidth.
 const posts = featureFlags.showBlog
 	? (await getCollection("blog"))
 			.filter(
@@ -18,15 +25,8 @@ const posts = featureFlags.showBlog
 				(a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
 					a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
 			)
+			.map((post: CollectionEntry<"blog">) => ({ ...post, body: "" }))
 	: [];
-
-try {
-	if (!featureFlags.showSearch) {
-		return Astro.redirect("/access-denied");
-	}
-} catch (_error) {
-	return Astro.redirect("/404");
-}
 ---
 
 <!doctype html>

@@ -61,9 +61,10 @@ const Search = memo(function Search({ posts }: SearchProps) {
 		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, [handleKeyDown]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: intentionally triggers on results change
 	useEffect(() => {
 		setSelectedResultIndex(-1);
-	}, []);
+	}, [results]);
 
 	useEffect(() => {
 		if (selectedResultIndex >= 0) {
