@@ -2,11 +2,11 @@
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 
 try {
-	if (!featureFlags.showBlog) {
-		return Astro.redirect("/access-denied");
-	}
+  if (!featureFlags.showBlog) {
+    return Astro.redirect("/access-denied");
+  }
 } catch (_error) {
-	return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
 export const prerender = true;
@@ -105,7 +105,7 @@ const { theme = "dark" } = Astro.props;
           script.src = "https://giscus.app/client.js";
 
           const config = {
-            "data-repo": "rafay99-epic/Astro-Portfolio-Blog",
+            "data-repo": "rafay99-epic/rafay99.com",
             "data-repo-id": "R_kgDOMZI1RA",
             "data-category": "Q&A",
             "data-category-id": "DIC_kwDOMZI1RM4ChJFB",
