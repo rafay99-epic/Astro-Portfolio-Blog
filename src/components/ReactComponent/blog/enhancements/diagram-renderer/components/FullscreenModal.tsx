@@ -1,11 +1,12 @@
 import { memo, useMemo } from "react";
 import { LuChartColumn } from "react-icons/lu";
-import { CheckIcon, CloseIcon, CopyIcon } from "../icons";
+import { CheckIcon, CloseIcon, CopyIcon, DownloadIcon } from "../icons";
 
 interface FullscreenModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	onCopy: () => void;
+	onDownload: () => void;
 	copied: boolean;
 	children: React.ReactNode;
 	diagramType?: string;
@@ -16,6 +17,7 @@ const FullscreenModal = memo(
 		isOpen,
 		onClose,
 		onCopy,
+		onDownload,
 		copied,
 		children,
 		diagramType,
@@ -27,6 +29,8 @@ const FullscreenModal = memo(
 						? "bg-[#9ece6a]/20 border-[#9ece6a]/50 text-[#9ece6a]"
 						: "bg-[#24283b] border-[#565f89]/30 text-[#a9b1d6] hover:bg-[#414868] hover:border-[#7aa2f7]/50 hover:text-[#7aa2f7]"
 				}`,
+				downloadButton:
+					"flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all duration-200 border bg-[#24283b] border-[#565f89]/30 text-[#a9b1d6] hover:bg-[#414868] hover:border-[#bb9af7]/50 hover:text-[#bb9af7]",
 			}),
 			[copied],
 		);
@@ -66,6 +70,15 @@ const FullscreenModal = memo(
 								{copied ? <CheckIcon /> : <CopyIcon />}
 								<span>{copied ? "SVG Copied!" : "Copy SVG"}</span>
 							</button>
+							<button
+								type="button"
+								onClick={onDownload}
+								className={modalClasses.downloadButton}
+								title="Download as PNG"
+							>
+								<DownloadIcon />
+								<span>Download PNG</span>
+							</button>
 							<div className="flex items-center gap-2 text-sm text-[#a9b1d6]">
 								<kbd className="rounded border border-[#565f89]/30 bg-[#24283b] px-2 py-1 font-mono text-xs">
 									ESC
@@ -94,7 +107,8 @@ const FullscreenModal = memo(
 		return (
 			prevProps.isOpen === nextProps.isOpen &&
 			prevProps.copied === nextProps.copied &&
-			prevProps.diagramType === nextProps.diagramType
+			prevProps.diagramType === nextProps.diagramType &&
+			prevProps.onDownload === nextProps.onDownload
 		);
 	},
 );
