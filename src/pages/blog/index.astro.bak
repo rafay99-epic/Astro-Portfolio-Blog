@@ -7,14 +7,9 @@ import Header from "@astro/header/Header.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
 
+export const prerender = false;
+
 const postsPerPage = 9;
-
-const { page } = Astro.params;
-const currentPage = page ? parseInt(page, 10) : 1;
-
-if (Number.isNaN(currentPage) || currentPage < 1) {
-	return Astro.redirect("/blog");
-}
 
 const allPosts = (await getCollection("blog"))
 	.filter(
@@ -28,13 +23,13 @@ const allPosts = (await getCollection("blog"))
 const totalPosts = allPosts.length;
 const totalPages = Math.ceil(totalPosts / postsPerPage);
 
-if (currentPage > totalPages && totalPages > 0) {
-	return Astro.redirect("/blog");
-}
+const currentPage = 1;
 
-const startIndex = (currentPage - 1) * postsPerPage;
-const endIndex = startIndex + postsPerPage;
-const posts: CollectionEntry<"blog">[] = allPosts.slice(startIndex, endIndex);
+const posts: CollectionEntry<"blog">[] = allPosts.slice(0, postsPerPage);
+const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
+const remainingPosts = featuredPost
+	? posts.filter((post) => post !== featuredPost)
+	: [];
 
 const tagCounts = new Map();
 for (const post of allPosts) {
@@ -42,6 +37,20 @@ for (const post of allPosts) {
 		tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
 	}
 }
+
+const topTags = Array.from(tagCounts.entries())
+	.sort((a, b) => b[1] - a[1])
+	.slice(0, 5)
+	.map(([tag]) => tag);
+
+const latestPostDate = allPosts[0]?.data.pubDate;
+const latestPostLabel = latestPostDate
+	? new Date(latestPostDate).toLocaleDateString("en-US", {
+			month: "short",
+			day: "numeric",
+			year: "numeric",
+		})
+	: "—";
 
 const formatDate = (date: Date) =>
 	new Date(date).toLocaleDateString("en-US", {
@@ -65,17 +74,31 @@ try {
 <html lang="en">
   <head>
     <BaseHead
-      title={`Articles - Page ${currentPage} | ${authorConfig.SiteName}`}
-      description={`Browse articles on page ${currentPage} of ${authorConfig.SiteName}.`}
+      title={`Articles | ${authorConfig.SiteName}`}
+      description={`Browse all articles on ${authorConfig.SiteName} and explore categorized content.`}
     />
 
-    <style>
+    <style is:inline>
       html {
-        background-color: #1a1b26;
+        background-color: #1a1b26 !important;
+      }
+      body {
+        background-color: #1a1b26 !important;
+      }
+      #__astro {
+        background-color: #1a1b26 !important;
+      }
+    </style>
+
+    <style>
+      /* Prevent white flash */
+      html {
+        background-color: #1a1b26 !important;
       }
 
       body {
-        background-color: #1a1b26;
+        background-color: #1a1b26 !important;
+        transition: none !important;
       }
     </style>
 
@@ -85,9 +108,9 @@ try {
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Blog",
-        name: `${authorConfig.SiteName} Blog - Page ${currentPage}`,
-        description: `Browse articles on page ${currentPage} of ${authorConfig.SiteName}.`,
-        url: `https://rafay99.com/blog/page/${currentPage}`,
+        name: `${authorConfig.SiteName} Blog`,
+        description: `Browse all articles on ${authorConfig.SiteName} and explore categorized content.`,
+        url: "https://rafay99.com/blog",
         publisher: {
           "@type": "Organization",
           name: authorConfig.SiteName,
@@ -106,7 +129,7 @@ try {
               name: post.data.authorName,
             },
             datePublished: post.data.pubDate.toISOString(),
-            url: `https://rafay99.com/blog/${post.id}`,
+            url: `https://rafay99.com/blog/${post.slug}`,
             keywords: post.data.tags?.join(", ") || "blog, technology",
           }),
         ),
@@ -118,38 +141,94 @@ try {
 
     <main class="feed-shell mx-auto w-full max-w-3xl flex-1 px-5 pb-24 pt-14 sm:px-6">
 
-      <!-- ─── Compact Page Header ─── -->
+      <!-- ─── Minimal Hero ─── -->
       <header class="feed-hero fade-up">
-        <h1 class="feed-title">Articles</h1>
-        <div class="feed-meta-bar">
-          <span class="meta-stat">Page {currentPage} of {totalPages}</span>
-          <span class="meta-dot">&middot;</span>
-          <span class="meta-stat">{totalPosts} total articles</span>
+        <h1 class="feed-title">Articles, deep dives, and build notes.</h1>
+        <p class="feed-sub">
+          A curated stream of engineering stories, product explorations, and
+          opinionated guides. Written with clarity, built for people who ship.
+        </p>
+        <div class="feed-meta-bar fade-up delay-1">
+          <span class="meta-stat">{totalPosts} articles</span>
           <span class="meta-dot">&middot;</span>
           <span class="meta-stat">{tagCounts.size} topics</span>
+          <span class="meta-dot">&middot;</span>
+          <span class="meta-stat">Latest {latestPostLabel}</span>
           <span class="meta-dot meta-dot--actions">&middot;</span>
           <div class="meta-actions">
-            <a href="/blog" class="meta-link">Latest</a>
             <a href="/blog/archive" class="meta-link">Archive</a>
             {showSearch && <a href="/search" class="meta-link">Search</a>}
             {showTags && <a href="/tag" class="meta-link">Tags</a>}
           </div>
         </div>
+        {
+          showTags && topTags.length > 0 && (
+            <div class="tag-rail fade-up delay-2">
+              {topTags.map((tag) => (
+                <a
+                  href={`/tag/${encodeURIComponent(tag)}`}
+                  class="tag-pill"
+                >
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          )
+        }
       </header>
 
       {posts.length === 0 && (
         <div class="empty-state">
-          <p>No articles on this page.</p>
+          <p>No published articles yet. Check back soon.</p>
         </div>
       )}
 
+      <!-- ─── Featured Post ─── -->
+      {
+        featuredPost && (
+          <a href={`/blog/${featuredPost.slug}`} class="featured-card group fade-up delay-1">
+            <div class="featured-image-wrap">
+              {featuredPost.data.heroImage ? (
+                <Image
+                  src={featuredPost.data.heroImage}
+                  alt={featuredPost.data.title}
+                  width={720}
+                  height={400}
+                  loading="eager"
+                  decoding="async"
+                  class="featured-img"
+                />
+              ) : (
+                <div class="featured-fallback" aria-hidden="true" />
+              )}
+            </div>
+            <div class="featured-body">
+              <span class="featured-kicker">Featured</span>
+              <h2 class="featured-title">{featuredPost.data.title}</h2>
+              <p class="featured-excerpt line-clamp-2">
+                {featuredPost.data.excerpt || featuredPost.data.description}
+              </p>
+              <div class="featured-footer">
+                <span class="featured-date">{formatDate(featuredPost.data.pubDate)}</span>
+                {featuredPost.data.tags?.[0] && (
+                  <span class="featured-tag">#{featuredPost.data.tags[0]}</span>
+                )}
+                <span class="featured-cta">
+                  Read story <span class="cta-arrow">&rarr;</span>
+                </span>
+              </div>
+            </div>
+          </a>
+        )
+      }
+
       <!-- ─── Article Feed ─── -->
       {
-        posts.length > 0 && (
+        remainingPosts.length > 0 && (
           <section class="feed-list">
-            {posts.map((post, index) => (
+            {remainingPosts.map((post, index) => (
               <a
-                href={`/blog/${post.id}`}
+                href={`/blog/${post.slug}`}
                 class:list={["feed-item group", `fade-up delay-${Math.min(index + 1, 4)}`]}
               >
                 <div class="feed-item-thumb">
@@ -159,7 +238,7 @@ try {
                       alt={post.data.title}
                       width={160}
                       height={160}
-                      loading={index < 3 ? "eager" : "lazy"}
+                      loading="lazy"
                       decoding="async"
                       class="feed-item-img"
                     />
@@ -232,7 +311,7 @@ try {
 
     <style>
       /* ═══════════════════════════════════════════
-         Clean Feed — Paginated pages
+         Clean Feed — Substack / Medium inspired
          ═══════════════════════════════════════════ */
 
       .feed-shell {
@@ -242,17 +321,25 @@ try {
 
       /* ─── Hero ─── */
       .feed-hero {
-        padding-bottom: 1.5rem;
+        padding-bottom: 2rem;
         border-bottom: 1px solid rgba(86, 95, 137, 0.25);
-        margin-bottom: 0.5rem;
+        margin-bottom: 2.5rem;
       }
 
       .feed-title {
-        font-size: clamp(1.8rem, 2.5vw + 0.8rem, 2.6rem);
+        font-size: clamp(2rem, 3vw + 1rem, 3.2rem);
         font-weight: 700;
         line-height: 1.1;
         color: #f8f8ff;
         letter-spacing: -0.02em;
+      }
+
+      .feed-sub {
+        margin-top: 0.85rem;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: var(--color-text-secondary, #a9b1d6);
+        max-width: 38rem;
       }
 
       .feed-meta-bar {
@@ -260,7 +347,7 @@ try {
         flex-wrap: wrap;
         align-items: center;
         gap: 0.5rem;
-        margin-top: 0.75rem;
+        margin-top: 1.25rem;
         font-size: 0.85rem;
       }
 
@@ -287,6 +374,141 @@ try {
         color: #bb9af7;
       }
 
+      .tag-rail {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin-top: 1.1rem;
+      }
+
+      .tag-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem 0.65rem;
+        border-radius: 999px;
+        border: 1px solid rgba(86, 95, 137, 0.4);
+        font-size: 0.75rem;
+        color: var(--color-text-secondary, #a9b1d6);
+        background: rgba(36, 40, 59, 0.5);
+        transition:
+          border-color 0.25s ease,
+          color 0.25s ease;
+      }
+
+      .tag-pill:hover {
+        border-color: rgba(122, 162, 247, 0.6);
+        color: #dbe2ff;
+      }
+
+      /* ─── Featured Card ─── */
+      .featured-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        border-radius: 20px;
+        border: 1px solid rgba(86, 95, 137, 0.3);
+        background: rgba(36, 40, 59, 0.5);
+        overflow: hidden;
+        margin-bottom: 2rem;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .featured-card:hover {
+        border-color: rgba(122, 162, 247, 0.55);
+        box-shadow: 0 16px 40px rgba(10, 12, 22, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .featured-image-wrap {
+        position: relative;
+        overflow: hidden;
+        min-height: 240px;
+      }
+
+      .featured-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+
+      .featured-card:hover .featured-img {
+        transform: scale(1.03);
+      }
+
+      .featured-fallback {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(36, 40, 59, 0.9), rgba(122, 162, 247, 0.3));
+      }
+
+      .featured-body {
+        padding: 1.6rem 1.8rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.6rem;
+      }
+
+      .featured-kicker {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #7aa2f7;
+        font-weight: 600;
+      }
+
+      .featured-title {
+        font-size: clamp(1.25rem, 1.5vw + 0.8rem, 1.75rem);
+        font-weight: 700;
+        line-height: 1.25;
+        color: #f1f1ff;
+      }
+
+      .featured-excerpt {
+        font-size: 0.9rem;
+        color: var(--color-text-secondary, #a9b1d6);
+        line-height: 1.5;
+      }
+
+      .featured-footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.3rem;
+        font-size: 0.78rem;
+      }
+
+      .featured-date {
+        color: var(--color-text-muted, #565f89);
+      }
+
+      .featured-tag {
+        color: var(--color-text-muted, #565f89);
+      }
+
+      .featured-cta {
+        margin-left: auto;
+        color: #7aa2f7;
+        font-weight: 600;
+        font-size: 0.85rem;
+      }
+
+      .cta-arrow {
+        display: inline-block;
+        transition: transform 0.25s ease;
+      }
+
+      .featured-card:hover .cta-arrow {
+        transform: translateX(3px);
+      }
+
       /* ─── Feed List ─── */
       .feed-list {
         display: flex;
@@ -299,7 +521,8 @@ try {
         gap: 1.1rem;
         padding: 1.35rem 0;
         border-bottom: 1px solid rgba(86, 95, 137, 0.18);
-        transition: background-color 0.25s ease;
+        transition:
+          background-color 0.25s ease;
       }
 
       .feed-item:first-child {
@@ -435,6 +658,13 @@ try {
         overflow: hidden;
       }
 
+      .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
       /* ─── Animations ─── */
       @keyframes fadeUp {
         from {
@@ -469,6 +699,19 @@ try {
 
       /* ─── Responsive ─── */
       @media (max-width: 640px) {
+        .featured-card {
+          grid-template-columns: 1fr;
+        }
+
+        .featured-image-wrap {
+          min-height: 200px;
+          max-height: 220px;
+        }
+
+        .featured-body {
+          padding: 1.2rem 1.4rem 1.4rem;
+        }
+
         .feed-item {
           grid-template-columns: 68px 1fr;
           gap: 0.85rem;
@@ -504,7 +747,9 @@ try {
           animation: none;
         }
 
+        .featured-card,
         .feed-item,
+        .tag-pill,
         .pagination-link {
           transition: none;
         }

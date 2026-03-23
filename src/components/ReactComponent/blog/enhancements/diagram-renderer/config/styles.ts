@@ -61,6 +61,78 @@ export const mermaidConfig = {
 	},
 } as const;
 
+// ---------- DOM-injected button bar styles ----------
+
+export const buttonBarStyles = {
+	container: {
+		position: "absolute",
+		top: "6px",
+		right: "6px",
+		display: "flex",
+		gap: "3px",
+		opacity: "0",
+		visibility: "hidden",
+		pointerEvents: "none",
+		transition: "opacity 0.2s ease, visibility 0.2s ease",
+		zIndex: "10",
+	} as Record<string, string>,
+
+	button: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		width: "28px",
+		height: "28px",
+		padding: "0",
+		borderRadius: "6px",
+		fontSize: "0",
+		lineHeight: "0",
+		border: "1px solid rgba(86,95,137,0.3)",
+		backgroundColor: "rgba(36,40,59,0.85)",
+		color: "#a9b1d6",
+		cursor: "pointer",
+		backdropFilter: "blur(4px)",
+		transition: "all 0.2s ease",
+	} as Record<string, string>,
+
+	badge: {
+		padding: "1px 5px",
+		borderRadius: "4px",
+		fontSize: "10px",
+		fontWeight: "500",
+		lineHeight: "16px",
+		border: "1px solid rgba(86,95,137,0.3)",
+		backgroundColor: "rgba(36,40,59,0.85)",
+		color: "#565f89",
+		backdropFilter: "blur(4px)",
+	} as Record<string, string>,
+} as const;
+
+const MERMAID_HOVER_STYLE_ID = "mermaid-hover-styles";
+
+/** Injects a <style> tag once for hover-reveal behaviour on diagram buttons. */
+export function injectHoverStyles(): void {
+	if (document.getElementById(MERMAID_HOVER_STYLE_ID)) return;
+	const style = document.createElement("style");
+	style.id = MERMAID_HOVER_STYLE_ID;
+	style.textContent = `
+.mermaid-diagram-container { cursor: pointer; }
+.mermaid-diagram-container:hover .mermaid-btn-bar,
+.mermaid-diagram-container:focus-within .mermaid-btn-bar {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+.mermaid-btn:hover,
+.mermaid-btn:focus {
+  background-color: rgba(65,72,104,0.5) !important;
+  border-color: rgba(122,162,247,0.5) !important;
+  color: #7aa2f7 !important;
+  outline: none;
+}`;
+	document.head.appendChild(style);
+}
+
 export const DIAGRAM_TYPES = {
 	graph: "Flowchart",
 	flowchart: "Flowchart",

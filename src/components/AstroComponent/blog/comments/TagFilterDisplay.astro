@@ -169,7 +169,7 @@ const getPageUrl = (page: number) => {
             paginatedPosts.map((post: Post) => (
               <div class="group">
                 <a
-                  href={`/blog/${post.slug}`}
+                  href={`/blog/${post.id}`}
                   class="article-card relative block overflow-hidden rounded-2xl border border-[#565f89]/30 bg-[#24283b]/60 shadow-xl backdrop-blur-xl transition-all duration-500 hover:shadow-2xl hover:shadow-[#7aa2f7]/10"
                 >
                   <div class="p-4 sm:p-6">

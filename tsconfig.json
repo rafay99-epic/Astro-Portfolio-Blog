@@ -27,6 +27,8 @@
 		"jsx": "react-jsx",
 		"jsxImportSource": "react",
 		"types": ["react", "react-dom", "astro/client", "node"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
 		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true
 	}

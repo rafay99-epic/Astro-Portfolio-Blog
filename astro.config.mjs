@@ -12,6 +12,7 @@ const enableHeavyCompression = process.env.HEAVY_COMPRESS === "true";
 
 import partytown from "@astrojs/partytown";
 import playformCompress from "@playform/compress";
+import { fontProviders } from "astro/config";
 import icon from "astro-icon";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
 
@@ -25,11 +26,23 @@ export default defineConfig({
 		concurrency: 10,
 		format: "directory",
 	},
+	fonts: [
+		{
+			name: "Poppins",
+			cssVariable: "--font-poppins",
+			provider: fontProviders.google(),
+		},
+	],
 	prefetch: {
 		prefetchAll: false,
 	},
 	experimental: {
 		svgo: true,
+		queuedRendering: {
+			enabled: true,
+			poolSize: 3000,
+			contentCache: true,
+		},
 	},
 	markdown: {
 		syntaxHighlight: {

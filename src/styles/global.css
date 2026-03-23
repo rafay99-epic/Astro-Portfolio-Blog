@@ -1,3 +1,9 @@
+@import "@fontsource/poppins/300.css";
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/600.css";
+@import "@fontsource/poppins/700.css";
+@import "@fontsource/poppins/900.css";
 @import "devicon/devicon.min.css";
 
 :root {
@@ -17,54 +23,6 @@
 		0 2px 6px rgba(76, 80, 106, 0.25), 0 8px 24px rgba(76, 80, 106, 0.33),
 		0 16px 32px rgba(76, 80, 106, 0.33);
 	--copy-btn-margin: 10px;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Black.ttf") format("truetype");
-	font-weight: 900;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Bold.ttf") format("truetype");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-SemiBold.ttf") format("truetype");
-	font-weight: 600;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Medium.ttf") format("truetype");
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Light.ttf") format("truetype");
-	font-weight: 300;
-	font-style: normal;
-	font-display: swap;
 }
 
 /* Font utilities */

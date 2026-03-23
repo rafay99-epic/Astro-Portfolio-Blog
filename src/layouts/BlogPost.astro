@@ -50,7 +50,7 @@ const BlogPosts = featureFlags.showBlog
 
 const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
 const currentBlog = BlogPosts.find(
-	(post: CollectionEntry<"blog">) => post.slug === currentSlug,
+	(post: CollectionEntry<"blog">) => post.id === currentSlug,
 );
 
 if (!currentBlog) {
@@ -58,7 +58,7 @@ if (!currentBlog) {
 }
 
 const currentIndex = BlogPosts.findIndex(
-	(post: CollectionEntry<"blog">) => post.slug === currentSlug,
+	(post: CollectionEntry<"blog">) => post.id === currentSlug,
 );
 const prevPost = currentIndex > 0 ? BlogPosts[currentIndex - 1] : undefined;
 const nextPost =
@@ -1249,12 +1249,29 @@ const postActionPayload = JSON.stringify({
                       data-ask-chatgpt
                     >
                       <Icon
-                        name="lucide:sparkles"
+                        name="openai"
                         class="post-action-option-icon"
                         aria-hidden="true"
                       />
                       <span class="post-action-option-label">
                         Ask ChatGPT
+                      </span>
+                      <span class="post-action-option-loader" aria-hidden="true"
+                      ></span>
+                    </button>
+                    <button
+                      class="post-action-option"
+                      type="button"
+                      role="menuitem"
+                      data-ask-claude
+                    >
+                      <Icon
+                        name="claude"
+                        class="post-action-option-icon"
+                        aria-hidden="true"
+                      />
+                      <span class="post-action-option-label">
+                        Ask Claude
                       </span>
                       <span class="post-action-option-loader" aria-hidden="true"
                       ></span>
@@ -1364,7 +1381,7 @@ const postActionPayload = JSON.stringify({
           <div class="mx-auto mt-10 flex w-full max-w-4xl items-center justify-between border-t border-[#565f89]/20 px-6 py-8">
             {prevPost ? (
               <a
-                href={`/blog/archive/${prevPost.slug}`}
+                href={`/blog/archive/${prevPost.id}`}
                 class="group flex max-w-xs items-center gap-3 text-left"
               >
                 <div class="flex flex-col">
@@ -1395,7 +1412,7 @@ const postActionPayload = JSON.stringify({
 
             {nextPost ? (
               <a
-                href={`/blog/archive/${nextPost.slug}`}
+                href={`/blog/archive/${nextPost.id}`}
                 class="group flex max-w-xs items-center gap-3 text-right"
               >
                 <svg
@@ -1465,6 +1482,7 @@ const postActionPayload = JSON.stringify({
         );
         const openMarkdownBtn = document.querySelector("[data-open-markdown]");
         const askChatGptBtn = document.querySelector("[data-ask-chatgpt]");
+        const askClaudeBtn = document.querySelector("[data-ask-claude]");
         const postActionData = document.getElementById("post-action-data");
         const tocRoot = document.getElementById("post-toc");
         const tocEmpty = tocRoot?.querySelector("[data-toc-empty]") || null;
@@ -1800,6 +1818,40 @@ const postActionPayload = JSON.stringify({
 
             if (!openedChat) {
               setStatus("Popup blocked while opening ChatGPT");
+            }
+
+            closeActionMenu();
+          });
+        }
+
+        if (askClaudeBtn) {
+          askClaudeBtn.addEventListener("click", async () => {
+            const openedClaude = await runOptionAction(
+              askClaudeBtn,
+              async () => {
+                try {
+                  await navigator.clipboard.writeText(chatPrompt);
+                  setStatus("Prompt copied. Opening Claude...");
+                } catch (error) {
+                  setStatus("Opening Claude (clipboard blocked)");
+                }
+
+                const claudeWindow = window.open(
+                  `https://claude.ai/new?q=${encodeURIComponent(
+                    `Help me with this blog post: ${postActionMeta.title} ${postActionMeta.url}`,
+                  )}`,
+                  "_blank",
+                  "noopener,noreferrer",
+                );
+
+                if (!claudeWindow) {
+                  throw new Error("popup-blocked");
+                }
+              },
+            );
+
+            if (!openedClaude) {
+              setStatus("Popup blocked while opening Claude");
             }
 
             closeActionMenu();

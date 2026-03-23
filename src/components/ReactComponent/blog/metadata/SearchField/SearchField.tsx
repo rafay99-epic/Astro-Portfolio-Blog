@@ -42,7 +42,7 @@ const Search = memo(function Search({ posts }: SearchProps) {
 						break;
 					case "Enter":
 						if (selectedResultIndex >= 0 && results[selectedResultIndex]) {
-							window.location.href = `/blog/${results[selectedResultIndex].slug}`;
+							window.location.href = `/blog/${results[selectedResultIndex].id}`;
 						}
 						break;
 					case "Escape":

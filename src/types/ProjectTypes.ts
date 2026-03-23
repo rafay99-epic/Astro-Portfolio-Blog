@@ -13,7 +13,7 @@ export const ProjectDataSchema = z.object({
 });
 
 export const ProjectSchema = z.object({
-	slug: z.string(),
+	id: z.string(),
 	data: ProjectDataSchema,
 });
 

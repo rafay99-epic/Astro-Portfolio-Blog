@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import type React from "react";
 
 interface BlogPost {
-	slug: string;
+	id: string;
 	data: {
 		title: string;
 		pubDate: Date;
@@ -23,7 +23,7 @@ const BlogNavigation: React.FC<BlogNavigationProps> = ({
 	const normalizedBasePath = basePath.endsWith("/")
 		? basePath.slice(0, -1)
 		: basePath;
-	const currentIndex = allPosts.findIndex((post) => post.slug === currentSlug);
+	const currentIndex = allPosts.findIndex((post) => post.id === currentSlug);
 
 	if (currentIndex === -1) {
 		return null;
@@ -39,7 +39,7 @@ const BlogNavigation: React.FC<BlogNavigationProps> = ({
 		<div className="mx-auto flex w-full max-w-4xl items-center justify-between border-t border-[#565f89]/20 px-6 py-8">
 			{prevPost ? (
 				<motion.a
-					href={`${normalizedBasePath}/${prevPost.slug}`}
+					href={`${normalizedBasePath}/${prevPost.id}`}
 					className="group flex max-w-xs items-center gap-3 text-left"
 					whileHover={{ x: -5 }}
 					transition={{ duration: 0.2 }}
@@ -74,7 +74,7 @@ const BlogNavigation: React.FC<BlogNavigationProps> = ({
 
 			{nextPost ? (
 				<motion.a
-					href={`${normalizedBasePath}/${nextPost.slug}`}
+					href={`${normalizedBasePath}/${nextPost.id}`}
 					className="group flex max-w-xs items-center gap-3 text-right"
 					whileHover={{ x: 5 }}
 					transition={{ duration: 0.2 }}
