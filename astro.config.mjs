@@ -3,7 +3,7 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import robotsTxt from "astro-robots-txt";
 import dotenv from "dotenv";
 
@@ -28,6 +28,18 @@ export default defineConfig({
 	prefetch: {
 		prefetchAll: false,
 	},
+	fonts: [
+		{
+			provider: fontProviders.google(),
+			name: "Poppins",
+			cssVariable: "--font-poppins",
+			weights: [300, 400, 500, 600, 700, 900],
+			styles: ["normal", "italic"],
+			subsets: ["latin"],
+			fallbacks: ["sans-serif"],
+			optimizedFallbacks: true,
+		},
+	],
 	experimental: {
 		svgo: true,
 		queuedRendering: {

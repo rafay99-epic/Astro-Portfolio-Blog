@@ -19,72 +19,24 @@
 	--copy-btn-margin: 10px;
 }
 
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Black.ttf") format("truetype");
-	font-weight: 900;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Bold.ttf") format("truetype");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-SemiBold.ttf") format("truetype");
-	font-weight: 600;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Medium.ttf") format("truetype");
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Poppins";
-	src: url("/fonts/Poppins/Poppins-Light.ttf") format("truetype");
-	font-weight: 300;
-	font-style: normal;
-	font-display: swap;
-}
-
 /* Font utilities */
 .font-poppins {
-	font-family: "Poppins", sans-serif;
+	font-family: var(--font-poppins), "Poppins", sans-serif;
 }
 
 /* Ensure all elements use Poppins by default */
 * {
-	font-family: "Poppins", sans-serif;
+	font-family: var(--font-poppins), "Poppins", sans-serif;
 }
 
 html {
 	scroll-behavior: smooth;
-	font-family: "Poppins", sans-serif;
+	font-family: var(--font-poppins), "Poppins", sans-serif;
 	background-color: #1a1b26;
 }
 
 body {
-	font-family: "Poppins", sans-serif;
+	font-family: var(--font-poppins), "Poppins", sans-serif;
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -140,7 +92,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: "Poppins", sans-serif;
+	font-family: var(--font-poppins), "Poppins", sans-serif;
 	margin: 0 0 0.5em 0;
 	line-height: 1.2;
 	font-weight: 600;
@@ -636,7 +588,7 @@ html {
 
 /* Ensure diagram text is readable */
 .mermaid-diagram-container svg text {
-	font-family: "Poppins", sans-serif;
+	font-family: var(--font-poppins), "Poppins", sans-serif;
 	font-size: 16px;
 	font-weight: 600;
 	fill: #c0caf5;

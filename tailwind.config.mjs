@@ -6,8 +6,8 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				poppins: ["Poppins", "sans-serif"],
-				sans: ["Poppins", "sans-serif"],
+				poppins: ["var(--font-poppins)", "Poppins", "sans-serif"],
+				sans: ["var(--font-poppins)", "Poppins", "sans-serif"],
 			},
 			colors: {
 				...generateTailwindColors(colors),
