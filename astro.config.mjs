@@ -3,7 +3,7 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig } from "astro/config";
 import robotsTxt from "astro-robots-txt";
 import dotenv from "dotenv";
 
@@ -12,6 +12,7 @@ const enableHeavyCompression = process.env.HEAVY_COMPRESS === "true";
 
 import partytown from "@astrojs/partytown";
 import playformCompress from "@playform/compress";
+import { fontProviders } from "astro/config";
 import icon from "astro-icon";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
 
@@ -25,21 +26,16 @@ export default defineConfig({
 		concurrency: 10,
 		format: "directory",
 	},
+	fonts: [
+		{
+			name: "Poppins",
+			cssVariable: "--font-poppins",
+			provider: fontProviders.google(),
+		},
+	],
 	prefetch: {
 		prefetchAll: false,
 	},
-	fonts: [
-		{
-			provider: fontProviders.google(),
-			name: "Poppins",
-			cssVariable: "--font-poppins",
-			weights: [300, 400, 500, 600, 700, 900],
-			styles: ["normal", "italic"],
-			subsets: ["latin"],
-			fallbacks: ["sans-serif"],
-			optimizedFallbacks: true,
-		},
-	],
 	experimental: {
 		svgo: true,
 		queuedRendering: {

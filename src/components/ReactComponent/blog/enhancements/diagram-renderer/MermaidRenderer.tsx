@@ -31,23 +31,8 @@ const MermaidRenderer = memo(function MermaidRenderer() {
 	const handleCopy = useCallback(() => {
 		if (!fullscreen.svgHtml) return;
 
-		const copyText = (text: string): Promise<void> => {
-			if (navigator.clipboard?.writeText) {
-				return navigator.clipboard.writeText(text);
-			}
-			// Legacy fallback for older browsers / insecure contexts
-			const textarea = document.createElement("textarea");
-			textarea.value = text;
-			textarea.style.position = "fixed";
-			textarea.style.opacity = "0";
-			document.body.appendChild(textarea);
-			textarea.select();
-			document.execCommand("copy");
-			document.body.removeChild(textarea);
-			return Promise.resolve();
-		};
-
-		copyText(fullscreen.svgHtml)
+		navigator.clipboard
+			.writeText(fullscreen.svgHtml)
 			.then(() => {
 				setCopied(true);
 				setTimeout(() => setCopied(false), 2000);

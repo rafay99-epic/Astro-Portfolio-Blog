@@ -24,6 +24,7 @@
 		"@astrojs/tailwind": "^6.0.2",
 		"@astrojs/ts-plugin": "1.10.7",
 		"@astrojs/vercel": "10.0.2",
+		"@fontsource/poppins": "^5.2.7",
 		"@playform/compress": "^0.2.0",
 		"@rollup/plugin-yaml": "^4.1.2",
 		"@tailwindcss/typography": "^0.5.19",
