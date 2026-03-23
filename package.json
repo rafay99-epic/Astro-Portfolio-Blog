@@ -7,7 +7,6 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"check": "astro check",
-		"scan": "npx react-scan@latest http://localhost:4321",
 		"ci": "biome check . && tsc --noEmit --skipLibCheck && astro check && astro build",
 		"lint": "biome check . && tsc --noEmit --skipLibCheck",
 		"lint:fix": "biome check --write . && tsc --noEmit --skipLibCheck",

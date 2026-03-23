@@ -322,11 +322,13 @@ try {
       {totalPages > 1 && (
         <nav class="pagination fade-up" aria-label="Pagination">
           <a
-            href={currentPage > 1 ? `/blog/page/${currentPage - 1}` : "#"}
+            href={currentPage > 1 ? `/blog/page/${currentPage - 1}` : undefined}
             class:list={[
               "pagination-link",
               currentPage > 1 ? "pagination-active" : "pagination-disabled",
             ]}
+            aria-disabled={currentPage > 1 ? undefined : "true"}
+            tabindex={currentPage > 1 ? undefined : "-1"}
           >
             &larr; Previous
           </a>
@@ -336,11 +338,13 @@ try {
             <span class="pagination-total">{totalPages}</span>
           </div>
           <a
-            href={currentPage < totalPages ? `/blog/page/${currentPage + 1}` : "#"}
+            href={currentPage < totalPages ? `/blog/page/${currentPage + 1}` : undefined}
             class:list={[
               "pagination-link",
               currentPage < totalPages ? "pagination-active" : "pagination-disabled",
             ]}
+            aria-disabled={currentPage < totalPages ? undefined : "true"}
+            tabindex={currentPage < totalPages ? undefined : "-1"}
           >
             Next &rarr;
           </a>
@@ -1113,6 +1117,8 @@ try {
 
         .spotlight-number {
           font-size: 3rem;
+          top: auto;
+          left: auto;
           bottom: -0.5rem;
           right: 0.75rem;
         }
@@ -1123,6 +1129,7 @@ try {
         }
 
         .story-card-visual {
+          padding-bottom: 0;
           height: 180px;
         }
 
