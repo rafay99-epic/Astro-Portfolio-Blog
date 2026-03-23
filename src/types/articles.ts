@@ -15,8 +15,6 @@ export const PostDataSchema = z.object({
 
 export const PostSchema = z.object({
 	id: z.string(),
-	slug: z.string(),
-	body: z.string(),
 	collection: z.string(),
 	data: PostDataSchema,
 });

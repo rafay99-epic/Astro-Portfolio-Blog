@@ -83,7 +83,7 @@ try {
           <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
             {archivedPosts.map((post: BlogCollectionEntry) => (
               <article>
-                <a href={`/blog/archive/${post.slug}`} class="block">
+                <a href={`/blog/archive/${post.id}`} class="block">
                   <div class="mb-6 h-64 overflow-hidden rounded-xl">
                     <img
                       src={post.data.heroImage || "/default-image.jpg"}

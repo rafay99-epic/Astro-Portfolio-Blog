@@ -30,11 +30,11 @@ export async function GET() {
 			(project: CollectionEntry<"projects">) => {
 				try {
 					return ProjectSchema.parse({
-						slug: project.slug,
+						id: project.id,
 						data: project.data,
 					});
 				} catch (error) {
-					console.error("Validation error for project:", project.slug, error);
+					console.error("Validation error for project:", project.id, error);
 					throw error;
 				}
 			},

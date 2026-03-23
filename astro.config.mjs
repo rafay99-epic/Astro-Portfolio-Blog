@@ -30,6 +30,11 @@ export default defineConfig({
 	},
 	experimental: {
 		svgo: true,
+		queuedRendering: {
+			enabled: true,
+			poolSize: 3000,
+			contentCache: true,
+		},
 	},
 	markdown: {
 		syntaxHighlight: {

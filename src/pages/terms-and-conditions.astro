@@ -1,5 +1,5 @@
 ---
-import { getEntry } from "astro:content";
+import { getEntry, render } from "astro:content";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import Legal from "@layouts/Legal.astro";
 
@@ -19,7 +19,7 @@ if (!entry) {
 	return Astro.redirect("/404");
 }
 
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 ---
 
 {

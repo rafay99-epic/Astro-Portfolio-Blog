@@ -35,12 +35,6 @@ if (currentPage > totalPages && totalPages > 0) {
 const startIndex = (currentPage - 1) * postsPerPage;
 const endIndex = startIndex + postsPerPage;
 const posts: CollectionEntry<"blog">[] = allPosts.slice(startIndex, endIndex);
-const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
-const remainingPosts = featuredPost
-	? posts.filter((post) => post !== featuredPost)
-	: [];
-const quickReads = remainingPosts.slice(0, 3);
-const mosaicPosts = remainingPosts.slice(3);
 
 const tagCounts = new Map();
 for (const post of allPosts) {
@@ -48,20 +42,6 @@ for (const post of allPosts) {
 		tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
 	}
 }
-
-const topTags = Array.from(tagCounts.entries())
-	.sort((a, b) => b[1] - a[1])
-	.slice(0, 5)
-	.map(([tag]) => tag);
-
-const latestPostDate = allPosts[0]?.data.pubDate;
-const latestPostLabel = latestPostDate
-	? new Date(latestPostDate).toLocaleDateString("en-US", {
-			month: "short",
-			day: "numeric",
-			year: "numeric",
-		})
-	: "—";
 
 const formatDate = (date: Date) =>
 	new Date(date).toLocaleDateString("en-US", {
@@ -126,7 +106,7 @@ try {
               name: post.data.authorName,
             },
             datePublished: post.data.pubDate.toISOString(),
-            url: `https://rafay99.com/blog/${post.slug}`,
+            url: `https://rafay99.com/blog/${post.id}`,
             keywords: post.data.tags?.join(", ") || "blog, technology",
           }),
         ),
@@ -136,238 +116,85 @@ try {
   <body class="flex min-h-screen flex-col bg-[#1a1b26] text-[#a9b1d6]">
     <Header />
 
-    <main
-      class="blog-shell mx-auto w-full max-w-7xl flex-1 px-4 pb-20 pt-12 sm:px-6 lg:px-10"
-    >
-      <section class="blog-hero">
-        <div class="hero-glow" aria-hidden="true">
-          <span class="hero-orb hero-orb--one"></span>
-          <span class="hero-orb hero-orb--two"></span>
-          <span class="hero-orb hero-orb--three"></span>
-        </div>
+    <main class="feed-shell mx-auto w-full max-w-3xl flex-1 px-5 pb-24 pt-14 sm:px-6">
 
-        <div
-          class="relative z-10 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
-        >
-          <div>
-            <p class="eyebrow fade-up">Studio Journal</p>
-            <h1 class="hero-title fade-up delay-1">
-              Articles, deep dives, and build notes.
-            </h1>
-            <p class="hero-sub fade-up delay-2">
-              A curated stream of engineering stories, product explorations, and
-              opinionated guides. Written with clarity, built for people who
-              ship.
-            </p>
-            <div class="hero-actions fade-up delay-3">
-              <a href="/blog/archive" class="btn btn-primary">View archive</a>
-              {
-                showSearch && (
-                  <a href="/search" class="btn btn-ghost">
-                    Search articles
-                  </a>
-                )
-              }
-              {
-                showTags && (
-                  <a href="/tag" class="btn btn-ghost">
-                    Browse tags
-                  </a>
-                )
-              }
-            </div>
-            {
-              showTags && topTags.length > 0 && (
-                <div class="tag-rail fade-up delay-4">
-                  {topTags.map((tag) => (
-                    <a href={`/tag/${tag}`} class="tag-pill">
-                      #{tag}
-                    </a>
-                  ))}
-                </div>
-              )
-            }
-          </div>
-
-          <div class="hero-stats fade-up delay-2">
-            <div class="stat-card">
-              <span class="stat-label">Total articles</span>
-              <span class="stat-value">{totalPosts}</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">Topics covered</span>
-              <span class="stat-value">{tagCounts.size}</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">Latest drop</span>
-              <span class="stat-value">{latestPostLabel}</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">Pages</span>
-              <span class="stat-value">{totalPages}</span>
-            </div>
+      <!-- ─── Compact Page Header ─── -->
+      <header class="feed-hero fade-up">
+        <h1 class="feed-title">Articles</h1>
+        <div class="feed-meta-bar">
+          <span class="meta-stat">Page {currentPage} of {totalPages}</span>
+          <span class="meta-dot">&middot;</span>
+          <span class="meta-stat">{totalPosts} total articles</span>
+          <span class="meta-dot">&middot;</span>
+          <span class="meta-stat">{tagCounts.size} topics</span>
+          <span class="meta-dot meta-dot--actions">&middot;</span>
+          <div class="meta-actions">
+            <a href="/blog" class="meta-link">Latest</a>
+            <a href="/blog/archive" class="meta-link">Archive</a>
+            {showSearch && <a href="/search" class="meta-link">Search</a>}
+            {showTags && <a href="/tag" class="meta-link">Tags</a>}
           </div>
         </div>
-      </section>
+      </header>
 
-      {
-        posts.length === 0 && (
-          <div class="empty-state">
-            <p>No published articles yet. Check back soon.</p>
-          </div>
-        )
-      }
+      {posts.length === 0 && (
+        <div class="empty-state">
+          <p>No articles on this page.</p>
+        </div>
+      )}
 
+      <!-- ─── Article Feed ─── -->
       {
-        featuredPost && (
-          <section class="mt-14 grid gap-8 lg:grid-cols-12">
-            <div class="lg:col-span-7">
+        posts.length > 0 && (
+          <section class="feed-list">
+            {posts.map((post, index) => (
               <a
-                href={`/blog/${featuredPost.slug}`}
-                class="featured-card group"
+                href={`/blog/${post.id}`}
+                class:list={["feed-item group", `fade-up delay-${Math.min(index + 1, 4)}`]}
               >
-                <div class="media-frame media-frame--hero">
-                  {featuredPost.data.heroImage ? (
+                <div class="feed-item-thumb">
+                  {post.data.heroImage ? (
                     <Image
-                      src={featuredPost.data.heroImage}
-                      alt={featuredPost.data.title}
-                      width={800}
-                      height={440}
-                      loading="eager"
+                      src={post.data.heroImage}
+                      alt={post.data.title}
+                      width={160}
+                      height={160}
+                      loading={index < 3 ? "eager" : "lazy"}
                       decoding="async"
+                      class="feed-item-img"
                     />
                   ) : (
-                    <div class="media-fallback" aria-hidden="true" />
+                    <div class="feed-item-fallback" aria-hidden="true" />
                   )}
-                  <div class="media-overlay" />
                 </div>
-                <div class="featured-body">
-                  <span class="featured-kicker">Featured story</span>
-                  <div class="meta-line">
-                    <span>{formatDate(featuredPost.data.pubDate)}</span>
-                    {featuredPost.data.readTime && (
-                      <span>• {featuredPost.data.readTime}</span>
+                <div class="feed-item-body">
+                  <div class="feed-item-meta">
+                    <span>{formatDate(post.data.pubDate)}</span>
+                    {post.data.readTime && (
+                      <>
+                        <span class="meta-dot">&middot;</span>
+                        <span>{post.data.readTime}</span>
+                      </>
                     )}
-                    {featuredPost.data.tags?.[0] && (
-                      <span>• #{featuredPost.data.tags[0]}</span>
+                    {post.data.tags?.[0] && (
+                      <>
+                        <span class="meta-dot">&middot;</span>
+                        <span class="feed-item-tag">#{post.data.tags[0]}</span>
+                      </>
                     )}
                   </div>
-                  <h2 class="featured-title">{featuredPost.data.title}</h2>
-                  <p class="featured-desc line-clamp-3">
-                    {featuredPost.data.excerpt || featuredPost.data.description}
+                  <h3 class="feed-item-title line-clamp-2">{post.data.title}</h3>
+                  <p class="feed-item-excerpt line-clamp-2">
+                    {post.data.excerpt || post.data.description}
                   </p>
-                  <div class="featured-cta">
-                    <span>Read story</span>
-                    <span class="cta-arrow">→</span>
-                  </div>
                 </div>
               </a>
-            </div>
-
-            {quickReads.length > 0 && (
-              <aside class="lg:col-span-5">
-                <div class="section-heading">
-                  <h2>Quick reads</h2>
-                  <p>Shorter entries for fast context.</p>
-                </div>
-                <div class="quick-list">
-                  {quickReads.map((post) => (
-                    <a href={`/blog/${post.slug}`} class="quick-card">
-                      <div class="media-frame media-frame--square">
-                        {post.data.heroImage ? (
-                          <Image
-                            src={post.data.heroImage}
-                            alt={post.data.title}
-                            width={200}
-                            height={200}
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        ) : (
-                          <div class="media-fallback" aria-hidden="true" />
-                        )}
-                      </div>
-                      <div>
-                        <p class="quick-meta">
-                          {formatDate(post.data.pubDate)}
-                        </p>
-                        <h3 class="quick-title line-clamp-2">
-                          {post.data.title}
-                        </h3>
-                        <p class="quick-desc line-clamp-2">
-                          {post.data.excerpt || post.data.description}
-                        </p>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </aside>
-            )}
+            ))}
           </section>
         )
       }
 
-      {
-        mosaicPosts.length > 0 && (
-          <section class="mt-14">
-            <div class="section-heading">
-              <h2>Latest articles</h2>
-              <p>Fresh insights and practical experiments.</p>
-            </div>
-
-            <div class="mosaic-grid">
-              {mosaicPosts.map((post, index) => (
-                <article
-                  class:list={[
-                    "mosaic-card group",
-                    index === 0 && "mosaic-card--hero",
-                  ]}
-                >
-                  <a href={`/blog/${post.slug}`} class="mosaic-link">
-                    <div class="media-frame media-frame--tile">
-                      {post.data.heroImage ? (
-                        <Image
-                          src={post.data.heroImage}
-                          alt={post.data.title}
-                          width={600}
-                          height={372}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      ) : (
-                        <div class="media-fallback" aria-hidden="true" />
-                      )}
-                      <div class="media-overlay" />
-                    </div>
-                    <div class="mosaic-body">
-                      <div class="meta-line">
-                        <span>{formatDate(post.data.pubDate)}</span>
-                        {post.data.readTime && (
-                          <span>• {post.data.readTime}</span>
-                        )}
-                      </div>
-                      <h3 class="mosaic-title line-clamp-2">
-                        {post.data.title}
-                      </h3>
-                      <p class="mosaic-desc line-clamp-3">
-                        {post.data.excerpt || post.data.description}
-                      </p>
-                      {post.data.tags?.length && (
-                        <div class="tag-row">
-                          {post.data.tags.slice(0, 3).map((tag: string) => (
-                            <span class="tag-pill tag-pill--muted">#{tag}</span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </a>
-                </article>
-              ))}
-            </div>
-          </section>
-        )
-      }
-
+      <!-- ─── Pagination ─── -->
       {
         totalPages > 1 && (
           <nav class="pagination" aria-label="Pagination">
@@ -378,10 +205,10 @@ try {
                 currentPage > 1 ? "pagination-active" : "pagination-disabled",
               ]}
             >
-              <span>Previous</span>
+              <span>&larr; Previous</span>
             </a>
             <div class="pagination-pill">
-              Page {currentPage} of {totalPages}
+              {currentPage} / {totalPages}
             </div>
             <a
               href={
@@ -394,7 +221,7 @@ try {
                   : "pagination-disabled",
               ]}
             >
-              <span>Next</span>
+              <span>Next &rarr;</span>
             </a>
           </nav>
         )
@@ -404,444 +231,170 @@ try {
     <Footer />
 
     <style>
-      .blog-shell {
+      /* ═══════════════════════════════════════════
+         Clean Feed — Paginated pages
+         ═══════════════════════════════════════════ */
+
+      .feed-shell {
         position: relative;
         isolation: isolate;
       }
 
-      .blog-shell::before {
-        content: none;
+      /* ─── Hero ─── */
+      .feed-hero {
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(86, 95, 137, 0.25);
+        margin-bottom: 0.5rem;
       }
 
-      .blog-hero {
-        position: relative;
-        overflow: hidden;
-        border-radius: 32px;
-        border: 1px solid rgba(86, 95, 137, 0.35);
-        background:
-          linear-gradient(
-            160deg,
-            rgba(36, 40, 59, 0.9),
-            rgba(26, 27, 38, 0.95)
-          ),
-          radial-gradient(
-            circle at 20% 20%,
-            rgba(122, 162, 247, 0.12),
-            transparent 50%
-          );
-        padding: 2.5rem;
-        box-shadow: 0 30px 60px rgba(10, 12, 22, 0.45);
-      }
-
-      .hero-glow {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-      }
-
-      .hero-orb {
-        position: absolute;
-        border-radius: 999px;
-        filter: blur(40px);
-        opacity: 0.45;
-      }
-
-      .hero-orb--one {
-        width: 220px;
-        height: 220px;
-        background: rgba(122, 162, 247, 0.45);
-        top: -60px;
-        left: -40px;
-      }
-
-      .hero-orb--two {
-        width: 180px;
-        height: 180px;
-        background: rgba(187, 154, 247, 0.4);
-        top: 40px;
-        right: 10%;
-      }
-
-      .hero-orb--three {
-        width: 140px;
-        height: 140px;
-        background: rgba(158, 206, 106, 0.28);
-        bottom: -50px;
-        right: 20%;
-      }
-
-      .eyebrow {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.35em;
-        color: var(--color-text-muted, #565f89);
-      }
-
-      .hero-title {
-        margin-top: 0.5rem;
-        font-size: clamp(2.1rem, 2.6vw + 1.4rem, 3.8rem);
+      .feed-title {
+        font-size: clamp(1.8rem, 2.5vw + 0.8rem, 2.6rem);
         font-weight: 700;
-        line-height: 1.05;
+        line-height: 1.1;
         color: #f8f8ff;
+        letter-spacing: -0.02em;
       }
 
-      .hero-sub {
-        margin-top: 1rem;
-        max-width: 36rem;
-        color: var(--color-text-secondary, #a9b1d6);
-      }
-
-      .hero-actions {
+      .feed-meta-bar {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 1.75rem;
-      }
-
-      .btn {
-        display: inline-flex;
         align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
-        padding: 0.6rem 1.2rem;
-        border-radius: 999px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease,
-          border-color 0.3s ease,
-          color 0.3s ease;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #7aa2f7, #bb9af7);
-        color: #1a1b26;
-        box-shadow: 0 12px 24px rgba(122, 162, 247, 0.25);
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-2px);
-      }
-
-      .btn-ghost {
-        border: 1px solid rgba(86, 95, 137, 0.6);
-        color: var(--color-text-primary, #c0caf5);
-        background: rgba(26, 27, 38, 0.5);
-      }
-
-      .btn-ghost:hover {
-        border-color: rgba(122, 162, 247, 0.7);
-        color: #dbe2ff;
-        transform: translateY(-2px);
-      }
-
-      .tag-rail {
-        display: flex;
-        flex-wrap: wrap;
         gap: 0.5rem;
-        margin-top: 1.5rem;
+        margin-top: 0.75rem;
+        font-size: 0.85rem;
       }
 
-      .tag-pill {
-        display: inline-flex;
-        align-items: center;
-        border-radius: 999px;
-        border: 1px solid rgba(86, 95, 137, 0.5);
-        padding: 0.25rem 0.75rem;
-        font-size: 0.75rem;
-        color: var(--color-text-secondary, #a9b1d6);
-        background: rgba(26, 27, 38, 0.6);
-        transition:
-          border-color 0.3s ease,
-          color 0.3s ease;
-      }
-
-      .tag-pill:hover {
-        border-color: rgba(122, 162, 247, 0.7);
-        color: #dbe2ff;
-      }
-
-      .tag-pill--muted {
-        border-color: rgba(86, 95, 137, 0.35);
-        background: rgba(36, 40, 59, 0.5);
-        font-size: 0.7rem;
-      }
-
-      .hero-stats {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1rem;
-      }
-
-      .stat-card {
-        padding: 1rem 1.2rem;
-        border-radius: 18px;
-        border: 1px solid rgba(86, 95, 137, 0.35);
-        background: rgba(36, 40, 59, 0.7);
-        backdrop-filter: blur(12px);
-      }
-
-      .stat-label {
-        display: block;
-        font-size: 0.65rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
+      .meta-stat {
         color: var(--color-text-muted, #565f89);
       }
 
-      .stat-value {
-        margin-top: 0.35rem;
-        display: block;
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: var(--color-text-primary, #c0caf5);
+      .meta-dot {
+        color: rgba(86, 95, 137, 0.5);
       }
 
-      .section-heading {
+      .meta-actions {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .meta-link {
+        color: #7aa2f7;
+        font-weight: 500;
+        transition: color 0.2s ease;
+      }
+
+      .meta-link:hover {
+        color: #bb9af7;
+      }
+
+      /* ─── Feed List ─── */
+      .feed-list {
         display: flex;
         flex-direction: column;
-        gap: 0.35rem;
-        margin-bottom: 1.5rem;
       }
 
-      .section-heading h2 {
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: var(--color-text-primary, #c0caf5);
+      .feed-item {
+        display: grid;
+        grid-template-columns: 88px 1fr;
+        gap: 1.1rem;
+        padding: 1.35rem 0;
+        border-bottom: 1px solid rgba(86, 95, 137, 0.18);
+        transition: background-color 0.25s ease;
       }
 
-      .section-heading p {
-        font-size: 0.95rem;
-        color: var(--color-text-muted, #565f89);
+      .feed-item:first-child {
+        border-top: 1px solid rgba(86, 95, 137, 0.18);
       }
 
-      .media-frame {
-        position: relative;
+      .feed-item:hover {
+        background-color: rgba(36, 40, 59, 0.3);
+      }
+
+      .feed-item-thumb {
+        width: 88px;
+        height: 88px;
+        border-radius: 12px;
         overflow: hidden;
-        border-radius: 20px;
-        background: rgba(36, 40, 59, 0.8);
+        flex-shrink: 0;
+        background: rgba(36, 40, 59, 0.6);
       }
 
-      .media-frame::before {
-        content: "";
-        display: block;
-        padding-top: 62%;
-      }
-
-      .media-frame--hero::before {
-        padding-top: 55%;
-      }
-
-      .media-frame--square::before {
-        padding-top: 100%;
-      }
-
-      .media-frame > img,
-      .media-frame > .media-fallback,
-      .media-frame > .media-overlay {
-        position: absolute;
-        inset: 0;
+      .feed-item-img {
         width: 100%;
         height: 100%;
-      }
-
-      .media-frame > img {
         object-fit: cover;
-      }
-
-      .media-fallback {
-        background: linear-gradient(
-          135deg,
-          rgba(36, 40, 59, 0.9),
-          rgba(122, 162, 247, 0.4)
-        );
-      }
-
-      .media-overlay {
-        background: linear-gradient(
-          180deg,
-          rgba(26, 27, 38, 0) 40%,
-          rgba(26, 27, 38, 0.85) 100%
-        );
-        opacity: 0.8;
-      }
-
-      .meta-line {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        font-size: 0.75rem;
-        color: var(--color-text-muted, #565f89);
-      }
-
-      .featured-card {
-        display: block;
-        border-radius: 26px;
-        border: 1px solid rgba(86, 95, 137, 0.4);
-        background: rgba(36, 40, 59, 0.7);
-        overflow: hidden;
-        transition:
-          transform 0.35s ease,
-          border-color 0.35s ease,
-          box-shadow 0.35s ease;
-      }
-
-      .featured-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(122, 162, 247, 0.7);
-        box-shadow: 0 24px 50px rgba(10, 12, 22, 0.5);
-      }
-
-      .featured-body {
-        padding: 1.6rem 1.8rem 1.9rem;
-        display: grid;
-        gap: 0.8rem;
-      }
-
-      .featured-kicker {
-        font-size: 0.65rem;
-        letter-spacing: 0.25em;
-        text-transform: uppercase;
-        color: var(--color-text-muted, #565f89);
-      }
-
-      .featured-title {
-        font-size: clamp(1.6rem, 1.1vw + 1.2rem, 2.4rem);
-        color: #ffffff;
-        line-height: 1.2;
-      }
-
-      .featured-desc {
-        color: var(--color-text-secondary, #a9b1d6);
-        font-size: 0.98rem;
-      }
-
-      .featured-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 600;
-        color: #7aa2f7;
-      }
-
-      .cta-arrow {
         transition: transform 0.3s ease;
       }
 
-      .featured-card:hover .cta-arrow {
-        transform: translateX(4px);
+      .feed-item:hover .feed-item-img {
+        transform: scale(1.06);
       }
 
-      .quick-list {
-        display: grid;
-        gap: 0.85rem;
+      .feed-item-fallback {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(36, 40, 59, 0.9), rgba(122, 162, 247, 0.3));
       }
 
-      .quick-card {
-        display: grid;
-        grid-template-columns: 82px 1fr;
-        gap: 0.85rem;
-        padding: 0.85rem;
-        border-radius: 18px;
-        border: 1px solid rgba(86, 95, 137, 0.35);
-        background: rgba(26, 27, 38, 0.7);
-        transition:
-          border-color 0.3s ease,
-          transform 0.3s ease;
+      .feed-item-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.3rem;
+        min-width: 0;
       }
 
-      .quick-card:hover {
-        border-color: rgba(122, 162, 247, 0.6);
-        transform: translateY(-2px);
-      }
-
-      .quick-meta {
-        font-size: 0.7rem;
+      .feed-item-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
         color: var(--color-text-muted, #565f89);
-        margin-bottom: 0.35rem;
       }
 
-      .quick-title {
-        font-size: 1rem;
+      .feed-item-tag {
+        color: #7aa2f7;
+      }
+
+      .feed-item-title {
+        font-size: 1.08rem;
         font-weight: 600;
+        line-height: 1.35;
         color: var(--color-text-primary, #c0caf5);
+        transition: color 0.2s ease;
       }
 
-      .quick-desc {
-        font-size: 0.85rem;
-        color: var(--color-text-secondary, #a9b1d6);
-      }
-
-      .mosaic-grid {
-        display: grid;
-        gap: 1.4rem;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      }
-
-      .mosaic-card {
-        border-radius: 24px;
-        border: 1px solid rgba(86, 95, 137, 0.35);
-        background: rgba(36, 40, 59, 0.6);
-        overflow: hidden;
-        transition:
-          transform 0.3s ease,
-          border-color 0.3s ease,
-          box-shadow 0.3s ease;
-      }
-
-      .mosaic-card:hover {
-        transform: translateY(-3px);
-        border-color: rgba(122, 162, 247, 0.6);
-        box-shadow: 0 20px 40px rgba(10, 12, 22, 0.4);
-      }
-
-      .mosaic-link {
-        display: grid;
-        gap: 0.9rem;
-      }
-
-      .mosaic-body {
-        padding: 0 1.3rem 1.5rem;
-        display: grid;
-        gap: 0.6rem;
-      }
-
-      .mosaic-title {
-        font-size: 1.1rem;
-        font-weight: 600;
+      .feed-item:hover .feed-item-title {
         color: #f1f1ff;
       }
 
-      .mosaic-desc {
-        font-size: 0.9rem;
+      .feed-item-excerpt {
+        font-size: 0.88rem;
         color: var(--color-text-secondary, #a9b1d6);
+        line-height: 1.5;
       }
 
-      .tag-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-      }
-
+      /* ─── Pagination ─── */
       .pagination {
-        margin-top: 3.5rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(86, 95, 137, 0.2);
         display: flex;
-        flex-wrap: wrap;
         align-items: center;
         justify-content: center;
         gap: 1rem;
       }
 
       .pagination-link {
-        padding: 0.5rem 1.2rem;
+        padding: 0.45rem 1.1rem;
         border-radius: 999px;
-        border: 1px solid rgba(86, 95, 137, 0.4);
+        border: 1px solid rgba(86, 95, 137, 0.35);
         font-size: 0.85rem;
-        font-weight: 600;
+        font-weight: 500;
         transition:
-          border-color 0.3s ease,
-          color 0.3s ease;
+          border-color 0.25s ease,
+          color 0.25s ease;
       }
 
       .pagination-active {
@@ -849,33 +402,32 @@ try {
       }
 
       .pagination-active:hover {
-        border-color: rgba(122, 162, 247, 0.7);
+        border-color: rgba(122, 162, 247, 0.6);
         color: #bb9af7;
       }
 
       .pagination-disabled {
-        color: rgba(86, 95, 137, 0.8);
+        color: rgba(86, 95, 137, 0.5);
         cursor: not-allowed;
       }
 
       .pagination-pill {
-        padding: 0.5rem 1.4rem;
-        border-radius: 999px;
-        background: rgba(26, 27, 38, 0.6);
-        border: 1px solid rgba(86, 95, 137, 0.35);
         font-size: 0.8rem;
         color: var(--color-text-muted, #565f89);
+        font-variant-numeric: tabular-nums;
       }
 
+      /* ─── Empty State ─── */
       .empty-state {
         margin-top: 2.5rem;
         padding: 1.5rem;
-        border-radius: 20px;
-        border: 1px dashed rgba(86, 95, 137, 0.5);
+        border-radius: 16px;
+        border: 1px dashed rgba(86, 95, 137, 0.4);
         text-align: center;
         color: var(--color-text-secondary, #a9b1d6);
       }
 
+      /* ─── Utilities ─── */
       .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -883,20 +435,7 @@ try {
         overflow: hidden;
       }
 
-      .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .line-clamp-4 {
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
+      /* ─── Animations ─── */
       @keyframes fadeUp {
         from {
           opacity: 0;
@@ -913,48 +452,50 @@ try {
       }
 
       .delay-1 {
-        animation-delay: 0.1s;
+        animation-delay: 0.08s;
       }
 
       .delay-2 {
-        animation-delay: 0.2s;
+        animation-delay: 0.16s;
       }
 
       .delay-3 {
-        animation-delay: 0.3s;
+        animation-delay: 0.24s;
       }
 
       .delay-4 {
-        animation-delay: 0.4s;
+        animation-delay: 0.32s;
       }
 
-      @media (min-width: 1024px) {
-        .mosaic-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .mosaic-card--hero {
-          grid-column: span 2;
-        }
-
-        .mosaic-card--hero .media-frame::before {
-          padding-top: 55%;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .blog-hero {
-          padding: 1.8rem;
-        }
-
-        .hero-stats {
-          grid-template-columns: 1fr;
-        }
-      }
-
+      /* ─── Responsive ─── */
       @media (max-width: 640px) {
-        .quick-card {
-          grid-template-columns: 64px 1fr;
+        .feed-item {
+          grid-template-columns: 68px 1fr;
+          gap: 0.85rem;
+          padding: 1.1rem 0;
+        }
+
+        .feed-item-thumb {
+          width: 68px;
+          height: 68px;
+          border-radius: 10px;
+        }
+
+        .feed-item-title {
+          font-size: 0.98rem;
+        }
+
+        .feed-item-excerpt {
+          display: none;
+        }
+
+        .meta-dot--actions {
+          display: none;
+        }
+
+        .meta-actions {
+          width: 100%;
+          margin-top: 0.25rem;
         }
       }
 
@@ -963,10 +504,8 @@ try {
           animation: none;
         }
 
-        .featured-card,
-        .quick-card,
-        .mosaic-card,
-        .btn {
+        .feed-item,
+        .pagination-link {
           transition: none;
         }
       }

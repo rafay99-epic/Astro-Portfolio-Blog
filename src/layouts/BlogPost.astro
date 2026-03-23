@@ -50,7 +50,7 @@ const BlogPosts = featureFlags.showBlog
 
 const currentSlug = Astro.url.pathname.split("/").filter(Boolean).pop();
 const currentBlog = BlogPosts.find(
-	(post: CollectionEntry<"blog">) => post.slug === currentSlug,
+	(post: CollectionEntry<"blog">) => post.id === currentSlug,
 );
 
 if (!currentBlog) {
@@ -58,7 +58,7 @@ if (!currentBlog) {
 }
 
 const currentIndex = BlogPosts.findIndex(
-	(post: CollectionEntry<"blog">) => post.slug === currentSlug,
+	(post: CollectionEntry<"blog">) => post.id === currentSlug,
 );
 const prevPost = currentIndex > 0 ? BlogPosts[currentIndex - 1] : undefined;
 const nextPost =
@@ -1364,7 +1364,7 @@ const postActionPayload = JSON.stringify({
           <div class="mx-auto mt-10 flex w-full max-w-4xl items-center justify-between border-t border-[#565f89]/20 px-6 py-8">
             {prevPost ? (
               <a
-                href={`/blog/archive/${prevPost.slug}`}
+                href={`/blog/archive/${prevPost.id}`}
                 class="group flex max-w-xs items-center gap-3 text-left"
               >
                 <div class="flex flex-col">
@@ -1395,7 +1395,7 @@ const postActionPayload = JSON.stringify({
 
             {nextPost ? (
               <a
-                href={`/blog/archive/${nextPost.slug}`}
+                href={`/blog/archive/${nextPost.id}`}
                 class="group flex max-w-xs items-center gap-3 text-right"
               >
                 <svg

@@ -1,1 +1,7 @@
-{}
+{
+	"functions": {
+		"api/**": {
+			"runtime": "nodejs24.x"
+		}
+	}
+}

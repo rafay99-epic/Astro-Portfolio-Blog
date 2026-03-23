@@ -34,13 +34,11 @@ export async function GET() {
 				try {
 					return PostSchema.parse({
 						id: post.id,
-						slug: post.slug,
-						body: post.body,
 						collection: post.collection,
 						data: post.data,
 					});
 				} catch (error) {
-					console.error("Validation error for post:", post.slug, error);
+					console.error("Validation error for post:", post.id, error);
 					throw error;
 				}
 			},

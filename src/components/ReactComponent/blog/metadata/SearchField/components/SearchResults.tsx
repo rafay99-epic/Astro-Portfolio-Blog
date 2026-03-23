@@ -46,7 +46,7 @@ const SearchResults = memo(function SearchResults({
 			>
 				{results.map((post, index) => (
 					<SearchResultItem
-						key={post.slug}
+						key={post.id}
 						post={post}
 						index={index}
 						isSelected={selectedResultIndex === index}
@@ -72,7 +72,7 @@ const SearchResultItem = memo(function SearchResultItem({
 	return (
 		<motion.a
 			data-result-index={index}
-			href={`/blog/${post.slug}`}
+			href={`/blog/${post.id}`}
 			variants={itemVariants}
 			className={`group block rounded-2xl border bg-[#24283b]/60 p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-[#7aa2f7]/40 hover:bg-[#24283b]/80 hover:shadow-2xl hover:shadow-[#7aa2f7]/10 ${
 				isSelected

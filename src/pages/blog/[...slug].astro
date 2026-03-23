@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 		: posts.filter((post: CollectionEntry<"blog">) => !post.data.archived);
 
 	return filteredPosts.map((post: CollectionEntry<"blog">) => ({
-		params: { slug: post.slug },
+		params: { slug: post.id },
 		props: post,
 	}));
 }
