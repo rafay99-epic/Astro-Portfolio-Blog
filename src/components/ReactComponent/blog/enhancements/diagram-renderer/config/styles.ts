@@ -71,7 +71,9 @@ export const buttonBarStyles = {
 		display: "flex",
 		gap: "3px",
 		opacity: "0",
-		transition: "opacity 0.2s ease",
+		visibility: "hidden",
+		pointerEvents: "none",
+		transition: "opacity 0.2s ease, visibility 0.2s ease",
 		zIndex: "10",
 	} as Record<string, string>,
 
@@ -115,11 +117,18 @@ export function injectHoverStyles(): void {
 	style.id = MERMAID_HOVER_STYLE_ID;
 	style.textContent = `
 .mermaid-diagram-container { cursor: pointer; }
-.mermaid-diagram-container:hover .mermaid-btn-bar { opacity: 1 !important; }
-.mermaid-btn:hover {
+.mermaid-diagram-container:hover .mermaid-btn-bar,
+.mermaid-diagram-container:focus-within .mermaid-btn-bar {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+.mermaid-btn:hover,
+.mermaid-btn:focus {
   background-color: rgba(65,72,104,0.5) !important;
   border-color: rgba(122,162,247,0.5) !important;
   color: #7aa2f7 !important;
+  outline: none;
 }`;
 	document.head.appendChild(style);
 }
