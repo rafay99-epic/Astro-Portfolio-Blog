@@ -1,16 +1,197 @@
 ---
-title: "Paying Double: Why I Finally Migrated to Turborepo"
+title: "From Two Repos to One: How I Accidentally Learned to Love (and Hate)
+  Turborepo"
 description: ""
-pubDate: 2026-04-02
+pubDate: 2026-04-02T22:26:25.458Z
 draft: false
-heroImage: ""
-authorName: ""
-authorAvatar: ""
-tags: []
-keywords: []
-canonicalUrl: ""
-featured: false
-excerpt: ""
+heroImage: "/BlogImages/mono-repo.webp"
+authorName: "Abdul Rafay"
+authorAvatar: "/BlogImages/IMG-20221105-WA0007.jpg"
+tags:
+  - Development
+  - Story
+  - WebDevelopment
+keywords:
+  - turborepo
+  - monorepo
+  - claude code
+  - cursor ai
+  - convex
+canonicalUrl: "https://rafay99.com/blog/turborepo-migration-one-shot-claude-code"
+featured: true
+excerpt: "I was paying for two Convex instances, maintaining two codebases, and
+  slowly losing my mind. Then I gave Claude Code one prompt and 75 minutes — and
+  got a working monorepo. Here's what broke, what worked, and why I'd never go
+  back."
 archived: false
 ---
+## The Pain of Paying Twice for the Same Problem
 
+Let me paint you a picture. I was running **two separate Convex instances** for the same project. Same backend logic, same data models, same everything — except I was paying for it twice and maintaining it in two places. Every schema change meant copy-pasting. Every bug fix meant remembering which repo I was in. It was stupid, and I knew it was stupid, but I kept doing it because the alternative seemed harder.
+
+That project was **Lumo** — my first real attempt at a unified product with a Next.js website and a React Native mobile app. Two codebases, two Convex projects, two bills, one massive headache.
+
+The breaking point? I added a feature to the web app and realized I needed the exact same thing in mobile. Same API calls, same types, same validation. I sat there staring at two VS Code windows thinking: *there has to be a better way.*
+
+## Attempt #1: Cursor Auto-Mode ate my codebase
+
+I'd heard about monorepos. Everyone on Twitter made it sound like a solved problem. "Just use Turborepo," they said. "It's easy," they said.
+
+So I did what any reasonable dev does in 2024: I asked Cursor's auto-mode to "convert this to a monorepo."
+
+**Big mistake.**
+
+It created a plan. It started moving files. And within 20 minutes, my project was broken in ways I didn't understand. Files were in wrong places. Imports were circular. The build system was screaming. I didn't know enough about monorepo structure to fix what Cursor had done, so I did what professionals do: I rage-quit and reverted everything.
+
+Back to two repos. Back to two Convex instances. Back to being miserable, but at least my code ran.
+
+## Claude Code: The One-Shot That Actually Worked
+
+Months later, I got access to Claude Code. People were hyping its "one-shot" capabilities — the idea that you could describe a complex refactor and it would just... do it. I was skeptical, but I was also still paying double for Convex.
+
+I sat down and wrote one massive prompt:
+
+> "This is the backend. This is the Convex of two different projects. This is the frontend of two different projects — the mobile app and the web app. I want a single backend, one Convex instance, all running in a monorepo with Turborepo and Bun."
+
+Then I walked away.
+
+**One hour and fifteen minutes later**, I had a working monorepo. Convex was unified. The web app ran. The mobile app... mostly ran. There was a package resolution issue because I'd put the Convex folder in `packages/` instead of the root, but two more prompts to Claude Code fixed that.
+
+I didn't trust it yet. I created a fresh repo, pushed everything there, and kept the old ones as backup. But it worked. I archived the separate repos that same day.
+
+## The Real Win: Unified Everything
+
+Here's what nobody tells you about monorepos — the structure is just the beginning. The actual magic happens when you start unifying the *boring* stuff.
+
+I had three apps now: web (Next.js), mobile (React Native), and an admin panel (also React Native with Expo Router). Each was using different styling approaches. The web was on Tailwind v4. Mobile was using StyleSheet objects. The admin panel was... a mess I'd asked Claude to whip up because I hate the Convex dashboard.
+
+Then Claude suggested something that should have been obvious: *"You're using Turborepo. Why not unify Tailwind across everything?"*
+
+That clicked hard.
+
+I migrated the mobile app to NativeWind. I rebuilt the admin panel using the same color scheme and design tokens. Then I started extracting shared code into `packages/`:
+
+- `packages/typescript-config` — one tsconfig to rule them all
+- `packages/eslint-config` — consistent linting everywhere  
+- `packages/tailwind-config` — shared theme, colors, spacing
+- `packages/ui` — shared components (still a work in progress)
+
+Now when I run `bun run dev:all`, it spins up:
+- Convex dev server
+- Next.js web app
+- Admin panel
+- React Native on emulator
+
+One command. One terminal. One mental context.
+
+## The Tailwind v3/v4 Nightmare (and My Dumb Fix)
+
+Of course, it wasn't all smooth. React Native's NativeWind was stuck on Tailwind v3 while my web app was on v4. The class names were incompatible. The builds were angry.
+
+I could have migrated everything to v4, but that would have meant touching every single style in the mobile app. Instead, I wrote a custom script that switches Tailwind versions based on which app is building. It's a hack. It works. I'm not proud of it, but I'm also not spending three days on a migration that adds zero user value.
+
+Sometimes engineering is knowing which problems to solve with duct tape.
+
+## Project #2: envpilot.dev — Doing It Right From Scratch
+
+With Lumo stable, I started **envpilot.dev** — a tool for managing environment variables across projects. This time I knew what I was doing.
+
+The stack got ambitious fast:
+- Next.js web app with Convex backend
+- VS Code extension
+- CLI tool
+- RESTful APIs for the extension/CLI to hit
+
+This is a bigger monorepo than Lumo, and it needed to be. The web app uses WorkOS for auth. The extension and CLI need to authenticate and fetch secrets. Everything shares the same Convex backend, the same types, the same validation logic.
+
+Building this from scratch in a monorepo felt *correct*. No migration pain. No "where should this file go" debates. I knew the structure because I'd already burned myself learning it.
+
+## What's Still Broken (Because Honesty Matters)
+
+Let me be real about what's not perfect:
+
+**Turborepo documentation is fragmented.** There's no "official" way to structure your apps and packages. I looked at the t3 codebase — it's a monorepo with web, server, and Electron apps — and I couldn't make sense of their structure at first. It's valid, it works, but it's not intuitive.
+
+Compare this to something like Django or Laravel. You know what you're getting. There's a `models.py` or `app/Http/Controllers`. The framework *tells* you where things go. Turborepo gives you rope and lets you decide whether to build with it or hang yourself.
+
+**End-to-end testing is still unsolved.** I'm writing unit tests with Vitest. I'm *not* writing good E2E tests because every tool I've tried makes me want to cry. If you know a sane way to E2E test a monorepo with web + mobile + backend, drop a comment. Seriously. Help me.
+
+**The VS Code extension and CLI need love.** The web app is solid — Convex with WebSockets, Zustand for state, the usual stack. But the extension and CLI are using RESTful APIs I wrote, and I'm eyeing tRPC for a rewrite. I've never used tRPC. It might be a disaster. It might be great. That's next month's problem.
+
+## The Hard Truth About Monorepos
+
+Here's what I wish someone had told me: **monorepos don't solve organizational problems, they expose them.**
+
+If your code is messy in separate repos, it'll be messy in one repo — just easier to access. The real benefit is forcing you to confront shared concerns: your types, your validation, your styling, your testing strategy.
+
+You can't hide behind "oh that's in the other repo" anymore. You have to decide: are these actually the same thing, or are they just similar?
+
+For me, the answer was yes — my web and mobile apps *are* the same product. They deserve the same backend, the same design system, the same deployment pipeline. The monorepo structure just made that obvious.
+
+## Folder Structures That Actually Work
+
+Since you asked, here's how I'm structuring things now. This is what works for me — not gospel, just battle-tested:
+
+### Lumo (Web + Mobile + Admin)
+
+```
+lumo/
+├── apps/
+│   ├── web/                 # Next.js 15 + Tailwind v4
+│   ├── mobile/              # React Native + NativeWind
+│   └── admin/               # Expo Router + Zustand
+├── packages/
+│   ├── typescript-config/   # Shared tsconfig.json
+│   ├── eslint-config/       # Shared lint rules
+│   ├── tailwind-config/     # Shared theme (v3/v4 switcher)
+│   └── ui/                  # Shared components (WIP)
+├── convex/                  # Backend at root, not in packages
+├── turbo.json               # Pipeline definitions
+└── package.json             # Bun workspace root
+```
+
+### envpilot.dev (Web + Extension + CLI)
+
+```
+envpilot/
+├── apps/
+│   ├── web/                 # Next.js + Convex
+│   ├── vscode-extension/    # Extension host + webview
+│   └── cli/                 # Node.js CLI tool
+├── packages/
+│   ├── typescript-config/
+│   ├── eslint-config/
+│   ├── api/                 # Shared API client (REST → tRPC soon?)
+│   ├── types/               # Shared Convex types
+│   └── ui/
+├── convex/
+├── turbo.json
+└── package.json
+```
+
+The key insight: **Convex lives at root**, not in `packages/`. It's your backend, not a shared library. Treating it as a package created circular dependency hell for me.
+
+## Should You Do This?
+
+If you're maintaining multiple apps that share a backend, yes. The unified development experience is worth the migration pain.
+
+If you're building one app and think monorepos look cool, probably not. You're adding complexity without solving a real problem.
+
+And if you're migrating, here's my advice: **use Claude Code, not Cursor auto-mode.** The difference in context window and reasoning is real. But also — **understand what it's doing.** I got lucky the first time, but I also spent hours reading the generated config files, tracing imports, understanding why things were placed where they were.
+
+AI can get you 90% there. The last 10% — the debugging, the edge cases, the "why isn't this caching" — that's still you.
+
+## What's Next
+
+I'm eyeing tRPC for envpilot's extension and CLI. I'm trying to figure out E2E testing that doesn't make me miserable. And I'm still refining that `packages/ui` folder — shared components across web and mobile is harder than it sounds when one uses divs and the other uses View.
+
+But I can spin up my entire stack with one command now. My types are shared. My backend is unified. I'm paying for one Convex instance.
+
+Was it worth the pain? Absolutely.
+
+Would I do it again? I'd do it right from the start.
+
+
+*Leave a comment if you've got E2E testing strategies that actually work, or if you think I'm wrong about tRPC. I'm always learning.*
+
+*Until then, peace out, nerds.* 👓
