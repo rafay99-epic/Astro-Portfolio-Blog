@@ -7,6 +7,7 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"check": "astro check",
+		"verify": "biome check . && tsc --noEmit --skipLibCheck && astro check",
 		"ci": "biome check . && tsc --noEmit --skipLibCheck && astro check && astro build",
 		"lint": "biome check . && tsc --noEmit --skipLibCheck",
 		"lint:fix": "biome check --write . && tsc --noEmit --skipLibCheck",
