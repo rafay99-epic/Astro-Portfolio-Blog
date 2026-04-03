@@ -20,22 +20,17 @@ Astro 5 portfolio and blog site (rafay99.com) with React 19 islands, TinaCMS for
 
 ```bash
 # Development
-bun run dev              # Start dev server with TinaCMS (requires TINA_TOKEN)
-bun run dev:local        # Start dev server without CMS (local-only work)
+bun run dev              # Start dev server
 bun run preview          # Preview production build locally
 
 # Building
 bun run build            # Astro build only
-bun run production_build # TinaCMS build + Astro build (full production)
 
 # Code quality
 bun run lint             # TypeScript type check (tsc --noEmit) + formatting check
 bun run lint:fix         # Auto-format with Prettier
 bun run check            # Astro diagnostics (template/component checks)
 
-# Performance / tooling
-bun run scan             # Run react-scan against local dev server
-bun run changelog        # Generate changelog via ./scripts/generate-changelog.sh
 ```
 
 ## Architecture
