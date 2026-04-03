@@ -18,15 +18,13 @@ const publishedPosts = allPosts.filter(
 	(post: CollectionEntry<"blog">) => !post.data.draft && !post.data.archived,
 );
 
-const allTags = Array.from(
-	new Set(
+const allTags = [
+	...new Set<string>(
 		publishedPosts.flatMap(
 			(post: CollectionEntry<"blog">) => post.data.tags || [],
 		),
 	),
-).sort((a: string, b: string) =>
-	(a as string).localeCompare(b as string),
-) as string[];
+].sort((a, b) => a.localeCompare(b));
 
 const selectedTag = null;
 const currentPage = 1;

@@ -1,0 +1,428 @@
+---
+interface Props {
+	postActionPayload: string;
+}
+
+const { postActionPayload } = Astro.props;
+---
+    <script
+      is:inline
+      id="post-action-data"
+      type="application/json"
+      set:html={postActionPayload}
+    />
+
+    <script is:inline>
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+
+      function initBlogPost() {
+        window.scrollTo(0, 0);
+
+        const progressLabel = document.querySelector(
+          "[data-read-progress-label]",
+        );
+        const progressFill = document.querySelector(
+          "[data-read-progress-fill]",
+        );
+        const progressTrack = document.querySelector(
+          "[data-read-progress-track]",
+        );
+        const copyStatus = document.querySelector("[data-copy-status]");
+        const actionMenu = document.querySelector("[data-post-action-menu]");
+        const copyPagePrimaryBtn = document.querySelector(
+          "[data-copy-page-primary]",
+        );
+        const actionMenuToggle = document.querySelector(
+          "[data-post-action-toggle]",
+        );
+        const actionMenuDropdown = document.querySelector(
+          "[data-post-action-dropdown]",
+        );
+        const openMarkdownBtn = document.querySelector("[data-open-markdown]");
+        const askChatGptBtn = document.querySelector("[data-ask-chatgpt]");
+        const askClaudeBtn = document.querySelector("[data-ask-claude]");
+        const postActionData = document.getElementById("post-action-data");
+        const tocRoot = document.getElementById("post-toc");
+        const tocEmpty = tocRoot?.querySelector("[data-toc-empty]") || null;
+        const postContent = document.getElementById("post-content");
+        const wait = (durationMs) =>
+          new Promise((resolve) => window.setTimeout(resolve, durationMs));
+        const postActionDataRaw = postActionData?.textContent || "{}";
+        let postActionMeta = {
+          title: document.title,
+          url: window.location.href,
+          markdown: "",
+        };
+        try {
+          postActionMeta = {
+            ...postActionMeta,
+            ...JSON.parse(postActionDataRaw),
+          };
+        } catch (error) {
+          postActionMeta = { ...postActionMeta };
+        }
+
+        const markdownText =
+          postActionMeta.markdown ||
+          `# ${postActionMeta.title}\n\nSource: ${postActionMeta.url}\n`;
+        const chatPrompt = [
+          "Analyze this blog post and help me understand it.",
+          "Share: 1) concise summary, 2) key takeaways, 3) practical suggestions.",
+          "",
+          `Title: ${postActionMeta.title}`,
+          `URL: ${postActionMeta.url}`,
+          "",
+          "Markdown:",
+          markdownText,
+        ].join("\n");
+
+        let statusTimer = 0;
+        const setStatus = (message, delay = 2200) => {
+          if (!copyStatus) return;
+          copyStatus.textContent = message;
+          if (statusTimer) {
+            clearTimeout(statusTimer);
+          }
+          if (!message || delay <= 0) return;
+          statusTimer = window.setTimeout(() => {
+            copyStatus.textContent = "";
+          }, delay);
+        };
+
+        const runOptionAction = async (button, action) => {
+          if (!button || button.getAttribute("data-loading") === "true") {
+            return false;
+          }
+
+          button.setAttribute("data-loading", "true");
+          button.setAttribute("aria-busy", "true");
+          button.classList.add("is-loading");
+
+          let succeeded = false;
+          const startedAt = performance.now();
+
+          try {
+            await action();
+            succeeded = true;
+          } catch (error) {
+            succeeded = false;
+          }
+
+          const elapsed = performance.now() - startedAt;
+          if (elapsed < 320) {
+            await wait(320 - elapsed);
+          }
+
+          button.classList.remove("is-loading");
+          button.removeAttribute("data-loading");
+          button.removeAttribute("aria-busy");
+
+          if (succeeded) {
+            button.classList.add("is-success");
+            window.setTimeout(() => {
+              button.classList.remove("is-success");
+            }, 650);
+          }
+
+          return succeeded;
+        };
+
+        const openActionMenu = () => {
+          if (!actionMenu || !actionMenuDropdown || !actionMenuToggle) return;
+          actionMenu.classList.add("is-open");
+          actionMenuDropdown.hidden = false;
+          actionMenuToggle.setAttribute("aria-expanded", "true");
+        };
+
+        const closeActionMenu = () => {
+          if (!actionMenu || !actionMenuDropdown || !actionMenuToggle) return;
+          actionMenu.classList.remove("is-open");
+          actionMenuDropdown.hidden = true;
+          actionMenuToggle.setAttribute("aria-expanded", "false");
+        };
+
+        const setActive = (id) => {
+          (tocRoot?.querySelectorAll("a") || []).forEach((link) => {
+            link.classList.toggle(
+              "is-active",
+              link.getAttribute("href") === `#${id}`,
+            );
+          });
+        };
+
+        const slugCounts = new Map();
+        const slugify = (text) => {
+          const base = text
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-");
+          const count = slugCounts.get(base) || 0;
+          slugCounts.set(base, count + 1);
+          return count ? `${base}-${count + 1}` : base;
+        };
+
+        const buildToc = () => {
+          const headings = Array.from(
+            postContent
+              ? postContent.querySelectorAll("h2, h3")
+              : document.querySelectorAll(".blog-prose h2, .blog-prose h3"),
+          );
+
+          if (!tocRoot) return headings;
+
+          tocRoot.innerHTML = "";
+          if (headings.length === 0) {
+            if (tocEmpty) {
+              tocRoot.appendChild(tocEmpty);
+            }
+          } else {
+            headings.forEach((heading) => {
+              if (!heading.id) {
+                heading.id = slugify(heading.textContent || "section");
+              }
+              const link = document.createElement("a");
+              link.href = `#${heading.id}`;
+              link.textContent = heading.textContent || heading.id;
+              link.className =
+                heading.tagName === "H3" ? "toc-link toc-h3" : "toc-link";
+              tocRoot.appendChild(link);
+            });
+          }
+          return headings;
+        };
+
+        const hasServerToc =
+          tocRoot && tocRoot.querySelectorAll("a.toc-link").length > 0;
+        const headings = hasServerToc
+          ? Array.from(tocRoot.querySelectorAll("a.toc-link"))
+              .map((a) => {
+                const slug = (a.getAttribute("href") || "").replace(/^#/, "");
+                return document.getElementById(slug);
+              })
+              .filter(Boolean)
+          : buildToc();
+
+        if (!hasServerToc && headings.length === 0 && postContent) {
+          requestAnimationFrame(() => {
+            const retryHeadings = buildToc();
+            if (retryHeadings.length > 0 && "IntersectionObserver" in window) {
+              const observer = new IntersectionObserver(
+                (entries) => {
+                  entries.forEach((entry) => {
+                    if (entry.isIntersecting && entry.target.id) {
+                      setActive(entry.target.id);
+                    }
+                  });
+                },
+                { rootMargin: "0px 0px -65% 0px" },
+              );
+              retryHeadings.forEach((h) => observer.observe(h));
+            }
+          });
+        }
+
+        if (headings.length > 0 && "IntersectionObserver" in window) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.target.id) {
+                  setActive(entry.target.id);
+                }
+              });
+            },
+            { rootMargin: "0px 0px -65% 0px" },
+          );
+          headings.forEach((heading) => observer.observe(heading));
+        }
+
+        let rafId = 0;
+        const updateProgress = () => {
+          rafId = 0;
+          const totalHeight = document.body.scrollHeight - window.innerHeight;
+          const scrollTop =
+            window.scrollY || document.documentElement.scrollTop;
+          const progress =
+            totalHeight > 0
+              ? Math.min(Math.max(scrollTop / totalHeight, 0), 1)
+              : 0;
+
+          if (progressFill) {
+            progressFill.style.transform = `scaleX(${progress})`;
+          }
+          if (progressLabel) {
+            progressLabel.textContent = `${Math.round(progress * 100)}%`;
+          }
+          if (progressTrack) {
+            progressTrack.setAttribute(
+              "aria-valuenow",
+              `${Math.round(progress * 100)}`,
+            );
+          }
+        };
+
+        const onScroll = () => {
+          if (rafId) return;
+          rafId = requestAnimationFrame(updateProgress);
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        updateProgress();
+
+        if (actionMenu && actionMenuToggle) {
+          actionMenuToggle.addEventListener("click", () => {
+            const isExpanded =
+              actionMenuToggle.getAttribute("aria-expanded") === "true";
+            if (isExpanded) {
+              closeActionMenu();
+            } else {
+              openActionMenu();
+            }
+          });
+
+          document.addEventListener("click", (event) => {
+            const target = event.target;
+            if (!(target instanceof Node)) return;
+            if (!actionMenu.contains(target)) {
+              closeActionMenu();
+            }
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+              closeActionMenu();
+            }
+          });
+        }
+
+        if (copyPagePrimaryBtn) {
+          copyPagePrimaryBtn.addEventListener("click", async () => {
+            const didCopy = await runOptionAction(
+              copyPagePrimaryBtn,
+              async () => {
+                await navigator.clipboard.writeText(markdownText);
+                setStatus("Page copied as Markdown");
+              },
+            );
+
+            if (!didCopy) {
+              setStatus("Copy failed");
+            }
+          });
+        }
+
+        if (openMarkdownBtn) {
+          openMarkdownBtn.addEventListener("click", async () => {
+            const openedMarkdown = await runOptionAction(
+              openMarkdownBtn,
+              async () => {
+                const markdownBlob = new Blob([markdownText], {
+                  type: "text/markdown;charset=utf-8",
+                });
+                const markdownUrl = URL.createObjectURL(markdownBlob);
+                const markdownTab = window.open(
+                  markdownUrl,
+                  "_blank",
+                  "noopener,noreferrer",
+                );
+
+                window.setTimeout(
+                  () => URL.revokeObjectURL(markdownUrl),
+                  20000,
+                );
+
+                if (!markdownTab) {
+                  throw new Error("popup-blocked");
+                }
+
+                setStatus("Opened markdown in a new tab");
+              },
+            );
+
+            if (!openedMarkdown) {
+              setStatus("Popup blocked while opening markdown");
+            }
+
+            closeActionMenu();
+          });
+        }
+
+        if (askChatGptBtn) {
+          askChatGptBtn.addEventListener("click", async () => {
+            const openedChat = await runOptionAction(
+              askChatGptBtn,
+              async () => {
+                try {
+                  await navigator.clipboard.writeText(chatPrompt);
+                  setStatus("Prompt copied. Opening ChatGPT...");
+                } catch (error) {
+                  setStatus("Opening ChatGPT (clipboard blocked)");
+                }
+
+                const chatWindow = window.open(
+                  `https://chatgpt.com/?q=${encodeURIComponent(
+                    `Help me with this blog post: ${postActionMeta.title} ${postActionMeta.url}`,
+                  )}`,
+                  "_blank",
+                  "noopener,noreferrer",
+                );
+
+                if (!chatWindow) {
+                  throw new Error("popup-blocked");
+                }
+              },
+            );
+
+            if (!openedChat) {
+              setStatus("Popup blocked while opening ChatGPT");
+            }
+
+            closeActionMenu();
+          });
+        }
+
+        if (askClaudeBtn) {
+          askClaudeBtn.addEventListener("click", async () => {
+            const openedClaude = await runOptionAction(
+              askClaudeBtn,
+              async () => {
+                try {
+                  await navigator.clipboard.writeText(chatPrompt);
+                  setStatus("Prompt copied. Opening Claude...");
+                } catch (error) {
+                  setStatus("Opening Claude (clipboard blocked)");
+                }
+
+                const claudeWindow = window.open(
+                  `https://claude.ai/new?q=${encodeURIComponent(
+                    `Help me with this blog post: ${postActionMeta.title} ${postActionMeta.url}`,
+                  )}`,
+                  "_blank",
+                  "noopener,noreferrer",
+                );
+
+                if (!claudeWindow) {
+                  throw new Error("popup-blocked");
+                }
+              },
+            );
+
+            if (!openedClaude) {
+              setStatus("Popup blocked while opening Claude");
+            }
+
+            closeActionMenu();
+          });
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initBlogPost);
+      } else {
+        initBlogPost();
+      }
+      document.addEventListener("astro:after-swap", initBlogPost);
+    </script>

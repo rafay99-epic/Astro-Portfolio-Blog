@@ -162,9 +162,15 @@ export function useDiagramRenderer({
 					let diagramHeight = 0;
 
 					if (viewBox) {
-						const [, , width, height] = viewBox.split(" ").map(Number);
-						diagramWidth = width;
-						diagramHeight = height;
+						const parts = viewBox.split(" ").map(Number);
+						const width = parts[2];
+						const height = parts[3];
+						diagramWidth =
+							typeof width === "number" && Number.isFinite(width) ? width : 0;
+						diagramHeight =
+							typeof height === "number" && Number.isFinite(height)
+								? height
+								: 0;
 					}
 
 					let measuredWidth = 0;

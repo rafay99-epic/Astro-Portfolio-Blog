@@ -400,11 +400,13 @@ const processSteps = [
   const sliderContainer = document.getElementById("slider-container");
   if (sliderContainer) {
     sliderContainer.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
+      const t = e.changedTouches[0];
+      if (t) touchStartX = t.screenX;
     });
 
     sliderContainer.addEventListener("touchend", (e) => {
-      touchEndX = e.changedTouches[0].screenX;
+      const t = e.changedTouches[0];
+      if (t) touchEndX = t.screenX;
       handleSwipe();
     });
   }

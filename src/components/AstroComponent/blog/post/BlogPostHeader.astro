@@ -1,0 +1,98 @@
+---
+interface Props {
+	title: string;
+	lead?: string;
+	pubDate: Date;
+	isArchive: boolean;
+	authorName: string;
+	authorAvatar?: string;
+	readTime?: string;
+	tags?: string[];
+	updatedDate?: Date;
+}
+
+const {
+	title,
+	lead,
+	pubDate,
+	isArchive,
+	authorName,
+	authorAvatar,
+	readTime,
+	tags,
+	updatedDate,
+} = Astro.props;
+---
+
+<header class="post-header">
+	<div class="post-eyebrow">
+		<time datetime={pubDate.toISOString()}>
+			{
+				new Date(pubDate).toLocaleDateString("en-US", {
+					year: "numeric",
+					month: "long",
+					day: "numeric",
+				})
+			}
+		</time>
+		{
+			isArchive && (
+				<span class="post-badge">
+					Archived article &middot; may be outdated
+				</span>
+			)
+		}
+	</div>
+
+	<h1
+		class="post-title bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent"
+	>
+		{title}
+	</h1>
+
+	{lead && <p class="post-lead">{lead}</p>}
+
+	<div class="post-byline">
+		<div class="post-author">
+			{
+				authorAvatar ? (
+					<img
+						src={authorAvatar}
+						alt=""
+						aria-hidden="true"
+						class="inline-block h-8 w-8 rounded-full border border-[#565f89]/30 object-cover"
+						loading="eager"
+					/>
+				) : (
+					<div class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#24283b] text-xs font-medium text-[#7aa2f7] ring-1 ring-[#565f89]/30">
+						{authorName?.charAt(0)?.toUpperCase()}
+					</div>
+				)
+			}
+			<span>{authorName}</span>
+		</div>
+		{readTime && <span>{readTime}</span>}
+		{
+			updatedDate && (
+				<span>
+					Updated{" "}
+					{updatedDate.toLocaleDateString("en-US", {
+						year: "numeric",
+						month: "long",
+						day: "numeric",
+					})}
+				</span>
+			)
+		}
+	</div>
+
+	{
+		tags && tags.length > 0 && (
+			<div class="post-tags">
+				{tags.map((tag: string) => (
+					<span class="post-tag">{tag}</span>
+				))}
+			</div>
+		)
+	}
+</header>

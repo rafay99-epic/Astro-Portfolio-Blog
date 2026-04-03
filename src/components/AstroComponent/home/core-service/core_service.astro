@@ -18,7 +18,9 @@ const serviceIcons = {
 	"Cloud & DevOps": `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
     <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
   </svg>`,
-};
+} as const;
+
+type ServiceIconTitle = keyof typeof serviceIcons;
 ---
 
 <section class="relative bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
@@ -53,7 +55,8 @@ const serviceIcons = {
               <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#7aa2f7]/10 text-[#7aa2f7] sm:h-11 sm:w-11">
                 <div
                   set:html={
-                    serviceIcons[service.title] || serviceIcons["Web Development"]
+                    serviceIcons[service.title as ServiceIconTitle] ||
+                    serviceIcons["Web Development"]
                   }
                 />
               </div>

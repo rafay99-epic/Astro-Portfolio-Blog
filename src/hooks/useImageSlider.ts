@@ -41,13 +41,17 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
 	}, [isFullScreen]);
 
 	const handleTouchStart = useCallback((e: React.TouchEvent) => {
-		touchStart.current = e.touches[0].clientX;
+		const touch = e.touches[0];
+		if (!touch) return;
+		touchStart.current = touch.clientX;
 	}, []);
 
 	const handleTouchMove = useCallback(
 		(e: React.TouchEvent) => {
 			if (!touchStart.current) return;
-			const currentTouch = e.touches[0].clientX;
+			const firstTouch = e.touches[0];
+			if (!firstTouch) return;
+			const currentTouch = firstTouch.clientX;
 			const diff = touchStart.current - currentTouch;
 			if (Math.abs(diff) > 50) {
 				if (diff > 0) {

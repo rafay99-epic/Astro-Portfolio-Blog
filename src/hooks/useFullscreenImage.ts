@@ -19,7 +19,9 @@ export function useFullscreenImage(options: UseFullscreenImageOptions = {}) {
 
 	const openFullscreen = useCallback(
 		(src: string, alt: string, caption?: string) => {
-			setImageData({ src, alt, caption });
+			setImageData(
+				caption !== undefined ? { src, alt, caption } : { src, alt },
+			);
 			setIsFullscreen(true);
 			onOpen?.();
 		},
