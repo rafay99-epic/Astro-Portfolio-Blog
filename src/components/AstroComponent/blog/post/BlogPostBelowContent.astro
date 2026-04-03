@@ -2,7 +2,6 @@
 import type { CollectionEntry } from "astro:content";
 import PostComment from "@astro/blog/comments/PostComment.astro";
 import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
-import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
 import EnhancedImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/EnhancedImageCaptionRenderer";
 import BlogNavigation from "@react/blog/layout/BlogNavigation";
 
@@ -20,8 +19,6 @@ const { isArchive, currentSlug, BlogPosts, prevPost, nextPost } = Astro.props;
 {
 	!isArchive ? (
 		<>
-			<MermaidRenderer client:load />
-
 			<EnhancedImageCaptionRenderer client:load />
 
 			<CodeCopySimple client:load />
