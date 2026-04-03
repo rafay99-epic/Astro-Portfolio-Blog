@@ -1,4 +1,5 @@
 ---
+import { getImage } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import BlogPostArticle from "@astro/blog/post/BlogPostArticle.astro";
@@ -81,6 +82,22 @@ const {
 	headings: tocHeadings = [],
 } = Astro.props as Props;
 const lead = excerpt || description;
+
+let articleHeroBackgroundSrc: string | null = null;
+if (heroImage) {
+	try {
+		const optimized = await getImage({
+			src: heroImage,
+			width: 1600,
+			height: 900,
+			format: "webp",
+			quality: 72,
+		});
+		articleHeroBackgroundSrc = optimized.src;
+	} catch {
+		articleHeroBackgroundSrc = heroImage;
+	}
+}
 const tocEntries = tocHeadings.filter(
 	(h: import("astro").MarkdownHeading) => h.depth === 2 || h.depth === 3,
 );
@@ -138,19 +155,49 @@ const updatedDate = currentBlog.data.updatedDate;
 
     <main class="main-content relative z-10 flex flex-1 flex-col">
       <section class="post-shell">
-        <BlogPostHeader
-          title={title}
-          lead={lead}
-          pubDate={pubDate}
-          isArchive={isArchive}
-          authorName={authorName}
-          authorAvatar={authorAvatar}
-          readTime={readTime}
-          wordCount={wordCount}
-          formattedWordCount={formattedWordCount}
-          tags={tags}
-          updatedDate={updatedDate}
-        />
+        <div
+          class:list={[
+            "post-header-hero",
+            articleHeroBackgroundSrc
+              ? "post-header-hero--has-image"
+              : "post-header-hero--plain",
+          ]}
+        >
+          {
+            articleHeroBackgroundSrc && (
+              <>
+                <div class="post-header-hero__blur-wrap" aria-hidden="true">
+                  <img
+                    src={articleHeroBackgroundSrc}
+                    alt=""
+                    width={1600}
+                    height={900}
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                    class="post-header-hero__blur-img"
+                  />
+                </div>
+                <div class="post-header-hero__scrim" aria-hidden="true" />
+              </>
+            )
+          }
+          <div class="post-header-hero__inner">
+            <BlogPostHeader
+              title={title}
+              lead={lead}
+              pubDate={pubDate}
+              isArchive={isArchive}
+              authorName={authorName}
+              authorAvatar={authorAvatar}
+              readTime={readTime}
+              wordCount={wordCount}
+              formattedWordCount={formattedWordCount}
+              tags={tags}
+              updatedDate={updatedDate}
+            />
+          </div>
+        </div>
 
         <div class="post-grid">
           <BlogPostArticle>

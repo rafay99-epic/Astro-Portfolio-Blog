@@ -2,6 +2,21 @@
 ---
     <!-- Styles must be global: markup lives in sibling components (header, rails); scoped CSS would only target this file's DOM. -->
     <style is:global>
+      /* Softer nav chrome on article pages — less “hard line” under the floating bar. */
+      .blog-container header .nav-float {
+        border-color: rgba(86, 95, 137, 0.11);
+        box-shadow:
+          0 10px 40px rgba(0, 0, 0, 0.2),
+          inset 0 1px 0 rgba(192, 202, 245, 0.045);
+      }
+
+      .blog-container header .nav-float.is-scrolled {
+        border-color: rgba(86, 95, 137, 0.16);
+        box-shadow:
+          0 12px 36px rgba(0, 0, 0, 0.28),
+          inset 0 1px 0 rgba(192, 202, 245, 0.05);
+      }
+
       .blog-container .main-content {
         margin: 0;
         padding: 0;
@@ -62,6 +77,104 @@
         width: min(92vw, 72ch);
         margin: 3rem auto 0;
         padding-bottom: 4rem;
+      }
+
+      /* Article masthead: blurred cover — lighter scrim so the photo reads clearly, still readable type. */
+      .post-header-hero {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        border-radius: 14px;
+        margin-bottom: 0.35rem;
+      }
+
+      .post-header-hero--has-image {
+        border: 1px solid rgba(86, 95, 137, 0.22);
+        box-shadow:
+          0 0 0 1px rgba(0, 0, 0, 0.15),
+          0 24px 56px -28px rgba(0, 0, 0, 0.65),
+          inset 0 1px 0 rgba(192, 202, 245, 0.07);
+      }
+
+      .post-header-hero__blur-wrap {
+        position: absolute;
+        inset: -32px;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .post-header-hero__blur-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        filter: blur(24px) saturate(1.22) brightness(0.55);
+        transform: scale(1.06);
+      }
+
+      .post-header-hero__scrim {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        border-radius: inherit;
+        background:
+          linear-gradient(
+            168deg,
+            rgba(26, 27, 38, 0.18) 0%,
+            rgba(26, 27, 38, 0.48) 38%,
+            rgba(26, 27, 38, 0.82) 100%
+          ),
+          radial-gradient(
+            110% 85% at 18% 0%,
+            rgba(122, 162, 247, 0.28),
+            transparent 52%
+          ),
+          radial-gradient(
+            90% 70% at 92% 25%,
+            rgba(187, 154, 247, 0.14),
+            transparent 48%
+          );
+      }
+
+      .post-header-hero__inner {
+        position: relative;
+        z-index: 2;
+        padding: clamp(1.15rem, 2.8vw, 1.75rem) clamp(0.5rem, 1.5vw, 1rem) 0;
+      }
+
+      .post-header-hero--plain .post-header-hero__inner {
+        padding: 0;
+      }
+
+      .post-header-hero--plain {
+        border-radius: 0;
+        margin-bottom: 0;
+      }
+
+      .post-header-hero--has-image .post-header {
+        border-bottom-color: rgba(192, 202, 245, 0.22);
+      }
+
+      .post-header-hero--has-image .post-lead {
+        color: #c8d0f0;
+        text-shadow: 0 1px 18px rgba(0, 0, 0, 0.4);
+      }
+
+      .post-header-hero--has-image .post-byline,
+      .post-header-hero--has-image .post-eyebrow {
+        text-shadow: 0 1px 14px rgba(0, 0, 0, 0.38);
+      }
+
+      .post-header-hero--has-image .post-title {
+        filter: drop-shadow(0 2px 24px rgba(0, 0, 0, 0.5));
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .post-header-hero__blur-img {
+          filter: blur(14px) saturate(1.08) brightness(0.5);
+          transform: none;
+        }
       }
 
       .post-header {
@@ -153,10 +266,18 @@
         margin-top: 2.5rem;
       }
 
+      .post-header-hero--has-image + .post-grid {
+        margin-top: 2rem;
+      }
+
       .post-rail {
         display: flex;
         flex-direction: column;
         gap: 2rem;
+      }
+
+      .post-rail--right {
+        gap: 1.6rem;
       }
 
       .post-card {
@@ -168,14 +289,39 @@
         border-top: 1px solid rgba(86, 95, 137, 0.12);
       }
 
-      /* QuickCopy + Share live in one card so spacing stays tight (no extra “invisible” block between cards). */
+      /* Quick actions + Share: one compact panel (no dead air, no island layout gap). */
+      .post-card--engage {
+        padding: 0.8rem 0.85rem 0.95rem;
+        border-radius: 11px;
+        background: rgba(26, 27, 38, 0.72);
+        border: 1px solid rgba(86, 95, 137, 0.14);
+        box-shadow:
+          inset 0 1px 0 rgba(192, 202, 245, 0.04),
+          0 8px 28px rgba(0, 0, 0, 0.12);
+      }
+
+      .post-card--engage .post-card-title {
+        margin-bottom: 0.5rem;
+      }
+
       .post-card--engage .post-card-title--inline {
-        margin-top: 0.65rem;
-        margin-bottom: 0.4rem;
+        margin-top: 0.4rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .post-card--engage .post-actions {
+        gap: 0.35rem;
       }
 
       .post-card--engage .post-actions-share {
         margin-top: 0;
+        min-height: 2.25rem;
+      }
+
+      .post-card--engage .post-action-split {
+        border-radius: 9px;
+        border-color: rgba(86, 95, 137, 0.16);
+        background: rgba(36, 40, 59, 0.35);
       }
 
       .post-card--engage .post-action-status:empty {

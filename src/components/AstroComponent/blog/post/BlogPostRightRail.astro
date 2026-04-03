@@ -107,7 +107,7 @@ const { tocEntries, isArchive, pageUrl } = Astro.props;
 			<ShareButtons
 				url={pageUrl}
 				pagetitle="Article"
-				client:visible
+				client:load
 				compact={true}
 			/>
 		</div>
