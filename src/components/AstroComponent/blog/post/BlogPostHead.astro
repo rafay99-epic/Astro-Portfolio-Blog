@@ -41,13 +41,29 @@ const {
 	excerpt,
 	canonicalUrl,
 } = Astro.props;
+
+/** One canonical absolute URL for OG / Twitter / schema (fixes wrong default when sharing). */
+const baseOrigin = Astro.site ?? Astro.url;
+function toAbsoluteImageUrl(src: string | undefined | null): string {
+	const s = typeof src === "string" ? src.trim() : "";
+	if (!s) return new URL("/Rafay99.webp", baseOrigin).href;
+	if (/^https?:\/\//i.test(s)) return s;
+	const path = s.startsWith("/") ? s : `/${s}`;
+	return new URL(path, baseOrigin).href;
+}
+
+const hasHero = Boolean(heroImage && String(heroImage).trim());
+const shareImageAbsolute = hasHero
+	? toAbsoluteImageUrl(heroImage)
+	: toAbsoluteImageUrl(openGraphImageUrl) ||
+		toAbsoluteImageUrl("/Rafay99.webp");
 ---
 
 <BaseHead
 	title={title}
 	description={description}
-	{...(heroImage !== undefined ? { image: heroImage } : {})}
-	{...(keywords !== undefined ? { keywords } : {})}
+	image={shareImageAbsolute}
+	{...(keywords !== undefined && keywords.length > 0 ? { keywords } : {})}
 />
 
 <BlogPostCriticalStyles />
@@ -60,9 +76,7 @@ const {
         basic: {
           title: title,
           type: "article",
-          image: heroImage
-            ? new URL(heroImage, Astro.url).toString()
-            : openGraphImageUrl,
+          image: shareImageAbsolute,
           url: pageUrl,
         },
         optional: {
@@ -108,9 +122,7 @@ const {
         "@type": "BlogPosting",
         headline: title,
         description: description,
-        image: heroImage
-          ? new URL(heroImage, Astro.url).toString()
-          : new URL("/Rafay99.webp", Astro.url).toString(),
+        image: shareImageAbsolute,
         author: {
           "@type": "Person",
           name: authorName,
