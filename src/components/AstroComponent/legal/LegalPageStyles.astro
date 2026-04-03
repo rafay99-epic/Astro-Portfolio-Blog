@@ -1,0 +1,71 @@
+---
+---
+<style is:global>
+  .legal-container {
+    min-height: 100vh;
+  }
+
+  .legal-hero {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 35%, transparent);
+    background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+    color: var(--color-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .legal-title {
+    font-size: clamp(2.4rem, 4vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .legal-title span {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .legal-description {
+    max-width: 62ch;
+    margin: 0 auto 1.25rem;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+
+  .legal-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-border-primary) 45%, transparent);
+    background: var(--color-bg-overlay);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+  }
+
+  .legal-meta span {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 768px) {
+    .legal-description {
+      font-size: 1rem;
+    }
+  }
+</style>

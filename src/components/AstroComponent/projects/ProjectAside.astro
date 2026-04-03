@@ -1,0 +1,88 @@
+---
+interface Props {
+	primaryCategory?: string | undefined;
+	ProjectRanking?: string | undefined;
+	stackCount: number;
+	ProjectDeployedLink?: string | undefined;
+	ProjectGithubLink?: string | undefined;
+	ProjectTech?: string[] | undefined;
+}
+
+const {
+	primaryCategory,
+	ProjectRanking,
+	stackCount,
+	ProjectDeployedLink,
+	ProjectGithubLink,
+	ProjectTech,
+} = Astro.props;
+---
+
+<aside class="project-aside">
+	<div class="project-card">
+		<h3>Project Snapshot</h3>
+		<div class="project-summary-grid">
+			<div class="project-summary-item">
+				<span class="project-summary-label">Category</span>
+				<span class="project-summary-value">{primaryCategory ?? "General"}</span>
+			</div>
+			<div class="project-summary-item">
+				<span class="project-summary-label">Rank</span>
+				<span class="project-summary-value">{ProjectRanking ?? "—"}</span>
+			</div>
+			<div class="project-summary-item">
+				<span class="project-summary-label">Stack</span>
+				<span class="project-summary-value">
+					{stackCount ? `${stackCount} tools` : "—"}
+				</span>
+			</div>
+			{
+				(ProjectDeployedLink || ProjectGithubLink) && (
+					<div class="project-summary-item">
+						<span class="project-summary-label">Links</span>
+						<div class="project-summary-links">
+							{ProjectDeployedLink && (
+								<a
+									href={ProjectDeployedLink}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="project-summary-link"
+								>
+									Live
+								</a>
+							)}
+							{ProjectGithubLink && (
+								<a
+									href={ProjectGithubLink}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="project-summary-link"
+								>
+									Source
+								</a>
+							)}
+						</div>
+					</div>
+				)
+			}
+		</div>
+	</div>
+
+	{
+		ProjectTech && ProjectTech.length > 0 && (
+			<div class="project-card">
+				<h3>Tech Stack</h3>
+				<div class="project-tech">
+					{ProjectTech.map((tech) => (
+						<span class="project-tech__chip">{tech}</span>
+					))}
+				</div>
+			</div>
+		)
+	}
+
+	<div class="project-card project-card--toc">
+		<h3>On this page</h3>
+		<nav class="project-toc" id="project-toc" />
+	</div>
+</aside>

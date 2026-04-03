@@ -9,7 +9,7 @@ const { class: className = "", withBackground = true } = Astro.props;
 
 <style>
   .content-container {
-    border: 1px solid rgba(86, 95, 137, 0.2);
+    border: 1px solid var(--color-border-secondary);
     border-radius: 20px;
     padding: 40px;
     margin-top: 32px;
@@ -19,7 +19,7 @@ const { class: className = "", withBackground = true } = Astro.props;
   }
 
   .content-container.with-background {
-    background: rgba(26, 27, 38, 0.6);
+    background: var(--color-bg-overlay);
     backdrop-filter: blur(20px);
   }
 
@@ -32,8 +32,8 @@ const { class: className = "", withBackground = true } = Astro.props;
     bottom: 0;
     background: linear-gradient(
       135deg,
-      rgba(122, 162, 247, 0.03) 0%,
-      rgba(187, 154, 247, 0.03) 100%
+      color-mix(in srgb, var(--color-primary) 4%, transparent) 0%,
+      color-mix(in srgb, var(--color-secondary) 4%, transparent) 100%
     );
     pointer-events: none;
   }

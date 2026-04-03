@@ -172,7 +172,7 @@ const EnhancedImageCaptionRenderer = memo(
 
 		const processImages = useCallback(() => {
 			const mainContent = document.querySelector(
-				"main, .main-content, .blog-typography",
+				"main, .main-content, .content-prose",
 			);
 			if (!mainContent) return;
 
@@ -217,7 +217,7 @@ const EnhancedImageCaptionRenderer = memo(
 			});
 
 			const mainContent = document.querySelector(
-				"main, .main-content, .blog-typography",
+				"main, .main-content, .content-prose",
 			);
 			if (mainContent) {
 				observer.observe(mainContent, {

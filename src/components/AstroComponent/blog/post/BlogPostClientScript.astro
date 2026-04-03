@@ -160,7 +160,7 @@ const { postActionPayload } = Astro.props;
           const headings = Array.from(
             postContent
               ? postContent.querySelectorAll("h2, h3")
-              : document.querySelectorAll(".blog-prose h2, .blog-prose h3"),
+              : document.querySelectorAll(".content-prose h2, .content-prose h3"),
           );
 
           if (!tocRoot) return headings;

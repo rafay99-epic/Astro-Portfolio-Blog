@@ -1,0 +1,564 @@
+/**
+ * Long-form MDX/Markdown (blog, project, legal).
+ * Base palette: theme.css :root (--color-*).
+ *
+ * Reskin without editing every rule: in your CSS, set e.g.
+ * `.content-prose { --prose-link: …; --prose-body: …; }` (all --prose-* are optional overrides).
+ */
+
+.content-prose {
+  /* —— Prose tokens (swap these to refresh the whole document surface) —— */
+  --prose-body: var(--color-text-secondary);
+  --prose-heading: var(--color-text-primary);
+  --prose-bold: var(--color-text-primary);
+  --prose-link: var(--color-text-accent);
+  --prose-link-hover: var(--color-primary);
+  --prose-link-underline: color-mix(
+    in srgb,
+    var(--color-text-accent) 38%,
+    transparent
+  );
+  --prose-link-underline-hover: var(--color-border-accent);
+  --prose-code-bg: var(--color-hover);
+  --prose-code-fg: var(--color-text-accent);
+  --prose-code-border: var(--color-border-secondary);
+  --prose-pre-bg: var(--color-bg-tertiary);
+  --prose-pre-border: var(--color-border-primary);
+  --prose-pre-fg: var(--color-text-primary);
+  --prose-pre-shadow:
+    0 2px 6px color-mix(in srgb, var(--color-bg-primary) 55%, transparent),
+    0 10px 28px color-mix(in srgb, var(--color-bg-primary) 45%, transparent);
+  --prose-table-border: var(--color-border-secondary);
+  --prose-table-head-bg: var(--color-bg-tertiary);
+  --prose-table-cell-border: var(--color-border-secondary);
+  --prose-table-row-alt: color-mix(
+    in srgb,
+    var(--color-bg-tertiary) 38%,
+    transparent
+  );
+  --prose-table-row-hover: var(--color-hover);
+  --prose-table-shadow: 0 2px 14px
+    color-mix(in srgb, var(--color-bg-primary) 65%, transparent);
+  --prose-blockquote-border: var(--color-border-accent);
+  --prose-blockquote-bg: color-mix(
+    in srgb,
+    var(--color-primary) 9%,
+    transparent
+  );
+  --prose-hr: var(--color-border-primary);
+  --prose-mark-bg: color-mix(in srgb, var(--color-warning) 24%, transparent);
+  --prose-mark-fg: var(--color-text-primary);
+  --prose-kbd-bg: var(--color-bg-secondary);
+  --prose-kbd-border: var(--color-border-secondary);
+  /* Legacy class-based highlighters (span.keyword, etc.) */
+  --prose-token-keyword: var(--color-primary);
+  --prose-token-string: var(--color-accent);
+  --prose-token-comment: var(--color-text-muted);
+  --prose-token-function: var(--color-secondary);
+
+  font-size: clamp(1rem, 0.2vw + 0.96rem, 1.0625rem);
+  line-height: 1.78;
+  color: var(--prose-body);
+  font-weight: 400;
+}
+
+/* -------- Headings -------- */
+.content-prose :where(h1, h2, h3, h4, h5, h6) {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  line-height: 1.28;
+  scroll-margin-top: 7.5rem;
+  color: var(--prose-heading);
+}
+
+.content-prose h1 {
+  margin: 0 0 0.65em;
+  font-size: clamp(1.65rem, 2.8vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.content-prose h2 {
+  margin: 2.35rem 0 0.55em;
+  padding: 0.45rem 0.85rem 0.45rem 0.9rem;
+  font-size: clamp(1.22rem, 2vw, 1.42rem);
+  font-weight: 600;
+  color: var(--prose-heading);
+  border-left: 3px solid var(--color-border-accent);
+  border-radius: 0 10px 10px 0;
+  background: color-mix(in srgb, var(--color-primary) 11%, transparent);
+}
+
+.content-prose h2:first-child,
+.content-prose > *:first-child:is(h2) {
+  margin-top: 0;
+}
+
+.content-prose h3 {
+  margin: 1.85rem 0 0.45em;
+  padding-left: 1rem;
+  font-size: clamp(1.08rem, 1.5vw, 1.2rem);
+  font-weight: 600;
+  color: var(--prose-heading);
+  position: relative;
+}
+
+.content-prose h3::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 700;
+  font-size: 0.95em;
+}
+
+.content-prose h4 {
+  margin: 1.45rem 0 0.4em;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.content-prose h5 {
+  margin: 1.2rem 0 0.35em;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--prose-body);
+}
+
+.content-prose h6 {
+  margin: 1rem 0 0.3em;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* -------- Body copy & emphasis -------- */
+.content-prose :where(p) {
+  margin: 0 0 1.1em;
+  color: var(--prose-body);
+}
+
+.content-prose :where(strong, b) {
+  color: var(--prose-bold);
+  font-weight: 600;
+}
+
+/* Links: clear but not heavy; stronger on hover */
+.content-prose :where(a) {
+  color: var(--prose-link);
+  text-decoration: underline;
+  text-decoration-color: var(--prose-link-underline);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition:
+    color 0.15s ease,
+    text-decoration-color 0.15s ease,
+    text-decoration-thickness 0.15s ease;
+}
+
+.content-prose :where(a:hover) {
+  color: var(--prose-link-hover);
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--prose-link-underline-hover);
+}
+
+.content-prose :where(a:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* -------- Lists (nested patterns from legacy global.css) -------- */
+.content-prose :where(ul, ol) {
+  margin: 1.05em 0;
+  padding-left: 1.35rem;
+  color: var(--prose-body);
+}
+
+.content-prose :where(ul) {
+  list-style-type: disc;
+}
+
+.content-prose :where(ol) {
+  list-style-type: decimal;
+}
+
+.content-prose :where(li) {
+  margin: 0.35em 0;
+  line-height: 1.65;
+  color: var(--prose-body);
+}
+
+.content-prose :where(ul ul, ol ol, ul ol, ol ul) {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+  padding-left: 1.35em;
+}
+
+.content-prose ul ul {
+  list-style-type: circle;
+}
+
+.content-prose ul ol {
+  list-style-type: lower-alpha;
+}
+
+.content-prose ol ul {
+  list-style-type: circle;
+}
+
+.content-prose ol ol {
+  list-style-type: lower-alpha;
+}
+
+.content-prose ul li::marker {
+  color: var(--color-accent);
+}
+
+.content-prose ol li::marker {
+  color: var(--color-secondary);
+  font-weight: 700;
+}
+
+/* GFM task lists */
+.content-prose li:has(> input[type="checkbox"]) {
+  list-style: none;
+  padding-left: 0.15em;
+  margin-left: -1.2rem;
+}
+
+.content-prose li > input[type="checkbox"] {
+  margin-right: 0.45em;
+  vertical-align: middle;
+  accent-color: var(--color-primary);
+}
+
+/* -------- Blockquote -------- */
+.content-prose :where(blockquote) {
+  margin: 1.25em 0;
+  padding: 0.85rem 1.1rem 0.85rem 1.15rem;
+  border-left: 4px solid var(--prose-blockquote-border);
+  border-radius: 0 10px 10px 0;
+  background: var(--prose-blockquote-bg);
+  color: var(--prose-body);
+  font-style: italic;
+}
+
+.content-prose blockquote :where(p) {
+  margin: 0.4em 0;
+}
+
+.content-prose blockquote :where(p:first-child) {
+  margin-top: 0;
+}
+
+.content-prose blockquote :where(p:last-child) {
+  margin-bottom: 0;
+}
+
+.content-prose blockquote :where(a) {
+  color: var(--prose-link);
+}
+
+.content-prose blockquote :where(code) {
+  background: var(--prose-code-bg);
+  color: var(--prose-code-fg);
+}
+
+.content-prose blockquote blockquote {
+  border-left-width: 3px;
+  border-left-color: var(--color-border-primary);
+  background: color-mix(in srgb, var(--prose-blockquote-bg) 70%, transparent);
+  font-size: 0.96em;
+}
+
+/* -------- Horizontal rule -------- */
+.content-prose :where(hr) {
+  border: none;
+  border-top: 1px solid var(--prose-hr);
+  opacity: 0.5;
+  margin: 2em 0;
+}
+
+/* -------- Tables (full chrome + hover from legacy global) -------- */
+.content-prose :where(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.35em 0;
+  font-size: 0.94em;
+  border: 1px solid var(--prose-table-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-bg-secondary);
+  box-shadow: var(--prose-table-shadow);
+}
+
+.content-prose :where(caption) {
+  caption-side: top;
+  padding: 0.5rem 0.85rem 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-align: left;
+}
+
+.content-prose :where(thead) {
+  background: var(--prose-table-head-bg);
+}
+
+.content-prose :where(tfoot) {
+  background: color-mix(in srgb, var(--prose-table-head-bg) 88%, transparent);
+  font-weight: 600;
+  font-size: 0.92em;
+  color: var(--prose-heading);
+}
+
+.content-prose :where(th) {
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--prose-heading);
+  border-bottom: 2px solid var(--color-border-accent);
+  vertical-align: bottom;
+}
+
+.content-prose :where(td) {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--prose-table-cell-border);
+  color: var(--prose-body);
+  vertical-align: top;
+}
+
+.content-prose :where(tr:last-child td) {
+  border-bottom: none;
+}
+
+.content-prose :where(tbody tr:nth-child(even)) {
+  background: var(--prose-table-row-alt);
+}
+
+.content-prose :where(tbody tr) {
+  transition: background-color 0.15s ease;
+}
+
+.content-prose :where(tbody tr:hover) {
+  background: var(--prose-table-row-hover);
+}
+
+/* -------- Media & figures -------- */
+.content-prose :where(img, video) {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 1.1em 0;
+}
+
+.content-prose :where(figure) {
+  margin: 1.25em 0;
+}
+
+.content-prose :where(figcaption) {
+  margin-top: 0.4em;
+  font-size: 0.88em;
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.content-prose :where(iframe) {
+  display: block;
+  width: 100%;
+  max-width: 48rem;
+  margin: 1.25em auto;
+  border: none;
+  border-radius: 10px;
+  box-shadow: var(--prose-pre-shadow);
+}
+
+/* -------- Inline code (not pre > code — higher specificity below) -------- */
+.content-prose :where(code) {
+  font-family: "Fira Code", ui-monospace, "Cascadia Code", monospace;
+  font-size: 0.88em;
+  font-weight: 500;
+  padding: 0.12em 0.38em;
+  border-radius: 5px;
+  border: 1px solid var(--prose-code-border);
+  background: var(--prose-code-bg);
+  color: var(--prose-code-fg);
+}
+
+/* -------- Code blocks -------- */
+.content-prose :where(pre) {
+  position: relative;
+  margin: 1.35em 0;
+  padding: 1rem 1.15rem;
+  border-radius: 12px;
+  border: 1px solid var(--prose-pre-border);
+  background: var(--prose-pre-bg);
+  box-shadow: var(--prose-pre-shadow);
+  overflow-x: auto;
+  font-size: 0.86em;
+  line-height: 1.55;
+  tab-size: 2;
+}
+
+.content-prose pre::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.content-prose pre::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+  border-radius: 8px;
+}
+
+.content-prose pre::-webkit-scrollbar-thumb {
+  background: var(--color-border-primary);
+  border-radius: 4px;
+  border: 2px solid var(--prose-pre-bg);
+}
+
+.content-prose pre::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-accent);
+}
+
+/* Block `code`: reset chip styling (works with global `pre > code { all: unset }`) */
+.content-prose pre > code {
+  all: unset;
+  display: block;
+  white-space: pre;
+  font-family: "Fira Code", ui-monospace, "Cascadia Code", monospace;
+  font-size: 1em;
+  line-height: 1.55;
+  color: var(--prose-pre-fg);
+}
+
+/* Shiki / legacy spans inside pre (when classes are emitted) */
+.content-prose pre code :is(.keyword, .hljs-keyword) {
+  color: var(--prose-token-keyword);
+}
+
+.content-prose pre code :is(.string, .hljs-string) {
+  color: var(--prose-token-string);
+}
+
+.content-prose pre code :is(.comment, .hljs-comment) {
+  color: var(--prose-token-comment);
+}
+
+.content-prose pre code :is(.function, .hljs-function, .title.function_) {
+  color: var(--prose-token-function);
+}
+
+.content-prose pre code :is(.number, .hljs-number) {
+  color: var(--color-warning);
+}
+
+.content-prose pre code :is(.operator, .hljs-operator) {
+  color: var(--color-text-secondary);
+}
+
+/* -------- Keyboard, sample, variable, mark, abbr -------- */
+.content-prose :where(kbd) {
+  font-family: "Fira Code", ui-monospace, monospace;
+  font-size: 0.85em;
+  padding: 0.12em 0.45em;
+  border-radius: 5px;
+  border: 1px solid var(--prose-kbd-border);
+  background: var(--prose-kbd-bg);
+  color: var(--prose-heading);
+  box-shadow: 0 1px 0 var(--color-border-secondary);
+}
+
+.content-prose :where(samp) {
+  font-family: "Fira Code", ui-monospace, monospace;
+  font-size: 0.9em;
+  color: var(--prose-code-fg);
+}
+
+.content-prose :where(var) {
+  font-style: italic;
+  color: var(--color-secondary);
+}
+
+.content-prose :where(mark) {
+  padding: 0.08em 0.25em;
+  border-radius: 4px;
+  background: var(--prose-mark-bg);
+  color: var(--prose-mark-fg);
+}
+
+.content-prose :where(abbr[title]) {
+  text-decoration: underline dotted;
+  text-decoration-color: var(--color-text-muted);
+  cursor: help;
+}
+
+/* -------- Definition lists -------- */
+.content-prose :where(dl) {
+  margin: 1.1em 0;
+}
+
+.content-prose :where(dt) {
+  margin-top: 0.75em;
+  font-weight: 600;
+  color: var(--prose-heading);
+}
+
+.content-prose :where(dt:first-child) {
+  margin-top: 0;
+}
+
+.content-prose :where(dd) {
+  margin: 0.25em 0 0.5em 1rem;
+  color: var(--prose-body);
+  line-height: 1.65;
+}
+
+/* -------- Details / summary (GFM-style) -------- */
+.content-prose :where(details) {
+  margin: 1.1em 0;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--prose-table-border);
+  background: color-mix(in srgb, var(--color-bg-secondary) 92%, transparent);
+}
+
+.content-prose :where(summary) {
+  font-weight: 600;
+  color: var(--prose-heading);
+  cursor: pointer;
+}
+
+.content-prose :where(details[open] summary) {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--prose-table-cell-border);
+}
+
+@media (max-width: 768px) {
+  .content-prose {
+    font-size: 1rem;
+    line-height: 1.74;
+  }
+
+  .content-prose :where(h2) {
+    padding-left: 0.75rem;
+    padding-right: 0.65rem;
+  }
+
+  .content-prose :where(table) {
+    font-size: 0.9em;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
