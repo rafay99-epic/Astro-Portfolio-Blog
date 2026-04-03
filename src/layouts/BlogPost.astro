@@ -6,7 +6,6 @@ import BlogPostBelowContent from "@astro/blog/post/BlogPostBelowContent.astro";
 import BlogPostClientScript from "@astro/blog/post/BlogPostClientScript.astro";
 import BlogPostHead from "@astro/blog/post/BlogPostHead.astro";
 import BlogPostHeader from "@astro/blog/post/BlogPostHeader.astro";
-import BlogPostLeftRail from "@astro/blog/post/BlogPostLeftRail.astro";
 import BlogPostRightRail from "@astro/blog/post/BlogPostRightRail.astro";
 import Footer from "@astro/footer/Footer.astro";
 import Header from "@astro/header/Header.astro";
@@ -147,23 +146,22 @@ const updatedDate = currentBlog.data.updatedDate;
           authorName={authorName}
           authorAvatar={authorAvatar}
           readTime={readTime}
+          wordCount={wordCount}
+          formattedWordCount={formattedWordCount}
           tags={tags}
           updatedDate={updatedDate}
         />
 
         <div class="post-grid">
-          <BlogPostLeftRail
-            readTime={readTime}
-            wordCount={wordCount}
-            formattedWordCount={formattedWordCount}
-            pageUrl={pageUrl}
-          />
-
           <BlogPostArticle>
             <slot />
           </BlogPostArticle>
 
-          <BlogPostRightRail tocEntries={tocEntries} isArchive={isArchive} />
+          <BlogPostRightRail
+            tocEntries={tocEntries}
+            isArchive={isArchive}
+            pageUrl={pageUrl}
+          />
         </div>
       </section>
 

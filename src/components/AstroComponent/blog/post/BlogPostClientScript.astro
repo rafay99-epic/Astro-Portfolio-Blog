@@ -20,15 +20,6 @@ const { postActionPayload } = Astro.props;
       function initBlogPost() {
         window.scrollTo(0, 0);
 
-        const progressLabel = document.querySelector(
-          "[data-read-progress-label]",
-        );
-        const progressFill = document.querySelector(
-          "[data-read-progress-fill]",
-        );
-        const progressTrack = document.querySelector(
-          "[data-read-progress-track]",
-        );
         const copyStatus = document.querySelector("[data-copy-status]");
         const actionMenu = document.querySelector("[data-post-action-menu]");
         const copyPagePrimaryBtn = document.querySelector(
@@ -238,39 +229,6 @@ const { postActionPayload } = Astro.props;
           );
           headings.forEach((heading) => observer.observe(heading));
         }
-
-        let rafId = 0;
-        const updateProgress = () => {
-          rafId = 0;
-          const totalHeight = document.body.scrollHeight - window.innerHeight;
-          const scrollTop =
-            window.scrollY || document.documentElement.scrollTop;
-          const progress =
-            totalHeight > 0
-              ? Math.min(Math.max(scrollTop / totalHeight, 0), 1)
-              : 0;
-
-          if (progressFill) {
-            progressFill.style.transform = `scaleX(${progress})`;
-          }
-          if (progressLabel) {
-            progressLabel.textContent = `${Math.round(progress * 100)}%`;
-          }
-          if (progressTrack) {
-            progressTrack.setAttribute(
-              "aria-valuenow",
-              `${Math.round(progress * 100)}`,
-            );
-          }
-        };
-
-        const onScroll = () => {
-          if (rafId) return;
-          rafId = requestAnimationFrame(updateProgress);
-        };
-
-        window.addEventListener("scroll", onScroll, { passive: true });
-        updateProgress();
 
         if (actionMenu && actionMenuToggle) {
           actionMenuToggle.addEventListener("click", () => {

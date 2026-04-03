@@ -7,6 +7,8 @@ interface Props {
 	authorName: string;
 	authorAvatar?: string;
 	readTime?: string;
+	wordCount?: number;
+	formattedWordCount?: string;
 	tags?: string[];
 	updatedDate?: Date;
 }
@@ -19,6 +21,8 @@ const {
 	authorName,
 	authorAvatar,
 	readTime,
+	wordCount = 0,
+	formattedWordCount = "",
 	tags,
 	updatedDate,
 } = Astro.props;
@@ -72,6 +76,11 @@ const {
 			<span>{authorName}</span>
 		</div>
 		{readTime && <span>{readTime}</span>}
+		{
+			wordCount > 0 && formattedWordCount && (
+				<span class="post-wordcount">{formattedWordCount} words</span>
+			)
+		}
 		{
 			updatedDate && (
 				<span>

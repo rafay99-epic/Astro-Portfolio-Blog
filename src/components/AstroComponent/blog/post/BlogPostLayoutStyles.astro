@@ -11,9 +11,16 @@
       .post-shell {
         position: relative;
         z-index: 1;
-        width: min(92vw, 80rem);
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 88rem;
         margin: 5rem auto 0;
-        padding: 3rem 0 3.5rem;
+        padding: 3rem clamp(1.25rem, 5vw, 3.25rem) 3.5rem;
+      }
+
+      .post-wordcount {
+        color: #565f89;
+        font-size: 0.85rem;
       }
 
       .ads-section {
@@ -83,7 +90,7 @@
         font-size: 1.15rem;
         line-height: 1.7;
         color: #a9b1d6;
-        max-width: 60ch;
+        max-width: min(68ch, 100%);
       }
 
       .post-byline {
@@ -161,57 +168,32 @@
         border-top: 1px solid rgba(86, 95, 137, 0.12);
       }
 
+      /* QuickCopy + Share live in one card so spacing stays tight (no extra “invisible” block between cards). */
+      .post-card--engage .post-card-title--inline {
+        margin-top: 0.65rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .post-card--engage .post-actions-share {
+        margin-top: 0;
+      }
+
+      .post-card--engage .post-action-status:empty {
+        display: none;
+        margin: 0;
+      }
+
+      .post-card--engage .post-action-status:not(:empty) {
+        display: block;
+        margin-top: 0.35rem;
+      }
+
       .post-card-title {
         font-size: 0.7rem;
         letter-spacing: 0.14em;
         text-transform: uppercase;
         color: #414868;
         margin-bottom: 0.85rem;
-      }
-
-      .post-stat {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.82rem;
-        color: #565f89;
-        margin-bottom: 0.5rem;
-      }
-
-      .post-stat strong {
-        color: #a9b1d6;
-        font-weight: 500;
-      }
-
-      .post-progress {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        margin-top: 0.6rem;
-      }
-
-      .post-progress-track {
-        flex: 1;
-        height: 3px;
-        background: rgba(86, 95, 137, 0.2);
-        border-radius: 999px;
-        overflow: hidden;
-      }
-
-      .post-progress-fill {
-        height: 100%;
-        background: #7aa2f7;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.1s ease-out;
-      }
-
-      .post-progress-label {
-        font-size: 0.7rem;
-        color: #414868;
-        min-width: 2.2rem;
-        text-align: right;
-        font-variant-numeric: tabular-nums;
       }
 
       .post-actions {
@@ -493,8 +475,8 @@
 
       .post-content {
         width: 100%;
-        max-width: 72ch;
-        margin: 0 auto;
+        max-width: min(82ch, 100%);
+        margin: 0;
       }
 
       .post-toc {
@@ -593,20 +575,14 @@
 
       @media (min-width: 1024px) {
         .post-grid {
-          grid-template-columns: minmax(0, 16rem) minmax(0, 72ch) minmax(
-              0,
-              16rem
-            );
+          grid-template-columns: minmax(0, 1fr) minmax(14rem, 17.5rem);
+          gap: clamp(2rem, 4vw, 3.5rem);
           align-items: start;
         }
 
         .post-rail {
           position: sticky;
           top: 6.5rem;
-        }
-
-        .post-content {
-          margin: 0;
         }
       }
 
@@ -615,41 +591,35 @@
           gap: 2rem;
         }
 
-        .post-rail--left {
-          order: 2;
-        }
-
         .post-content {
           order: 1;
         }
 
         .post-rail--right {
-          order: 3;
-        }
-
-        .post-rail {
+          order: 2;
           flex-direction: row;
           flex-wrap: wrap;
           gap: 1.5rem;
         }
 
-        .post-card {
+        .post-rail--right .post-card {
           flex: 1;
           min-width: 200px;
         }
 
-        .post-card + .post-card {
+        .post-rail--right .post-card + .post-card {
           padding-top: 0;
           border-top: none;
           padding-left: 1.5rem;
           border-left: 1px solid rgba(86, 95, 137, 0.12);
         }
+
       }
 
       @media (max-width: 768px) {
         .post-shell {
           margin-top: 3.5rem;
-          padding: 2rem 0 3rem;
+          padding: 2rem clamp(1rem, 4vw, 1.75rem) 3rem;
         }
 
         .post-header {
@@ -664,26 +634,27 @@
           font-size: 1rem;
         }
 
-        .post-rail {
+        .post-rail--right {
           flex-direction: column;
         }
 
-        .post-card {
+        .post-rail--right .post-card {
           min-width: unset;
         }
 
-        .post-card + .post-card {
+        .post-rail--right .post-card + .post-card {
           padding-left: 0;
           border-left: none;
           padding-top: 1.25rem;
           border-top: 1px solid rgba(86, 95, 137, 0.12);
         }
+
       }
 
       @media (max-width: 480px) {
         .post-shell {
           margin-top: 3rem;
-          padding: 1.5rem 0 2.5rem;
+          padding: 1.5rem clamp(0.875rem, 4vw, 1.25rem) 2.5rem;
         }
 
         .post-title {
