@@ -8,7 +8,7 @@ const { class: className = "", withBackground = true } = Astro.props;
 ---
 
 <style>
-  .content-container {
+  /* .content-container {
     border: 1px solid var(--color-border-secondary);
     border-radius: 20px;
     padding: 40px;
@@ -21,9 +21,9 @@ const { class: className = "", withBackground = true } = Astro.props;
   .content-container.with-background {
     background: var(--color-bg-overlay);
     backdrop-filter: blur(20px);
-  }
+  } */
 
-  .content-container::before {
+  /* .content-container::before {
     content: "";
     position: absolute;
     top: 0;
@@ -41,7 +41,7 @@ const { class: className = "", withBackground = true } = Astro.props;
   .content-wrapper {
     position: relative;
     z-index: 1;
-  }
+  } */
 
   @media (max-width: 768px) {
     .content-container {
