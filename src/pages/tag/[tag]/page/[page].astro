@@ -25,13 +25,11 @@ export async function getStaticPaths() {
 				b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 		);
 
-	const allTags = Array.from(
-		new Set(
+	const allTags = [
+		...new Set<string>(
 			allPosts.flatMap((post: CollectionEntry<"blog">) => post.data.tags || []),
 		),
-	).sort((a: string, b: string) =>
-		(a as string).localeCompare(b as string),
-	) as string[];
+	].sort((a, b) => a.localeCompare(b));
 
 	const paths: Array<{
 		params: { tag: string; page: string };

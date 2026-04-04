@@ -1,7 +1,7 @@
-import { memo } from "react";
+import { type ComponentType, type CSSProperties, memo } from "react";
 import { FaFacebook, FaLinkedin, FaTwitter, FaWhatsapp } from "react-icons/fa";
 import { LuSend } from "react-icons/lu";
-import { generateShareUrls } from "types/shareUtils";
+import { generateShareUrls, type ShareUrls } from "types/shareUtils";
 
 interface ShareButtonsProps {
 	url: string;
@@ -34,7 +34,12 @@ const sharePlatforms = [
 		icon: FaLinkedin,
 		color: "#0A66C2",
 	},
-];
+] as const satisfies ReadonlyArray<{
+	id: keyof ShareUrls;
+	label: string;
+	icon: ComponentType<{ className?: string; style?: CSSProperties }>;
+	color: string;
+}>;
 
 const ShareButtons = memo(function ShareButtons({
 	url,

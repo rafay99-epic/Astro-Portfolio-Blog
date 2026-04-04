@@ -1,0 +1,26 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	formattedUpdated: string | null;
+	lastUpdated?: Date | undefined;
+}
+
+const { title, description, formattedUpdated, lastUpdated } = Astro.props;
+---
+
+<section class="legal-hero">
+	<div class="legal-badge">Legal</div>
+	<h1 class="legal-title">
+		<span>{title}</span>
+	</h1>
+	<p class="legal-description">{description}</p>
+	{
+		formattedUpdated && lastUpdated && (
+			<div class="legal-meta">
+				<span>Last updated</span>
+				<time datetime={lastUpdated.toISOString()}>{formattedUpdated}</time>
+			</div>
+		)
+	}
+</section>

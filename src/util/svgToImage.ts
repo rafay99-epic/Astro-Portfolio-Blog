@@ -22,8 +22,10 @@ export async function downloadSvgAsPng(
 
 	if (viewBox) {
 		const parts = viewBox.split(" ").map(Number);
-		width = parts[2];
-		height = parts[3];
+		const w = parts[2];
+		const h = parts[3];
+		width = typeof w === "number" && Number.isFinite(w) ? w : 800;
+		height = typeof h === "number" && Number.isFinite(h) ? h : 600;
 	} else {
 		width = Number.parseFloat(svgElement.getAttribute("width") || "800");
 		height = Number.parseFloat(svgElement.getAttribute("height") || "600");

@@ -13,7 +13,7 @@ export function useMermaidRenderer(): UseMermaidRendererResult {
 	const [mermaidInitialized, setMermaidInitialized] = useState(false);
 
 	const extractDiagramType = useCallback((mermaidCode: string): string => {
-		const firstLine = mermaidCode.trim().split("\n")[0].toLowerCase();
+		const firstLine = (mermaidCode.trim().split("\n")[0] ?? "").toLowerCase();
 		const foundType = Object.entries(DIAGRAM_TYPES).find(([key]) =>
 			firstLine.includes(key),
 		);

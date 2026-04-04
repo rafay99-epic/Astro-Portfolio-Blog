@@ -1,0 +1,47 @@
+---
+import ProjectAside from "@astro/projects/ProjectAside.astro";
+import ShareButtons from "@react/blog/interactions/socialButton";
+
+interface Props {
+	pageUrl: string;
+	primaryCategory?: string | undefined;
+	ProjectRanking?: string | undefined;
+	stackCount: number;
+	ProjectDeployedLink?: string | undefined;
+	ProjectGithubLink?: string | undefined;
+	ProjectTech?: string[] | undefined;
+}
+
+const {
+	pageUrl,
+	primaryCategory,
+	ProjectRanking,
+	stackCount,
+	ProjectDeployedLink,
+	ProjectGithubLink,
+	ProjectTech,
+} = Astro.props;
+---
+
+<section class="project-body">
+	<div class="project-body__inner">
+		<div class="project-article">
+			<div class="project-content content-prose" id="project-content">
+				<slot />
+			</div>
+
+			<div class="project-share">
+				<ShareButtons url={pageUrl} pagetitle="Project" client:visible />
+			</div>
+		</div>
+
+		<ProjectAside
+			primaryCategory={primaryCategory}
+			ProjectRanking={ProjectRanking}
+			stackCount={stackCount}
+			ProjectDeployedLink={ProjectDeployedLink}
+			ProjectGithubLink={ProjectGithubLink}
+			ProjectTech={ProjectTech}
+		/>
+	</div>
+</section>

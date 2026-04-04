@@ -1,0 +1,112 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PostComment from "@astro/blog/comments/PostComment.astro";
+import CodeCopySimple from "@react/blog/enhancements/code-copy/CodeCopySimple";
+import EnhancedImageCaptionRenderer from "@react/blog/enhancements/image-caption-renderer/EnhancedImageCaptionRenderer";
+import BlogNavigation from "@react/blog/layout/BlogNavigation";
+
+interface Props {
+	isArchive: boolean;
+	currentSlug: string;
+	BlogPosts: CollectionEntry<"blog">[];
+	prevPost?: CollectionEntry<"blog">;
+	nextPost?: CollectionEntry<"blog">;
+}
+
+const { isArchive, currentSlug, BlogPosts, prevPost, nextPost } = Astro.props;
+---
+
+{
+	!isArchive ? (
+		<>
+			<EnhancedImageCaptionRenderer client:load />
+
+			<CodeCopySimple client:load />
+
+			<BlogNavigation
+				client:load
+				currentSlug={currentSlug || ""}
+				allPosts={BlogPosts}
+				basePath="/blog"
+			/>
+
+			<div class="comments-section">
+				<div class="border-t border-[#565f89]/10 pt-8">
+					<h2 class="mb-1 text-sm font-medium tracking-wide text-[#565f89] uppercase">
+						Discussion
+					</h2>
+					<p class="mb-6 text-xs text-[#414868]">
+						Share your thoughts and engage with the community
+					</p>
+					<div class="relative">
+						<PostComment />
+					</div>
+				</div>
+			</div>
+		</>
+	) : (
+		<div class="mx-auto mt-10 flex w-full max-w-4xl items-center justify-between border-t border-[#565f89]/20 px-6 py-8">
+			{prevPost ? (
+				<a
+					href={`/blog/archive/${prevPost.id}`}
+					class="group flex max-w-xs items-center gap-3 text-left"
+				>
+					<div class="flex flex-col">
+						<span class="text-xs font-medium uppercase tracking-wide text-[#565f89]">
+							Previous
+						</span>
+						<span class="line-clamp-2 text-sm text-[#a9b1d6] transition-colors duration-200 group-hover:text-[#7aa2f7]">
+							{prevPost.data.title}
+						</span>
+					</div>
+					<svg
+						class="h-4 w-4 flex-shrink-0 text-[#565f89] transition-colors duration-200 group-hover:text-[#7aa2f7]"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M15 19l-7-7 7-7"
+						/>
+					</svg>
+				</a>
+			) : (
+				<div />
+			)}
+
+			{nextPost ? (
+				<a
+					href={`/blog/archive/${nextPost.id}`}
+					class="group flex max-w-xs items-center gap-3 text-right"
+				>
+					<svg
+						class="h-4 w-4 flex-shrink-0 text-[#565f89] transition-colors duration-200 group-hover:text-[#7aa2f7]"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 5l7 7-7 7"
+						/>
+					</svg>
+					<div class="flex flex-col">
+						<span class="text-xs font-medium uppercase tracking-wide text-[#565f89]">
+							Next
+						</span>
+						<span class="line-clamp-2 text-sm text-[#a9b1d6] transition-colors duration-200 group-hover:text-[#7aa2f7]">
+							{nextPost.data.title}
+						</span>
+					</div>
+				</a>
+			) : (
+				<div />
+			)}
+		</div>
+	)
+}

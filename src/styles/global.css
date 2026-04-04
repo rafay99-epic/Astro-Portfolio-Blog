@@ -183,21 +183,7 @@ p {
 	color: var(--text-light);
 }
 
-ul,
-ol {
-	color: var(--text-light);
-	margin-left: 1.5em;
-	margin-bottom: 1em;
-}
-
-li {
-	margin-bottom: 0.5em;
-}
-
-.prose p {
-	margin-bottom: 2em;
-	color: var(--text-light);
-}
+/* Lists in articles: .content-prose (content-prose.css). Component lists: use Tailwind. */
 
 textarea,
 input {
@@ -210,43 +196,6 @@ input {
 	border-radius: 4px;
 }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin: 2em 0;
-	background-color: var(--gray-dark);
-	border-radius: 8px;
-	overflow: hidden;
-	box-shadow: var(--box-shadow);
-	border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-th,
-td {
-	padding: 1em;
-	text-align: left;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-	color: var(--text-light);
-}
-
-th {
-	background-color: var(--accent-dark);
-	color: var(--text-light);
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	border-bottom: 2px solid var(--accent);
-}
-
-tr:nth-child(even) {
-	background-color: rgba(255, 255, 255, 0.03);
-}
-
-tr:hover {
-	background-color: rgba(255, 255, 255, 0.07);
-	transition: background-color 0.2s ease-in-out;
-}
-
 img {
 	max-width: 100%;
 	height: auto;
@@ -254,15 +203,9 @@ img {
 	margin-bottom: 1em;
 }
 
+/* Code blocks: default chrome lives in content-prose.css (.content-prose pre).
+   Copy-button spacing applies to enhanced blocks anywhere on the site. */
 pre {
-	background-color: rgb(31, 34, 40);
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	padding: 1.5em;
-	border-radius: 8px;
-	box-shadow: var(--box-shadow);
-	overflow-x: auto;
-	margin: 2em 0;
-	font-size: 0.9em;
 	position: relative;
 }
 
@@ -304,134 +247,14 @@ pre[data-copy-enhanced="true"] {
 	}
 }
 
-pre::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
-}
-
-pre::-webkit-scrollbar-track {
-	background-color: rgb(31, 34, 40);
-	border-radius: 8px;
-}
-
-pre::-webkit-scrollbar-thumb {
-	background-color: var(--gray-light);
-	border-radius: 4px;
-	border: 2px solid rgb(31, 34, 40);
-}
-
-pre::-webkit-scrollbar-thumb:hover {
-	background-color: var(--accent);
-}
-
-code {
-	background-color: rgba(255, 255, 255, 0.1);
-	color: var(--accent);
-	padding: 2px 5px;
-	border-radius: 4px;
-	font-size: 0.9em;
-}
-
-pre code {
-	color: #cddbf7;
-	font-size: 1em;
-	font-family: "Fira Code", monospace;
-	line-height: 1.5;
-}
-
-pre code .keyword {
-	color: #7aa2f7;
-}
-
-pre code .string {
-	color: #9ece6a;
-}
-
-pre code .comment {
-	color: #565f89;
-}
-
-pre code .function {
-	color: #bb9af7;
-}
-
+/* pre > code: Shiki wrapper; token colors live in content-prose.css (.content-prose pre code …) */
 pre > code {
 	all: unset;
 }
 
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0.5em 0 0.5em 1em;
-	margin: 1em 0;
-	font-size: 1.1em;
-	color: var(--text-light);
-	font-style: italic;
-	line-height: 1.6;
-}
-
-blockquote blockquote {
-	border-left: 3px solid var(--gray-light);
-	margin-left: 1em;
-	padding-left: 1em;
-	font-size: 0.9em;
-	line-height: 1.5;
-}
-
-blockquote p {
-	margin: 0.5em 0;
-}
-
-blockquote h1,
-blockquote h2,
-blockquote h3,
-blockquote h4,
-blockquote h5,
-blockquote h6 {
-	color: var(--accent);
-	margin-top: 0.4em;
-	margin-bottom: 0.4em;
-	font-weight: 500;
-}
-
-blockquote ul,
-blockquote ol {
-	margin-left: 1.2em;
-	color: var(--text-light);
-}
-
-blockquote code {
-	background-color: rgba(255, 255, 255, 0.1);
-	color: var(--accent);
-	padding: 0.2em 0.5em;
-	border-radius: 4px;
-	font-size: 0.9em;
-}
-
-blockquote a {
-	color: var(--accent);
-	text-decoration: underline;
-}
-
-blockquote a:hover {
-	color: var(--accent);
-	text-decoration: none;
-}
-
-@media (max-width: 768px) {
-	blockquote {
-		font-size: 1em;
-		padding-left: 0.8em;
-		margin: 0.8em 0;
-	}
-
-	blockquote blockquote {
-		font-size: 0.85em;
-	}
-}
-
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid var(--color-border-secondary, rgba(86, 95, 137, 0.35));
 	margin: 1.5em 0;
 }
 
@@ -472,57 +295,6 @@ hr {
 
 [data-transition="leave-active"] {
 	opacity: 0;
-}
-
-ul,
-ol {
-	padding-left: 1.5em;
-	margin-bottom: 1.5em;
-}
-
-ul {
-	list-style-type: disc;
-}
-
-ol {
-	list-style-type: decimal;
-}
-
-ul li,
-ol li {
-	margin-bottom: 0.5em;
-	line-height: 1.6;
-}
-
-ul ul,
-ul ol,
-ol ul,
-ol ol {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-	padding-left: 1.5em;
-}
-
-ul ul {
-	list-style-type: circle;
-}
-
-ul ol {
-	list-style-type: lower-alpha;
-}
-
-ol ul {
-	list-style-type: circle;
-}
-
-ol ol {
-	list-style-type: lower-alpha;
-}
-
-ul li::marker,
-ol li::marker {
-	color: var(--accent);
-	font-weight: 600;
 }
 
 .custom-button {
@@ -597,7 +369,7 @@ html {
 	font-family: "Poppins", sans-serif;
 	font-size: 16px;
 	font-weight: 600;
-	fill: #c0caf5;
+	fill: var(--color-text-primary);
 }
 
 /* Improve node readability */

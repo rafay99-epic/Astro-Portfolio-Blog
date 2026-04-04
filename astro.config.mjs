@@ -38,8 +38,12 @@ export default defineConfig({
 	},
 	experimental: {
 		svgo: true,
+		// When enabled, main/slot content can stream in after first paint; the Mermaid
+		// island may run before `<pre><code class="language-mermaid">` has text, and
+		// a childList-only MutationObserver never retries. Re-enable after diagram
+		// rendering is tied to `astro:after-swap` / characterData or similar.
 		queuedRendering: {
-			enabled: true,
+			enabled: false,
 			poolSize: 3000,
 			contentCache: true,
 		},

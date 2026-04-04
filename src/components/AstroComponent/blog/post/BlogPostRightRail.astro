@@ -1,0 +1,158 @@
+---
+import ShareButtons from "@react/blog/interactions/socialButton";
+import type { MarkdownHeading } from "astro";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	tocEntries: MarkdownHeading[];
+	isArchive: boolean;
+	pageUrl: string;
+}
+
+const { tocEntries, isArchive, pageUrl } = Astro.props;
+---
+
+<aside class="post-rail post-rail--right">
+	<div class="post-card post-card--engage">
+		<div class="post-card-title">Quick actions</div>
+		<div class="post-actions">
+			<div class="post-action-menu" data-post-action-menu>
+				<div class="post-action-split">
+					<button
+						class="post-action-main"
+						type="button"
+						data-copy-page-primary
+					>
+						<Icon
+							name="lucide:copy"
+							class="post-action-main-icon"
+							aria-hidden="true"
+						/>
+						<span class="post-action-main-label">Copy page</span>
+						<span class="post-action-main-loader" aria-hidden="true"></span>
+					</button>
+					<button
+						class="post-action-toggle"
+						type="button"
+						aria-haspopup="menu"
+						aria-expanded="false"
+						aria-controls="post-markdown-actions"
+						data-post-action-toggle
+					>
+						<span class="post-action-chevron" aria-hidden="true">
+							▾
+						</span>
+					</button>
+				</div>
+				<div
+					class="post-action-dropdown"
+					id="post-markdown-actions"
+					role="menu"
+					aria-label="Copy page actions"
+					data-post-action-dropdown
+					hidden
+				>
+					<button
+						class="post-action-option"
+						type="button"
+						role="menuitem"
+						data-open-markdown
+					>
+						<Icon
+							name="lucide:external-link"
+							class="post-action-option-icon"
+							aria-hidden="true"
+						/>
+						<span class="post-action-option-label">Open Markdown</span>
+						<span class="post-action-option-loader" aria-hidden="true"></span>
+					</button>
+					<button
+						class="post-action-option"
+						type="button"
+						role="menuitem"
+						data-ask-chatgpt
+					>
+						<Icon
+							name="openai"
+							class="post-action-option-icon"
+							aria-hidden="true"
+						/>
+						<span class="post-action-option-label">Ask ChatGPT</span>
+						<span class="post-action-option-loader" aria-hidden="true"></span>
+					</button>
+					<button
+						class="post-action-option"
+						type="button"
+						role="menuitem"
+						data-ask-claude
+					>
+						<Icon
+							name="claude"
+							class="post-action-option-icon"
+							aria-hidden="true"
+						/>
+						<span class="post-action-option-label">Ask Claude</span>
+						<span class="post-action-option-loader" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<span
+			class="post-action-status"
+			data-copy-status
+			aria-live="polite"></span>
+
+		<div class="post-card-title post-card-title--inline">Share</div>
+		<div class="post-actions-share" aria-label="Share on social">
+			<ShareButtons
+				url={pageUrl}
+				pagetitle="Article"
+				client:load
+				compact={true}
+			/>
+		</div>
+	</div>
+
+	<div class="post-card">
+		<div class="post-card-title">On this page</div>
+		<nav class="post-toc" id="post-toc" aria-label="On this page">
+			{
+				tocEntries.length > 0 ? (
+					tocEntries.map((h: MarkdownHeading) => (
+						<a
+							class={h.depth === 3 ? "toc-link toc-h3" : "toc-link"}
+							href={`#${h.slug}`}
+						>
+							{h.text}
+						</a>
+					))
+				) : (
+					<span class="post-toc-empty" data-toc-empty>
+						No sections yet
+					</span>
+				)
+			}
+		</nav>
+	</div>
+
+	{
+		!isArchive && (
+			<div class="post-card">
+				<section class="ads-section ads-section--rail" aria-label="Ads">
+					<h2 class="ads-section-title">Ads</h2>
+					<div id="blog-ads" class="ads-slot">
+						<ins
+							class="adsbygoogle"
+							style="display:inline-block;width:336px;height:280px"
+							data-ad-client="ca-pub-2480387803052595"
+							data-ad-slot="3981831087"
+						/>
+						<script is:inline>
+							(adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+					</div>
+				</section>
+			</div>
+		)
+	}
+</aside>
