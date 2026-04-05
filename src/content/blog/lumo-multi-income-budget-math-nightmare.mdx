@@ -1,0 +1,291 @@
+---
+title: "Multiple Income Streams and the Budget Math Nightmare"
+description: >-
+  How Lumo handles salary, freelance, and investment income — all on different
+  schedules — and converts them into one usable budget number.
+pubDate: 2026-04-20T19:00:00.000Z
+draft: true
+archived: false
+heroImage: /BlogImages/lumo-multi-income.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - ThoughtsProcess
+  - WebDevelopment
+keywords:
+  - income streams
+  - budget calculation
+  - personal finance
+  - typescript
+  - convex
+  - lumo
+  - freelance income
+  - salary tracking
+canonicalUrl: /blog/lumo-multi-income-budget-math-nightmare
+featured: false
+series: "Building Lumo"
+seriesPart: 4
+seriesTotal: 9
+excerpt: >-
+  Salary hits monthly. Freelance pays biweekly. Investments trickle in
+  quarterly. Converting all of that into one budget number? Harder than it
+  sounds.
+---
+
+So you've got a job. Cool. Your salary comes in every month. Budget is just salary minus expenses. Done.
+
+But what if you also freelance on the side? And that pays biweekly. And you've got a small investment that pays quarterly dividends. And sometimes you do random one-off gigs that pay... whenever they feel like it.
+
+Now try to answer: "What's my monthly budget?"
+
+Yeah. That's what I had to solve in Lumo. And let me tell you — it's not just math. It's a whole philosophy about how people think about money.
+
+# The Income Model
+
+Most finance apps treat income as a single number you type in once and forget about. "$5,000 per month." Done. Move on.
+
+But real life isn't like that. Real life is messy. People have:
+
+- **Monthly salary** — predictable, consistent
+- **Freelance income** — irregular, sometimes biweekly, sometimes whenever the client finally pays
+- **Investment returns** — quarterly, annually, or random
+- **One-time payments** — bonuses, tax refunds, gifts
+
+Lumo needed to handle all of these. Not just store them — actually _use_ them to calculate a meaningful budget.
+
+Here's the schema for income streams:
+
+```typescript
+incomeStreams: defineTable({
+  userId: v.id("users"),
+  name: v.string(),           // "Day Job", "Freelance", "Dividends"
+  type: v.union(
+    v.literal("salary"),
+    v.literal("freelance"),
+    v.literal("investment"),
+    v.literal("other")
+  ),
+  amount: v.float64(),         // Amount per occurrence
+  frequency: v.union(
+    v.literal("monthly"),
+    v.literal("weekly"),
+    v.literal("biweekly"),
+    v.literal("annually"),
+    v.literal("one-time")
+  ),
+  cycleDay: v.optional(v.number()),  // Day of month/week it hits
+  isActive: v.boolean(),
+  createdAt: v.string(),
+})
+```
+
+One user can have as many income streams as they want. Each with its own frequency. Each hitting on a different schedule.
+
+The question is: how do you combine weekly freelance income with a monthly salary into a single budget number?
+
+# The Conversion Problem
+
+On the surface, converting between frequencies is basic arithmetic:
+
+- Weekly → Monthly: multiply by 4.33 (52 weeks / 12 months)
+- Biweekly → Monthly: multiply by 2.167 (26 pay periods / 12 months)
+- Annually → Monthly: divide by 12
+- One-time → Monthly: uh...
+
+That last one is the problem child. A one-time payment of $2,000 isn't "$2,000 per month." It's $2,000 _once_. So how does it affect the budget?
+
+I debated this for way too long. Here's what I landed on: **one-time income only affects the cycle it arrives in.** If you get a $2,000 bonus in April, your April budget increases by $2,000. May goes back to normal.
+
+For recurring streams, I wrote a utility that normalizes everything to a monthly equivalent:
+
+```typescript
+export function calculateMonthlyEquivalent(
+  amount: number,
+  frequency: IncomeFrequency
+): number {
+  switch (frequency) {
+    case "monthly":
+      return amount;
+    case "weekly":
+      return amount * (52 / 12);  // ~4.33
+    case "biweekly":
+      return amount * (26 / 12);  // ~2.167
+    case "annually":
+      return amount / 12;
+    case "one-time":
+      return 0;  // Handled separately per cycle
+  }
+}
+```
+
+The total monthly budget then becomes the sum of all active stream equivalents, plus any one-time income that falls within the current cycle.
+
+Simple? In theory. In practice, it opened a whole can of worms.
+
+# The "But My Freelance Income Varies" Problem
+
+Here's a fun conversation I had with myself while building this:
+
+_"Okay, freelance income is $500 biweekly."_
+_"But some months I get paid three times because of how the weeks fall."_
+_"And last month the client paid late, so I got two payments in one month."_
+_"And this month I picked up an extra project for a different rate."_
+
+The budgeted amount and the actual received amount are almost never the same. So Lumo tracks both.
+
+The income stream stores the _expected_ amount and frequency. That's what goes into the budget calculation. But there's a separate `paymentHistory` table that records _actual_ payments:
+
+```typescript
+paymentHistory: defineTable({
+  userId: v.id("users"),
+  incomeStreamId: v.id("incomeStreams"),
+  amount: v.float64(),       // Actual amount received
+  date: v.string(),          // When it actually hit
+  notes: v.optional(v.string()),
+})
+```
+
+This way, you can budget based on expectations but track reality. And if reality consistently differs from expectations, that's a signal to update your expected amount.
+
+I also added income change notifications. If your actual payments for a stream are consistently 20% above or below the expected amount, Lumo nudges you: _"Hey, your freelance income seems higher than expected. Want to update your budget?"_
+
+It's a small thing, but it's the kind of detail that makes a finance app actually useful instead of just being a fancy spreadsheet.
+
+# The Budget Recalculation Cascade
+
+Here's where things got architecturally interesting. When you update an income stream — say, you got a raise and your salary went from $5,000 to $5,500 — the budget needs to recalculate. But it's not just the current cycle's budget. It's:
+
+1. The monthly equivalent for this stream
+2. The total monthly income (sum of all streams)
+3. The current cycle's budget (which might use a manual override or auto-calculate)
+4. The available balance (budget - spending - loans + carryover)
+
+This is a cascade. Change one number, and four derived values need updating.
+
+I handled this with a Convex workflow:
+
+```typescript
+// When income changes, recalculate the budget
+export const budgetRecalc = internalMutation({
+  args: { userId: v.id("users") },
+  handler: async (ctx, { userId }) => {
+    // Get all active income streams
+    const streams = await ctx.db
+      .query("incomeStreams")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("isActive"), true))
+      .collect();
+    
+    // Calculate total monthly income
+    const monthlyIncome = streams.reduce((total, stream) => {
+      return total + calculateMonthlyEquivalent(
+        stream.amount,
+        stream.frequency
+      );
+    }, 0);
+    
+    // Update cycle state with new budget
+    const cycleState = await getCurrentCycleState(ctx, userId);
+    const budgetSettings = await getBudgetSettings(ctx, userId);
+    
+    // Use manual budget if set, otherwise use calculated income
+    const effectiveBudget = budgetSettings.manualBudget 
+      ?? monthlyIncome;
+    
+    await ctx.db.patch(cycleState._id, {
+      budget: effectiveBudget,
+    });
+  },
+});
+```
+
+Notice that `manualBudget` check? Some users don't want their budget to auto-calculate from income. They want to say "I earn $5,500 but my budget is $4,000" — because they're saving the rest. So there's an override option that takes precedence.
+
+More complexity? Yes. But it's the kind of complexity that real people need.
+
+# Payment Recording: The UX Challenge
+
+Beyond the math, there's a UX problem. How do you make it easy for someone to say "I got paid today"?
+
+The first version had a full form — select the income stream, enter the amount, pick the date. It was technically correct but annoying. Nobody wants to fill out a form every payday.
+
+The redesigned version shows your income streams as cards. Each card has a "Record Payment" button. Tap it, and it pre-fills with the expected amount and today's date. One tap to confirm. Done.
+
+If the actual amount differs from the expected, you can edit it. But the default flow is: see income stream, tap, confirm. Three seconds.
+
+```typescript
+// Pre-filled payment recording
+const recordPayment = useMutation(api.income.recordPayment);
+
+const handleQuickRecord = async (stream: IncomeStream) => {
+  await recordPayment({
+    incomeStreamId: stream._id,
+    amount: stream.amount,  // Pre-filled expected amount
+    date: new Date().toISOString(),
+  });
+  
+  // Haptic feedback for the satisfying tap
+  Haptics.notificationAsync(
+    Haptics.NotificationFeedbackType.Success
+  );
+};
+```
+
+That haptic feedback? It's a small touch, but it makes recording payments feel _good_. Like checking off a to-do item. Finance apps should make you feel accomplished, not stressed.
+
+# Income Change Detection
+
+One feature I'm particularly proud of is income change detection. The system compares recent payments against the expected amount for each stream and flags significant deviations:
+
+```typescript
+// Check for income changes worth notifying about
+async function detectIncomeChanges(ctx, userId) {
+  const streams = await getActiveStreams(ctx, userId);
+  
+  for (const stream of streams) {
+    const recentPayments = await getRecentPayments(
+      ctx, stream._id, 3  // Last 3 payments
+    );
+    
+    if (recentPayments.length < 3) continue;
+    
+    const avgActual = recentPayments.reduce(
+      (sum, p) => sum + p.amount, 0
+    ) / recentPayments.length;
+    
+    const deviation = Math.abs(
+      (avgActual - stream.amount) / stream.amount
+    );
+    
+    // If actual differs by more than 15%, notify
+    if (deviation > 0.15) {
+      await triggerIncomeChangeNotification(ctx, userId, {
+        streamName: stream.name,
+        expected: stream.amount,
+        actual: avgActual,
+        direction: avgActual > stream.amount 
+          ? "increase" : "decrease",
+      });
+    }
+  }
+}
+```
+
+This runs as part of the income reset reminder cron job. It's not real-time — it checks periodically. But it catches trends that users might miss. Your freelance rate quietly went up 20% over the last three months? Lumo notices.
+
+# Lessons from the Income Trenches
+
+Building multi-income support taught me that **financial software is really people software**. The math is the easy part. The hard part is understanding how different people think about their money.
+
+Some people have one salary and that's it. Others juggle five income sources with different frequencies. The system needs to handle both cases elegantly — not make the simple case complicated or the complex case impossible.
+
+Key takeaways:
+
+1. **Separate expected from actual.** Budget with expectations, track reality, alert on deviations.
+2. **Make the common case effortless.** One-tap payment recording with pre-filled defaults.
+3. **Don't force a budget model.** Some people want auto-calculated budgets from income. Others want manual control. Support both.
+4. **Frequency conversion is deceptively tricky.** 4 weeks ≠ 1 month. 52/12 ≈ 4.33. Get the math right or the budget will drift.
+
+Next up in the series: I'm going to talk about something wild — building an AI-powered spending prediction engine that actually tries to tell you how much you'll spend next month. Spoiler: it's part math, part magic, and part "please don't be too wrong."
+
+Until then, may your income always exceed your expenses. Peace out, nerds. 💸
