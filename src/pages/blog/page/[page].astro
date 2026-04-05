@@ -211,7 +211,7 @@ try {
                     {post.data.excerpt || post.data.description}
                   </p>
                   {featureFlags.showSeries && post.data.series && post.data.seriesPart && (
-                    <div class="mt-1.5" onclick="event.stopPropagation()">
+                    <div class="mt-1.5">
                       <SeriesBadge
                         series={post.data.series}
                         part={post.data.seriesPart}
