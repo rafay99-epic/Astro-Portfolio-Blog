@@ -20,6 +20,9 @@ const blog = defineCollection({
 		canonicalUrl: z.string().optional(),
 		featured: z.boolean().default(false),
 		excerpt: z.string().optional(),
+		series: z.string().optional(),
+		seriesPart: z.number().int().positive().optional(),
+		seriesTotal: z.number().int().positive().optional(),
 	}),
 });
 

@@ -110,6 +110,27 @@
 			"type": "boolean",
 			"value": false,
 			"defaultValue": false
+		},
+		{
+			"name": "series",
+			"label": "Series",
+			"type": "string",
+			"value": "",
+			"defaultValue": ""
+		},
+		{
+			"name": "seriesPart",
+			"label": "Series Part",
+			"type": "number",
+			"value": "",
+			"defaultValue": ""
+		},
+		{
+			"name": "seriesTotal",
+			"label": "Series Total Parts",
+			"type": "number",
+			"value": "",
+			"defaultValue": ""
 		}
 	]
 }

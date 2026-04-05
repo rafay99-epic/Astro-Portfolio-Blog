@@ -1,0 +1,225 @@
+---
+import { getCollection } from "astro:content";
+import BaseHead from "@astro/base/BaseHead.astro";
+import SeriesCard from "@astro/blog/series/SeriesCard.astro";
+import Footer from "@astro/footer/Footer.astro";
+import Header from "@astro/header/Header.astro";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import authorConfig from "@config/siteConfig/info.json";
+import { getAllSeriesMeta, getSeriesPosts } from "@util/series";
+
+export const prerender = true;
+
+try {
+	if (!featureFlags.showBlog || !featureFlags.showSeries) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
+}
+
+const allPosts = await getCollection("blog");
+const seriesMetas = getAllSeriesMeta(allPosts);
+const totalSeriesPosts = getSeriesPosts(allPosts).length;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`Series | ${authorConfig.SiteName}`}
+      description={`Browse multi-part article series on ${authorConfig.SiteName}. Deep dives into projects, frameworks, and ideas — told in parts.`}
+    />
+
+    <style is:inline>
+      html { background-color: #1a1b26 !important; }
+      body { background-color: #1a1b26 !important; }
+    </style>
+
+    <style>
+      html { background-color: #1a1b26 !important; }
+      body { background-color: #1a1b26 !important; transition: none !important; }
+    </style>
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: `Article Series | ${authorConfig.SiteName}`,
+        description: `Browse multi-part article series on ${authorConfig.SiteName}.`,
+        url: "https://rafay99.com/blog/series",
+        publisher: {
+          "@type": "Organization",
+          name: authorConfig.SiteName,
+          logo: {
+            "@type": "ImageObject",
+            url: "https://rafay99.com/favicon.webp",
+          },
+        },
+      })}
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-[#1a1b26] text-[#a9b1d6]">
+    <Header />
+
+    <main class="series-shell mx-auto w-full max-w-5xl flex-1 px-5 pb-24 pt-14 sm:px-6">
+
+      <!-- ─── Page Header ─── -->
+      <header class="series-hero fade-up">
+        <h1 class="series-title">Series</h1>
+        <p class="series-subtitle">
+          Multi-part deep dives into projects, frameworks, and ideas.
+        </p>
+        <div class="series-stats">
+          <span class="series-stat">{seriesMetas.length} {seriesMetas.length === 1 ? "Series" : "Series"}</span>
+          <span class="series-dot">&middot;</span>
+          <span class="series-stat">{totalSeriesPosts} articles</span>
+          <span class="series-dot series-dot--links">&middot;</span>
+          <div class="series-links">
+            <a href="/blog" class="series-link">Blog</a>
+            <a href="/blog/archive" class="series-link">Archive</a>
+            {featureFlags.showTags && <a href="/tag" class="series-link">Tags</a>}
+            {featureFlags.showSearch && <a href="/search" class="series-link">Search</a>}
+          </div>
+        </div>
+      </header>
+
+      {seriesMetas.length === 0 && (
+        <div class="series-empty">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="series-empty-icon">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+          </svg>
+          <h2 class="series-empty-title">No series yet</h2>
+          <p class="series-empty-text">
+            Multi-part series will appear here once published. Check back soon!
+          </p>
+        </div>
+      )}
+
+      {seriesMetas.length > 0 && (
+        <section class="series-grid">
+          {seriesMetas.map((meta, index) => (
+            <SeriesCard meta={meta} index={index} />
+          ))}
+        </section>
+      )}
+    </main>
+
+    <Footer />
+
+    <style>
+      .series-shell {
+        position: relative;
+        isolation: isolate;
+      }
+
+      /* ─── Hero ─── */
+      .series-hero {
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(86, 95, 137, 0.25);
+        margin-bottom: 2rem;
+      }
+
+      .series-title {
+        font-size: clamp(1.8rem, 2.5vw + 0.8rem, 2.6rem);
+        font-weight: 700;
+        line-height: 1.1;
+        color: #f8f8ff;
+        letter-spacing: -0.02em;
+      }
+
+      .series-subtitle {
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        color: #a9b1d6;
+        max-width: 42ch;
+      }
+
+      .series-stats {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      .series-stat { color: #565f89; }
+      .series-dot { color: rgba(86, 95, 137, 0.5); }
+
+      .series-links {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .series-link {
+        color: #7aa2f7;
+        font-weight: 500;
+        transition: color 0.2s ease;
+      }
+
+      .series-link:hover { color: #bb9af7; }
+
+      /* ─── Grid ─── */
+      .series-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      /* ─── Empty ─── */
+      .series-empty {
+        margin-top: 3rem;
+        padding: 2.5rem 2rem;
+        border-radius: 16px;
+        border: 1px dashed rgba(86, 95, 137, 0.4);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .series-empty-icon { color: #565f89; }
+
+      .series-empty-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #c0caf5;
+      }
+
+      .series-empty-text {
+        font-size: 0.9rem;
+        color: #a9b1d6;
+        max-width: 36ch;
+      }
+
+      /* ─── Animations ─── */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      .fade-up { animation: fadeUp 0.6s ease both; }
+
+      @media (max-width: 640px) {
+        .series-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .series-dot--links { display: none; }
+
+        .series-links {
+          width: 100%;
+          margin-top: 0.25rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .fade-up { animation: none; }
+      }
+    </style>
+  </body>
+</html>

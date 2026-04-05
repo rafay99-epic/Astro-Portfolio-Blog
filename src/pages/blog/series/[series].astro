@@ -1,0 +1,500 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseHead from "@astro/base/BaseHead.astro";
+import Footer from "@astro/footer/Footer.astro";
+import Header from "@astro/header/Header.astro";
+import { featureFlags } from "@config/featureFlag/featureFlag.json";
+import authorConfig from "@config/siteConfig/info.json";
+import {
+	fromSeriesSlug,
+	getAllSeriesMeta,
+	getSeriesPosts,
+	groupBySeries,
+} from "@util/series";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+	if (!featureFlags.showBlog || !featureFlags.showSeries) {
+		return [];
+	}
+
+	const allPosts = await getCollection("blog");
+	const metas = getAllSeriesMeta(allPosts);
+
+	return metas.map((meta) => ({
+		params: { series: meta.slug },
+		props: { meta },
+	}));
+}
+
+const { series: seriesSlug } = Astro.params;
+const { meta } = Astro.props;
+
+try {
+	if (!featureFlags.showBlog || !featureFlags.showSeries) {
+		return Astro.redirect("/access-denied");
+	}
+} catch (_error) {
+	return Astro.redirect("/404");
+}
+
+const allPosts = await getCollection("blog");
+const seriesPosts = getSeriesPosts(allPosts);
+const grouped = groupBySeries(seriesPosts);
+const posts = grouped.get(seriesSlug ?? "") ?? [];
+
+const seriesTitle = meta?.title ?? fromSeriesSlug(seriesSlug ?? "");
+
+const maxDeclaredTotal = posts.reduce(
+	(max, p) => Math.max(max, p.data.seriesTotal ?? p.data.seriesPart),
+	0,
+);
+const totalParts = Math.max(maxDeclaredTotal, posts.length);
+const progressPercent = Math.round((posts.length / totalParts) * 100);
+
+const formatDate = (date: Date) =>
+	new Date(date).toLocaleDateString("en-US", {
+		month: "short",
+		day: "numeric",
+		year: "numeric",
+	});
+---
+
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`${seriesTitle} — Series | ${authorConfig.SiteName}`}
+      description={meta?.description ?? `Read all parts of the "${seriesTitle}" series on ${authorConfig.SiteName}.`}
+    />
+
+    <style is:inline>
+      html { background-color: #1a1b26 !important; }
+      body { background-color: #1a1b26 !important; }
+    </style>
+
+    <style>
+      html { background-color: #1a1b26 !important; }
+      body { background-color: #1a1b26 !important; transition: none !important; }
+    </style>
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: `${seriesTitle} — Article Series`,
+        description: meta?.description ?? `All parts of the "${seriesTitle}" series.`,
+        url: `https://rafay99.com/blog/series/${seriesSlug}`,
+        numberOfItems: posts.length,
+        itemListElement: posts.map((post, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          url: `https://rafay99.com/blog/${post.id}`,
+          name: post.data.title,
+        })),
+      })}
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-[#1a1b26] text-[#a9b1d6]">
+    <Header />
+
+    <main class="single-series mx-auto w-full max-w-3xl flex-1 px-5 pb-24 pt-14 sm:px-6">
+
+      <!-- ─── Header ─── -->
+      <header class="ss-header fade-up">
+        <a href="/blog/series" class="ss-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 19l-7-7 7-7" />
+          </svg>
+          <span>All Series</span>
+        </a>
+
+        <div class="ss-label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+          </svg>
+          <span>Series</span>
+        </div>
+
+        <h1 class="ss-title">{seriesTitle}</h1>
+
+        {meta?.description && (
+          <p class="ss-desc">{meta.description}</p>
+        )}
+
+        <!-- Progress -->
+        <div class="ss-progress">
+          <div class="ss-progress-track">
+            <div class="ss-progress-fill" style={`width: ${progressPercent}%`} />
+          </div>
+          <span class="ss-progress-label">
+            {posts.length} of {totalParts} parts published
+          </span>
+        </div>
+
+        {meta && meta.tags.length > 0 && (
+          <div class="ss-tags">
+            {meta.tags.map((tag) => (
+              <a href={`/tag/${tag}`} class="ss-tag">#{tag}</a>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <!-- ─── Parts List ─── -->
+      <section class="ss-parts">
+        {posts.map((post, index) => (
+          <a
+            href={`/blog/${post.id}`}
+            class:list={["ss-part group", `fade-up delay-${Math.min(index + 1, 4)}`]}
+          >
+            <div class="ss-part-num-col">
+              <span class="ss-part-num">{post.data.seriesPart}</span>
+              {index < posts.length - 1 && (
+                <div class="ss-part-line" aria-hidden="true" />
+              )}
+            </div>
+
+            <div class="ss-part-thumb">
+              {post.data.heroImage ? (
+                <Image
+                  src={post.data.heroImage}
+                  alt={post.data.title}
+                  width={120}
+                  height={120}
+                  loading={index < 3 ? "eager" : "lazy"}
+                  decoding="async"
+                  class="ss-part-img"
+                />
+              ) : (
+                <div class="ss-part-fallback" aria-hidden="true" />
+              )}
+            </div>
+
+            <div class="ss-part-body">
+              <div class="ss-part-meta">
+                <span>{formatDate(post.data.pubDate)}</span>
+                {post.data.readTime && (
+                  <>
+                    <span class="ss-dot">&middot;</span>
+                    <span>{post.data.readTime}</span>
+                  </>
+                )}
+              </div>
+              <h3 class="ss-part-title">{post.data.title}</h3>
+              <p class="ss-part-excerpt">
+                {post.data.excerpt ?? post.data.description}
+              </p>
+            </div>
+          </a>
+        ))}
+
+        {/* Placeholder rows for upcoming parts */}
+        {totalParts > posts.length &&
+          Array.from({ length: totalParts - posts.length }, (_, i) => (
+            <div class="ss-part ss-part--upcoming fade-up">
+              <div class="ss-part-num-col">
+                <span class="ss-part-num ss-part-num--upcoming">{posts.length + i + 1}</span>
+              </div>
+              <div class="ss-part-body">
+                <p class="ss-part-upcoming-text">Coming soon</p>
+              </div>
+            </div>
+          ))}
+      </section>
+    </main>
+
+    <Footer />
+
+    <style>
+      .single-series {
+        position: relative;
+        isolation: isolate;
+      }
+
+      /* ─── Header ─── */
+      .ss-header {
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(86, 95, 137, 0.25);
+        margin-bottom: 2rem;
+      }
+
+      .ss-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #7aa2f7;
+        text-decoration: none;
+        margin-bottom: 0.75rem;
+        transition: color 0.2s ease;
+      }
+
+      .ss-back:hover { color: #bb9af7; }
+
+      .ss-label {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #bb9af7;
+        margin-bottom: 0.35rem;
+      }
+
+      .ss-title {
+        font-size: clamp(1.6rem, 2.2vw + 0.7rem, 2.4rem);
+        font-weight: 700;
+        line-height: 1.15;
+        color: #f8f8ff;
+        letter-spacing: -0.02em;
+      }
+
+      .ss-desc {
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
+        color: #a9b1d6;
+        max-width: 50ch;
+        line-height: 1.5;
+      }
+
+      /* Progress */
+      .ss-progress {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .ss-progress-track {
+        flex: 1;
+        max-width: 200px;
+        height: 4px;
+        border-radius: 999px;
+        background: rgba(86, 95, 137, 0.3);
+        overflow: hidden;
+      }
+
+      .ss-progress-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #7aa2f7, #bb9af7);
+        transition: width 0.4s ease;
+      }
+
+      .ss-progress-label {
+        font-size: 0.75rem;
+        color: #565f89;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .ss-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.75rem;
+      }
+
+      .ss-tag {
+        font-size: 0.75rem;
+        color: #7aa2f7;
+        text-decoration: none;
+        transition: color 0.15s ease;
+      }
+
+      .ss-tag:hover { color: #bb9af7; }
+
+      /* ─── Parts List ─── */
+      .ss-parts {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .ss-part {
+        display: grid;
+        grid-template-columns: 2.5rem 72px 1fr;
+        gap: 0.85rem;
+        padding: 1.2rem 0;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+      }
+
+      a.ss-part:hover {
+        background-color: rgba(36, 40, 59, 0.3);
+      }
+
+      .ss-part--upcoming {
+        grid-template-columns: 2.5rem 1fr;
+        opacity: 0.4;
+      }
+
+      /* Number column */
+      .ss-part-num-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
+
+      .ss-part-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        font-size: 0.8rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        background: rgba(187, 154, 247, 0.12);
+        color: #bb9af7;
+        flex-shrink: 0;
+      }
+
+      .ss-part-num--upcoming {
+        background: rgba(86, 95, 137, 0.15);
+        color: #565f89;
+      }
+
+      .ss-part-line {
+        width: 2px;
+        flex: 1;
+        min-height: 1rem;
+        background: rgba(86, 95, 137, 0.2);
+        margin-top: 0.25rem;
+      }
+
+      /* Thumbnail */
+      .ss-part-thumb {
+        width: 72px;
+        height: 72px;
+        border-radius: 10px;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: rgba(36, 40, 59, 0.6);
+      }
+
+      .ss-part-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      a.ss-part:hover .ss-part-img {
+        transform: scale(1.06);
+      }
+
+      .ss-part-fallback {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(36, 40, 59, 0.9), rgba(122, 162, 247, 0.2));
+      }
+
+      /* Body */
+      .ss-part-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.2rem;
+        min-width: 0;
+      }
+
+      .ss-part-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.72rem;
+        color: #565f89;
+      }
+
+      .ss-dot { color: rgba(86, 95, 137, 0.5); }
+
+      .ss-part-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #c0caf5;
+        line-height: 1.35;
+        transition: color 0.2s ease;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      a.ss-part:hover .ss-part-title {
+        color: #f1f1ff;
+      }
+
+      .ss-part-excerpt {
+        font-size: 0.85rem;
+        color: #a9b1d6;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .ss-part-upcoming-text {
+        font-size: 0.85rem;
+        font-style: italic;
+        color: #565f89;
+      }
+
+      /* ─── Animations ─── */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      .fade-up { animation: fadeUp 0.6s ease both; }
+      .delay-1 { animation-delay: 0.08s; }
+      .delay-2 { animation-delay: 0.16s; }
+      .delay-3 { animation-delay: 0.24s; }
+      .delay-4 { animation-delay: 0.32s; }
+
+      /* ─── Responsive ─── */
+      @media (max-width: 640px) {
+        .ss-part {
+          grid-template-columns: 2rem 56px 1fr;
+          gap: 0.65rem;
+          padding: 1rem 0;
+        }
+
+        .ss-part--upcoming {
+          grid-template-columns: 2rem 1fr;
+        }
+
+        .ss-part-thumb {
+          width: 56px;
+          height: 56px;
+          border-radius: 8px;
+        }
+
+        .ss-part-num {
+          width: 1.6rem;
+          height: 1.6rem;
+          font-size: 0.7rem;
+        }
+
+        .ss-part-excerpt {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .fade-up { animation: none; }
+        .ss-part, .ss-part-img, .ss-progress-fill { transition: none; }
+      }
+    </style>
+  </body>
+</html>

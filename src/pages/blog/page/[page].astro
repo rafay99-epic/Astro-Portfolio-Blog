@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { type CollectionEntry, getCollection } from "astro:content";
 import BaseHead from "@astro/base/BaseHead.astro";
+import SeriesBadge from "@astro/blog/series/SeriesBadge.astro";
 import Footer from "@astro/footer/Footer.astro";
 import Header from "@astro/header/Header.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
@@ -152,6 +153,7 @@ try {
           <div class="meta-actions">
             <a href="/blog" class="meta-link">Latest</a>
             <a href="/blog/archive" class="meta-link">Archive</a>
+            {featureFlags.showSeries && <a href="/blog/series" class="meta-link">Series</a>}
             {showSearch && <a href="/search" class="meta-link">Search</a>}
             {showTags && <a href="/tag" class="meta-link">Tags</a>}
           </div>
@@ -208,6 +210,16 @@ try {
                   <p class="feed-item-excerpt line-clamp-2">
                     {post.data.excerpt || post.data.description}
                   </p>
+                  {featureFlags.showSeries && post.data.series && post.data.seriesPart && (
+                    <div class="mt-1.5" onclick="event.stopPropagation()">
+                      <SeriesBadge
+                        series={post.data.series}
+                        part={post.data.seriesPart}
+                        total={post.data.seriesTotal}
+                        compact
+                      />
+                    </div>
+                  )}
                 </div>
               </a>
             ))}

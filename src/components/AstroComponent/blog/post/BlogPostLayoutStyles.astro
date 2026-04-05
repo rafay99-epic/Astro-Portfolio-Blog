@@ -778,4 +778,61 @@
           font-size: clamp(1.5rem, 8vw, 2rem);
         }
       }
+
+      /* ─── Mobile series bar (hidden on desktop — sidebar handles it) ─── */
+      .series-mobile-bar {
+        display: none;
+        margin: 0 auto;
+        max-width: 72ch;
+        padding: 0 clamp(1.25rem, 5vw, 3.25rem);
+      }
+
+      .series-mobile-inner {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.5rem 0.8rem;
+        border-radius: 10px;
+        border: 1px solid rgba(187, 154, 247, 0.2);
+        background: rgba(36, 40, 59, 0.5);
+        text-decoration: none;
+        transition:
+          border-color 0.2s ease,
+          background-color 0.2s ease;
+      }
+
+      .series-mobile-inner:hover {
+        border-color: rgba(187, 154, 247, 0.4);
+        background: rgba(36, 40, 59, 0.7);
+      }
+
+      .series-mobile-inner svg {
+        color: #bb9af7;
+        flex-shrink: 0;
+      }
+
+      .series-mobile-name {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #c0caf5;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .series-mobile-part {
+        margin-left: auto;
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: #bb9af7;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+
+      @media (max-width: 1024px) {
+        .series-mobile-bar {
+          display: block;
+          margin-bottom: 0.5rem;
+        }
+      }
     </style>

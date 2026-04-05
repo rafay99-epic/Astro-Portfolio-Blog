@@ -1,4 +1,6 @@
 ---
+import SeriesBadge from "@astro/blog/series/SeriesBadge.astro";
+
 interface Props {
 	title: string;
 	lead?: string;
@@ -11,6 +13,9 @@ interface Props {
 	formattedWordCount?: string;
 	tags?: string[];
 	updatedDate?: Date;
+	series?: string | undefined;
+	seriesPart?: number | undefined;
+	seriesTotal?: number | undefined;
 }
 
 const {
@@ -25,6 +30,9 @@ const {
 	formattedWordCount = "",
 	tags,
 	updatedDate,
+	series,
+	seriesPart,
+	seriesTotal,
 } = Astro.props;
 ---
 
@@ -44,6 +52,11 @@ const {
 				<span class="post-badge">
 					Archived article &middot; may be outdated
 				</span>
+			)
+		}
+		{
+			series && seriesPart && (
+				<SeriesBadge series={series} part={seriesPart} total={seriesTotal} />
 			)
 		}
 	</div>
