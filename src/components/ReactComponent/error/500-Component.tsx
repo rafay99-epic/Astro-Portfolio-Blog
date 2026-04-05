@@ -77,10 +77,7 @@ const ServerErrorPage = memo(function ServerErrorPage() {
 									className="mt-4 text-sm text-[#a9b1d6] md:text-base"
 								>
 									<span className="text-[#ff7a93]">Error:</span>
-									<span className="text-[#c0caf5]">
-										{" "}
-										Internal server error
-									</span>
+									<span className="text-[#c0caf5]"> Internal server error</span>
 								</motion.div>
 							</div>
 						</div>
@@ -103,9 +100,9 @@ const ServerErrorPage = memo(function ServerErrorPage() {
 						transition={{ delay: 0.4, duration: 0.5 }}
 						className="mb-8 text-base leading-relaxed text-[#a9b1d6] md:text-lg lg:text-xl"
 					>
-						The server ran into an unexpected error. Don't worry — it's not
-						your fault. Try refreshing the page, or head back home while we
-						sort things out.
+						The server ran into an unexpected error. Don't worry — it's not your
+						fault. Try refreshing the page, or head back home while we sort
+						things out.
 					</motion.p>
 
 					<motion.div
