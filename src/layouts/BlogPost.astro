@@ -131,9 +131,7 @@ const postActionPayload = JSON.stringify({
 const updatedDate = currentBlog.data.updatedDate;
 
 // ─── Series context ───
-const allBlogPosts = featureFlags.showBlog
-	? await getCollection("blog")
-	: [];
+const allBlogPosts = featureFlags.showBlog ? await getCollection("blog") : [];
 const seriesContext =
 	featureFlags.showSeries && currentBlog
 		? getSeriesContext(currentBlog, allBlogPosts)
