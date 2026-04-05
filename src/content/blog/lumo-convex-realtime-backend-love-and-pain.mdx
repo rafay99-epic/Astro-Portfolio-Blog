@@ -1,0 +1,230 @@
+---
+title: "Convex as a Real-Time Backend: The Love and the Pain"
+description: >-
+  What it's actually like building a full finance app on Convex — the magic of
+  real-time subscriptions, the pain of cache limits, and everything in between.
+pubDate: 2026-04-16T19:00:00.000Z
+draft: true
+archived: false
+heroImage: /BlogImages/lumo-convex-realtime.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - WebDevelopment
+  - ThoughtsProcess
+keywords:
+  - convex
+  - real-time database
+  - backend
+  - typescript
+  - subscriptions
+  - serverless
+  - lumo
+  - full stack development
+canonicalUrl: /blog/lumo-convex-realtime-backend-love-and-pain
+featured: false
+series: "Building Lumo"
+seriesPart: 3
+seriesTotal: 9
+excerpt: >-
+  Building a real-time finance app on Convex — what's magical, what's painful,
+  and what I wish someone had told me before I started.
+---
+
+If you've read my [earlier post about Convex scaling issues](/blog/stop-the-presses-convex-is-here-and-so-are-the-growing-pains), you know I've had a... complicated relationship with this platform. But Lumo is a different beast. This isn't a corporate onboarding flow with 500 concurrent users — it's a personal finance app where real-time data matters more than raw throughput.
+
+And for that use case? Convex is genuinely something special.
+
+But it's not all rainbows. Let me break down what it's actually like to build a production app with Convex as your entire backend.
+
+# The Magic: Real-Time Everything
+
+Here's the pitch: write a query function, and every client subscribed to it gets live updates when the underlying data changes. No WebSocket setup. No polling. No `useEffect` with a refresh timer. Just... data that stays current.
+
+For a finance app, this is transformative. Let me give you a real example.
+
+You're looking at your dashboard. It shows your remaining budget: $847. You switch to the transactions tab, add a $50 lunch. Switch back to the dashboard. **$797.** Instantly. No refresh button. No pull-to-refresh. The number just... changed.
+
+Behind the scenes, here's what happened:
+
+1. The `addTransaction` mutation ran
+2. Inside that mutation, it also called `updateCycleSpending` to atomically increment the spending total
+3. The dashboard is subscribed to `getCycleState`, which reads from the `cycleState` table
+4. Convex detected the table changed and pushed the updated state to all connected clients
+
+No event bus. No pub/sub setup. No cache invalidation logic. Convex just _knows_ which queries depend on which tables and re-runs them when data changes.
+
+I've built real-time features with Firebase Realtime Database, with Supabase subscriptions, with manual WebSocket setups. Convex is the cleanest implementation I've used. Period.
+
+# The Schema: Type Safety All the Way Down
+
+One of my favorite things about Convex is the schema definition. You define your tables in TypeScript, and the system generates types for your queries and mutations. Here's a peek at part of Lumo's schema:
+
+```typescript
+// Part of the Convex schema
+transactions: defineTable({
+  userId: v.id("users"),
+  amount: v.float64(),
+  category: v.string(),
+  paymentMethod: v.optional(v.string()),
+  notes: v.optional(v.string()),
+  date: v.string(),
+  createdAt: v.string(),
+}).index("by_user", ["userId"])
+  .index("by_user_date", ["userId", "date"]),
+```
+
+That `.index()` chain? Those are database indexes you define right in your schema. Change a field name? TypeScript catches it everywhere. Add a new required field? Every mutation that inserts into this table needs updating, and the compiler tells you exactly which ones.
+
+Coming from the world of raw SQL or even Mongoose schemas where "type safety" means "I hope the runtime catches it," this is refreshing. I can refactor my database schema and know that my entire app — backend, mobile, web, admin — will flag any inconsistencies at compile time.
+
+# The Pain: Learning to Think in Convex
+
+Okay, now the honest part. Because Convex isn't just "a database with an API." It's a different paradigm, and if you bring your REST/SQL mental model, you're going to have a bad time.
+
+## Pain Point 1: No `SELECT *` Mentality
+
+In SQL, you might write `SELECT * FROM transactions WHERE userId = ?`. In Convex, the equivalent is:
+
+```typescript
+const transactions = await ctx.db
+  .query("transactions")
+  .withIndex("by_user", (q) => q.eq("userId", userId))
+  .collect();
+```
+
+See that `.collect()` at the end? It loads _everything_ into memory. For a user with 50 transactions? Fine. For a user with 5,000? Your function just ate a bunch of memory and your cache is crying.
+
+I learned this the hard way. My initial `listTransactions` function collected everything, then filtered and sorted in JavaScript. It worked great in development with my test data of 20 transactions. In production? Not so much.
+
+The fix was pagination and smarter queries:
+
+```typescript
+// Paginated transaction listing
+export const listTransactions = query({
+  args: {
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthenticatedUserId(ctx);
+    
+    return await ctx.db
+      .query("transactions")
+      .withIndex("by_user_date", (q) => q.eq("userId", userId))
+      .order("desc")
+      .paginate(args.paginationOpts);
+  },
+});
+```
+
+Pagination is built into Convex, and it's actually nice once you learn to use it. But you _have_ to think about it upfront. There's no query optimizer silently saving you from yourself.
+
+## Pain Point 2: Mutations Must Be Fast
+
+Convex functions have execution limits. Your mutation can't run for 30 seconds doing complex calculations. This forced me to rethink how I handle things like cycle finalization.
+
+My original approach: one big mutation that reads all user data, calculates everything, and writes the new cycle. It worked for one user. For processing all users in a cron job? Timeout city.
+
+The solution was breaking work into smaller chunks:
+
+```typescript
+// Process cycle resets in batches
+const usersToProcess = await ctx.db
+  .query("cycleState")
+  .filter((q) => q.lt(q.field("cycleEndDate"), now))
+  .take(50);  // Process 50 at a time
+
+for (const cycle of usersToProcess) {
+  await finalizeSingleCycle(ctx, cycle);
+}
+```
+
+Cap at 50 per run. The cron fires every hour. If there are 200 users to process, it takes four runs. Not elegant, but reliable. And in serverless land, reliable beats elegant every time.
+
+## Pain Point 3: No Joins (But It's Okay)
+
+Coming from SQL, the lack of JOINs feels like losing a limb. Want a transaction with its category name? Two queries. Want a loan with the borrower's user info? Two queries.
+
+But here's the thing I realized: in a real-time system, denormalization is actually fine. If I store the category name directly on the transaction (instead of a category ID), it's one fewer query and the data is always right there. The tradeoff is updating category names means touching every transaction, but how often do you rename categories? Almost never.
+
+For Lumo, I found a balance: keep IDs for things that change (user references), denormalize things that don't (category names, payment method labels).
+
+# The Killer Feature: Atomic Mutations
+
+Here's something that doesn't get enough love in Convex: **mutations are transactional**. If any part of your mutation throws, the entire thing rolls back. No partial writes. No inconsistent state.
+
+For a finance app, this is critical. When someone adds a transaction, I need to:
+
+1. Insert the transaction record
+2. Update the cycle's spending total
+3. Check if they're over budget
+4. Maybe trigger a notification
+
+If step 2 fails after step 1 succeeds, I've got a transaction in the database that isn't reflected in the budget total. That's a data integrity bug that would haunt me forever.
+
+With Convex, all four steps happen in one mutation. Either they all succeed, or none of them do. I don't need to write rollback logic or implement sagas. It just works.
+
+```typescript
+export const addTransaction = mutation({
+  args: { /* ... */ },
+  handler: async (ctx, args) => {
+    const userId = await getAuthenticatedUserId(ctx);
+    
+    // Step 1: Insert transaction
+    await ctx.db.insert("transactions", {
+      userId,
+      amount: args.amount,
+      category: args.category,
+      date: args.date,
+      createdAt: new Date().toISOString(),
+    });
+    
+    // Step 2: Update cycle spending (atomic!)
+    await updateCycleSpending(ctx, userId, args.amount);
+    
+    // Step 3: Check budget and maybe notify
+    const state = await getCycleState(ctx, userId);
+    if (state.totalSpending > state.budget) {
+      await createNotification(ctx, userId, "over-budget");
+    }
+    
+    // If anything above throws, nothing is committed
+  },
+});
+```
+
+This alone is worth the learning curve. Financial data integrity is non-negotiable.
+
+# The Developer Experience
+
+Let me talk about the day-to-day of working with Convex, because the DX matters.
+
+**The good:**
+- `npx convex dev` gives you a live development server that hot-reloads your functions
+- Schema changes generate new types instantly
+- The Convex dashboard shows you every function call, every error, every table
+- Logs are actually useful (stack traces, arguments, timing)
+
+**The less good:**
+- Debugging subscriptions is tricky — if a query isn't updating, is it the query logic? The index? A missing table read?
+- The documentation is... growing. Some advanced patterns require digging through Discord or GitHub issues
+- Deployment is a separate step from your web deployment — you need to coordinate Convex deploys with frontend deploys
+
+**The underrated:**
+- Rate limiting via `@convex-dev/rate-limiter` is a one-line addition to any function
+- Cron jobs are defined in a single `crons.ts` file — no external scheduler needed
+- File storage is built in (used for receipt images)
+
+# Would I Choose Convex Again?
+
+For Lumo? Absolutely. The real-time subscriptions alone save me hundreds of lines of synchronization code. The type safety catches bugs before they ship. The atomic mutations keep financial data consistent.
+
+For a different app? Depends. If I were building something that's mostly CRUD with complex SQL queries and existing relationships — I'd probably stick with Postgres. Convex shines when real-time matters, when you want tight frontend-backend integration, and when you're willing to think in documents instead of rows.
+
+> **Convex is amazing for apps where the UI needs to feel alive. Just make sure you understand the constraints before your data grows.**
+
+That's the honest take. No hype. No hate. Just experience.
+
+Next up in the Lumo series: how I handled multiple income streams — salary, freelance, investments — all hitting at different times, and how converting them all into one budget number is secretly a nightmare.
+
+Until then, keep your queries indexed and your mutations atomic, nerds. 🔥

@@ -1,0 +1,229 @@
+---
+title: "The Budget Cycle System That Broke My Brain"
+description: >-
+  How I built a custom budget cycle engine for Lumo that respects payday
+  schedules, handles carryover, and took three rewrites to get right.
+pubDate: 2026-04-13T19:00:00.000Z
+draft: true
+archived: false
+heroImage: /BlogImages/lumo-budget-cycle.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - ThoughtsProcess
+  - WebDevelopment
+keywords:
+  - budget cycle
+  - personal finance
+  - convex
+  - typescript
+  - financial calculations
+  - lumo
+  - software architecture
+canonicalUrl: /blog/lumo-budget-cycle-system-that-broke-my-brain
+featured: false
+series: "Building Lumo"
+seriesPart: 2
+seriesTotal: 9
+excerpt: >-
+  Building a custom budget cycle system that aligns with your actual payday —
+  sounds simple, right? Three rewrites later, here's what I learned.
+---
+
+Here's a question that sounds simple until you actually try to answer it in code:
+
+**"How much money do I have left this month?"**
+
+Easy, right? Take your budget, subtract your spending, done. Ship it. Go home.
+
+Except... when does "this month" start? January 1st? Sure, if you get paid on the 1st. But what if your salary hits on the 15th? Or the 25th? What if you have freelance income that comes in randomly? What if last month you overspent by $200 — does that carry over?
+
+Welcome to the budget cycle system. The single most important piece of Lumo, and the feature that broke my brain the hardest.
+
+# The Problem with "Monthly" Budgets
+
+Every finance app I've used assumes your budget resets on the 1st of each month. Which is great if you're a trust fund kid who doesn't worry about when money actually arrives. But for the rest of us — the people who anxiously check their bank account on payday — the 1st means nothing.
+
+I get paid on the 25th. My budget cycle should run from the 25th to the 24th of next month. That's _my_ financial month. That's when my money refreshes.
+
+So the first requirement was clear: **let users pick their own cycle start day.**
+
+Sounds like a one-line config change, right?
+
+**HAHAHA.**
+
+# Attempt One: The Naive Approach
+
+My first implementation was embarrassingly simple. Store a `cycleStartDay` (1-31) in the user's settings. When loading the budget, calculate the current cycle window:
+
+```typescript
+// First attempt. Don't judge.
+function getCycleDates(startDay: number) {
+  const today = new Date();
+  const currentMonth = today.getMonth();
+  const currentYear = today.getFullYear();
+  
+  const cycleStart = new Date(currentYear, currentMonth, startDay);
+  const cycleEnd = new Date(currentYear, currentMonth + 1, startDay - 1);
+  
+  return { cycleStart, cycleEnd };
+}
+```
+
+This worked for about five minutes. Then I tested it with `startDay = 31` in February.
+
+Guess what February 31st is? It isn't. JavaScript's `Date` constructor silently rolls it over to March 3rd. No error. No warning. Just... wrong dates. Silently.
+
+Then there's the edge case where today is the 10th and your cycle starts on the 25th. Are we in the cycle that started last month's 25th? Or waiting for this month's 25th? The naive approach got confused. I got confused. Everyone was confused.
+
+# Attempt Two: The Over-Engineered Approach
+
+So I did what every developer does after a failure — I went full send in the opposite direction. I imported a date library. I wrote helper functions for every possible edge case. I had a `getCycleBoundaries` function that was 200 lines long and handled:
+
+- Months with 28, 29, 30, and 31 days
+- Cycle start days that don't exist in short months (31st in February → clamp to 28th/29th)
+- Year boundaries (cycle from December 25 to January 24)
+- Leap years (because of course)
+
+It worked. But it was a mess. The function had so many if/else branches it looked like a choose-your-own-adventure book. Testing it required dozens of date scenarios, and every new edge case I found meant another branch.
+
+# Attempt Three: The One That Actually Worked
+
+The breakthrough came when I stopped thinking about dates and started thinking about **state**.
+
+Instead of calculating the cycle window every time, I created a `cycleState` table in Convex:
+
+```typescript
+// The cycle state — our single source of truth
+cycleState: defineTable({
+  userId: v.id("users"),
+  cycleStartDate: v.string(),   // When this cycle began
+  cycleEndDate: v.string(),     // When this cycle ends
+  budget: v.float64(),          // Total budget for this cycle
+  totalSpending: v.float64(),   // Running total of spending
+  carryover: v.float64(),       // Surplus/deficit from last cycle
+  isFinalized: v.boolean(),     // Has this cycle been closed?
+})
+```
+
+Now the cycle isn't calculated — it's **stored**. When a cycle ends, we finalize it, calculate savings, and create a new one. The `cycleStartDate` and `cycleEndDate` are concrete, no ambiguity.
+
+The boundary calculation still exists, but it only runs once — when creating a new cycle. And it's been extracted into a dedicated utility:
+
+```typescript
+// Calculate cycle boundaries from a start day
+export function calculateCycleBoundaries(
+  startDay: number,
+  referenceDate: Date
+): { start: Date; end: Date } {
+  // Clamp start day to actual days in month
+  const daysInMonth = getDaysInMonth(referenceDate);
+  const clampedDay = Math.min(startDay, daysInMonth);
+  
+  // ... boundary logic with proper month wrapping
+}
+```
+
+Clean. Testable. And most importantly — **the cycle state is atomic**. When you add a transaction, the spending total updates in the same mutation. No race conditions. No stale reads. Convex's transactional guarantees handle the hard stuff.
+
+# The Carryover Headache
+
+Okay, so we have cycle boundaries working. Now comes the fun part: **what happens at the end of a cycle?**
+
+If you had a $2,000 budget and only spent $1,800, you saved $200. Great. But should that $200 carry over to the next cycle? Some people want that. Others prefer a clean slate each cycle.
+
+And what about the opposite — you overspent by $300. Does next month start with $300 less? That's technically accurate, but it's also depressing. Some people would rather not carry negative balances forward.
+
+So I made it configurable:
+
+```typescript
+// User's budget preferences
+budgetPreferences: {
+  carryNegativeBalance: v.boolean(),  // Carry debt forward?
+  carryPositiveBalance: v.boolean(),  // Carry surplus forward?
+}
+```
+
+The finalization logic runs as a Convex workflow — a cron job that fires every hour, checks all users, and finalizes any expired cycles:
+
+```typescript
+// Simplified cycle finalization
+async function finalizeCycle(ctx, userId) {
+  const cycleState = await getCycleState(ctx, userId);
+  
+  const savings = cycleState.budget - cycleState.totalSpending;
+  
+  // Store savings record
+  await ctx.db.insert("cycleSavings", {
+    userId,
+    cycleStart: cycleState.cycleStartDate,
+    cycleEnd: cycleState.cycleEndDate,
+    budget: cycleState.budget,
+    spending: cycleState.totalSpending,
+    savings,
+    carryover: cycleState.carryover,
+  });
+  
+  // Calculate next cycle's carryover
+  const prefs = await getBudgetPreferences(ctx, userId);
+  let nextCarryover = 0;
+  
+  if (savings > 0 && prefs.carryPositiveBalance) {
+    nextCarryover = savings;
+  } else if (savings < 0 && prefs.carryNegativeBalance) {
+    nextCarryover = savings;
+  }
+  
+  // Create new cycle
+  const boundaries = calculateCycleBoundaries(
+    prefs.cycleStartDay,
+    new Date()  // Reference from now
+  );
+  
+  await ctx.db.insert("cycleState", {
+    userId,
+    cycleStartDate: boundaries.start.toISOString(),
+    cycleEndDate: boundaries.end.toISOString(),
+    budget: calculateBudgetFromIncome(ctx, userId),
+    totalSpending: 0,
+    carryover: nextCarryover,
+    isFinalized: false,
+  });
+}
+```
+
+# The Loan Twist
+
+Just when I thought the budget math was done, I added loans. Because of course.
+
+Lumo lets you track money you've lent to people (or borrowed). And here's the thing — if you lent someone $500 this month, that $500 came from your budget. Your _available_ balance should reflect that.
+
+So the final budget calculation isn't just `budget - spending`. It's:
+
+```
+Available = Budget - Spending - Outstanding Loans + Carryover
+```
+
+This means every time someone records a loan transaction, the available balance changes. Every time a loan gets repaid, it changes again. It's a web of interconnected financial state, and getting it right required centralizing _all_ budget math into one file: `budgetCalculations.ts`.
+
+That file is now 800+ lines. It's the beating heart of the entire application. Every query that touches money flows through it. And honestly? That's the right call. One source of truth. One place to debug. One place to test.
+
+# What I Learned
+
+Three rewrites. Hundreds of test cases. One file that became the center of the universe.
+
+Here's what this whole ordeal taught me:
+
+1. **Don't calculate what you can store.** Derived state is fine for simple stuff, but when your calculation involves five tables and configurable preferences, store the result and update it atomically.
+
+2. **Edge cases are the feature.** The difference between a toy budget app and a real one is how it handles February 29th, negative carryover, and users who change their cycle start day mid-cycle.
+
+3. **Centralize financial math.** Having budget calculations scattered across files is a recipe for inconsistency. One function. One file. One truth.
+
+4. **Test with real scenarios.** Unit tests with hardcoded dates caught bugs that "works on my machine" testing never would. I tested every month transition, every leap year, every impossible date.
+
+This was the hardest feature to build in Lumo. Not because the individual pieces were complex — but because they all had to work together, perfectly, every time. Money stuff doesn't get to be "close enough."
+
+Next up: I'll talk about how I handled multiple income streams with different frequencies, and how converting weekly freelance income into a monthly budget is way harder than it sounds.
+
+Until then, keep budgeting and keep coding, nerds. 💰

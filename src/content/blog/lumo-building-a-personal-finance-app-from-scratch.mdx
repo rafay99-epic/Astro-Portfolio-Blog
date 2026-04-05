@@ -1,0 +1,158 @@
+---
+title: "Lumo: Why I'm Building a Personal Finance App from Scratch"
+description: >-
+  The origin story of Lumo — a full-stack personal finance app I'm building
+  with TypeScript, Convex, and React Native. Here's why and how it started.
+pubDate: 2026-04-09T19:00:00.000Z
+draft: true
+archived: false
+heroImage: /BlogImages/lumo-origin-story.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - ThoughtsProcess
+  - MobileDevelopment
+keywords:
+  - personal finance app
+  - lumo
+  - convex
+  - react native
+  - typescript
+  - full stack
+  - mobile development
+  - side project
+canonicalUrl: /blog/lumo-building-a-personal-finance-app-from-scratch
+featured: true
+series: "Building Lumo"
+seriesPart: 1
+seriesTotal: 9
+excerpt: >-
+  The origin story of Lumo — why I decided to build an entire personal finance
+  ecosystem from scratch, and what the first few weeks looked like.
+---
+
+Let me set the scene.
+
+It's late at night. I'm sitting there staring at my bank statement, trying to figure out where half my salary disappeared to. I've got three different apps open — one for tracking expenses, one for budgets, and one that I downloaded six months ago and literally never opened. None of them talk to each other. None of them actually understand how _I_ manage money.
+
+And that's when the itch started.
+
+You know the itch. The developer itch. The one that whispers: _"You could build something better."_ And honestly? I should've ignored it. I should've just picked one app and stuck with it like a normal person. But I'm not a normal person — I'm a software engineer. We don't use apps, we build them. (And then never finish them, but that's a conversation for another day.)
+
+So, **Lumo** was born.
+
+# What Even Is Lumo?
+
+Lumo is a personal finance application. But not just a mobile app — it's an entire ecosystem. We're talking:
+
+- A **React Native mobile app** (iOS and Android) for daily tracking
+- A **Next.js marketing website** with a blog and changelog
+- An **admin dashboard** built with Vite and TanStack Router
+- A **Convex backend** powering everything in real-time
+
+Yeah, I went all in. Because apparently I don't believe in "start small."
+
+The core idea is simple: **track your spending, understand your budget cycles, and actually know where your money goes.** But the implementation? That's where it gets spicy.
+
+# Why Not Just Use Mint? Or YNAB? Or Any Other App?
+
+Look, those apps are great. Seriously. But here's the thing — they all assume your financial life fits into their box. Monthly budgets that reset on the 1st? Cool, but what if you get paid on the 15th? Automatic bank syncing? Great, unless you live somewhere where your bank's API is held together with duct tape and prayers.
+
+I wanted something that:
+
+1. **Let me define my own budget cycle** — not locked to calendar months
+2. **Handled multiple income streams** — salary, freelance, investments, all with different frequencies
+3. **Actually predicted my spending** — not just showed me what I already spent
+4. **Worked offline** — because internet isn't always reliable
+5. **Didn't sell my financial data** — privacy matters, people
+
+And most importantly, I wanted to **own it**. Every line of code. Every database row. Every pixel on the screen.
+
+# The Tech Stack Decision
+
+Alright, tech stack time. This is always the fun part, right? Spending three weeks deciding on tools instead of actually building anything. Classic.
+
+Here's what I landed on:
+
+**Monorepo with Turborepo + Bun**
+
+I went with a monorepo because I've got four apps sharing a single backend. Having everything in one place means shared types, shared configs, and one `bun install` to rule them all. Turborepo handles the task orchestration — parallel builds, caching, the whole deal.
+
+And Bun over npm/yarn? Honestly, speed. `bun install` finishes before npm even thinks about starting. Plus, built-in TypeScript support without extra tooling. Once you go Bun, you don't go back.
+
+**Convex for the Backend**
+
+Now, if you've read my [previous post about Convex](/blog/stop-the-presses-convex-is-here-and-so-are-the-growing-pains), you know I have... _opinions_ about it. But here's the reality — for a real-time finance app where you want instant UI updates when transactions change, Convex is genuinely magical. Subscriptions that just work. Type-safe queries. No REST endpoints to maintain.
+
+The learning curve is real though. More on that in future posts.
+
+**React Native with Expo for Mobile**
+
+Flutter vs React Native is a debate I've had many times (and written about). For Lumo, I went React Native because the entire web ecosystem is already TypeScript. Sharing types between the backend and mobile app? Chef's kiss. One language across the entire stack.
+
+Expo handles the build pipeline — EAS builds for both platforms without me needing a Mac farm.
+
+**Next.js for the Marketing Site**
+
+The website needed to be content-heavy (blog, changelog, legal pages) with great SEO. Next.js with static generation was the obvious choice. MDX for blog posts, Vercel for deployment. Simple.
+
+**Vite + React for the Admin Panel**
+
+The admin dashboard doesn't need SSR or SEO. It's an internal tool. Vite gives me instant hot reload, TanStack Router gives me type-safe routing, and Radix UI gives me accessible components without fighting CSS.
+
+# The Architecture at a Glance
+
+Here's what the monorepo looks like:
+
+```
+Lumo/
+├── apps/
+│   ├── mobile/     # React Native/Expo
+│   ├── web/        # Next.js marketing
+│   └── admin/      # Vite admin dashboard
+├── packages/
+│   ├── backend/    # Convex functions + schema
+│   └── config/     # Shared TS/Biome configs
+├── turbo.json
+└── package.json
+```
+
+The beauty of this setup? The backend package (`@lumo/backend`) is a shared dependency. The mobile app, the web app, and the admin dashboard all import from the same backend. One schema. One set of functions. Three consumers.
+
+Type safety flows from the Convex schema all the way down to the button you tap on your phone. Change a field in the database? TypeScript screams at every app that needs updating. It's beautiful.
+
+# What's Coming in This Series
+
+I'm going to document the entire journey of building Lumo. Not the sanitized, everything-works-perfectly version — the real one. The one with bugs at 2 AM, architectural decisions I regretted, and features that took three rewrites to get right.
+
+Here's what I'm planning to cover:
+
+1. **The budget cycle system** — the core innovation and why it took forever to get right
+2. **Building real-time features with Convex** — subscriptions, optimistic updates, and the cache nightmares
+3. **Multi-income support** — salary + freelance + investments, all on different schedules
+4. **AI-powered spending predictions** — building a prediction engine that actually works
+5. **Mobile app architecture** — React Native patterns that don't make you want to quit
+6. **The admin dashboard** — building internal tools that aren't terrible
+7. **Security and subscriptions** — device sessions, rate limiting, and tier management
+
+Each post will dive deep into the actual code, the actual problems, and the actual solutions. No hand-waving. No "left as an exercise for the reader." The real stuff.
+
+# The First Commit
+
+I remember the first commit. It was just a Turborepo scaffold with a single Convex schema file. The `users` table had exactly three fields. The mobile app was a blank Expo template with "Hello World" on the screen.
+
+Looking at it now — with 20,000+ lines of backend code, 30+ database tables, and features I couldn't even imagine back then — it's wild. The codebase grew organically, one problem at a time. One "oh wait, I also need..." at a time.
+
+And that's honestly the best part of building something from scratch. You're not following a tutorial. You're not copying someone else's architecture. You're solving _your_ problems, _your_ way. And sometimes your way is wrong and you refactor everything at 3 AM. But you learn. Every single time.
+
+# Final Thoughts
+
+Lumo is still very much a work in progress. There are features I haven't built yet, bugs I haven't found yet, and architectural decisions I'll probably regret later. But that's the fun of it.
+
+If you're thinking about building your own full-stack app from scratch — do it. Don't overthink the tech stack. Don't wait until you have the "perfect" plan. Just start. The plan reveals itself as you build.
+
+This series is going to be a raw, honest look at what it takes to build something real. Not a toy project. Not a weekend hack. A real application that handles real money (well, tracks it) for real people.
+
+Buckle up, nerds. It's going to be a ride.
+
+Until then, keep coding. ❤️

@@ -3,20 +3,20 @@ export const prerender = true;
 
 import BaseHead from "@components/AstroComponent/base/BaseHead.astro";
 import authorConfig from "@config/siteConfig/info.json";
-import NotFoundPage from "@react/error/404-Compoent";
+import ServerErrorPage from "@react/error/500-Component";
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead
-      title={`Page Not Found | ${authorConfig.SiteName}`}
-      description="Oops! The page you are looking for doesn't exist. It may have been moved or deleted."
+      title={`Server Error | ${authorConfig.SiteName}`}
+      description="Something went wrong on our end. Please try again or return to the homepage."
     />
   </head>
   <body class="h-screen overflow-hidden bg-[#1a1b26]">
     <main class="flex h-full w-full items-center justify-center">
-      <NotFoundPage client:load />
+      <ServerErrorPage client:load />
     </main>
   </body>
 </html>

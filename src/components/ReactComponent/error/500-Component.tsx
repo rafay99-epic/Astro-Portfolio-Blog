@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
-import { LuArrowLeft, LuBookOpen, LuHouse } from "react-icons/lu";
+import { LuArrowLeft, LuHouse, LuRefreshCw } from "react-icons/lu";
 
-const NotFoundPage = memo(function NotFoundPage() {
+const ServerErrorPage = memo(function ServerErrorPage() {
 	return (
 		<div className="flex items-center justify-center p-6">
 			<motion.div
@@ -19,13 +19,13 @@ const NotFoundPage = memo(function NotFoundPage() {
 						className="mb-8"
 					>
 						<div className="relative">
-							<div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#7aa2f7]/20 to-[#bb9af7]/20 blur-2xl"></div>
+							<div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#ff7a93]/20 to-[#e0af68]/20 blur-2xl"></div>
 
 							<div className="relative rounded-2xl border border-[#565f89]/40 bg-[#1a1b26]/80 p-8 font-mono">
 								<div className="flex items-center justify-center gap-4 text-4xl font-bold md:text-5xl lg:text-6xl">
 									<motion.span
 										animate={{
-											color: ["#7aa2f7", "#bb9af7", "#9ece6a", "#7aa2f7"],
+											color: ["#ff7a93", "#e0af68", "#ff7a93"],
 											scale: [1, 1.1, 1],
 										}}
 										transition={{
@@ -33,7 +33,7 @@ const NotFoundPage = memo(function NotFoundPage() {
 											repeat: Infinity,
 											ease: "easeInOut",
 										}}
-										className="text-[#7aa2f7]"
+										className="text-[#ff7a93]"
 									>
 										{"<"}
 									</motion.span>
@@ -41,21 +41,21 @@ const NotFoundPage = memo(function NotFoundPage() {
 									<motion.span
 										animate={{
 											y: [-5, 5, -5],
-											color: ["#bb9af7", "#9ece6a", "#7aa2f7", "#bb9af7"],
+											color: ["#e0af68", "#ff7a93", "#e0af68"],
 										}}
 										transition={{
 											duration: 2,
 											repeat: Infinity,
 											ease: "easeInOut",
 										}}
-										className="text-[#bb9af7]"
+										className="text-[#e0af68]"
 									>
-										404
+										500
 									</motion.span>
 
 									<motion.span
 										animate={{
-											color: ["#9ece6a", "#7aa2f7", "#bb9af7", "#9ece6a"],
+											color: ["#e0af68", "#ff7a93", "#e0af68"],
 											scale: [1, 1.1, 1],
 										}}
 										transition={{
@@ -64,7 +64,7 @@ const NotFoundPage = memo(function NotFoundPage() {
 											ease: "easeInOut",
 											delay: 1.5,
 										}}
-										className="text-[#9ece6a]"
+										className="text-[#e0af68]"
 									>
 										{"/>"}
 									</motion.span>
@@ -77,7 +77,7 @@ const NotFoundPage = memo(function NotFoundPage() {
 									className="mt-4 text-sm text-[#a9b1d6] md:text-base"
 								>
 									<span className="text-[#ff7a93]">Error:</span>
-									<span className="text-[#c0caf5]"> Page not found</span>
+									<span className="text-[#c0caf5]"> Internal server error</span>
 								</motion.div>
 							</div>
 						</div>
@@ -89,8 +89,8 @@ const NotFoundPage = memo(function NotFoundPage() {
 						transition={{ delay: 0.3, duration: 0.5 }}
 						className="mb-4 text-2xl font-bold md:text-3xl lg:text-4xl"
 					>
-						<span className="bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text text-transparent">
-							Oops! You're Lost in Code
+						<span className="bg-gradient-to-r from-[#ff7a93] via-[#e0af68] to-[#ff7a93] bg-clip-text text-transparent">
+							Something Broke on Our End
 						</span>
 					</motion.h1>
 
@@ -100,8 +100,9 @@ const NotFoundPage = memo(function NotFoundPage() {
 						transition={{ delay: 0.4, duration: 0.5 }}
 						className="mb-8 text-base leading-relaxed text-[#a9b1d6] md:text-lg lg:text-xl"
 					>
-						It seems like you've wandered into uncharted code territory. The
-						page you're looking for doesn't exist in this repository.
+						The server ran into an unexpected error. Don't worry — it's not your
+						fault. Try refreshing the page, or head back home while we sort
+						things out.
 					</motion.p>
 
 					<motion.div
@@ -110,11 +111,21 @@ const NotFoundPage = memo(function NotFoundPage() {
 						transition={{ delay: 0.5, duration: 0.5 }}
 						className="flex flex-col justify-center gap-4 sm:flex-row"
 					>
+						<motion.button
+							onClick={() => window.location.reload()}
+							whileHover={{ scale: 1.05, y: -2 }}
+							whileTap={{ scale: 0.95 }}
+							className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff7a93] to-[#e0af68] px-8 py-4 font-semibold text-white shadow-lg shadow-[#ff7a93]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#ff7a93]/30"
+						>
+							<LuRefreshCw className="h-5 w-5" />
+							<span>Try Again</span>
+						</motion.button>
+
 						<motion.a
 							href="/"
 							whileHover={{ scale: 1.05, y: -2 }}
 							whileTap={{ scale: 0.95 }}
-							className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7aa2f7]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
+							className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 px-8 py-4 font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#ff7a93]/40 hover:bg-[#24283b]/60 hover:text-[#c0caf5]"
 						>
 							<LuHouse className="h-5 w-5" />
 							<span>Return to Home</span>
@@ -128,16 +139,6 @@ const NotFoundPage = memo(function NotFoundPage() {
 							>
 								<LuArrowLeft className="h-4 w-4" />
 							</motion.span>
-						</motion.a>
-
-						<motion.a
-							href="/blog"
-							whileHover={{ scale: 1.05, y: -2 }}
-							whileTap={{ scale: 0.95 }}
-							className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 px-8 py-4 font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#7aa2f7]/40 hover:bg-[#24283b]/60 hover:text-[#c0caf5]"
-						>
-							<LuBookOpen className="h-5 w-5" />
-							<span>Browse Blog</span>
 						</motion.a>
 					</motion.div>
 
@@ -156,12 +157,12 @@ const NotFoundPage = memo(function NotFoundPage() {
 										repeat: Infinity,
 										ease: "easeInOut",
 									}}
-									className="h-2 w-2 rounded-full bg-[#ff7a93]"
+									className="h-2 w-2 rounded-full bg-[#e0af68]"
 								/>
-								<span>404 Error</span>
+								<span>500 Error</span>
 							</div>
 							<span>•</span>
-							<span>Page Not Found</span>
+							<span>Internal Server Error</span>
 						</div>
 					</motion.div>
 				</div>
@@ -170,4 +171,4 @@ const NotFoundPage = memo(function NotFoundPage() {
 	);
 });
 
-export default NotFoundPage;
+export default ServerErrorPage;

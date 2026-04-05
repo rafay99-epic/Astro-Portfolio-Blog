@@ -1,0 +1,179 @@
+---
+title: "What Building Lumo Taught Me About Full-Stack Development"
+description: >-
+  The final post in the Lumo series — lessons learned, mistakes I'd avoid, and
+  what's next for the project after months of building.
+pubDate: 2026-05-07T19:00:00.000Z
+draft: true
+archived: false
+heroImage: /BlogImages/lumo-lessons-learned.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - ThoughtsProcess
+  - MobileDevelopment
+  - WebDevelopment
+keywords:
+  - lessons learned
+  - full stack development
+  - typescript
+  - convex
+  - react native
+  - lumo
+  - software engineering
+  - side project
+canonicalUrl: /blog/lumo-lessons-learned-full-stack-finance-app
+featured: true
+series: "Building Lumo"
+seriesPart: 9
+seriesTotal: 9
+excerpt: >-
+  The final post in the Lumo series — everything I learned from building a
+  full-stack personal finance app from scratch, the mistakes I'd avoid, and
+  what comes next.
+---
+
+Eight blog posts. Months of development. 20,000+ lines of backend code. 30+ database tables. A mobile app, a marketing site, an admin dashboard, and more late nights than I care to admit.
+
+Lumo started as a frustrated rant about bad finance apps and grew into the most complex thing I've ever built. And now, at the end of this series, I want to be honest about what went right, what went wrong, and what I'd do differently if I started over tomorrow.
+
+This is not a success story wrapped in a bow. This is a developer looking back at months of work and saying: "Here's what I actually learned."
+
+# What Went Right
+
+## 1. The Monorepo Decision
+
+Putting everything in one Turborepo monorepo was the best architectural decision I made. Period.
+
+Shared TypeScript types between the backend and all three frontends eliminated an entire category of bugs. When I changed a field in the Convex schema, TypeScript errors appeared in the mobile app, the web app, and the admin panel simultaneously. No "oh, I forgot to update the mobile app" moments.
+
+Shared configs (Biome, TypeScript) meant consistent code quality everywhere. One linting rule, one formatting style, three apps. And Bun workspaces made dependency management trivial — `@lumo/backend` is just a workspace reference, no publishing or linking needed.
+
+If you're building multiple apps that share a backend? Monorepo. Don't even think about it. Just do it.
+
+## 2. Convex for Real-Time
+
+Despite the learning curve, Convex was the right choice for Lumo. Real-time budget updates, live transaction sync across devices, instant prediction invalidation — all of this would've been a massive undertaking with a traditional REST API + WebSocket setup.
+
+The atomic mutations saved me from data integrity bugs multiple times. Financial data needs to be consistent, and Convex's transactional guarantees delivered that without me writing rollback logic.
+
+## 3. Early Admin Tooling
+
+Building the admin dashboard early (instead of postponing it like I originally planned) paid dividends every single day. Debugging user issues, monitoring system health, toggling features — all from a browser. No SSH, no scripts, no manual database queries.
+
+## 4. Story-Driven Development
+
+I didn't build Lumo from a spec. I built it from stories. "As a person with a freelance side gig, I want my budget to account for biweekly payments." Each feature was driven by a real use case, not a theoretical requirement.
+
+This kept the features grounded. No feature bloat. No "we might need this someday." Every screen, every mutation, every database table exists because a real scenario demanded it.
+
+# What Went Wrong
+
+## 1. I Didn't Test Enough
+
+This is the big one. I've said it in previous posts, and I'll say it again: Lumo's test coverage is not where it should be.
+
+The backend has decent test coverage — budget calculations, income logic, prediction models all have test suites. But the mobile app? The web app? Mostly untested. I relied too heavily on manual testing and "it works on my device."
+
+The cost of this hit me hard when I refactored the budget calculation logic. I changed one function, ran the backend tests (they passed), deployed, and then realized the mobile app was displaying the wrong available balance because a hook was calling a slightly different code path that wasn't tested.
+
+**Lesson: test the integration, not just the units.** Backend tests passing doesn't mean the app works.
+
+## 2. I Over-Abstracted Early
+
+In the first few weeks, I was obsessed with making everything reusable. Generic form components. Abstract data fetching hooks. A shared validation library. The works.
+
+Turns out, most of that abstraction was premature. I built a "generic income form" that handled salary, freelance, investment, and one-time income. It was a monster — 400 lines with conditional rendering based on the income type. When I needed to change the freelance form, I had to carefully navigate the abstraction without breaking the salary form.
+
+Eventually I split it into four simple forms. Each one was 80 lines, easy to read, easy to modify, completely independent. The total code was more, but the complexity was less.
+
+**Lesson: duplication is cheaper than the wrong abstraction.** Wait until you have three real use cases before abstracting.
+
+## 3. JavaScript Numbers for Money
+
+I mentioned this in the security post, but it deserves its own callout. I'm using `float64` for all financial amounts. Dollar amounts. Budget totals. Loan balances.
+
+So far, it hasn't caused visible issues. $50.10 stores as $50.10, not $50.09999999999. But that's luck, not correctness. Floating-point arithmetic _will_ bite eventually. Someone will add three transactions of $33.33 and the total will be $99.99 or $100.00 instead of the exact $99.99 they expect.
+
+The right approach is to store amounts in integer cents (5010 instead of 50.10) and format for display. I know this. I should've done this from the start. Now it's a migration I'm dreading.
+
+**Lesson: use integer cents for money. Always. From day one.**
+
+## 4. No CI/CD for Mobile
+
+The web app deploys automatically through Vercel on every push to main. The Convex backend deploys with a single command. But the mobile app? That requires manually triggering an EAS build, waiting 20 minutes, downloading the APK/IPA, and testing.
+
+I should've set up automated mobile builds from the beginning. Every merge to main should produce a test build. Every release tag should produce a production build. The infrastructure exists (EAS + GitHub Actions), I just never prioritized it.
+
+**Lesson: automate your mobile builds early.** Manual build processes don't scale, even for a solo developer.
+
+# The Numbers
+
+Let me get specific about the codebase size, because people always ask:
+
+| Component | Lines of Code | Files |
+|-----------|:---:|:---:|
+| Convex Backend | ~20,600 | 40+ |
+| Mobile App | ~8,700 | 80+ |
+| Marketing Website | ~6,900 | 50+ |
+| Admin Dashboard | ~4,000 | 35+ |
+| Shared Config | ~500 | 10+ |
+| **Total** | **~40,700** | **215+** |
+
+That's 40,000 lines of TypeScript across four apps, one backend, and shared configuration. For a side project. Built mostly by one person. With a lot of help from AI copilots (let's be honest).
+
+The database has 30+ tables, 100+ functions (queries + mutations), 4 cron jobs, and 3 workflows. The mobile app has 20+ screens. The admin panel has 18 routes.
+
+It's a real codebase. And maintaining it solo is... a lot.
+
+# What I'd Do Differently
+
+If I started Lumo from scratch today:
+
+1. **Integer cents from day one.** No float64 for money. Ever.
+
+2. **Test-first for financial logic.** Every budget calculation, every income conversion, every prediction model should have tests written _before_ the implementation.
+
+3. **Smaller initial scope.** I'd launch with just transactions and budget cycles. No predictions, no loans, no income streams, no admin panel. Get the core right, then add features based on actual usage.
+
+4. **CI/CD for everything from week one.** Web, backend, and mobile — all automated. No manual deployment steps.
+
+5. **Design system before screens.** I spent too much time tweaking individual screens instead of building a consistent component library first. (I suck at UI, which makes this doubly important.)
+
+6. **More writing, sooner.** This blog series should've started when I started building. The process of writing about decisions forces you to think them through properly. Half the architectural improvements I made came from trying to explain the old approach in a blog post and realizing it was bad.
+
+# What's Next for Lumo
+
+Lumo isn't done. Not by a long shot. Here's what's on the roadmap:
+
+- **Receipt scanning improvements** — The AI extraction works, but the accuracy could be better. Exploring fine-tuned models for common receipt formats.
+- **Recurring transactions** — Subscriptions, rent, bills that happen every month. Right now you have to add them manually each time.
+- **Goal tracking** — "Save $5,000 by December" with progress visualization.
+- **Partner/family mode** — Shared budgets between two people.
+- **End-to-end encryption** — Because financial data deserves it.
+- **Proper mobile CI/CD** — Automated builds on every merge.
+- **Integer cents migration** — The float64 reckoning is coming.
+
+Some of these are small features. Some are massive undertakings. But that's the beauty of having your own project — you get to decide what matters and when.
+
+# The Real Lesson
+
+Here's the thing nobody tells you about side projects: **the project isn't the point.**
+
+Lumo taught me more about full-stack development in a few months than years of professional work. Not because professional work isn't educational — but because when it's your project, you make every decision. You face every consequence. You can't hand off the hard parts to another team.
+
+I learned Convex by hitting its cache limits. I learned React Native by fighting its keyboard behavior. I learned about financial calculations by getting them wrong three times. I learned about security by imagining the worst-case scenarios and building against them.
+
+Every bug was a lesson. Every rewrite was an improvement. Every late night was worth it — not because Lumo will make me rich, but because it made me a better engineer.
+
+# Thank You
+
+If you've followed this entire series — from the [origin story](/blog/lumo-building-a-personal-finance-app-from-scratch) to the [budget cycle system](/blog/lumo-budget-cycle-system-that-broke-my-brain) to [Convex adventures](/blog/lumo-convex-realtime-backend-love-and-pain) to [income management](/blog/lumo-multi-income-budget-math-nightmare) to [AI predictions](/blog/lumo-ai-spending-predictions-that-actually-work) to [mobile architecture](/blog/lumo-react-native-mobile-app-architecture) to the [admin dashboard](/blog/lumo-admin-dashboard-internal-tools-that-dont-suck) to [security](/blog/lumo-security-subscriptions-device-sessions) — thank you. Genuinely.
+
+Writing about your own code is vulnerable. You're showing the world your decisions, your mistakes, your thought process. But it's also the most rewarding kind of technical writing. Because it's real. Not a tutorial from a docs page. Not a contrived example. Real code that solves real problems for real people.
+
+If you're building something — anything — consider writing about it. Not for the audience. For yourself. The act of explaining forces understanding. And understanding is what turns code into craft.
+
+Now, if you'll excuse me, I have a float64-to-integer-cents migration to plan. Wish me luck.
+
+Until then — and I mean this from the bottom of my terminal — keep building, keep writing, and keep shipping, nerds. ❤️❤️

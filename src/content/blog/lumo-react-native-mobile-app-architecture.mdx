@@ -1,0 +1,367 @@
+---
+title: "Building Lumo's Mobile App: React Native Patterns That Don't Suck"
+description: >-
+  How I structured a React Native finance app with Expo — from screen
+  architecture to custom hooks, real-time sync, and making the app feel native.
+pubDate: 2026-04-27T19:00:00.000Z
+draft: true
+archived: false
+heroImage: /BlogImages/lumo-mobile-architecture.webp
+authorName: Abdul Rafay
+authorAvatar: /IMG-20221105-WA0007.jpg
+tags:
+  - MobileDevelopment
+  - ThoughtsProcess
+keywords:
+  - react native
+  - expo
+  - mobile app architecture
+  - typescript
+  - personal finance
+  - lumo
+  - mobile development
+  - nativewind
+canonicalUrl: /blog/lumo-react-native-mobile-app-architecture
+featured: false
+series: "Building Lumo"
+seriesPart: 6
+seriesTotal: 9
+excerpt: >-
+  Building a finance app in React Native that actually feels native — screen
+  architecture, custom hooks, real-time sync, and the small details that matter.
+---
+
+I'll be honest — I was a Flutter guy. If you've read my earlier posts, you know I built MS Bridge in Flutter and loved the experience. So choosing React Native for Lumo felt a bit like betraying my first love.
+
+But here's the thing: Lumo's entire backend and web stack is TypeScript. The Convex backend generates TypeScript types. The Next.js site is TypeScript. Sharing types and logic between the backend and the mobile app — without some weird codegen bridge or manual type duplication — was too good to pass up.
+
+So I went React Native with Expo. And after months of building with it, I have thoughts. A lot of them.
+
+# The File-Based Routing Setup
+
+Expo Router uses file-based routing, similar to Next.js. Your file structure _is_ your navigation structure. Here's Lumo's:
+
+```
+app/
+├── (intro)/              # Onboarding flow (no auth required)
+│   ├── _layout.tsx
+│   └── index.tsx
+│
+├── (home)/               # Main app (auth required)
+│   ├── _layout.tsx       # Tab navigation wrapper
+│   ├── dashboard.tsx     # Home screen
+│   ├── transactions.tsx  # Transaction list
+│   ├── loans.tsx         # Loan management
+│   ├── insights.tsx      # Analytics
+│   │
+│   └── settings/
+│       ├── profile.tsx
+│       ├── budget.tsx
+│       ├── income.tsx
+│       ├── notifications.tsx
+│       ├── recovery-codes.tsx
+│       ├── upgrade.tsx
+│       └── dangerous.tsx   # Data deletion, account ops
+```
+
+The `(intro)` and `(home)` groups are layout groups — they don't create URL segments, they just group screens that share a layout. The `(home)` group wraps everything in an auth guard and tab navigation. The `(intro)` group is the unauthenticated onboarding flow.
+
+I like this pattern. It makes the navigation hierarchy visible just by looking at the folder structure. No digging through a 200-line navigation config to figure out which screen goes where.
+
+# The Hook-Driven Architecture
+
+Every screen in Lumo is thin. Like, really thin. The screen component handles layout and UI. All data fetching, mutations, and business logic live in custom hooks.
+
+Here's what the dashboard screen looks like (simplified):
+
+```tsx
+// app/(home)/dashboard.tsx
+export default function DashboardScreen() {
+  const { cycleState, isLoading } = useBudgetCycleInfo();
+  const { prediction } = usePredictions();
+  const { loans } = useLoans("active");
+  
+  if (isLoading) return <DashboardSkeleton />;
+  
+  return (
+    <ScrollView>
+      <BudgetCard 
+        budget={cycleState.budget}
+        spent={cycleState.totalSpending}
+        available={cycleState.available}
+      />
+      <PredictionCard prediction={prediction} />
+      <LoanSummaryCard loans={loans} />
+      <RecentTransactions />
+    </ScrollView>
+  );
+}
+```
+
+That's it. The screen is a composition of components, each fed by hooks. No API calls in the component. No state management logic. No `useEffect` chains.
+
+The hooks themselves are where the real work happens:
+
+```typescript
+// hooks/use-budget-cycle.ts
+export function useBudgetCycleInfo() {
+  const cycleState = useStableQuery(
+    api.budget.getCycleState
+  );
+  
+  const available = useMemo(() => {
+    if (!cycleState) return 0;
+    return cycleState.budget 
+      - cycleState.totalSpending 
+      - cycleState.outstandingLoans 
+      + cycleState.carryover;
+  }, [cycleState]);
+  
+  return {
+    cycleState: cycleState ? { ...cycleState, available } : null,
+    isLoading: cycleState === undefined,
+  };
+}
+```
+
+See that `useStableQuery`? That's a custom wrapper around Convex's `useQuery` hook that prevents unnecessary re-renders. More on that in a second.
+
+# The Real-Time Sync Story
+
+Convex queries are reactive by default. When you call `useQuery(api.budget.getCycleState)`, the component re-renders whenever the underlying data changes. This is amazing for a finance app — add a transaction on one device, see the budget update on another.
+
+But it comes with a gotcha: **Convex queries can return `undefined` during loading, then re-render with data, then re-render again if the data changes.** In a complex screen with five queries, you get render storms.
+
+I built `useStableQuery` to solve this:
+
+```typescript
+// hooks/use-stable-query.ts
+export function useStableQuery<T>(
+  queryFn: any,
+  args?: any
+): T | undefined {
+  const result = useQuery(queryFn, args);
+  const stableRef = useRef(result);
+  
+  // Only update ref when we get non-undefined data
+  // This prevents flicker when subscriptions reconnect
+  if (result !== undefined) {
+    stableRef.current = result;
+  }
+  
+  return stableRef.current;
+}
+```
+
+The idea is simple: once we have data, don't flash back to `undefined` during reconnections or subscription refreshes. The last known good value stays visible while the new one loads. This prevents the dreaded "loading spinner flash" that makes real-time apps feel janky.
+
+# Component Organization: The Feature Folder Pattern
+
+I organize components by feature, not by type. No `components/buttons/`, `components/cards/`, `components/modals/`. Instead:
+
+```
+components/
+├── dashboard/
+│   ├── BudgetCard.tsx
+│   ├── BudgetProgressBar.tsx
+│   ├── PredictionCard.tsx
+│   └── SpendingChart.tsx
+│
+├── transactions/
+│   ├── TransactionList.tsx
+│   ├── TransactionItem.tsx
+│   ├── AddTransactionModal.tsx
+│   └── TransactionFilters.tsx
+│
+├── income/
+│   ├── IncomeStreamCard.tsx
+│   ├── IncomeForm.tsx
+│   └── PaymentRecorder.tsx
+│
+├── loans/
+│   ├── LoanList.tsx
+│   ├── LoanCard.tsx
+│   └── LoanTransactionModal.tsx
+│
+└── ui/
+    ├── Button.tsx
+    ├── Input.tsx
+    ├── Card.tsx
+    ├── Badge.tsx
+    └── Spinner.tsx
+```
+
+The `ui/` folder is the exception — those are generic, reusable primitives that don't belong to any feature. Everything else lives with the feature it serves.
+
+Why this pattern? When I'm working on the loans feature, every file I need is in `components/loans/`. I'm not jumping between five different folders. And when I delete a feature (it happens), I delete one folder. Clean.
+
+# Making It Feel Native: The Small Things
+
+A finance app needs to feel trustworthy. That means it needs to feel _fast_ and _native_. Here are the small details that make a big difference:
+
+## Haptic Feedback
+
+Every important action gets a haptic response:
+
+```typescript
+import * as Haptics from 'expo-haptics';
+
+// Transaction added successfully
+Haptics.notificationAsync(
+  Haptics.NotificationFeedbackType.Success
+);
+
+// Over budget warning
+Haptics.notificationAsync(
+  Haptics.NotificationFeedbackType.Warning
+);
+
+// Delete confirmation
+Haptics.impactAsync(
+  Haptics.ImpactFeedbackStyle.Heavy
+);
+```
+
+It's subtle, but it matters. When you record a payment and feel that little buzz, it confirms the action happened. When you try to overspend and feel a warning vibration, it's a physical nudge to reconsider. Finance apps deal with anxiety-inducing actions — haptics help ground them in reality.
+
+## FlashList for Performance
+
+The transaction list can have hundreds (or thousands) of items. React Native's default `FlatList` gets sluggish around 500+ items. I switched to `FlashList` from Shopify:
+
+```tsx
+import { FlashList } from "@shopify/flash-list";
+
+<FlashList
+  data={transactions}
+  renderItem={({ item }) => (
+    <TransactionItem transaction={item} />
+  )}
+  estimatedItemSize={72}
+  keyExtractor={(item) => item._id}
+/>
+```
+
+The difference is dramatic. Scrolling through 2,000 transactions is butter-smooth. FlashList recycles views aggressively and only renders what's visible. The `estimatedItemSize` hint helps it pre-calculate scroll positions without measuring every item.
+
+## Biometric Lock
+
+A finance app sitting on your phone with no protection? Terrifying. Lumo supports fingerprint and FaceID gating:
+
+```typescript
+import * as LocalAuthentication from 'expo-local-authentication';
+
+async function authenticateUser(): Promise<boolean> {
+  const hasHardware = await LocalAuthentication
+    .hasHardwareAsync();
+  
+  if (!hasHardware) return true; // No biometrics, skip
+  
+  const result = await LocalAuthentication
+    .authenticateAsync({
+      promptMessage: 'Unlock Lumo',
+      fallbackLabel: 'Use Passcode',
+      disableDeviceFallback: false,
+    });
+  
+  return result.success;
+}
+```
+
+This runs when the app comes to foreground. Quick FaceID scan, and you're in. No PIN to remember. No pattern to draw. Just your face or your finger.
+
+# The Onboarding Flow
+
+First impressions matter, especially for a finance app where you're asking people to trust you with their money data.
+
+Lumo's onboarding is a multi-step wizard:
+
+1. **Welcome** — What Lumo does and why
+2. **Financial Goal** — What are you trying to achieve? (Save more? Track spending? Pay off debt?)
+3. **Budget Setup** — Set your cycle start day and initial budget
+4. **Categories** — Pick the spending categories you use
+5. **First Transaction** — Add one transaction to see how it works
+
+Each step is its own component with validation. You can go back and change things. The whole flow takes about 60 seconds.
+
+The key insight was making step 5 mandatory. A finance app with zero data is useless. By having users add one transaction during onboarding, they immediately see the dashboard with _their_ data. "Oh, this is what it looks like. I get it now." That moment of understanding is worth way more than a feature tour.
+
+# Error Handling: Making Failures Graceful
+
+Convex errors come back as somewhat cryptic strings. The mobile app needs to translate these into user-friendly messages:
+
+```typescript
+// lib/convex-error-handler.ts
+export function parseConvexError(error: unknown): string {
+  if (error instanceof ConvexError) {
+    const data = error.data;
+    
+    if (typeof data === 'string') {
+      return friendlyMessages[data] ?? data;
+    }
+    
+    if (data?.code === 'RATE_LIMITED') {
+      return "You're doing that too quickly. Please wait a moment.";
+    }
+    
+    if (data?.code === 'FEATURE_LIMIT') {
+      return `You've reached your ${data.feature} limit for this month. Upgrade to Pro for more!`;
+    }
+  }
+  
+  // Generic fallback
+  return "Something went wrong. Please try again.";
+}
+```
+
+The app never shows raw error messages to users. Every error is caught, parsed, and displayed as a friendly toast notification. "Rate limited" becomes "You're doing that too quickly." "Unauthorized" becomes "Please sign in again."
+
+# The Testing Reality
+
+I'll be honest — mobile testing is the weakest part of Lumo right now. I've got component tests for the critical hooks and some snapshot tests for key screens. But comprehensive E2E testing for React Native is still painful.
+
+What I _do_ test religiously:
+- **Custom hooks** — `useBudgetCycleInfo`, `useTransactions`, `usePredictions` all have unit tests
+- **Utility functions** — Date parsing, budget calculations, CSV export formatting
+- **Error handlers** — Every error code maps to a friendly message
+
+What I _should_ test but don't yet:
+- Full navigation flows (onboarding, transaction creation)
+- Screen rendering with different data states (empty, loading, error, full)
+- Interaction testing (tap flows, form submissions)
+
+Jest with React Testing Library gets you partway there, but testing Convex subscriptions in a React Native environment is... not great. I'm still figuring out the best approach. If you've got suggestions, I'm all ears.
+
+# React Native vs Flutter: The Honest Take
+
+Since I've now built production apps in both, here's my honest comparison:
+
+**React Native wins at:**
+- TypeScript ecosystem sharing (one language for everything)
+- Convex/backend integration (types flow naturally)
+- Web developer onboarding (if you know React, you're halfway there)
+- npm ecosystem breadth
+
+**Flutter wins at:**
+- UI consistency across platforms (pixel-perfect control)
+- Animation performance (Skia rendering is incredible)
+- Dart's null safety (TypeScript's is good, Dart's is better)
+- Hot reload speed (Flutter's is genuinely faster)
+
+**Neither wins at:**
+- Mobile testing (both are painful)
+- Native module bridging (both require native code eventually)
+- App size (both produce large binaries)
+
+For Lumo specifically, React Native was the right call because of the monorepo TypeScript story. But if I were building a standalone mobile app with no web component? I might still reach for Flutter.
+
+# Wrapping Up
+
+The Lumo mobile app is around 8,700 lines of screen and component code. It's not the biggest app in the world, but it handles real money tracking for real people, and it needs to feel trustworthy on every tap.
+
+The patterns that worked: thin screens, fat hooks, feature-based folder structure, aggressive caching with `useStableQuery`, and lots of small UX polish (haptics, biometric lock, friendly errors).
+
+The patterns that hurt: over-abstracting too early, not testing enough, and underestimating how different iOS and Android handle edge cases (keyboard behavior, safe area insets, notification permissions).
+
+Next up: I'll cover the admin dashboard — the internal tool that lets me manage users, toggle prediction models, monitor errors, and keep the whole system running. Spoiler: it's built with Vite and TanStack Router, and it's way more useful than I expected.
+
+Until then, keep your apps native-feeling and your hooks custom, nerds. 📱
