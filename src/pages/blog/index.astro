@@ -139,6 +139,7 @@ try {
         </div>
         <div class="masthead-links">
           <a href="/blog/archive" class="masthead-link">Archive</a>
+          {featureFlags.showSeries && <a href="/blog/series" class="masthead-link">Series</a>}
           {showSearch && <a href="/search" class="masthead-link">Search</a>}
           {showTags && <a href="/tag" class="masthead-link">Tags</a>}
         </div>

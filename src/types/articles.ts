@@ -11,6 +11,9 @@ export const PostDataSchema = z.object({
 	authorName: z.string(),
 	authorAvatar: z.string().optional(),
 	tags: z.array(z.string()).optional(),
+	series: z.string().optional(),
+	seriesPart: z.number().int().positive().optional(),
+	seriesTotal: z.number().int().positive().optional(),
 });
 
 export const PostSchema = z.object({

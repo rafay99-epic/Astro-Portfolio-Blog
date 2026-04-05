@@ -1,0 +1,367 @@
+---
+/**
+ * SeriesSidebarNav — compact series widget designed for the right rail sidebar.
+ *
+ * Follows the existing `.post-card` pattern so it sits naturally between
+ * the Table of Contents and the Ads section. Shows a progress bar,
+ * collapsible parts list, and prev/next links.
+ */
+
+import type { SeriesContext } from "types/series";
+
+interface Props {
+	context: SeriesContext;
+}
+
+const { context } = Astro.props;
+const { name, slug, posts, totalParts, currentIndex } = context;
+
+const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : undefined;
+const nextPost =
+	currentIndex >= 0 && currentIndex < posts.length - 1
+		? posts[currentIndex + 1]
+		: undefined;
+
+const progressPercent = Math.round(((currentIndex + 1) / totalParts) * 100);
+---
+
+<div class="post-card post-card--series">
+	<!-- Label + Title -->
+	<div class="post-card-title series-sidebar-label">
+		<svg
+			width="12"
+			height="12"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+			class="series-sidebar-icon"
+		>
+			<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+		</svg>
+		Series
+	</div>
+
+	<a href={`/blog/series/${slug}`} class="series-sidebar-title">
+		{name}
+	</a>
+
+	<!-- Progress -->
+	<div class="series-sidebar-progress">
+		<div class="series-sidebar-progress-track">
+			<div
+				class="series-sidebar-progress-fill"
+				style={`width: ${progressPercent}%`}
+			/>
+		</div>
+		<span class="series-sidebar-progress-text">
+			{currentIndex + 1} / {totalParts}
+		</span>
+	</div>
+
+	<!-- Parts list — collapsed by default to save space -->
+	<details class="series-sidebar-parts">
+		<summary class="series-sidebar-toggle">
+			<span>All parts</span>
+			<svg
+				class="series-sidebar-chevron"
+				width="12"
+				height="12"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				aria-hidden="true"
+			>
+				<path d="m6 9 6 6 6-6" />
+			</svg>
+		</summary>
+
+		<ol class="series-sidebar-list">
+			{posts.map((post, index) => {
+				const isCurrent = index === currentIndex;
+				return (
+					<li class:list={["series-sidebar-item", { "is-current": isCurrent }]}>
+						<span class="series-sidebar-num">{post.data.seriesPart}</span>
+						{isCurrent ? (
+							<span class="series-sidebar-item-title is-active" aria-current="page">
+								{post.data.title}
+							</span>
+						) : (
+							<a href={`/blog/${post.id}`} class="series-sidebar-item-title">
+								{post.data.title}
+							</a>
+						)}
+					</li>
+				);
+			})}
+
+			{totalParts > posts.length &&
+				Array.from({ length: totalParts - posts.length }, (_, i) => (
+					<li class="series-sidebar-item is-upcoming">
+						<span class="series-sidebar-num">{posts.length + i + 1}</span>
+						<span class="series-sidebar-item-title is-placeholder">Coming soon</span>
+					</li>
+				))}
+		</ol>
+	</details>
+
+	<!-- Prev / Next -->
+	{(prevPost || nextPost) && (
+		<div class="series-sidebar-nav">
+			{prevPost ? (
+				<a href={`/blog/${prevPost.id}`} class="series-sidebar-btn" title={prevPost.data.title}>
+					<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M15 19l-7-7 7-7" />
+					</svg>
+					<span>Prev</span>
+				</a>
+			) : (
+				<span />
+			)}
+			{nextPost ? (
+				<a href={`/blog/${nextPost.id}`} class="series-sidebar-btn" title={nextPost.data.title}>
+					<span>Next</span>
+					<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M9 5l7 7-7 7" />
+					</svg>
+				</a>
+			) : (
+				<span />
+			)}
+		</div>
+	)}
+</div>
+
+<style is:global>
+	/* ═══════════════════════════════════════════
+	   Series Sidebar Nav — right rail widget
+	   Follows the existing .post-card pattern
+	   ═══════════════════════════════════════════ */
+
+	.post-card--series {
+		padding: 0.85rem 0.9rem 0.9rem !important;
+		border-radius: 11px;
+		background: rgba(26, 27, 38, 0.72);
+		border: 1px solid rgba(187, 154, 247, 0.15) !important;
+		box-shadow:
+			inset 0 1px 0 rgba(192, 202, 245, 0.04),
+			0 8px 28px rgba(0, 0, 0, 0.12);
+	}
+
+	.series-sidebar-label {
+		display: flex !important;
+		align-items: center;
+		gap: 0.3rem;
+		color: #bb9af7 !important;
+		margin-bottom: 0.3rem !important;
+	}
+
+	.series-sidebar-icon {
+		flex-shrink: 0;
+		opacity: 0.8;
+	}
+
+	.series-sidebar-title {
+		display: block;
+		font-size: 0.92rem;
+		font-weight: 700;
+		color: #c0caf5;
+		text-decoration: none;
+		line-height: 1.3;
+		margin-bottom: 0.6rem;
+		transition: color 0.15s ease;
+	}
+
+	.series-sidebar-title:hover {
+		color: #bb9af7;
+	}
+
+	/* ─── Progress ─── */
+	.series-sidebar-progress {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.55rem;
+	}
+
+	.series-sidebar-progress-track {
+		flex: 1;
+		height: 3px;
+		border-radius: 999px;
+		background: rgba(86, 95, 137, 0.3);
+		overflow: hidden;
+	}
+
+	.series-sidebar-progress-fill {
+		height: 100%;
+		border-radius: 999px;
+		background: linear-gradient(90deg, #7aa2f7, #bb9af7);
+		transition: width 0.4s ease;
+	}
+
+	.series-sidebar-progress-text {
+		font-size: 0.65rem;
+		color: #565f89;
+		white-space: nowrap;
+		font-variant-numeric: tabular-nums;
+		font-weight: 500;
+	}
+
+	/* ─── Parts list ─── */
+	.series-sidebar-parts {
+		margin-bottom: 0.5rem;
+	}
+
+	.series-sidebar-toggle {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.68rem;
+		font-weight: 500;
+		color: #a9b1d6;
+		cursor: pointer;
+		list-style: none;
+		padding: 0.2rem 0;
+		user-select: none;
+	}
+
+	.series-sidebar-toggle::-webkit-details-marker {
+		display: none;
+	}
+
+	.series-sidebar-chevron {
+		transition: transform 0.2s ease;
+	}
+
+	.series-sidebar-parts[open] > .series-sidebar-toggle .series-sidebar-chevron {
+		transform: rotate(180deg);
+	}
+
+	.series-sidebar-list {
+		list-style: none;
+		padding: 0;
+		margin: 0.35rem 0 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+
+	.series-sidebar-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.4rem;
+		padding: 0.25rem 0.35rem;
+		border-radius: 6px;
+		transition: background-color 0.12s ease;
+	}
+
+	.series-sidebar-item:hover {
+		background: rgba(86, 95, 137, 0.08);
+	}
+
+	.series-sidebar-item.is-current {
+		background: rgba(187, 154, 247, 0.1);
+		border-left: 2px solid #bb9af7;
+		padding-left: calc(0.35rem - 2px);
+	}
+
+	.series-sidebar-item.is-upcoming {
+		opacity: 0.4;
+	}
+
+	.series-sidebar-num {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.15rem;
+		height: 1.15rem;
+		flex-shrink: 0;
+		border-radius: 50%;
+		font-size: 0.58rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		background: rgba(86, 95, 137, 0.18);
+		color: #a9b1d6;
+		margin-top: 0.1rem;
+	}
+
+	.is-current .series-sidebar-num {
+		background: rgba(187, 154, 247, 0.22);
+		color: #bb9af7;
+	}
+
+	.series-sidebar-item-title {
+		font-size: 0.72rem;
+		color: #a9b1d6;
+		text-decoration: none;
+		line-height: 1.4;
+		transition: color 0.12s ease;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	a.series-sidebar-item-title:hover {
+		color: #7aa2f7;
+	}
+
+	.series-sidebar-item-title.is-active {
+		color: #c0caf5;
+		font-weight: 600;
+	}
+
+	.series-sidebar-item-title.is-placeholder {
+		font-style: italic;
+		color: #565f89;
+	}
+
+	/* ─── Prev / Next ─── */
+	.series-sidebar-nav {
+		display: flex;
+		justify-content: space-between;
+		gap: 0.5rem;
+		padding-top: 0.5rem;
+		border-top: 1px solid rgba(86, 95, 137, 0.12);
+	}
+
+	.series-sidebar-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.65rem;
+		font-weight: 600;
+		color: #7aa2f7;
+		text-decoration: none;
+		padding: 0.2rem 0.4rem;
+		border-radius: 6px;
+		transition:
+			color 0.12s ease,
+			background-color 0.12s ease;
+	}
+
+	.series-sidebar-btn:hover {
+		color: #bb9af7;
+		background: rgba(122, 162, 247, 0.08);
+	}
+
+	/* ─── Responsive: hide on mobile (shown inline instead) ─── */
+	@media (max-width: 1024px) {
+		.post-card--series {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.series-sidebar-progress-fill,
+		.series-sidebar-chevron {
+			transition: none;
+		}
+	}
+</style>

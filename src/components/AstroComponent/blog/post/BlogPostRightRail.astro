@@ -1,15 +1,18 @@
 ---
+import SeriesSidebarNav from "@astro/blog/series/SeriesSidebarNav.astro";
 import ShareButtons from "@react/blog/interactions/socialButton";
 import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
+import type { SeriesContext } from "types/series";
 
 interface Props {
 	tocEntries: MarkdownHeading[];
 	isArchive: boolean;
 	pageUrl: string;
+	seriesContext?: SeriesContext | null | undefined;
 }
 
-const { tocEntries, isArchive, pageUrl } = Astro.props;
+const { tocEntries, isArchive, pageUrl, seriesContext } = Astro.props;
 ---
 
 <aside class="post-rail post-rail--right">
@@ -134,6 +137,8 @@ const { tocEntries, isArchive, pageUrl } = Astro.props;
 			}
 		</nav>
 	</div>
+
+	{seriesContext && <SeriesSidebarNav context={seriesContext} />}
 
 	{
 		!isArchive && (

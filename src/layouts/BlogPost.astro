@@ -12,6 +12,7 @@ import Footer from "@astro/footer/Footer.astro";
 import Header from "@astro/header/Header.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import MermaidRenderer from "@react/blog/enhancements/diagram-renderer/MermaidRenderer";
+import { getSeriesContext } from "@util/series";
 import { getImagePath } from "astro-opengraph-images";
 
 export const prerender = true;
@@ -128,6 +129,13 @@ const postActionPayload = JSON.stringify({
 }).replace(/</g, "\\u003c");
 
 const updatedDate = currentBlog.data.updatedDate;
+
+// ─── Series context ───
+const allBlogPosts = featureFlags.showBlog ? await getCollection("blog") : [];
+const seriesContext =
+	featureFlags.showSeries && currentBlog
+		? getSeriesContext(currentBlog, allBlogPosts)
+		: null;
 ---
 
 <html lang="en">
@@ -149,6 +157,8 @@ const updatedDate = currentBlog.data.updatedDate;
       featured={featured}
       excerpt={excerpt}
       canonicalUrl={canonicalUrl}
+      series={currentBlog.data.series}
+      seriesPart={currentBlog.data.seriesPart}
     />
   </head>
   <body class="blog-container" style="overflow-x: hidden; overflow-y: auto;">
@@ -196,9 +206,24 @@ const updatedDate = currentBlog.data.updatedDate;
               formattedWordCount={formattedWordCount}
               tags={tags}
               updatedDate={updatedDate}
+              series={currentBlog.data.series}
+              seriesPart={currentBlog.data.seriesPart}
+              seriesTotal={seriesContext?.totalParts}
             />
           </div>
         </div>
+
+        {seriesContext && (
+          <div class="series-mobile-bar">
+            <a href={`/blog/series/${seriesContext.slug}`} class="series-mobile-inner">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+              </svg>
+              <span class="series-mobile-name">{seriesContext.name}</span>
+              <span class="series-mobile-part">Part {seriesContext.currentIndex + 1}/{seriesContext.totalParts}</span>
+            </a>
+          </div>
+        )}
 
         <div class="post-grid">
           <BlogPostArticle>
@@ -209,6 +234,7 @@ const updatedDate = currentBlog.data.updatedDate;
             tocEntries={tocEntries}
             isArchive={isArchive}
             pageUrl={pageUrl}
+            seriesContext={seriesContext}
           />
         </div>
       </section>

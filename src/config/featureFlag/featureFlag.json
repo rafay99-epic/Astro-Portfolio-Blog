@@ -15,6 +15,7 @@
 		"showPrivacyPolicy": true,
 		"showWiki": false,
 		"showWhatsNew": true,
+		"showSeries": true,
 		"enableCoreServices": true,
 		"enableProcessShowcase": true,
 		"enablePortfolioSection": true,
