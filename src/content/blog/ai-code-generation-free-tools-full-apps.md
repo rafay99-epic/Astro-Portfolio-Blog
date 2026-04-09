@@ -13,7 +13,6 @@ canonicalUrl: "https://rafay99.com/blog/ai-code-generation-free-tools-full-apps"
 featured: true
 excerpt: >-
 ---
-
 I still remember it like yesterday. Fresh out of uni, bright-eyed and bushy-tailed, an intern wading into the world of Machine Learning because, hey, it was _the_ trend. Then, one fateful day, my coworkers dropped a bomb: "Have you seen ChatGPT?" My reaction? Let's just say it was less 'Aha!' and more **"Holy Molly!"**
 
 That first encounter with an AI model generating human-like text, and even _code_, was a revelation. Something so simple, yet so profoundly powerful. My brain immediately zeroed in on the code generation—this was a game-changer. Initially, I was doing what any budding engineer might: copy-pasting snippets from a web browser, hoping for the best. And let's be real, the quality often didn't quite match the hype.
