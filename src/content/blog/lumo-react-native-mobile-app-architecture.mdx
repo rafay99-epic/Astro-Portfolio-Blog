@@ -4,7 +4,7 @@ description: >-
   How I structured a React Native finance app with Expo — from screen
   architecture to custom hooks, real-time sync, and making the app feel native.
 pubDate: 2026-04-27T19:00:00.000Z
-draft: true
+draft: false
 archived: false
 heroImage: /BlogImages/lumo-mobile-architecture.webp
 authorName: Abdul Rafay
@@ -30,7 +30,6 @@ excerpt: >-
   Building a finance app in React Native that actually feels native — screen
   architecture, custom hooks, real-time sync, and the small details that matter.
 ---
-
 I'll be honest — I was a Flutter guy. If you've read my earlier posts, you know I built MS Bridge in Flutter and loved the experience. So choosing React Native for Lumo felt a bit like betraying my first love.
 
 But here's the thing: Lumo's entire backend and web stack is TypeScript. The Convex backend generates TypeScript types. The Next.js site is TypeScript. Sharing types and logic between the backend and the mobile app — without some weird codegen bridge or manual type duplication — was too good to pass up.
