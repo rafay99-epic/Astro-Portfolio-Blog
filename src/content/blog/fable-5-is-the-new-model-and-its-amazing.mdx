@@ -1,0 +1,173 @@
+---
+title: "Claude Fable 5: I Gave It One Prompt and Walked Away — It Built a Whole Game"
+date: "2026-06-13T09:02:04.578Z"
+draft: false
+pubDate: "2026-06-13"
+updatedDate: "2026-06-11"
+authorName: Abdul Rafay
+slug: claude-fable-5-i-gave-it-one-prompt-and-walked-away-it-built-a-whole-game
+description: "I tested Anthropic's new Mythos-class model, Claude Fable 5. It one-shot two full 3D browser games while I was away, then nailed a real client revision from a single PDF. Here's the honest review — the wins and the warts."
+tags:
+  - Claude Fable 5
+  - Claude Fable 5 review
+  - Anthropic Mythos
+  - Claude Code
+  - AI game development
+  - Fable 5 vs Opus
+  - vibe coding
+  - Three.js game AI
+featured: true
+keywords:
+  - AI
+  - ClaudeFable5
+  - Anthropic
+  - GameDev
+  - ThoughtsProcess
+  - ClaudeCode
+authorAvatar: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxZSVOvl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+canonicalUrl: "https://rafay99.com/blog/claude-fable-5-i-walked-away"
+heroImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJV94V5aThLpNfDlGtag3IM2qo1QCHSWJuVyn4"
+---
+
+I want to tell you about the moment I stopped trusting my own eyes.
+
+I'd seen the Twitter hype. You probably saw it too — for two days straight, my whole feed was people throwing one prompt at Claude Fable 5 and getting back things that should not exist yet. Whole apps. Whole games. One shot. No back-and-forth. I scrolled past a dozen of these thinking *okay, cherry-picked demos, sure.* We've all watched a hundred "AI built my startup in 5 minutes" clips that fall apart the second you click anything.
+
+But I pay for the $200 Max plan. The thing is right there. So I figured — fine. Let me try to break it.
+
+I could not break it. That's the whole post. But let me actually show you.
+
+# The empty folder test
+
+One thing up front, since it matters for the whole post: I did all of this — both games and the real client work — through the **Claude Code CLI**, straight from the terminal. No fancy setup. Just me, a shell, and the model.
+
+Here's the cleanest test I know for a coding model: open the Claude Code CLI, point it at a completely empty folder, give it one prompt, and walk away. No scaffolding. No "let me set up the project structure first." Nothing for it to lean on. Just an empty room and an idea.
+
+So I did exactly that. Empty folder. One prompt describing a browser space game. And then — this is the part I want you to sit with — **I left.** I made tea. I answered some messages. I did not babysit a single token.
+
+About an hour later I came back, ran the dev server, and **Nebula Strike** was just… there. Loaded. Playable. Not a grey box with a triangle in it — a proper sci-fi space game running on Three.js, with ships, enemies, weapons, and *landable planets that have real gravity.* Fly too close to the Jupiter-class world and your main engine literally can't pull you back out until you hit the afterburner. I did not ask for that level of detail. It just decided that was the bar.
+
+And it didn't crash. It ran first try.
+
+So I did it again. And again. Different game each time, same workflow — empty folder, one prompt, walk away. Every single one launched and worked. Not "worked after I fixed three import errors." Worked. The second one became **Metropolis City Simulator** — a SimCity-style 3D city builder where you paint roads, towns grow into cities, and traffic *emerges* from your street layout. Cars actually pathfind across the network and the roads tint red as they get congested. Nobody scripted that traffic. It falls out of the simulation.
+
+I'll be honest with you. I've built games before. I know how much glue, how many tiny broken states, how many "why is this undefined" moments sit between an idea and a thing that runs. To watch that gap just… close, while I was in another room — that messed with my head a little.
+
+# Then I took it to real work
+
+Toys are fun. But a model isn't real to me until it survives my actual job.
+
+I had a revision sitting in a client project. The kind of thing where the requirements live in a PDF and translating that PDF into code is half the work. Normally that's an afternoon of reading, mapping, and carefully threading changes through an existing codebase without breaking what's already there.
+
+I pointed Fable 5 at the project, handed it the PDF, and said go.
+
+And then I did the thing again. I left.
+
+When I came back, the revision was done. Not "started." Not "here's a plan, want me to continue?" **Done.** And here's the part that actually matters more than the speed:
+
+It was correct.
+
+That's the line. Anyone can generate a lot of code fast. Generating a lot of *correct* code, against a real codebase, from a spec it had to read and interpret itself — that's a different thing entirely.
+
+# Why this feels different from Opus
+
+People are going to say "Opus 4.8 can one-shot stuff too," and they're right. It can. I use Opus every day and it's a beast.
+
+But there's a tax with Opus that we've all just quietly accepted. You steer. You monitor. You sit there and watch the stream, ready to jump in when it drifts, course-correct when it misreads the goal, nudge it back when it goes down a wrong path. The output is great — but *you are part of the loop.* You can't really walk away.
+
+With Fable 5, I didn't steer. I gave the prompt and I left the room. Twice. And both times the work was finished and right when I got back.
+
+That's not "a bit better." That's a different category of tool. Opus is a brilliant pair programmer who needs you in the chair. Fable 5 is the first one I've used that I could actually hand the whole thing to and trust the result. Anthropic's own numbers back this up — they say **the longer and more complex the task, the bigger Fable's lead gets.** That tracks perfectly with what I felt. The short stuff, everything's good at now. It's the long, multi-step, "don't lose the plot for an hour" work where this thing pulls away.
+
+# It codes like a senior, not an intern
+
+Okay — this is the part I actually want other developers to hear. The "it built a game" stuff is flashy, but *this* is the thing that changes my job.
+
+Fable 5 writes code like a good employee. Not a good *intern* — a good *employee.*
+
+Here's what I mean. A bad employee (and honestly, most AI models until now) drops into your codebase and just starts typing. Big clever solution that technically works, ignores how the rest of the app is built, reinvents three things you already had, and hands you a 600-line diff you now have to babysit.
+
+A good employee opens the repo and *reads* first. Looks at how the project is structured. Checks what tests exist. Figures out the convention you're already using — and then does the smallest correct thing that fits. They know what to touch, and just as importantly, **what not to touch.**
+
+That second one is the whole game. Fable 5 doesn't barge through your codebase writing long, bad solutions. It scopes the change, finds the right files, leaves everything else alone, and matches your existing patterns instead of bulldozing them.
+
+And here's the kicker — **I stopped doing the prompt ritual.** You know the one. "Act like a senior engineer. This app will have 5,000 concurrent users. Think about scale. Write production-quality code. Don't over-engineer." All that babysitting boilerplate we've trained ourselves to paste at the top of every prompt? Gone. I don't write any of it anymore. Fable 5 just defaults to that bar on its own. The bullshit tax is gone.
+
+## It checks its own work
+
+This one genuinely surprised me. While it was building Nebula Strike, I watched it spin up **Puppeteer and drive the game in headless Chrome** to actually see the output — does it boot without console errors, does the ship move, does a weapon deal damage, does the wave progress. It wasn't *guessing* whether the code worked. It was running it, looking at the result, and fixing what broke. On its own. (That test harness is sitting in the repo right now if you want to see it.)
+
+For real work, that means I'm not the QA loop anymore. It writes, runs the tests, runs the build, verifies — and *then* tells me it's done. My job shrinks to confirming what it touched and what it left alone.
+
+## Proof from a real app, not a toy
+
+The games are greenfield — fun, but easy mode. The harder test is an existing production app, so here's my actual one: [Wryte](https://wryte.xyz/), my writing app.
+
+I've been having Fable 5 add real, necessary features to it. And when I asked what the app was *missing*, it didn't hand me a wishlist of shiny nonsense. It looked at what was actually there and named the unglamorous things that would genuinely make the app better. Every time I asked Opus that same question, I got the fancy, over-ambitious "let's add AI agents and real-time multiplayer" answer that sounds great and helps nobody. Fable 5 just told me the truth about my own app.
+
+Two commits from *while I was literally writing this post*:
+
+- 🎬 [Video embeds in the editor (v0.16.0)](https://github.com/rafay99-epic/wryte.xyz/commit/b1c241e04ad66b50ef24f535410626e4bc0587aa) — and look at *how* it did it. It didn't just slam a `<video>` tag into the preview. It went into the markdown sanitizer, whitelisted `<video>` properly, kept `src` restricted to http/https so it doesn't open an XSS hole, respected the existing upload-quota system instead of inventing a new one, and refactored the image handler into a shared media handler instead of copy-pasting. That's the instinct of someone who has shipped before.
+- ⚙️ [Editor workflow batch (v0.17.0)](https://github.com/rafay99-epic/wryte.xyz/commit/c6e4d1385c81e20eb28c15dd285538ac8101c334) — paste-to-upload, smart lists, find & replace, a document outline. It even left a comment explaining *why* it mounted a component at the layout level instead of the toolbar (so it survives focus mode). It's documenting its own architectural decisions like it expects a teammate to read them later.
+- 🗂️ [Version snapshots, selection toolbar & writing insights (v0.18.0)](https://github.com/rafay99-epic/wryte.xyz/commit/92b5a660e7a61b9db7c603266fb0f0ad9e3faad9) — the big one, 35 files. Automatic draft snapshots with a diff view and one-click restore (and restoring backs up your current draft first, so even the undo is undoable). But the senior-ness is in the parts I never asked for: it added its own **rate limits** so save-spamming can't hammer the database, made the new internal-link menu **paginate** so a project with hundreds of posts never ships its whole list at once, wrote a deliberately lean stats query so the editor doesn't drag in heavy data on every keystroke, and — this is the "what to touch" thing made real — it remembered to wire the new snapshots table into the **project-delete cleanup** so deleting a project doesn't leave orphaned rows behind. Nobody told it to worry about any of that. It just did, because that's what shipping the feature *actually* means.
+
+And those features it was grinding on in the background while I wrote this? They just landed — that v0.18.0 commit right up there *is* them. I was writing the blog post, and the model shipped the exact work the post is about, mid-paragraph. That's a genuinely weird thing to live through.
+
+## The part I'm not ready for
+
+Honest, slightly uncomfortable thought to close this section on.
+
+The free access window closes soon. When it does, I go back to Opus 4.8. And Opus is *great* — I want to be clear about that. But after a few days inside Fable 5, going back is going to feel like having a brilliant senior dev taken away and being handed back the very-good one who still needs me in the chair. There's no match. Once you've had a model you can actually hand the whole task to, the one you have to steer feels heavier than it did before.
+
+# Play them yourself (and watch the gameplay)
+
+Don't take my word for any of this. I deployed both games — go fly around and break them yourself:
+
+- 🚀 **Nebula Strike** — live: [nebulastrike.rafay99.com](https://nebulastrike.rafay99.com/) · code: [github.com/rafay99-epic/nebula-strike](https://github.com/rafay99-epic/nebula-strike)
+- 🏙️ **Metropolis City Simulator** — live: [metropolis.city.simulator.rafay99.com](https://metropolis.city.simulator.rafay99.com/) · code: [github.com/rafay99-epic/metropolis-city-simulator](https://github.com/rafay99-epic/metropolis-city-simulator)
+
+Quick technical note for the devs reading, because it matters: Nebula Strike is **fully procedural** — every ship, enemy, planet, surface, sound, and the entire soundtrack is generated in code. There are zero art assets and zero audio files in that repo. Metropolis is Vite + React 19 + TypeScript + Three.js with emergent BFS-pathfinding traffic and a full day/night cycle. These aren't "hello world with a sprite." They're real.
+
+And here's the gameplay video so you can see it actually moving before you click anything:
+
+<video controls preload="metadata" src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJd8KuqcpRMXrVqxvoCAZgBiLEyI8peGwKtDH1" title="2026-06-10 01-07-48.mov"></video>
+
+# So what actually *is* Fable 5?
+
+Quick zoom-out, because the naming is genuinely a little wild.
+
+Anthropic dropped Claude Fable 5 on June 9, 2026. It's the first model the public gets from a new tier they call **Mythos-class** — a level that sits *above* Opus. Under the hood it's the same model as Claude Mythos 5 (the locked-down version going to cyber-defense partners); Fable is just the one with safeguards bolted on so the rest of us can use it.
+
+I'm not going to recite the benchmark sheet at you — you felt the parts that matter through my whole story above. But two flexes that aren't mine and are worth knowing: Anthropic says Stripe had it run a codebase-wide migration on a **50-million-line Ruby codebase in a day** — a job they peg at over two months for a whole team by hand. And on vision it beat **Pokémon FireRed from raw screenshots alone**, no maps or helper tools. So the autonomy I kept raving about isn't just my lucky afternoon. It's the actual headline of the model.
+
+If you're hitting it through the API: **$10 / million input tokens, $50 / million output**, model string `claude-fable-5`.
+
+# It's not all magic — the parts nobody's putting in the headline
+
+I'm not here to sell you a model. So let me be straight about the rough edges, because they're real and some of them landed *this week.*
+
+**The safeguards are aggressive — sometimes stupidly so.** Because Mythos-class models are genuinely dangerous in the wrong hands (frontier-level cyber and bio capabilities), Anthropic wrapped Fable in classifiers that detect "risky" topics and quietly route those requests to the weaker Opus 4.8 instead. Their claim is this triggers in under 5% of sessions. Now — in fairness, I should be straight about my *own* experience here: across every session I ran in Claude Code, building both games and doing the real client work, **I never tripped a single one. Not once.** So for normal product and coding work, my experience was completely clean. But the reports from other people are real, and they cluster around security and bio-adjacent work: folks getting blocked on legit code and repo-analysis, an immunologist pointing out the word **"cancer"** got flagged as a biosecurity risk, someone refused help editing an *"Application Security Architect"* résumé. There's already a pile of bug reports in the Claude Code GitHub. So if your work lives near those topics, budget for friction — even if mine had none.
+
+**There was a genuine trust mess, and it broke open as I was writing this.** It came out that Fable's anti-distillation safeguard wasn't just refusing — it was *silently degrading* answers without telling you, on certain frontier-AI-development prompts. Researchers were furious because invisible degradation quietly poisons your work and your evals. Anthropic apologized on June 11 and is making those safeguards visible — flagged requests now openly fall back to Opus 4.8 with a notification, and the API returns a refusal reason. Good fix. But it's a real reminder: **when you get a great answer from a guard-railed model, you're trusting that you got the real model and not a muffled one.** With Fable, occasionally you didn't, and you weren't told.
+
+**The data retention rule changed.** For Mythos-class traffic, Anthropic now requires 30-day retention on all of it (they say it's for safety/abuse detection, not training, and it's deleted after). If you're piping client work through this, know that going in.
+
+**And access is a moving target.** This is the one that'll bite subscribers. Fable 5 is included free on Pro / Max / Team through **June 22**. On **June 23**, they're pulling it from those plans, and using it after that needs usage credits — until they have enough capacity to bring it back as a standard plan feature. So the thing I just spent a whole post raving about might quietly get more expensive next week. Plan around that.
+
+# Should you actually use it?
+
+Yes — but use it like an adult.
+
+If your work is product coding, prototyping, knowledge work, anything long-horizon where you'd normally have to hover — Fable 5 is, hands down, the best model I've ever put my hands on. The walk-away-and-it's-done experience is not marketing. I lived it twice in one afternoon and I'm still a little rattled by it.
+
+But keep your eyes open. The guardrails will trip on innocent stuff and shove you down to a weaker model — and you want to *notice* when that happens. Don't run sensitive client data through it without reading the retention terms. And mark June 23 in your calendar before you build a whole workflow on the free window.
+
+Here's where I've landed: for the first time, the bottleneck isn't the model anymore. It's me — my taste, my judgment about what's worth building, my ability to check the output and catch the one place it went sideways. The model will do the work. Whether it does the *right* work is still on you.
+
+So go test it yourself. Open an empty folder. Write one good prompt. And then — this is the fun part — walk away and see what's waiting when you come back.
+
+Until then, goodbye nerds. 👋
+
+---
+
+*Built two games, broke nothing, mildly questioned reality. If you play Nebula Strike or Metropolis, tell me how badly you crashed into the Jupiter-class planet — I want to hear it. Drop a comment, a roast, whatever. 👇*
