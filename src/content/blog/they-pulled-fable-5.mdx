@@ -1,0 +1,160 @@
+---
+title: They pulled fable 5
+date: "2026-06-14T08:00:15.315Z"
+draft: false
+pubDate: "2026-06-14"
+updatedDate: "2026-06-13"
+authorName: Abdul Rafay
+slug: they-pulled-fable-5
+description: "Two days after I wrote a love letter to Claude Fable 5, the US government forced Anthropic to shut it off. Here's what actually happened, why it happened, what it means for developers outside the US, and what Anthropic does next."
+authorAvatar: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxZSVOvl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+tags:
+  - AI
+  - ClaudeFable5
+  - Anthropic
+  - AIPolicy
+  - ExportControls
+  - ThoughtsProcess
+keywords:
+  - Claude Fable 5 banned
+  - Anthropic Fable 5 suspended
+  - Mythos 5 export control
+  - US government AI directive
+  - AI export controls 2026
+  - Fable 5 jailbreak
+canonicalUrl: "https://rafay99.com/blog/they-pulled-fable-5"
+featured: true
+heroImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJUQIhojxZdb0IOL1s3KJqktcxwpW9faXP2muE"
+---
+
+
+
+
+Two days ago I published a love letter to Claude Fable 5. I told you it was the best model I'd ever used, that I gave it one prompt and walked away and came back to a whole working game, that it shipped real features into my production app while I was *writing the post about it.* I meant every word.
+
+Today it's gone.
+
+Not deprecated. Not rate-limited. Not "moved to a higher tier." **Pulled** — by the United States government. On Friday, June 12, the Commerce Department handed Anthropic an export control directive and Anthropic disabled Fable 5 and Mythos 5 for every customer on Earth. The login page just says it's temporarily unavailable. The best tool I've ever put my hands on had a shelf life of about 48 hours.
+
+<video controls preload="metadata" src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ5UblLzPko82asfnA7ZImhrD30bxS16ucgX9W" title="ColdOpen.mp4"></video>
+
+Let me walk you through what happened, because the details are wilder than the headline — and one of them hit me personally in a way I didn't expect.
+
+# What actually happened
+
+<video controls preload="metadata" src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ5dhwfXPko82asfnA7ZImhrD30bxS16ucgX9W" title="Directive.mp4"></video>
+
+Friday evening, 5:21pm Eastern, Anthropic received a letter. It came from the Commerce Department — the directive itself signed out by Commerce Secretary Howard Lutnick — citing national security authorities. The instruction: suspend all access to Fable 5 and Mythos 5 for **any foreign national**, whether they're inside the United States or outside it. That includes Anthropic's own non-citizen employees.
+
+Here's the catch that turned a targeted order into a global blackout. Anthropic can't cleanly fence off "only foreign nationals" from a live consumer product used by hundreds of millions of people. So to comply, they had to pull the plug for **everyone** — Americans included. Their other models (Opus 4.8, Sonnet, Haiku) are untouched and working normally. Only the new Mythos-class tier went dark.
+
+As far as anyone can tell, this is the **first time a leading AI company has been forced to take a publicly deployed model offline because of a federal order.** That's the part that should make you sit up. Not a recall of a beta. Not a voluntary pause. A shipped, paid, in-production frontier model, switched off by government directive, overnight.
+
+And the letter, by Anthropic's account, didn't even spell out the specific national security concern.
+
+# The part that made me close my laptop for a second
+
+So why did they do it? Anthropic's read is that the government believes someone found a way to "jailbreak" Fable 5 — to slip past the safeguards that normally keep its heavy cybersecurity capabilities locked down.
+
+And here is the detail that stopped me cold. According to Anthropic, the only evidence handed over so far was *verbal*, and the jailbreak in question essentially amounts to this: **asking the model to read a specific codebase and fix any software flaws it finds.**
+
+Read that again. Then go read my last post.
+
+That is *exactly* what I spent two thousand words praising. Point Fable at a repo, let it read the whole thing, let it find what's broken and fix it. I watched it do that to my own app, Wryte — read the codebase, add rate limits I didn't ask for, wire up cleanup logic in every place a new table needed it. I called it the senior engineer who finally lets you walk away.
+
+The government is calling that same behavior a national security weapon.
+
+<video controls preload="metadata" src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJv2TOvYedxMXjfviDwkBcsUay3O21YNZQ9mzJ" title="CodeMunition.mp4"></video>
+
+I don't say that to be glib. I genuinely don't know where the line sits between "reads your code and patches your bugs" and "reads anyone's code and finds the holes." They might be the same muscle pointed in two directions. But it's a strange thing to watch the exact capability that made the tool feel magical get reclassified, within 48 hours, as the reason it's too dangerous to exist in public.
+
+And there's a more personal sting. I'm a foreign national. I'm writing this from Pakistan. The order is, by its own plain text, about people like me — *any foreign national, inside or outside the United States.* For two days I was holding the absolute frontier of this technology in a terminal on my desk. Then a letter went out in Washington that had my entire category's name on it, and the frontier closed.
+
+# Anthropic's side of it
+
+To their credit, Anthropic didn't go quiet. They published a sharp, unusually direct statement, and their argument is worth laying out fairly.
+
+Their position, in short: the jailbreak the government is worried about is **narrow, not universal.** A universal jailbreak would crack the safeguards wide open across the board — and Anthropic says nobody, in thousands of hours of red-teaming with the US government, the UK's AI Safety Institute, outside firms, and internal teams, has found one. What's been disclosed to them are either harmless outputs or minor findings that give no real Mythos-specific advantage. They say they haven't received a single disclosure of a concerning jailbreak that actually led to a harmful result.
+
+Their sharpest point is a comparison: the same "read a codebase, find the flaws" capability, they say, is **already available from other public models** — they name OpenAI's GPT-5.5 specifically — none of which are under this kind of export control. It's the same thing security defenders use every single day to keep systems safe. So singling out Fable, they argue, doesn't remove the capability from the world. It just removes *their* model from the market.
+
+They're complying. But they called the whole thing a misunderstanding, and they issued a warning that's bigger than their own product: if "a narrow potential jailbreak justifies recalling a model used by hundreds of millions" becomes the standard, it would freeze new model launches across the *entire* industry, for everyone. Their stated view is that the government *should* be able to block genuinely unsafe deployments — but through a process that's transparent, fair, and grounded in technical facts, and they don't think this one was.
+
+# The deeper analysis: why *this* model, why *now*
+
+This is where it gets uncomfortable, because the timing and the target don't look random — and the honest answer is that there are several competing explanations, and the truth is probably a blend of them. Let me give you the lenses, not a verdict.
+
+<video controls preload="metadata" src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJDIn9uHCwMPbVrdEixLKuT4A2s8a1Ieh9DqXS" title="FourLenses.mp4"></video>
+
+**Lens one: this is the latest shot in an existing war.** This didn't come out of nowhere. Back in February, the Trump administration ordered federal agencies to stop using Anthropic's models after the company refused the Pentagon's preferred contract language — terms that would have let purchased models be used "for any lawful purpose." Anthropic wanted carve-outs against things like autonomous weapons and mass domestic surveillance. In March, the Pentagon branded Anthropic a "supply chain risk," and the company is now fighting that designation in federal court. Senior administration tech voices like David Sacks have publicly gone after Anthropic, accusing it of regulatory capture and worse. Through this lens, the export directive reads less like a security measure and more like the next move in a grudge. Policy analyst Dean Ball — himself a former Trump-administration figure — said he couldn't tell if it was lawfare aimed at Anthropic specifically or just extreme security hawkery, and called the whole thing "cartoonish." He pointed at the contradiction baked into it: an administration that wants to *export* advanced AI chips to China, simultaneously barring Britain and every other non-American on the planet from using America's best models.
+
+**Lens two: Anthropic wrote this script itself.** This is the most uncomfortable read, and I think it's the most underrated one. For over a year, Anthropic's entire brand has been *"our models are so powerful they're dangerous, and only we can be trusted to handle them safely."* They described Mythos as too dangerous to release. They wrapped Fable in safeguards and made a whole marketing story out of how locked-down it was. A cybersecurity researcher named Peter Girnus put it brutally: Anthropic spent months describing its own product as essentially a weapon, so eventually the government simply believed them. As he put it, "they wrote the legal predicate themselves and called it a brand." You cannot spend a year telling the state your tool is a munition and then act shocked when the state regulates it like one.
+
+**Lens three: it's genuine, if clumsy, national-security caution.** It's also possible the government simply got spooked by a live demonstration, acted fast and broad because that's what national-security machinery does, and the lack of detail in the letter reflects classification rather than malice. AI critic Gary Marcus argued the move actually makes sense if you take the "stay ahead of China" doctrine seriously. You don't have to like the execution to grant that the underlying worry — frontier cyber capability leaking to adversaries — is not imaginary.
+
+**Lens four: some people quietly wanted this.** Here's the twist Dean Ball floated. There's a wing of the AI world that genuinely believes these systems pose serious, even existential risk, and that the whole industry is moving too fast. For them, a government slamming the brakes on the most powerful public model isn't a disaster — it's a win. That faction may well include some of the safety-minded people *inside* Anthropic. So the reaction to this isn't cleanly "everyone is furious." It's messier than that.
+
+My honest take, for whatever a developer in Rawalpindi's opinion is worth: it's lenses one and two together. There's a real feud, and Anthropic handed the other side a loaded gun by branding its own product as ammunition. The security rationale is the wrapper; the politics are the engine.
+
+# What I think happens next (predictions)
+
+Nobody knows. But patterns exist, so here's where I'd put my chips.
+
+1. **Short term, Anthropic fights and the model probably comes back — partially.** They promised more evidence within 24 hours, they're calling it a misunderstanding, and the login page says *temporarily* unavailable. All of that is the language of a company that expects to win an appeal, not one that's accepted a death. I'd bet on Fable returning in some form within weeks — but possibly region-locked, US-persons-gated, or with even heavier restrictions. Which, for most of the planet, is its own kind of loss.
+
+2. **The "foreign national" scope is the real bomb, and it'll outlive this one model.** If the precedent holds — that America's best models can be made US-citizens-only by directive — the global developer market fractures. The frontier tier becomes something the rest of us read about but can't touch. For someone like me, that's not a temporary outage; it's a preview of a two-speed world.
+
+3. **The competition is the immediate winner.** Every international developer who built a workflow on Fable this week just got pushed toward models that *aren't* under these controls — GPT-5.5 and whatever else. Anthropic's own argument ("the same capability is everywhere else") is true, and it cuts against them commercially. If you're a non-US team, the safe procurement choice just got more obvious, and it isn't Anthropic.
+
+4. **A chilling effect on safety honesty.** Here's the perverse part. The lesson other labs will take from this is *don't loudly advertise how dangerous your model is, or you'll paint a target on it.* That pushes the industry toward **less** transparency about capabilities and risks, not more — the opposite of what anyone sane wants.
+
+5. **Talent and capital get jumpy.** Marcus's point stands: capricious, hard-to-predict policy makes investors and researchers nervous about building their lives and money around US AI labs. Expect quiet hedging.
+
+6. **The capability doesn't actually go anywhere.** History is not kind to attempts to export-control software and knowledge — the 1990s crypto wars are the textbook example, and encryption won. The ability to point a model at code and find flaws now exists in multiple systems. You can pull Fable off the shelf; you can't pull the capability out of the world.
+
+# What Anthropic actually does now
+
+Strip away the drama and their playbook is fairly clear — comply and contest, at the same time.
+
+They'll **comply** (already done — models are off) while **contesting** hard: publish the technical evidence, argue the GPT-5.5 parity point relentlessly, and fold this into the legal fight they're already running against the "supply chain risk" label. Expect a push for a real statutory process — clear rules for when the government can pull a model — because "a letter at 5:21pm with no specifics" is exactly the arbitrariness they want to litigate against.
+
+Commercially, they'll **lean on Opus 4.8 as the public face** and reassure enterprise and government customers that the workhorse models are untouched. Mythos-class becomes the thing they fight to bring back rather than the thing they sell this quarter.
+
+And strategically, they're in a genuine bind of their own making: the "safety-first, our models are dangerous" identity that won them credibility with regulators is the same identity now being used to take their product away. Watch whether they recalibrate that message — whether the next launch is described with a lot less "munition" energy. I'd bet it is.
+
+The thing they *can't* easily do is the thing that would help most — prove a negative. "Our safeguards are good enough" is an almost impossible case to win against a national-security argument, because the other side only has to gesture at a worst case. That asymmetry is the whole problem, and it's why I think this fight is going to be long.
+
+# Where this leaves me
+
+I got 48 hours.
+
+<video controls preload="metadata" src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJzUhMrrB7pQ0TRPA9NYOdUsXcZvWxnjer5yg8" title="Countdown.mp4"></video>
+
+In those 48 hours I built two games I'm proud of, shipped real features into an app I actually run, and felt — for the first time — what it's like to genuinely hand a machine the whole task and trust the result. Then a letter went out in Washington and that machine switched off, and the letter was, in plain language, about people like me.
+
+I'm not going to pretend I have a clean feeling about it. Part of me thinks the government overreached on thin evidence in the middle of a grudge. Part of me thinks Anthropic spent a year describing its product as a weapon and is now shocked the state took the description literally. Both can be true. They probably are.
+
+What I keep coming back to is smaller and quieter than the policy fight. For two days, the absolute frontier of this technology sat in a terminal on my desk, in Rawalpindi, and it worked. The capability is real. It already exists. And the actual story now isn't whether Fable 5 comes back next week — it's the question this whole mess just dragged into the open: **who gets to hold the frontier, and who gets to decide that for everyone else.**
+
+I'll be back on Opus 4.8 in the morning. It's still great. It's still the one that needs me in the chair. And for now, that's the deal.
+
+<video controls preload="metadata" src="https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJfMApZigM2Y36kmGTvR8NgZEHqahLDpX9VzJA" title="BackToOpus.mp4"></video>
+
+I'll keep you posted as this develops — and if Fable comes back, you'll hear about it here first.
+
+Untill then Nerd.. See you Next Time. 👋
+
+---
+
+## Sources
+
+- Anthropic — [Statement on the US government directive to suspend access to Fable 5 and Mythos 5](https://www.anthropic.com/news/fable-mythos-access)
+- Anthropic — [Original Fable 5 / Mythos 5 launch post](https://www.anthropic.com/news/claude-fable-5-mythos-5)
+- CNBC — [Anthropic disables access to Fable 5 and Mythos 5 to comply with government directive](https://www.cnbc.com/2026/06/12/anthropic-disables-access-to-fable-5-and-mythos-5-to-comply-with-government-directive.html)
+- NBC News — [Anthropic suspends new AI models after government directive](https://www.nbcnews.com/tech/tech-news/anthropic-suspends-new-ai-models-fable-mythos-government-directive-rcna349901)
+- Fortune (Jeremy Kahn) — [Anthropic disables Fable and Mythos after US bars foreign access](https://fortune.com/2026/06/13/anthropic-disables-fable-mythos-export-controls-national-security-threat/)
+- TechCrunch — [Anthropic's safety warnings may have just backfired](https://techcrunch.com/2026/06/12/anthropics-safety-warnings-may-have-just-backfired-the-government-has-pulled-the-plug-on-its-most-powerful-ai/)
+
+*This post reflects my own reading of a fast-moving story and includes informed speculation, clearly marked as such. Facts are sourced above; the predictions are mine, and I reserve the right to be wrong about them.*
+
+
