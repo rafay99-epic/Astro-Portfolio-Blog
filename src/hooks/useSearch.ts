@@ -1,6 +1,6 @@
 // NOTE: Search excludes archived posts to keep results aligned with public blog listings.
 
-import Fuse, { type FuseResultMatch, type IFuseOptions } from "fuse.js";
+import Fuse, { type IFuseOptions } from "fuse.js";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Post } from "types/articles";
 import type { SearchCache, SearchState } from "types/search";
@@ -13,7 +13,9 @@ const MAX_HISTORY_ITEMS = 10;
 const SEARCH_HISTORY_KEY = "search_history";
 const DEBOUNCE_MS = 250;
 const HISTORY_COMMIT_MS = 1000;
-const SCORE_THRESHOLD = 0.6;
+// Cap how many results we render. Fuse already sorts by relevance, so beyond
+// this nothing useful is lost — but it keeps the animated result list cheap.
+const MAX_RENDERED_RESULTS = 30;
 
 // --- Fuse Configuration ---
 // NOTE: `body` is intentionally excluded. Fuzzy-matching full article text
@@ -42,7 +44,6 @@ const FUSE_CONFIG: IFuseOptions<Post> = {
 	],
 	threshold: 0.4,
 	includeScore: true,
-	includeMatches: true,
 	useExtendedSearch: true,
 	ignoreLocation: true,
 	fieldNormWeight: 1.5,
@@ -159,19 +160,6 @@ const saveSearchHistory = (history: string[]): void => {
 	}
 };
 
-// --- Extract matched fields from Fuse results ---
-
-const extractMatchedFields = (
-	matches: readonly FuseResultMatch[] | undefined,
-): string[] => {
-	if (!matches) return [];
-	const fields = new Set<string>();
-	for (const match of matches) {
-		if (match.key) fields.add(match.key);
-	}
-	return Array.from(fields);
-};
-
 // --- Hook ---
 
 const useSearch = (posts: Post[]): SearchState => {
@@ -249,7 +237,7 @@ const useSearch = (posts: Post[]): SearchState => {
 			const fuseResults = fuse.search(processedQuery);
 
 			const scoredResults = fuseResults
-				.filter((r) => r.score != null && r.score < SCORE_THRESHOLD)
+				.filter((r) => r.score != null)
 				.map((r) => ({
 					post: r.item,
 					relevance: calculateRelevance(
@@ -257,25 +245,25 @@ const useSearch = (posts: Post[]): SearchState => {
 						r.item.data.pubDate,
 						intentType,
 					),
-					matchedFields: extractMatchedFields(r.matches),
 				}))
 				.sort((a, b) => b.relevance - a.relevance);
 
-			const rankedPosts = scoredResults.map((r) => r.post);
-			const allMatchedFields = Array.from(
-				new Set(scoredResults.flatMap((r) => r.matchedFields)),
-			);
 			const avgRelevance = scoredResults.length
 				? scoredResults.reduce((sum, r) => sum + r.relevance, 0) /
 					scoredResults.length
 				: 0;
 
+			// Render only the top slice; report the true match count in stats.
+			const rankedPosts = scoredResults
+				.slice(0, MAX_RENDERED_RESULTS)
+				.map((r) => r.post);
+
 			const searchTime = Math.round(performance.now() - startTime);
 			const stats: SearchState["searchStats"] = {
-				totalResults: rankedPosts.length,
+				totalResults: scoredResults.length,
 				searchTime,
 				relevanceScore: avgRelevance,
-				matchedFields: allMatchedFields,
+				matchedFields: [],
 			};
 
 			setResults(rankedPosts);
