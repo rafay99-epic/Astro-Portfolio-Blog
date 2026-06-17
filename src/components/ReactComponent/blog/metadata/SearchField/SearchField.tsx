@@ -5,7 +5,7 @@ import SearchResults from "@react/blog/metadata/SearchField/components/SearchRes
 import SearchStats from "@react/blog/metadata/SearchField/components/SearchStats";
 import SearchTips from "@react/blog/metadata/SearchField/components/SearchTips";
 import { motion } from "framer-motion";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import type { Post } from "types/articles";
 
 interface SearchProps {
@@ -19,41 +19,51 @@ const Search = memo(function Search({ posts }: SearchProps) {
 	const [showSearchTips, setShowSearchTips] = useState(false);
 	const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
 
+	// Mirror state into refs so the global keydown listener can stay bound once
+	// instead of being re-registered on every keystroke / result change.
+	const resultsRef = useRef(results);
+	resultsRef.current = results;
+	const selectedIndexRef = useRef(selectedResultIndex);
+	selectedIndexRef.current = selectedResultIndex;
+	const isFocusedRef = useRef(isSearchFocused);
+	isFocusedRef.current = isSearchFocused;
+
 	const handleKeyDown = useCallback(
 		(e: KeyboardEvent) => {
-			if (e.key === "/" && !isSearchFocused) {
+			if (e.key === "/" && !isFocusedRef.current) {
 				e.preventDefault();
-				const searchInput =
-					document.querySelector<HTMLInputElement>("#search-input");
-				searchInput?.focus();
+				document.querySelector<HTMLInputElement>("#search-input")?.focus();
+				return;
 			}
 
-			if (isSearchFocused) {
-				switch (e.key) {
-					case "ArrowDown":
-						e.preventDefault();
-						setSelectedResultIndex((prev) =>
-							prev < results.length - 1 ? prev + 1 : prev,
-						);
-						break;
-					case "ArrowUp":
-						e.preventDefault();
-						setSelectedResultIndex((prev) => (prev > -1 ? prev - 1 : -1));
-						break;
-					case "Enter":
-						if (selectedResultIndex >= 0 && results[selectedResultIndex]) {
-							window.location.href = `/blog/${results[selectedResultIndex].id}`;
-						}
-						break;
-					case "Escape":
-						e.preventDefault();
-						setQuery("");
-						setSelectedResultIndex(-1);
-						break;
+			if (!isFocusedRef.current) return;
+
+			switch (e.key) {
+				case "ArrowDown":
+					e.preventDefault();
+					setSelectedResultIndex((prev) =>
+						prev < resultsRef.current.length - 1 ? prev + 1 : prev,
+					);
+					break;
+				case "ArrowUp":
+					e.preventDefault();
+					setSelectedResultIndex((prev) => (prev > -1 ? prev - 1 : -1));
+					break;
+				case "Enter": {
+					const selected = resultsRef.current[selectedIndexRef.current];
+					if (selected) {
+						window.location.href = `/blog/${selected.id}`;
+					}
+					break;
 				}
+				case "Escape":
+					e.preventDefault();
+					setQuery("");
+					setSelectedResultIndex(-1);
+					break;
 			}
 		},
-		[isSearchFocused, results, selectedResultIndex, setQuery],
+		[setQuery],
 	);
 
 	useEffect(() => {

@@ -23,6 +23,12 @@ const SearchStats = memo(function SearchStats({
 								<span className="font-semibold text-[#bb9af7]">
 									{searchStats.searchTime}ms
 								</span>
+								{searchStats.totalResults > results.length && (
+									<span className="text-[#565f89]">
+										{" "}
+										(showing top {results.length})
+									</span>
+								)}
 							</>
 						) : (
 							<>No results found</>

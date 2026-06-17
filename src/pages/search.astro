@@ -13,8 +13,9 @@ if (!featureFlags.showSearch) {
 	return Astro.redirect("/access-denied");
 }
 
-// Strip `body` before sending to client — full article text is not searched
-// or displayed, so shipping it as serialized JSON wastes significant bandwidth.
+// Project only the fields search/display need before serializing to the client.
+// Full article body, rendered HTML, hero images, and other metadata are neither
+// searched nor shown, so shipping them as inline JSON wastes bandwidth.
 const posts = featureFlags.showBlog
 	? (await getCollection("blog"))
 			.filter(
@@ -23,9 +24,21 @@ const posts = featureFlags.showBlog
 			)
 			.sort(
 				(a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
-					a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+					b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 			)
-			.map((post: CollectionEntry<"blog">) => ({ ...post, body: "" }))
+			.map((post: CollectionEntry<"blog">) => ({
+				id: post.id,
+				collection: post.collection,
+				data: {
+					title: post.data.title,
+					description: post.data.description,
+					pubDate: post.data.pubDate,
+					authorName: post.data.authorName,
+					draft: post.data.draft,
+					archived: post.data.archived,
+					tags: post.data.tags,
+				},
+			}))
 	: [];
 ---
 
