@@ -1,149 +1,154 @@
-import { memo, useCallback, useEffect, useMemo, useRef } from "react";
-import ReactDOM from "react-dom/client";
-import { Toaster } from "react-hot-toast";
-import CopyButton from "./CopyButton";
+import { memo, useEffect } from "react";
+import { Toaster, toast } from "react-hot-toast";
 import { STYLES, TOAST_STYLES } from "./styles";
 
+// Inline icon markup (lucide copy/check) so buttons are plain DOM — no React
+// root per code block.
+const ICON_COPY =
+	'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>';
+const ICON_CHECK =
+	'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+
+// Tailwind classes toggled while the "copied" state is showing.
+const COPIED_CLASSES = [
+	"bg-[#9ece6a]/20",
+	"border-[#9ece6a]/30",
+	"text-[#9ece6a]",
+];
+
+// Marker classes used to find/remove what we inject (className strings from
+// STYLES contain spaces, so we add our own stable hooks).
+const BAR_CLASS = "code-copy-bar";
+const BTN_CLASS = "code-copy-btn";
+
+const copyResetTimers = new WeakMap<HTMLElement, number>();
+
+function extractLanguage(codeElement: HTMLElement): string | undefined {
+	const match = (codeElement.className || "").match(/(?:language|lang)-(\w+)/);
+	return match ? match[1] : undefined;
+}
+
+// Add the language badge + copy button to a single <pre>, once.
+function enhanceCodeBlock(preElement: HTMLElement): void {
+	if (preElement.hasAttribute("data-copy-enhanced")) return;
+
+	const codeElement = preElement.querySelector("code");
+	if (!codeElement || (codeElement.textContent ?? "").trim().length === 0) {
+		return;
+	}
+
+	preElement.style.position = "relative";
+	preElement.setAttribute("data-copy-enhanced", "true");
+
+	const isMobile = window.matchMedia("(max-width: 768px)").matches;
+	const language = extractLanguage(codeElement);
+
+	const bar = document.createElement("div");
+	bar.className = `${BAR_CLASS} ${STYLES.buttonContainer}`;
+
+	if (language) {
+		const label = document.createElement("span");
+		label.className = `${STYLES.languageLabel} hidden md:inline-block`;
+		label.textContent = language;
+		Object.assign(label.style, STYLES.language);
+		bar.appendChild(label);
+	}
+
+	const button = document.createElement("button");
+	button.type = "button";
+	button.className =
+		`${BTN_CLASS} ${STYLES.copyButton} ${isMobile ? STYLES.mobileButton : ""}`.trim();
+	button.setAttribute("aria-label", "Copy code to clipboard");
+	button.innerHTML = ICON_COPY;
+	bar.appendChild(button);
+
+	preElement.appendChild(bar);
+}
+
+// Show the "copied" confirmation on a button for 2s, then revert.
+function flashCopied(button: HTMLElement): void {
+	const existing = copyResetTimers.get(button);
+	if (existing) window.clearTimeout(existing);
+
+	button.innerHTML = ICON_CHECK;
+	button.classList.add(...COPIED_CLASSES);
+
+	const timer = window.setTimeout(() => {
+		button.innerHTML = ICON_COPY;
+		button.classList.remove(...COPIED_CLASSES);
+		copyResetTimers.delete(button);
+	}, 2000);
+	copyResetTimers.set(button, timer);
+}
+
+// One delegated handler for every copy button on the page.
+async function handleCopyClick(event: MouseEvent): Promise<void> {
+	const button = (event.target as HTMLElement | null)?.closest<HTMLElement>(
+		`.${BTN_CLASS}`,
+	);
+	if (!button) return;
+
+	const code = button.closest("pre")?.querySelector("code")?.textContent ?? "";
+	if (!code.trim()) return;
+
+	try {
+		await navigator.clipboard.writeText(code);
+		navigator.vibrate?.(50);
+		flashCopied(button);
+		toast.success("Code copied to clipboard");
+	} catch (error) {
+		console.error("Failed to copy to clipboard:", error);
+		toast.error("Failed to copy code");
+	}
+}
+
 const CodeCopySimple = memo(function CodeCopySimple() {
-	const observerRef = useRef<MutationObserver | undefined>(undefined);
-	const enhancedElementsRef = useRef<Set<Element>>(new Set());
-
-	const applyStyles = useCallback(
-		(element: HTMLElement, styles: Record<string, string>) => {
-			Object.entries(styles).forEach(([property, value]) => {
-				element.style.setProperty(
-					property.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`),
-					value,
-				);
-			});
-		},
-		[],
-	);
-
-	const createLanguageLabel = useMemo(
-		() =>
-			(language: string): HTMLElement => {
-				const languageLabel = document.createElement("span");
-				languageLabel.className = `${STYLES.languageLabel} hidden md:inline-block`;
-				languageLabel.textContent = language;
-				applyStyles(languageLabel, STYLES.language);
-				return languageLabel;
-			},
-		[applyStyles],
-	);
-
-	const extractLanguage = useMemo(
-		() =>
-			(codeElement: HTMLElement): string | undefined => {
-				const codeClasses = codeElement.className || "";
-				const languageMatch = codeClasses.match(/(?:language|lang)-(\w+)/);
-				return languageMatch ? languageMatch[1] : undefined;
-			},
-		[],
-	);
-
-	const enhanceCodeBlock = useCallback(
-		(preElement: Element) => {
-			if (enhancedElementsRef.current.has(preElement)) return;
-
-			const element = preElement as HTMLElement;
-			const codeElement = element.querySelector("code");
-
-			if (!codeElement || element.hasAttribute("data-copy-enhanced")) return;
-
-			const codeText = codeElement.textContent || "";
-			if (codeText.trim().length === 0) return;
-
-			const isMobile = window.matchMedia("(max-width: 768px)").matches;
-			const language = extractLanguage(codeElement);
-
-			element.style.position = "relative";
-			element.setAttribute("data-copy-enhanced", "true");
-
-			const buttonContainer = document.createElement("div");
-			buttonContainer.className = STYLES.buttonContainer;
-
-			if (language) {
-				buttonContainer.appendChild(createLanguageLabel(language));
-			}
-
-			const reactContainer = document.createElement("div");
-			const root = ReactDOM.createRoot(reactContainer);
-			root.render(
-				<CopyButton
-					codeText={codeText}
-					isMobile={isMobile}
-					onCopy={() => {
-						if (navigator.vibrate) {
-							navigator.vibrate(50);
-						}
-					}}
-				/>,
-			);
-
-			buttonContainer.appendChild(reactContainer);
-			element.appendChild(buttonContainer);
-
-			enhancedElementsRef.current.add(preElement);
-		},
-		[createLanguageLabel, extractLanguage],
-	);
-
-	const observerCallback = useMemo(
-		() => (mutations: MutationRecord[]) => {
-			const shouldReEnhance = mutations.some(
-				(mutation) =>
-					mutation.type === "childList" &&
-					Array.from(mutation.addedNodes).some(
-						(node) =>
-							node.nodeType === Node.ELEMENT_NODE &&
-							((node as Element).querySelector("pre") ||
-								(node as Element).tagName === "PRE"),
-					),
-			);
-
-			if (shouldReEnhance) {
-				requestAnimationFrame(() => {
-					document
-						.querySelectorAll("pre:not([data-copy-enhanced])")
-						.forEach(enhanceCodeBlock);
-				});
-			}
-		},
-		[enhanceCodeBlock],
-	);
-
 	useEffect(() => {
-		observerRef.current = new MutationObserver(observerCallback);
-
-		requestAnimationFrame(() => {
+		const enhanceAll = () => {
 			document
-				.querySelectorAll("pre:not([data-copy-enhanced])")
+				.querySelectorAll<HTMLElement>("pre:not([data-copy-enhanced])")
 				.forEach(enhanceCodeBlock);
+		};
+
+		// Coalesce mutation bursts into one enhancement pass per frame.
+		let scheduled = false;
+		const schedule = () => {
+			if (scheduled) return;
+			scheduled = true;
+			requestAnimationFrame(() => {
+				scheduled = false;
+				enhanceAll();
+			});
+		};
+
+		const observer = new MutationObserver((mutations) => {
+			const relevant = mutations.some(
+				(m) => m.addedNodes.length > 0 || m.type === "characterData",
+			);
+			if (relevant) schedule();
 		});
 
-		observerRef.current.observe(document.body, {
+		observer.observe(document.body, {
 			childList: true,
 			subtree: true,
+			characterData: true,
 		});
+		document.addEventListener("click", handleCopyClick);
+		schedule();
 
 		return () => {
-			observerRef.current?.disconnect();
-			enhancedElementsRef.current.forEach((element) => {
-				element.removeAttribute("data-copy-enhanced");
-				const container = element.querySelector(`.${STYLES.buttonContainer}`);
-				container?.remove();
-			});
-			enhancedElementsRef.current.clear();
+			observer.disconnect();
+			document.removeEventListener("click", handleCopyClick);
+			document
+				.querySelectorAll<HTMLElement>("pre[data-copy-enhanced]")
+				.forEach((pre) => {
+					pre.removeAttribute("data-copy-enhanced");
+					pre.querySelector(`.${BAR_CLASS}`)?.remove();
+				});
 		};
-	}, [enhanceCodeBlock, observerCallback]);
+	}, []);
 
-	return (
-		<>
-			<Toaster position="bottom-right" toastOptions={TOAST_STYLES} />
-			{null}
-		</>
-	);
+	return <Toaster position="bottom-right" toastOptions={TOAST_STYLES} />;
 });
 
 export default CodeCopySimple;

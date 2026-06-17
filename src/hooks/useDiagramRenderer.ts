@@ -1,7 +1,9 @@
 import {
 	buttonBarStyles,
 	containerStyles,
+	DIAGRAM_TYPES,
 	injectHoverStyles,
+	mermaidConfig,
 } from "@react/blog/enhancements/diagram-renderer/config/styles";
 import { useCallback, useEffect } from "react";
 
@@ -28,17 +30,62 @@ const ICON_DOWNLOAD =
 const ICON_COPY =
 	'<svg style="width:14px;height:14px;min-width:14px;min-height:14px;max-width:14px;max-height:14px;display:block;flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 
-// ── Hook props ──────────────────────────────────────────────────────────
-interface UseDiagramRendererProps {
-	mermaidInitialized: boolean;
-	extractDiagramType: (mermaidCode: string) => string;
+// ── Lazy Mermaid loader (shared singleton) ──────────────────────────────
+// Mermaid is the heaviest dependency on the site (its own vendor chunk, plus
+// d3/dagre/cytoscape). Only import and initialize it the first time a diagram
+// actually appears, and reuse that single instance everywhere.
+type MermaidApi = typeof import("mermaid")["default"];
+let mermaidPromise: Promise<MermaidApi> | null = null;
+function ensureMermaid(): Promise<MermaidApi> {
+	if (!mermaidPromise) {
+		mermaidPromise = import("mermaid").then(({ default: mermaid }) => {
+			mermaid.initialize(mermaidConfig);
+			return mermaid;
+		});
+	}
+	return mermaidPromise;
+}
+
+// ── Map a diagram's first line to a human-readable type label ───────────
+function extractDiagramType(mermaidCode: string): string {
+	const firstLine = (mermaidCode.trim().split("\n")[0] ?? "").toLowerCase();
+	const found = Object.entries(DIAGRAM_TYPES).find(([key]) =>
+		firstLine.includes(key),
+	);
+	return found ? found[1] : "Mermaid";
+}
+
+// ── Button-bar colors (kept in sync with buttonBarStyles.button) ─────────
+const BTN_COLOR = "#a9b1d6";
+const BTN_BORDER = "rgba(86,95,137,0.3)";
+const BTN_COLOR_ACTIVE = "#9ece6a";
+const BTN_BORDER_ACTIVE = "rgba(158,206,106,0.5)";
+
+type DiagramAction = "fullscreen" | "download" | "copy";
+
+// Per-diagram payload, keyed by its container element. A WeakMap keeps the
+// (potentially large) SVG string off the DOM and lets entries be collected
+// automatically once a container is removed and garbage-collected.
+const diagramData = new WeakMap<HTMLElement, MermaidEventDetail>();
+
+// ── Helper: dispatch a typed mermaid custom event ───────────────────────
+function dispatchMermaid<K extends keyof DocumentEventMap>(
+	type: K,
+	detail: DocumentEventMap[K] extends CustomEvent<infer D> ? D : never,
+): void {
+	document.dispatchEvent(new CustomEvent(type, { detail }));
 }
 
 // ── Helper: create a single icon-only button ────────────────────────────
-function createBtn(iconHtml: string, label: string): HTMLButtonElement {
+function createBtn(
+	iconHtml: string,
+	label: string,
+	action: DiagramAction,
+): HTMLButtonElement {
 	const btn = document.createElement("button");
 	btn.type = "button";
 	btn.className = "mermaid-btn";
+	btn.setAttribute("data-mermaid-action", action);
 	btn.title = label;
 	btn.setAttribute("aria-label", label);
 	Object.assign(btn.style, buttonBarStyles.button);
@@ -47,11 +94,15 @@ function createBtn(iconHtml: string, label: string): HTMLButtonElement {
 }
 
 // ── Helper: build the button bar and attach it to the container ─────────
+// No per-element listeners are bound here; clicks are handled by a single
+// delegated listener installed by the hook (see useEffect below).
 function injectButtonBar(
 	container: HTMLDivElement,
 	svgHtml: string,
 	diagramType: string,
 ): void {
+	diagramData.set(container, { svgHtml, diagramType });
+
 	const bar = document.createElement("div");
 	bar.className = "mermaid-btn-bar";
 	Object.assign(bar.style, buttonBarStyles.container);
@@ -64,209 +115,146 @@ function injectButtonBar(
 		bar.appendChild(badge);
 	}
 
-	// Fullscreen button
-	const fullscreenBtn = createBtn(ICON_FULLSCREEN, "Fullscreen");
-	fullscreenBtn.addEventListener("click", (e) => {
-		e.stopPropagation();
-		document.dispatchEvent(
-			new CustomEvent("mermaid:fullscreen", {
-				detail: { svgHtml, diagramType },
-			}),
-		);
-	});
-	bar.appendChild(fullscreenBtn);
-
-	// Download PNG button
-	const downloadBtn = createBtn(ICON_DOWNLOAD, "Download");
-	downloadBtn.addEventListener("click", (e) => {
-		e.stopPropagation();
-		document.dispatchEvent(
-			new CustomEvent("mermaid:download", {
-				detail: { svgHtml, diagramType },
-			}),
-		);
-	});
-	bar.appendChild(downloadBtn);
-
-	// Copy SVG button
-	const copyBtn = createBtn(ICON_COPY, "Copy");
-	copyBtn.addEventListener("click", (e) => {
-		e.stopPropagation();
-		document.dispatchEvent(
-			new CustomEvent("mermaid:copy", { detail: { svgHtml } }),
-		);
-		// Visual feedback
-		copyBtn.style.color = "#9ece6a";
-		copyBtn.style.borderColor = "rgba(158,206,106,0.5)";
-		setTimeout(() => {
-			copyBtn.style.color = "#a9b1d6";
-			copyBtn.style.borderColor = "rgba(86,95,137,0.3)";
-		}, 2000);
-	});
-	bar.appendChild(copyBtn);
+	bar.appendChild(createBtn(ICON_FULLSCREEN, "Fullscreen", "fullscreen"));
+	bar.appendChild(createBtn(ICON_DOWNLOAD, "Download", "download"));
+	bar.appendChild(createBtn(ICON_COPY, "Copy", "copy"));
 
 	container.appendChild(bar);
+}
 
-	// Click on the diagram itself opens fullscreen
-	container.addEventListener("click", (e) => {
-		// Ignore clicks on buttons themselves
-		if ((e.target as HTMLElement).closest(".mermaid-btn-bar")) return;
-		document.dispatchEvent(
-			new CustomEvent("mermaid:fullscreen", {
-				detail: { svgHtml, diagramType },
-			}),
-		);
-	});
+// ── Delegated click handler shared by every diagram on the page ─────────
+// A stable, module-level reference so add/removeEventListener pair up and
+// repeated registrations (multiple hook mounts) collapse to one.
+function handleDiagramClick(event: MouseEvent): void {
+	const target = event.target as HTMLElement | null;
+	const container = target?.closest<HTMLElement>(".mermaid-diagram-container");
+	if (!container) return;
+
+	const data = diagramData.get(container);
+	if (!data) return;
+
+	const btn = target?.closest<HTMLElement>(".mermaid-btn");
+	if (!btn) {
+		// Click on the diagram body (not a button) opens fullscreen.
+		dispatchMermaid("mermaid:fullscreen", data);
+		return;
+	}
+
+	switch (btn.getAttribute("data-mermaid-action") as DiagramAction | null) {
+		case "fullscreen":
+			dispatchMermaid("mermaid:fullscreen", data);
+			break;
+		case "download":
+			dispatchMermaid("mermaid:download", data);
+			break;
+		case "copy":
+			dispatchMermaid("mermaid:copy", { svgHtml: data.svgHtml });
+			// Visual feedback
+			btn.style.color = BTN_COLOR_ACTIVE;
+			btn.style.borderColor = BTN_BORDER_ACTIVE;
+			setTimeout(() => {
+				btn.style.color = BTN_COLOR;
+				btn.style.borderColor = BTN_BORDER;
+			}, 2000);
+			break;
+	}
 }
 
 // ── The hook ────────────────────────────────────────────────────────────
-export function useDiagramRenderer({
-	mermaidInitialized,
-	extractDiagramType,
-}: UseDiagramRendererProps): {
-	renderDiagram: (codeElement: Element) => Promise<void>;
-} {
-	const renderDiagram = useCallback(
-		async (codeElement: Element) => {
-			const preElement = codeElement.parentElement;
-			if (!preElement || preElement.tagName !== "PRE") return;
+export function useDiagramRenderer(): void {
+	const renderDiagram = useCallback(async (codeElement: Element) => {
+		const preElement = codeElement.parentElement;
+		if (!preElement || preElement.tagName !== "PRE") return;
 
-			let mermaidCode = codeElement.textContent?.trim();
-			if (!mermaidCode) return;
+		const mermaidCode = codeElement.textContent
+			?.trim()
+			.replace(/unsupported markdown: list/gi, "• List item")
+			.replace(/unsupported markdown: /gi, "");
+		if (!mermaidCode) return;
 
-			mermaidCode = mermaidCode
-				.replace(/Unsupported markdown: list/g, "\u2022 List item")
-				.replace(/unsupported markdown: list/g, "\u2022 List item")
-				.replace(/Unsupported markdown: /g, "")
-				.replace(/unsupported markdown: /g, "");
+		try {
+			const mermaid = await ensureMermaid();
+			const diagramId = `mermaid-diagram-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
-			try {
-				const mermaid = (await import("mermaid")).default;
-				const diagramId = `mermaid-diagram-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+			const renderResult = await mermaid.render(diagramId, mermaidCode);
+			const svg =
+				typeof renderResult === "string" ? renderResult : renderResult.svg;
 
-				const container = document.createElement("div");
-				container.className = `${containerStyles.diagram} mermaid-diagram-container`;
+			const svgWrapper = document.createElement("div");
+			svgWrapper.className = containerStyles.svgWrapper;
+			svgWrapper.innerHTML = svg;
 
-				const renderResult = await mermaid.render(diagramId, mermaidCode);
-				const svg =
-					typeof renderResult === "string" ? renderResult : renderResult.svg;
+			const svgElement = svgWrapper.querySelector("svg");
+			if (!svgElement) return;
 
-				const svgWrapper = document.createElement("div");
-				svgWrapper.className = containerStyles.svgWrapper;
-				svgWrapper.innerHTML = svg;
+			// Sizing and text styling are owned by CSS
+			// (`.mermaid-diagram-container svg` in global.css) together with
+			// Mermaid's own `useMaxWidth`, so the SVG scales responsively to its
+			// container. Here we only lock the aspect ratio while it scales.
+			svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
-				const svgElement = svgWrapper.querySelector("svg");
-				if (svgElement) {
-					const viewBox = svgElement.getAttribute("viewBox");
-					let diagramWidth = 0;
-					let diagramHeight = 0;
+			const container = document.createElement("div");
+			container.className = `${containerStyles.diagram} mermaid-diagram-container`;
+			container.appendChild(svgWrapper);
 
-					if (viewBox) {
-						const parts = viewBox.split(" ").map(Number);
-						const width = parts[2];
-						const height = parts[3];
-						diagramWidth =
-							typeof width === "number" && Number.isFinite(width) ? width : 0;
-						diagramHeight =
-							typeof height === "number" && Number.isFinite(height)
-								? height
-								: 0;
-					}
+			const diagramType = extractDiagramType(mermaidCode);
+			injectHoverStyles();
+			injectButtonBar(container, svgWrapper.innerHTML, diagramType);
 
-					let measuredWidth = 0;
-
-					if (container?.isConnected) {
-						const containerRect = container.getBoundingClientRect();
-						measuredWidth = containerRect.width;
-					} else if (container?.parentElement) {
-						const parentRect = container.parentElement.getBoundingClientRect();
-						measuredWidth = parentRect.width;
-					} else {
-						measuredWidth = window.innerWidth;
-					}
-
-					const containerWidth = Math.max(0, measuredWidth - 48);
-
-					let targetHeight = 400;
-
-					if (diagramHeight > 0) {
-						if (diagramHeight < 200) {
-							targetHeight = Math.max(350, diagramHeight * 3);
-						} else if (diagramHeight > 400) {
-							targetHeight = Math.min(600, diagramHeight * 1.2);
-						} else {
-							targetHeight = Math.max(350, Math.min(550, diagramHeight * 2));
-						}
-					}
-
-					const aspectRatio = diagramWidth / diagramHeight;
-					const targetWidth = targetHeight * aspectRatio;
-
-					if (targetWidth < containerWidth * 0.8) {
-						targetHeight = (containerWidth * 0.8) / aspectRatio;
-					}
-
-					svgElement.style.width = "100%";
-					svgElement.style.maxWidth = "100%";
-					svgElement.style.height = `${targetHeight}px`;
-					svgElement.style.minHeight = "300px";
-					svgElement.style.maxHeight = "700px";
-
-					svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
-					svgElement.style.overflow = "visible";
-
-					const textElements = svgElement.querySelectorAll("text, tspan");
-					textElements.forEach((textElement) => {
-						const element = textElement as HTMLElement;
-						const currentFontSize = Number.parseFloat(
-							element.style.fontSize || "14",
-						);
-						if (currentFontSize < 16) {
-							element.style.fontSize = "16px";
-						} else if (currentFontSize < 20) {
-							element.style.fontSize = `${Math.max(18, currentFontSize * 1.2)}px`;
-						}
-						element.style.fontWeight = "600";
-					});
-
-					container.appendChild(svgWrapper);
-
-					// ── Inject interactive button bar ───────────────
-					const diagramType = extractDiagramType(mermaidCode);
-					injectHoverStyles();
-					injectButtonBar(container, svgWrapper.innerHTML, diagramType);
-
-					preElement.parentNode?.replaceChild(container, preElement);
-					codeElement.setAttribute("data-mermaid-rendered", "true");
-				}
-			} catch (error) {
-				console.error("Failed to render diagram:", error);
-			}
-		},
-		[extractDiagramType],
-	);
+			preElement.parentNode?.replaceChild(container, preElement);
+			codeElement.setAttribute("data-mermaid-rendered", "true");
+		} catch (error) {
+			console.error("Failed to render Mermaid diagram:", error);
+		}
+	}, []);
 
 	useEffect(() => {
-		if (!mermaidInitialized) return;
-
 		const renderDiagrams = () => {
 			const diagrams = document.querySelectorAll(
 				"pre code.language-mermaid:not([data-mermaid-rendered])",
 			);
+			// Mermaid is only imported once a diagram is actually present
+			// (see ensureMermaid), so diagram-free pages never pay for it.
 			diagrams.forEach(renderDiagram);
 		};
 
-		const observer = new MutationObserver((mutations) => {
-			if (mutations.some((m) => m.addedNodes.length > 0)) {
+		// Coalesce bursts of mutations into a single render pass per frame.
+		let scheduled = false;
+		const scheduleRender = () => {
+			if (scheduled) return;
+			scheduled = true;
+			requestAnimationFrame(() => {
+				scheduled = false;
 				renderDiagrams();
-			}
+			});
+		};
+
+		const observer = new MutationObserver((mutations) => {
+			// Re-render when nodes are added (islands/content mount) OR when text
+			// streams into an already-present <pre><code>. With
+			// experimental.queuedRendering, slot content streams in after first
+			// paint, so a childList-only watch misses the late text and the block
+			// never renders. Watching characterData closes that gap.
+			const relevant = mutations.some(
+				(m) => m.addedNodes.length > 0 || m.type === "characterData",
+			);
+			if (relevant) scheduleRender();
 		});
 
-		observer.observe(document.body, { childList: true, subtree: true });
-		renderDiagrams();
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true,
+			characterData: true,
+		});
 
-		return () => observer.disconnect();
-	}, [mermaidInitialized, renderDiagram]);
+		// One delegated listener handles clicks for every rendered diagram.
+		document.addEventListener("click", handleDiagramClick);
 
-	return { renderDiagram };
+		scheduleRender();
+
+		return () => {
+			observer.disconnect();
+			document.removeEventListener("click", handleDiagramClick);
+		};
+	}, [renderDiagram]);
 }

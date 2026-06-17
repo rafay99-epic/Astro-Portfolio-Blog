@@ -21,7 +21,7 @@ const { isArchive, currentSlug, BlogPosts, prevPost, nextPost } = Astro.props;
 		<>
 			<EnhancedImageCaptionRenderer client:load />
 
-			<CodeCopySimple client:load />
+			<CodeCopySimple client:idle />
 
 			<BlogNavigation
 				client:load

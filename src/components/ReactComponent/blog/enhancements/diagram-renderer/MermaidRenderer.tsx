@@ -1,18 +1,23 @@
 import type { MermaidEventDetail } from "@hooks/useDiagramRenderer";
 import { useDiagramRenderer } from "@hooks/useDiagramRenderer";
-import { useMermaidRenderer } from "@hooks/useMermaidRenderer";
 import { downloadSvgAsPng } from "@util/svgToImage";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import FullscreenModal from "./components/FullscreenModal";
 
-const MermaidRenderer = memo(function MermaidRenderer() {
-	const { mermaidInitialized, extractDiagramType } = useMermaidRenderer();
+// Export the current SVG as a PNG, naming the file after the diagram type.
+function downloadDiagram(svgHtml: string, diagramType: string): void {
+	if (!svgHtml) return;
+	const safeName = diagramType
+		? `${diagramType.toLowerCase().replace(/\s+/g, "-")}-diagram.png`
+		: "diagram.png";
+	downloadSvgAsPng(svgHtml, safeName).catch((err) =>
+		console.error("Download failed:", err),
+	);
+}
 
-	useDiagramRenderer({
-		mermaidInitialized,
-		extractDiagramType,
-	});
+const MermaidRenderer = memo(function MermaidRenderer() {
+	useDiagramRenderer();
 
 	// ── Fullscreen modal state ──────────────────────────────────────────
 	const [fullscreen, setFullscreen] = useState<{
@@ -43,13 +48,7 @@ const MermaidRenderer = memo(function MermaidRenderer() {
 	}, [fullscreen.svgHtml]);
 
 	const handleDownload = useCallback(() => {
-		if (!fullscreen.svgHtml) return;
-		const safeName = fullscreen.diagramType
-			? `${fullscreen.diagramType.toLowerCase().replace(/\s+/g, "-")}-diagram.png`
-			: "diagram.png";
-		downloadSvgAsPng(fullscreen.svgHtml, safeName).catch((err) =>
-			console.error("Download failed:", err),
-		);
+		downloadDiagram(fullscreen.svgHtml, fullscreen.diagramType);
 	}, [fullscreen.svgHtml, fullscreen.diagramType]);
 
 	// ── Listen for custom events from DOM-injected buttons ──────────────
@@ -63,12 +62,7 @@ const MermaidRenderer = memo(function MermaidRenderer() {
 		};
 
 		const onDownload = (e: CustomEvent<MermaidEventDetail>) => {
-			const safeName = e.detail.diagramType
-				? `${e.detail.diagramType.toLowerCase().replace(/\s+/g, "-")}-diagram.png`
-				: "diagram.png";
-			downloadSvgAsPng(e.detail.svgHtml, safeName).catch((err) =>
-				console.error("Download failed:", err),
-			);
+			downloadDiagram(e.detail.svgHtml, e.detail.diagramType);
 		};
 
 		const onCopy = (e: CustomEvent<{ svgHtml: string }>) => {

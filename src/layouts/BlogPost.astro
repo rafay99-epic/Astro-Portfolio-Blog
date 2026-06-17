@@ -239,7 +239,7 @@ const seriesContext =
         </div>
       </section>
 
-      {!isArchive ? <MermaidRenderer client:load /> : null}
+      {!isArchive ? <MermaidRenderer client:idle /> : null}
 
       <BlogPostBelowContent
         isArchive={isArchive}
