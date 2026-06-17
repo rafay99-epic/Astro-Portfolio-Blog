@@ -37,8 +37,6 @@
 		"astro-icon": "^1.1.5",
 		"astro-opengraph-images": "^1.13.1",
 		"astro-robots-txt": "^1.0.0",
-		"astro-seo": "^0.8.4",
-		"astro-seo-metadata": "^0.6.0",
 		"caniuse-lite": "^1.0.30001750",
 		"devicon": "^2.17.0",
 		"framer-motion": "^11.18.2",
