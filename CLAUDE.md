@@ -22,7 +22,7 @@ bun run dev              # Start dev server
 bun run preview          # Preview production build locally
 
 # Building
-bun run build            # Astro build only
+bun run build            # Astro build, then IndexNow ping (ping only runs when VERCEL_ENV=production)
 
 # Code quality
 bun run lint             # TypeScript type check (tsc --noEmit) + formatting check
