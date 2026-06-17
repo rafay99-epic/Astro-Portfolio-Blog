@@ -6,6 +6,7 @@ import Footer from "@astro/footer/Footer.astro";
 import Header from "@astro/header/Header.astro";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
+import { toJsonLd } from "@util/jsonLd";
 
 export const prerender = true;
 
@@ -90,7 +91,7 @@ try {
     <script
       is:inline
       type="application/ld+json"
-      set:html={JSON.stringify({
+      set:html={toJsonLd({
         "@context": "https://schema.org",
         "@type": "Blog",
         name: `${authorConfig.SiteName} Blog - Page ${currentPage}`,
