@@ -3,17 +3,28 @@ import "@styles/global.css";
 import "@styles/theme.css";
 import "@styles/content-prose.css";
 import { ClientRouter } from "astro:transitions";
-import { SEOMetadata } from "astro-seo-metadata";
 
 interface Props {
 	title: string;
 	description: string;
 	image?: string;
 	keywords?: string[];
+	type?: "website" | "article";
+	author?: string;
+	canonical?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = "/Rafay99.webp", keywords } = Astro.props;
+const {
+	title,
+	description,
+	image = "/Rafay99.webp",
+	keywords,
+	type = "website",
+	author = "Abdul Rafay",
+	canonical,
+} = Astro.props;
+const canonicalHref = canonical ?? canonicalURL.toString();
 
 declare global {
 	interface Window {
@@ -30,7 +41,7 @@ declare global {
 <ClientRouter fallback="swap" />
 <meta name="generator" content={Astro.generator} />
 
-<link rel="canonical" href={canonicalURL} />
+<link rel="canonical" href={canonicalHref} />
 
 <title>{title}</title>
 <meta name="title" content={title} />
@@ -41,17 +52,21 @@ declare global {
   )
 }
 
-<meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content="Rafay99" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:image" content={new URL(image, Astro.site)} />
 
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:site" content="@rafay99" />
+<meta property="twitter:creator" content="@rafay99" />
+<meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta property="twitter:image" content={new URL(image, Astro.site)} />
 
 <meta
   name="google-site-verification"
@@ -63,29 +78,15 @@ declare global {
   content="yhlSscdVZmq_TymJP_qeDvw2R1HWYzPTQOoCTiA6jgA"
 />
 
-<SEOMetadata
-  siteName="Rafay99"
-  title={title}
-  description={description}
-  image={new URL(image, Astro.url).toString()}
-  favicon="/favicon.webp"
-  author="Abdul Rafay"
-  copyright="© Abdul Rafay"
-  astroSitemap={true}
-  canonicalUrl={canonicalURL.toString()}
-  type="website"
-  astroGenerator={true}
-/>
-
 <script
   is:inline
   defer
   src="https://cloud.umami.is/script.js"
   data-website-id="a0bf9842-31b3-4e49-a961-cc27e2ab6920"></script>
 
-<meta name="author" content={Astro.site} />
+<meta name="author" content={author} />
 
-<meta name="copyright" content="ISC" />
+<meta name="copyright" content="© Abdul Rafay" />
 
 <link
   rel="alternate"
