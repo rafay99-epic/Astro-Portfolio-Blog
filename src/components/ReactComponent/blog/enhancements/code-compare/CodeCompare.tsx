@@ -341,9 +341,13 @@ const CodeCompare = memo(function CodeCompare({
 	}, [code1, code2]);
 
 	const handleCopy = async (code: string, type: string) => {
-		await navigator.clipboard.writeText(code);
-		setCopied(type);
-		setTimeout(() => setCopied(null), 2000);
+		try {
+			await navigator.clipboard.writeText(code);
+			setCopied(type);
+			setTimeout(() => setCopied(null), 2000);
+		} catch (error) {
+			console.error("Failed to copy code:", error);
+		}
 	};
 
 	const toggleFullScreen = () => {

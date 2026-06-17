@@ -47,7 +47,7 @@ const posts = featureFlags.showBlog
     <Header />
     <main class="mx-auto flex-grow">
       <div>
-        <SearchReactComponent client:load posts={posts} />
+        <SearchReactComponent client:idle posts={posts} />
       </div>
     </main>
     <Footer class="mt-auto" />

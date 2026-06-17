@@ -70,7 +70,7 @@ bun run check            # Astro diagnostics (template/component checks)
 
 - **Markdown**: Shiki syntax highlighting with Tokyo Night theme. Mermaid blocks excluded from syntax highlighting (rendered client-side). Reading time calculated via remark plugin (`remark-reading-time.mjs`).
 - **Tailwind theme**: Custom color system defined in `src/config/theme/colors.ts` (Tokyo Night inspired). Poppins font. Custom `mobile` breakpoint at max 767px.
-- **Build optimization**: Terser minification removes all `console.*` and `debugger` in production. Manual chunk splitting for react-vendor, ui-components, and vendor-mermaid.
+- **Build optimization**: Default esbuild minification (no `console.*`/`debugger` stripping — `console.error` is intentionally kept so server API routes log to Vercel). Manual chunk splitting in `astro.config.mjs` for `vendor-d3`, `vendor-parser`, `vendor-graph`, `vendor-mermaid`, `vendor-katex`, `vendor-framer`, `vendor-lucide`, and `react-vendor`.
 - **React Compiler**: Enabled via babel plugin (`babel-plugin-react-compiler`).
 - **Formatting**: Biome with tailwind plugin (class sorting). The codebase uses semicolons.
 - **Content drafts**: Both `draft` and `archived` boolean fields control content visibility. Filter these when querying collections.

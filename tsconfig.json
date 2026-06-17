@@ -21,8 +21,7 @@
 			"@util/*": ["util/*"],
 			"@config/*": ["config/*"],
 			"@hooks/*": ["hooks/*"],
-			"@server/*": ["server/*"],
-			"@package.json": ["../package.json"]
+			"@server/*": ["server/*"]
 		},
 		"strict": true,
 		"skipLibCheck": true,
