@@ -18,6 +18,7 @@ const SITEMAP_PATH = "dist/client/sitemap-0.xml";
 const ENDPOINT = "https://api.indexnow.org/indexnow";
 const MAX_AGE_DAYS = 14;
 const MAX_URLS = 10_000;
+const REQUEST_TIMEOUT_MS = 10_000;
 
 function recentUrlsFromSitemap(xml) {
 	const cutoff = Date.now() - MAX_AGE_DAYS * 24 * 60 * 60 * 1000;
@@ -60,16 +61,20 @@ async function main() {
 		return;
 	}
 
+	// Abort if the endpoint stalls, so a hung request can't hang the build.
+	const controller = new AbortController();
+	const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 	const res = await fetch(ENDPOINT, {
 		method: "POST",
 		headers: { "Content-Type": "application/json; charset=utf-8" },
+		signal: controller.signal,
 		body: JSON.stringify({
 			host: HOST,
 			key: KEY,
 			keyLocation: KEY_LOCATION,
 			urlList,
 		}),
-	});
+	}).finally(() => clearTimeout(timeout));
 	console.log(
 		`[indexnow] submitted ${urlList.length} URL(s) -> HTTP ${res.status}`,
 	);
