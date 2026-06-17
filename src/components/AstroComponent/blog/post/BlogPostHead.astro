@@ -64,6 +64,11 @@ const shareImageAbsolute = hasHero
 const wordCount = blogContent
 	? blogContent.trim().split(/\s+/).filter(Boolean).length
 	: 0;
+
+// Escape `<` so author content containing `</script>` can't break out of the
+// JSON-LD <script> block (JSON.stringify alone does not escape angle brackets).
+const toJsonLd = (value: unknown): string =>
+	JSON.stringify(value).replace(/</g, "\\u003c");
 ---
 
 {/* BaseHead is the single source for title, description, canonical, and the
@@ -106,11 +111,11 @@ core OG/Twitter tags. Here we only add article-specific metadata and JSON-LD. */
 <script
 	is:inline
 	type="application/ld+json"
-	set:html={JSON.stringify({
+	set:html={toJsonLd({
 		"@context": "https://schema.org",
 		"@type": "BlogPosting",
 		headline: title,
-		description: description,
+		description: excerpt || description,
 		image: shareImageAbsolute,
 		author: {
 			"@type": "Person",
@@ -157,7 +162,7 @@ core OG/Twitter tags. Here we only add article-specific metadata and JSON-LD. */
 <script
 	is:inline
 	type="application/ld+json"
-	set:html={JSON.stringify({
+	set:html={toJsonLd({
 		"@context": "https://schema.org",
 		"@type": "BreadcrumbList",
 		itemListElement: [
