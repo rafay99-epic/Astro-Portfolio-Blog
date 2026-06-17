@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import getReadingTime from "reading-time";
 
 interface Props {
 	post: CollectionEntry<"blog">;
@@ -9,6 +10,10 @@ interface Props {
 }
 
 const { post, index, showSeries = false } = Astro.props;
+
+// `readTime` is only set in a few posts' frontmatter; derive it from the body
+// otherwise so every card shows a reading time (matches the remark plugin).
+const readTime = post.data.readTime ?? getReadingTime(post.body ?? "").text;
 
 const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
 	month: "short",
@@ -55,10 +60,10 @@ const hasSeries = showSeries && post.data.series && post.data.seriesPart;
 	<div class="feed-card-body">
 		<div class="feed-card-meta">
 			<span>{formattedDate}</span>
-			{post.data.readTime && (
+			{readTime && (
 				<>
 					<span class="feed-card-sep">&middot;</span>
-					<span>{post.data.readTime}</span>
+					<span>{readTime}</span>
 				</>
 			)}
 			{post.data.tags?.[0] && (

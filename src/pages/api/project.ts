@@ -1,4 +1,5 @@
 import { type CollectionEntry, getCollection } from "astro:content";
+import { createHash } from "node:crypto";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { ProjectSchema } from "../../types/ProjectTypes";
 
@@ -7,7 +8,6 @@ export async function GET() {
 		"Content-Type": "application/json",
 		"Access-Control-Allow-Origin": "https://www.rafay99.com",
 		"Cache-Control": "public, max-age=3600",
-		ETag: crypto.randomUUID(),
 	};
 	try {
 		if (!featureFlags.showProjects) {
@@ -40,9 +40,13 @@ export async function GET() {
 			},
 		);
 
-		return new Response(JSON.stringify(validatedProjects), {
+		const responseBody = JSON.stringify(validatedProjects);
+		return new Response(responseBody, {
 			status: 200,
-			headers: headers,
+			headers: {
+				...headers,
+				ETag: `"${createHash("sha1").update(responseBody).digest("hex")}"`,
+			},
 		});
 	} catch (error) {
 		console.error("Error fetching Project posts:", error);

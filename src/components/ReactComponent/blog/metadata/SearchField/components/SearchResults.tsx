@@ -41,8 +41,6 @@ const SearchResults = memo(function SearchResults({
 				animate="visible"
 				exit="hidden"
 				className="space-y-4"
-				role="listbox"
-				aria-label="Search results"
 			>
 				{results.map((post, index) => (
 					<SearchResultItem
@@ -81,8 +79,6 @@ const SearchResultItem = memo(function SearchResultItem({
 			}`}
 			whileHover={{ scale: 1.01 }}
 			onMouseEnter={() => setSelectedResultIndex(index)}
-			role="option"
-			aria-selected={isSelected}
 		>
 			<h3 className="mb-2 text-xl font-bold text-[#c0caf5] transition-colors group-hover:text-[#7aa2f7]">
 				{post.data.title}

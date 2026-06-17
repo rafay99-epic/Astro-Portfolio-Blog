@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
 
@@ -6,7 +7,6 @@ export async function GET() {
 		"Content-Type": "application/json",
 		"Access-Control-Allow-Origin": "https://www.rafay99.com",
 		"Cache-Control": "public, max-age=3600",
-		ETag: crypto.randomUUID(),
 	};
 	try {
 		if (!FeatureFlagsApi.enableauthorInfoAPI) {
@@ -23,9 +23,13 @@ export async function GET() {
 			author: authorConfig,
 		};
 
-		return new Response(JSON.stringify(responseData), {
+		const responseBody = JSON.stringify(responseData);
+		return new Response(responseBody, {
 			status: 200,
-			headers: header,
+			headers: {
+				...header,
+				ETag: `"${createHash("sha1").update(responseBody).digest("hex")}"`,
+			},
 		});
 	} catch (error) {
 		console.error("Error fetching author data:", error);

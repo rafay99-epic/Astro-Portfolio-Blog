@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
 import playformCompress from "@playform/compress";
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig } from "astro/config";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
@@ -23,13 +23,6 @@ export default defineConfig({
 		concurrency: 10,
 		format: "directory",
 	},
-	fonts: [
-		{
-			name: "Poppins",
-			cssVariable: "--font-poppins",
-			provider: fontProviders.google(),
-		},
-	],
 	prefetch: {
 		prefetchAll: false,
 	},
@@ -80,7 +73,10 @@ export default defineConfig({
 			},
 		}),
 		mdx({}),
-		sitemap({}),
+		sitemap({
+			filter: (page) =>
+				!page.includes("/blog/archive/") && !page.includes("/access-denied"),
+		}),
 		react({
 			experimentalDisableStreaming: true,
 
@@ -196,7 +192,6 @@ export default defineConfig({
 				"@config": "/src/config",
 				"@server": "/src/server",
 				"@hooks": "/src/hooks",
-				"@package.json": "/package.json",
 			},
 		},
 	},

@@ -31,14 +31,16 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
 		setCurrent(index);
 	}, []);
 
+	// Only request/exit fullscreen here; isFullScreen is driven by the
+	// fullscreenchange event below so it stays correct even when the user exits
+	// via Esc or the browser chrome.
 	const toggleFullScreen = useCallback(() => {
-		if (!isFullScreen) {
-			sliderRef.current?.requestFullscreen();
-		} else {
+		if (document.fullscreenElement) {
 			document.exitFullscreen();
+		} else {
+			sliderRef.current?.requestFullscreen();
 		}
-		setIsFullScreen(!isFullScreen);
-	}, [isFullScreen]);
+	}, []);
 
 	const handleTouchStart = useCallback((e: React.TouchEvent) => {
 		const touch = e.touches[0];
@@ -71,6 +73,15 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
 
 	const handleMouseLeave = useCallback(() => {
 		setIsHovered(false);
+	}, []);
+
+	useEffect(() => {
+		const handleFullScreenChange = () => {
+			setIsFullScreen(Boolean(document.fullscreenElement));
+		};
+		document.addEventListener("fullscreenchange", handleFullScreenChange);
+		return () =>
+			document.removeEventListener("fullscreenchange", handleFullScreenChange);
 	}, []);
 
 	useEffect(() => {

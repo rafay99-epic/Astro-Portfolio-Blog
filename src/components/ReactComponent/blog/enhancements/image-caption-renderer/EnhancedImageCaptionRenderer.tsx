@@ -1,5 +1,83 @@
 import { memo, useCallback, useEffect } from "react";
 
+// Marker class on the clickable image container; a single delegated listener
+// (installed by the effect) opens the fullscreen viewer for any of them.
+const CLICKABLE_CLASS = "enhanced-image-clickable";
+
+// Build and show the fullscreen image viewer. Fully self-contained: every
+// listener and the injected node are removed again on close.
+function openFullscreen(src: string, alt: string): void {
+	if (document.querySelector(".fullscreen-modal-active")) return;
+
+	const overlay = document.createElement("div");
+	overlay.className =
+		"fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm fullscreen-modal-active";
+	overlay.style.cursor = "zoom-out";
+
+	const imageWrapper = document.createElement("div");
+	imageWrapper.className = "relative max-h-[90vh] max-w-[90vw]";
+
+	const img = document.createElement("img");
+	img.src = src;
+	img.alt = alt;
+	img.className = "max-h-[90vh] max-w-[90vw] object-contain";
+
+	const closeButton = document.createElement("button");
+	closeButton.type = "button";
+	closeButton.className =
+		"absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20";
+	closeButton.innerHTML =
+		'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+	closeButton.setAttribute("aria-label", "Close fullscreen");
+
+	if (alt) {
+		const altText = document.createElement("div");
+		altText.className =
+			"absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-center text-white backdrop-blur-sm";
+		const altParagraph = document.createElement("p");
+		altParagraph.className = "text-sm";
+		altParagraph.textContent = alt;
+		altText.appendChild(altParagraph);
+		imageWrapper.appendChild(img);
+		imageWrapper.appendChild(altText);
+	} else {
+		imageWrapper.appendChild(img);
+	}
+
+	overlay.appendChild(closeButton);
+	overlay.appendChild(imageWrapper);
+
+	const previousOverflow = document.body.style.overflow;
+	document.body.style.overflow = "hidden";
+
+	const close = () => {
+		document.removeEventListener("keydown", onKeyDown);
+		overlay.remove();
+		document.body.style.overflow = previousOverflow;
+	};
+	const onKeyDown = (e: KeyboardEvent) => {
+		if (e.key === "Escape") close();
+	};
+
+	closeButton.addEventListener("click", close);
+	overlay.addEventListener("click", (e) => {
+		if (e.target === overlay) close();
+	});
+	document.addEventListener("keydown", onKeyDown);
+
+	document.body.appendChild(overlay);
+}
+
+// One delegated handler for every enhanced image on the page.
+function handleImageClick(event: MouseEvent): void {
+	const trigger = (event.target as HTMLElement | null)?.closest<HTMLElement>(
+		`.${CLICKABLE_CLASS}`,
+	);
+	const img = trigger?.querySelector("img");
+	if (!img) return;
+	openFullscreen(img.src, img.getAttribute("alt") ?? "");
+}
+
 const EnhancedImageCaptionRenderer = memo(
 	function EnhancedImageCaptionRenderer() {
 		const shouldProcessElement = useCallback((element: Element): boolean => {
@@ -13,12 +91,9 @@ const EnhancedImageCaptionRenderer = memo(
 				!alt ||
 				alt.trim() === "" ||
 				img.hasAttribute("data-enhanced-processed") ||
-				img.hasAttribute("data-caption-processed")
+				img.hasAttribute("data-caption-processed") ||
+				img.closest("figure")
 			) {
-				return;
-			}
-
-			if (img.closest("figure")) {
 				return;
 			}
 
@@ -29,45 +104,37 @@ const EnhancedImageCaptionRenderer = memo(
 				return;
 			}
 
+			// Not loaded yet — re-run once dimensions are known. `once` auto-removes
+			// the listener so it can't leak.
 			if (img.naturalWidth === 0 || img.naturalHeight === 0) {
-				const handleLoad = () => {
-					img.removeEventListener("load", handleLoad);
-					processImage(img);
-				};
-				img.addEventListener("load", handleLoad);
+				img.addEventListener("load", () => processImage(img), { once: true });
 				return;
 			}
 
-			// Create wrapper container
 			const wrapper = document.createElement("div");
 			wrapper.className = "my-4 text-center enhanced-image-container";
 
-			// Create image container with fullscreen capability
 			const imageContainer = document.createElement("div");
-			imageContainer.className = "relative inline-block cursor-pointer";
+			imageContainer.className = `relative inline-block cursor-pointer ${CLICKABLE_CLASS}`;
 
-			// Clone the original image
 			const enhancedImg = img.cloneNode(true) as HTMLImageElement;
 			enhancedImg.className =
 				"max-w-full h-auto rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl";
 			enhancedImg.setAttribute("data-enhanced-processed", "true");
 
-			// Add error handling for the enhanced image
-			enhancedImg.addEventListener("error", () => {
-				console.warn("Enhanced image failed to load:", enhancedImg.src);
-				// Fallback: show original image without enhancement
-				const parent = enhancedImg.parentNode;
-				if (parent) {
-					parent.replaceChild(img, enhancedImg);
-				}
-			});
+			// If the enhanced clone fails to load, restore the original image.
+			enhancedImg.addEventListener(
+				"error",
+				() => {
+					enhancedImg.parentNode?.replaceChild(img, enhancedImg);
+				},
+				{ once: true },
+			);
 
-			// Create caption
 			const caption = document.createElement("p");
 			caption.className = "mt-2 text-sm text-[#a9b1d6] italic";
 			caption.textContent = alt;
 
-			// Assemble the structure
 			imageContainer.appendChild(enhancedImg);
 			wrapper.appendChild(imageContainer);
 			wrapper.appendChild(caption);
@@ -77,97 +144,6 @@ const EnhancedImageCaptionRenderer = memo(
 				parent.insertBefore(wrapper, img);
 				parent.removeChild(img);
 			}
-
-			// Add click event for fullscreen
-			imageContainer.addEventListener("click", () => {
-				// Prevent multiple fullscreen modals
-				if (document.querySelector(".fullscreen-modal-active")) {
-					return;
-				}
-
-				const fullscreenContainer = document.createElement("div");
-				fullscreenContainer.className =
-					"fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm fullscreen-modal-active";
-				fullscreenContainer.style.cursor = "zoom-out";
-
-				const imageWrapper = document.createElement("div");
-				imageWrapper.className = "relative max-h-[90vh] max-w-[90vw]";
-
-				const fullscreenImg = enhancedImg.cloneNode(true) as HTMLImageElement;
-				fullscreenImg.className = "max-h-[90vh] max-w-[90vw] object-contain";
-				fullscreenImg.style.filter = "none";
-
-				const closeButton = document.createElement("button");
-				closeButton.className =
-					"absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20";
-				closeButton.innerHTML = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      `;
-				closeButton.setAttribute("aria-label", "Close fullscreen");
-
-				const altText = document.createElement("div");
-				altText.className =
-					"absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-center text-white backdrop-blur-sm";
-				const altParagraph = document.createElement("p");
-				altParagraph.className = "text-sm";
-				altParagraph.textContent = alt;
-				altText.appendChild(altParagraph);
-
-				const instructions = document.createElement("div");
-				instructions.className =
-					"absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-white/70";
-				instructions.innerHTML =
-					'<p class="text-xs">Press <kbd class="rounded bg-white/20 px-1">ESC</kbd> or click outside to close</p>';
-
-				imageWrapper.appendChild(fullscreenImg);
-				imageWrapper.appendChild(altText);
-				fullscreenContainer.appendChild(closeButton);
-				fullscreenContainer.appendChild(imageWrapper);
-				fullscreenContainer.appendChild(instructions);
-
-				document.body.appendChild(fullscreenContainer);
-				document.body.style.overflow = "hidden";
-
-				// Close handlers
-				const handleKeyDown = (e: KeyboardEvent) => {
-					if (e.key === "Escape") {
-						closeFullscreen();
-					}
-				};
-
-				const closeFullscreen = () => {
-					document.removeEventListener("keydown", handleKeyDown);
-					// Safely remove the modal
-					if (fullscreenContainer?.parentNode) {
-						fullscreenContainer.parentNode.removeChild(fullscreenContainer);
-					}
-					document.body.style.overflow = "unset";
-				};
-
-				closeButton.addEventListener("click", closeFullscreen);
-				fullscreenContainer.addEventListener("click", (e) => {
-					if (e.target === fullscreenContainer) {
-						closeFullscreen();
-					}
-				});
-
-				document.addEventListener("keydown", handleKeyDown);
-			});
-
-			// Style the original image
-			if (!enhancedImg.complete) {
-				enhancedImg.addEventListener(
-					"load",
-					() => {
-						enhancedImg.style.maxWidth = "100%";
-						enhancedImg.style.height = "auto";
-					},
-					{ once: true },
-				);
-			}
 		}, []);
 
 		const processImages = useCallback(() => {
@@ -176,9 +152,9 @@ const EnhancedImageCaptionRenderer = memo(
 			);
 			if (!mainContent) return;
 
-			const images = mainContent.querySelectorAll(
+			const images = mainContent.querySelectorAll<HTMLImageElement>(
 				"img[alt]:not([data-enhanced-processed]):not([data-caption-processed])",
-			) as NodeListOf<HTMLImageElement>;
+			);
 
 			if (images.length > 0) {
 				requestAnimationFrame(() => {
@@ -193,22 +169,15 @@ const EnhancedImageCaptionRenderer = memo(
 			let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
 			const observer = new MutationObserver((mutations) => {
-				let hasNewImages = false;
-
-				for (const mutation of mutations) {
-					if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
-						for (const node of Array.from(mutation.addedNodes)) {
-							if (node.nodeType === Node.ELEMENT_NODE) {
-								const element = node as Element;
-								if (shouldProcessElement(element)) {
-									hasNewImages = true;
-									break;
-								}
-							}
-						}
-						if (hasNewImages) break;
-					}
-				}
+				const hasNewImages = mutations.some(
+					(mutation) =>
+						mutation.type === "childList" &&
+						Array.from(mutation.addedNodes).some(
+							(node) =>
+								node.nodeType === Node.ELEMENT_NODE &&
+								shouldProcessElement(node as Element),
+						),
+				);
 
 				if (hasNewImages) {
 					if (timeoutId) clearTimeout(timeoutId);
@@ -220,16 +189,16 @@ const EnhancedImageCaptionRenderer = memo(
 				"main, .main-content, .content-prose",
 			);
 			if (mainContent) {
-				observer.observe(mainContent, {
-					childList: true,
-					subtree: true,
-					attributes: false,
-					characterData: false,
-				});
+				observer.observe(mainContent, { childList: true, subtree: true });
 			}
 
+			// One delegated listener for all enhanced images.
+			document.addEventListener("click", handleImageClick);
+
 			return () => {
+				if (timeoutId) clearTimeout(timeoutId);
 				observer.disconnect();
+				document.removeEventListener("click", handleImageClick);
 			};
 		}, [processImages, shouldProcessElement]);
 
