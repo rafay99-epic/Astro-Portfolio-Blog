@@ -1,3 +1,4 @@
+import { readdirSync, readFileSync } from "node:fs";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import react from "@astrojs/react";
@@ -8,7 +9,48 @@ import playformCompress from "@playform/compress";
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
+import yaml from "js-yaml";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
+
+// Map each published blog post's URL path -> last-modified ISO date, read
+// straight from frontmatter at config time. Used to stamp <lastmod> on the
+// sitemap so Google recrawls updated posts instead of treating them as stale.
+function buildBlogLastmod() {
+	const dir = new URL("./src/content/blog/", import.meta.url);
+	const map = new Map();
+	let files = [];
+	try {
+		files = readdirSync(dir);
+	} catch {
+		return map;
+	}
+	for (const file of files) {
+		if (!/\.(md|mdx)$/.test(file)) continue;
+		let raw;
+		try {
+			raw = readFileSync(new URL(file, dir), "utf8");
+		} catch {
+			continue;
+		}
+		const fm = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+		if (!fm) continue;
+		let data;
+		try {
+			data = yaml.load(fm[1]) ?? {};
+		} catch {
+			continue;
+		}
+		if (data.draft || data.archived) continue;
+		const date = data.updatedDate ?? data.pubDate;
+		if (!date) continue;
+		const ts = new Date(date).getTime();
+		if (Number.isNaN(ts)) continue;
+		const id = file.replace(/\.(md|mdx)$/, "");
+		map.set(`/blog/${id}/`, new Date(ts).toISOString());
+	}
+	return map;
+}
+const blogLastmod = buildBlogLastmod();
 
 export default defineConfig({
 	site: "https://www.rafay99.com",
@@ -76,6 +118,11 @@ export default defineConfig({
 		sitemap({
 			filter: (page) =>
 				!page.includes("/blog/archive/") && !page.includes("/access-denied"),
+			serialize(item) {
+				const lastmod = blogLastmod.get(new URL(item.url).pathname);
+				if (lastmod) item.lastmod = lastmod;
+				return item;
+			},
 		}),
 		react({
 			experimentalDisableStreaming: true,
