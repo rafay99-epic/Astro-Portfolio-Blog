@@ -65,6 +65,7 @@ export default defineConfig({
 		concurrency: 10,
 		format: "directory",
 	},
+	trailingSlash: "always",
 	prefetch: {
 		prefetchAll: false,
 	},
@@ -117,7 +118,9 @@ export default defineConfig({
 		mdx({}),
 		sitemap({
 			filter: (page) =>
-				!page.includes("/blog/archive/") && !page.includes("/access-denied"),
+				!page.includes("/blog/archive/") &&
+				!page.includes("/access-denied") &&
+				!page.match(/\/(blog|tag)\/page\/\d+/),
 			serialize(item) {
 				const lastmod = blogLastmod.get(new URL(item.url).pathname);
 				if (lastmod) item.lastmod = lastmod;
