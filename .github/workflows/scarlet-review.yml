@@ -1,0 +1,61 @@
+# Scarlet Speedster — Automated PR Review Trigger
+#
+# This workflow fires when a PR is opened, updated, or marked ready for review.
+# It sends a webhook to the Hermes agent server, which triggers an automated
+# code review by Scarlet Speedster.
+#
+# SETUP INSTRUCTIONS:
+# 1. Add the following repository secrets (Settings → Secrets and Variables → Actions):
+#    - HERMES_WEBHOOK_URL  — The webhook receiver URL (e.g., http://YOUR_SERVER_IP:9876)
+#    - HERMES_WEBHOOK_SECRET — Shared secret for signature validation
+# 2. Copy this file to: .github/workflows/scarlet-review.yml
+# 3. That's it! Every PR will now get an automated review.
+
+name: Scarlet Speedster PR Review
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+jobs:
+  trigger-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send review trigger to Hermes
+        env:
+          WEBHOOK_URL: ${{ secrets.HERMES_WEBHOOK_URL }}
+          WEBHOOK_SECRET: ${{ secrets.HERMES_WEBHOOK_SECRET }}
+        run: |
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "HERMES_WEBHOOK_URL secret not set — skipping review trigger"
+            exit 0
+          fi
+
+          # Compute HMAC signature
+          PAYLOAD='{"action":"workflow_trigger","repository":{"full_name":"'"$GITHUB_REPOSITORY"'"},"pull_request":{"number":'"${{ github.event.pull_request.number }}"',"title":"'"${{ github.event.pull_request.title }}"'"}}'
+
+          # For proper signature, we need to send the actual GitHub event payload
+          # GitHub Actions provides the full webhook payload in $GITHUB_EVENT_PATH
+          PAYLOAD_BODY=$(cat "$GITHUB_EVENT_PATH")
+
+          SIGNATURE=$(echo -n "$PAYLOAD_BODY" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" -binary | xxd -p | sed 's/^/sha256=/')
+
+          echo "Triggering review for PR #${{ github.event.pull_request.number }} in $GITHUB_REPOSITORY"
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            -H "X-GitHub-Event: pull_request" \
+            -H "X-Hub-Signature-256: $SIGNATURE" \
+            -d "$PAYLOAD_BODY" \
+            "$WEBHOOK_URL")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+
+          echo "Response: $HTTP_CODE — $BODY"
+
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Review triggered successfully"
+          else
+            echo "⚠️ Webhook returned $HTTP_CODE — review may not have been triggered"
+          fi
