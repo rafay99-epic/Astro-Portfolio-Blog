@@ -1,9 +1,8 @@
 ---
-title: >-
-  Fixing Flutter: Stuck at 'Running Gradle task assembleDebug...' – Quick
-  Solution
-description: "Fixing Flutter Error and Solution "
+title: "Flutter Stuck at 'Running Gradle Task assembleDebug'? Here's the Fix (2026)"
+description: "Flutter stuck at 'Running Gradle task assembleDebug' forever? This step-by-step guide fixes it on Windows, Mac, and Linux — covers Gradle cache issues, exit code 1, stuck builds, and slow first builds."
 pubDate: 2025-01-17T19:00:00.000Z
+updatedDate: 2026-06-23T19:00:00.000Z
 draft: false
 archived: false
 heroImage: https://utfs.io/f/TViMykBJnLIJ8PMxGnrtmYFqJTthG6XHUrp5nyDRAkMsBZ4v
@@ -11,20 +10,26 @@ authorName: Abdul Rafay
 authorAvatar: /IMG-20221105-WA0007.jpg
 tags:
   - MobileDevelopment
+  - Flutter
+  - Android
+  - Debugging
 keywords:
-  - programming
-  - software development
-  - android
-  - app development
   - flutter
-  - blog
-  - mobiledevelopment
-  - ios
+  - assembledebug
+  - running gradle task assembledebug
+  - flutter stuck assembledebug
+  - gradle task assembledebug
+  - flutter assembledebug taking too long
+  - flutter assembledebug stuck
+  - gradle assembledebug
+  - flutter gradle clean
+  - assembledebug failed with exit code 1
+  - flutter running gradle task
+  - android
   - mobile development
-  - technology
 canonicalUrl: /blog/fixing-flutter-stuck-at-running-gradle-task-assembledebug-quick-solution
 featured: false
-excerpt: Fixing Flutter Error and Solution
+excerpt: "Flutter stuck at 'Running Gradle task assembleDebug' forever? This guide fixes it on Windows, Mac, and Linux — Gradle cache issues, exit code 1, and slow first builds."
 ---
 
 Flutter is fantastic for developing anything from small apps to complex applications. I absolutely love using Flutter, but sometimes, it can be a real pain in the **you-know-what**. Managing different Flutter versions, dealing with various Java versions—yeah, it's not always smooth sailing. But there’s one error that has truly driven me _crazy_.
@@ -104,4 +109,65 @@ Getting stuck at **"Running Gradle task 'assembleDebug'..."** is one of the most
 
 Remember, the first Gradle build will always take some time, but once it’s done, everything will run much smoother. Don’t let this error slow you down; now you know exactly how to handle it.
 
-Flutter is an amazing tool, and a little troubleshooting like this is just part of the journey. So, keep building, keep experimenting, and don’t let a stuck Gradle task stop you from creating something awesome! 🚀
+Flutter is an amazing tool, and a little troubleshooting like this is just part of the journey. So, keep building, keep experimenting, and don't let a stuck Gradle task stop you from creating something awesome! 🚀
+
+---
+
+## FAQ: Common Flutter Gradle assembleDebug Questions
+
+### How long should "Running Gradle task assembleDebug" take?
+
+On a **first build**, it can take 5–20 minutes depending on your internet speed and machine. Gradle downloads all dependencies, SDK tools, and build artifacts from scratch. On subsequent builds, it should take 30 seconds to 2 minutes. If it's been stuck for more than 20 minutes on a first build, something is wrong — follow the steps above.
+
+### What does "Gradle task assembleDebug failed with exit code 1" mean?
+
+Exit code 1 means the Gradle build failed. The most common causes:
+
+1. **Unaccepted Android licenses** — Run `flutter doctor --android-licenses` and accept all.
+2. **Corrupted Gradle cache** — Run `cd android && ./gradlew clean` then rebuild.
+3. **Missing or outdated Android SDK** — Run `flutter doctor -v` and fix any red items.
+4. **Java version mismatch** — Flutter requires JDK 17+. Check with `java -version`.
+5. **Network issues** — Gradle needs to download dependencies. If you're behind a firewall or proxy, configure Gradle proxy settings in `android/gradle.properties`.
+
+### Flutter build apk --release stuck at "Running Gradle task assembleRelease" — same fix?
+
+Yes! The same solution applies to `assembleRelease`. The Gradle clean + build steps work for both debug and release builds. Run:
+
+```bash
+cd android
+./gradlew clean
+flutter build apk --release
+```
+
+### "flutter run stuck at running gradle task assembleDebug" — how to stop it?
+
+Press `Ctrl+C` (or `Cmd+C` on Mac) in the terminal to kill the stuck process. Then follow the fix steps above before running `flutter run` again. You can also try running with verbose mode to see where it's actually stuck:
+
+```bash
+flutter run --verbose
+```
+
+### What does `flutter doctor -v` show about Gradle?
+
+Run `flutter doctor -v` to get a detailed report of your Flutter environment. It will show:
+
+- **Flutter version** and which channel you're on
+- **Android SDK** path and installed components
+- **Android NDK** location (if needed)
+- **Java version** (must be JDK 17+ for recent Flutter versions)
+- Any issues with your setup that might cause Gradle to fail
+
+Fix every item marked with a red `[!]` before trying to build again.
+
+### Flutter assembleDebug taking too long every time (not just first build)?
+
+If every build is slow (not just the first one), try these:
+
+1. **Clear the Gradle cache**: `rm -rf ~/.gradle/caches/` (Mac/Linux) or delete `%USERPROFILE%\.gradle\caches` (Windows)
+2. **Increase Gradle memory**: Add `org.gradle.jvmargs=-Xmx4096m` to `android/gradle.properties`
+3. **Enable parallel builds**: Add `org.gradle.parallel=true` to `android/gradle.properties`
+4. **Use `--no-daemon` mode** to troubleshoot: `flutter run -- --no-daemon`
+
+### Is "Running Gradle task assembleDebug" stuck or just slow?
+
+If the terminal shows the message and the cursor is blinking, it's likely still working (downloading dependencies). If you see no network activity in your task manager or the process is using 0% CPU, it's probably stuck. Run `flutter run --verbose` to see real-time logs and pinpoint where it's hanging.

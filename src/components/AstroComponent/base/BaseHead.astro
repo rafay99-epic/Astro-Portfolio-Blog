@@ -12,6 +12,7 @@ interface Props {
 	type?: "website" | "article";
 	author?: string;
 	canonical?: string;
+	noindex?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -23,6 +24,7 @@ const {
 	type = "website",
 	author = "Abdul Rafay",
 	canonical,
+	noindex = false,
 } = Astro.props;
 const canonicalHref = canonical ?? canonicalURL.toString();
 
@@ -42,6 +44,8 @@ declare global {
 <meta name="generator" content={Astro.generator} />
 
 <link rel="canonical" href={canonicalHref} />
+
+{noindex && <meta name="robots" content="noindex, follow" />}
 
 <title>{title}</title>
 <meta name="title" content={title} />
