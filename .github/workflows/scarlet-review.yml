@@ -10,6 +10,10 @@
 #    - HERMES_WEBHOOK_SECRET — Shared secret for signature validation
 # 2. Copy this file to: .github/workflows/scarlet-review.yml
 # 3. That's it! Every PR will now get an automated review.
+#
+# NOTE: The webhook trigger uses continue-on-error so that if the Hermes server
+# is offline or the port is blocked (e.g., Oracle Cloud VCN), the workflow
+# still passes and does not block PR merges. The review will simply be skipped.
 
 name: Scarlet Speedster PR Review
 
@@ -22,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send review trigger to Hermes
+        continue-on-error: true
         env:
           WEBHOOK_URL: ${{ secrets.HERMES_WEBHOOK_URL }}
           WEBHOOK_SECRET: ${{ secrets.HERMES_WEBHOOK_SECRET }}
@@ -32,17 +37,13 @@ jobs:
           fi
 
           # Compute HMAC signature
-          PAYLOAD='{"action":"workflow_trigger","repository":{"full_name":"'"$GITHUB_REPOSITORY"'"},"pull_request":{"number":'"${{ github.event.pull_request.number }}"',"title":"'"${{ github.event.pull_request.title }}"'"}}'
-
-          # For proper signature, we need to send the actual GitHub event payload
-          # GitHub Actions provides the full webhook payload in $GITHUB_EVENT_PATH
           PAYLOAD_BODY=$(cat "$GITHUB_EVENT_PATH")
 
           SIGNATURE=$(echo -n "$PAYLOAD_BODY" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" -binary | xxd -p | sed 's/^/sha256=/')
 
           echo "Triggering review for PR #${{ github.event.pull_request.number }} in $GITHUB_REPOSITORY"
 
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+          RESPONSE=$(curl -s -w "\n%{http_code}" --max-time 10 --connect-timeout 5 -X POST \
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: pull_request" \
             -H "X-Hub-Signature-256: $SIGNATURE" \
@@ -57,5 +58,5 @@ jobs:
           if [ "$HTTP_CODE" = "200" ]; then
             echo "✅ Review triggered successfully"
           else
-            echo "⚠️ Webhook returned $HTTP_CODE — review may not have been triggered"
+            echo "⚠️ Webhook returned $HTTP_CODE — review may not have been triggered (server may be offline or port blocked)"
           fi
