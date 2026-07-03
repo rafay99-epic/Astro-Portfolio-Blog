@@ -1,0 +1,36 @@
+bunfig.toml
+  s_a5e50bb795d399::t_e42c6a699cfa61 1-6
+satteri-reading-time.mjs
+  s_a5e50bb795d399::t_c714322ce634a7 1-36
+astro.config.mjs
+  s_a5e50bb795d399::t_42ed0118039ce2 197-207,209-252
+  s_a5e50bb795d399::t_c8568ae76d2914 74-76,78-79
+  h_1e0ba4a9f2a4b4 77,117
+  s_a5e50bb795d399::t_81991b0c47fce5 208
+  s_a5e50bb795d399::t_0e47bd8f7ae801 2,14
+package.json
+  s_a5e50bb795d399::t_590472bd1880f9 22,24-26,28-29,36
+bun.lock
+  s_a5e50bb795d399::t_872c069bde479e 8,10-12,14-15,22,75,77,79-103,107,109,111,113,119,121,123,187-204,235-236,239-241,243,245,247,249,251,253,255,257,259,261,263,265,267,269,271,273,275,277,279,281,283,285,287,289,291,387-388,401-402,435-464,539-540,691-692,707,927,973,1495-1496,1591-1592,1605-1606,1759,1831-1832,1839-1840,1929-1930,1949-1950,1961-1963,1983-1986,2043-2094,2103-2104,2107-2108,2111-2162
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "b0d954e3f1dea759e6af3c7257417d4c11e05fbd",
+  "prompts": {},
+  "humans": {
+    "h_1e0ba4a9f2a4b4": {
+      "author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_a5e50bb795d399": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cb2a7b16-7d30-4726-a659-9b48a7d25812",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
