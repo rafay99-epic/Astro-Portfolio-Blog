@@ -1,4 +1,5 @@
 import { readdirSync, readFileSync } from "node:fs";
+import { satteri } from "@astrojs/markdown-satteri";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import react from "@astrojs/react";
@@ -10,7 +11,7 @@ import { defineConfig } from "astro/config";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import yaml from "js-yaml";
-import { remarkReadingTime } from "./remark-reading-time.mjs";
+import { satteriReadingTime } from "./satteri-reading-time.mjs";
 
 // Map each published blog post's URL path -> last-modified ISO date, read
 // straight from frontmatter at config time. Used to stamp <lastmod> on the
@@ -69,18 +70,16 @@ export default defineConfig({
 	prefetch: {
 		prefetchAll: false,
 	},
-	experimental: {
-		queuedRendering: {
-			enabled: true,
-			poolSize: 3000,
-		},
-	},
 	markdown: {
+		// Astro 7's native Rust Markdown engine. GFM and frontmatter are on by
+		// default, so the old `gfm: true` is dropped. Reading time is provided as a
+		// Sätteri mdast plugin (remark plugins no longer run under Sätteri).
+		processor: satteri({
+			mdastPlugins: [satteriReadingTime],
+		}),
 		syntaxHighlight: {
 			excludeLangs: ["mermaid"],
 		},
-		remarkPlugins: [remarkReadingTime],
-		gfm: true,
 
 		shikiConfig: {
 			theme: "tokyo-night",
@@ -115,6 +114,7 @@ export default defineConfig({
 				forward: ["dataLayer.push"],
 			},
 		}),
+
 		mdx({}),
 		sitemap({
 			filter: (page) =>
@@ -194,28 +194,62 @@ export default defineConfig({
 					warn(warning);
 				},
 				output: {
-					experimentalMinChunkSize: 30000,
-					manualChunks(id) {
-						if (!id.includes("node_modules")) return;
-						if (id.includes("d3-")) return "vendor-d3";
-						if (id.includes("@chevrotain") || id.includes("langium"))
-							return "vendor-parser";
-						if (
-							id.includes("cytoscape") ||
-							id.includes("dagre-d3-es") ||
-							id.includes("dagre")
-						)
-							return "vendor-graph";
-						if (id.includes("mermaid")) return "vendor-mermaid";
-						if (id.includes("katex")) return "vendor-katex";
-						if (id.includes("framer-motion")) return "vendor-framer";
-						if (id.includes("lucide-react")) return "vendor-lucide";
-						if (
-							id.includes("/react/") ||
-							id.includes("/react-dom/") ||
-							id.includes("/scheduler/")
-						)
-							return "react-vendor";
+					// Vite 8 bundles with Rolldown, which deprecated `manualChunks`
+					// (superseded by `codeSplitting`) and dropped Rollup's
+					// `experimentalMinChunkSize`. This is the Rolldown-native
+					// equivalent: groups are matched in array order (ties broken by
+					// smaller index), preserving the original first-match behavior —
+					// e.g. `dagre-d3-es` matches `vendor-d3` before `vendor-graph`,
+					// exactly as the old `if` chain did.
+					codeSplitting: {
+						groups: [
+							{
+								name: "vendor-d3",
+								test: (id) => id.includes("node_modules") && id.includes("d3-"),
+							},
+							{
+								name: "vendor-parser",
+								test: (id) =>
+									id.includes("node_modules") &&
+									(id.includes("@chevrotain") || id.includes("langium")),
+							},
+							{
+								name: "vendor-graph",
+								test: (id) =>
+									id.includes("node_modules") &&
+									(id.includes("cytoscape") ||
+										id.includes("dagre-d3-es") ||
+										id.includes("dagre")),
+							},
+							{
+								name: "vendor-mermaid",
+								test: (id) =>
+									id.includes("node_modules") && id.includes("mermaid"),
+							},
+							{
+								name: "vendor-katex",
+								test: (id) =>
+									id.includes("node_modules") && id.includes("katex"),
+							},
+							{
+								name: "vendor-framer",
+								test: (id) =>
+									id.includes("node_modules") && id.includes("framer-motion"),
+							},
+							{
+								name: "vendor-lucide",
+								test: (id) =>
+									id.includes("node_modules") && id.includes("lucide-react"),
+							},
+							{
+								name: "react-vendor",
+								test: (id) =>
+									id.includes("node_modules") &&
+									(id.includes("/react/") ||
+										id.includes("/react-dom/") ||
+										id.includes("/scheduler/")),
+							},
+						],
 					},
 				},
 			},

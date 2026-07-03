@@ -1,0 +1,6 @@
+# Project-local bun config.
+# Overrides the global `minimumReleaseAge` guard so this project can install
+# freshly published releases (e.g. the latest Astro majors). The global setting
+# in ~/.bunfig.toml still applies to every other project.
+[install]
+minimumReleaseAge = 0
