@@ -19,6 +19,7 @@
 		"biome:check": "biome check --write ."
 	},
 	"dependencies": {
+		"@astrojs/check": "^0.9.9",
 		"@astrojs/mdx": "5.0.4",
 		"@astrojs/partytown": "2.1.7",
 		"@astrojs/react": "5.0.4",
@@ -54,7 +55,7 @@
 		"reading-time": "^1.5.0",
 		"sharp": "^0.34.4",
 		"tailwindcss": "^3.4.18",
-		"typescript": "^5.9.3",
+		"typescript": "^6.0.3",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
