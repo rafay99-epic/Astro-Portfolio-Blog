@@ -1,7 +1,7 @@
 {
 	"name": "rafay99.com",
 	"type": "module",
-	"version": "10.3.0",
+	"version": "10.3.1",
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build && node scripts/indexnow.mjs",
