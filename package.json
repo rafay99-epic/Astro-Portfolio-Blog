@@ -19,8 +19,7 @@
 		"biome:check": "biome check --write ."
 	},
 	"dependencies": {
-		"@astrojs/check": "^0.9.9",
-		"@astrojs/markdown-satteri": "^0.3.3",
+		"@astrojs/markdown-remark": "^7.2.1",
 		"@astrojs/mdx": "7.0.2",
 		"@astrojs/partytown": "2.1.7",
 		"@astrojs/react": "6.0.1",
@@ -37,6 +36,7 @@
 		"@vercel/speed-insights": "^1.2.0",
 		"astro": "7.0.7",
 		"astro-icon": "^1.1.5",
+		"astro-mermaid": "^2.1.0",
 		"astro-opengraph-images": "^1.13.1",
 		"astro-robots-txt": "^1.0.0",
 		"caniuse-lite": "^1.0.30001750",

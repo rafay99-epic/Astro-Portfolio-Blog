@@ -10,7 +10,8 @@ import { defineConfig } from "astro/config";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import yaml from "js-yaml";
-import { satteri } from "@astrojs/markdown-satteri";
+import { unified } from "@astrojs/markdown-remark";
+import mermaid from "astro-mermaid";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
 
 // Map each published blog post's URL path -> last-modified ISO date, read
@@ -73,9 +74,8 @@ export default defineConfig({
 		syntaxHighlight: {
 			excludeLangs: ["mermaid"],
 		},
-		processor: satteri({
-			mdastPlugins: [remarkReadingTime],
-			features: { gfm: true },
+		processor: unified({
+			remarkPlugins: [remarkReadingTime],
 		}),
 		shikiConfig: {
 			theme: "tokyo-night",
@@ -108,6 +108,36 @@ export default defineConfig({
 		partytown({
 			config: {
 				forward: ["dataLayer.push"],
+			},
+		}),
+		mermaid({
+			theme: "base",
+			autoTheme: false,
+			mermaidConfig: {
+				themeVariables: {
+					primaryColor: "#7aa2f7",
+					primaryTextColor: "#c0caf5",
+					primaryBorderColor: "#7aa2f7",
+					lineColor: "#7aa2f7",
+					secondaryColor: "#bb9af7",
+					tertiaryColor: "#565f89",
+					background: "#1a1b26",
+					mainBkg: "#24283b",
+					secondaryBkg: "#414868",
+					tertiaryBkg: "#565f89",
+					secondaryTextColor: "#a9b1d6",
+					tertiaryTextColor: "#9aa5ce",
+					secondaryBorderColor: "#bb9af7",
+					tertiaryBorderColor: "#565f89",
+					noteBkgColor: "#24283b",
+					noteTextColor: "#c0caf5",
+					noteBorderColor: "#7aa2f7",
+					darkMode: "true",
+					fontFamily: "Poppins",
+					fontSize: "16px",
+				},
+				flowchart: { htmlLabels: true, curve: "basis", useMaxWidth: true },
+				sequence: { useMaxWidth: true, actorFontSize: 16, noteFontSize: 16, messageFontSize: 16 },
 			},
 		}),
 		mdx({}),
