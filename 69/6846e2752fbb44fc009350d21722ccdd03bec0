@@ -1,0 +1,14 @@
+package.json
+  h_1e0ba4a9f2a4b4 4,23-24,26-28,30-31,38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "696846e2752fbb44fc009350d21722ccdd03bec0",
+  "prompts": {},
+  "humans": {
+    "h_1e0ba4a9f2a4b4": {
+      "author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
