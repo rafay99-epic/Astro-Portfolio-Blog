@@ -10,6 +10,8 @@ import { defineConfig } from "astro/config";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import yaml from "js-yaml";
+import { unified } from "@astrojs/markdown-remark";
+import mermaid from "astro-mermaid";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
 
 // Map each published blog post's URL path -> last-modified ISO date, read
@@ -68,19 +70,13 @@ export default defineConfig({
 	prefetch: {
 		prefetchAll: false,
 	},
-	experimental: {
-		queuedRendering: {
-			enabled: true,
-			poolSize: 3000,
-		},
-	},
 	markdown: {
 		syntaxHighlight: {
 			excludeLangs: ["mermaid"],
 		},
-		remarkPlugins: [remarkReadingTime],
-		gfm: true,
-
+		processor: unified({
+			remarkPlugins: [remarkReadingTime],
+		}),
 		shikiConfig: {
 			theme: "tokyo-night",
 			defaultColor: false,
@@ -112,6 +108,41 @@ export default defineConfig({
 		partytown({
 			config: {
 				forward: ["dataLayer.push"],
+			},
+		}),
+		mermaid({
+			theme: "base",
+			autoTheme: false,
+			mermaidConfig: {
+				themeVariables: {
+					primaryColor: "#7aa2f7",
+					primaryTextColor: "#c0caf5",
+					primaryBorderColor: "#7aa2f7",
+					lineColor: "#7aa2f7",
+					secondaryColor: "#bb9af7",
+					tertiaryColor: "#565f89",
+					background: "#1a1b26",
+					mainBkg: "#24283b",
+					secondaryBkg: "#414868",
+					tertiaryBkg: "#565f89",
+					secondaryTextColor: "#a9b1d6",
+					tertiaryTextColor: "#9aa5ce",
+					secondaryBorderColor: "#bb9af7",
+					tertiaryBorderColor: "#565f89",
+					noteBkgColor: "#24283b",
+					noteTextColor: "#c0caf5",
+					noteBorderColor: "#7aa2f7",
+					darkMode: "true",
+					fontFamily: "Poppins",
+					fontSize: "16px",
+				},
+				flowchart: { htmlLabels: true, curve: "basis", useMaxWidth: true },
+				sequence: {
+					useMaxWidth: true,
+					actorFontSize: 16,
+					noteFontSize: 16,
+					messageFontSize: 16,
+				},
 			},
 		}),
 		mdx({}),
@@ -180,7 +211,7 @@ export default defineConfig({
 		build: {
 			cssMinify: true,
 			chunkSizeWarningLimit: 2500,
-			rollupOptions: {
+			rolldownOptions: {
 				onwarn(warning, warn) {
 					if (
 						warning.code === "EMPTY_BUNDLE" ||
@@ -193,28 +224,23 @@ export default defineConfig({
 					warn(warning);
 				},
 				output: {
-					experimentalMinChunkSize: 30000,
-					manualChunks(id) {
-						if (!id.includes("node_modules")) return;
-						if (id.includes("d3-")) return "vendor-d3";
-						if (id.includes("@chevrotain") || id.includes("langium"))
-							return "vendor-parser";
-						if (
-							id.includes("cytoscape") ||
-							id.includes("dagre-d3-es") ||
-							id.includes("dagre")
-						)
-							return "vendor-graph";
-						if (id.includes("mermaid")) return "vendor-mermaid";
-						if (id.includes("katex")) return "vendor-katex";
-						if (id.includes("framer-motion")) return "vendor-framer";
-						if (id.includes("lucide-react")) return "vendor-lucide";
-						if (
-							id.includes("/react/") ||
-							id.includes("/react-dom/") ||
-							id.includes("/scheduler/")
-						)
-							return "react-vendor";
+					codeSplitting: {
+						groups: [
+							{ test: /d3-/, name: "vendor-d3" },
+							{ test: /@chevrotain|langium/, name: "vendor-parser" },
+							{
+								test: /cytoscape|dagre-d3-es|dagre/,
+								name: "vendor-graph",
+							},
+							{ test: /mermaid/, name: "vendor-mermaid" },
+							{ test: /katex/, name: "vendor-katex" },
+							{ test: /framer-motion/, name: "vendor-framer" },
+							{ test: /lucide-react/, name: "vendor-lucide" },
+							{
+								test: /\/react\/|\/react-dom\/|\/scheduler\//,
+								name: "react-vendor",
+							},
+						],
 					},
 				},
 			},
