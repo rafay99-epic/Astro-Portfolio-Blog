@@ -1,0 +1,14 @@
+astro.config.mjs
+  h_1e0ba4a9f2a4b4 13-14,77-78,113-140
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "d3bded7365d468e0ae3eb064bc8ff54a61c4755c",
+  "prompts": {},
+  "humans": {
+    "h_1e0ba4a9f2a4b4": {
+      "author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
