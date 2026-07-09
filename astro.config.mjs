@@ -137,7 +137,12 @@ export default defineConfig({
 					fontSize: "16px",
 				},
 				flowchart: { htmlLabels: true, curve: "basis", useMaxWidth: true },
-				sequence: { useMaxWidth: true, actorFontSize: 16, noteFontSize: 16, messageFontSize: 16 },
+				sequence: {
+					useMaxWidth: true,
+					actorFontSize: 16,
+					noteFontSize: 16,
+					messageFontSize: 16,
+				},
 			},
 		}),
 		mdx({}),
