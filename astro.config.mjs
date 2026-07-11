@@ -1,4 +1,5 @@
 import { readdirSync, readFileSync } from "node:fs";
+import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import react from "@astrojs/react";
@@ -8,10 +9,9 @@ import vercel from "@astrojs/vercel";
 import playformCompress from "@playform/compress";
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
+import mermaid from "astro-mermaid";
 import robotsTxt from "astro-robots-txt";
 import yaml from "js-yaml";
-import { unified } from "@astrojs/markdown-remark";
-import mermaid from "astro-mermaid";
 import { remarkReadingTime } from "./remark-reading-time.mjs";
 
 // Map each published blog post's URL path -> last-modified ISO date, read

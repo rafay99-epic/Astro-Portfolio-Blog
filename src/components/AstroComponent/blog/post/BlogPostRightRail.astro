@@ -15,7 +15,28 @@ interface Props {
 const { tocEntries, isArchive, pageUrl, seriesContext } = Astro.props;
 ---
 
-<aside class="post-rail post-rail--right">
+<button
+	class="post-rail-fab"
+	type="button"
+	data-rail-fab
+	aria-expanded="false"
+	aria-controls="post-rail"
+	aria-label="Open page actions and table of contents"
+>
+	<Icon name="lucide:list" class="post-rail-fab-icon" aria-hidden="true" />
+</button>
+<div class="post-rail-backdrop" data-rail-backdrop hidden></div>
+
+<aside id="post-rail" class="post-rail post-rail--right">
+	<button
+		class="post-rail-close"
+		type="button"
+		data-rail-close
+		aria-label="Close"
+	>
+		<Icon name="lucide:x" class="post-rail-close-icon" aria-hidden="true" />
+	</button>
+
 	<div class="post-card post-card--engage">
 		<div class="post-card-title">Quick actions</div>
 		<div class="post-actions">

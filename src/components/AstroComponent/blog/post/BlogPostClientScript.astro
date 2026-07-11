@@ -375,6 +375,48 @@ const { postActionPayload } = Astro.props;
             closeActionMenu();
           });
         }
+
+        const railFab = document.querySelector("[data-rail-fab]");
+        const railPanel = document.getElementById("post-rail");
+        const railBackdrop = document.querySelector("[data-rail-backdrop]");
+        const railClose = document.querySelector("[data-rail-close]");
+        if (railFab && railPanel && !railFab.dataset.railBound) {
+          railFab.dataset.railBound = "1";
+          const closeRail = () => {
+            railPanel.classList.remove("is-open");
+            railBackdrop?.setAttribute("hidden", "");
+            railFab.setAttribute("aria-expanded", "false");
+          };
+          const openRail = () => {
+            railPanel.classList.add("is-open");
+            railBackdrop?.removeAttribute("hidden");
+            railFab.setAttribute("aria-expanded", "true");
+          };
+          railFab.addEventListener("click", () =>
+            railPanel.classList.contains("is-open") ? closeRail() : openRail(),
+          );
+          railClose?.addEventListener("click", closeRail);
+          railBackdrop?.addEventListener("click", closeRail);
+          railPanel.addEventListener("click", (event) => {
+            if (event.target.closest(".toc-link")) closeRail();
+          });
+        }
+      }
+
+      if (!window.__railEscBound) {
+        window.__railEscBound = true;
+        document.addEventListener("keydown", (event) => {
+          if (event.key !== "Escape") return;
+          const panel = document.getElementById("post-rail");
+          if (!panel?.classList.contains("is-open")) return;
+          panel.classList.remove("is-open");
+          document
+            .querySelector("[data-rail-backdrop]")
+            ?.setAttribute("hidden", "");
+          document
+            .querySelector("[data-rail-fab]")
+            ?.setAttribute("aria-expanded", "false");
+        });
       }
 
       if (document.readyState === "loading") {
