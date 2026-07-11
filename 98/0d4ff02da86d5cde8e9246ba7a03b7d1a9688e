@@ -1,0 +1,26 @@
+src/components/AstroComponent/blog/post/BlogPostRightRail.astro
+  s_b3145c139f7057::t_625ef9d4f036bd 18-39
+src/components/AstroComponent/blog/post/BlogPostClientScript.astro
+  s_b3145c139f7057::t_129ce900c4a818 378-419
+astro.config.mjs
+  s_b3145c139f7057::t_074dcd49c7939c 2,12
+src/components/AstroComponent/blog/post/BlogPostLayoutStyles.astro
+  s_b3145c139f7057::t_b9729eee9ca8a7 718-750,754-763,765-773,776-778,781-793,796-799
+  s_b3145c139f7057::t_c61e4cff5456aa 283-289
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "980d4ff02da86d5cde8e9246ba7a03b7d1a9688e",
+  "prompts": {},
+  "sessions": {
+    "s_b3145c139f7057": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2ba744dd-9dc8-4850-8b68-a711b695973c",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
