@@ -171,7 +171,12 @@ export default defineConfig({
 			host: "www.rafay99.com",
 		}),
 		playformCompress({
-			CSS: true,
+			// CSS minification is handled by Vite/Rolldown (lightningcss, cssMinify
+			// below). Do NOT re-run CSSO here: lightningcss emits modern range-syntax
+			// media queries (e.g. `@media (width>=1024px)`) which CSSO doesn't
+			// understand and silently DROPS — that nuked every responsive breakpoint
+			// in production while dev (unminified) looked fine. Keep this false.
+			CSS: false,
 			HTML: {
 				"html-minifier-terser": {
 					removeAttributeQuotes: false,
