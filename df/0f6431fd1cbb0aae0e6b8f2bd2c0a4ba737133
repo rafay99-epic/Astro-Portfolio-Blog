@@ -1,0 +1,20 @@
+astro.config.mjs
+  s_b3145c139f7057::t_f5be69039ba76e 174-178
+  s_b3145c139f7057::t_4c37824871ccd8 179
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "df0f6431fd1cbb0aae0e6b8f2bd2c0a4ba737133",
+  "prompts": {},
+  "sessions": {
+    "s_b3145c139f7057": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2ba744dd-9dc8-4850-8b68-a711b695973c",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
