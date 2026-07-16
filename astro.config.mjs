@@ -209,7 +209,7 @@ export default defineConfig({
 			enabled: true,
 		},
 		maxDuration: 3,
-		imageService: true,
+		imageService: false,
 		isr: true,
 	}),
 	vite: {
