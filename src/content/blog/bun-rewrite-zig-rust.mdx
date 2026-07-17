@@ -1,0 +1,317 @@
+---
+title: "Bun Rewrite: Zig -> Rust"
+date: "2026-07-17T09:23:51.129Z"
+draft: false
+pubDate: "2026-07-13"
+updatedDate: "2026-07-13"
+authorName: Abdul Rafay
+slug: bun-rewrite-zig-rust
+description: "Bun ported 535,496 lines of Zig to Rust in 11 days using ~64 Claudes running in a loop. Here's what actually happened, why it worked, and what it means for the rest of us who write code for a living"
+authorAvatar: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxZSVOvl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+featured: true
+keywords:
+  - ThoughtsProcess
+  - bun
+  - rust
+  - zig
+  - rewrite
+  - claude code
+  - ai coding
+  - llm
+  - software engineering
+  - memory safety
+  - borrow checker
+tags:
+  - ThoughtsProcess
+  - AI
+  - Rust
+  - SoftwareEngineering
+heroImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJOoEN7P8kbVhcyQEigAvaB3fqpPwWD0CRnm81"
+---
+
+ 
+## The Post That Broke My Timeline
+ 
+Every few months something lands on Hacker News and the entire dev internet loses its mind for 48 hours. Usually it's a framework. This time it was a blog post.
+ 
+On July 8th, Jarred Sumner published [Rewriting Bun in Rust](https://bun.com/blog/bun-in-rust). Bun — the JavaScript runtime, 22 million monthly CLI downloads, the thing Claude Code and OpenCode actually run on — got rewritten from Zig to Rust. Half a million lines. Eleven days. One engineer.
+ 
+Not a team. One engineer, watching about 64 instances of Claude do the typing.
+ 
+I read the whole thing twice. Then I read it a third time with a notepad open, because the first two times I was reacting and not thinking. This post is what came out of that third read.
+ 
+## First, Kill the Headline
+ 
+The headline everyone ran with was "AI rewrote Bun in 11 days." That framing is lazy and it's also the least interesting part of the story.
+ 
+Here's the thing: **the rewrite is not the achievement. The harness is.**
+ 
+Jarred says it himself, and it's the line I keep coming back to — he explicitly did *not* prompt Claude with "rewrite Bun in Rust, don't make mistakes" and pray. That would've produced a landfill. What he actually built was a system: a porting spec, a lifetime spec, a work queue, and a review loop that assumed every line of generated code was wrong until proven otherwise.
+ 
+If you take one thing from this post, take that. The model is a component. The engineering is everything around it.
+ 
+## Why Rewrite At All? (The Part People Skipped)
+ 
+Bun started in 2021 as a line-for-line port of esbuild's transpiler from Go to Zig. Zig is *why Bun exists* — Jarred is pretty emotional about this and doesn't throw Zig under the bus even once. He built a transpiler, bundler, minifier, npm-compatible package manager, Jest-like test runner, HTTP/WebSocket client, and a pile of Node.js API implementations in about a year, alone, in a small Oakland apartment, before LLMs were useful for anything.
+ 
+But scope has a bill and it comes due later.
+ 
+Look at the actual bug list from Bun v1.3.14:
+ 
+- heap-use-after-free in `node:zlib` when you call `.reset()` while an async `.write()` is still on the threadpool
+- use-after-free in `node:http2` when a re-entrant JS callback triggers a hashmap rehash and invalidates internal stream pointers
+- use-after-free in `UDPSocket.send()` where a `valueOf()` callback detaches the `ArrayBuffer` between capturing the payload and actually sending it
+- a `tlsSocket.setSession()` leak of roughly 6.5 KB per call from a missing `SSL_SESSION_free`
+- `fs.watch()` watchers that never got collected after `.close()` because a refcount underflow pinned them as GC roots forever
+Read those again. Every single one is the same bug wearing a different hat: **who owns this memory, and when does it die?**
+ 
+And notice the pattern in half of them — user JavaScript running *inside* the lifetime of a native operation. That's the actual monster here. Bun glues a garbage-collected language (JavaScript, via JavaScriptCore) to a manually-managed one (Zig). Almost nobody designs a language for that seam. Zig doesn't have destructors; cleanup is explicit `defer` at every call site. Miss one and you leak. Run one twice on a weird error path and you double-free.
+ 
+They weren't being sloppy either. ASAN on every commit via a patched Zig compiler. ReleaseSafe builds shipped on Windows. Fuzzilli fuzzing the runtime 24/7 — the same fuzzer V8 and JavaScriptCore use. End-to-end leak tests. That's more rigor than 95% of projects out there.
+ 
+It still wasn't enough, because all of that catches bugs *after* you write them.
+ 
+## The Real Argument: Compiler > Style Guide
+ 
+This is the section of Jarred's post that I'd staple to the wall of every engineering team.
+ 
+The traditional answer to "how do we stop making this class of mistake" is a style guide. TigerBeetle has TigerStyle. Google has a 31,000-word C++ style guide. Thirty-one thousand words. And the eternal problem with a style guide is enforcement — you're relying on code review and linters and human attention at 2am.
+ 
+Rust's pitch isn't "Rust is faster." Rust's pitch here is: **use-after-free, double-free, and forgot-to-free-on-the-error-path become compiler errors.** The style guide gets promoted into the type system. `Drop` runs your cleanup automatically instead of you remembering to type `defer` in seventeen places.
+ 
+Compare the feedback loops, because this is the whole ballgame:
+ 
+| Where the bug is caught | When you find out |
+| --- | --- |
+| Fuzzing | after merge, maybe days later |
+| CI | after you push |
+| ASAN / runtime safety checks | when that exact line runs |
+| **Compiler** | **while you're typing** |
+ 
+Bun's team had already started building homegrown Rust-style smart pointers in Zig to fake this. Jarred's honest verdict on that path: worse ergonomics than Rust, none of the guarantees. Which, yeah.
+ 
+## "But Rewrites Are Always a Bad Idea"
+ 
+They are! That's the received wisdom and it's mostly correct. 535,496 lines of Zig (comments excluded) is a small team burning a full year — a year where you ship no features, fix no bugs, patch no CVEs. Nobody sane signs up for that.
+ 
+So the realistic options were:
+1. Do the rewrite, freeze the product for a year. Never happening.
+2. Bolt smart pointers onto Zig and keep grinding. Meh.
+3. Keep fixing use-after-frees one at a time, forever.
+Option 3 was the *actual* default. That's the honest baseline everyone forgets when they argue about whether AI "counts."
+ 
+There was one hidden asset that made option 1 suddenly viable, and it's the most underrated detail in the entire post: **Bun's test suite is written in TypeScript.** It doesn't care what language the runtime is implemented in. So you can swap out the entire engine underneath and the oracle still works — 1.38 million `expect()` calls across 60,624 tests that don't know or care whether they're being run by Zig or Rust.
+ 
+That's not luck. That's an architectural decision from years ago paying a dividend nobody planned for.
+ 
+I want to sit on this for a second, because it's the transferable lesson for people like us who aren't rewriting runtimes. **AI-assisted work at scale is bottlenecked by verification, not generation.** Generation is cheap now. The question is whether you have something that can tell you the output is correct without a human reading it. Bun had that. Most codebases don't. If you want to be ready for this stuff, stop asking "which model should I use" and start asking "what's my oracle?"
+ 
+## How It Actually Ran
+ 
+Jarred frames engineering as a loop, which is one of those observations that's obvious right after someone says it:
+ 
+```js
+// Pseudocode, not real code:
+let task;
+while ((task = todoList.pop())) {
+  const result = task();
+  const feedback = await Promise.all([review(result), review(result)]);
+  await apply(feedback, result);
+}
+```
+ 
+Ticket in, code out, two reviewers, apply feedback. That's your job description. Mine too.
+ 
+He ran roughly 50 of these as dynamic workflows in Claude Code, continuously, for 11 days.
+ 
+### The two decisions that mattered
+ 
+Only two big questions, he says. Everything else is tactics.
+ 
+**1. Incremental or all at once?** All at once. Incremental means shims and adapters and a "we'll delete this later" layer that never gets deleted. He'd already learned this porting esbuild from Go to Zig, by hand, without LLMs.
+ 
+**2. Idiomatic Rust or transpiled-looking Rust?** Transpiled-looking. This one is *so* smart and I think most people would get it wrong. The goal was code that looks like your Zig ran through a machine, so anyone who understood the Zig understands the Rust on day one. Idiomatic refactoring comes later, after v1.4 ships. He kept his team's mental model intact — which is the thing that actually kills rewrites.
+ 
+### Adversarial review
+ 
+Here's the mechanic I'm stealing for my own work.
+ 
+The Claude that writes the code wants the code to get merged. Same as a human. So he split it: **one implementer, two adversarial reviewers, one fixer.** The reviewers get a fresh context window, only the diff, none of the implementer's reasoning, and one instruction — assume this is wrong and find out how.
+ 
+The implementer never reviews. The reviewer never implements.
+ 
+And it caught real things. Three examples from the post, all of which compiled clean and all of which looked completely fine:
+ 
+- **The async close.** A `Box<uv::Pipe>` handed to libuv's `uv_close`, which is asynchronous — libuv keeps the pointer until the next tick. But the Box drops at the end of the match arm. libuv is now holding freed memory, and the close callback frees it again. Use-after-free *and* double-free. Fix: `Box::leak(pipe)` before the close.
+- **`trunc` vs `floor`.** Splitting an f64 into a timespec. For a file mtime before 1970, `trunc` rounds toward zero and you get `{sec: -1, nsec: -500_000_000}`. A negative nsec is not a valid timespec. `floor` keeps nsec in range.
+- **Eager `unwrap_or`.** `first.percentage.unwrap_or(1.0 - second.percentage.unwrap())` — the argument to `unwrap_or` evaluates *always*, even when the Option is `Some`. So `color-mix(in srgb, red 40%, blue)` panics inside the argument before `unwrap_or` gets a chance to ignore it. Needs `unwrap_or_else` and a closure.
+That middle one is a *human* bug. I have written that bug. That eager-`unwrap_or` one gets senior engineers in code review every week. These aren't "AI slop" bugs — they're the bugs a tired person ships on a Friday, and a second reader with no stake in merging caught all three.
+ 
+The lesson isn't "AI reviews code." It's that **separating the author from the reviewer is a structural fix, and it works on models for exactly the same reason it works on people.**
+ 
+## The Messy Middle (My Favourite Part)
+ 
+Honestly? The false starts are the best writing in the post, because this is where you can tell a real engineer was in the chair.
+ 
+**The git brawl.** He kicked off the workflow across all 1,448 `.zig` files and about two minutes in, one Claude ran `git stash`. Another ran `git stash pop`. Then somebody ran `git reset HEAD --hard`. They were trampling each other. Separate worktrees each? Bun's repo is too big — he'd run out of disk. Fix: edit the workflow prompt to ban `git stash`, `git reset`, any git command that isn't committing one specific file. No `cargo`. Nothing slow. Then shard into 4 worktrees × 16 Claudes each.
+ 
+**The stubbing incident.** He told Claude "get all the crates to compile." Claude interpreted that as "stub out the functions that don't compile." Technically correct. Completely useless. It also started writing suspiciously long comments explaining why each workaround was fine — which is such a recognisable tell. So he added a rule for the reviewers: if the workaround needs a paragraph of justification, the code is wrong, fix the code. One prompt edit. Problem gone in a few hours.
+ 
+**The EC2 IOPS thing.** The commit graph in his post has weird dead patches, and the reason is that he forgot to raise IOPS on the instance. One slow `grep` froze disk I/O for minutes. Half a million lines of AI-generated Rust, taken out by an unprovisioned EBS volume. There's a lesson in there about where the bottleneck actually lives.
+ 
+Notice what he does every single time something breaks: **he fixes the loop, not the code.** Bad output isn't a bug in the output, it's a bug in the process that generated the output. Patch the generator. That's the whole discipline.
+ 
+## Compiler Errors as a Work Queue
+ 
+I love this part on pure aesthetics.
+ 
+He wanted ~100 crates instead of Zig's single compilation unit, so Rust would compile in reasonable time. Splitting it surfaced cyclical dependencies. Untangling those produced roughly **16,000 compiler errors**.
+ 
+For one human that's a career-ending Tuesday. For 64 Claudes it's a queue.
+ 
+The workflow, per crate: run `cargo check` once, group errors by file, dump to a file. One Claude fixes. Two review. One applies. Commit. Next crate. `cargo check` runs only at the start — nothing slow, nothing that lets them collide.
+ 
+That's it. **The compiler is the ticket system.** The type checker generates the backlog, the loop drains it. Nobody's writing Jira tickets, nobody's in standup. I've been trying to figure out what "AI-native engineering" actually means beyond marketing noise and I think this is the closest thing I've seen to an answer.
+ 
+Peak throughput: about 1,300 lines of code per minute. Peak hour: 695 commits. Peak minute: 58 commits. And here's my favourite sentence in the whole post — after all that code was written and reviewed, *absolutely none of it worked yet.*
+ 
+## The Grind to Green
+ 
+`cargo check` passing is not `bun --version` working. It had linker errors, then it panicked instantly on startup. Then: get `bun test <file>` to run. Then run tests for real.
+ 
+Which broke in new and beautiful ways, because Bun's test suite is *hostile*. Tests that exhaust every TCP socket on the machine. Tests that write gigabytes to disk. Tests that spawn ~10,000 processes. A test that runs `next dev` and hot-reloads 100 times. Asking 64 parallel agents to please be considerate wasn't going to cut it, so they wrapped everything in `systemd-run` with cgroups for memory and CPU limits and pid namespace isolation.
+ 
+The machine still ran out of disk and crashed several times. Obviously.
+ 
+Two days after the first CI run: 972 failing test files down to 23. A day and a half later Linux went fully green — and that's when he says it first felt like the thing was actually going to work. Windows dragged in last on May 11 at 6:23 AM. Build #54202 went green on all six platforms and he pressed merge.
+ 
+**Zero tests skipped. Zero tests deleted.** He manually verified they were actually running and not being quietly skipped, which — good, because that's the first thing I'd check too.
+ 
+## The Receipts
+ 
+| | |
+| --- | --- |
+| Duration | 11 days (May 3 → merged May 14) |
+| Commits | 6,778 total, 6,502 on the port branch |
+| Diff that landed | +1,009,272 lines |
+| Zig ported | 535,496 lines across 1,448 files |
+| Claudes at peak | ~64 (4 workflows × 16) |
+| Uncached input tokens | 5.9 billion |
+| Output tokens | 690 million |
+| Cached input reads | 72 billion |
+| Cost at API pricing | ~$165,000 |
+| Tests skipped or deleted | 0 |
+ 
+His counterfactual: three engineers with full context, about a year, no features and no bug fixes shipped in the meantime. So they'd never have done it. The real alternative was doing nothing.
+ 
+$165,000 versus three engineer-years. Do that math for your own team and sit with the result for a minute.
+ 
+He used a pre-release **Claude Fable 5** — a Mythos-class model — and says plainly this is the bleeding edge of what's possible right now, and that without Claude Code's dynamic workflows he'd have had to build his own harness to keep 64 agents alive for 11 days.
+ 
+## Did It Actually Get Better? (Yes)
+ 
+This is where I'd have been most skeptical, so let's look.
+ 
+**Bugs.** v1.4.0 fixes 128 bugs that reproduce in v1.3.14. Leaks, crashes, and yes, miscolored help text.
+ 
+**Memory.** They fixed every instrumentable leak, verified with LeakSanitizer wired up to track native allocations. The showcase: `Bun.build()` leaked ~3 MB per call — parsed source and AST symbol tables outliving the build. Bundle a 60-module project 2,000 times in one process:
+ 
+| Builds | v1.3.14 | v1.4.0 |
+| --- | --- | --- |
+| 500 | 1,914 MB | 526 MB |
+| 1,000 | 3,506 MB | 586 MB |
+| 1,500 | 5,097 MB | 608 MB |
+| 2,000 | 6,745 MB | 609 MB |
+ 
+One of those columns levels off. The other one is a dev server that dies at 2pm. And here's the kicker — they'd *tried* to fix this in Zig before. [The PR](https://github.com/oven-sh/bun/pull/24741) wasn't merged, because without `Drop` nobody felt confident enough to hit the button. The language changed what they were willing to ship.
+ 
+**Binary size.** Down ~20% on Linux and Windows. Windows 94 MB → 76 MB, Linux 88 MB → 70 MB. Partly the rewrite (turns out they'd been overusing `comptime` and paying for it in monomorphized code), partly identical code folding and lazily zstd-decompressing chunks of ICU on demand.
+ 
+**Stack usage.** All the recursive-descent parsers use less stack now, because rustc emits LLVM's `llvm.lifetime.start`/`end` intrinsics so LLVM can reuse stack slots. In Zig they'd been manually splitting big functions into small ones to work around [an open issue](https://github.com/ziglang/zig/issues/23475). The compiler just does it now.
+ 
+**Speed.** 2–5% faster, which surprised me — I'd have bet on a small regression. The reason is cross-language LTO: Rust can inline *across* the C/C++ boundary into JavaScriptCore and BoringSSL. Zig couldn't.
+ 
+| Server | v1.3.14 | v1.4.0 | Δ |
+| --- | --- | --- | --- |
+| Bun.serve | 169.6k | 177.7k | +4.8% |
+| node:http | 103.8k | 108.5k | +4.5% |
+| Elysia | 158.9k | 163.3k | +2.8% |
+| express | 64.5k | 66.6k | +3.2% |
+| fastify | 91.5k | 95.9k | +4.8% |
+ 
+Smaller, faster, less memory, fewer crashes. Not the tradeoff anyone predicted.
+ 
+## The Regressions, Because Of Course There Were Some
+ 
+19 known regressions. All fixed. And the pattern in them is genuinely fascinating: **almost every one came from code that looks identical in both languages but means something different.**
+ 
+The `debug_assert!` one is the scariest thing I've read all year:
+ 
+```zig
+// Zig — assert is a function, the argument runs in every build
+if (dev.framework.react_fast_refresh) |rfr| {
+    assert(try dev.client_graph.insertStale(rfr.import_source, false) == ...);
+}
+```
+ 
+```rust
+// Rust — debug_assert! is a macro, the whole expression vanishes in release
+if let Some(rfr) = &dev.framework.react_fast_refresh {
+    debug_assert!(dev.client_graph.insert_stale(&rfr.import_source, false)? == ...);
+}
+```
+ 
+`insert_stale` adds a file to the dev server's hot-reload graph. In release builds it silently stopped running. HMR broke for React projects with HTML routes. Debug builds were fine. **Debug builds were fine.** Think about how long you'd chase that.
+ 
+The others rhyme:
+ 
+- **Odd-length slices.** The Zig helper used `@divTrunc` and ignored a trailing odd byte. `bytemuck::cast_slice` panics instead. `Blob.text()` on a UTF-16 BOM plus an odd number of bytes killed the process.
+- **Bounds checks.** They compiled Zig with `ReleaseFast` on macOS and Linux, which strips bounds checks. Rust keeps them in release. A placeholder constant (`BSS_OVERFLOW_BLOCK_SIZE = 64`, with a comment promising to fix it in Phase B) dropped the interned-filename ceiling from 8.4 million to 270,272 — which real projects hit — and made an off-by-one reachable. Rust panicked instead of writing past the end. Which is, you know, *the entire point.*
+- **`comptime` format strings.** `Output.pretty` rewrites `<r>` and `<d>` markers into ANSI escapes. In Zig `fmt` is comptime, so markers are gone before arguments get substituted. Rust has no comptime parameters, so `Output::pretty` only saw the finished string and rewrote markers inside the arguments too. Result: `bun update -i` prints OSC 8 hyperlinks terminated by `ESC \`, the backslash sits right before the `<` of a trailing `<r>`, the marker parser eats it, and a stray `r` prints. It said `oxfmtr` instead of `oxfmt`.
+![bun update -i printing oxfmtr instead of oxfmt](https://bun.com/images/update-interactive-r.png)
+ 
+Nineteen regressions across a million lines. I've shipped worse from a 200-line PR.
+ 
+## It's In Production Right Now
+ 
+This is the part that shuts down the "cute demo" argument.
+ 
+Prisma launched [Prisma Compute](https://www.prisma.io/blog/bun-rust-rewrite-prisma-compute) public beta on the Rust rewrite. They'd been hitting memory leaks and a connection pool that couldn't recover after a VM was paused and resumed, tested the rewrite against the same failure modes, and it handled them.
+ 
+And Claude Code v2.1.181, out June 17th, runs on Rust Bun. Startup got 10% faster on Linux — 517ms down to 464ms in production telemetry. Otherwise, per Jarred, barely anyone noticed.
+ 
+![Claude Code startup time, Linux p50: 517ms on v2.1.179 vs 464ms on v2.1.181, the first release on Rust Bun](https://bun.com/images/claude-code-rust-bun-startup.png)
+ 
+> "Boring is good." — Jarred Sumner
+ 
+Which is such a good closing note for a rewrite. The highest compliment infrastructure can receive is that nobody noticed you replaced the engine.
+ 
+Since merging: 11 rounds of security review with Claude Code Security, all findings addressed. Plus 24/7 coverage-guided fuzzing on every parser in Bun — JS, TS, JSX, CSS, JSON5, JSONC, TOML, YAML, Markdown, INI, Bun Shell, semver ranges, `.patch` files, CSS colors. The fuzzer files its own PRs with a repro and a fix; humans review them. 100 billion parser executions so far, ~15 PRs out of it.
+ 
+About 4% of the Rust sits in `unsafe` — roughly 13,000 `unsafe` keywords over ~27,000 lines out of ~780,000. 78% of those blocks are one line: a pointer from C++, or one call into a C library. That number should drop as they refactor toward idiomatic Rust, but it'll never hit zero, because JavaScriptCore isn't going anywhere. They publish [an audit page](https://bun.com/bun-unsafe-audit) for it, which is more transparency than I expected.
+ 
+## What I'm Actually Taking From This
+ 
+I wrote a post a while back called *The Price of Thought*, about how most of us are using AI coding tools at maybe 10% of what they can do. We're using a `while` loop as a fancy autocomplete. This post is what the other 90% looks like, and it's humbling.
+ 
+Here's my honest list.
+ 
+**1. The oracle is the product.** Bun could do this because a TypeScript test suite with 1.38 million assertions could verify a million lines of Rust nobody read. Your codebase probably can't make that claim. That's not an AI problem — that's a testing problem you already had, and now it's a ceiling on what AI can do for you. Go fix your tests. That's the prep work.
+ 
+**2. Author ≠ reviewer, always.** Fresh context, only the diff, told to assume it's broken. Free, mechanical, and it caught three real memory bugs in code that compiled clean and read fine.
+ 
+**3. Fix the loop, not the output.** Claude stubbing functions, writing essay-length excuse comments, fighting over `git stash` — every one of those got solved with a prompt edit, not a manual patch. If you're hand-fixing AI output, you're doing the job the loop should do.
+ 
+**4. Make the type system enforce the rule.** A style guide is a suggestion. A compiler error is a fact. This one has nothing to do with AI and everything to do with engineering.
+ 
+**5. Constraints scale better than intelligence.** PORTING.md and LIFETIMES.tsv were written *before* a single line of Rust existed, then adversarially reviewed themselves, then hand-read. Three hours of prep bought eleven days of unattended work. Trial run on 3 files before touching 1,448. De-risk the expensive thing before you spend on it — same as always.
+ 
+**6. The seams are where it bites.** Every regression was a place where two languages agree on syntax and disagree on meaning. `assert` vs `debug_assert!`. `trunc` vs `floor`. Comptime vs runtime. A model that pattern-matches on shape will walk straight into those, and so will a tired human at 1am.
+ 
+The uncomfortable one, the one I've been chewing on for a week: this wasn't the model being brilliant. Read the post again — it's a spec, a queue, isolation, review separation, and a feedback loop tight enough to catch mistakes before they compound. That's the same engineering we've always done. It just runs at 1,300 lines a minute now.
+ 
+One engineer can do a lot more than a year ago. That's true. But look at *which* engineer, and look at how much he understood about his own system before he pointed a single agent at it. The leverage went up. The bar for who gets to use it didn't move an inch.
+ 
+Anyway — go read [the original](https://bun.com/blog/bun-in-rust). The animated commit graphs alone are worth the click, and I've only pulled the parts I couldn't stop thinking about.
+ 
+And then go look at your test suite. 😅
