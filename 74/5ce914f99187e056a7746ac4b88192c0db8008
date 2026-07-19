@@ -1,0 +1,67 @@
+src/content/projects/Cinematic-Experience.md
+  s_68fa4051dcc2af::t_670f34809c0198 15
+src/content/projects/Crisp.mdx
+  s_68fa4051dcc2af::t_0178690f75f500 1-43
+src/content/projects/Dienstleisto.mdx
+  s_68fa4051dcc2af::t_bdf65b049102ea 16
+src/content/projects/EnvPilot.mdx
+  s_68fa4051dcc2af::t_508f3ffb8779bf 27
+src/content/projects/Future-Insight.md
+  s_68fa4051dcc2af::t_66ff9038479f50 19
+src/content/projects/ImageComposer.mdx
+  s_68fa4051dcc2af::t_cb65bc0ad6074c 20
+src/content/projects/Immune-Defenders.md
+  s_68fa4051dcc2af::t_6986e3956e5b84 12
+src/content/projects/Lumo.mdx
+  s_68fa4051dcc2af::t_cf0ba716fca8bb 26
+src/content/projects/MSbridge.mdx
+  s_68fa4051dcc2af::t_fd50d06a9a6c02 19
+src/content/projects/MeaningMate.mdx
+  s_68fa4051dcc2af::t_e3b1a0cdffd887 9
+src/content/projects/Ourtrail.mdx
+  s_68fa4051dcc2af::t_7433b12d938b3c 23
+src/content/projects/Porter.mdx
+  s_68fa4051dcc2af::t_eaf47be0ed75c9 1-42
+src/content/projects/Quill.mdx
+  s_68fa4051dcc2af::t_ac73540c4ab2e4 1-38
+src/content/projects/ShafiqLawAssociates.mdx
+  s_68fa4051dcc2af::t_9db882e45a3744 17
+src/content/projects/Smart-Parking-Assist.mdx
+  s_68fa4051dcc2af::t_bfa412f4e9eede 21
+src/content/projects/TudoNum.mdx
+  s_68fa4051dcc2af::t_f9631e1b4bc155 28
+src/content/projects/Vitals.mdx
+  s_68fa4051dcc2af::t_2f27e7c13a9b33 1-46
+src/content/projects/chessmaster.md
+  s_68fa4051dcc2af::t_00cdd4d28857c3 9
+src/content/projects/floaty_astronaut.md
+  s_68fa4051dcc2af::t_0b8ff5de6f27c0 14
+src/content/projects/flutterBlogSite.md
+  s_68fa4051dcc2af::t_ea73142b14a7ea 24
+src/content/projects/futureInsightApp.md
+  s_68fa4051dcc2af::t_b1bdd869a28a57 19
+src/content/projects/leadfinder.mdx
+  s_68fa4051dcc2af::t_6bff77a62c2a53 24
+src/content/projects/markdownpro.mdx
+  s_68fa4051dcc2af::t_87150791253ac9 19
+src/content/projects/shafiqLawChamber.md
+  s_68fa4051dcc2af::t_2b56ed18e9c014 18
+src/content/projects/simplethread.md
+  s_68fa4051dcc2af::t_2740a3510a853b 17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "745ce914f99187e056a7746ac4b88192c0db8008",
+  "prompts": {},
+  "sessions": {
+    "s_68fa4051dcc2af": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dbee0969-f065-4fc6-a073-4c2aacb51b5b",
+        "model": "unknown"
+      },
+      "human_author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
