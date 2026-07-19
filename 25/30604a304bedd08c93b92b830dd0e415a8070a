@@ -1,0 +1,61 @@
+src/content/projects/Cinematic-Experience.md
+  s_68fa4051dcc2af::t_017dd8bcfe97e1 15
+src/content/projects/Dienstleisto.mdx
+  s_68fa4051dcc2af::t_b0df7b9e96cc6e 16
+src/content/projects/EnvPilot.mdx
+  s_68fa4051dcc2af::t_432818cdf220b6 27
+src/content/projects/Future-Insight.md
+  s_68fa4051dcc2af::t_c124ec9a29ece7 19
+src/content/projects/ImageComposer.mdx
+  s_68fa4051dcc2af::t_efb191d452aa70 20
+src/content/projects/Immune-Defenders.md
+  s_68fa4051dcc2af::t_d417b13d6bd01d 12
+src/content/projects/Lumo.mdx
+  s_68fa4051dcc2af::t_b0322d79e3a9af 26
+src/content/projects/MSbridge.mdx
+  s_68fa4051dcc2af::t_5bed31e9ed184c 19
+src/content/projects/MeaningMate.mdx
+  s_68fa4051dcc2af::t_8ed8f5a5156b6a 9
+src/content/projects/Ourtrail.mdx
+  s_68fa4051dcc2af::t_b6068f6e5bc668 23
+src/content/projects/ShafiqLawAssociates.mdx
+  s_68fa4051dcc2af::t_0a34668351e7c8 17
+src/content/projects/Smart-Parking-Assist.mdx
+  s_68fa4051dcc2af::t_1fb5009b7e29dc 21
+src/content/projects/TudoNum.mdx
+  s_68fa4051dcc2af::t_bc2b988cfedf0b 28
+src/content/projects/chessmaster.md
+  s_68fa4051dcc2af::t_54c1268a1d1528 9
+src/content/projects/cvx.mdx
+  s_68fa4051dcc2af::t_c5cc9b4c52720b 1-50
+src/content/projects/floaty_astronaut.md
+  s_68fa4051dcc2af::t_f44603fd164b4e 14
+src/content/projects/flutterBlogSite.md
+  s_68fa4051dcc2af::t_3e466b615e4183 24
+src/content/projects/futureInsightApp.md
+  s_68fa4051dcc2af::t_7050338971f1db 19
+src/content/projects/leadfinder.mdx
+  s_68fa4051dcc2af::t_bcda39cf17ab45 24
+src/content/projects/markdownpro.mdx
+  s_68fa4051dcc2af::t_73c58f3535d92e 19
+src/content/projects/shafiqLawChamber.md
+  s_68fa4051dcc2af::t_98956f72a34d87 18
+src/content/projects/simplethread.md
+  s_68fa4051dcc2af::t_0ebcf6f7c573ed 17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "2530604a304bedd08c93b92b830dd0e415a8070a",
+  "prompts": {},
+  "sessions": {
+    "s_68fa4051dcc2af": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dbee0969-f065-4fc6-a073-4c2aacb51b5b",
+        "model": "unknown"
+      },
+      "human_author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
