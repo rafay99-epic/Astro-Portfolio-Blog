@@ -16,7 +16,7 @@ ProjectTech:
     "SEO Optimization",
   ]
 ProjectCategory: ["Web Apps"]
-ranking: "8"
+ProjectRanking: "26"
 ProjectDeployedLink: ""
 ---
 

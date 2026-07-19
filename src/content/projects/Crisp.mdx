@@ -1,0 +1,43 @@
+---
+Projecttitle: "Crisp - Automatic Silence & Filler Remover"
+ProjectDescription: "A native SwiftUI macOS app that automatically cuts long pauses and filler words (um, uh, hmm) from screen recordings — audio and video together — producing tight jump-cuts. Runs 100% locally, never touches the original, and includes experimental on-device ML models for filler detection."
+ProjectImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJGpWSssawb4kvpnSiWK6hNjUHqM9Qc3e51BOa"
+draft: false
+ProjectTech:
+  [
+    "Swift",
+    "SwiftUI",
+    "Swift Package Manager",
+    "Apple Silicon",
+    "FFmpeg",
+    "whisper.cpp",
+    "CoreML",
+    "On-device ML",
+  ]
+ProjectCategory: ["Desktop Apps", "AI/ML", "Open Source"]
+ProjectGithubLink: "https://github.com/rafay99-epic/Crisp"
+ProjectDeployedLink: "https://crisp.rafay99.com"
+ProjectRanking: "3"
+---
+
+## Project Overview
+
+Crisp makes your recordings crisp. It is a native SwiftUI app that automatically removes long pauses, silence, and filler words — um, uh, hmm, aww — from screen recordings, cutting them out of the audio and the video together so you skip straight to real editing. Everything runs 100% locally; nothing is uploaded. The original is never touched: it is backed up first, and the result is saved as a new `…_cleaned.mp4` next to it.
+
+## How It Works
+
+The pipeline is four stages. **Backup** copies the original to `_originals/`. **Detect pauses** uses `ffmpeg silencedetect` to find silence from real audio energy, which stays accurate even when speech timing is irregular. **Find fillers** runs [whisper.cpp](https://github.com/ggerganov/whisper.cpp) for word-level timestamps and matches hesitation words. **Re-render** keeps only the wanted segments and joins them with `ffmpeg`, audio and video locked together at the same resolution and frame rate — no downscaling.
+
+The user picks how aggressive the cut is (Gentle to Very aggressive) and whether to strip filler words, drags in one or several videos, and watches a live progress log.
+
+## Research — Custom On-Device Models
+
+Crisp is experimenting with its own small on-device ML models for filler detection as a fast, opt-in alternative to full speech-to-text. The first, **Wren**, is a tiny CNN trained on [PodcastFillers](https://podcastfillers.github.io/) that spots "um"/"uh" at roughly 600× real-time with 0.94 precision on held-out speakers. All training code, benchmarks, and a native eval dashboard live in a separate `research/` tree, kept out of the shipped app; trained models are published to [Hugging Face](https://huggingface.co/rafay99-epic/crisp-models).
+
+## Channels & Distribution
+
+Crisp builds in three side-by-side channels — Stable, Nightly, and Dev — each a separate app with its own icon and settings. Stable and Nightly auto-update from GitHub Releases; Dev never does. The roadmap and design notes are tracked in-repo as plain Markdown via [Backlog.md](https://github.com/MrLesk/Backlog.md), so shipped, in-progress, and planned work all live in git with no external service.
+
+## License
+
+GPL-3.0. © Syntax Lab Technology.

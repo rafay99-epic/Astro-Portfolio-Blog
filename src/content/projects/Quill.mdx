@@ -1,0 +1,38 @@
+---
+Projecttitle: "Quill - Local Speech-to-Text Dictation"
+ProjectDescription: "A personal, for-fun macOS fork of VoiceInk — local, on-device speech-to-text dictation powered by whisper.cpp, with its own identity, GitHub-Releases updater, and stable/nightly/dev channels. A hobby project built to learn, credited fully to upstream."
+ProjectImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJQobd8xFgn1yhkSGRDC7A9coMEHbvUd3KfpeY"
+draft: false
+ProjectTech:
+  [
+    "Swift",
+    "SwiftUI",
+    "Apple Silicon",
+    "whisper.cpp",
+    "Parakeet",
+    "On-device ML",
+    "Homebrew",
+  ]
+ProjectCategory: ["Desktop Apps", "AI/ML", "Open Source"]
+ProjectGithubLink: "https://github.com/rafay99-epic/Quill"
+ProjectDeployedLink: ""
+ProjectRanking: "5"
+---
+
+## Project Overview
+
+Quill is a personal, for-fun macOS fork of [VoiceInk](https://github.com/Beingpax/VoiceInk) — local speech-to-text dictation powered by whisper.cpp. It is a hobby project built for my own use, to learn, and to enjoy tinkering with a real native SwiftUI app.
+
+## What It Actually Is
+
+**Quill is not the official app.** VoiceInk is GPL-3.0 source, and the GPL grants the right to modify and run your own build — Quill is exactly that. All of the real work here is [Beingpax](https://github.com/Beingpax)'s: the app, the design, the engineering, the polish. Everything that makes it useful — local Whisper / Parakeet transcription, the paste engine, the dashboard — is upstream VoiceInk. If you want the real thing with support, updates, and a developer who stands behind it, use the official app at [tryvoiceink.com](https://tryvoiceink.com) and buy a license to support their work.
+
+Quill's own changes are deliberately thin: rebranded to its own name, bundle id, and icon so it never pretends to be the official app; builds locally with no Apple Developer account (ad-hoc signed); and a custom GitHub-Releases updater with its own stable, nightly, and dev channels.
+
+## Distribution
+
+Apple Silicon, macOS 14.4+. Installs through a Homebrew cask tap (`brew install --cask quill`, plus a nightly channel), with a build-from-source path for Xcode. Because builds are ad-hoc signed and not notarized, first launch is right-click → Open; then grant Microphone and Accessibility and download a model in-app. All three channels install side by side with separate icons and data.
+
+## License
+
+GPL-3.0, inherited from [VoiceInk](https://github.com/Beingpax/VoiceInk). Provided as-is, with no warranty of any kind.

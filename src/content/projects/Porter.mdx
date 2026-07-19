@@ -1,0 +1,42 @@
+---
+Projecttitle: "Porter - Downloads-to-NAS Auto-Filer"
+ProjectDescription: "A native macOS menu-bar app that watches the Downloads folder and quietly files each finished download into the matching folder on a NAS. Built to sidestep the macOS limitations that make a launchd cron job silently fail: SMB write scoping, throttled watchers, and TCC blocks."
+ProjectImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ5GXRJELPko82asfnA7ZImhrD30bxS16ucgX9"
+draft: false
+ProjectTech:
+  [
+    "Swift",
+    "SwiftUI",
+    "Swift Package Manager",
+    "Apple Silicon",
+    "FSEvents",
+    "SMAppService",
+    "SMB",
+  ]
+ProjectCategory: ["Desktop Apps", "Open Source"]
+ProjectGithubLink: "https://github.com/rafay99-epic/porter"
+ProjectDeployedLink: "https://porter.rafay99.com"
+ProjectRanking: "4"
+---
+
+## Project Overview
+
+Porter is a menu-bar app for macOS that watches your Downloads folder and quietly files each finished download into the matching folder on your NAS — Pictures, PDFs, Documents, Installers, Movies, Music, Archives, Screenshots, and everything else. The classification and move rules are a direct port of the author's `bin/sort-downloads` script, wrapped in a real app so they actually run.
+
+## Why an App, Not a Cron Job
+
+The obvious approach — a `launchd` job that moves files onto a Finder-mounted SMB share — does not reliably work on modern macOS, for three separate reasons:
+
+- macOS scopes SMB **write** access to the Aqua GUI session that mounted the share, so a `launchd`-spawned process can read the share but its writes fail.
+- `launchd`'s `WatchPaths` goes silently dead and `StartInterval` gets throttled.
+- TCC silently blocks a background script from even reading `~/Downloads`.
+
+Porter sidesteps all three by being a real menu-bar app that runs in the login session. The folder watcher runs in-process via **FSEvents**, not as a separate LaunchAgent. Launch-at-login uses `SMAppService.mainApp` — a login-item app in the full Aqua session — so SMB writes succeed. Full Disk Access attaches to the signed app's stable identity, granted once and surviving updates. The menu-bar icon is always-visible status: watching, sorting, NAS not mounted, needs access. No more silent failures.
+
+## Code Signing
+
+Builds sign ad-hoc by default, but ad-hoc signatures change every build, so macOS treats an update as a brand-new app and drops TCC grants. Porter supports a stable self-signed identity — no Apple account or notarization needed — so Full Disk Access and Gatekeeper identity persist across updates. In CI, signing runs only on release jobs, driven by two repo secrets. The same cert can be reused across the whole app family; each bundle id still gets its own designated requirement.
+
+## License
+
+GPL-3.0. Apple Silicon, macOS 14+. © Syntax Lab Technology.

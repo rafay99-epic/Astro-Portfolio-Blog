@@ -1,0 +1,46 @@
+---
+Projecttitle: "Vitals - Native macOS System Monitor"
+ProjectDescription: "A native SwiftUI menu-bar and dashboard app for Apple Silicon Macs that reads chip temperature, fan speed, and battery health straight from the hardware, presented in a UI that looks like Apple built it. Free and open source."
+ProjectImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ4s1WuiFLOXl3ypochkavemWz6wDQUIAdKrfR"
+draft: false
+ProjectTech:
+  [
+    "Swift",
+    "SwiftUI",
+    "Swift Package Manager",
+    "Apple Silicon",
+    "IOKit / SMC",
+    "React",
+    "Vite",
+    "Tailwind CSS",
+    "Convex",
+    "Turborepo",
+    "Bun",
+  ]
+ProjectCategory: ["Desktop Apps", "Open Source"]
+ProjectGithubLink: "https://github.com/rafay99-epic/Vitals"
+ProjectDeployedLink: "https://vitals.rafay99.com"
+ProjectRanking: "2"
+---
+
+## Project Overview
+
+Your Mac already knows its own temperature, fan speed, and battery health — Apple just never surfaced it. Vitals reads those sensors directly from the hardware and shows them in a native window that looks like it shipped with macOS. It is free, open source, and Apple Silicon only.
+
+The goal was never "another third-party monitor with a busy dashboard." It was a tool that feels first-party: SwiftUI throughout, native controls, no Electron shell, no bundled Chromium. It reads the System Management Controller and IOKit for chip temperature, per-fan RPM, and battery cycle count and wear, then renders them the way Settings would.
+
+## Monorepo Layout
+
+Vitals is a Turborepo monorepo driven by Bun workspaces. The desktop app under `apps/desktop` is pure Swift / SwiftUI built with Swift Package Manager. The marketing site under `apps/website` is React + Vite + Tailwind, with a Convex backend. `turbo` orchestrates build, lint, and test across both so one command covers the whole tree.
+
+## Release Channels
+
+The app ships in three channels that install side by side with separate apps, icons, and settings: **Stable** (`main`, curated weekly release), **Nightly** (rolling pre-release off the integration branch, auto-updates), and **Dev** (local-only builds, no updater). Each push to `main` publishes a full GitHub Release with a versioned DMG; every merge to `nightly` auto-publishes a rolling pre-release. Distribution runs through a Homebrew cask tap with direct DMG as the fallback.
+
+## Applications & Cleanup
+
+Beyond sensors, Vitals includes a native app-cleanup feature — finding where macOS apps leave files behind and removing them safely. That work is informed by the [Mole](https://github.com/tw93/mole) project's battle-tested catalog of leftover locations and its safety-first uninstall design, reimplemented natively in Swift.
+
+## License
+
+GPL-3.0. Free software you may use, study, modify, and redistribute under the same terms. © Syntax Lab Technology.

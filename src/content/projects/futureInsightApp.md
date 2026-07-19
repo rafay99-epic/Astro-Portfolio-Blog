@@ -16,7 +16,7 @@ ProjectTech:
     "Test Magic",
   ]
 ProjectCategory: ["Mobile Apps"]
-ProjectRanking: "9"
+ProjectRanking: "15"
 ProjectDeployedLink: ""
 ---
 
