@@ -12,7 +12,7 @@ ProjectTech:
   - Svelte
 
 ProjectCategory: ["Web Apps"]
-ProjectRanking: "19"
+ProjectRanking: "20"
 ProjectDeployedLink: ""
 ---
 

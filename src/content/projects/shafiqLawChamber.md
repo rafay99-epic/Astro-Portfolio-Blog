@@ -15,7 +15,7 @@ ProjectTech:
     "Playwrite",
     "SEO Optimization",
   ]
-ProjectRanking: "13"
+ProjectRanking: "14"
 ProjectCategory: ["Web Apps"]
 ProjectDeployedLink: "https://shafiqlawchamber.com"
 ---

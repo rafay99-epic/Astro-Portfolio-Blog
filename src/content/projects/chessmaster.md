@@ -6,7 +6,7 @@ draft: true
 ProjectTech:
   ["Flutter", "Firebase", "Dart", "Postman", "Test Magic", "Git", "GitHub"]
 ProjectCategory: ["Mobile Apps"]
-ProjectRanking: "17"
+ProjectRanking: "18"
 ProjectDeployedLink: ""
 ---
 

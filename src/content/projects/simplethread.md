@@ -14,7 +14,7 @@ ProjectTech:
     "Postman",
     "Test Magic",
   ]
-ProjectRanking: "22"
+ProjectRanking: "23"
 ProjectCategory: ["Mobile Apps"]
 ProjectDeployedLink: ""
 ---
