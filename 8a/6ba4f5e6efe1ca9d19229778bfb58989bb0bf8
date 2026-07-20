@@ -1,0 +1,19 @@
+README.md
+  s_194ae03cf93313::t_558cf1255b0621 20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "8a6ba4f5e6efe1ca9d19229778bfb58989bb0bf8",
+  "prompts": {},
+  "sessions": {
+    "s_194ae03cf93313": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_080036af3ffec6SmrRI0kmcSW2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
