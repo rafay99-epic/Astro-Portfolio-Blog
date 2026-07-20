@@ -17,6 +17,7 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
   <img src="https://img.shields.io/badge/Biome-60A5FA?style=flat-square&logo=biome&logoColor=white" alt="Biome" />
   <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Vercel" />
+  <a href="https://wryte.xyz/gh?utm_medium=badge"><img src="https://wryte.xyz/badge.svg" alt="Published with Wryte" /></a>
 </p>
 
 <p align="center">
