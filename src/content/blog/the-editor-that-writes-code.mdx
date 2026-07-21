@@ -1,0 +1,120 @@
+---
+title: I Got Tired of Mermaid Diagrams, So I Taught My Editor to Run React
+date: "2026-07-21T18:01:05.855Z"
+draft: false
+pubDate: "2026-07-21"
+updatedDate: "2026-07-21"
+authorName: Abdul Rafay
+slug: the-editor-that-writes-code
+description: "A while back I ditched server-side Mermaid rendering for a client-side React setup. It worked — but the diagrams still didn't move. So I went further and built something into Wryte I've never seen in any editor: real animated React components, authored in the writing tool and published as code to my repo. Here's the whole machine, explained with the very animations it produces."
+authorAvatar: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxZSVOvl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+keywords:
+  - wryte
+  - mdx react components
+  - live code preview
+  - astro react islands
+  - convex
+  - sucrase
+  - client-side rendering
+  - blog animations
+  - building in   public
+excerpt: |
+    I built an editor that lets me write a React animation, watch it run as I
+    type, and publish it as real code to my repo — and this whole post is
+    explained by the animations it produced.
+featured: true
+tags:
+  - React
+  - MDX
+  - Convex
+  - WebDevelopment
+  - ThoughtsProcess
+  - Wryte
+canonicalUrl: /blog/i-taught-my-blog-editor-to-run-react
+heroImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJL2cE03GODv8zKEuQRClSiYAsbdfeG73ThV1q"
+---
+
+import CompileFlow from "../../components/blog/CompileFlow";
+import JourneySteps from "../../components/blog/JourneySteps";
+import PublishTransform from "../../components/blog/PublishTransform";
+import TrustZones from "../../components/blog/TrustZones";
+import TwoHomes from "../../components/blog/TwoHomes";
+
+
+You know that itch. You finish a post you're proud of, you drop in a diagram to explain the tricky part, and it just… sits there. A static box. A while back I wrote about how I [ditched server-side Mermaid rendering for a client-side React setup](/blog/client-side-mermaid-diagrams-astro-react) — and I loved that fix. It got my diagrams shipping on Vercel without the build system laughing at me.
+
+But here's the thing I didn't say out loud back then: Mermaid diagrams don't *move*. And everybody has them. Open any technical blog and it's the same three visuals — a screenshot, a code block, and a flowchart that's been sitting perfectly still since 2015.
+
+I wanted something almost nobody has. Not an embed. Not a GIF. A real, animated React component living inside my post — running in the reader's browser, the same way it runs in mine. And I wanted to build it without leaving my writing tool, [Wryte](https://wryte.xyz), and without hand-editing `.tsx` files in VS Code like it's a chore.
+
+> So I stopped wishing for it and built it into the editor itself.
+
+And the most honest way to explain how it works is to let it explain itself. Every diagram you're about to see below **is** one of these animations — authored exactly the way this post describes, running live as you read.
+
+Here's the whole journey, start to finish:
+
+<JourneySteps client:visible />
+
+Five steps. Let me pull each one apart, because each one hid a decision I had to get right.
+
+## The one idea that makes it all click
+
+If you take one thing from this post, take this. An animation is a single piece of React source. And that source lives in **two places at once** — running differently in each.
+
+<TwoHomes client:visible />
+
+In the **editor**, the source sits in a database (Convex) and gets compiled in my browser on the fly, so I watch it render live while I type. In the **repo**, that exact same source is committed as a real `.tsx` file and compiled by my site's build, so it runs for you. Same code. Two runtimes. The entire feature is just the machine that keeps those two homes in sync — and rewrites the wiring as the code crosses from one to the other.
+
+That's also why the folder it publishes to isn't hardcoded. Every repo is laid out differently, so you point at your components directory *once*, and everything after that is math.
+
+## Step one: how a pasted component comes alive
+
+Here's the part that surprised me. When I paste a component into the editor, none of it touches a server. The whole compile-and-run loop happens right there in my browser:
+
+<CompileFlow client:visible />
+
+[Sucrase](https://sucrase.io/) strips the TypeScript and turns JSX into plain function calls — it's roughly twenty times faster than Babel and needs zero WebAssembly, so it keeps pace with every keystroke. The result runs through `new Function`, which has no access to the surrounding code, wired to a tiny shim that only ever hands back `react` and nothing else. Whatever the file exports as its default *is* the component. That's what you see render.
+
+And one rule falls right out of this design, so I made it the law:
+
+> Exactly one `export default function`, and imports from `react` only.
+
+The publish step writes the import line as a default import, so a default export isn't a preference — it's load-bearing. And since the same file has to build in my repo later, it can only import what my repo actually ships.
+
+## Step two: the rewrite nobody sees
+
+This is the piece I'm quietly proud of. In the editor I write a plain `<Pulse />`. No import. No framework directive. Nothing. That stuff would just be noise while I'm writing — and worse, it'd chain the whole feature to one framework forever.
+
+So instead, publish *generates* it, shaped for wherever the post is headed:
+
+<PublishTransform client:visible />
+
+It parses the post into a real syntax tree first — so a `<Pulse />` sitting inside a code block is understood as **text**, not a real usage, and never gets touched. (That bug would've been brutal: mangling the exact technical posts this feature exists for.) Then it splices in the `import` line and the `client:visible` directive, and commits the component's `.tsx` right alongside the post — stamped with a `wryte:managed` header so it can never overwrite a file I wrote by hand.
+
+"Write plain, generate specific." That one line is the whole trick. It's what makes this work for anyone's repo, not just mine.
+
+## Okay, but where does the code actually run?
+
+The moment you tell someone "the editor runs arbitrary React," they get nervous. Fair. So let me show you exactly where it runs — and, more importantly, where it deliberately never does:
+
+<TrustZones client:visible />
+
+Two browsers execute the component: mine, for the live preview, and yours, for the published site. The server sitting between them only ever holds the source as a **string**. It stores it, scans it, splices it, commits it — but it never *evaluates* it. There's no server-side sandbox to get wrong, because there's no server-side execution to sandbox in the first place. It's the same trust boundary my Markdown preview already lived inside. I didn't invent a new risk; I just refused to add one.
+
+## What I actually ended up with
+
+Put it all together and I have something I genuinely haven't seen in any editor: I write a component, watch it run as I type, drop it into my prose with a single tag, hit publish, and it lands in my repo as real, reviewable, version-controlled code that my blog builds like any other file.
+
+I went looking to see if I'd reinvented a wheel. I hadn't. The visual builders — Plasmic, TinaCMS, all of them — make you write the component in your IDE first, then merely *drag it in*. Here, the authoring **is** the editor. The prose and the moving picture that explains it are, for once, the exact same artifact.
+
+Which brings me to the fun part, and honestly the reason I wrote this at all:
+
+> Every single animation in this post was authored inside Wryte and published as code to this repo.
+
+You just read five components that describe how they themselves came to exist. If the diagrams are moving, the machine works. And they're moving.
+
+---
+
+*So — would you actually write your blog animations as code, or is a static diagram still good enough for you? And what's the one visual you've always wished you could make move? Tell me in the comments, I want to hear it. 👇*
+
+Untill then next time Nerds. 
