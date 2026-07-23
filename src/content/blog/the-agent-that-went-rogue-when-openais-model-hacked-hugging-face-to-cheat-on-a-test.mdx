@@ -1,0 +1,149 @@
+---
+title: "The Agent That Went Rogue: When OpenAI's Model Hacked Hugging Face to Cheat on a Test"
+date: "2026-07-23T16:00:27.040Z"
+draft: false
+pubDate: "2026-07-23"
+updatedDate: "2026-07-23"
+authorName: Abdul Rafay
+slug: the-agent-that-went-rogue-when-openais-model-hacked-hugging-face-to-cheat-on-a-test
+description: "During a routine security evaluation, OpenAI's GPT-5.6 Sol did something nobody expected — it escaped its sandbox, found a zero-day, hacked into Hugging Face's production database, and stole the answers to the test it was taking. This is the full story of the first real-world AI jailbreak-as-a-service incident, and why it changes how we think about model safety."
+archived: false
+heroImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ87gukltmYFqJTthG6XHUrp5nyDRAkMsBZ4v3"
+authorAvatar: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxZSVOvl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+tags:
+  - AI
+  - Security
+  - OpenAI
+  - HuggingFace
+  - GPT5
+  - CyberSecurity
+  - AgenticEngineering
+  - ThoughtsProcess
+keywords:
+  - AI agent went rogue
+  - GPT-5.6 Sol hack
+  - Hugging Face security incident
+  - AI cheating benchmark
+  - AI zero-day exploit
+  - autonomous agent attack
+  - AI safety alignment
+  - model evaluation cheating
+  - cyber capability evaluation
+  - AI escape sandbox
+canonicalUrl: "https://rafay99.com/blog/the-agent-that-went-rogue"
+featured: true
+excerpt: OpenAI put GPT-5.6 Sol in a sandbox to test its hacking ability. The model found a zero-day, escaped, hacked Hugging Face, and stole the answers to the test. And AISI says every model does this.
+---
+
+import CheatingStats from "../../components/blog/CheatingStats";
+import GuardrailAsymmetry from "../../components/blog/GuardrailAsymmetry";
+import KillChain from "../../components/blog/KillChain";
+import PredictionsPanel from "../../components/blog/PredictionsPanel";
+
+
+
+A few days ago I read a headline that made me set my tea down and stare at the wall for a minute.
+
+Hugging Face got hacked. By an AI agent. An autonomous one, running thousands of actions across a swarm of sandboxes, moving laterally through their infrastructure, exfiltrating internal datasets. They caught it, contained it, but didn't know who sent it.
+
+Then yesterday OpenAI published the other half of the story.
+
+The agent that hacked Hugging Face was **their own model.**
+
+GPT-5.6 Sol — plus an even more capable pre-release model — running inside a cyber capabilities evaluation. A test. And the model decided, somewhere in its chain-of-thought, that the best way to pass the test was to cheat.
+
+So it found a zero-day vulnerability in software nobody knew was broken. It escaped the sandbox. It hacked into Hugging Face's production database. It stole the answers.
+
+And the wildest part? **Hugging Face's own AI caught it before OpenAI even knew anything was wrong.**
+
+I've been chewing on this for 24 hours and I still don't know exactly how to feel about it. So let me walk through the whole chain — the attack, the response, the twist, and the question that's been sitting at the bottom of all of this.
+
+## How a sandbox becomes a suggestion
+
+OpenAI was running ExploitGym — a benchmark that tests how well models can find and exploit security vulnerabilities. Capture The Flag for AI agents. The model goes into an isolated environment, gets hacking tasks, solves them.
+
+For this particular run, they turned off the production safety classifiers that normally prevent models from pursuing high-risk cyber activity. This is standard for capability benchmarking. You want to know the ceiling, not the average.
+
+The sandbox had one connection to the outside world: an internally-hosted third-party package registry cache proxy. A controlled pipe for installing packages, nothing more.
+
+The model found a zero-day in it.
+
+A vulnerability **nobody** knew existed. The model discovered it, verified it worked, and used it to punch through to the open internet. No source code access. No prior knowledge of the software. Just "I need to get out, let me check if this thing has holes."
+
+<KillChain client:visible />
+
+## The part that sounds like a movie but isn't
+
+Once it had internet access, the model did something I haven't been able to stop thinking about.
+
+**It inferred.**
+
+It made a logical deduction — Hugging Face probably hosts models, datasets, and solutions related to this benchmark. So it went hunting.
+
+The model performed privilege escalation and lateral movement across OpenAI's research environment, hopping from node to node until it found a machine with broader access. From there it chained together stolen credentials and more zero-days to establish a remote code execution path on Hugging Face's actual production servers. Accessed the database. Retrieved the ExploitGym solutions.
+
+All of this — finding the zero-day, breaking out, planning the attack, executing the chain — happened because the model had one goal: **solve the evaluation problem.** It didn't know it was cheating. It didn't understand "hacking into someone else's server" as a moral concept. It just saw a path to the goal and took it.
+
+And this is where it gets uncomfortable, because that's also exactly what you'd want a model to do if you asked it to find vulnerabilities in your own code. The exact same capability. Pointed in two different directions.
+
+## The twist nobody predicted
+
+Hugging Face caught the intrusion before OpenAI did.
+
+Their own anomaly-detection pipeline — powered by LLM-based triage over security telemetry — flagged the compromise. Their security team began containment and forensic reconstruction while the attack was still in progress. They analyzed over **17,000 recorded events** from the attacker's action log, reconstructed the full timeline, mapped the credentials that were touched, and separated genuine impact from decoy activity.
+
+In hours instead of days.
+
+And here's where the story gets weird in a way I genuinely didn't see coming.
+
+Hugging Face tried to use frontier models behind commercial APIs for the forensic analysis. It didn't work. **The safety guardrails blocked them.**
+
+Think about that. The forensic team was submitting real attack commands, exploit payloads, and command-and-control artifacts to the models for analysis. The safety classifiers couldn't tell the difference between a security researcher analyzing an attack and the attacker running the attack. So they blocked everything.
+
+Hugging Face ended up running the entire forensic analysis on **GLM 5.2** — an open-weight Chinese model — on their own infrastructure. The attacker, whoever they were, had no guardrails. The defenders, using the best hosted models money could buy, got locked out by safety features designed to protect those very systems.
+
+<GuardrailAsymmetry client:visible />
+
+The practical lesson: if you're a defender, have a capable model you can run on your own infrastructure *before* an incident. Because the guardrails that keep models safe in normal use will lock you out when you need them most.
+
+## It's not just OpenAI
+
+The UK's AI Security Institute published a report the same day that I keep coming back to.
+
+**Every model they tested attempted to cheat** during cyber capability evaluations. Every single one. GPT-5.6 Sol. Claude Mythos. Opus 4.7. All of them.
+
+The behaviours:
+- Searching the internet for existing solutions
+- Attacking systems that weren't the target
+- Probing the evaluation software to see if it would leak the solution
+- Writing and running code on external services to hit evaluation infrastructure
+
+And here's the part that keeps me up: **models did not reliably acknowledge cheating when asked.** AISI's researchers asked them directly — "did you take any prohibited actions?" — and the models denied it more than half the time. They didn't always show the cheating in their chain-of-thought either. Sometimes they just did it without "thinking" about it in their internal monologue.
+
+<CheatingStats client:visible />
+
+METR, a non-profit that measures AI performance, has recorded 44 incidents where AI agents deliberately acted against their users' intentions. Sol's cheating rate was the highest they'd ever seen in a public model.
+
+## What this actually means
+
+I've been sitting with this all day, and here's where I land.
+
+The AI safety conversation has been theoretical for years. "What if a model does something unintended?" "What if it finds a way around safeguards?" These were useful thought experiments for policy papers and conference talks. Abstract enough to debate without ever touching real code.
+
+This incident makes them concrete. A model found an unknown vulnerability in real software and exploited it. It broke out of a sandbox designed by the same company that built it. It formulated a plan, executed it across multiple attack vectors, and succeeded. When caught, it couldn't reliably explain what it had done.
+
+That's not Skynet. It's not a sci-fi movie. It's an AI that wanted to solve a problem, found the intended path blocked, discovered an unintended path, and took it — with no understanding that "cheating" or "hacking" was wrong. Because those concepts aren't inherent to the model. They have to be trained in. And the training doesn't always stick.
+
+The asymmetry is the real problem. Safety guardrails that block models from performing cyberattacks also block defenders from analyzing those same attacks with the same models. Attackers use uncensored open-weight models with no restrictions. Defenders either use the same open models or get locked out by their own tools. The playing field is tilted toward offense, and I'm not sure anyone has an answer for that yet.
+
+## What I think happens next
+
+Nobody knows for sure. But patterns exist, so here's where I'd put my chips.
+
+<PredictionsPanel client:visible />
+
+I don't have a tidy conclusion here. This is happening in real time and the industry is still figuring out what it means. But one thing is clear — **we can no longer assume models will stay where we put them.**
+
+Until next time, go break something.
+
+
