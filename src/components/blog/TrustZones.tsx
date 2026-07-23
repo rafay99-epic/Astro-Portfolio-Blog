@@ -12,126 +12,144 @@ import { useEffect, useState } from "react";
  * passing through as inert text.
  */
 export default function TrustZones() {
-  const [pos, setPos] = useState(0);
+	const [pos, setPos] = useState(0);
 
-  useEffect(() => {
-    const id = setInterval(() => setPos((p) => (p + 1) % 3), 1400);
-    return () => clearInterval(id);
-  }, []);
+	useEffect(() => {
+		const id = setInterval(() => setPos((p) => (p + 1) % 3), 1400);
+		return () => clearInterval(id);
+	}, []);
 
-  const c = {
-    bg: "#1a1b26",
-    panel: "#24283b",
-    line: "#3b4261",
-    text: "#c0caf5",
-    muted: "#737aa2",
-    blue: "#7aa2f7",
-    green: "#9ece6a",
-    red: "#f7768e",
-    teal: "#73daca",
-  };
+	const c = {
+		bg: "#1a1b26",
+		panel: "#24283b",
+		line: "#3b4261",
+		text: "#c0caf5",
+		muted: "#737aa2",
+		blue: "#7aa2f7",
+		green: "#9ece6a",
+		red: "#f7768e",
+		teal: "#73daca",
+	};
 
-  const zones = [
-    { label: "Your browser", note: "compiles + renders", runs: true, accent: c.blue },
-    { label: "Convex server", note: "stores text · never runs", runs: false, accent: c.teal },
-    { label: "Reader's browser", note: "builds + hydrates", runs: true, accent: c.green },
-  ];
+	const zones = [
+		{
+			label: "Your browser",
+			note: "compiles + renders",
+			runs: true,
+			accent: c.blue,
+		},
+		{
+			label: "Convex server",
+			note: "stores text · never runs",
+			runs: false,
+			accent: c.teal,
+		},
+		{
+			label: "Reader's browser",
+			note: "builds + hydrates",
+			runs: true,
+			accent: c.green,
+		},
+	];
 
-  return (
-    <div
-      style={{
-        background: c.bg,
-        border: `1px solid ${c.line}`,
-        borderRadius: 16,
-        padding: 24,
-        fontFamily: "ui-sans-serif, system-ui, sans-serif",
-        color: c.text,
-      }}
-    >
-      <div
-        style={{
-          fontFamily: "ui-monospace, Menlo, monospace",
-          fontSize: 11,
-          letterSpacing: ".18em",
-          textTransform: "uppercase",
-          color: c.muted,
-          marginBottom: 18,
-        }}
-      >
-        Where the code runs
-      </div>
+	return (
+		<div
+			style={{
+				background: c.bg,
+				border: `1px solid ${c.line}`,
+				borderRadius: 16,
+				padding: 24,
+				fontFamily: "ui-sans-serif, system-ui, sans-serif",
+				color: c.text,
+			}}
+		>
+			<div
+				style={{
+					fontFamily: "ui-monospace, Menlo, monospace",
+					fontSize: 11,
+					letterSpacing: ".18em",
+					textTransform: "uppercase",
+					color: c.muted,
+					marginBottom: 18,
+				}}
+			>
+				Where the code runs
+			</div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        {zones.map((z, i) => {
-          const here = pos === i;
-          return (
-            <div key={z.label} style={{ display: "flex", flex: 1, alignItems: "center", gap: 8 }}>
-              <div
-                style={{
-                  flex: 1,
-                  border: `1px solid ${here ? z.accent : c.line}`,
-                  borderRadius: 12,
-                  background: c.panel,
-                  padding: "14px 12px",
-                  textAlign: "center",
-                  transition: "all .4s ease",
-                  boxShadow: here ? `0 0 22px -7px ${z.accent}` : "none",
-                }}
-              >
-                <div style={{ fontSize: 13, fontWeight: 600, color: c.text }}>
-                  {z.label}
-                </div>
-                <div
-                  style={{
-                    marginTop: 6,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 5,
-                    fontFamily: "ui-monospace, Menlo, monospace",
-                    fontSize: 10.5,
-                    padding: "2px 8px",
-                    borderRadius: 999,
-                    border: `1px solid ${z.runs ? c.green : c.red}`,
-                    color: z.runs ? c.green : c.red,
-                  }}
-                >
-                  {z.runs ? "▶ runs" : "✕ text only"}
-                </div>
-                <div style={{ marginTop: 8, fontSize: 11, color: c.muted }}>
-                  {z.note}
-                </div>
-                {/* the travelling packet */}
-                <div
-                  style={{
-                    margin: "10px auto 0",
-                    width: here ? 44 : 8,
-                    height: 8,
-                    borderRadius: 999,
-                    background: here ? z.accent : c.line,
-                    boxShadow: here ? `0 0 12px 1px ${z.accent}` : "none",
-                    transition: "all .5s cubic-bezier(.5,0,.4,1)",
-                  }}
-                />
-              </div>
-              {i < zones.length - 1 && (
-                <div style={{ color: c.line, fontSize: 15 }}>→</div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+			<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+				{zones.map((z, i) => {
+					const here = pos === i;
+					return (
+						<div
+							key={z.label}
+							style={{ display: "flex", flex: 1, alignItems: "center", gap: 8 }}
+						>
+							<div
+								style={{
+									flex: 1,
+									border: `1px solid ${here ? z.accent : c.line}`,
+									borderRadius: 12,
+									background: c.panel,
+									padding: "14px 12px",
+									textAlign: "center",
+									transition: "all .4s ease",
+									boxShadow: here ? `0 0 22px -7px ${z.accent}` : "none",
+								}}
+							>
+								<div style={{ fontSize: 13, fontWeight: 600, color: c.text }}>
+									{z.label}
+								</div>
+								<div
+									style={{
+										marginTop: 6,
+										display: "inline-flex",
+										alignItems: "center",
+										gap: 5,
+										fontFamily: "ui-monospace, Menlo, monospace",
+										fontSize: 10.5,
+										padding: "2px 8px",
+										borderRadius: 999,
+										border: `1px solid ${z.runs ? c.green : c.red}`,
+										color: z.runs ? c.green : c.red,
+									}}
+								>
+									{z.runs ? "▶ runs" : "✕ text only"}
+								</div>
+								<div style={{ marginTop: 8, fontSize: 11, color: c.muted }}>
+									{z.note}
+								</div>
+								{/* the travelling packet */}
+								<div
+									style={{
+										margin: "10px auto 0",
+										width: here ? 44 : 8,
+										height: 8,
+										borderRadius: 999,
+										background: here ? z.accent : c.line,
+										boxShadow: here ? `0 0 12px 1px ${z.accent}` : "none",
+										transition: "all .5s cubic-bezier(.5,0,.4,1)",
+									}}
+								/>
+							</div>
+							{i < zones.length - 1 && (
+								<div style={{ color: c.line, fontSize: 15 }}>→</div>
+							)}
+						</div>
+					);
+				})}
+			</div>
 
-      <div
-        style={{
-          marginTop: 16,
-          fontSize: 12.5,
-          color: c.muted,
-          textAlign: "center",
-        }}
-      >
-        The middle never executes your component — so there's no server
-        sandbox to get wrong.
-      </div>
-    </div>
-  );
+			<div
+				style={{
+					marginTop: 16,
+					fontSize: 12.5,
+					color: c.muted,
+					textAlign: "center",
+				}}
+			>
+				The middle never executes your component — so there's no server sandbox
+				to get wrong.
+			</div>
+		</div>
+	);
 }

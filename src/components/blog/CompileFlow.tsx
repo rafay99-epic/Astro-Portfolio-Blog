@@ -10,132 +10,132 @@ import { useEffect, useState } from "react";
  * token arrives. No server involved — this whole loop is client-side.
  */
 export default function CompileFlow() {
-  const stages = [
-    { key: "paste", label: "Paste TSX", note: "your source" },
-    { key: "sucrase", label: "Sucrase", note: "strip types, JSX → jsx()" },
-    { key: "fn", label: "new Function", note: "no closure access" },
-    { key: "export", label: "default export", note: "the component" },
-    { key: "render", label: "Live render", note: "in the preview" },
-  ];
-  const [active, setActive] = useState(0);
+	const stages = [
+		{ key: "paste", label: "Paste TSX", note: "your source" },
+		{ key: "sucrase", label: "Sucrase", note: "strip types, JSX → jsx()" },
+		{ key: "fn", label: "new Function", note: "no closure access" },
+		{ key: "export", label: "default export", note: "the component" },
+		{ key: "render", label: "Live render", note: "in the preview" },
+	];
+	const [active, setActive] = useState(0);
 
-  useEffect(() => {
-    const id = setInterval(
-      () => setActive((a) => (a + 1) % stages.length),
-      1100,
-    );
-    return () => clearInterval(id);
-  }, [stages.length]);
+	useEffect(() => {
+		const id = setInterval(
+			() => setActive((a) => (a + 1) % stages.length),
+			1100,
+		);
+		return () => clearInterval(id);
+	}, []);
 
-  const c = {
-    bg: "#1a1b26",
-    panel: "#24283b",
-    line: "#3b4261",
-    text: "#c0caf5",
-    muted: "#737aa2",
-    blue: "#7aa2f7",
-    teal: "#73daca",
-  };
+	const c = {
+		bg: "#1a1b26",
+		panel: "#24283b",
+		line: "#3b4261",
+		text: "#c0caf5",
+		muted: "#737aa2",
+		blue: "#7aa2f7",
+		teal: "#73daca",
+	};
 
-  return (
-    <div
-      style={{
-        background: c.bg,
-        border: `1px solid ${c.line}`,
-        borderRadius: 16,
-        padding: 24,
-        fontFamily: "ui-sans-serif, system-ui, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          fontFamily: "ui-monospace, Menlo, monospace",
-          fontSize: 11,
-          letterSpacing: ".18em",
-          textTransform: "uppercase",
-          color: c.muted,
-          marginBottom: 18,
-        }}
-      >
-        Compile pipeline · runs in your browser
-      </div>
+	return (
+		<div
+			style={{
+				background: c.bg,
+				border: `1px solid ${c.line}`,
+				borderRadius: 16,
+				padding: 24,
+				fontFamily: "ui-sans-serif, system-ui, sans-serif",
+			}}
+		>
+			<div
+				style={{
+					fontFamily: "ui-monospace, Menlo, monospace",
+					fontSize: 11,
+					letterSpacing: ".18em",
+					textTransform: "uppercase",
+					color: c.muted,
+					marginBottom: 18,
+				}}
+			>
+				Compile pipeline · runs in your browser
+			</div>
 
-      <div style={{ display: "flex", alignItems: "stretch", gap: 6 }}>
-        {stages.map((s, i) => {
-          const on = i === active;
-          const done = i < active;
-          return (
-            <div key={s.key} style={{ display: "flex", flex: 1, gap: 6 }}>
-              <div
-                style={{
-                  flex: 1,
-                  border: `1px solid ${on ? c.blue : c.line}`,
-                  borderRadius: 10,
-                  background: on ? "rgba(122,162,247,.1)" : c.panel,
-                  padding: "12px 10px",
-                  textAlign: "center",
-                  transition: "all .4s ease",
-                  boxShadow: on ? `0 0 20px -6px ${c.blue}` : "none",
-                  opacity: done ? 0.55 : 1,
-                }}
-              >
-                <div
-                  style={{
-                    width: 22,
-                    height: 22,
-                    margin: "0 auto 8px",
-                    borderRadius: "50%",
-                    border: `1.5px solid ${on || done ? c.teal : c.line}`,
-                    color: on || done ? c.teal : c.muted,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontFamily: "ui-monospace, Menlo, monospace",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    transition: "all .4s ease",
-                  }}
-                >
-                  {done ? "✓" : i + 1}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12.5,
-                    fontWeight: 600,
-                    color: on ? c.text : c.muted,
-                    transition: "color .4s ease",
-                  }}
-                >
-                  {s.label}
-                </div>
-                <div
-                  style={{
-                    marginTop: 3,
-                    fontSize: 10.5,
-                    color: c.muted,
-                    fontFamily: "ui-monospace, Menlo, monospace",
-                    minHeight: 26,
-                  }}
-                >
-                  {s.note}
-                </div>
-              </div>
-              {i < stages.length - 1 && (
-                <div
-                  style={{
-                    alignSelf: "center",
-                    color: i < active ? c.teal : c.line,
-                    transition: "color .4s ease",
-                    fontSize: 14,
-                  }}
-                >
-                  ▸
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+			<div style={{ display: "flex", alignItems: "stretch", gap: 6 }}>
+				{stages.map((s, i) => {
+					const on = i === active;
+					const done = i < active;
+					return (
+						<div key={s.key} style={{ display: "flex", flex: 1, gap: 6 }}>
+							<div
+								style={{
+									flex: 1,
+									border: `1px solid ${on ? c.blue : c.line}`,
+									borderRadius: 10,
+									background: on ? "rgba(122,162,247,.1)" : c.panel,
+									padding: "12px 10px",
+									textAlign: "center",
+									transition: "all .4s ease",
+									boxShadow: on ? `0 0 20px -6px ${c.blue}` : "none",
+									opacity: done ? 0.55 : 1,
+								}}
+							>
+								<div
+									style={{
+										width: 22,
+										height: 22,
+										margin: "0 auto 8px",
+										borderRadius: "50%",
+										border: `1.5px solid ${on || done ? c.teal : c.line}`,
+										color: on || done ? c.teal : c.muted,
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+										fontFamily: "ui-monospace, Menlo, monospace",
+										fontSize: 11,
+										fontWeight: 700,
+										transition: "all .4s ease",
+									}}
+								>
+									{done ? "✓" : i + 1}
+								</div>
+								<div
+									style={{
+										fontSize: 12.5,
+										fontWeight: 600,
+										color: on ? c.text : c.muted,
+										transition: "color .4s ease",
+									}}
+								>
+									{s.label}
+								</div>
+								<div
+									style={{
+										marginTop: 3,
+										fontSize: 10.5,
+										color: c.muted,
+										fontFamily: "ui-monospace, Menlo, monospace",
+										minHeight: 26,
+									}}
+								>
+									{s.note}
+								</div>
+							</div>
+							{i < stages.length - 1 && (
+								<div
+									style={{
+										alignSelf: "center",
+										color: i < active ? c.teal : c.line,
+										transition: "color .4s ease",
+										fontSize: 14,
+									}}
+								>
+									▸
+								</div>
+							)}
+						</div>
+					);
+				})}
+			</div>
+		</div>
+	);
 }
