@@ -1,0 +1,157 @@
+---
+title: Code Is Cheap Now. Your Test Suite Is the Product
+date: "2026-07-25T08:00:04.727Z"
+draft: false
+pubDate: "2026-07-25"
+updatedDate: "2026-07-21"
+authorName: Abdul Rafay
+slug: code-is-cheap-now-your-test-suite-is-the-product
+description: "Rewriting big software used to be unthinkable — feature parity was a wall you'd spend years climbing. Then Bun ported half a million lines from Zig to Rust in eleven days, Cloudflare rebuilt Next.js in a week, and Google let AI author 80% of a migration. The thing they all leaned on wasn't the model. It was the test suite. Here's why tests just became the most valuable code you own."
+authorAvatar: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxZSVOvl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+canonicalUrl: "https://rafay99.com/blog/code-is-cheap-tests-are-the-product"
+tags:
+  - AI
+  - Testing
+  - CodeMigration
+  - Rust
+  - ClaudeCode
+  - SoftwareEngineering
+  - ThoughtsProcess
+keywords:
+  - test suites AI
+  - code migration AI
+  - bun zig rust rewrite
+  - cloudflare vinext
+  - google ai code migration
+  - tests as spec
+  - AI rewrite test driven
+  - test suite value
+  - software rewrite AI
+excerpt: "Rewriting big software used to be unthinkable. Then AI made porting a codebase a weekend job — and the thing every one of those ports leaned on wasn't the model. It was the test suite. Code got cheap. Tests didn't."
+---
+
+import CodeVsTests from "../../components/blog/CodeVsTests";
+import MigrationLoop from "../../components/blog/MigrationLoop";
+import SpecSurvivesPort from "../../components/blog/SpecSurvivesPort";
+
+
+
+## The rewrite that never ends
+
+Let me start with the version of this story we're all used to — the sad one.
+
+System76 got tired of fighting GNOME. Their old Pop!_OS desktop was a pile of GNOME extensions, and every time GNOME shifted, those extensions cracked. So they made the big-boy decision: stop patching someone else's house, build your own. COSMIC — from scratch, in Rust, on Wayland, with their own toolkit. No GTK, no GNOME, no extensions. A clean thing they'd own end to end.
+
+That was 2021. The first alpha didn't land until August 2024. The first *stable* release didn't ship until December 2025. Four years to walk out of one desktop and into another — and honestly, that's a *success* story, because most from-scratch rewrites just die in the alpha.
+
+That's the world I grew up building in. Rewriting anything real was borderline irresponsible. The moment you said "let's rebuild this," you signed up to freeze features, freeze bugfixes, and freeze your roadmap while a team climbs the feature-parity wall for a year or three — and nobody thanks you, because from the outside nothing changed. The old thing already worked. You just spent eighteen months making a new thing that *also* works, if you're lucky.
+
+So we didn't rewrite. We patched, we wrapped, we suffered. The rewrite was the thing you dreamed about and never did.
+
+Then that rule quietly broke, and I don't think enough people have noticed.
+
+## Exhibit A: half a million lines in eleven days
+
+I already [wrote a whole post about the Bun rewrite](https://rafay99.com/blog/bun-rewrite-zig-rust), so I won't re-run the whole thing here. Short version: Bun — the JavaScript runtime, ~22 million CLI downloads a month — got ported from Zig to Rust. **535,496 lines** of Zig across 1,448 files. **Eleven days.** One engineer watching a peak of **64 instances** of Claude do the typing.
+
+Read that again with the COSMIC timeline still warm. Four years to change a desktop. Eleven days to reimplement a production runtime in a different language.
+
+When I first read it, I did the thing everyone did — I got hung up on the model. *How is an LLM good enough to port half a million lines and have it actually run?* Wrong question. I said this in the Bun post and I'll say it louder here: the model is not the achievement. The rewrite is not the achievement.
+
+**The achievement is that they had a way to know it worked.**
+
+Jarred didn't type "rewrite Bun in Rust, don't make mistakes" and pray. He built a harness that treated every generated line as guilty until proven innocent — and the thing doing the proving was the test suite. The rule was blunt: nothing merges until 100% of the existing tests pass on the Rust side. Not most. All of them.
+
+The port wasn't "write Rust." The port was "make the Zig test suite green again in a language it's never seen." The Rust was almost a side effect.
+
+## It wasn't a fluke. It's a pattern.
+
+If Bun were the only one, I'd call it a stunt. It isn't.
+
+**Cloudflare** rebuilt Next.js in a week. Not wrapped it — *rebuilt* it. `vinext` is a clean-room reimplementation of the Next.js API surface running on Vite instead of Turbopack, deploying to Workers. [Almost every line was written by Claude](https://blog.cloudflare.com/vinext/) driving through OpenCode, for about **$1,100** in tokens, by essentially one person steering. How do you clean-room a framework as sprawling as Next.js without shipping a thousand subtle behavior breaks? You don't hand-check it. They ported Next.js's own tests plus the OpenNext conformance suite and ran against it: **1,700+ Vitest unit tests, 380 Playwright end-to-end tests, 94% of the Next.js 16 API surface covered.** The suite *is* the spec. Hit the spec, you've built Next.js. (Hold onto that number — 94%, not 100% — and the fact that those tests proved *conformance*, not *security*. We're coming back to what that gap let through.)
+
+**Google** has been doing this at industrial scale since before it was cool. Their [AI code-migration writeup](https://research.google/blog/accelerating-code-migrations-with-ai/) is from 2024 and it already reads like the future: migrating IDs from 32-bit to 64-bit integers across *thousands* of files of C++ and Java, work that would've eaten "many software engineering years." A fine-tuned Gemini generated the edits; **80% of the changes were AI-authored**; total migration time dropped by **~50%**. And the loop is the same loop: generate a change, compile it, run the unit tests, and when it fails, feed the error straight back into the model and let it try again. The test failures *are* the to-do list.
+
+**Anthropic** put its own version in writing this month, and buried in it is the sentence that made the whole thing click for me:
+
+> "You don't fix the code. You fix the process that produced the code."
+
+That's from [their migration post](https://claude.com/blog/ai-code-migration), where they walk through Bun (Zig→Rust) and an internal Python→TypeScript port — 165,000 lines in a weekend, memory down from ~6,700 MB to ~600 MB on one benchmark. Every one of these projects rebuilds tests *first* so they're portable, then validates them the paranoid way: the ported tests have to pass against the original code and *fail* against deliberately broken code, so you know the test itself isn't lying. Only then do you let the agent grind.
+
+<MigrationLoop client:visible />
+
+Look at that loop and notice where the model actually lives. It generates. That's it. Everything that makes the output *trustworthy* — the build, the suite, the gate, the fail-routes-back-to-fix — is the harness, and the beating heart of the harness is the test suite. Pull the tests out and the whole thing is just a very expensive random code generator.
+
+## The twist: it works even when there's no AI in the loop
+
+Here's the detail that convinced me this is about tests and not about models.
+
+**Meta** has been translating its Android codebase from Java to Kotlin — over **40,000** files converted, more than half of a ~10-million-line codebase. Google went Kotlin-first in 2019, so this is a genuinely huge, genuinely important migration. And Meta's tool for it, "Kotlinator," is **not an LLM.** It's a six-phase, rule-based pipeline built around JetBrains' J2K converter: preprocess, convert, postprocess, lint, fix the build errors, repeat.
+
+No intelligence. No model. And it *still* works — because it has the same skeleton as all the others: a deterministic transform wrapped in a build-and-verify loop that won't let anything through until it passes.
+
+That's the tell. If the exact same loop shape produces good migrations with a fine-tuned Gemini (Google), a frontier Claude (Bun, Cloudflare), *and* a dumb rule engine (Meta), then the intelligence in the middle is interchangeable. The part that doesn't change — the part actually doing the work of deciding "is this correct?" — is the verification. It's the tests.
+
+The model is a commodity. The loop is the machine. **The test suite is the thing the whole machine is built to satisfy.**
+
+## Which means the economics just flipped
+
+Sit with what that does to the value of code.
+
+For my entire career, the code *was* the asset. The code was the hard part, the expensive part, the thing you protected. Tests were the chore — the tax you paid, the thing you skipped when the deadline got close, the coverage number you fudged in the PR description.
+
+That's inverted now. Generating code is a firehose. A model will rewrite your module over a weekend, in a different language, for the price of a nice dinner. Its marginal cost is falling toward zero and it is not coming back up. Code is cheap. Code is *disposable*.
+
+The test suite is the opposite. It's the accumulated memory of every bug you ever hit, every edge case that bit you at 2am, every "oh, it also has to handle *that*" you learned in production and encoded so it'd never happen again. You cannot regenerate that from a prompt. Nobody can. It's your scar tissue, written down.
+
+<CodeVsTests client:visible />
+
+That's the inversion in one picture. The code column churns — tall, loud, endlessly regenerated, worth almost nothing per line. The test column just quietly compounds. Every test you add is a permanent statement about what "correct" means for your product that survives every rewrite, every language change, every model swap underneath it.
+
+So here's the prediction I'll actually put my name on: **we're going to start buying test suites.** Not code — code will be free. Conformance suites, end-to-end scenario packs, the executable definition of "a correct payments system" or "a correct Next.js" or "a correct POSIX shell." The spec, as tests, is the product you'll pay for. The implementation is what your agent writes on Tuesday.
+
+## The suite is the thing that survives the port
+
+This is the mental model I keep coming back to, so let me make it explicit.
+
+<SpecSurvivesPort client:visible />
+
+When Bun went from Zig to Rust, what actually carried over? Not the Zig. The Zig got deleted. The thing that survived — the thing that *defined what Bun even is* across the language boundary — was the suite. Zig on the bottom, Rust on the bottom, tomorrow maybe something else on the bottom; the suite on top never moves. It's the invariant every implementation has to satisfy to earn the name.
+
+Even the academics are landing here. There's a 2025 paper, [LLMigrate](https://arxiv.org/abs/2503.23791), on translating C to Rust function by function — it drives the loop with the *compiler* rather than a test suite, and gets translations needing under 15% hand-fixing on Linux kernel modules. Different verifier, identical shape: generate, check against ground truth, repair on failure, repeat. Whether your ground truth is a compiler or a test suite, the lesson is the same — the migration is only as good as the thing you're checking against. A rewrite doesn't inherit correctness. It inherits your suite, and it's exactly as correct as that suite is complete.
+
+Which is the honest, uncomfortable other edge of all this.
+
+## The uncomfortable part
+
+Tests only prove what they test. That's not a footnote — it's the whole risk.
+
+A green suite means "everything I thought to check still works." It says nothing about the things you never wrote a test for. Bun's rewrite shipped, and then shipped a pile of regression fixes right after — the bugs that lived in the gaps between the tests. Zig's own creator called the whole thing "unreviewed slop," and he's not entirely wrong to worry: if you trust the green checkmark *completely*, you've just moved your blind spots from "code you didn't read" to "behavior you didn't test," and the second one is harder to see.
+
+Remember that 94% on `vinext`? Here's what lived in the gap. A security firm, [Hacktron](https://www.hacktron.ai/blog/hacking-cloudflare-vinext), pointed their own AI at it and came back with **24 validated vulnerabilities — four of them critical.** Session hijacking from a race condition in the auth-token handling. Cache poisoning that served one user's personalized data to another. An authentication bypass because the middleware and the router decoded the URL differently, so a path-traversal payload slipped past the auth check. None of that showed up as a failing test, because *not one of those 1,700 tests was a security test.* The suite proved vinext behaved like Next.js. It said nothing about whether vinext was safe — a completely different axis of "correct" that nobody had written down as tests. The green checkmark was honest. It just wasn't answering the question that mattered most.
+
+That's the whole lesson in one example. A suite is exactly as complete as the questions you thought to ask it.
+
+So the suite doesn't remove the judgment. It relocates it. The expensive skill isn't writing the implementation anymore — the agent does that. The expensive skill is knowing what to test, thinking of the scenario nobody hit yet, writing the end-to-end case that catches the thing the happy path hides. That's the work that's getting *more* valuable, not less.
+
+I feel this every week on [ENV Pilot](https://envpilot.dev). I write the end-to-end tests in Playwright and they take *forever* to run, and every single time I'm tempted to thin them out — and every single time the slow, annoying suite is the only reason I can let an agent touch the codebase and actually sleep. Manual testing isn't going away. But the automated suite is what turns "an AI changed my code" from a gamble into a thing I can verify. The tests are the leash.
+
+## What to actually do about it
+
+I'll keep this short, because it's the same ladder every time and you already feel where it's going:
+
+1. **Treat the test suite as the asset, not the tax.** Fund it like it's the product, because it's becoming the product. When you scope a feature, the tests aren't the cleanup afterward — they're the deliverable.
+2. **Write the end-to-end tests you keep skipping.** The slow, ugly, full-scenario ones. Those are the ones that let an agent rewrite a module and let *you* trust the green check. Unit tests prove functions; e2e tests prove the product.
+3. **Make your suite portable.** If it's welded to your current framework or language, it dies in the next rewrite. Test behavior through the front door — external calls, real scenarios — not internal implementation details, and it'll survive the port that's coming whether you plan it or not.
+4. **Let the loop do the grinding.** Generate, build, test, and route failures back into the model as the next work item. You're not the one fixing the red. You're the one deciding what "green" has to mean.
+
+The rewrite stopped being the scary part. The wall we couldn't climb for a decade — feature parity, the thing that made rebuilding anything real a career risk — an agent walks straight through it now, *as long as* there's a suite on the other side telling it what "done" means.
+
+Code is the cheap part now. The test suite is the product. Start writing it like you mean it.
+
+---
+
+*Am I right that we'll be buying test suites in a couple years, or is that too far? And be honest — how slow is your e2e suite, and have you been quietly deleting tests to make CI faster? Drop it in the comments, I want to know I'm not the only one. 👇*
+
+Until then, happy coding!
+
