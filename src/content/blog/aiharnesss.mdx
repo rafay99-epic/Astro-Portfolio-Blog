@@ -1,0 +1,158 @@
+---
+title: "Your AI Agent Isn't Getting Smarter. Its Harness Is."
+date: "2026-07-29T08:00:05.351Z"
+draft: false
+pubDate: "2026-07-29"
+updatedDate: "2026-07-21"
+authorName: Abdul Rafay
+slug: aiharnesss
+excerpt: "Everyone's arguing about which model tops the benchmarks. Nobody's talking about the thing that actually decides whether your agent works — the harness wrapped around it. Here's what's inside one, why it matters more than the model, and why you're already building them without knowing it."
+description: "Everyone's arguing about which model tops the benchmarks. Nobody's talking about the thing that actually decides whether your agent works — the harness wrapped around it. Here's what's inside one, why it matters more than the model, and why you're already building them without knowing it."
+authorAvatar: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxZSVOvl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+canonicalUrl: "https://rafay99.com/blog/the-harness-is-the-car"
+featured: true
+tags:
+  - AI
+  - Harness
+  - ClaudeCode
+  - Codex
+  - OpenCode
+  - MCP
+  - AgenticEngineering
+  - ThoughtsProcess
+keywords:
+  - AI harness
+  - what is a harness LLM
+  - Claude Code harness
+  - agent harness explained
+  - MCP model   context protocol
+  - context engineering
+  - system prompt agent
+  - harness vs orchestrator vs framework
+heroImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJ9M2mqGAyTICn34S8WjDea5XptzKQ1fABrNZm"
+---
+
+import AIStack from "../../components/blog/AIStack";
+import BenchmarkJump from "../../components/blog/BenchmarkJump";
+import HarnessAnatomy from "../../components/blog/HarnessAnatomy";
+import HarnessLoop from "../../components/blog/HarnessLoop";
+
+
+
+A few weeks ago I wrote [The Price of Thought](https://rafay99.com/blog/the-price-of-thought) — a post about how most people are wildly underusing these AI coding tools while somehow also overpaying for them. Near the end I dropped one line almost in passing: the real battleground in AI right now isn't the model, it's the *harness*.
+
+And then a bunch of you came into the comments and my DMs asking the same question, phrased about ten different ways: okay cool, but what actually *is* a harness?
+
+Fair. I blew past it. So this whole post is me going back and doing it properly.
+
+Here's the one sentence I want you to leave with, and honestly if you close the tab right after reading it I've still done my job:
+
+**The model is the engine. The harness is the car.**
+
+## Why I keep saying the model is the boring part
+
+I know that sounds backwards. We've spent two years being trained to care about exactly one number — which model is on top of which leaderboard this week. GPT this, Claude that, some new open-weight model from China that just ate everyone's lunch. That's the conversation everybody's having.
+
+And it's the wrong conversation.
+
+Because a harness is the entire software system built *around* the model — all the stuff the model itself genuinely cannot do. Tool access. Memory. Permissions. Deciding what the model is even allowed to see. The loop that connects "the thing you typed" to "the model's answer" to "an actual change on your actual computer." The model is a brain in a jar. The harness is everything that gives that brain hands, eyes, and a memory.
+
+And here's the part people don't want to hear: the harness matters more than the model.
+
+I'm not saying that to be edgy. Look at what's actually happening in the wild. OpenAI built a production application with Codex — around a million lines — where *zero* lines were written by a human. Their engineers didn't write code. They spent their time designing constraints, docs, feedback loops, and lifecycle rules. In other words, they spent all their time on the harness. LangChain's DeepAgents jumped from 52.8% to 66.5% on a benchmark by changing *nothing* about the model — only the harness. And Vercel got better results by *deleting* 80% of the tools they'd handed their agent.
+
+<BenchmarkJump client:visible />
+
+Sit with that last one for a second, because it's the least intuitive and the most important. They made the agent *dumber* on paper — fewer tools, fewer options — and it got *better*. That is not a model story. That is a harness story from top to bottom.
+
+The model's intelligence is table stakes now. Everyone has a good-enough engine. The car you bolt around it is the whole game.
+
+## So what's actually inside one?
+
+Let me strip the buzzwords off, because every serious AI system shipping in 2026 has some version of these pieces, whether the team calls it "a harness" or not. There are five parts, and once you see them you can't unsee them in any tool you use.
+
+**Permission and approval.** The most basic one, and the first one people skip when they roll their own. What is the agent allowed to do on its own, and when does it have to stop and ask you? Claude Code sits in a sandbox by default — it'll edit files freely but wants a nod before it touches the network or runs a command. Codex has the same idea with tiers: read-only, workspace-write, full access. This is the layer standing between you and an agent cheerfully running the one command that nukes your production database. It sounds obvious right up until it's 2am and it isn't there.
+
+**Context engineering.** Models have a finite window. The harness decides what goes in it and what stays out — summarising old conversation to free up room, spinning off sub-agents that go do a messy job and come back with a clean one-paragraph answer, loading instructions only when they're actually relevant. OpenAI's team found that a short `AGENTS.md` acting as a table of contents, pointing to deeper docs, beat one giant wall-of-text instruction file. Less in the window, more in the tank.
+
+**Tool orchestration.** Which external tools can the agent reach, how does it call them, and what happens when a call blows up? This is where MCP — the Model Context Protocol — comes in, the open standard for how agents discover and talk to outside services. And the big lesson here is the Vercel one again: less is more. Fewer tools, fewer redundant calls, fewer dumb detours.
+
+**Lifecycle hooks.** Little triggers that fire at specific moments. Lint after every edit. Check permissions before a command runs. Format on save. Run the tests before a commit lands. All the quality-control chores you'd otherwise be doing by hand after every single AI interaction — automated, so you stop being the linter.
+
+**System-level instructions.** `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.cursorrules` — the filename changes, the job is identical. A document that tells the agent how *your* specific project actually works. This is the cheapest, highest-leverage thing in the entire stack. A good project file can transform your output with zero lines of code.
+
+Stack all five up and it looks like this:
+
+<HarnessAnatomy client:visible />
+
+Notice where the model sits — near the bottom, small, one box among many. That placement isn't me being disrespectful to the model. It's the actual architecture.
+
+## The part nobody shows you: it's a loop
+
+Here's the thing that clicked for me and changed how I think about all of this. The harness isn't a passive wrapper you set up once. It's a runtime. It's *running* — cycling through the same stages — on every single prompt you send.
+
+<HarnessLoop client:visible />
+
+You never see this. It's invisible by design. But every time you hit enter, the harness curates what the model gets to see, hands it over, reads the answer, checks it, goes and executes whatever the model asked for, feeds the results back, and loops until the job is done. The model never once reaches out and touches the outside world directly. The harness is its hands, its eyes, and its memory. Every time.
+
+## Same model, different car
+
+This is the bit I've been repeating across three posts now and I'm going to keep repeating it: **same model, different harness, completely different output.**
+
+Claude Code's harness is tuned tightly around Anthropic's own models — its system prompt, its tools, its sub-agent setup, all built to make Claude specifically shine. OpenCode goes the opposite way: model-agnostic, swap providers mid-session, so its harness has to stay neutral and assume nothing about any one model's quirks. Codex behaves differently depending on whether you're in the CLI, the desktop app, or firing off a cloud task, because its harness is shaped by all that surface area.
+
+And sitting at the centre of every one of these is a system prompt — the real thing shaping how the agent behaves. It defines what tools exist, how they should be used, and the rules the agent must never break. These prompts started out short and generic a year ago. Today they're long, detailed documents about planning, tool use, when to ask you for clarification, and how to dodge the usual failure modes.
+
+Which is *why* an agent can feel noticeably better from one month to the next even when the model underneath it didn't change at all. The harness got better. Not the brain. The car.
+
+## Harness, orchestrator, framework — these are not the same word
+
+People throw these three around like synonyms and they're not. Quick untangle:
+
+| Layer | Examples | The one-liner |
+| --- | --- | --- |
+| **Framework** | LangChain, LlamaIndex | The building blocks you assemble an agent out of |
+| **Orchestrator** | — | The reasoning loop — decides when to think, call, and act |
+| **Harness** | Claude Code, Codex, OpenCode | The hands *and* the operating system |
+| **Model** | Claude, GPT, DeepSeek, GLM | The engine. Raw intelligence. Table stakes. |
+
+Harnesses use frameworks. Orchestrators run inside harnesses. Together they turn a raw model into something that can actually do work.
+
+<AIStack client:visible />
+
+## The most underrated job of a harness
+
+Here's the one that took me the longest to appreciate: the harness is what makes working *with* an AI actually bearable.
+
+A good one doesn't just run the model and dump the output on you. It stages the changes so you can look before you leap. It asks before it does something destructive. It shows you the diff and the test results. It watches how you correct it and adjusts.
+
+That's the whole line between "vibe coding" — where you shrug and accept whatever falls out — and real engineering with these tools. The harness is the translator sitting between what you meant and what the machine does, and then between what the machine did and something you can actually review and approve.
+
+Every time you eyeball a diff before committing, every time you write a `CLAUDE.md`, every time you approve or deny a tool call — you're not talking to the model. You're talking to the harness.
+
+## So should you build your own?
+
+For almost everyone: no. And I say that as someone who loves building things from scratch to a fault. The CLIs and platforms that already exist are *very* good harnesses, and they're improving faster than you can hand-roll a worse one. The customisation hooks they give you — skills, plugins, connectors — let you bend them to your workflow without starting from zero.
+
+Here's the ladder I'd actually climb, in order:
+
+1. **Start with a project config file.** A real `CLAUDE.md` or `AGENTS.md`. This one move can transform your output quality and it costs you nothing. It's a mini-harness.
+2. **Then add skills.** Got a process you repeat constantly? Package it as a skill — an instruction file the agent loads on demand. No code.
+3. **Then add hooks.** Want auto-lint after edits, tests before commits? Wire up hooks. Light infrastructure, real time saved.
+4. **Only *then* think about a custom harness** — and only if you've genuinely outgrown the first three. The real reasons to: you need to orchestrate multiple models (say, one to plan and another to execute), you need domain-specific safety rails, or AI *is* your product.
+
+But here's the punchline, and it's the same one from *The Price of Thought* wearing a different shirt: **you're probably already building harnesses without calling them that.** Every system prompt you write, every skill you save, every connector you configure — that's you wrapping a model in infrastructure. The vocabulary is new. The practice is old.
+
+## Wrapping up: stop buying engines
+
+If you take one habit away from this, make it this one: stop obsessing over which model benchmarked higher this week, and start paying attention to the car wrapped around it.
+
+When you pick between Claude Code, Codex, OpenCode, Cursor — you are not choosing a model. You're choosing a harness. Its system prompt, its permission model, its context handling, its tools, its hooks, its skills — *that's* what decides whether the thing works for your actual life. Two tools running the identical model will give you wildly different results because their harnesses are different. The intelligence is necessary. The harness is what makes it useful.
+
+The model is the engine. The harness is the car. Stop buying engines. Start choosing cars.
+
+---
+
+*Do you think the harness matters more than the model, or am I overselling it? What's in your `CLAUDE.md` right now? Drop it in the comments — I actually want to argue about this. 👇*
+
+Until then, happy coding!
