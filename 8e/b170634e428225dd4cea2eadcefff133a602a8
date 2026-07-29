@@ -1,0 +1,28 @@
+src/components/blog/CodeVsTests.tsx
+  s_b1b1f8993c2db2::t_e4115f7499a4e6 95-103,117-120,132,134,136,153,155,157
+src/components/blog/HarnessLoop.tsx
+  s_b1b1f8993c2db2::t_e4115f7499a4e6 103-106,151,177-178
+  s_b1b1f8993c2db2::t_f06e3f3104f5ae 149,191-203
+  s_b1b1f8993c2db2::t_379e6745e17f4d 205-206
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "8eb170634e428225dd4cea2eadcefff133a602a8",
+  "prompts": {},
+  "humans": {
+    "h_1e0ba4a9f2a4b4": {
+      "author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b1b1f8993c2db2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019faf2f-ba78-7412-9ecd-a21767f400bf",
+        "model": "gpt-5.6-luna"
+      },
+      "human_author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
