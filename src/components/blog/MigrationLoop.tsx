@@ -8,11 +8,11 @@ import { type RefObject, useEffect, useRef, useState } from "react";
 type Verdict = "pass" | "fail" | null;
 
 interface LoopFrame {
-  /** Index of the node currently lit: 0 gen · 1 build · 2 test · 3 fix · 6 merge. */
-  active: number;
-  verdict: Verdict;
-  /** Show the "failing test → next work item" back-route hint. */
-  back: boolean;
+	/** Index of the node currently lit: 0 gen · 1 build · 2 test · 3 fix · 6 merge. */
+	active: number;
+	verdict: Verdict;
+	/** Show the "failing test → next work item" back-route hint. */
+	back: boolean;
 }
 
 const CSS = `
@@ -69,134 +69,138 @@ const CSS = `
 `;
 
 function useStyles(): void {
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    if (document.getElementById("ts-migration-loop-styles")) return;
-    const el = document.createElement("style");
-    el.id = "ts-migration-loop-styles";
-    el.textContent = CSS;
-    document.head.appendChild(el);
-  }, []);
+	useEffect(() => {
+		if (typeof document === "undefined") return;
+		if (document.getElementById("ts-migration-loop-styles")) return;
+		const el = document.createElement("style");
+		el.id = "ts-migration-loop-styles";
+		el.textContent = CSS;
+		document.head.appendChild(el);
+	}, []);
 }
 
-function useInView<T extends HTMLElement>(threshold = 0.3): {
-  ref: RefObject<T | null>;
-  inView: boolean;
+function useInView<T extends HTMLElement>(
+	threshold = 0.3,
+): {
+	ref: RefObject<T | null>;
+	inView: boolean;
 } {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node || typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        }
-      },
-      { threshold },
-    );
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
+	const ref = useRef<T | null>(null);
+	const [inView, setInView] = useState(false);
+	useEffect(() => {
+		const node = ref.current;
+		if (!node || typeof IntersectionObserver === "undefined") {
+			setInView(true);
+			return;
+		}
+		const obs = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) {
+					if (e.isIntersecting) {
+						setInView(true);
+						obs.disconnect();
+					}
+				}
+			},
+			{ threshold },
+		);
+		obs.observe(node);
+		return () => obs.disconnect();
+	}, [threshold]);
+	return { ref, inView };
 }
 
 const IDLE: LoopFrame = { active: 0, verdict: null, back: false };
 
 // gen → build → test(fail) → fix → build → test(pass) → merge
 const LOOP_FRAMES: readonly LoopFrame[] = [
-  { active: 0, verdict: null, back: false },
-  { active: 1, verdict: null, back: false },
-  { active: 2, verdict: "fail", back: false },
-  { active: 3, verdict: "fail", back: true },
-  { active: 1, verdict: null, back: false },
-  { active: 2, verdict: "pass", back: false },
-  { active: 6, verdict: "pass", back: false },
+	{ active: 0, verdict: null, back: false },
+	{ active: 1, verdict: null, back: false },
+	{ active: 2, verdict: "fail", back: false },
+	{ active: 3, verdict: "fail", back: true },
+	{ active: 1, verdict: null, back: false },
+	{ active: 2, verdict: "pass", back: false },
+	{ active: 6, verdict: "pass", back: false },
 ];
 
 export default function MigrationLoop() {
-  useStyles();
-  const { ref, inView } = useInView<HTMLDivElement>();
-  const [f, setF] = useState(0);
+	useStyles();
+	const { ref, inView } = useInView<HTMLDivElement>();
+	const [f, setF] = useState(0);
 
-  useEffect(() => {
-    if (!inView) return;
-    const id = setInterval(
-      () => setF((x) => (x + 1) % LOOP_FRAMES.length),
-      1300,
-    );
-    return () => clearInterval(id);
-  }, [inView]);
+	useEffect(() => {
+		if (!inView) return;
+		const id = setInterval(
+			() => setF((x) => (x + 1) % LOOP_FRAMES.length),
+			1300,
+		);
+		return () => clearInterval(id);
+	}, [inView]);
 
-  const frame: LoopFrame = LOOP_FRAMES[f] ?? IDLE;
+	const frame: LoopFrame = LOOP_FRAMES[f] ?? IDLE;
 
-  const nodeClass = (i: number): string => {
-    if (frame.active !== i) return "ts-node";
-    if (i === 2) return `ts-node ${frame.verdict === "pass" ? "pass" : "fail"}`;
-    if (i === 6) return "ts-node pass";
-    return "ts-node on";
-  };
+	const nodeClass = (i: number): string => {
+		if (frame.active !== i) return "ts-node";
+		if (i === 2) return `ts-node ${frame.verdict === "pass" ? "pass" : "fail"}`;
+		if (i === 6) return "ts-node pass";
+		return "ts-node on";
+	};
 
-  return (
-    <div className={`ts ${inView ? "ts-in" : ""}`} ref={ref}>
-      <p className="ts-cap">The loop · code is guilty until the suite says otherwise</p>
-      <div className="ts-loop ts-rise">
-        <div className="ts-loop-row">
-          <div className={nodeClass(0)}>
-            <div className="ts-node-k">01</div>
-            <div className="ts-node-t">Generate</div>
-            <div className="ts-node-n">agent writes the port</div>
-          </div>
-          <div className={`ts-arrow ${frame.active <= 1 ? "hot" : ""}`}>▸</div>
-          <div className={nodeClass(1)}>
-            <div className="ts-node-k">02</div>
-            <div className="ts-node-t">Build</div>
-            <div className="ts-node-n">does it compile?</div>
-          </div>
-          <div className={`ts-arrow ${frame.active === 2 ? "hot" : ""}`}>▸</div>
-          <div className={nodeClass(2)}>
-            <div className="ts-node-k">03</div>
-            <div className="ts-node-t">Run the suite</div>
-            <div className="ts-node-n">the ground truth</div>
-          </div>
-        </div>
+	return (
+		<div className={`ts ${inView ? "ts-in" : ""}`} ref={ref}>
+			<p className="ts-cap">
+				The loop · code is guilty until the suite says otherwise
+			</p>
+			<div className="ts-loop ts-rise">
+				<div className="ts-loop-row">
+					<div className={nodeClass(0)}>
+						<div className="ts-node-k">01</div>
+						<div className="ts-node-t">Generate</div>
+						<div className="ts-node-n">agent writes the port</div>
+					</div>
+					<div className={`ts-arrow ${frame.active <= 1 ? "hot" : ""}`}>▸</div>
+					<div className={nodeClass(1)}>
+						<div className="ts-node-k">02</div>
+						<div className="ts-node-t">Build</div>
+						<div className="ts-node-n">does it compile?</div>
+					</div>
+					<div className={`ts-arrow ${frame.active === 2 ? "hot" : ""}`}>▸</div>
+					<div className={nodeClass(2)}>
+						<div className="ts-node-k">03</div>
+						<div className="ts-node-t">Run the suite</div>
+						<div className="ts-node-n">the ground truth</div>
+					</div>
+				</div>
 
-        <div className={`ts-gate ${frame.verdict ?? ""}`}>
-          <span className="ts-gate-label">Test gate</span>
-          <span className={`ts-verdict ${frame.verdict ?? ""}`}>
-            {frame.verdict === "pass"
-              ? "✓ 100% green — ship it"
-              : frame.verdict === "fail"
-                ? "✗ red — send it back"
-                : "· awaiting run"}
-          </span>
-        </div>
+				<div className={`ts-gate ${frame.verdict ?? ""}`}>
+					<span className="ts-gate-label">Test gate</span>
+					<span className={`ts-verdict ${frame.verdict ?? ""}`}>
+						{frame.verdict === "pass"
+							? "✓ 100% green — ship it"
+							: frame.verdict === "fail"
+								? "✗ red — send it back"
+								: "· awaiting run"}
+					</span>
+				</div>
 
-        <div className={`ts-back ${frame.back ? "show" : ""}`}>
-          ↑ failing test becomes the next work item → Fix → Build again
-        </div>
+				<div className={`ts-back ${frame.back ? "show" : ""}`}>
+					↑ failing test becomes the next work item → Fix → Build again
+				</div>
 
-        <div className="ts-loop-row">
-          <div className={nodeClass(3)}>
-            <div className="ts-node-k">04</div>
-            <div className="ts-node-t">Fix</div>
-            <div className="ts-node-n">re-prompt with the error</div>
-          </div>
-          <div className="ts-arrow">▸</div>
-          <div className={nodeClass(6)}>
-            <div className="ts-node-k">05</div>
-            <div className="ts-node-t">Merge</div>
-            <div className="ts-node-n">only a green suite gets here</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+				<div className="ts-loop-row">
+					<div className={nodeClass(3)}>
+						<div className="ts-node-k">04</div>
+						<div className="ts-node-t">Fix</div>
+						<div className="ts-node-n">re-prompt with the error</div>
+					</div>
+					<div className="ts-arrow">▸</div>
+					<div className={nodeClass(6)}>
+						<div className="ts-node-k">05</div>
+						<div className="ts-node-t">Merge</div>
+						<div className="ts-node-n">only a green suite gets here</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
