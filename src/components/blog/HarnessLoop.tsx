@@ -100,6 +100,10 @@ function useInView<T extends HTMLElement>(threshold = 0.35) {
 	return { ref, inView };
 }
 
+const NODE_KEYS = ["user", "harness", "model", "tools"] as const;
+type NodeKey = (typeof NODE_KEYS)[number];
+type LoopStep = { text: string; from: NodeKey; to: NodeKey };
+
 const LOOP_STEPS = [
 	{ text: "You send a request.", from: "user", to: "harness" },
 	{
@@ -142,9 +146,9 @@ const LOOP_STEPS = [
 		from: "harness",
 		to: "user",
 	},
-];
+] as const satisfies readonly LoopStep[];
 
-const NODE_POS: Record<string, { x: number; y: number; label: string }> = {
+const NODE_POS: Record<NodeKey, { x: number; y: number; label: string }> = {
 	user: { x: 70, y: 130, label: "YOU" },
 	harness: { x: 250, y: 130, label: "HARNESS" },
 	model: { x: 430, y: 70, label: "MODEL" },
@@ -170,7 +174,8 @@ export default function HarnessLoop() {
 		return () => clearInterval(id);
 	}, [inView]);
 
-	const s = LOOP_STEPS[step];
+	const s = LOOP_STEPS[step] ?? LOOP_STEPS[0];
+	if (!s) return null;
 	const active = new Set([s.from, s.to]);
 	const target = NODE_POS[s.to];
 
@@ -183,19 +188,22 @@ export default function HarnessLoop() {
 				role="img"
 				aria-label="Harness runtime loop"
 			>
-				{(["user", "model", "tools"] as const).map((k) => (
-					<line
-						key={k}
-						x1={NODE_POS.harness.x}
-						y1={NODE_POS.harness.y}
-						x2={NODE_POS[k].x}
-						y2={NODE_POS[k].y}
-						stroke={active.has(k) ? "var(--hx-signal)" : "var(--hx-line)"}
-						strokeWidth={active.has(k) ? 2 : 1.4}
-					/>
-				))}
+				{(["user", "model", "tools"] as const satisfies readonly NodeKey[]).map(
+					(k) => (
+						<line
+							key={k}
+							x1={NODE_POS.harness.x}
+							y1={NODE_POS.harness.y}
+							x2={NODE_POS[k].x}
+							y2={NODE_POS[k].y}
+							stroke={active.has(k) ? "var(--hx-signal)" : "var(--hx-line)"}
+							strokeWidth={active.has(k) ? 2 : 1.4}
+						/>
+					),
+				)}
 
-				{Object.entries(NODE_POS).map(([k, p]) => {
+				{NODE_KEYS.map((k) => {
+					const p = NODE_POS[k];
 					const on = active.has(k);
 					const isHub = k === "harness";
 					return (

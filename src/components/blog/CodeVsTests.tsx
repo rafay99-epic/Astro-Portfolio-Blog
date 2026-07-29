@@ -92,6 +92,15 @@ function useInView<T extends HTMLElement>(
 
 // Steady rising staircase — the asset that compounds. Static by design.
 const TEST_BARS: readonly number[] = [34, 44, 52, 61, 70, 80, 90];
+const CODE_BAR_IDS = [
+	"code-bar-1",
+	"code-bar-2",
+	"code-bar-3",
+	"code-bar-4",
+	"code-bar-5",
+	"code-bar-6",
+	"code-bar-7",
+] as const;
 
 export default function CodeVsTests() {
 	useStyles();
@@ -105,10 +114,10 @@ export default function CodeVsTests() {
 	}, [inView]);
 
 	// Code bars: tall + volatile — cheap, disposable, regenerated constantly.
-	const codeBars: number[] = Array.from(
-		{ length: 7 },
-		(_, i) => 30 + ((i * 13 + t * 6) % 60),
-	);
+	const codeBars = CODE_BAR_IDS.map((id, i) => ({
+		id,
+		height: 30 + ((i * 13 + t * 6) % 60),
+	}));
 
 	return (
 		<div className={`ts ${inView ? "ts-in" : ""}`} ref={ref}>
@@ -120,11 +129,11 @@ export default function CodeVsTests() {
 						<span className="ts-tag cheap">FIREHOSE</span>
 					</div>
 					<div className="ts-bars">
-						{codeBars.map((h, i) => (
+						{codeBars.map(({ id, height }) => (
 							<div
-								key={i}
+								key={id}
 								className="ts-bar code"
-								style={{ height: `${h}%` }}
+								style={{ height: `${height}%` }}
 							/>
 						))}
 					</div>
@@ -141,11 +150,11 @@ export default function CodeVsTests() {
 						<span className="ts-tag moat">MOAT</span>
 					</div>
 					<div className="ts-bars">
-						{TEST_BARS.map((h, i) => (
+						{TEST_BARS.map((height) => (
 							<div
-								key={i}
+								key={height}
 								className="ts-bar test"
-								style={{ height: `${h}%` }}
+								style={{ height: `${height}%` }}
 							/>
 						))}
 					</div>
