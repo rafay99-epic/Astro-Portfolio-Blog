@@ -1,0 +1,25 @@
+src/components/blog/MigrationLoop.tsx
+  s_2ecb3ce5c6f304::t_647efaa966d753 11-15,72-79,82-86,88-98
+  s_2ecb3ce5c6f304::t_f1ecdb4e5bd3fd 99-101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "3a7bbf22596d52f2ed2eb0b577f16559299d6530",
+  "prompts": {},
+  "humans": {
+    "h_1e0ba4a9f2a4b4": {
+      "author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2ecb3ce5c6f304": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6384fdcb-aff3-4c43-bcab-1c94ff20b3f2",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
