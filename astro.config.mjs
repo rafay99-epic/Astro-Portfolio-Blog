@@ -56,6 +56,7 @@ const blogLastmod = buildBlogLastmod();
 
 export default defineConfig({
 	site: "https://www.rafay99.com",
+	trailingSlash: "always",
 	output: "server",
 	image: {
 		remotePatterns: [
