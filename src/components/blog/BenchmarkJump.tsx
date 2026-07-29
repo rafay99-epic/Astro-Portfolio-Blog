@@ -76,103 +76,106 @@ const CSS = `
 `;
 
 function useStyles() {
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    if (document.getElementById(STYLE_ID)) return;
-    const el = document.createElement("style");
-    el.id = STYLE_ID;
-    el.textContent = CSS;
-    document.head.appendChild(el);
-  }, []);
+	useEffect(() => {
+		if (typeof document === "undefined") return;
+		if (document.getElementById(STYLE_ID)) return;
+		const el = document.createElement("style");
+		el.id = STYLE_ID;
+		el.textContent = CSS;
+		document.head.appendChild(el);
+	}, []);
 }
 
 function useInView<T extends HTMLElement>(threshold = 0.35) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node || typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
+	const ref = useRef<T | null>(null);
+	const [inView, setInView] = useState(false);
+	useEffect(() => {
+		const node = ref.current;
+		if (!node || typeof IntersectionObserver === "undefined") {
+			setInView(true);
+			return;
+		}
+		const obs = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) {
+						setInView(true);
+						obs.disconnect();
+					}
+				});
+			},
+			{ threshold },
+		);
+		obs.observe(node);
+		return () => obs.disconnect();
+	}, [threshold]);
+	return { ref, inView };
 }
 
 export default function BenchmarkJump() {
-  useStyles();
-  const { ref, inView } = useInView<HTMLDivElement>();
-  const [pct, setPct] = useState(52.8);
+	useStyles();
+	const { ref, inView } = useInView<HTMLDivElement>();
+	const [pct, setPct] = useState(52.8);
 
-  useEffect(() => {
-    if (!inView) return;
-    const reduce =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      setPct(66.5);
-      return;
-    }
-    const start = performance.now();
-    const from = 52.8;
-    const to = 66.5;
-    let raf = 0;
-    const tick = (now: number) => {
-      const t = Math.min((now - start) / 1300, 1);
-      const eased = 1 - (1 - t) ** 3;
-      setPct(+(from + (to - from) * eased).toFixed(1));
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView]);
+	useEffect(() => {
+		if (!inView) return;
+		const reduce =
+			typeof window !== "undefined" &&
+			window.matchMedia &&
+			window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (reduce) {
+			setPct(66.5);
+			return;
+		}
+		const start = performance.now();
+		const from = 52.8;
+		const to = 66.5;
+		let raf = 0;
+		const tick = (now: number) => {
+			const t = Math.min((now - start) / 1300, 1);
+			const eased = 1 - (1 - t) ** 3;
+			setPct(+(from + (to - from) * eased).toFixed(1));
+			if (t < 1) raf = requestAnimationFrame(tick);
+		};
+		raf = requestAnimationFrame(tick);
+		return () => cancelAnimationFrame(raf);
+	}, [inView]);
 
-  return (
-    <div ref={ref} className={`hx-bench-wrap ${inView ? "hx-in" : ""}`}>
-      <p className="hx-cap">Same model. Different harness.</p>
-      <div className="hx-bench">
-        <div className="hx-bench-head hx-rise">
-          They changed <span>nothing</span> about the model — only the harness.
-        </div>
+	return (
+		<div ref={ref} className={`hx-bench-wrap ${inView ? "hx-in" : ""}`}>
+			<p className="hx-cap">Same model. Different harness.</p>
+			<div className="hx-bench">
+				<div className="hx-bench-head hx-rise">
+					They changed <span>nothing</span> about the model — only the harness.
+				</div>
 
-        <div className="hx-rise" style={{ transitionDelay: "80ms" }}>
-          <div className="hx-bar-track">
-            <div
-              className="hx-bar-fill"
-              style={{
-                width: inView ? `${((pct - 45) / (75 - 45)) * 100}%` : "0%",
-              }}
-            />
-          </div>
-          <div className="hx-bar-labels">
-            <span>52.8% before</span>
-            <span className="hx-bench-num">{pct.toFixed(1)}%</span>
-            <span>66.5% after</span>
-          </div>
-        </div>
+				<div className="hx-rise" style={{ transitionDelay: "80ms" }}>
+					<div className="hx-bar-track">
+						<div
+							className="hx-bar-fill"
+							style={{
+								width: inView ? `${((pct - 45) / (75 - 45)) * 100}%` : "0%",
+							}}
+						/>
+					</div>
+					<div className="hx-bar-labels">
+						<span>52.8% before</span>
+						<span className="hx-bench-num">{pct.toFixed(1)}%</span>
+						<span>66.5% after</span>
+					</div>
+				</div>
 
-        <div className="hx-bench-row hx-rise" style={{ transitionDelay: "160ms" }}>
-          <span className="hx-bench-chip">−80% tools → better output</span>
-          <span className="hx-bench-sub">
-            Vercel <em>removed</em> most of their agent's tools and the results
-            improved.
-          </span>
-        </div>
-      </div>
-    </div>
-  );
+				<div
+					className="hx-bench-row hx-rise"
+					style={{ transitionDelay: "160ms" }}
+				>
+					<span className="hx-bench-chip">−80% tools → better output</span>
+					<span className="hx-bench-sub">
+						Vercel <em>removed</em> most of their agent's tools and the results
+						improved.
+					</span>
+				</div>
+			</div>
+		</div>
+	);
 }

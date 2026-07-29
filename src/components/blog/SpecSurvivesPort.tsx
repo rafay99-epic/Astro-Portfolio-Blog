@@ -2,12 +2,11 @@
  * Edits to this file are overwritten on the next publish; edit the
  * animation inside Wryte instead. */
 
-
 import { type RefObject, useEffect, useRef, useState } from "react";
 
 interface Port {
-  name: string;
-  sub: string;
+	name: string;
+	sub: string;
 }
 
 const CSS = `
@@ -56,85 +55,87 @@ const CSS = `
 `;
 
 function useStyles(): void {
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    if (document.getElementById("ts-spec-survives-styles")) return;
-    const el = document.createElement("style");
-    el.id = "ts-spec-survives-styles";
-    el.textContent = CSS;
-    document.head.appendChild(el);
-  }, []);
+	useEffect(() => {
+		if (typeof document === "undefined") return;
+		if (document.getElementById("ts-spec-survives-styles")) return;
+		const el = document.createElement("style");
+		el.id = "ts-spec-survives-styles";
+		el.textContent = CSS;
+		document.head.appendChild(el);
+	}, []);
 }
 
-function useInView<T extends HTMLElement>(threshold = 0.3): {
-  ref: RefObject<T | null>;
-  inView: boolean;
+function useInView<T extends HTMLElement>(
+	threshold = 0.3,
+): {
+	ref: RefObject<T | null>;
+	inView: boolean;
 } {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node || typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        }
-      },
-      { threshold },
-    );
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
+	const ref = useRef<T | null>(null);
+	const [inView, setInView] = useState(false);
+	useEffect(() => {
+		const node = ref.current;
+		if (!node || typeof IntersectionObserver === "undefined") {
+			setInView(true);
+			return;
+		}
+		const obs = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) {
+					if (e.isIntersecting) {
+						setInView(true);
+						obs.disconnect();
+					}
+				}
+			},
+			{ threshold },
+		);
+		obs.observe(node);
+		return () => obs.disconnect();
+	}, [threshold]);
+	return { ref, inView };
 }
 
 const PORTS: readonly Port[] = [
-  { name: "Zig", sub: "where Bun started" },
-  { name: "Rust", sub: "where it landed" },
-  { name: "next?", sub: "whatever comes" },
+	{ name: "Zig", sub: "where Bun started" },
+	{ name: "Rust", sub: "where it landed" },
+	{ name: "next?", sub: "whatever comes" },
 ];
 
 export default function SpecSurvivesPort() {
-  useStyles();
-  const { ref, inView } = useInView<HTMLDivElement>();
-  const [i, setI] = useState(0);
+	useStyles();
+	const { ref, inView } = useInView<HTMLDivElement>();
+	const [i, setI] = useState(0);
 
-  useEffect(() => {
-    if (!inView) return;
-    const id = setInterval(() => setI((x) => (x + 1) % PORTS.length), 1600);
-    return () => clearInterval(id);
-  }, [inView]);
+	useEffect(() => {
+		if (!inView) return;
+		const id = setInterval(() => setI((x) => (x + 1) % PORTS.length), 1600);
+		return () => clearInterval(id);
+	}, [inView]);
 
-  return (
-    <div className={`ts ${inView ? "ts-in" : ""}`} ref={ref}>
-      <p className="ts-cap">The invariant · what actually survives a rewrite</p>
-      <div className="ts-spec-wrap ts-rise">
-        <div className="ts-spec-bar">
-          <b>The test suite — the spec</b>
-          <span>constant · never ports</span>
-        </div>
-        <div className="ts-invariant">
-          ↓ every implementation below must satisfy the same suite above ↓
-        </div>
-        <div className="ts-langs">
-          {PORTS.map((p, idx) => (
-            <div key={p.name} className={`ts-lang ${idx === i ? "on" : ""}`}>
-              <div className="ts-lang-name">{p.name}</div>
-              <div className="ts-lang-sub">{p.sub}</div>
-            </div>
-          ))}
-        </div>
-        <div className="ts-morph ts-mono">
-          implementation is disposable — the spec is the product
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className={`ts ${inView ? "ts-in" : ""}`} ref={ref}>
+			<p className="ts-cap">The invariant · what actually survives a rewrite</p>
+			<div className="ts-spec-wrap ts-rise">
+				<div className="ts-spec-bar">
+					<b>The test suite — the spec</b>
+					<span>constant · never ports</span>
+				</div>
+				<div className="ts-invariant">
+					↓ every implementation below must satisfy the same suite above ↓
+				</div>
+				<div className="ts-langs">
+					{PORTS.map((p, idx) => (
+						<div key={p.name} className={`ts-lang ${idx === i ? "on" : ""}`}>
+							<div className="ts-lang-name">{p.name}</div>
+							<div className="ts-lang-sub">{p.sub}</div>
+						</div>
+					))}
+				</div>
+				<div className="ts-morph ts-mono">
+					implementation is disposable — the spec is the product
+				</div>
+			</div>
+		</div>
+	);
 }

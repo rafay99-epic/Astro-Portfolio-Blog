@@ -81,91 +81,91 @@ const CSS = `
 `;
 
 function useStyles() {
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    if (document.getElementById(STYLE_ID)) return;
-    const el = document.createElement("style");
-    el.id = STYLE_ID;
-    el.textContent = CSS;
-    document.head.appendChild(el);
-  }, []);
+	useEffect(() => {
+		if (typeof document === "undefined") return;
+		if (document.getElementById(STYLE_ID)) return;
+		const el = document.createElement("style");
+		el.id = STYLE_ID;
+		el.textContent = CSS;
+		document.head.appendChild(el);
+	}, []);
 }
 
 function useInView<T extends HTMLElement>(threshold = 0.35) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node || typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
+	const ref = useRef<T | null>(null);
+	const [inView, setInView] = useState(false);
+	useEffect(() => {
+		const node = ref.current;
+		if (!node || typeof IntersectionObserver === "undefined") {
+			setInView(true);
+			return;
+		}
+		const obs = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) {
+						setInView(true);
+						obs.disconnect();
+					}
+				});
+			},
+			{ threshold },
+		);
+		obs.observe(node);
+		return () => obs.disconnect();
+	}, [threshold]);
+	return { ref, inView };
 }
 
 const STACK = [
-  {
-    name: "Framework",
-    tag: "LangChain · LlamaIndex",
-    desc: "Building blocks — tools, memory, prompt chains. Libraries you assemble an agent from.",
-    hero: false,
-  },
-  {
-    name: "Orchestrator",
-    tag: "the brain",
-    desc: "The reasoning loop — when to call the model, how to parse it, what to do next.",
-    hero: false,
-  },
-  {
-    name: "Harness",
-    tag: "the hands + the OS",
-    desc: "Tools, memory, context, permissions, hooks. The layer that actually makes the model useful.",
-    hero: true,
-  },
-  {
-    name: "Model",
-    tag: "the engine",
-    desc: "Claude · GPT · DeepSeek · GLM. Raw intelligence. Table stakes.",
-    hero: false,
-  },
+	{
+		name: "Framework",
+		tag: "LangChain · LlamaIndex",
+		desc: "Building blocks — tools, memory, prompt chains. Libraries you assemble an agent from.",
+		hero: false,
+	},
+	{
+		name: "Orchestrator",
+		tag: "the brain",
+		desc: "The reasoning loop — when to call the model, how to parse it, what to do next.",
+		hero: false,
+	},
+	{
+		name: "Harness",
+		tag: "the hands + the OS",
+		desc: "Tools, memory, context, permissions, hooks. The layer that actually makes the model useful.",
+		hero: true,
+	},
+	{
+		name: "Model",
+		tag: "the engine",
+		desc: "Claude · GPT · DeepSeek · GLM. Raw intelligence. Table stakes.",
+		hero: false,
+	},
 ];
 
 export default function AIStack() {
-  useStyles();
-  const { ref, inView } = useInView<HTMLDivElement>();
-  return (
-    <div ref={ref} className={`hx-stack-wrap ${inView ? "hx-in" : ""}`}>
-      <p className="hx-cap">Where the harness sits in the stack</p>
-      <div className="hx-stack">
-        {STACK.map((l, i) => (
-          <div key={l.name}>
-            <div
-              className={`hx-layer hx-drop ${l.hero ? "hx-hero" : ""}`}
-              style={inView ? { animationDelay: `${i * 120}ms` } : undefined}
-            >
-              <h4>
-                {l.name} <span className="hx-tag">{l.tag}</span>
-              </h4>
-              <p>{l.desc}</p>
-            </div>
-            {i < STACK.length - 1 && <div className="hx-arrow">▼</div>}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+	useStyles();
+	const { ref, inView } = useInView<HTMLDivElement>();
+	return (
+		<div ref={ref} className={`hx-stack-wrap ${inView ? "hx-in" : ""}`}>
+			<p className="hx-cap">Where the harness sits in the stack</p>
+			<div className="hx-stack">
+				{STACK.map((l, i) => (
+					<div key={l.name}>
+						<div
+							className={`hx-layer hx-drop ${l.hero ? "hx-hero" : ""}`}
+							style={inView ? { animationDelay: `${i * 120}ms` } : undefined}
+						>
+							<h4>
+								{l.name} <span className="hx-tag">{l.tag}</span>
+							</h4>
+							<p>{l.desc}</p>
+						</div>
+						{i < STACK.length - 1 && <div className="hx-arrow">▼</div>}
+					</div>
+				))}
+			</div>
+		</div>
+	);
 }

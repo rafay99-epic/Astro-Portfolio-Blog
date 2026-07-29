@@ -114,108 +114,110 @@ const CSS = `
 `;
 
 function useStyles() {
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    if (document.getElementById(STYLE_ID)) return;
-    const el = document.createElement("style");
-    el.id = STYLE_ID;
-    el.textContent = CSS;
-    document.head.appendChild(el);
-  }, []);
+	useEffect(() => {
+		if (typeof document === "undefined") return;
+		if (document.getElementById(STYLE_ID)) return;
+		const el = document.createElement("style");
+		el.id = STYLE_ID;
+		el.textContent = CSS;
+		document.head.appendChild(el);
+	}, []);
 }
 
 function useInView<T extends HTMLElement>(threshold = 0.35) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node || typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
+	const ref = useRef<T | null>(null);
+	const [inView, setInView] = useState(false);
+	useEffect(() => {
+		const node = ref.current;
+		if (!node || typeof IntersectionObserver === "undefined") {
+			setInView(true);
+			return;
+		}
+		const obs = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) {
+						setInView(true);
+						obs.disconnect();
+					}
+				});
+			},
+			{ threshold },
+		);
+		obs.observe(node);
+		return () => obs.disconnect();
+	}, [threshold]);
+	return { ref, inView };
 }
 
 const HARNESS_LAYERS = [
-  ["Permission & Approval", "Can the agent run this command?"],
-  ["Context Engineering", "What should the model see right now?"],
-  ["Tool Orchestration", "Which tools can it call — and which shouldn't it?"],
-  ["Lifecycle Hooks", "Lint on save? Test before commit?"],
-  ["System Instructions", "Read CLAUDE.md on every turn."],
+	["Permission & Approval", "Can the agent run this command?"],
+	["Context Engineering", "What should the model see right now?"],
+	["Tool Orchestration", "Which tools can it call — and which shouldn't it?"],
+	["Lifecycle Hooks", "Lint on save? Test before commit?"],
+	["System Instructions", "Read CLAUDE.md on every turn."],
 ];
 
 export default function HarnessAnatomy() {
-  useStyles();
-  const { ref, inView } = useInView<HTMLDivElement>();
-  return (
-    <div ref={ref} className={`hx-anat-wrap ${inView ? "hx-in" : ""}`}>
-      <p className="hx-cap">Anatomy of a harness</p>
-      <div className="hx-anat">
-        <div className="hx-spine" aria-hidden />
-        {!("matchMedia" in globalThis) ? null : (
-          <div className="hx-pulse" aria-hidden />
-        )}
+	useStyles();
+	const { ref, inView } = useInView<HTMLDivElement>();
+	return (
+		<div ref={ref} className={`hx-anat-wrap ${inView ? "hx-in" : ""}`}>
+			<p className="hx-cap">Anatomy of a harness</p>
+			<div className="hx-anat">
+				<div className="hx-spine" aria-hidden />
+				{!("matchMedia" in globalThis) ? null : (
+					<div className="hx-pulse" aria-hidden />
+				)}
 
-        <div className="hx-zone hx-rise" style={{ transitionDelay: "0ms" }}>
-          <div className="hx-zone-label">You · the user layer</div>
-          <div className="hx-chips">
-            <span className="hx-chip">Terminal / CLI</span>
-            <span className="hx-chip">Desktop / Web</span>
-            <span className="hx-chip">Editor / IDE</span>
-          </div>
-        </div>
+				<div className="hx-zone hx-rise" style={{ transitionDelay: "0ms" }}>
+					<div className="hx-zone-label">You · the user layer</div>
+					<div className="hx-chips">
+						<span className="hx-chip">Terminal / CLI</span>
+						<span className="hx-chip">Desktop / Web</span>
+						<span className="hx-chip">Editor / IDE</span>
+					</div>
+				</div>
 
-        <div
-          className="hx-zone hx-star-zone hx-rise"
-          style={{ transitionDelay: "90ms" }}
-        >
-          <div className="hx-zone-label" style={{ color: "var(--hx-signal)" }}>
-            The harness — where the actual work happens
-          </div>
-          {HARNESS_LAYERS.map(([name, q], i) => (
-            <div
-              className="hx-row"
-              key={name}
-              style={inView ? { animationDelay: `${250 + i * 130}ms` } : undefined}
-            >
-              <span className="hx-row-name hx-mono">{name}</span>
-              <span className="hx-row-q">{q}</span>
-            </div>
-          ))}
-        </div>
+				<div
+					className="hx-zone hx-star-zone hx-rise"
+					style={{ transitionDelay: "90ms" }}
+				>
+					<div className="hx-zone-label" style={{ color: "var(--hx-signal)" }}>
+						The harness — where the actual work happens
+					</div>
+					{HARNESS_LAYERS.map(([name, q], i) => (
+						<div
+							className="hx-row"
+							key={name}
+							style={
+								inView ? { animationDelay: `${250 + i * 130}ms` } : undefined
+							}
+						>
+							<span className="hx-row-name hx-mono">{name}</span>
+							<span className="hx-row-q">{q}</span>
+						</div>
+					))}
+				</div>
 
-        <div className="hx-zone hx-rise" style={{ transitionDelay: "180ms" }}>
-          <div className="hx-zone-label">The model layer</div>
-          <div className="hx-chips">
-            <span className="hx-chip">
-              LLM — Claude · GPT · DeepSeek · GLM · Kimi…
-            </span>
-          </div>
-        </div>
+				<div className="hx-zone hx-rise" style={{ transitionDelay: "180ms" }}>
+					<div className="hx-zone-label">The model layer</div>
+					<div className="hx-chips">
+						<span className="hx-chip">
+							LLM — Claude · GPT · DeepSeek · GLM · Kimi…
+						</span>
+					</div>
+				</div>
 
-        <div className="hx-zone hx-rise" style={{ transitionDelay: "270ms" }}>
-          <div className="hx-zone-label">The outside world</div>
-          <div className="hx-chips">
-            <span className="hx-chip">File system</span>
-            <span className="hx-chip">Network</span>
-            <span className="hx-chip">MCP servers</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+				<div className="hx-zone hx-rise" style={{ transitionDelay: "270ms" }}>
+					<div className="hx-zone-label">The outside world</div>
+					<div className="hx-chips">
+						<span className="hx-chip">File system</span>
+						<span className="hx-chip">Network</span>
+						<span className="hx-chip">MCP servers</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }

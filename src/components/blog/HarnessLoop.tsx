@@ -64,189 +64,189 @@ const CSS = `
 `;
 
 function useStyles() {
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    if (document.getElementById(STYLE_ID)) return;
-    const el = document.createElement("style");
-    el.id = STYLE_ID;
-    el.textContent = CSS;
-    document.head.appendChild(el);
-  }, []);
+	useEffect(() => {
+		if (typeof document === "undefined") return;
+		if (document.getElementById(STYLE_ID)) return;
+		const el = document.createElement("style");
+		el.id = STYLE_ID;
+		el.textContent = CSS;
+		document.head.appendChild(el);
+	}, []);
 }
 
 function useInView<T extends HTMLElement>(threshold = 0.35) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node || typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
+	const ref = useRef<T | null>(null);
+	const [inView, setInView] = useState(false);
+	useEffect(() => {
+		const node = ref.current;
+		if (!node || typeof IntersectionObserver === "undefined") {
+			setInView(true);
+			return;
+		}
+		const obs = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) {
+						setInView(true);
+						obs.disconnect();
+					}
+				});
+			},
+			{ threshold },
+		);
+		obs.observe(node);
+		return () => obs.disconnect();
+	}, [threshold]);
+	return { ref, inView };
 }
 
 const LOOP_STEPS = [
-  { text: "You send a request.", from: "user", to: "harness" },
-  {
-    text: "The harness curates context — system prompt, history, docs.",
-    from: "harness",
-    to: "harness",
-  },
-  {
-    text: "It hands the curated context to the model.",
-    from: "harness",
-    to: "model",
-  },
-  {
-    text: "The model answers. It never touches the outside world itself.",
-    from: "model",
-    to: "harness",
-  },
-  {
-    text: "The harness verifies the output — format, safety.",
-    from: "harness",
-    to: "harness",
-  },
-  {
-    text: "It executes the tools the model asked for.",
-    from: "harness",
-    to: "tools",
-  },
-  {
-    text: "Tool results come back into the harness.",
-    from: "tools",
-    to: "harness",
-  },
-  {
-    text: "Results are fed back to the model for the next move.",
-    from: "harness",
-    to: "model",
-  },
-  {
-    text: "The finished result is delivered to you.",
-    from: "harness",
-    to: "user",
-  },
+	{ text: "You send a request.", from: "user", to: "harness" },
+	{
+		text: "The harness curates context — system prompt, history, docs.",
+		from: "harness",
+		to: "harness",
+	},
+	{
+		text: "It hands the curated context to the model.",
+		from: "harness",
+		to: "model",
+	},
+	{
+		text: "The model answers. It never touches the outside world itself.",
+		from: "model",
+		to: "harness",
+	},
+	{
+		text: "The harness verifies the output — format, safety.",
+		from: "harness",
+		to: "harness",
+	},
+	{
+		text: "It executes the tools the model asked for.",
+		from: "harness",
+		to: "tools",
+	},
+	{
+		text: "Tool results come back into the harness.",
+		from: "tools",
+		to: "harness",
+	},
+	{
+		text: "Results are fed back to the model for the next move.",
+		from: "harness",
+		to: "model",
+	},
+	{
+		text: "The finished result is delivered to you.",
+		from: "harness",
+		to: "user",
+	},
 ];
 
 const NODE_POS: Record<string, { x: number; y: number; label: string }> = {
-  user: { x: 70, y: 130, label: "YOU" },
-  harness: { x: 250, y: 130, label: "HARNESS" },
-  model: { x: 430, y: 70, label: "MODEL" },
-  tools: { x: 430, y: 190, label: "TOOLS" },
+	user: { x: 70, y: 130, label: "YOU" },
+	harness: { x: 250, y: 130, label: "HARNESS" },
+	model: { x: 430, y: 70, label: "MODEL" },
+	tools: { x: 430, y: 190, label: "TOOLS" },
 };
 
 export default function HarnessLoop() {
-  useStyles();
-  const { ref, inView } = useInView<HTMLDivElement>();
-  const [step, setStep] = useState(0);
+	useStyles();
+	const { ref, inView } = useInView<HTMLDivElement>();
+	const [step, setStep] = useState(0);
 
-  useEffect(() => {
-    if (!inView) return;
-    const reduce =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-    const id = setInterval(
-      () => setStep((s) => (s + 1) % LOOP_STEPS.length),
-      1500,
-    );
-    return () => clearInterval(id);
-  }, [inView]);
+	useEffect(() => {
+		if (!inView) return;
+		const reduce =
+			typeof window !== "undefined" &&
+			window.matchMedia &&
+			window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (reduce) return;
+		const id = setInterval(
+			() => setStep((s) => (s + 1) % LOOP_STEPS.length),
+			1500,
+		);
+		return () => clearInterval(id);
+	}, [inView]);
 
-  const s = LOOP_STEPS[step];
-  const active = new Set([s.from, s.to]);
-  const target = NODE_POS[s.to];
+	const s = LOOP_STEPS[step];
+	const active = new Set([s.from, s.to]);
+	const target = NODE_POS[s.to];
 
-  return (
-    <div ref={ref} className={`hx-loop-wrap ${inView ? "hx-in" : ""}`}>
-      <p className="hx-cap">The loop that runs on every single prompt</p>
-      <svg
-        viewBox="0 0 500 260"
-        width="100%"
-        role="img"
-        aria-label="Harness runtime loop"
-      >
-        {(["user", "model", "tools"] as const).map((k) => (
-          <line
-            key={k}
-            x1={NODE_POS.harness.x}
-            y1={NODE_POS.harness.y}
-            x2={NODE_POS[k].x}
-            y2={NODE_POS[k].y}
-            stroke={active.has(k) ? "var(--hx-signal)" : "var(--hx-line)"}
-            strokeWidth={active.has(k) ? 2 : 1.4}
-          />
-        ))}
+	return (
+		<div ref={ref} className={`hx-loop-wrap ${inView ? "hx-in" : ""}`}>
+			<p className="hx-cap">The loop that runs on every single prompt</p>
+			<svg
+				viewBox="0 0 500 260"
+				width="100%"
+				role="img"
+				aria-label="Harness runtime loop"
+			>
+				{(["user", "model", "tools"] as const).map((k) => (
+					<line
+						key={k}
+						x1={NODE_POS.harness.x}
+						y1={NODE_POS.harness.y}
+						x2={NODE_POS[k].x}
+						y2={NODE_POS[k].y}
+						stroke={active.has(k) ? "var(--hx-signal)" : "var(--hx-line)"}
+						strokeWidth={active.has(k) ? 2 : 1.4}
+					/>
+				))}
 
-        {Object.entries(NODE_POS).map(([k, p]) => {
-          const on = active.has(k);
-          const isHub = k === "harness";
-          return (
-            <g key={k}>
-              <circle
-                cx={p.x}
-                cy={p.y}
-                r={isHub ? 42 : 30}
-                fill="var(--hx-panel)"
-                stroke={on || isHub ? "var(--hx-signal)" : "var(--hx-line)"}
-                strokeWidth={isHub ? 2 : 1.5}
-                style={
-                  isHub
-                    ? { filter: "drop-shadow(0 0 10px var(--hx-glow))" }
-                    : on
-                      ? { filter: "drop-shadow(0 0 6px var(--hx-glow))" }
-                      : undefined
-                }
-              />
-              <text
-                x={p.x}
-                y={p.y + 4}
-                textAnchor="middle"
-                className={`hx-node-label ${on || isHub ? "hx-on" : ""}`}
-              >
-                {p.label}
-              </text>
-            </g>
-          );
-        })}
+				{Object.entries(NODE_POS).map(([k, p]) => {
+					const on = active.has(k);
+					const isHub = k === "harness";
+					return (
+						<g key={k}>
+							<circle
+								cx={p.x}
+								cy={p.y}
+								r={isHub ? 42 : 30}
+								fill="var(--hx-panel)"
+								stroke={on || isHub ? "var(--hx-signal)" : "var(--hx-line)"}
+								strokeWidth={isHub ? 2 : 1.5}
+								style={
+									isHub
+										? { filter: "drop-shadow(0 0 10px var(--hx-glow))" }
+										: on
+											? { filter: "drop-shadow(0 0 6px var(--hx-glow))" }
+											: undefined
+								}
+							/>
+							<text
+								x={p.x}
+								y={p.y + 4}
+								textAnchor="middle"
+								className={`hx-node-label ${on || isHub ? "hx-on" : ""}`}
+							>
+								{p.label}
+							</text>
+						</g>
+					);
+				})}
 
-        <g
-          style={{
-            transform: `translate(${target.x}px, ${target.y}px)`,
-            transition: "transform .7s cubic-bezier(.5,0,.4,1)",
-          }}
-        >
-          <circle
-            r={6}
-            fill="var(--hx-signal-2)"
-            style={{ filter: "drop-shadow(0 0 8px var(--hx-glow))" }}
-          />
-        </g>
-      </svg>
+				<g
+					style={{
+						transform: `translate(${target.x}px, ${target.y}px)`,
+						transition: "transform .7s cubic-bezier(.5,0,.4,1)",
+					}}
+				>
+					<circle
+						r={6}
+						fill="var(--hx-signal-2)"
+						style={{ filter: "drop-shadow(0 0 8px var(--hx-glow))" }}
+					/>
+				</g>
+			</svg>
 
-      <div className="hx-loop-caption">
-        <span className="hx-loop-step">
-          {step + 1} / {LOOP_STEPS.length}
-        </span>
-        <span className="hx-loop-text">{s.text}</span>
-      </div>
-    </div>
-  );
+			<div className="hx-loop-caption">
+				<span className="hx-loop-step">
+					{step + 1} / {LOOP_STEPS.length}
+				</span>
+				<span className="hx-loop-text">{s.text}</span>
+			</div>
+		</div>
+	);
 }
