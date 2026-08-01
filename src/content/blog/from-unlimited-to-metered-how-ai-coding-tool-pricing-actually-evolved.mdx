@@ -1,0 +1,206 @@
+---
+title: "From Unlimited to Metered: How AI Coding Tool Pricing Actually Evolved"
+date: "2026-07-22T10:00:00.000Z"
+draft: false
+pubDate: "2026-08-01"
+updatedDate: "2026-07-22"
+authorName: Abdul Rafay
+slug: from-unlimited-to-metered
+description: "Copilot started with per-message pricing. Cursor promised unlimited. Now everything is token-based credits and rolling session windows. Here's how we got here — and why your subscription works the way it does."
+authorAvatar: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxZSVOvl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+keywords:
+  - AI coding tools pricing history
+  - GitHub Copilot pricing evolution
+  - Cursor credits system
+  - token-based billing
+  - session   limits explained
+  - AI inference costs
+  - per-message pricing
+  - Claude Code sessions
+  - Fable 5 pricing
+  - AI agent usage
+  - rolling window   sessions
+  - five-hour session limit
+  - weekly vs monthly reset
+  - AI subscription comparison
+featured: true
+tags:
+  - AI
+  - ThoughtsProcess
+  - AICodingTools
+  - ClaudeCode
+  - OpenCode
+canonicalUrl: /blog/from-unlimited-to-metered
+heroImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxWY8YSl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+---
+
+import CreditBurn from "../../components/blog/CreditBurn";
+import PricingLandscape from "../../components/blog/PricingLandscape";
+import SessionCalendar from "../../components/blog/SessionCalendar";
+import UsageMeter from "../../components/blog/UsageMeter";
+
+I've been thinking about this for months, and I think I finally have the story straight.
+
+There was a time when AI coding tool pricing was simple. You paid $10 or $20 a month, you got a fixed number of requests, and when you hit the limit, you waited or upgraded. That was it. No credit pools, no token math, no rolling session windows, no "this model costs 60x more than that model."
+
+That time ended in June 2025, and most developers still don't fully understand what replaced it.
+
+So let me walk through the whole arc — how we got from per-message pricing to the token-based, session-windowed, credit-pooled world we live in now. Because the only way to not get burned by these systems is to understand what they're actually measuring.
+
+## Back when Copilot was the only game in town
+
+GitHub Copilot launched in June 2021 as a technical preview. The pricing was almost comically simple in hindsight: **$10/month for individuals, unlimited completions.** You paid, you got suggestions. There was no concept of "premium models" or "credits" because there was only one model — Codex — and it was cheap enough that GitHub could absorb the cost.
+
+When Copilot went GA in June 2022, the pricing hadn't changed. $10/month individual, $19/month for business. The value proposition was straightforward: autocomplete for your editor. The model was small enough, the inference cheap enough, that usage variance didn't matter. A heavy user might cost GitHub $3-4 in inference. A light user cost pennies. The $10 average covered everyone.
+
+This was the **flat-rate era**, and it worked because:
+- The model was a single, small model (Codex / early GPT-3 variants)
+- Output was short — a few lines of completion, not whole files
+- There was no agent mode, no multi-file editing, no tool calling
+- Inference costs were a fraction of what they are today
+
+The most expensive thing Copilot did was generate a function body. Compare that to today's agents that can rewrite your entire codebase, spawn sub-processes, and run for 15 minutes straight generating tens of thousands of tokens. The cost profile is unrecognizable.
+
+## Then Cursor showed up and changed everything
+
+Cursor launched in 2023 and did something Copilot couldn't: it integrated *multiple* frontier models directly into the editor experience. Claude, GPT-4, and later Gemini and DeepSeek. The quality jump over Copilot was immediate and massive. But so was the cost problem.
+
+Cursor didn't own the models. Every time a user asked Claude Sonnet to refactor a file, Cursor paid Anthropic API rates. Every time a user asked GPT-4 to explain a codebase, Cursor paid OpenAI. Their margins were thin, and their pricing had to cover a much wider range of costs than Copilot ever faced.
+
+Initially, Cursor tried to keep the flat-rate model alive. **$20/month for 500 "fast" requests.** Unlimited "slow" requests (their own cheaper routing). Unlimited tab completions. This was essentially Copilot's model with a request cap bolted on — and for a while, it worked.
+
+But then three things happened simultaneously:
+
+**Models got more expensive.** Claude Opus, GPT-4 Turbo, and the reasoning models all came with dramatically higher per-token costs. A single Opus response doing multi-file reasoning could cost Cursor $0.50-$1.00 in inference. An agent mode session that ran for 10 minutes could cost $5-$10.
+
+**Users got agentic.** The introduction of Composer, Agent mode, and multi-file edits meant each "request" was no longer a simple Q&A. It was a sprawling, tool-calling, file-rewriting session that consumed 10-100x more tokens than before. The average cost per request skyrocketed.
+
+**The "unlimited" promise broke.** This is where I wrote my [Cursor's Pricing Shock](/blog/cursor-unlimited-ai-cost-shock) post, and honestly, nothing has changed my view since. Cursor promised "unlimited" for $20, and 12 days later, power users were getting $100+ bills. The math simply didn't work.
+
+The root cause was simple: **flat-rate pricing can't survive when your input costs vary by 60x per request.** Cursor had to change or bleed money.
+
+### The June 2025 pivot
+
+In June 2025, Cursor replaced the 500-request model with **credit-based billing.** Your $20 plan now bought you $20 in API credits. Auto mode (Cursor's smart routing) was still unlimited. But manually selecting a premium model — Claude Sonnet, Opus, GPT-4 — would draw from your credit pool at varying rates based on actual API costs.
+
+The backlash was enormous. I covered the details — refunds, apology blog posts, community outrage — in my earlier post. But the important thing is what it represented: **the death of flat-rate pricing in AI coding tools.** Once Cursor admitted that one request wasn't equal to another, the era of simple pricing was over.
+
+<CreditBurn client:visible />
+
+The burn rate difference is the whole story. Haiku costs $0.25 per million input tokens. Opus costs $15. Same tool, same task format, 60x difference. A flat-rate plan can't price for both.
+
+## Everyone followed suit — but differently
+
+After Cursor's pivot, the dominoes fell fast. The interesting part is how differently each tool implemented the same basic idea.
+
+**GitHub Copilot (June 2026):** After years of flat $10/month pricing, Copilot moved to usage-based billing with AI Credits. Pro now includes $15 in credits. Premium models (Opus-tier) consume credits at 3x the base rate. The Copilot ecosystem integration is still unmatched — it sees your issues, PRs, and CI results — but the pricing model converged with everyone else's.
+
+The interesting thing about Copilot's transition is how quietly it happened compared to Cursor's firestorm. GitHub has more users, a stronger brand, and better communication channels. They also had the benefit of watching Cursor take the arrows first. The lesson was learned: you need a dashboard, you need clear limits, and you need to grandfather users or offer opt-outs.
+
+**Claude Code (always been session-based):** Anthropic's pricing model was different from day one. No credits. No per-request limits. Instead, Claude Code uses **rolling session windows.** Your subscription gives you a certain amount of active usage time — typically measured in hours — on a rolling basis. The clock only ticks when Claude is generating tokens. Idle time doesn't count.
+
+This is the model that confuses people the most, so let me be specific.
+
+### How rolling sessions actually work
+
+Imagine you have a 5-hour session window. That window is a bracket sliding forward through time. When you use Claude Code for an hour, that hour goes into the window. The window rolls forward continuously — typically on a multi-day cadence, depending on your plan.
+
+So if you use 4 hours on Monday and 1 hour on Tuesday, your available time on Wednesday depends on whether Monday's usage has rolled out of the window yet. It's not a monthly reset. It's a **rolling replenishment** — old sessions age out, new capacity opens up.
+
+<SessionCalendar client:visible />
+
+The reason this matters: **people think they have a monthly budget, but they actually have a rate limit.** The $20 Pro plan gives you roughly 15-20 hours of active coding per month *at Sonnet speeds.* If you try to do that in a week, you'll hit the rolling window limit because the replenishment can't keep up with the consumption rate.
+
+The $100 Max plan expands the window and gives you Opus-tier reasoning. The $200 Max plan expands it further — effectively unlimited for daily use. Same software, same features, just more room in the window and a smarter model answering your prompts.
+
+**Windsurf (rebranded from Codeium):** Windsurf went with yet another model — **daily and weekly quotas** instead of monthly credit pools or rolling sessions. Your daily allowance resets every day. Your weekly allowance resets every week. This is the most predictable model for budgeting, but it's also the least flexible — you can't save up unused capacity or borrow from future allocations.
+
+**OpenCode and Command Code:** These tools operate on a fundamentally different axis. They don't use frontier models as their primary offering. They use **open-weight models** (DeepSeek, MiniMax, Hunyuan) that cost a fraction of what Opus or GPT-4 cost to run. This lets them offer aggressive pricing — Command Code's $1 Go plan, OpenCode's $5-10 Go plan — while staying solvent.
+
+The trade-off is model capability. DeepSeek V4 Flash is genuinely good at logic and debugging when pointed in the right direction. But it's not Sonnet 5. It's not Opus. You're trading raw intelligence for raw volume — more requests, cheaper models, different edge cases.
+
+<PricingLandscape client:visible />
+
+## The token economics underneath everything
+
+Underneath all the subscription plans and credit pools, there's a single layer that determines the real economics: **token pricing.**
+
+Every model has an API price. Every subscription is a wrapper around that price. Here's the ranges as of July 2026:
+
+| Model | Input (per MTok) | Output (per MTok) | Relative cost |
+|-------|-------------------|--------------------|---------------|
+| Haiku 3 | $0.25 | $1.25 | 1x (baseline) |
+| Sonnet 5 | $2.00 | $10.00 | 8x |
+| Opus 4.8 | $15.00 | $75.00 | 60x |
+| GPT-5.6 Luna | $1.00 | $6.00 | 4.8x |
+| GPT-5.6 Terra | $2.50 | $15.00 | 12x |
+| GPT-5.6 Sol | $5.00 | $30.00 | 24x |
+| DeepSeek V4 | $0.50 | $2.00 | 1.6x |
+
+These numbers are the floor. Every tool above them adds a margin, but they can't go below these costs for long.
+
+Now here's the part that matters for your wallet: **output tokens dominate the bill.** A typical agentic coding session might use 5,000 input tokens (your prompt + context) and generate 15,000 output tokens (the code, reasoning, file edits, tool calls). At Sonnet 5 rates, that session costs roughly $0.15 in input and $0.15 in output — $0.30 total. Run 100 of those in a month and you're at $30 in raw API cost, plus the tool's margin.
+
+At Opus 4.8 rates, the same 100 sessions cost roughly $7.50 in input and $11.25 in output — $18.75 total. But that's only the API cost. The tool still needs to add their margin, pay for infrastructure, and keep the lights on. Hence the $200/mo price tag for Opus-tier access.
+
+The math only makes sense if you're generating enough value per session to justify it. Most professional developers do. But understanding *why* the pricing works the way it does is the difference between feeling like you're getting ripped off and understanding the economics.
+
+## Special pricing — Fable 5, promo rates, and the traps
+
+One thing I haven't touched yet is the **promotional pricing** that can temporarily break the normal economics. Fable 5 is the best example.
+
+Anthropic launched Fable 5 with a promotional window: **access included with Pro, Max, Team, and Enterprise plans at no extra charge.** For a period of time — extended multiple times as of this writing — subscribers could use Fable 5 for up to 50% of their weekly limits. The promo is currently set to expire on July 19, 2026, after which Fable 5 transitions to usage-based billing at $10/$50 per MTok.
+
+This is a different pricing model entirely. It's a **time-limited promotion** designed to:
+1. Give users exposure to a new model without friction
+2. Gather usage data and feedback
+3. Convert users to paying API customers once the promo ends
+
+The key insight: **promotional pricing is designed for adoption, not sustainability.** The $10/$50 per MTok rate that Fable 5 will charge after the promo is the *real* price. The included access during the promo was a marketing cost.
+
+Similarly, Sonnet 5 launched with an introductory price of $2/$10 per MTok, running through August 31, 2026. After that, it's expected to settle at $3/$15. **Always check whether the price you're seeing is intro pricing or long-term pricing** — this distinction has burned a lot of people who budgeted based on launch prices.
+
+Other notable special cases:
+- **GPT-5.6 Sol usage limits were temporarily lifted** during the Codex and ChatGPT Work launches, giving all plans more access to the frontier model
+- **Cursor's Pro plan includes "bonus capacity"** beyond the $20 credit pool, but the exact amount is intentionally vague — it's a buffer, not a guarantee
+- **GitHub Copilot now supports session spend limits** — you can cap how much an agent spends in a single session, which is useful for controlling costs during heavy agent runs
+
+## The patterns that actually explain everything
+
+After all this, I keep coming back to three patterns that explain almost every pricing decision in the space:
+
+**Fixed-cost plans die when variable-cost inputs diverge by 60x.** Copilot survived on flat-rate pricing because its model costs were narrow. Cursor, running 6+ models with wildly different API prices, couldn't. The credit pool model is the industry's answer to this: let users feel the variable cost directly, but give them a free option (Auto mode) to opt out when they don't need frontier reasoning.
+
+**Session-based billing aligns incentives better than credit-based billing.** Claude Code's rolling window charges for *time spent generating*, not tokens consumed or requests made. This means the model can be as verbose or concise as it needs to be without penalizing the user for seeking a thorough answer. Credit-based billing (Cursor, Copilot) creates a perverse incentive: users optimize for shorter responses to conserve credits, even when a longer response would be better.
+
+**Daily/weekly quotas are more predictable but less powerful.** Windsurf's daily and weekly quotas are the easiest to understand and budget around. You know exactly when your allowance resets. But you also can't front-load work — if you have a big coding session on Tuesday, you're limited by Tuesday's daily quota, not your remaining monthly budget. This predictability comes at the cost of flexibility.
+
+<UsageMeter client:visible />
+
+The usage curve is the real story. A 35% day followed by a 55% day exhausts your weekly capacity faster than you expect. The billing model determines whether that means "I need to wait for a rolling window" or "I can continue on Auto mode" or "I'm done for the day."
+
+## So where does that leave us?
+
+I don't think we're going back to flat-rate pricing. The cost variance between models and use cases is too wide. But I do think the industry will settle into clearer norms — probably a combination of: a free/cheap tier with basic models, a $20 tier with credit-based premium access, and a $100-200 tier for unlimited usage of the best models.
+
+Until then, the best strategy is to understand which meter you're on, what you're actually being charged for, and when it resets. Because the tool doesn't care whether you understand the pricing — it just bills you.
+
+Until next time, go break something.
+
+---
+
+## References
+
+- [GitHub Copilot Plans](https://github.com/features/copilot/plans)
+- [Cursor Pricing](https://cursor.com/pricing)
+- [Anthropic Claude Pricing](https://www.anthropic.com/pricing)
+- [Cursor June 2025 Pricing Apology](https://cursor.com/blog/june-2025-pricing)
+- [Windsurf Pricing](https://windsurf.com/pricing)
+- [OpenAI Codex Documentation](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan)
+- [OpenAI Codex Rate Card](https://help.openai.com/en/articles/20001106-codex-rate-card)
+- [Command Code Pricing](https://commandcode.ai/pricing)
+- [OpenCode](https://opencode.ai)
+- [CloudZero — Cursor AI Pricing 2026](https://www.cloudzero.com/blog/cursor-ai-pricing/)
+- [Developer Digest — AI Coding Tools Pricing Comparison 2026](https://www.developersdigest.tech/blog/ai-coding-tools-pricing-2026)
+- [GitHub Copilot Usage-Based Billing Guide](https://www.developersdigest.tech/blog/github-copilot-usage-based-billing-guide-2026)
+
