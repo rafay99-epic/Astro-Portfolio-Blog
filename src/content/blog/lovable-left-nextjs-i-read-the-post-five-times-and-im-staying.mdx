@@ -1,0 +1,154 @@
+---
+title: "Lovable Left Next.js. I Read the Post Five Times and I'm Staying."
+date: "2026-08-29T08:00:04.913Z"
+draft: false
+pubDate: "2026-08-29"
+updatedDate: "2026-08-24"
+authorName: Abdul Rafay
+slug: lovable-left-nextjs-i-read-the-post-five-times-and-im-staying
+description: Lovable migrated 850,000 lines of lovable.dev off Next.js to TanStack Start, mostly with agents, mostly with one developer. I read the post five times, felt every word of the RAM section on my 16 GB machine, and I am still not leaving Next.js. Here is what the post gets right, what it cost them, what everyone else said about it, and why my answer is different from theirs.
+tags:
+  - AI
+  - NextJS
+  - "\"TanStack Start\""
+  - Vercel
+  - Lovable
+  - Migrations
+  - ThoughtsProcess
+keywords:
+  - AI
+  - NextJS
+  - "\"TanStack Start\""
+  - Vercel
+  - Lovable
+  - Migrations
+  - ThoughtsProcess
+canonicalUrl: "https://rafay99.com/blog/lovable-left-nextjs-im-staying"
+featured: true
+excerpt: Lovable moved 850K lines off Next.js with one developer and a pack of agents. The dev server numbers hurt to read on my 16 GB machine. I read the post five times and I am still staying on Next.js. Here is why both of us can be right.
+authorAvatar: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJxZSVOvl9R3riI0XzKFH7a5TLmpyJl1P2Eewu"
+heroImage: "https://7huqjqx8yo.ufs.sh/f/TViMykBJnLIJV9NxgOWhLpNfDlGtag3IM2qo1QCHSWJuVyn4"
+---
+
+import DevServerCost from "../../components/blog/DevServerCost";
+import IncidentSpike from "../../components/blog/IncidentSpike";
+import SharedCodeSplit from "../../components/blog/SharedCodeSplit";
+
+There is a post making the rounds that every Next.js developer should read with their guard up and their ego down: [How we migrated lovable.dev away from Next.js](https://lovable.dev/blog/how-we-migrated-lovable-dev-away-from-nextjs). Lovable took their own website, close to 400 routes and 910K lines of code, 42 million monthly visitors, and moved the whole thing from Next.js on Vercel to TanStack Start on their own hosting. One developer drove the migration. Agents wrote most of the PRs. It took six months and, at one point, took their error rate from 0.1% to 50% in a few minutes.
+
+I have read it five times now. Not skimming, properly reading, because posts like this one are rare. Most framework content is either a tutorial or a sales pitch. This is neither. It is a real postmortem with real numbers, including numbers that make Next.js look bad, written by someone who used Next.js for years and is not bitter about it.
+
+And my conclusion after all five reads is the opposite of theirs. I love Next.js, I am keeping it, and I want to explain why the post convinced me of that rather than talked me out of it.
+
+**If you do not write code:** a very successful company just spent six months renovating their house while living in it, and wrote an honest diary about which walls collapsed. That diary is more useful than any brochure.
+
+**If you do write code:** keep reading, because the RAM section is going to hit close to home.
+
+## The part that hurt: the RAM numbers
+
+This is the section I felt in my spine.
+
+<DevServerCost client:visible />
+
+TanStack Start uses the Vite dev server. On Lovable's codebase, they measured 10 seconds to start and 1.5 GB of RAM on TanStack Start, against 70 seconds and 8 GB of RAM for Next.js v16.2 with Turbopack. Same codebase, same MacBook M4 Max, no other major workloads running. That is a 7x difference in startup time and more than 5x in memory, on hardware most of us can only dream about.
+
+Now here is my confession. I run a 16 GB machine. Not an M4 Max, a normal one. And when I read that section I was, at that very moment, running three Next.js projects side by side, which is a normal Tuesday for me. Three dev servers, three node processes doing whatever it is they do in there, and the fans spinning like the machine is trying to achieve liftoff. When I spin up three Next.js projects, goodbye computer, hello Jet. I posted almost exactly that when the article came out, and half my replies were people sharing their own RAM horror stories, so I know I am not alone.
+
+The Lovable post adds one more detail that stuck with me. Some of their colleagues reported 20 GB or more of RAM from a Next.js dev server, while trying to debug a backend service and not even needing the frontend that much. Twenty gigabytes, to not look at a page. There is a version of this where I defend Next.js, and I will defend it later in this post, but I will not defend that number. It is too much, and everyone who has watched Activity Monitor during a dev server boot knows it.
+
+To their credit, the post is fair here too. Next.js 16.3 claims up to a 90% reduction in dev server memory. Good. I will take it, and I will still keep an eye on Activity Monitor, because I have been promised memory improvements before.
+
+## What the migration actually took
+
+This is the part I read most carefully on passes two through five, because the interesting question is never "should we switch frameworks" but "what does switching frameworks cost", and almost nobody publishes that number.
+
+Here is what Lovable paid:
+
+- Six months of migration while the app kept growing under them. Alexander Lebedev, the developer who ran it, started with 350K lines of code he describes as code he had never read, containing features he did not know existed. By the time he finished, the app was 850K lines, and another 60K landed after. The finish line was running away from them the entire time.
+- Both frameworks running in parallel behind a proxy worker, route by route, with feature flags deciding which framework each visitor got. Five major route groups, each rolled out gradually from internal testing to 1% of users up to 100%, one external rollout climbing at a time. Crossing between frameworks forces a hard navigation, which cost them about 5 seconds against 1.5 seconds for a soft one, so they mapped routes onto user journeys and migrated whole journeys together.
+- A shared-code discipline that got 97% of the codebase framework-agnostic, with lint rules that forbid shared code from importing either framework.
+
+<SharedCodeSplit client:visible />
+
+That last one is the genuinely impressive part of the whole post. They wired a `#shared/` import alias into both frameworks, added lint rules rejecting any `next` or `@tanstack` import inside it, and later added an agent-powered check that reviewed every merged PR for portability violations and explained its verdict per file. Most teams cannot keep a utils folder clean. They kept 850K lines portable while shipping features at full speed. By the end, only 3% of the web codebase was Next.js specific, and the serving path for lovable.dev on their own platform is under 200 unique lines. That means the next framework decision they make carries a fraction of the switching cost. As one analysis from Futurum Group put it, that is a real architectural advantage for a company that has to evolve fast.
+
+- One outage. The dashboard rollout, 20% of users, a Friday afternoon.
+
+<IncidentSpike client:visible />
+
+Error rate went from 0.1% to about 50% in minutes. Root cause was a few megabytes of static JSON pushing their worker over a 128 MB memory limit, so their V8 isolates, which should serve thousands of requests each, were dying after fewer than 10. Eleven minutes, fixed by rollback, understood later. The fixes they landed afterwards are worth reading on their own: parsing multi-megabyte JSON in request handlers instead of at module level cut memory 2x to 12x depending on route, and stubbing out client-only IDE code in the server bundle saved 9 MB of bundle, which is 18 MB of worker memory, because V8 stores any string containing one non-Latin-1 character in a two-byte format.
+
+That last one is my favorite part of the post, honestly. They could have hidden it. Instead they walk through exactly what they ignored, the unmeasured baseline memory, the 0.1% error rate they accepted and planned to deal with later, and they name the real culprit, which was optimism.
+
+Read that list again if you are tempted to think a framework migration is a weekend project because an agent can write the code. The agents genuinely did write the code. The original plan was to distribute migration tickets across the teams who owned each feature, and it collapsed in a good way: agents drafted the PRs, the drafts turned out good enough that one person reviewed and landed them batch after batch, and no team ever received their share of the work. But it still took six months, because the code was never the hard part. The routing, the rollouts, the stickiness so a user does not bounce between two frameworks mid-session, the deterministic flags for testing, the monitoring, the incident. That is the migration. The code move is a rounding error.
+
+## What everyone else said
+
+One thing I enjoy about a post this big is watching the reaction wave move through the community, so I collected some of it.
+
+Alexander Lebedev, who ran the migration, framed the bigger picture in his announcement: "This year's coding agents are good enough to make large-scale code migrations a solved problem. See Bun's 500K-line Zig-to-Rust rewrite. Now the bottleneck is what happens after you move the mountain of code. An agent may write a million lines and make the tests pass. But what do you do after that? And how do you approach this if your test coverage is thin?" That framing is worth sitting with. The migration being possible is no longer the question. The question is what your safety net looks like when an agent can move faster than your tests can follow.
+
+Mark Dembo's reaction, "preeetty cool to see this project progress! Lovable.dev is now on Cloudflare Workers", pulled in over 150 reactions, which tells you how many people were quietly watching this migration happen over the six months.
+
+Not everyone was impressed in the same way. Allan Leinwand's take was a shrug in the best sense: "Of course it is, just like all other quickly scaling web properties." He is right that successful platforms eventually own their serving path, that is the standard trajectory. But most companies writing that sentence do not also publish the outage, the memory math, and the rollout schedule. The shrug is fair for the destination, not for the diary.
+
+The context that makes Lovable's move make sense came earlier, in June, when Fabian Hedin announced they had switched their users' default stack from a custom Vite setup to TanStack Start. Users now create over a million applications per week on it, and the platform serves over 60 billion requests a month. The June post also explains a reason nobody talks about enough: SEO. Lovable apps used to be client-rendered, which meant crawlers that do not execute JavaScript saw an empty page and social previews showed generic cards. SSR fixes that for every user, not just for lovable.dev. The migration post is really the second half of a decision that was made months earlier.
+
+The analyst crowd read it as a business move, which it is. Futurum Group called it a deliberate dogfooding play, treating the flagship site as just another app to stress-test the platform at hyperscale, in a market they size at $181.3 billion for AI platforms in 2026. TLDR's dev newsletter picked it up as their featured link a few days later with a 26-minute read warning attached.
+
+And then there were the tweets, mine included. I posted that I love Next.js but the article is painfully accurate about RAM, that it is not a joke and very fun to read, that using Lovable to build Lovable is cool and funny, and finally that I read it five times, learned a lot, and am sticking with Next.js anyway. That last tweet is this post. The replies split the same way the community always splits on Next.js: half people sharing memory screenshots, half people saying they tried TanStack and never looked back, and a quiet middle asking whether any of this applies to apps a hundredth of the size. That middle group is who I am writing for.
+
+## The self-editing part is the real story
+
+Everyone is going to argue about Next.js versus TanStack Start. That is the boring argument. The interesting part of the post is a paragraph near the end that sounds like a footnote.
+
+Now that lovable.dev runs on the same stack as every Lovable user's app, they can use Lovable to edit lovable.dev. Their own product, pointed at their own website, previewing changes in real time. It has become the main self-service editing flow for their non-technical employees. Everyone at the company is a builder, and everyone can make Lovable itself better.
+
+I love this, and it is also very funny. They spent six months migrating away from Next.js so that their own product could eat their own website. Using Lovable to build Lovable is the most Lovable thing imaginable, and underneath the joke is a serious point: dogfooding at the infrastructure level is different from dogfooding at the feature level. Most companies dogfood by using their own app for demos. Lovable dogfooded by making their website indistinguishable from any user's project, which means every hosting bug their users can hit, they hit first, on their own 42-million-visitor front door. That feedback loop is worth a lot, and it is the actual reason the migration made sense for them.
+
+There is an irony on top, which the post owns openly: their roadmap includes letting users import and edit Next.js apps on the platform. They migrated away from Next.js so they could help you edit it. I respect the honesty of leaving that sentence in.
+
+## Why I am still staying on Next.js
+
+So the post is convincing, the numbers are real, the RAM pain is personal, and I read it five times. Here is why my conclusion is still no.
+
+Lovable's reasons were mostly reasons that exist at their scale and almost nowhere else. They run a hosting platform, so serving their website through the same machinery as 60 million customer apps collapses two systems into one and every improvement flows back to users. They have a builder agent that needs one uniform target stack to learn from, and the June post is explicit that a unified stack makes it easier to feed internal knowledge back into the agent. They employ the people who run the infrastructure. Those are excellent reasons. None of them are my reasons, because I do not run a hosting platform, and my website does not need to be edible by my own product.
+
+What I have is a pile of side projects and experiments, and for that, Next.js gives me things I am not willing to give up:
+
+- **Vercel just works.** Push, deploy, preview URLs, rollbacks. I have never once thought about my hosting for a side project, and that is worth more to me than 6.5 GB of dev server RAM. The post even says it themselves: Vercel performed admirably, their problems went away when they moved to it.
+- **The ecosystem absorbs my randomness.** I experiment with random ideas, and whatever the idea is, there is a Next.js integration, a template, or a tutorial from last month for it. TanStack Start is younger, and the post admits the cost of that: 17 custom build plugins to get bundling right at their scale. For a big team with a bundler expert, fine. For me at midnight, that is a tax. The agents can write the config, but I still have to recognize that I need it.
+- **The abstractions confuse me and I have made peace with it.** The post says server components and server actions still confuse them, and I laughed out loud, because same. But confusion is a tuition payment, not a mortgage. I have already paid it. I know where the bodies are buried in my own mental model of Next.js. Switching frameworks means paying tuition all over again at a school with fewer classmates to ask.
+
+And one more thing, the one that made me respect the post the most: they were honest that this worked because of extreme circumstances. A single developer with deep context, agent tooling built up over months, permission to run a six-month migration on the company's main website, and the authority to review and land every PR himself. That is a rare combination. If your team of eight tries to copy this over a quarter with normal deadlines and shared ownership, you will get the outage paragraph and not the happy ending.
+
+There is also an agent angle that the post raises and that I keep thinking about. Lebedev writes that his agents performed better with TanStack Start, because Next.js v12, v14, and v16 are different enough that training data full of unversioned Next.js advice actively misleads them. An agent can fill a knowledge gap by reading the docs, but it cannot easily unlearn a confidently wrong habit. I have hit this exact failure, agents reaching for pages-router patterns in an app-router project. My workaround has been AGENTS.md files and pinned docs, and it works most of the time. But the observation cuts at something real: the bigger and older a framework gets, the more its own history becomes noise for the tools writing it. That is an argument for TanStack Start today, and it will be an argument against TanStack Start in four years, when v2 and v4 disagree with each other in someone's training data.
+
+## What I am actually taking from it
+
+Staying on Next.js does not mean the post has nothing for me. The transferable parts, the ones I have already started stealing for non-migration reasons:
+
+- **The thin framework layer.** Keep 95% of your code framework-agnostic and put a small adapter layer on top. You do not need a migration planned to want this. It makes testing easier, it makes porting pieces to React Native or a different stack possible later, and it forces cleaner boundaries. The TypeScript import-alias trick, same interface, different implementation per framework, resolved at the tsconfig level, is genuinely elegant and works today in any project.
+- **Deterministic feature flags for tests.** Let the proxy or app read an internal parameter and pin the flag instead of rolling dice. Any codebase with randomized rollouts should steal this.
+- **Measure before you are on fire.** They skipped measuring baseline memory, ate a 50% error rate on a Friday, and wrote it down for the whole internet to read. Cheaper lesson: measure the baseline now.
+- **Agents for boring, repeatable work.** The pattern that made the migration possible was not "AI writes my app", it was "extract the reusable skill, then let agents repeat it hundreds of times, with a review check that teaches the rule at the moment it matters". Lebedev raised the abstraction one level mid-migration, from tracking individual tickets to feeding a planner agent a measurable metric like "how many agent tools still have a Next.js UI" and letting it propose batches of up to 12 PRs. That pattern applies to far more than framework migrations.
+
+## The verdict
+
+Read the post. All of it, more than once if you have the patience, because the details are where the value is. It is the most honest large-scale framework migration writeup I have read, the outage section alone is worth the eighteen minutes, and the RAM numbers should make every Next.js developer a little uncomfortable in a productive way.
+
+Then make your own call, with your own scale in mind. Lovable had reasons that weighed hundreds of millions of visitors and a product strategy. I have side projects, a 16 GB machine that turns into a jet engine, and a Vercel bill I do not think about. Their math said move. My math says stay.
+
+Both answers are right. That is the actual lesson of the post, and it is the one nobody will put in the headline.
+
+## References
+
+1. Alexander Lebedev, ["How we migrated lovable.dev away from Next.js and turned it into another Lovable app"](https://lovable.dev/blog/how-we-migrated-lovable-dev-away-from-nextjs), Lovable blog, August 18, 2026. The source post, all numbers in this article come from it.
+2. Lovable, ["Building apps using TanStack Start"](https://lovable.dev/blog/building-apps-using-tanstack-start), June 1, 2026. The first half of the story: why they picked TanStack Start for user apps, the SSR and SEO reasoning, and the work needed to teach their agent the new framework.
+3. Fabian Hedin, [announcement of the TanStack Start default stack](https://www.linkedin.com/posts/fabian-hedin-2377b0144_we-switched-our-default-tech-stack-for-our-activity-7467259089950138368-6IZe), LinkedIn, June 2026. One million apps created per week, 60 billion requests served monthly.
+4. Alexander Lebedev, [LinkedIn announcement of the migration post](https://www.linkedin.com/posts/alexlebedev_how-we-migrated-lovabledev-away-from-nextjs-activity-7495419093123252224-61RJ), August 18, 2026. Source of the "migrations are a solved problem, the bottleneck is after" framing and the Bun 500K-line Zig-to-Rust comparison.
+5. Futurum Group, ["Lovable Eats Its Own Cooking at 42M Visitors a Month"](https://futurumgroup.com/insights/lovable-eats-its-own-cooking-at-42m-visitors-a-month/), August 19, 2026. Analyst read on the dogfooding strategy and the switching-cost angle of the 97% shared codebase.
+6. TLDR Dev, [August 20, 2026 newsletter](https://tldr.tech/dev/2026-08-20). Featured the migration post as its lead link.
+7. Next.js team, [Next.js 16.3 release notes](https://nextjs.org/blog/next-16-3). The claimed up-to-90% dev server memory reduction.
+8. Allan Leinwand and Mark Dembo, LinkedIn reactions to the post, August 19, 2026. The "of course it is" and "preeetty cool" camps, respectively.
+9. My own posts on X about the article, August 19, 2026, [@abdul_rafay99](https://x.com/abdul_rafay99). The RAM complaint, the five-reads confession, and the staying-on-Next.js verdict this post expands on.
