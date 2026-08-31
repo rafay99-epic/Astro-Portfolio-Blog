@@ -30,16 +30,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
 
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
       - name: Cache bun dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.bun/install/cache
           key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
@@ -59,16 +59,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
 
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
       - name: Cache bun dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.bun/install/cache
           key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
@@ -80,6 +80,8 @@ jobs:
       - name: Build
         run: bun run build
 
+  # PRs run quality checks + build only — they never deploy.
+  # Production deploys happen exclusively from main (push or manual dispatch).
   deploy:
     name: Deploy to Vercel (production)
     needs: build
