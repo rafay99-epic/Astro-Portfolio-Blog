@@ -1,0 +1,119 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - name: Biome (format + lint)
+            script: bun run lint
+          - name: Typecheck
+            script: bun run typecheck
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: ${{ matrix.name }}
+        run: ${{ matrix.script }}
+
+  build:
+    name: Build
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build
+        run: bun run build
+
+  deploy:
+    name: Deploy to Vercel (production)
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+
+      # Credentials (VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID) come from
+      # Envpilot — nothing Vercel-related is stored in GitHub secrets.
+      - name: Pull environment variables from Envpilot
+        uses: rafay99-epic/envpilot-action@v1
+        with:
+          token: ${{ secrets.ENVPILOT_TOKEN }}
+          environment: production
+
+      - name: Guard required Vercel variables
+        run: |
+          for v in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!v}" ]; then
+              echo "::error::Envpilot did not provide $v for production."
+              exit 1
+            fi
+          done
+
+      # Uploads SOURCE and lets the build run on Vercel's infra, so the deploy
+      # inherits the project's real production env vars. Pinned CLI: prod
+      # deploy behavior must not shift under a silent @latest bump.
+      - name: Deploy to production
+        run: |
+          npx vercel@56.3.1 deploy --prod --yes --token="$VERCEL_TOKEN"
+          echo "Deployed \`${{ github.sha }}\` to production." >> "$GITHUB_STEP_SUMMARY"
