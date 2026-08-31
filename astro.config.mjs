@@ -65,7 +65,7 @@ export default defineConfig({
 		],
 	},
 	build: {
-		concurrency: 10,
+		concurrency: 50,
 		format: "directory",
 	},
 	prefetch: {
@@ -99,7 +99,6 @@ export default defineConfig({
 			"https://msbridge.rafay99.com/downloads/ms-bridge-beta.apk",
 		"/SimpleThread-APK": "/downloads/app/SimpleThread/simple_thread.apk",
 		"/MeetTime-APK": "/downloads/app/meet_time/MeetTime.apk",
-		"/webwiki": "https://rafay99-docs.vercel.app/",
 	},
 
 	security: {
