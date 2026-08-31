@@ -33,7 +33,6 @@
 		"astro-opengraph-images": "^1.20.0",
 		"astro-robots-txt": "^1.0.0",
 		"caniuse-lite": "^1.0.30001810",
-		"devicon": "^2.17.0",
 		"framer-motion": "^11.18.2",
 		"fuse.js": "^7.5.0",
 		"js-yaml": "^4.3.2",
