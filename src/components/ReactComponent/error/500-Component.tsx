@@ -1,8 +1,7 @@
 import { domAnimation, LazyMotion, m } from "framer-motion";
-import { memo } from "react";
 import { LuArrowLeft, LuHouse, LuRefreshCw } from "react-icons/lu";
 
-const ServerErrorPage = memo(function ServerErrorPage() {
+function ServerErrorPage() {
 	return (
 		<LazyMotion features={domAnimation}>
 			<div className="flex items-center justify-center p-6">
@@ -119,7 +118,7 @@ const ServerErrorPage = memo(function ServerErrorPage() {
 								onClick={() => window.location.reload()}
 								whileHover={{ scale: 1.05, y: -2 }}
 								whileTap={{ scale: 0.95 }}
-								className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff7a93] to-[#e0af68] px-8 py-4 font-semibold text-white shadow-lg shadow-[#ff7a93]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#ff7a93]/30"
+								className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff7a93] to-[#e0af68] px-8 py-4 font-semibold text-white shadow-lg shadow-[#ff7a93]/25 transition-shadow duration-300 hover:shadow-xl hover:shadow-[#ff7a93]/30"
 							>
 								<LuRefreshCw className="h-5 w-5" />
 								<span>Try Again</span>
@@ -129,7 +128,7 @@ const ServerErrorPage = memo(function ServerErrorPage() {
 								href="/"
 								whileHover={{ scale: 1.05, y: -2 }}
 								whileTap={{ scale: 0.95 }}
-								className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 px-8 py-4 font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#ff7a93]/40 hover:bg-[#24283b]/60 hover:text-[#c0caf5]"
+								className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 px-8 py-4 font-semibold text-[#a9b1d6] transition-shadow duration-300 hover:border-[#ff7a93]/40 hover:bg-[#24283b]/60 hover:text-[#c0caf5]"
 							>
 								<LuHouse className="h-5 w-5" />
 								<span>Return to Home</span>
@@ -174,6 +173,6 @@ const ServerErrorPage = memo(function ServerErrorPage() {
 			</div>
 		</LazyMotion>
 	);
-});
+}
 
 export default ServerErrorPage;

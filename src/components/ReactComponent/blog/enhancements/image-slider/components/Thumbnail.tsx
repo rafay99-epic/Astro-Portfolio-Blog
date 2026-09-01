@@ -1,8 +1,7 @@
 import { m } from "framer-motion";
-import { memo } from "react";
 import type { ThumbnailProps } from "types/image_slider";
 
-export const Thumbnail = memo(function Thumbnail({
+export function Thumbnail({
 	image,
 	index,
 	current,
@@ -27,4 +26,4 @@ export const Thumbnail = memo(function Thumbnail({
 			/>
 		</m.button>
 	);
-});
+}

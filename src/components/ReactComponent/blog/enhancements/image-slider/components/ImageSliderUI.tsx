@@ -1,12 +1,11 @@
 import { useImageSlider } from "@hooks/useImageSlider";
 import { useSliderStyles } from "@hooks/useSliderStyles";
 import { AnimatePresence, m } from "framer-motion";
-import { memo } from "react";
 import type { ImageSliderProps } from "types/image_slider";
 import { NavigationButton } from "./NavigationButton";
 import { Thumbnail } from "./Thumbnail";
 
-export const ImageSliderUI = memo(function ImageSliderUI({
+export function ImageSliderUI({
 	images,
 	aspectRatio = "auto",
 	showThumbnails = true,
@@ -167,4 +166,4 @@ export const ImageSliderUI = memo(function ImageSliderUI({
 			</div>
 		</div>
 	);
-});
+}

@@ -1,5 +1,4 @@
 import { AnimatePresence, m } from "framer-motion";
-import { memo } from "react";
 import type { SearchResultsProps } from "types/search";
 
 const containerVariants = {
@@ -25,7 +24,7 @@ const itemVariants = {
 	},
 };
 
-const SearchResults = memo(function SearchResults({
+function SearchResults({
 	query,
 	results,
 	selectedResultIndex,
@@ -54,9 +53,9 @@ const SearchResults = memo(function SearchResults({
 			</m.div>
 		</AnimatePresence>
 	);
-});
+}
 
-const SearchResultItem = memo(function SearchResultItem({
+function SearchResultItem({
 	post,
 	index,
 	isSelected,
@@ -100,6 +99,6 @@ const SearchResultItem = memo(function SearchResultItem({
 			)}
 		</m.a>
 	);
-});
+}
 
 export default SearchResults;

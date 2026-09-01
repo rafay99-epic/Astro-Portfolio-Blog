@@ -1,9 +1,8 @@
 import { m } from "framer-motion";
-import { memo } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import type { NavigationButtonProps } from "types/image_slider";
 
-export const NavigationButton = memo(function NavigationButton({
+export function NavigationButton({
 	direction,
 	onClick,
 	themeClasses,
@@ -23,4 +22,4 @@ export const NavigationButton = memo(function NavigationButton({
 			)}
 		</m.button>
 	);
-});
+}

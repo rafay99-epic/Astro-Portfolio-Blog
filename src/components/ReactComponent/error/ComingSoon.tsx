@@ -1,5 +1,4 @@
 import { domAnimation, LazyMotion, m } from "framer-motion";
-import { memo } from "react";
 import {
 	LuArrowLeft,
 	LuMail,
@@ -50,7 +49,7 @@ const iconVariants = {
 	},
 };
 
-const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
+function ComingSoon({ featureName }: ComingSoonProps) {
 	return (
 		<LazyMotion features={domAnimation}>
 			<main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden p-6 text-[#c0caf5]">
@@ -124,7 +123,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
 									<m.div
 										key={feature.text}
 										whileHover={{ scale: 1.05, y: -2 }}
-										className="rounded-xl border border-[#565f89]/20 bg-[#1a1b26]/40 p-4 backdrop-blur-md transition-all duration-300 hover:border-[#7aa2f7]/40"
+										className="rounded-xl border border-[#565f89]/20 bg-[#1a1b26]/40 p-4 backdrop-blur-md transition-colors duration-300 hover:border-[#7aa2f7]/40"
 									>
 										<div className="mb-2">
 											<feature.icon className="mx-auto h-7 w-7 text-[#7aa2f7]" />
@@ -141,7 +140,7 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
 								<m.a
 									whileHover={{ scale: 1.05, y: -2 }}
 									whileTap={{ scale: 0.98 }}
-									className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7aa2f7]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
+									className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7aa2f7]/25 transition-shadow duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
 									href="/"
 									aria-label="Return to homepage"
 									role="button"
@@ -202,6 +201,6 @@ const ComingSoon = memo(function ComingSoon({ featureName }: ComingSoonProps) {
 			</main>
 		</LazyMotion>
 	);
-});
+}
 
 export default ComingSoon;

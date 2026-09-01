@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useRef } from "react";
 import { LuSearch, LuX } from "react-icons/lu";
 import type { SearchInputProps } from "types/search";
 
-const SearchInput = memo(function SearchInput({
+function SearchInput({
 	query,
 	setQuery,
 	isSearchFocused,
@@ -72,7 +72,7 @@ const SearchInput = memo(function SearchInput({
 			)}
 		</div>
 	);
-});
+}
 
 const KeyboardShortcuts = memo(function KeyboardShortcuts({
 	isMobile,

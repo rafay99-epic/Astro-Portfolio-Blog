@@ -1,8 +1,7 @@
 import { domAnimation, LazyMotion, m } from "framer-motion";
-import { memo } from "react";
 import { LuArrowLeft, LuBookOpen, LuHouse } from "react-icons/lu";
 
-const NotFoundPage = memo(function NotFoundPage() {
+function NotFoundPage() {
 	return (
 		<LazyMotion features={domAnimation}>
 			<div className="flex items-center justify-center p-6">
@@ -115,7 +114,7 @@ const NotFoundPage = memo(function NotFoundPage() {
 								href="/"
 								whileHover={{ scale: 1.05, y: -2 }}
 								whileTap={{ scale: 0.95 }}
-								className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7aa2f7]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
+								className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7aa2f7]/25 transition-shadow duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
 							>
 								<LuHouse className="h-5 w-5" />
 								<span>Return to Home</span>
@@ -135,7 +134,7 @@ const NotFoundPage = memo(function NotFoundPage() {
 								href="/blog"
 								whileHover={{ scale: 1.05, y: -2 }}
 								whileTap={{ scale: 0.95 }}
-								className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 px-8 py-4 font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#7aa2f7]/40 hover:bg-[#24283b]/60 hover:text-[#c0caf5]"
+								className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#565f89]/40 bg-[#1a1b26]/60 px-8 py-4 font-semibold text-[#a9b1d6] transition-shadow duration-300 hover:border-[#7aa2f7]/40 hover:bg-[#24283b]/60 hover:text-[#c0caf5]"
 							>
 								<LuBookOpen className="h-5 w-5" />
 								<span>Browse Blog</span>
@@ -170,6 +169,6 @@ const NotFoundPage = memo(function NotFoundPage() {
 			</div>
 		</LazyMotion>
 	);
-});
+}
 
 export default NotFoundPage;
