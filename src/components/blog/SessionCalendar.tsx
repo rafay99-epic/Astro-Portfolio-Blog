@@ -120,7 +120,7 @@ export default function SessionCalendar() {
 
 						return (
 							<div
-								key={`${s.label}-${i}`}
+								key={`${s.label}-${s.type}`}
 								style={{
 									flex: 1,
 									textAlign: "center",

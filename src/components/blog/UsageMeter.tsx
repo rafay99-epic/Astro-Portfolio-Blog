@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
  * The bar fills progressively through the week, Wednesday hits hard,
  * and the rolling window shows when capacity replenishes.
  */
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 export default function UsageMeter() {
 	const [day, setDay] = useState(0);
-	const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
 	// Each day's usage as % of weekly capacity (totals ~250% — you run out)
 	const dailyUsage = [35, 28, 55, 42, 30, 50, 10];
 	const weeklyLimit = 100;

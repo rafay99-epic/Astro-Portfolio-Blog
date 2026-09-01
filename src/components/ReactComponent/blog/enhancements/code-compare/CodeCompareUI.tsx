@@ -382,7 +382,7 @@ function SplitView({
 		});
 	}, []);
 
-	const renderRow = (row: SplitRow, idx: number, side: "left" | "right") => {
+	const renderRow = (row: SplitRow, side: "left" | "right") => {
 		const type = side === "left" ? row.leftType : row.rightType;
 		const num = side === "left" ? row.leftNum : row.rightNum;
 		const html = side === "left" ? row.leftHtml : row.rightHtml;
@@ -397,7 +397,7 @@ function SplitView({
 
 		return (
 			<tr
-				key={`${side}-${num ?? "e"}-${idx}`}
+				key={`${side}-${row.leftNum ?? "e"}-${row.rightNum ?? "e"}`}
 				className="cc-diff-row"
 				style={{ background: lineBackground(type) }}
 			>
@@ -424,12 +424,10 @@ function SplitView({
 	const renderSide = (side: "left" | "right") =>
 		collapsed.flatMap((item) => {
 			if (item.kind === "row") {
-				return [renderRow(item.row, item.idx, side)];
+				return [renderRow(item.row, side)];
 			}
 			if (expanded.has(item.startIdx)) {
-				return item.rows.map((row, j) =>
-					renderRow(row, item.startIdx + j, side),
-				);
+				return item.rows.map((row) => renderRow(row, side));
 			}
 			return [
 				<CollapseBar
@@ -543,11 +541,8 @@ function UnifiedView({
 							}
 							const entriesToRender =
 								item.kind === "collapse" ? item.entries : [item.entry];
-							const baseIdx =
-								item.kind === "collapse" ? item.startIdx : item.idx;
 
-							return entriesToRender.map((entry, j) => {
-								const idx = baseIdx + j;
+							return entriesToRender.map((entry) => {
 								const bg =
 									entry.type === "removed"
 										? c.removedBg
@@ -577,7 +572,7 @@ function UnifiedView({
 
 								return (
 									<tr
-										key={`u-${entry.leftNum ?? "e"}-${entry.rightNum ?? "e"}-${idx}`}
+										key={`u-${entry.leftNum ?? "e"}-${entry.rightNum ?? "e"}`}
 										className="cc-diff-row"
 										style={{ background: bg }}
 									>

@@ -24,6 +24,7 @@ export interface UseThemeReturn {
 
 interface IdleCallbackWindow {
 	requestIdleCallback?: Window["requestIdleCallback"];
+	cancelIdleCallback?: Window["cancelIdleCallback"];
 }
 
 interface ThemeContextType extends UseThemeReturn {}
@@ -103,11 +104,13 @@ export function useThemeProvider() {
 
 	useEffect(() => {
 		let mounted = true;
+		let idleId: number | undefined;
+		let timerId: ReturnType<typeof setTimeout> | undefined;
 
 		const initializeTheme = () => {
 			try {
 				const savedTheme = localStorage.getItem("theme") as ThemeName;
-				const savedDarkMode = localStorage.getItem("darkMode");
+				const savedDarkMode = localStorage.getItem("darkMode:v1");
 
 				if (mounted) {
 					if (
@@ -136,19 +139,26 @@ export function useThemeProvider() {
 			}
 		};
 
-		if (typeof window !== "undefined") {
-			const idleWindow = window as Window & IdleCallbackWindow;
+		const idleWindow = (typeof window !== "undefined" ? window : undefined) as
+			| (Window & IdleCallbackWindow)
+			| undefined;
+
+		if (idleWindow) {
 			if (idleWindow.requestIdleCallback) {
-				idleWindow.requestIdleCallback(initializeTheme);
+				idleId = idleWindow.requestIdleCallback(initializeTheme);
 			} else {
-				setTimeout(initializeTheme, 0);
+				timerId = setTimeout(initializeTheme, 0);
 			}
 		} else {
-			setTimeout(initializeTheme, 0);
+			timerId = setTimeout(initializeTheme, 0);
 		}
 
 		return () => {
 			mounted = false;
+			clearTimeout(timerId);
+			if (idleId !== undefined) {
+				idleWindow?.cancelIdleCallback(idleId);
+			}
 		};
 	}, []);
 
@@ -163,7 +173,7 @@ export function useThemeProvider() {
 			const saveTimeout = setTimeout(() => {
 				try {
 					localStorage.setItem("theme", currentTheme);
-					localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+					localStorage.setItem("darkMode:v1", JSON.stringify(isDarkMode));
 				} catch (error) {
 					console.warn("Failed to save theme to localStorage:", error);
 				}

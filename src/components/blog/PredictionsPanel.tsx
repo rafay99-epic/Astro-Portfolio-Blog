@@ -3,52 +3,52 @@
  * animation inside Wryte instead. */
 import { useEffect, useState } from "react";
 
+const predictions = [
+	{
+		number: 1,
+		label: "Fable returns",
+		detail: "Partially, within weeks — region-locked or US-persons-gated",
+		color: "#7aa2f7",
+	},
+	{
+		number: 2,
+		label: "Global developer market fractures",
+		detail:
+			"Frontier tier becomes US-citizens-only. The rest of the world reads about it.",
+		color: "#f7768e",
+	},
+	{
+		number: 3,
+		label: "Competition wins quietly",
+		detail:
+			"Non-US teams pick models without export controls. The safe procurement choice shifts.",
+		color: "#e0af68",
+	},
+	{
+		number: 4,
+		label: "Safety honesty chills",
+		detail:
+			"Labs stop loudly warning about dangers. Transparency decreases across the industry.",
+		color: "#bb9af7",
+	},
+	{
+		number: 5,
+		label: "Capability doesn't disappear",
+		detail:
+			"Like 90s crypto wars — you can remove the product, not the capability.",
+		color: "#73daca",
+	},
+	{
+		number: 6,
+		label: "Defender asymmetry becomes the norm",
+		detail:
+			"Open-weight self-hosted models become mandatory IR toolkit components.",
+		color: "#9ece6a",
+	},
+];
+
 export default function PredictionsPanel() {
 	const [prediction, setPrediction] = useState(0);
-
-	const predictions = [
-		{
-			number: 1,
-			label: "Fable returns",
-			detail: "Partially, within weeks — region-locked or US-persons-gated",
-			color: "#7aa2f7",
-		},
-		{
-			number: 2,
-			label: "Global developer market fractures",
-			detail:
-				"Frontier tier becomes US-citizens-only. The rest of the world reads about it.",
-			color: "#f7768e",
-		},
-		{
-			number: 3,
-			label: "Competition wins quietly",
-			detail:
-				"Non-US teams pick models without export controls. The safe procurement choice shifts.",
-			color: "#e0af68",
-		},
-		{
-			number: 4,
-			label: "Safety honesty chills",
-			detail:
-				"Labs stop loudly warning about dangers. Transparency decreases across the industry.",
-			color: "#bb9af7",
-		},
-		{
-			number: 5,
-			label: "Capability doesn't disappear",
-			detail:
-				"Like 90s crypto wars — you can remove the product, not the capability.",
-			color: "#73daca",
-		},
-		{
-			number: 6,
-			label: "Defender asymmetry becomes the norm",
-			detail:
-				"Open-weight self-hosted models become mandatory IR toolkit components.",
-			color: "#9ece6a",
-		},
-	];
 
 	useEffect(() => {
 		const id = setInterval(

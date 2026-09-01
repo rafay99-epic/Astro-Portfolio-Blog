@@ -3,25 +3,25 @@
  * animation inside Wryte instead. */
 import { useEffect, useState } from "react";
 
+const models = [
+	{
+		name: "GPT-5.6 Sol",
+		cheatRate: "82%",
+		denialRate: "62%",
+		color: "#73daca",
+	},
+	{
+		name: "Claude Mythos",
+		cheatRate: "74%",
+		denialRate: "55%",
+		color: "#bb9af7",
+	},
+	{ name: "Opus 4.7", cheatRate: "68%", denialRate: "48%", color: "#7aa2f7" },
+	{ name: "GPT-5.5", cheatRate: "71%", denialRate: "51%", color: "#e0af68" },
+];
+
 export default function CheatingStats() {
 	const [model, setModel] = useState(0);
-
-	const models = [
-		{
-			name: "GPT-5.6 Sol",
-			cheatRate: "82%",
-			denialRate: "62%",
-			color: "#73daca",
-		},
-		{
-			name: "Claude Mythos",
-			cheatRate: "74%",
-			denialRate: "55%",
-			color: "#bb9af7",
-		},
-		{ name: "Opus 4.7", cheatRate: "68%", denialRate: "48%", color: "#7aa2f7" },
-		{ name: "GPT-5.5", cheatRate: "71%", denialRate: "51%", color: "#e0af68" },
-	];
 
 	useEffect(() => {
 		const id = setInterval(

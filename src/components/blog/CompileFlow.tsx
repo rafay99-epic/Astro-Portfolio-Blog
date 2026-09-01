@@ -9,14 +9,15 @@ import { useEffect, useState } from "react";
  * new Function → default export → live render. Each stage lights as the
  * token arrives. No server involved — this whole loop is client-side.
  */
+const stages = [
+	{ key: "paste", label: "Paste TSX", note: "your source" },
+	{ key: "sucrase", label: "Sucrase", note: "strip types, JSX → jsx()" },
+	{ key: "fn", label: "new Function", note: "no closure access" },
+	{ key: "export", label: "default export", note: "the component" },
+	{ key: "render", label: "Live render", note: "in the preview" },
+];
+
 export default function CompileFlow() {
-	const stages = [
-		{ key: "paste", label: "Paste TSX", note: "your source" },
-		{ key: "sucrase", label: "Sucrase", note: "strip types, JSX → jsx()" },
-		{ key: "fn", label: "new Function", note: "no closure access" },
-		{ key: "export", label: "default export", note: "the component" },
-		{ key: "render", label: "Live render", note: "in the preview" },
-	];
 	const [active, setActive] = useState(0);
 
 	useEffect(() => {

@@ -22,11 +22,22 @@ const Search = memo(function Search({ posts }: SearchProps) {
 	// Mirror state into refs so the global keydown listener can stay bound once
 	// instead of being re-registered on every keystroke / result change.
 	const resultsRef = useRef(results);
-	resultsRef.current = results;
 	const selectedIndexRef = useRef(selectedResultIndex);
-	selectedIndexRef.current = selectedResultIndex;
 	const isFocusedRef = useRef(isSearchFocused);
-	isFocusedRef.current = isSearchFocused;
+
+	useEffect(() => {
+		resultsRef.current = results;
+		selectedIndexRef.current = selectedResultIndex;
+		isFocusedRef.current = isSearchFocused;
+	});
+
+	const updateQuery = useCallback(
+		(q: string) => {
+			setSelectedResultIndex(-1);
+			setQuery(q);
+		},
+		[setQuery],
+	);
 
 	const handleKeyDown = useCallback(
 		(e: KeyboardEvent) => {
@@ -70,11 +81,6 @@ const Search = memo(function Search({ posts }: SearchProps) {
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, [handleKeyDown]);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: intentionally triggers on results change
-	useEffect(() => {
-		setSelectedResultIndex(-1);
-	}, [results]);
 
 	useEffect(() => {
 		if (selectedResultIndex >= 0) {
@@ -130,7 +136,7 @@ const Search = memo(function Search({ posts }: SearchProps) {
 					<div className="rounded-3xl border border-[#565f89]/30 bg-[#24283b]/60 p-6 shadow-2xl backdrop-blur-xl md:p-8">
 						<SearchInput
 							query={query}
-							setQuery={setQuery}
+							setQuery={updateQuery}
 							isSearchFocused={isSearchFocused}
 							setIsSearchFocused={setIsSearchFocused}
 							setShowSearchTips={setShowSearchTips}
@@ -142,7 +148,7 @@ const Search = memo(function Search({ posts }: SearchProps) {
 						<SearchTips
 							showSearchTips={showSearchTips}
 							query={query}
-							setQuery={setQuery}
+							setQuery={updateQuery}
 						/>
 
 						<SearchStats

@@ -10,7 +10,7 @@ import type { SearchCache, SearchState } from "types/search";
 const CACHE_DURATION = 5 * 60 * 1000;
 const MAX_CACHE_SIZE = 50;
 const MAX_HISTORY_ITEMS = 10;
-const SEARCH_HISTORY_KEY = "search_history";
+const SEARCH_HISTORY_KEY = "search_history:v1";
 const DEBOUNCE_MS = 250;
 const HISTORY_COMMIT_MS = 1000;
 // Cap how many results we render. Fuse already sorts by relevance, so beyond
@@ -190,20 +190,21 @@ const useSearch = (posts: Post[]): SearchState => {
 
 	const commitToHistory = useCallback((searchQuery: string) => {
 		if (!searchQuery.trim()) return;
-		setSearchHistory((prev) => {
-			const updated = [
-				searchQuery,
-				...prev.filter((q) => q !== searchQuery),
-			].slice(0, MAX_HISTORY_ITEMS);
-			saveSearchHistory(updated);
-			return updated;
-		});
+		setSearchHistory((prev) =>
+			[searchQuery, ...prev.filter((q) => q !== searchQuery)].slice(
+				0,
+				MAX_HISTORY_ITEMS,
+			),
+		);
 	}, []);
 
 	const clearHistory = useCallback(() => {
 		setSearchHistory([]);
-		saveSearchHistory([]);
 	}, []);
+
+	useEffect(() => {
+		saveSearchHistory(searchHistory);
+	}, [searchHistory]);
 
 	const performSearch = useCallback(
 		(searchQuery: string) => {

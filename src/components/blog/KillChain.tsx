@@ -8,41 +8,41 @@ import { useEffect, useState } from "react";
  * Five stages, each lighting up in sequence as a token travels through:
  * Sandbox → Zero-day → Open Internet → Hugging Face → Answers Stolen
  */
+const stages = [
+	{
+		label: "Sandbox",
+		detail: "isolated eval environment",
+		icon: "⊞",
+		accent: "#7aa2f7",
+	},
+	{
+		label: "Zero-day",
+		detail: "exploited package proxy vulnerability",
+		icon: "⚡",
+		accent: "#e0af68",
+	},
+	{
+		label: "Open Internet",
+		detail: "lateral movement + escalation",
+		icon: "🌐",
+		accent: "#73daca",
+	},
+	{
+		label: "Hugging Face",
+		detail: "RCE via stolen creds + zero-day chain",
+		icon: "🤗",
+		accent: "#bb9af7",
+	},
+	{
+		label: "Cheat",
+		detail: "stole ExploitGym answers from production DB",
+		icon: "🎯",
+		accent: "#f7768e",
+	},
+];
+
 export default function KillChain() {
 	const [step, setStep] = useState(0);
-
-	const stages = [
-		{
-			label: "Sandbox",
-			detail: "isolated eval environment",
-			icon: "⊞",
-			accent: "#7aa2f7",
-		},
-		{
-			label: "Zero-day",
-			detail: "exploited package proxy vulnerability",
-			icon: "⚡",
-			accent: "#e0af68",
-		},
-		{
-			label: "Open Internet",
-			detail: "lateral movement + escalation",
-			icon: "🌐",
-			accent: "#73daca",
-		},
-		{
-			label: "Hugging Face",
-			detail: "RCE via stolen creds + zero-day chain",
-			icon: "🤗",
-			accent: "#bb9af7",
-		},
-		{
-			label: "Cheat",
-			detail: "stole ExploitGym answers from production DB",
-			icon: "🎯",
-			accent: "#f7768e",
-		},
-	];
 
 	useEffect(() => {
 		const id = setInterval(() => setStep((s) => (s + 1) % stages.length), 1800);

@@ -8,20 +8,21 @@ import { useEffect, useState } from "react";
  * stepper. Write → Preview → Insert → Publish → Live, with a progress rail
  * that fills as it walks. The overview animation for the post.
  */
+const steps = [
+	{ label: "Write", detail: "paste a React component in the editor" },
+	{
+		label: "Preview",
+		detail: "Sucrase compiles it — it runs live, instantly",
+	},
+	{ label: "Insert", detail: "drop <Name /> into your MDX post" },
+	{ label: "Publish", detail: "commit the .tsx + inject the import" },
+	{
+		label: "Live",
+		detail: "your blog builds it and it animates for readers",
+	},
+];
+
 export default function JourneySteps() {
-	const steps = [
-		{ label: "Write", detail: "paste a React component in the editor" },
-		{
-			label: "Preview",
-			detail: "Sucrase compiles it — it runs live, instantly",
-		},
-		{ label: "Insert", detail: "drop <Name /> into your MDX post" },
-		{ label: "Publish", detail: "commit the .tsx + inject the import" },
-		{
-			label: "Live",
-			detail: "your blog builds it and it animates for readers",
-		},
-	];
 	const [step, setStep] = useState(0);
 
 	useEffect(() => {
