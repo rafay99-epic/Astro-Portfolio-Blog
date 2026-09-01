@@ -1,20 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import authorConfig from "@config/siteConfig/info.json";
-import {
-	ArrowRight,
-	Briefcase,
-	Cloud,
-	Code2,
-	Gamepad2,
-	Globe,
-	Layers,
-	MessageCircle,
-	Rocket,
-	Send,
-	Smartphone,
-	Zap,
-} from "lucide-react";
+import { ArrowRight, Briefcase, MessageCircle, Send } from "lucide-react";
 import { FaGithub, FaLinkedin, FaYoutube } from "react-icons/fa6";
 
 const {
@@ -33,24 +20,29 @@ const {
 const linkedinUrl = `https://www.linkedin.com/in/${socialLinks.linkedin}`;
 const whatsappUrl = `https://wa.me/${socialLinks.whatsNumber}?text=Hello%20there!`;
 
-const serviceIcons: Record<string, typeof Smartphone> = {
-	mobile: Smartphone,
-	globe: Globe,
-	zap: Zap,
-	cloud: Cloud,
-};
-const serviceColors = ["#7aa2f7", "#bb9af7", "#9ece6a", "#7aa2f7"];
-
-const engineerSnippet = `${about.whoAmI.split(". ").slice(0, 2).join(". ")}.`;
-const lifestyleSnippet = `${about.lifeBeyondCode.split(". ").slice(0, 2).join(". ")}.`;
-const learningSnippet = `${about.continuousLearning.split(". ").slice(0, 2).join(". ")}.`;
-
-const statIcons = [Briefcase, Code2, Layers];
-const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
+const storySections = [
+	{
+		index: "01",
+		title: "The Engineer",
+		text: `${about.whoAmI.split(". ").slice(0, 2).join(". ")}.`,
+		color: "#7aa2f7",
+	},
+	{
+		index: "02",
+		title: "Beyond the Screen",
+		text: `${about.lifeBeyondCode.split(". ").slice(0, 2).join(". ")}.`,
+		color: "#bb9af7",
+	},
+	{
+		index: "03",
+		title: "Always Learning",
+		text: `${about.continuousLearning.split(". ").slice(0, 2).join(". ")}.`,
+		color: "#9ece6a",
+	},
+];
 ---
 
 <style>
-  /* Shared animations */
   .fade-up {
     opacity: 0;
     transform: translateY(20px);
@@ -66,132 +58,24 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
   .delay-2 { animation-delay: 0.2s; }
   .delay-3 { animation-delay: 0.3s; }
   .delay-4 { animation-delay: 0.4s; }
-  .delay-5 { animation-delay: 0.5s; }
-
-  /* Hero */
-  .gradient-name {
-    background: linear-gradient(135deg, #7aa2f7, #bb9af7, #7aa2f7);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.6s ease-out forwards, nameGradient 6s ease infinite;
-  }
-  @keyframes nameGradient {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-  .profile-glow {
-    box-shadow:
-      0 0 60px rgba(122, 162, 247, 0.15),
-      0 0 120px rgba(187, 154, 247, 0.08);
-  }
-  .profile-image {
-    transition: transform 0.5s ease;
-  }
-  .profile-wrapper:hover .profile-image {
-    transform: scale(1.03);
-  }
-
-  /* Stats */
-  .stat-item {
-    opacity: 0;
-    transform: scale(0.9);
-    animation: statPop 0.6s ease-out forwards;
-  }
-  .stat-item:nth-child(1) { animation-delay: 0.1s; }
-  .stat-item:nth-child(2) { animation-delay: 0.2s; }
-  .stat-item:nth-child(3) { animation-delay: 0.3s; }
-  @keyframes statPop {
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  /* Story cards */
-  .story-card {
-    transition: all 0.3s ease-out;
-  }
-  .story-card:hover {
-    transform: translateY(-3px);
-  }
-
-  /* Tech cards */
-  .tech-card {
-    transition: all 0.3s ease;
-  }
-  .tech-card:hover {
-    transform: translateY(-2px);
-    background-color: rgba(36, 40, 59, 0.5);
-  }
-  .tech-icon {
-    transition: transform 0.3s ease;
-  }
-  .tech-card:hover .tech-icon {
-    transform: scale(1.08);
-  }
-
-  /* Service cards */
-  .service-card {
-    transition: all 0.3s ease-out;
-  }
-  .service-card:hover {
-    transform: translateY(-3px);
-  }
-
-  /* Floating blobs */
-  .floating {
-    animation: float 6s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-  }
 </style>
 
 <!-- ============================================================
      Section 1: Hero — Split Layout
      ============================================================ -->
-<section class="relative overflow-hidden bg-[#1a1b26] px-4 pb-12 pt-24 sm:px-8 sm:pb-16 sm:pt-32 lg:px-12">
-  <!-- Background blobs -->
-  <div class="pointer-events-none absolute inset-0 overflow-hidden">
-    <div
-      class="floating absolute left-10 top-20 h-32 w-32 rounded-full bg-gradient-to-r from-[#7aa2f7]/8 to-[#bb9af7]/8 blur-3xl"
-    ></div>
-    <div
-      class="floating absolute bottom-20 right-10 h-40 w-40 rounded-full bg-gradient-to-r from-[#bb9af7]/8 to-[#9ece6a]/8 blur-3xl"
-      style="animation-delay: -2s;"
-    ></div>
-  </div>
-
-  <div class="relative z-10 mx-auto max-w-6xl">
+<section class="relative bg-[#1a1b26] px-4 pb-12 pt-24 sm:px-8 sm:pb-16 sm:pt-32 lg:px-12">
+  <div class="mx-auto max-w-6xl">
     <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
       <!-- Left: Photo -->
       <div class="fade-up flex justify-center lg:justify-start">
-        <div class="profile-wrapper relative inline-block">
-          <div class="profile-glow rounded-3xl p-1">
-            <Image
-              src={picture}
-              alt={name}
-              width={320}
-              height={320}
-              class="profile-image h-56 w-56 rounded-3xl object-cover sm:h-72 sm:w-72 lg:h-80 lg:w-80"
-              loading="eager"
-            />
-          </div>
-          <div
-            class="absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-gradient-to-r from-[#9ece6a] to-[#7aa2f7] px-5 py-2.5 text-sm font-semibold text-white shadow-lg"
-          >
-            <span class="relative flex h-2 w-2">
-              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-60"></span>
-              <span class="relative inline-flex h-2 w-2 rounded-full bg-white"></span>
-            </span>
-            Available for Work
-          </div>
-        </div>
+        <Image
+          src={picture}
+          alt={name}
+          width={320}
+          height={320}
+          class="h-56 w-56 rounded-3xl object-cover ring-2 ring-[#7aa2f7]/20 sm:h-72 sm:w-72 lg:h-80 lg:w-80"
+          loading="eager"
+        />
       </div>
 
       <!-- Right: Text -->
@@ -200,8 +84,8 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
           {jobTitle}
         </p>
         <h1
-          class="gradient-name mb-3 font-black"
-          style="font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; animation-delay: 0.2s;"
+          class="fade-up delay-1 mb-3 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#7aa2f7] bg-clip-text font-black text-transparent"
+          style="font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1;"
         >
           {name}
         </h1>
@@ -247,17 +131,17 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
         </div>
 
         <!-- CTAs -->
-        <div class="fade-up delay-4 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+        <div class="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
           <a
             href="/contact-me"
-            class="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-[#7aa2f7]/20 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
+            class="group inline-flex items-center gap-2 rounded-full bg-[#7aa2f7] px-7 py-3 text-sm font-semibold text-[#1a1b26] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#89b4fa] active:translate-y-0"
           >
             Get in Touch
-            <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            <Send className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
           </a>
           <a
             href="/project"
-            class="inline-flex items-center gap-2 rounded-full border border-[#414868]/40 px-7 py-3 text-sm font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#7aa2f7]/40 hover:text-[#c0caf5]"
+            class="inline-flex items-center gap-2 rounded-full border border-[#414868]/40 px-7 py-3 text-sm font-semibold text-[#a9b1d6] transition-colors duration-200 hover:border-[#565f89] hover:text-[#c0caf5]"
           >
             View My Work
             <ArrowRight className="h-4 w-4" />
@@ -269,146 +153,103 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
 </section>
 
 <!-- ============================================================
-     Section 2: Stats Bar
+     Section 2: Stats Strip
      ============================================================ -->
-<div class="border-y border-[#414868]/20 bg-[#24283b]/20 px-4 py-6 backdrop-blur-sm sm:px-8 sm:py-10">
+<div class="border-y border-[#414868]/30 px-4 py-8 sm:px-8 sm:py-10">
   <div class="mx-auto grid max-w-6xl grid-cols-3 gap-4 sm:gap-0">
-    {stats.map((stat, index) => {
-      const IconComponent = statIcons[index]!;
-      const color = statColors[index]!;
-      return (
-        <div class="stat-item flex flex-col items-center text-center border-r border-[#414868]/20 px-2 last:border-r-0 sm:px-4">
-          <div class="mb-1.5 sm:mb-2" style={`color: ${color};`}>
-            <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" />
-          </div>
-          <div class="text-2xl font-black text-[#c0caf5] sm:text-4xl">
-            {stat.value}
-          </div>
-          <div class="mt-1 text-[10px] uppercase tracking-wide text-[#565f89] sm:text-xs sm:tracking-wider">
-            {stat.label}
-          </div>
+    {stats.map((stat) => (
+      <div class="flex flex-col items-center border-r border-[#414868]/30 px-2 text-center last:border-r-0 sm:px-4">
+        <div class="text-2xl font-black text-[#c0caf5] sm:text-4xl">
+          {stat.value}
         </div>
-      );
-    })}
+        <div class="mt-1 text-[10px] uppercase tracking-wider text-[#565f89] sm:text-xs">
+          {stat.label}
+        </div>
+      </div>
+    ))}
   </div>
 </div>
 
 <!-- ============================================================
-     Section 3: My Story — Three Card Grid
+     Section 3: My Story — Numbered Editorial Sections
      ============================================================ -->
-<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
-  <div class="mx-auto max-w-6xl">
-    <!-- Section header -->
-    <div class="mb-8 text-center sm:mb-10">
+<section class="relative bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
+  <div class="mx-auto max-w-3xl">
+    <div class="mb-10 sm:mb-12">
       <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
         My Story
       </p>
       <h2
         style="font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.2;"
-        class="mb-4 font-bold text-[#c0caf5]"
+        class="font-bold text-[#c0caf5]"
       >
-        The Person
+        The Person{" "}
         <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
           Behind the Code
         </span>
       </h2>
-      <p class="mx-auto max-w-lg text-[#a9b1d6]" style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);">
-        Engineer, builder, and continuous learner.
-      </p>
     </div>
 
-    <!-- Card grid -->
-    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
-      <!-- The Engineer -->
-      <div class="story-card fade-up delay-1 rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-6 transition-all duration-300 hover:border-[#7aa2f7]/20 hover:bg-[#24283b]/50" style="border-left: 4px solid #7aa2f7;">
-        <div class="mb-4 flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#7aa2f7]/10 text-[#7aa2f7]">
-            <Code2 className="h-5 w-5" />
+    <div class="space-y-10">
+      {storySections.map((section, index) => (
+        <div
+          class="fade-up border-t border-[#414868]/40 pt-6"
+          style={`animation-delay: ${0.1 + index * 0.1}s;`}
+        >
+          <div class="mb-3 flex items-baseline gap-3">
+            <span class="text-xs font-bold tracking-widest" style={`color: ${section.color};`}>
+              {section.index}
+            </span>
+            <h3 class="text-lg font-bold text-[#c0caf5]">{section.title}</h3>
           </div>
-          <h3 class="text-lg font-bold text-[#c0caf5]">The Engineer</h3>
+          <p class="max-w-2xl text-sm leading-relaxed text-[#a9b1d6] sm:text-base">
+            {section.text}
+          </p>
         </div>
-        <p class="text-sm leading-relaxed text-[#a9b1d6]">
-          {engineerSnippet}
-        </p>
-      </div>
-
-      <!-- Beyond the Screen -->
-      <div class="story-card fade-up delay-2 rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-6 transition-all duration-300 hover:border-[#bb9af7]/20 hover:bg-[#24283b]/50" style="border-left: 4px solid #bb9af7;">
-        <div class="mb-4 flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#bb9af7]/10 text-[#bb9af7]">
-            <Gamepad2 className="h-5 w-5" />
-          </div>
-          <h3 class="text-lg font-bold text-[#c0caf5]">Beyond the Screen</h3>
-        </div>
-        <p class="text-sm leading-relaxed text-[#a9b1d6]">
-          {lifestyleSnippet}
-        </p>
-      </div>
-
-      <!-- Always Learning -->
-      <div class="story-card fade-up delay-3 rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-6 transition-all duration-300 hover:border-[#9ece6a]/20 hover:bg-[#24283b]/50" style="border-left: 4px solid #9ece6a;">
-        <div class="mb-4 flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#9ece6a]/10 text-[#9ece6a]">
-            <Rocket className="h-5 w-5" />
-          </div>
-          <h3 class="text-lg font-bold text-[#c0caf5]">Always Learning</h3>
-        </div>
-        <p class="text-sm leading-relaxed text-[#a9b1d6]">
-          {learningSnippet}
-        </p>
-      </div>
+      ))}
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     Section 4: Core Stack — Tech Grid
+     Section 4: Core Stack — Row Index
      ============================================================ -->
-<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
-  <div class="mx-auto max-w-6xl">
-    <!-- Section header -->
-    <div class="mb-8 text-center sm:mb-10">
+<section class="relative bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
+  <div class="mx-auto max-w-5xl">
+    <div class="mb-10 sm:mb-12">
       <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
         Tech Stack
       </p>
       <h2
         style="font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.2;"
-        class="mb-4 font-bold text-[#c0caf5]"
+        class="font-bold text-[#c0caf5]"
       >
-        Core
+        Core{" "}
         <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
           Technologies
         </span>
       </h2>
-      <p class="mx-auto max-w-lg text-[#a9b1d6]" style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);">
-        The tools and frameworks I build with daily.
-      </p>
     </div>
 
-    <!-- Tech grid -->
-    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
+    <div class="fade-up delay-1 grid grid-cols-1 gap-x-16 lg:grid-cols-2">
       {coreStack.map((tech) => (
-        <div
-          class="tech-card rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-4 sm:p-5"
-          style={`border-left: 4px solid ${tech.color};`}
-        >
-          <div class="mb-3">
+        <div class="flex items-center justify-between gap-4 border-b border-[#414868]/40 py-3.5">
+          <span class="flex items-center gap-3">
             <i
-              class={`devicon-${tech.icon}-plain colored tech-icon text-3xl sm:text-4xl`}
+              class={`devicon-${tech.icon}-plain text-xl`}
               style={`color: ${tech.color};`}
             />
-          </div>
-          <h3 class="mb-1 text-sm font-semibold text-[#c0caf5]">{tech.name}</h3>
-          <p class="text-xs text-[#565f89]">{tech.context}</p>
+            <span class="text-sm font-medium text-[#c0caf5]">{tech.name}</span>
+          </span>
+          <span class="text-right text-xs text-[#565f89]">{tech.context}</span>
         </div>
       ))}
     </div>
 
-    <!-- CTA link -->
-    <div class="mt-8 text-center">
+    <div class="mt-10">
       <a
         href="/experience"
-        class="inline-flex items-center gap-2 text-sm font-medium text-[#565f89] transition-colors duration-300 hover:text-[#7aa2f7]"
+        class="inline-flex items-center gap-2 text-sm font-medium text-[#565f89] transition-colors duration-200 hover:text-[#7aa2f7]"
       >
         View full experience
         <ArrowRight className="h-4 w-4" />
@@ -418,46 +259,37 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
 </section>
 
 <!-- ============================================================
-     Section 5: Services — What I Do
+     Section 5: Services — Numbered Editorial Sections
      ============================================================ -->
-<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
-  <div class="mx-auto max-w-6xl">
-    <!-- Section header -->
-    <div class="mb-8 text-center sm:mb-10">
+<section class="relative bg-[#1a1b26] px-4 py-14 sm:px-8 sm:py-20 lg:px-12">
+  <div class="mx-auto max-w-5xl">
+    <div class="mb-10 sm:mb-12">
       <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
         What I Do
       </p>
       <h2
         style="font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.2;"
-        class="mb-4 font-bold text-[#c0caf5]"
+        class="font-bold text-[#c0caf5]"
       >
-        Services I
+        Services I{" "}
         <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
           Offer
         </span>
       </h2>
-      <p class="mx-auto max-w-lg text-[#a9b1d6]" style="font-size: clamp(0.875rem, 1.2vw, 1.125rem);">
-        End-to-end development for web, mobile, and cloud.
-      </p>
     </div>
 
-    <!-- Services grid -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+    <div class="grid grid-cols-1 gap-x-16 gap-y-10 md:grid-cols-2">
       {services.map((service, index) => {
-        const IconComponent = serviceIcons[service.icon] ?? Zap;
-        const color = serviceColors[index];
+        const color = ["#7aa2f7", "#bb9af7", "#9ece6a", "#7aa2f7"][index]!;
         return (
           <div
-            class="service-card fade-up rounded-2xl border border-[#414868]/20 bg-[#24283b]/30 p-6 hover:border-[#7aa2f7]/20 hover:bg-[#24283b]/50"
-            style={`border-left: 4px solid ${color}; animation-delay: ${index * 0.1}s;`}
+            class="fade-up border-t border-[#414868]/40 pt-6"
+            style={`animation-delay: ${index * 0.1}s;`}
           >
-            <div class="mb-4 flex items-center gap-3">
-              <div
-                class="flex h-10 w-10 items-center justify-center rounded-xl"
-                style={`background: ${color}15; color: ${color};`}
-              >
-                <IconComponent className="h-5 w-5" />
-              </div>
+            <div class="mb-3 flex items-baseline gap-3">
+              <span class="text-xs font-bold tracking-widest" style={`color: ${color};`}>
+                0{index + 1}
+              </span>
               <h3 class="text-lg font-bold text-[#c0caf5]">{service.title}</h3>
             </div>
 
@@ -465,7 +297,6 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
               {service.description}
             </p>
 
-            {/* Feature highlights */}
             <ul class="mb-4 space-y-1.5">
               {service.features.slice(0, 4).map((feature: string) => (
                 <li class="flex items-start gap-2 text-xs text-[#565f89]">
@@ -475,14 +306,9 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
               ))}
             </ul>
 
-            {/* Tech pills */}
-            <div class="flex flex-wrap gap-1.5">
-              {service.technologies.map((tech: string) => (
-                <span class="rounded-full bg-[#1a1b26]/60 px-2.5 py-1 text-xs text-[#565f89]">
-                  {tech}
-                </span>
-              ))}
-            </div>
+            <p class="text-xs leading-relaxed text-[#565f89]">
+              {service.technologies.join(" &middot; ")}
+            </p>
           </div>
         );
       })}
@@ -493,69 +319,36 @@ const statColors = ["#7aa2f7", "#bb9af7", "#9ece6a"];
 <!-- ============================================================
      Section 6: CTA — Full Width Closer
      ============================================================ -->
-<section class="relative overflow-hidden bg-[#1a1b26] px-4 py-16 sm:px-8 sm:py-20 lg:px-12">
-  <!-- Subtle background blobs -->
-  <div class="pointer-events-none absolute inset-0 overflow-hidden">
-    <div
-      class="floating absolute right-1/4 top-1/4 h-48 w-48 rounded-full bg-[#7aa2f7]/5 blur-3xl"
-    ></div>
-    <div
-      class="floating absolute bottom-1/4 left-1/4 h-40 w-40 rounded-full bg-[#bb9af7]/5 blur-3xl"
-      style="animation-delay: -3s;"
-    ></div>
-  </div>
-
-  <div class="relative z-10 mx-auto max-w-3xl text-center">
+<section class="relative bg-[#1a1b26] px-4 py-16 sm:px-8 sm:py-24 lg:px-12">
+  <div class="mx-auto max-w-3xl text-center">
     <p class="fade-up mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#7aa2f7]">
       Open to Opportunities
     </p>
     <h2
       style="font-size: clamp(1.875rem, 3.5vw, 2.5rem); line-height: 1.2;"
-      class="fade-up delay-1 mb-4 font-bold text-[#c0caf5]"
+      class="fade-up delay-1 mb-8 font-bold text-[#c0caf5]"
     >
-      Let's build something
+      Let's build something{" "}
       <span class="bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] bg-clip-text text-transparent">
         together
       </span>
     </h2>
-    <p
-      class="fade-up delay-2 mx-auto mb-8 max-w-lg text-[#a9b1d6]"
-      style="font-size: clamp(0.875rem, 1.2vw, 1rem);"
-    >
-      {tag_line}
-    </p>
 
-    <!-- CTA buttons -->
-    <div class="fade-up delay-3 flex flex-wrap items-center justify-center gap-4">
+    <div class="flex flex-wrap items-center justify-center gap-4">
       <a
         href="/contact-me"
-        class="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#7aa2f7] to-[#bb9af7] px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-[#7aa2f7]/20 transition-all duration-300 hover:shadow-xl hover:shadow-[#7aa2f7]/30"
+        class="group inline-flex items-center gap-2 rounded-full bg-[#7aa2f7] px-7 py-3 text-sm font-semibold text-[#1a1b26] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#89b4fa] active:translate-y-0"
       >
         Get in Touch
-        <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+        <Send className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
       </a>
       <a
         href="/project"
-        class="inline-flex items-center gap-2 rounded-full border border-[#414868]/40 px-7 py-3 text-sm font-semibold text-[#a9b1d6] transition-all duration-300 hover:border-[#7aa2f7]/40 hover:text-[#c0caf5]"
+        class="inline-flex items-center gap-2 rounded-full border border-[#414868]/40 px-7 py-3 text-sm font-semibold text-[#a9b1d6] transition-colors duration-200 hover:border-[#565f89] hover:text-[#c0caf5]"
       >
         View My Work
         <ArrowRight className="h-4 w-4" />
       </a>
-    </div>
-
-    <!-- Availability badges -->
-    <div class="fade-up delay-4 mt-8 flex flex-col items-center justify-center gap-4 text-sm text-[#a9b1d6] sm:flex-row">
-      <div class="flex items-center gap-2">
-        <span class="relative flex h-2 w-2">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#9ece6a] opacity-60"></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-[#9ece6a]"></span>
-        </span>
-        Open to opportunities
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="h-2 w-2 animate-pulse rounded-full bg-[#7aa2f7]"></span>
-        Remote friendly
-      </div>
     </div>
   </div>
 </section>

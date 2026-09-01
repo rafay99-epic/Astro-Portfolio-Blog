@@ -1,6 +1,4 @@
 ---
-import { Image } from "astro:assets";
-
 interface SocialLinks {
 	twitter: string;
 	github: string;
@@ -14,11 +12,10 @@ interface Props {
 	name: string;
 	jobTitle: string;
 	position: string;
-	picture: string;
 	socialLinks: SocialLinks;
 }
 
-const { name, jobTitle, picture, socialLinks } = Astro.props as Props;
+const { name, jobTitle, socialLinks } = Astro.props as Props;
 ---
 
 <style>
@@ -131,24 +128,6 @@ const { name, jobTitle, picture, socialLinks } = Astro.props as Props;
   <!-- Content -->
   <div class="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-5 pt-28 pb-14 text-center sm:px-8 sm:pt-36 sm:pb-20">
 
-    <!-- Avatar + status badge -->
-    <div class="hero-fade-up mb-5 flex items-center gap-2.5 sm:gap-3" style="animation-delay: 0s;">
-      <Image
-        src={picture}
-        alt={name}
-        width={56}
-        height={56}
-        class="h-11 w-11 rounded-full object-cover ring-2 ring-[#7aa2f7]/20 sm:h-14 sm:w-14"
-      />
-      <div class="flex items-center gap-2 rounded-full border border-[#414868]/20 bg-[#24283b]/40 px-3 py-1.5 backdrop-blur-sm sm:px-3.5">
-        <span class="relative flex h-2 w-2">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#9ece6a] opacity-60"></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-[#9ece6a]"></span>
-        </span>
-        <span class="text-[11px] font-medium text-[#a9b1d6] sm:text-xs">Available for Projects</span>
-      </div>
-    </div>
-
     <!-- Name -->
     <h1 class="hero-fade-up mb-2" style="animation-delay: 0.1s;">
       <span
@@ -182,7 +161,7 @@ const { name, jobTitle, picture, socialLinks } = Astro.props as Props;
           id="connect-button"
           class="cursor-pointer rounded-full bg-[#7aa2f7] px-7 py-3 text-sm font-semibold text-[#1a1b26] transition-all duration-200 hover:bg-[#89b4fa] sm:px-8 sm:py-3.5"
         >
-          Get in touch
+          Get in Touch
         </button>
         <a
           href="/downloads/Abdul_Rafay_CV.pdf"
