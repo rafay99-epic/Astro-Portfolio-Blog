@@ -36,7 +36,7 @@ const SearchInput = memo(function SearchInput({
 	return (
 		<div className="relative mb-4 flex items-center">
 			<div
-				className="absolute left-4 flex h-full items-center text-xl text-[#a9b1d6] transition-transform duration-200 will-change-transform"
+				className="absolute left-4 flex h-full items-center text-xl text-[#a9b1d6] transition-transform duration-200"
 				aria-hidden="true"
 			>
 				<LuSearch />

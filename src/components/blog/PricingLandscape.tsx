@@ -235,7 +235,6 @@ export default function PricingLandscape() {
 												left: `${px}%`,
 												top: "50%",
 												transform: "translate(-50%, -50%)",
-												transition: "all .3s ease",
 											}}
 										>
 											{/* Dot */}

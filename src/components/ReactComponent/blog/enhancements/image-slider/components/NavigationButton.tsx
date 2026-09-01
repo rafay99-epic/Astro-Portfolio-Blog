@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { memo } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import type { NavigationButtonProps } from "types/image_slider";
@@ -9,7 +9,7 @@ export const NavigationButton = memo(function NavigationButton({
 	themeClasses,
 }: NavigationButtonProps) {
 	return (
-		<motion.button
+		<m.button
 			whileHover={{ scale: 1.1 }}
 			whileTap={{ scale: 0.9 }}
 			onClick={onClick}
@@ -21,6 +21,6 @@ export const NavigationButton = memo(function NavigationButton({
 			) : (
 				<LuChevronRight className="h-5 w-5" />
 			)}
-		</motion.button>
+		</m.button>
 	);
 });

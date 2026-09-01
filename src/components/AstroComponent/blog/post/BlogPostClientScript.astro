@@ -189,12 +189,11 @@ const { postActionPayload } = Astro.props;
         const hasServerToc =
           tocRoot && tocRoot.querySelectorAll("a.toc-link").length > 0;
         const headings = hasServerToc
-          ? Array.from(tocRoot.querySelectorAll("a.toc-link"))
-              .map((a) => {
-                const slug = (a.getAttribute("href") || "").replace(/^#/, "");
-                return document.getElementById(slug);
-              })
-              .filter(Boolean)
+          ? Array.from(tocRoot.querySelectorAll("a.toc-link")).flatMap((a) => {
+              const slug = (a.getAttribute("href") || "").replace(/^#/, "");
+              const el = document.getElementById(slug);
+              return el ? [el] : [];
+            })
           : buildToc();
 
         if (!hasServerToc && headings.length === 0 && postContent) {

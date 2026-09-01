@@ -402,13 +402,13 @@ const processSteps = [
     sliderContainer.addEventListener("touchstart", (e) => {
       const t = e.changedTouches[0];
       if (t) touchStartX = t.screenX;
-    });
+    }, { passive: true });
 
     sliderContainer.addEventListener("touchend", (e) => {
       const t = e.changedTouches[0];
       if (t) touchEndX = t.screenX;
       handleSwipe();
-    });
+    }, { passive: true });
   }
 
   function handleSwipe() {

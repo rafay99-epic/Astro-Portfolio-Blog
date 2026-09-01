@@ -43,7 +43,6 @@ export default function RequestPath() {
 	const nodes = mode === "before" ? beforeNodes : afterNodes;
 
 	useEffect(() => {
-		setActive(0);
 		const id = setInterval(
 			() => {
 				setActive((a) => (a + 1) % nodes.length);
@@ -56,6 +55,7 @@ export default function RequestPath() {
 	useEffect(() => {
 		const id = setInterval(() => {
 			setMode((m) => (m === "before" ? "after" : "before"));
+			setActive(0);
 		}, 6500);
 		return () => clearInterval(id);
 	}, []);
@@ -97,7 +97,12 @@ export default function RequestPath() {
 						<button
 							type="button"
 							key={m}
-							onClick={() => setMode(m)}
+							onClick={() => {
+								if (m !== mode) {
+									setMode(m);
+									setActive(0);
+								}
+							}}
 							style={{
 								fontSize: 11,
 								fontFamily: "ui-monospace, Menlo, monospace",

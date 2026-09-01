@@ -125,7 +125,7 @@ export default function SessionCalendar() {
 									flex: 1,
 									textAlign: "center",
 									opacity: inWindow ? 1 : 0.3,
-									transition: "all .4s ease",
+									transition: "opacity .4s ease",
 								}}
 							>
 								{/* Day label */}

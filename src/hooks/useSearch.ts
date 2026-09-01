@@ -188,19 +188,9 @@ const useSearch = (posts: Post[]): SearchState => {
 		[filteredPosts],
 	);
 
-	const commitToHistory = useCallback((searchQuery: string) => {
-		if (!searchQuery.trim()) return;
-		setSearchHistory((prev) =>
-			[searchQuery, ...prev.filter((q) => q !== searchQuery)].slice(
-				0,
-				MAX_HISTORY_ITEMS,
-			),
-		);
-	}, []);
-
-	const clearHistory = useCallback(() => {
+	const clearHistory = () => {
 		setSearchHistory([]);
-	}, []);
+	};
 
 	useEffect(() => {
 		saveSearchHistory(searchHistory);
@@ -284,13 +274,17 @@ const useSearch = (posts: Post[]): SearchState => {
 	useEffect(() => {
 		clearTimeout(historyTimerRef.current);
 		if (query.trim()) {
-			historyTimerRef.current = setTimeout(
-				() => commitToHistory(query),
-				HISTORY_COMMIT_MS,
-			);
+			historyTimerRef.current = setTimeout(() => {
+				setSearchHistory((prev) =>
+					[query, ...prev.filter((q) => q !== query)].slice(
+						0,
+						MAX_HISTORY_ITEMS,
+					),
+				);
+			}, HISTORY_COMMIT_MS);
 		}
 		return () => clearTimeout(historyTimerRef.current);
-	}, [query, commitToHistory]);
+	}, [query]);
 
 	return {
 		query,

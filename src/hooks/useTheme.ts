@@ -145,7 +145,9 @@ export function useThemeProvider() {
 
 		if (idleWindow) {
 			if (idleWindow.requestIdleCallback) {
-				idleId = idleWindow.requestIdleCallback(initializeTheme);
+				idleId = idleWindow.requestIdleCallback(initializeTheme, {
+					timeout: 500,
+				});
 			} else {
 				timerId = setTimeout(initializeTheme, 0);
 			}

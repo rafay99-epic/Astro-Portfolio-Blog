@@ -4,15 +4,15 @@ import SearchInput from "@react/blog/metadata/SearchField/components/SearchInput
 import SearchResults from "@react/blog/metadata/SearchField/components/SearchResults";
 import SearchStats from "@react/blog/metadata/SearchField/components/SearchStats";
 import SearchTips from "@react/blog/metadata/SearchField/components/SearchTips";
-import { motion } from "framer-motion";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { domAnimation, LazyMotion, m } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Post } from "types/articles";
 
 interface SearchProps {
 	posts: Post[];
 }
 
-const Search = memo(function Search({ posts }: SearchProps) {
+function Search({ posts }: SearchProps) {
 	const { query, setQuery, results, searchStats } = useSearch(posts);
 	const isMobile = useIsMobile();
 	const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -31,13 +31,10 @@ const Search = memo(function Search({ posts }: SearchProps) {
 		isFocusedRef.current = isSearchFocused;
 	});
 
-	const updateQuery = useCallback(
-		(q: string) => {
-			setSelectedResultIndex(-1);
-			setQuery(q);
-		},
-		[setQuery],
-	);
+	const updateQuery = (q: string) => {
+		setSelectedResultIndex(-1);
+		setQuery(q);
+	};
 
 	const handleKeyDown = useCallback(
 		(e: KeyboardEvent) => {
@@ -92,82 +89,84 @@ const Search = memo(function Search({ posts }: SearchProps) {
 	}, [selectedResultIndex]);
 
 	return (
-		<section className="relative overflow-hidden px-4 py-8">
-			<div className="absolute inset-0 opacity-5">
-				<div className="absolute left-1/4 top-1/4 h-64 w-64 rounded-full bg-[#7aa2f7] blur-3xl" />
-				<div className="absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-[#bb9af7] blur-3xl" />
-			</div>
+		<LazyMotion features={domAnimation}>
+			<section className="relative overflow-hidden px-4 py-8">
+				<div className="absolute inset-0 opacity-5">
+					<div className="absolute left-1/4 top-1/4 h-64 w-64 rounded-full bg-[#7aa2f7] blur-3xl" />
+					<div className="absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-[#bb9af7] blur-3xl" />
+				</div>
 
-			<div className="container relative z-10 mx-auto max-w-6xl">
-				<motion.div
-					className="mb-8 text-center"
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6 }}
-				>
-					<motion.h1
-						className={`mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text font-bold text-transparent ${
-							isMobile ? "text-3xl" : "text-4xl lg:text-5xl"
-						}`}
-						initial={{ scale: 0.9, opacity: 0 }}
-						animate={{ scale: 1, opacity: 1 }}
-						transition={{ duration: 0.6, delay: 0.1 }}
+				<div className="container relative z-10 mx-auto max-w-6xl">
+					<m.div
+						className="mb-8 text-center"
+						initial={{ opacity: 0, y: -20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.6 }}
 					>
-						Search Articles
-					</motion.h1>
-					<motion.p
-						className={`mx-auto max-w-2xl text-[#a9b1d6] ${
-							isMobile ? "text-sm" : "text-lg"
-						}`}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.3, duration: 0.6 }}
+						<m.h1
+							className={`mb-4 bg-gradient-to-r from-[#7aa2f7] via-[#bb9af7] to-[#9ece6a] bg-clip-text font-bold text-transparent ${
+								isMobile ? "text-3xl" : "text-4xl lg:text-5xl"
+							}`}
+							initial={{ scale: 0.9, opacity: 0 }}
+							animate={{ scale: 1, opacity: 1 }}
+							transition={{ duration: 0.6, delay: 0.1 }}
+						>
+							Search Articles
+						</m.h1>
+						<m.p
+							className={`mx-auto max-w-2xl text-[#a9b1d6] ${
+								isMobile ? "text-sm" : "text-lg"
+							}`}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ delay: 0.3, duration: 0.6 }}
+						>
+							Smart search across titles, tags, authors, and content
+						</m.p>
+					</m.div>
+
+					<m.div
+						className="mb-8"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.4, duration: 0.6 }}
 					>
-						Smart search across titles, tags, authors, and content
-					</motion.p>
-				</motion.div>
+						<div className="rounded-3xl border border-[#565f89]/30 bg-[#24283b]/60 p-6 shadow-2xl backdrop-blur-xl md:p-8">
+							<SearchInput
+								query={query}
+								setQuery={updateQuery}
+								isSearchFocused={isSearchFocused}
+								setIsSearchFocused={setIsSearchFocused}
+								setShowSearchTips={setShowSearchTips}
+								setSelectedResultIndex={setSelectedResultIndex}
+								isMobile={isMobile}
+								resultsLength={results.length}
+							/>
 
-				<motion.div
-					className="mb-8"
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.4, duration: 0.6 }}
-				>
-					<div className="rounded-3xl border border-[#565f89]/30 bg-[#24283b]/60 p-6 shadow-2xl backdrop-blur-xl md:p-8">
-						<SearchInput
-							query={query}
-							setQuery={updateQuery}
-							isSearchFocused={isSearchFocused}
-							setIsSearchFocused={setIsSearchFocused}
-							setShowSearchTips={setShowSearchTips}
-							setSelectedResultIndex={setSelectedResultIndex}
-							isMobile={isMobile}
-							resultsLength={results.length}
-						/>
+							<SearchTips
+								showSearchTips={showSearchTips}
+								query={query}
+								setQuery={updateQuery}
+							/>
 
-						<SearchTips
-							showSearchTips={showSearchTips}
-							query={query}
-							setQuery={updateQuery}
-						/>
+							<SearchStats
+								query={query}
+								results={results}
+								searchStats={searchStats}
+							/>
+						</div>
+					</m.div>
 
-						<SearchStats
-							query={query}
-							results={results}
-							searchStats={searchStats}
-						/>
-					</div>
-				</motion.div>
-
-				<SearchResults
-					query={query}
-					results={results}
-					selectedResultIndex={selectedResultIndex}
-					setSelectedResultIndex={setSelectedResultIndex}
-				/>
-			</div>
-		</section>
+					<SearchResults
+						query={query}
+						results={results}
+						selectedResultIndex={selectedResultIndex}
+						setSelectedResultIndex={setSelectedResultIndex}
+					/>
+				</div>
+			</section>
+		</LazyMotion>
 	);
-});
+}
 
 export default Search;

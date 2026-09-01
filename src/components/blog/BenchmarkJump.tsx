@@ -123,14 +123,14 @@ export default function BenchmarkJump() {
 			typeof window !== "undefined" &&
 			window.matchMedia &&
 			window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-		if (reduce) {
-			setPct(66.5);
-			return;
-		}
 		const start = performance.now();
 		const from = 52.8;
 		const to = 66.5;
 		let raf = 0;
+		if (reduce) {
+			raf = requestAnimationFrame(() => setPct(to));
+			return () => cancelAnimationFrame(raf);
+		}
 		const tick = (now: number) => {
 			const t = Math.min((now - start) / 1300, 1);
 			const eased = 1 - (1 - t) ** 3;
