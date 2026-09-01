@@ -162,7 +162,7 @@ export default defineConfig({
 
 			include: ["**/ReactComponent/**", "**/*.{jsx,tsx}"],
 			babel: {
-				plugins: ["babel-plugin-react-compiler"],
+				plugins: [["babel-plugin-react-compiler", { target: "19" }]],
 			},
 		}),
 		tailwind(),

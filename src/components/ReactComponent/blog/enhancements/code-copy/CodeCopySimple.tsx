@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { STYLES, TOAST_STYLES } from "./styles";
 
@@ -102,7 +102,7 @@ async function handleCopyClick(event: MouseEvent): Promise<void> {
 	}
 }
 
-const CodeCopySimple = memo(function CodeCopySimple() {
+const CodeCopySimple = function CodeCopySimple() {
 	useEffect(() => {
 		const enhanceAll = () => {
 			document
@@ -149,6 +149,6 @@ const CodeCopySimple = memo(function CodeCopySimple() {
 	}, []);
 
 	return <Toaster position="bottom-right" toastOptions={TOAST_STYLES} />;
-});
+};
 
 export default CodeCopySimple;

@@ -193,68 +193,6 @@ export const CURRENT_THEME: ThemeName = "tokyo-night";
 
 export const colors = themes[CURRENT_THEME];
 
-export function getThemeColors(themeName: ThemeName): ColorPalette {
-	return themes[themeName] || themes["tokyo-night"];
-}
-
-export function generateCSSVariables(palette: ColorPalette): string {
-	return `
-    :root {
-      /* Primary Colors */
-      --color-primary: ${palette.primary};
-      --color-secondary: ${palette.secondary};
-      --color-accent: ${palette.accent};
-      
-      /* Background Colors */
-      --color-bg-primary: ${palette.background.primary};
-      --color-bg-secondary: ${palette.background.secondary};
-      --color-bg-tertiary: ${palette.background.tertiary};
-      --color-bg-card: ${palette.background.card};
-      --color-bg-overlay: ${palette.background.overlay};
-      
-      /* Text Colors */
-      --color-text-primary: ${palette.text.primary};
-      --color-text-secondary: ${palette.text.secondary};
-      --color-text-muted: ${palette.text.muted};
-      --color-text-accent: ${palette.text.accent};
-      --color-text-inverse: ${palette.text.inverse};
-      
-      /* Border Colors */
-      --color-border-primary: ${palette.border.primary};
-      --color-border-secondary: ${palette.border.secondary};
-      --color-border-accent: ${palette.border.accent};
-      --color-border-hover: ${palette.border.hover};
-      
-      /* Status Colors */
-      --color-success: ${palette.status.success};
-      --color-warning: ${palette.status.warning};
-      --color-error: ${palette.status.error};
-      --color-info: ${palette.status.info};
-      
-      /* Interactive Colors */
-      --color-hover: ${palette.interactive.hover};
-      --color-focus: ${palette.interactive.focus};
-      --color-active: ${palette.interactive.active};
-      --color-disabled: ${palette.interactive.disabled};
-      
-      /* Gradients */
-      --gradient-primary: ${palette.gradients.primary};
-      --gradient-secondary: ${palette.gradients.secondary};
-      --gradient-accent: ${palette.gradients.accent};
-      --gradient-rainbow: ${palette.gradients.rainbow};
-      
-      /* Social Colors */
-      --color-twitter: ${palette.social.twitter};
-      --color-facebook: ${palette.social.facebook};
-      --color-linkedin: ${palette.social.linkedin};
-      --color-whatsapp: ${palette.social.whatsapp};
-      --color-github: ${palette.social.github};
-      --color-youtube: ${palette.social.youtube};
-      --color-upwork: ${palette.social.upwork};
-    }
-  `;
-}
-
 export function generateTailwindColors(palette: ColorPalette) {
 	return {
 		"theme-primary": palette.primary,

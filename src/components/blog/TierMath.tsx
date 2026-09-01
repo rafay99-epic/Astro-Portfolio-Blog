@@ -84,7 +84,7 @@ export default function TierMath() {
 							padding: 16,
 							cursor: "pointer",
 							opacity: sel === i ? 1 : 0.55,
-							transition: "all .4s ease",
+							transition: "border-color .4s ease, opacity .4s ease",
 						}}
 					>
 						<div

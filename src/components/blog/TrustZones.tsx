@@ -11,6 +11,39 @@ import { useEffect, useState } from "react";
  * eval to sandbox. A packet crosses the zones; the server zone shows it
  * passing through as inert text.
  */
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	green: "#9ece6a",
+	red: "#f7768e",
+	teal: "#73daca",
+};
+
+const zones = [
+	{
+		label: "Your browser",
+		note: "compiles + renders",
+		runs: true,
+		accent: c.blue,
+	},
+	{
+		label: "Convex server",
+		note: "stores text · never runs",
+		runs: false,
+		accent: c.teal,
+	},
+	{
+		label: "Reader's browser",
+		note: "builds + hydrates",
+		runs: true,
+		accent: c.green,
+	},
+];
+
 export default function TrustZones() {
 	const [pos, setPos] = useState(0);
 
@@ -18,39 +51,6 @@ export default function TrustZones() {
 		const id = setInterval(() => setPos((p) => (p + 1) % 3), 1400);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		green: "#9ece6a",
-		red: "#f7768e",
-		teal: "#73daca",
-	};
-
-	const zones = [
-		{
-			label: "Your browser",
-			note: "compiles + renders",
-			runs: true,
-			accent: c.blue,
-		},
-		{
-			label: "Convex server",
-			note: "stores text · never runs",
-			runs: false,
-			accent: c.teal,
-		},
-		{
-			label: "Reader's browser",
-			note: "builds + hydrates",
-			runs: true,
-			accent: c.green,
-		},
-	];
 
 	return (
 		<div
@@ -92,7 +92,7 @@ export default function TrustZones() {
 									background: c.panel,
 									padding: "14px 12px",
 									textAlign: "center",
-									transition: "all .4s ease",
+									transition: "border-color .4s ease, box-shadow .4s ease",
 									boxShadow: here ? `0 0 22px -7px ${z.accent}` : "none",
 								}}
 							>
@@ -127,7 +127,8 @@ export default function TrustZones() {
 										borderRadius: 999,
 										background: here ? z.accent : c.line,
 										boxShadow: here ? `0 0 12px 1px ${z.accent}` : "none",
-										transition: "all .5s cubic-bezier(.5,0,.4,1)",
+										transition:
+											"width .5s cubic-bezier(.5,0,.4,1), background .5s cubic-bezier(.5,0,.4,1), box-shadow .5s cubic-bezier(.5,0,.4,1)",
 									}}
 								/>
 							</div>

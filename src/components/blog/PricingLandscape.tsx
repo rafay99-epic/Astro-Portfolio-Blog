@@ -84,6 +84,16 @@ const tools = [
 	},
 ];
 
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+};
+
+const markers = [0, 20, 50, 100, 200];
+
 export default function PricingLandscape() {
 	const [focus, setFocus] = useState(0);
 
@@ -94,17 +104,7 @@ export default function PricingLandscape() {
 		return () => clearInterval(id);
 	}, []);
 
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-	};
-
 	// Price markers
-	const markers = [0, 20, 50, 100, 200];
-
 	return (
 		<div
 			style={{
@@ -187,7 +187,7 @@ export default function PricingLandscape() {
 								position: "relative",
 								padding: "6px 0",
 								opacity: isFocused ? 1 : 0.5,
-								transition: "all .5s ease",
+								transition: "opacity .5s ease",
 							}}
 						>
 							{/* Tool name */}
@@ -200,7 +200,7 @@ export default function PricingLandscape() {
 									fontWeight: 600,
 									color: tool.color,
 									fontFamily: "ui-monospace, Menlo, monospace",
-									transition: "all .4s ease",
+									transition: "opacity .4s ease, text-shadow .4s ease",
 									opacity: isFocused ? 1 : 0.5,
 									textShadow: isFocused ? `0 0 12px ${tool.color}44` : "none",
 									whiteSpace: "nowrap",
@@ -248,7 +248,7 @@ export default function PricingLandscape() {
 														isFocused && i === 0
 															? `0 0 12px 2px ${tool.color}`
 															: "none",
-													transition: "all .3s ease",
+													transition: "transform .3s ease",
 													transform: isFocused ? "scale(1.3)" : "scale(1)",
 												}}
 											/>

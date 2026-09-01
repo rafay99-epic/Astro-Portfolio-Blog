@@ -1,7 +1,6 @@
-import { memo } from "react";
 import type { SearchStatsProps } from "types/search";
 
-const SearchStats = memo(function SearchStats({
+const SearchStats = function SearchStats({
 	query,
 	results,
 	searchStats,
@@ -38,6 +37,6 @@ const SearchStats = memo(function SearchStats({
 			</div>
 		</div>
 	);
-});
+};
 
 export default SearchStats;

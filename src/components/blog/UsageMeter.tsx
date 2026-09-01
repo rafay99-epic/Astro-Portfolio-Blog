@@ -10,36 +10,37 @@ import { useEffect, useState } from "react";
  */
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	green: "#9ece6a",
+	red: "#f7768e",
+	yellow: "#e0af68",
+	purple: "#bb9af7",
+};
+
+// Each day's usage as % of weekly capacity (totals ~250% — you run out)
+const dailyUsage = [35, 28, 55, 42, 30, 50, 10];
+const weeklyLimit = 100;
+
+// cumulative: [35, 63, 118, 160, 190, 240, 250]
+const cumulative: number[] = [];
+for (const val of dailyUsage) {
+	const prev = cumulative[cumulative.length - 1] ?? 0;
+	cumulative.push(prev + val);
+}
+
 export default function UsageMeter() {
 	const [day, setDay] = useState(0);
-	// Each day's usage as % of weekly capacity (totals ~250% — you run out)
-	const dailyUsage = [35, 28, 55, 42, 30, 50, 10];
-	const weeklyLimit = 100;
-
-	// cumulative: [35, 63, 118, 160, 190, 240, 250]
-	const cumulative: number[] = [];
-	for (const val of dailyUsage) {
-		const prev = cumulative[cumulative.length - 1] ?? 0;
-		cumulative.push(prev + val);
-	}
 
 	useEffect(() => {
 		const id = setInterval(() => setDay((d) => (d + 1) % days.length), 1400);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		green: "#9ece6a",
-		red: "#f7768e",
-		yellow: "#e0af68",
-		purple: "#bb9af7",
-	};
 
 	const cum = cumulative[day] ?? 0;
 	const overLimit = cum > weeklyLimit;
@@ -85,7 +86,7 @@ export default function UsageMeter() {
 								borderRadius: 8,
 								background: on ? "rgba(122,162,247,.12)" : "transparent",
 								border: `1px solid ${on ? c.blue : "transparent"}`,
-								transition: "all .3s ease",
+								transition: "background .3s ease, border-color .3s ease",
 							}}
 						>
 							<div
@@ -214,7 +215,7 @@ export default function UsageMeter() {
 								borderRadius: "4px 4px 0 0",
 								background: `hsl(${220 - i * 25}, 70%, ${65 - i * 6}%)`,
 								opacity: i === day ? 1 : 0.6,
-								transition: "all .3s ease",
+								transition: "opacity .3s ease",
 								position: "relative",
 							}}
 						>

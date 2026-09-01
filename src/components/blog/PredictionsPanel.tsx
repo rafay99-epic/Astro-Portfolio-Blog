@@ -47,6 +47,14 @@ const predictions = [
 	},
 ];
 
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+};
+
 export default function PredictionsPanel() {
 	const [prediction, setPrediction] = useState(0);
 
@@ -57,14 +65,6 @@ export default function PredictionsPanel() {
 		);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-	};
 
 	const current = predictions[prediction];
 	if (!current) return null;
@@ -101,7 +101,6 @@ export default function PredictionsPanel() {
 					background: `${current.color}10`,
 					padding: 20,
 					marginBottom: 16,
-					transition: "all .5s ease",
 					boxShadow: `0 0 24px -8px ${current.color}`,
 				}}
 			>
@@ -126,7 +125,6 @@ export default function PredictionsPanel() {
 							fontWeight: 700,
 							color: current.color,
 							flexShrink: 0,
-							transition: "all .4s ease",
 							background: `${current.color}15`,
 						}}
 					>
@@ -163,7 +161,7 @@ export default function PredictionsPanel() {
 							height: 4,
 							borderRadius: 2,
 							background: i === prediction ? p.color : c.line,
-							transition: "all .3s ease",
+							transition: "background .3s ease, box-shadow .3s ease",
 							boxShadow: i === prediction ? `0 0 8px 1px ${p.color}` : "none",
 						}}
 					/>

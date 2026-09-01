@@ -10,6 +10,18 @@ import { type ReactNode, useEffect, useState } from "react";
  * commits a real Pulse.tsx alongside. Toggles between "what you wrote" and
  * "what ships" so the injection is visible.
  */
+const c = {
+	bg: "#1a1b26",
+	panel: "#16161e",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	green: "#9ece6a",
+	purple: "#bb9af7",
+	amber: "#e0af68",
+};
+
 export default function PublishTransform() {
 	const [shipped, setShipped] = useState(false);
 
@@ -17,18 +29,6 @@ export default function PublishTransform() {
 		const id = setInterval(() => setShipped((s) => !s), 2200);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#16161e",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		green: "#9ece6a",
-		purple: "#bb9af7",
-		amber: "#e0af68",
-	};
 
 	const mono = "ui-monospace, Menlo, monospace";
 
@@ -42,7 +42,7 @@ export default function PublishTransform() {
 				maxHeight: visible ? 30 : 0,
 				opacity: visible ? 1 : 0,
 				overflow: "hidden",
-				transition: "all .5s ease",
+				transition: "max-height .5s ease, opacity .5s ease",
 				whiteSpace: "nowrap",
 			}}
 		>
@@ -88,7 +88,7 @@ export default function PublishTransform() {
 						borderRadius: 999,
 						border: `1px solid ${shipped ? c.green : c.purple}`,
 						color: shipped ? c.green : c.purple,
-						transition: "all .4s ease",
+						transition: "border-color .4s ease, color .4s ease",
 					}}
 				>
 					{shipped ? "what ships →" : "what you wrote"}
@@ -154,7 +154,7 @@ export default function PublishTransform() {
 							display: "inline-block",
 							overflow: "hidden",
 							verticalAlign: "bottom",
-							transition: "all .5s ease",
+							transition: "max-width .5s ease, opacity .5s ease",
 							whiteSpace: "nowrap",
 						}}
 					>
@@ -174,7 +174,8 @@ export default function PublishTransform() {
 					padding: "12px 16px",
 					opacity: shipped ? 1 : 0.4,
 					transform: `translateY(${shipped ? 0 : 6}px)`,
-					transition: "all .5s ease",
+					transition:
+						"border-color .5s ease, opacity .5s ease, transform .5s ease",
 				}}
 			>
 				<div style={{ fontSize: 10.5, color: c.muted, fontFamily: mono }}>

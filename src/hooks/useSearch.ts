@@ -1,7 +1,7 @@
 // NOTE: Search excludes archived posts to keep results aligned with public blog listings.
 
 import Fuse, { type IFuseOptions } from "fuse.js";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Post } from "types/articles";
 import type { SearchCache, SearchState } from "types/search";
 
@@ -178,16 +178,6 @@ const useSearch = (posts: Post[]): SearchState => {
 	);
 
 	// Safety net: filter drafts/archived even if caller already did
-	const filteredPosts = useMemo(
-		() => posts.filter((post) => !post.data.draft && !post.data.archived),
-		[posts],
-	);
-
-	const fuse = useMemo(
-		() => new Fuse(filteredPosts, FUSE_CONFIG),
-		[filteredPosts],
-	);
-
 	const clearHistory = () => {
 		setSearchHistory([]);
 	};
@@ -196,8 +186,15 @@ const useSearch = (posts: Post[]): SearchState => {
 		saveSearchHistory(searchHistory);
 	}, [searchHistory]);
 
-	const performSearch = useCallback(
-		(searchQuery: string) => {
+	// Debounced search execution
+	useEffect(() => {
+		const filteredPosts = posts.filter(
+			(post) => !post.data.draft && !post.data.archived,
+		);
+
+		const fuse = new Fuse(filteredPosts, FUSE_CONFIG);
+
+		const performSearch = (searchQuery: string) => {
 			if (!searchQuery.trim()) {
 				setResults([]);
 				setSearchStats({
@@ -260,15 +257,10 @@ const useSearch = (posts: Post[]): SearchState => {
 			setResults(rankedPosts);
 			setSearchStats(stats);
 			addToCache(searchQuery, rankedPosts, stats);
-		},
-		[fuse],
-	);
-
-	// Debounced search execution
-	useEffect(() => {
+		};
 		const id = setTimeout(() => performSearch(query), DEBOUNCE_MS);
 		return () => clearTimeout(id);
-	}, [query, performSearch]);
+	}, [query, posts]);
 
 	// Delayed history commit: only saves after user stops typing for 1s
 	useEffect(() => {

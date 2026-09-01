@@ -5,7 +5,7 @@ import SearchResults from "@react/blog/metadata/SearchField/components/SearchRes
 import SearchStats from "@react/blog/metadata/SearchField/components/SearchStats";
 import SearchTips from "@react/blog/metadata/SearchField/components/SearchTips";
 import { domAnimation, LazyMotion, m } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Post } from "types/articles";
 
 interface SearchProps {
@@ -36,8 +36,8 @@ function Search({ posts }: SearchProps) {
 		setQuery(q);
 	};
 
-	const handleKeyDown = useCallback(
-		(e: KeyboardEvent) => {
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === "/" && !isFocusedRef.current) {
 				e.preventDefault();
 				document.querySelector<HTMLInputElement>("#search-input")?.focus();
@@ -70,14 +70,11 @@ function Search({ posts }: SearchProps) {
 					setSelectedResultIndex(-1);
 					break;
 			}
-		},
-		[setQuery],
-	);
+		};
 
-	useEffect(() => {
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [handleKeyDown]);
+	}, [setQuery]);
 
 	useEffect(() => {
 		if (selectedResultIndex >= 0) {

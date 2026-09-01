@@ -41,6 +41,16 @@ const stages = [
 	},
 ];
 
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	red: "#f7768e",
+};
+
 export default function KillChain() {
 	const [step, setStep] = useState(0);
 
@@ -48,16 +58,6 @@ export default function KillChain() {
 		const id = setInterval(() => setStep((s) => (s + 1) % stages.length), 1800);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		red: "#f7768e",
-	};
 
 	return (
 		<div
@@ -104,7 +104,7 @@ export default function KillChain() {
 										: c.panel,
 								padding: "10px 6px",
 								textAlign: "center",
-								transition: "all .4s ease",
+								transition: "box-shadow .4s ease, opacity .4s ease",
 								boxShadow: on ? `0 0 20px -6px ${s.accent}` : "none",
 								opacity: done ? 0.7 : 1,
 							}}
@@ -114,7 +114,7 @@ export default function KillChain() {
 								style={{
 									fontSize: 18,
 									marginBottom: 4,
-									transition: "all .3s ease",
+									transition: "filter .3s ease",
 									filter: on ? "none" : "grayscale(0.6)",
 								}}
 							>
@@ -234,7 +234,7 @@ export default function KillChain() {
 							background:
 								i === step ? s.accent : i < step ? `${s.accent}60` : c.line,
 							boxShadow: i === step ? `0 0 10px 1px ${s.accent}` : "none",
-							transition: "all .3s ease",
+							transition: "box-shadow .3s ease",
 						}}
 					/>
 				))}

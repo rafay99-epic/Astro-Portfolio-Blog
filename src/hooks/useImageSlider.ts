@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { UseImageSliderResult } from "types/image_slider";
 
 export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
@@ -10,70 +10,64 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const touchStart = useRef(0);
 
-	const handleImageLoad = useCallback((index: number) => {
+	const handleImageLoad = (index: number) => {
 		setLoadedImages((prev) => new Set(prev).add(index));
-	}, []);
+	};
 
-	const isImageLoaded = useCallback(
-		(index: number) => loadedImages.has(index),
-		[loadedImages],
-	);
+	const isImageLoaded = (index: number) => loadedImages.has(index);
 
-	const prevSlide = useCallback(() => {
+	const prevSlide = () => {
 		setCurrent((prev) => (prev === 0 ? imagesLength - 1 : prev - 1));
-	}, [imagesLength]);
+	};
 
-	const nextSlide = useCallback(() => {
+	const nextSlide = () => {
 		setCurrent((prev) => (prev === imagesLength - 1 ? 0 : prev + 1));
-	}, [imagesLength]);
+	};
 
-	const goToSlide = useCallback((index: number) => {
+	const goToSlide = (index: number) => {
 		setCurrent(index);
-	}, []);
+	};
 
 	// Only request/exit fullscreen here; isFullScreen is driven by the
 	// fullscreenchange event below so it stays correct even when the user exits
 	// via Esc or the browser chrome.
-	const toggleFullScreen = useCallback(() => {
+	const toggleFullScreen = () => {
 		if (document.fullscreenElement) {
 			document.exitFullscreen();
 		} else {
 			sliderRef.current?.requestFullscreen();
 		}
-	}, []);
+	};
 
-	const handleTouchStart = useCallback((e: React.TouchEvent) => {
+	const handleTouchStart = (e: React.TouchEvent) => {
 		const touch = e.touches[0];
 		if (!touch) return;
 		touchStart.current = touch.clientX;
-	}, []);
+	};
 
-	const handleTouchMove = useCallback(
-		(e: React.TouchEvent) => {
-			if (!touchStart.current) return;
-			const firstTouch = e.touches[0];
-			if (!firstTouch) return;
-			const currentTouch = firstTouch.clientX;
-			const diff = touchStart.current - currentTouch;
-			if (Math.abs(diff) > 50) {
-				if (diff > 0) {
-					nextSlide();
-				} else {
-					prevSlide();
-				}
-				touchStart.current = 0;
+	const handleTouchMove = (e: React.TouchEvent) => {
+		if (!touchStart.current) return;
+		const firstTouch = e.touches[0];
+		if (!firstTouch) return;
+		const currentTouch = firstTouch.clientX;
+		const diff = touchStart.current - currentTouch;
+		if (Math.abs(diff) > 50) {
+			if (diff > 0) {
+				nextSlide();
+			} else {
+				prevSlide();
 			}
-		},
-		[nextSlide, prevSlide],
-	);
+			touchStart.current = 0;
+		}
+	};
 
-	const handleMouseEnter = useCallback(() => {
+	const handleMouseEnter = () => {
 		setIsHovered(true);
-	}, []);
+	};
 
-	const handleMouseLeave = useCallback(() => {
+	const handleMouseLeave = () => {
 		setIsHovered(false);
-	}, []);
+	};
 
 	useEffect(() => {
 		const handleFullScreenChange = () => {
@@ -84,16 +78,22 @@ export const useImageSlider = (imagesLength: number): UseImageSliderResult => {
 			document.removeEventListener("fullscreenchange", handleFullScreenChange);
 	}, []);
 
+	const handlersRef = useRef({ prevSlide, nextSlide, toggleFullScreen });
+	useEffect(() => {
+		handlersRef.current = { prevSlide, nextSlide, toggleFullScreen };
+	});
+
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === "ArrowLeft") prevSlide();
-			if (event.key === "ArrowRight") nextSlide();
-			if (event.key === "Escape" && isFullScreen) toggleFullScreen();
+			if (event.key === "ArrowLeft") handlersRef.current.prevSlide();
+			if (event.key === "ArrowRight") handlersRef.current.nextSlide();
+			if (event.key === "Escape" && isFullScreen)
+				handlersRef.current.toggleFullScreen();
 		};
 
 		document.addEventListener("keydown", handleKeyDown);
 		return () => document.removeEventListener("keydown", handleKeyDown);
-	}, [isFullScreen, prevSlide, nextSlide, toggleFullScreen]);
+	}, [isFullScreen]);
 
 	return {
 		current,

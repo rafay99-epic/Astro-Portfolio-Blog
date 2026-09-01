@@ -176,7 +176,6 @@ export default function CapGauge() {
 							background: overCap
 								? "rgba(247,118,142,.08)"
 								: "rgba(158,206,106,.08)",
-							transition: "all .4s ease",
 						}}
 					>
 						{overCap ? "123% of cap" : `${Math.round(pctOfCap)}% of cap`}

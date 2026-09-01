@@ -3,12 +3,13 @@ import { createHash } from "node:crypto";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { ProjectSchema } from "../../types/ProjectTypes";
 
+const headers = {
+	"Content-Type": "application/json",
+	"Access-Control-Allow-Origin": "https://www.rafay99.com",
+	"Cache-Control": "public, max-age=3600",
+};
+
 export async function GET() {
-	const headers = {
-		"Content-Type": "application/json",
-		"Access-Control-Allow-Origin": "https://www.rafay99.com",
-		"Cache-Control": "public, max-age=3600",
-	};
 	try {
 		if (!featureFlags.showProjects) {
 			return new Response(

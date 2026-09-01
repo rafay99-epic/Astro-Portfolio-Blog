@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface DiffEntry {
 	type: "added" | "removed" | "unchanged";
@@ -65,7 +65,8 @@ function CopyButton({ text }: { text: string }) {
 				fontSize: 12,
 				fontWeight: 500,
 				cursor: "pointer",
-				transition: "all 0.2s ease",
+				transition:
+					"background 0.2s ease, color 0.2s ease, border-color 0.2s ease",
 			}}
 		>
 			{copied ? "Copied" : "Copy"}
@@ -332,6 +333,45 @@ function CollapseBar({
 	);
 }
 
+const renderRow = (row: SplitRow, side: "left" | "right") => {
+	const type = side === "left" ? row.leftType : row.rightType;
+	const num = side === "left" ? row.leftNum : row.rightNum;
+	const html = side === "left" ? row.leftHtml : row.rightHtml;
+	const indicator =
+		type === "removed" ? (
+			<span style={{ color: c.removedIndicator }}>−</span>
+		) : type === "added" ? (
+			<span style={{ color: c.addedIndicator }}>+</span>
+		) : (
+			""
+		);
+
+	return (
+		<tr
+			key={`${side}-${row.leftNum ?? "e"}-${row.rightNum ?? "e"}`}
+			className="cc-diff-row"
+			style={{ background: lineBackground(type) }}
+		>
+			<td
+				style={{
+					...gutterStyle,
+					background: gutterBackground(type),
+				}}
+			>
+				{num ?? ""}
+			</td>
+			<td style={indicatorStyle}>{indicator}</td>
+			<td
+				style={codeStyle}
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki build-time output
+				dangerouslySetInnerHTML={{
+					__html: html ?? "&nbsp;",
+				}}
+			/>
+		</tr>
+	);
+};
+
 function SplitView({
 	entries,
 	title1,
@@ -359,7 +399,7 @@ function SplitView({
 	const rightRef = useRef<HTMLDivElement>(null);
 	const syncing = useRef(false);
 
-	const handleScroll = useCallback((source: "left" | "right") => {
+	const handleScroll = (source: "left" | "right") => {
 		if (syncing.current) return;
 		syncing.current = true;
 		const from = source === "left" ? leftRef.current : rightRef.current;
@@ -371,54 +411,15 @@ function SplitView({
 		requestAnimationFrame(() => {
 			syncing.current = false;
 		});
-	}, []);
+	};
 
-	const toggleExpand = useCallback((startIdx: number) => {
+	const toggleExpand = (startIdx: number) => {
 		setExpanded((prev) => {
 			const next = new Set(prev);
 			if (next.has(startIdx)) next.delete(startIdx);
 			else next.add(startIdx);
 			return next;
 		});
-	}, []);
-
-	const renderRow = (row: SplitRow, side: "left" | "right") => {
-		const type = side === "left" ? row.leftType : row.rightType;
-		const num = side === "left" ? row.leftNum : row.rightNum;
-		const html = side === "left" ? row.leftHtml : row.rightHtml;
-		const indicator =
-			type === "removed" ? (
-				<span style={{ color: c.removedIndicator }}>−</span>
-			) : type === "added" ? (
-				<span style={{ color: c.addedIndicator }}>+</span>
-			) : (
-				""
-			);
-
-		return (
-			<tr
-				key={`${side}-${row.leftNum ?? "e"}-${row.rightNum ?? "e"}`}
-				className="cc-diff-row"
-				style={{ background: lineBackground(type) }}
-			>
-				<td
-					style={{
-						...gutterStyle,
-						background: gutterBackground(type),
-					}}
-				>
-					{num ?? ""}
-				</td>
-				<td style={indicatorStyle}>{indicator}</td>
-				<td
-					style={codeStyle}
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki build-time output
-					dangerouslySetInnerHTML={{
-						__html: html ?? "&nbsp;",
-					}}
-				/>
-			</tr>
-		);
 	};
 
 	const renderSide = (side: "left" | "right") =>
@@ -503,14 +504,14 @@ function UnifiedView({
 	const collapsed = collapseEntries(entries);
 	const [expanded, setExpanded] = useState<Set<number>>(new Set());
 
-	const toggleExpand = useCallback((startIdx: number) => {
+	const toggleExpand = (startIdx: number) => {
 		setExpanded((prev) => {
 			const next = new Set(prev);
 			if (next.has(startIdx)) next.delete(startIdx);
 			else next.add(startIdx);
 			return next;
 		});
-	}, []);
+	};
 
 	return (
 		<div>
@@ -675,7 +676,6 @@ function FullScreenButton({
 				fontSize: 12,
 				fontWeight: 500,
 				cursor: "pointer",
-				transition: "all 0.2s ease",
 				display: "flex",
 				alignItems: "center",
 				gap: 4,
@@ -780,7 +780,7 @@ function scrollPanelStyle(isFullScreen: boolean): React.CSSProperties {
 	};
 }
 
-const CodeCompareUI = memo(function CodeCompareUI({
+const CodeCompareUI = function CodeCompareUI({
 	entries,
 	title1,
 	title2,
@@ -854,7 +854,7 @@ const CodeCompareUI = memo(function CodeCompareUI({
 									cursor: "pointer",
 									background: view === mode ? c.accent : "transparent",
 									color: view === mode ? c.bg : c.textMuted,
-									transition: "all 0.2s ease",
+									transition: "background 0.2s ease, color 0.2s ease",
 									textTransform: "capitalize",
 								}}
 							>
@@ -954,6 +954,6 @@ const CodeCompareUI = memo(function CodeCompareUI({
 			{content}
 		</div>
 	);
-});
+};
 
 export default CodeCompareUI;

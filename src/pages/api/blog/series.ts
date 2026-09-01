@@ -4,13 +4,13 @@ import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { getAllSeriesMeta, getSeriesPosts, groupBySeries } from "@util/series";
 import { SeriesMetaSchema } from "../../../types/series";
 
-export async function GET() {
-	const errorHeaders = {
-		"Content-Type": "application/json",
-		"Access-Control-Allow-Origin": "https://www.rafay99.com",
-		"Cache-Control": "no-store, no-cache",
-	};
+const errorHeaders = {
+	"Content-Type": "application/json",
+	"Access-Control-Allow-Origin": "https://www.rafay99.com",
+	"Cache-Control": "no-store, no-cache",
+};
 
+export async function GET() {
 	try {
 		if (!featureFlags.showBlog || !featureFlags.showSeries) {
 			return new Response(
