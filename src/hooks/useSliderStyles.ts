@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import type {
 	AspectRatio,
 	Layout,
@@ -15,7 +14,7 @@ export const useSliderStyles = (
 	thumbnailPosition: ThumbnailPosition,
 	isFullScreen: boolean,
 ) => {
-	const themeClasses = useMemo((): ThemeClasses => {
+	const themeClasses = ((): ThemeClasses => {
 		switch (theme) {
 			case "light":
 				return {
@@ -43,9 +42,9 @@ export const useSliderStyles = (
 					ring: "ring-[var(--accent)]",
 				};
 		}
-	}, [theme]);
+	})();
 
-	const layoutClasses = useMemo((): LayoutClasses => {
+	const layoutClasses = ((): LayoutClasses => {
 		switch (layout) {
 			case "modern":
 				return {
@@ -89,29 +88,23 @@ export const useSliderStyles = (
 					thumbnails: "flex gap-2 p-2",
 				};
 		}
-	}, [layout, thumbnailPosition]);
+	})();
 
-	const containerClasses = useMemo(
-		() => `
+	const containerClasses = (() => `
     relative w-full max-w-7xl mx-auto
     ${layoutClasses.container}
     ${themeClasses.container}
     ${isFullScreen ? "fixed inset-0 z-50" : ""}
     group
-  `,
-		[layoutClasses.container, themeClasses.container, isFullScreen],
-	);
+  `)();
 
-	const mainContentClasses = useMemo(
-		() => `
+	const mainContentClasses = (() => `
     relative flex
     ${thumbnailPosition === "left" ? "flex-row-reverse" : ""}
     ${thumbnailPosition === "right" ? "flex-row" : "flex-col"}
-  `,
-		[thumbnailPosition],
-	);
+  `)();
 
-	const aspectRatioClass = useMemo(() => {
+	const aspectRatioClass = (() => {
 		switch (aspectRatio) {
 			case "square":
 				return "aspect-square";
@@ -122,7 +115,7 @@ export const useSliderStyles = (
 			default:
 				return "";
 		}
-	}, [aspectRatio]);
+	})();
 
 	return {
 		themeClasses,

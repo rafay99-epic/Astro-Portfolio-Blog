@@ -183,7 +183,7 @@ export default function ChangelogLoop() {
 									borderRadius: 3,
 									background: isBefore && i < regens * 3 ? c.red : c.line,
 									opacity: isBefore && i < regens * 3 ? 0.85 : 1,
-									transition: "all .35s ease",
+									transition: "background .35s ease, opacity .35s ease",
 								}}
 							/>
 						))}

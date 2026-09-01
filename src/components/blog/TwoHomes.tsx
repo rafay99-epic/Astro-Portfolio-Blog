@@ -9,6 +9,64 @@ import { useEffect, useState } from "react";
  * (Convex-stored, in-browser eval) and again at BUILD in the repo (a real
  * .tsx file). A packet pulses from the shared source down into both homes.
  */
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	purple: "#bb9af7",
+	green: "#9ece6a",
+};
+
+const home = (label: string, sub: string, accent: string, active: boolean) => (
+	<div
+		style={{
+			flex: 1,
+			border: `1px solid ${active ? accent : c.line}`,
+			borderRadius: 12,
+			background: c.panel,
+			padding: "16px 18px",
+			transition: "border-color .5s ease, box-shadow .5s ease",
+			boxShadow: active ? `0 0 24px -8px ${accent}` : "none",
+		}}
+	>
+		<div
+			style={{
+				fontFamily: "ui-monospace, Menlo, monospace",
+				fontSize: 10,
+				letterSpacing: ".16em",
+				textTransform: "uppercase",
+				color: active ? accent : c.muted,
+				transition: "color .5s ease",
+				marginBottom: 8,
+			}}
+		>
+			{label}
+		</div>
+		<div style={{ fontSize: 13, color: c.text, fontWeight: 600 }}>{sub}</div>
+		<div
+			style={{
+				marginTop: 10,
+				height: 6,
+				borderRadius: 3,
+				background: c.bg,
+				overflow: "hidden",
+			}}
+		>
+			<div
+				style={{
+					height: "100%",
+					width: active ? "100%" : "0%",
+					background: accent,
+					transition: "width .8s cubic-bezier(.2,.8,.2,1)",
+				}}
+			/>
+		</div>
+	</div>
+);
+
 export default function TwoHomes() {
 	const [beat, setBeat] = useState(0);
 
@@ -16,69 +74,6 @@ export default function TwoHomes() {
 		const id = setInterval(() => setBeat((b) => (b + 1) % 2), 1600);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		purple: "#bb9af7",
-		green: "#9ece6a",
-	};
-
-	const home = (
-		label: string,
-		sub: string,
-		accent: string,
-		active: boolean,
-	) => (
-		<div
-			style={{
-				flex: 1,
-				border: `1px solid ${active ? accent : c.line}`,
-				borderRadius: 12,
-				background: c.panel,
-				padding: "16px 18px",
-				transition: "border-color .5s ease, box-shadow .5s ease",
-				boxShadow: active ? `0 0 24px -8px ${accent}` : "none",
-			}}
-		>
-			<div
-				style={{
-					fontFamily: "ui-monospace, Menlo, monospace",
-					fontSize: 10,
-					letterSpacing: ".16em",
-					textTransform: "uppercase",
-					color: active ? accent : c.muted,
-					transition: "color .5s ease",
-					marginBottom: 8,
-				}}
-			>
-				{label}
-			</div>
-			<div style={{ fontSize: 13, color: c.text, fontWeight: 600 }}>{sub}</div>
-			<div
-				style={{
-					marginTop: 10,
-					height: 6,
-					borderRadius: 3,
-					background: c.bg,
-					overflow: "hidden",
-				}}
-			>
-				<div
-					style={{
-						height: "100%",
-						width: active ? "100%" : "0%",
-						background: accent,
-						transition: "width .8s cubic-bezier(.2,.8,.2,1)",
-					}}
-				/>
-			</div>
-		</div>
-	);
 
 	return (
 		<div
@@ -141,7 +136,8 @@ export default function TwoHomes() {
 							background: beat === i ? c.blue : c.line,
 							boxShadow: beat === i ? `0 0 12px 2px ${c.blue}` : "none",
 							transform: `translateY(${beat === i ? 12 : 0}px)`,
-							transition: "all .6s cubic-bezier(.5,0,.4,1)",
+							transition:
+								"background .6s cubic-bezier(.5,0,.4,1), box-shadow .6s cubic-bezier(.5,0,.4,1), transform .6s cubic-bezier(.5,0,.4,1)",
 						}}
 					/>
 				))}

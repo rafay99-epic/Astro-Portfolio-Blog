@@ -3,25 +3,34 @@
  * animation inside Wryte instead. */
 import { useEffect, useState } from "react";
 
+const models = [
+	{
+		name: "GPT-5.6 Sol",
+		cheatRate: "82%",
+		denialRate: "62%",
+		color: "#73daca",
+	},
+	{
+		name: "Claude Mythos",
+		cheatRate: "74%",
+		denialRate: "55%",
+		color: "#bb9af7",
+	},
+	{ name: "Opus 4.7", cheatRate: "68%", denialRate: "48%", color: "#7aa2f7" },
+	{ name: "GPT-5.5", cheatRate: "71%", denialRate: "51%", color: "#e0af68" },
+];
+
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	red: "#f7768e",
+};
+
 export default function CheatingStats() {
 	const [model, setModel] = useState(0);
-
-	const models = [
-		{
-			name: "GPT-5.6 Sol",
-			cheatRate: "82%",
-			denialRate: "62%",
-			color: "#73daca",
-		},
-		{
-			name: "Claude Mythos",
-			cheatRate: "74%",
-			denialRate: "55%",
-			color: "#bb9af7",
-		},
-		{ name: "Opus 4.7", cheatRate: "68%", denialRate: "48%", color: "#7aa2f7" },
-		{ name: "GPT-5.5", cheatRate: "71%", denialRate: "51%", color: "#e0af68" },
-	];
 
 	useEffect(() => {
 		const id = setInterval(
@@ -30,15 +39,6 @@ export default function CheatingStats() {
 		);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		red: "#f7768e",
-	};
 
 	return (
 		<div
@@ -78,7 +78,8 @@ export default function CheatingStats() {
 								background: on ? `${m.color}12` : c.panel,
 								padding: "12px 8px",
 								textAlign: "center",
-								transition: "all .4s ease",
+								transition:
+									"border-color .4s ease, background .4s ease, box-shadow .4s ease",
 								boxShadow: on ? `0 0 18px -5px ${m.color}` : "none",
 							}}
 						>

@@ -8,32 +8,44 @@ import { useEffect, useState } from "react";
  * at different rates. Each model column has a drip animation showing
  * credits being consumed, with a gauge that drops faster for expensive models.
  */
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	green: "#9ece6a",
+	red: "#f7768e",
+	yellow: "#e0af68",
+};
+
+const models = [
+	{
+		name: "Haiku 3",
+		costPer: "$0.25/$1.25",
+		costColor: "#73daca",
+		rate: 1, // baseline
+		requests: 800,
+	},
+	{
+		name: "Sonnet 5",
+		costPer: "$2/$10",
+		costColor: "#7aa2f7",
+		rate: 8,
+		requests: 100,
+	},
+	{
+		name: "Opus 4.8",
+		costPer: "$15/$75",
+		costColor: "#bb9af7",
+		rate: 60,
+		requests: 13,
+	},
+];
+
 export default function CreditBurn() {
 	const [tick, setTick] = useState(0);
-
-	const models = [
-		{
-			name: "Haiku 3",
-			costPer: "$0.25/$1.25",
-			costColor: "#73daca",
-			rate: 1, // baseline
-			requests: 800,
-		},
-		{
-			name: "Sonnet 5",
-			costPer: "$2/$10",
-			costColor: "#7aa2f7",
-			rate: 8,
-			requests: 100,
-		},
-		{
-			name: "Opus 4.8",
-			costPer: "$15/$75",
-			costColor: "#bb9af7",
-			rate: 60,
-			requests: 13,
-		},
-	];
 
 	// Simulated credit consumption: each model burns at its rate
 	// $20 pool. After 120 ticks, Haiku uses ~5%, Sonnet ~40%, Opus exhausts
@@ -42,18 +54,6 @@ export default function CreditBurn() {
 		const id = setInterval(() => setTick((t) => (t + 1) % maxTicks), 80);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		green: "#9ece6a",
-		red: "#f7768e",
-		yellow: "#e0af68",
-	};
 
 	return (
 		<div
@@ -111,7 +111,7 @@ export default function CreditBurn() {
 								borderRadius: 12,
 								background: c.panel,
 								padding: 14,
-								transition: "all .4s ease",
+								transition: "opacity .4s ease",
 								opacity: exhausted ? 0.6 : 1,
 							}}
 						>

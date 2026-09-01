@@ -4,7 +4,7 @@ import { z } from "zod";
 // ─── Zod Schemas ───
 
 /** Schema for the series-related frontmatter fields on a blog post. */
-export const SeriesFrontmatterSchema = z.object({
+const SeriesFrontmatterSchema = z.object({
 	series: z.string().optional(),
 	seriesPart: z.number().int().positive().optional(),
 	seriesTotal: z.number().int().positive().optional(),

@@ -1,4 +1,4 @@
-import { type ComponentType, memo } from "react";
+import type { ComponentType } from "react";
 import { LuCalendar, LuSearch, LuUser } from "react-icons/lu";
 import type { SearchTipsProps } from "types/search";
 
@@ -24,7 +24,7 @@ const searchTips: Array<{
 	},
 ];
 
-const SearchTips = memo(function SearchTips({
+const SearchTips = function SearchTips({
 	showSearchTips,
 	query,
 	setQuery,
@@ -32,7 +32,7 @@ const SearchTips = memo(function SearchTips({
 	if (!(showSearchTips || query)) return null;
 
 	return (
-		<div className="mt-4 rounded-xl border border-[#565f89]/30 bg-[#1a1b26]/40 p-4 transition-all duration-200">
+		<div className="mt-4 rounded-xl border border-[#565f89]/30 bg-[#1a1b26]/40 p-4">
 			<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
 				{searchTips.map((tip) => (
 					<button
@@ -53,6 +53,6 @@ const SearchTips = memo(function SearchTips({
 			</div>
 		</div>
 	);
-});
+};
 
 export default SearchTips;

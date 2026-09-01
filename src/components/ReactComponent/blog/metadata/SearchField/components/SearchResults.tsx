@@ -1,5 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { memo } from "react";
+import { AnimatePresence, m } from "framer-motion";
 import type { SearchResultsProps } from "types/search";
 
 const containerVariants = {
@@ -25,7 +24,7 @@ const itemVariants = {
 	},
 };
 
-const SearchResults = memo(function SearchResults({
+function SearchResults({
 	query,
 	results,
 	selectedResultIndex,
@@ -35,7 +34,7 @@ const SearchResults = memo(function SearchResults({
 
 	return (
 		<AnimatePresence mode="wait">
-			<motion.div
+			<m.div
 				variants={containerVariants}
 				initial="hidden"
 				animate="visible"
@@ -51,12 +50,12 @@ const SearchResults = memo(function SearchResults({
 						setSelectedResultIndex={setSelectedResultIndex}
 					/>
 				))}
-			</motion.div>
+			</m.div>
 		</AnimatePresence>
 	);
-});
+}
 
-const SearchResultItem = memo(function SearchResultItem({
+function SearchResultItem({
 	post,
 	index,
 	isSelected,
@@ -68,7 +67,7 @@ const SearchResultItem = memo(function SearchResultItem({
 	setSelectedResultIndex: (index: number) => void;
 }) {
 	return (
-		<motion.a
+		<m.a
 			data-result-index={index}
 			href={`/blog/${post.id}`}
 			variants={itemVariants}
@@ -98,8 +97,8 @@ const SearchResultItem = memo(function SearchResultItem({
 					))}
 				</div>
 			)}
-		</motion.a>
+		</m.a>
 	);
-});
+}
 
 export default SearchResults;

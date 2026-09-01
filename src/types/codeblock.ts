@@ -31,7 +31,7 @@ export const ToastStylesSchema = z.object({
 	error: ToastStyleSchema.optional(),
 });
 
-export const StylesSchema = z.object({
+const StylesSchema = z.object({
 	buttonContainer: z.string(),
 	languageLabel: z.string(),
 	copyButton: z.string(),
@@ -42,13 +42,13 @@ export const StylesSchema = z.object({
 	language: StyleValueSchema,
 });
 
-export const CopyButtonPropsSchema = z.object({
+const CopyButtonPropsSchema = z.object({
 	codeText: z.string(),
 	isMobile: z.boolean(),
 	onCopy: z.function().args().returns(z.void()),
 });
 
-export const UseCopyButtonPropsSchema = z.object({
+const UseCopyButtonPropsSchema = z.object({
 	buttonRef: z.custom<RefObject<HTMLButtonElement | null>>(),
 	codeText: z.string(),
 	onCopy: z.function().args().returns(z.void()),

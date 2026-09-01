@@ -1,8 +1,7 @@
-import { motion } from "framer-motion";
-import { memo } from "react";
+import { m } from "framer-motion";
 import type { ThumbnailProps } from "types/image_slider";
 
-export const Thumbnail = memo(function Thumbnail({
+export function Thumbnail({
 	image,
 	index,
 	current,
@@ -11,7 +10,7 @@ export const Thumbnail = memo(function Thumbnail({
 	themeClasses,
 }: ThumbnailProps) {
 	return (
-		<motion.button
+		<m.button
 			whileHover={{ scale: 1.05 }}
 			whileTap={{ scale: 0.95 }}
 			onClick={onClick}
@@ -25,6 +24,6 @@ export const Thumbnail = memo(function Thumbnail({
 				} rounded-lg object-cover`}
 				loading="lazy"
 			/>
-		</motion.button>
+		</m.button>
 	);
-});
+}

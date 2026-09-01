@@ -8,20 +8,32 @@ import { useEffect, useState } from "react";
  * stepper. Write → Preview → Insert → Publish → Live, with a progress rail
  * that fills as it walks. The overview animation for the post.
  */
+const steps = [
+	{ label: "Write", detail: "paste a React component in the editor" },
+	{
+		label: "Preview",
+		detail: "Sucrase compiles it — it runs live, instantly",
+	},
+	{ label: "Insert", detail: "drop <Name /> into your MDX post" },
+	{ label: "Publish", detail: "commit the .tsx + inject the import" },
+	{
+		label: "Live",
+		detail: "your blog builds it and it animates for readers",
+	},
+];
+
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	purple: "#bb9af7",
+	green: "#9ece6a",
+};
+
 export default function JourneySteps() {
-	const steps = [
-		{ label: "Write", detail: "paste a React component in the editor" },
-		{
-			label: "Preview",
-			detail: "Sucrase compiles it — it runs live, instantly",
-		},
-		{ label: "Insert", detail: "drop <Name /> into your MDX post" },
-		{ label: "Publish", detail: "commit the .tsx + inject the import" },
-		{
-			label: "Live",
-			detail: "your blog builds it and it animates for readers",
-		},
-	];
 	const [step, setStep] = useState(0);
 
 	useEffect(() => {
@@ -31,17 +43,6 @@ export default function JourneySteps() {
 
 	const currentStep = steps[step];
 	if (!currentStep) return null;
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		purple: "#bb9af7",
-		green: "#9ece6a",
-	};
 
 	const pct = (step / (steps.length - 1)) * 100;
 
@@ -119,7 +120,8 @@ export default function JourneySteps() {
 										fontFamily: "ui-monospace, Menlo, monospace",
 										fontSize: 11,
 										fontWeight: 700,
-										transition: "all .4s ease",
+										transition:
+											"border-color .4s ease, color .4s ease, box-shadow .4s ease, transform .4s ease",
 										boxShadow: on ? `0 0 14px -2px ${c.blue}` : "none",
 										transform: on ? "scale(1.15)" : "scale(1)",
 									}}

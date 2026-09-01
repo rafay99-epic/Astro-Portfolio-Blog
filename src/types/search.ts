@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { PostSchema } from "./articles";
 
-export const SearchInputPropsSchema = z.object({
+const SearchInputPropsSchema = z.object({
 	query: z.string(),
 	setQuery: z.function().args(z.string()).returns(z.void()),
 	isSearchFocused: z.boolean(),
@@ -12,7 +12,7 @@ export const SearchInputPropsSchema = z.object({
 	resultsLength: z.number(),
 });
 
-export const SearchTipsPropsSchema = z.object({
+const SearchTipsPropsSchema = z.object({
 	showSearchTips: z.boolean(),
 	query: z.string(),
 	setQuery: z.function().args(z.string()).returns(z.void()),
@@ -25,20 +25,20 @@ export const SearchStatsDataSchema = z.object({
 	matchedFields: z.array(z.string()),
 });
 
-export const SearchStatsPropsSchema = z.object({
+const SearchStatsPropsSchema = z.object({
 	query: z.string(),
 	results: z.array(PostSchema),
 	searchStats: SearchStatsDataSchema,
 });
 
-export const SearchResultsPropsSchema = z.object({
+const SearchResultsPropsSchema = z.object({
 	query: z.string(),
 	results: z.array(PostSchema),
 	selectedResultIndex: z.number(),
 	setSelectedResultIndex: z.function().args(z.number()).returns(z.void()),
 });
 
-export const SearchStateSchema = z.object({
+const SearchStateSchema = z.object({
 	query: z.string(),
 	setQuery: z.function().args(z.string()).returns(z.void()),
 	results: z.array(PostSchema),
@@ -47,7 +47,7 @@ export const SearchStateSchema = z.object({
 	clearHistory: z.function().args().returns(z.void()),
 });
 
-export const SearchCacheSchema = z.object({
+const SearchCacheSchema = z.object({
 	results: z.array(PostSchema),
 	stats: SearchStatsDataSchema,
 	timestamp: z.number(),

@@ -9,83 +9,93 @@ import { useEffect, useState } from "react";
  * price spectrum from $0 to $200. A highlight cycles through to show
  * where each tier sits relative to the others.
  */
+const tools = [
+	{
+		name: "Claude Code",
+		color: "#bb9af7",
+		tiers: [
+			{ label: "Pro", price: 20, x: 20 },
+			{ label: "Max", price: 100, x: 100 },
+			{ label: "Max", price: 200, x: 200 },
+		],
+	},
+	{
+		name: "Cursor",
+		color: "#7aa2f7",
+		tiers: [
+			{ label: "Hobby", price: 0, x: 0 },
+			{ label: "Pro", price: 20, x: 20 },
+			{ label: "Pro+", price: 60, x: 60 },
+			{ label: "Ultra", price: 200, x: 200 },
+		],
+	},
+	{
+		name: "Copilot",
+		color: "#73daca",
+		tiers: [
+			{ label: "Free", price: 0, x: 0 },
+			{ label: "Pro", price: 10, x: 10 },
+			{ label: "Pro+", price: 39, x: 39 },
+			{ label: "Biz", price: 19, x: 19 },
+		],
+	},
+	{
+		name: "Windsurf",
+		color: "#e0af68",
+		tiers: [
+			{ label: "Free", price: 0, x: 0 },
+			{ label: "Pro", price: 15, x: 15 },
+			{ label: "Max", price: 200, x: 200 },
+		],
+	},
+	{
+		name: "Codex",
+		color: "#f7768e",
+		tiers: [
+			{ label: "Free", price: 0, x: 0 },
+			{ label: "Go", price: 8, x: 8 },
+			{ label: "Plus", price: 20, x: 20 },
+			{ label: "Pro", price: 100, x: 100 },
+			{ label: "Pro", price: 200, x: 200 },
+		],
+	},
+	{
+		name: "Cmd Code",
+		color: "#9ece6a",
+		tiers: [
+			{ label: "Go", price: 1, x: 1 },
+			{ label: "Pro", price: 15, x: 15 },
+			{ label: "Max", price: 100, x: 100 },
+		],
+	},
+	{
+		name: "OpenCode",
+		color: "#ff9e64",
+		tiers: [
+			{ label: "Go", price: 5, x: 5 },
+			{ label: "Go", price: 10, x: 10 },
+			{ label: "Zen", price: 20, x: 20 },
+		],
+	},
+	{
+		name: "Gemini CLI",
+		color: "#73daca",
+		tiers: [{ label: "Free", price: 0, x: 0 }],
+	},
+];
+
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+};
+
+const markers = [0, 20, 50, 100, 200];
+
 export default function PricingLandscape() {
 	const [focus, setFocus] = useState(0);
-
-	const tools = [
-		{
-			name: "Claude Code",
-			color: "#bb9af7",
-			tiers: [
-				{ label: "Pro", price: 20, x: 20 },
-				{ label: "Max", price: 100, x: 100 },
-				{ label: "Max", price: 200, x: 200 },
-			],
-		},
-		{
-			name: "Cursor",
-			color: "#7aa2f7",
-			tiers: [
-				{ label: "Hobby", price: 0, x: 0 },
-				{ label: "Pro", price: 20, x: 20 },
-				{ label: "Pro+", price: 60, x: 60 },
-				{ label: "Ultra", price: 200, x: 200 },
-			],
-		},
-		{
-			name: "Copilot",
-			color: "#73daca",
-			tiers: [
-				{ label: "Free", price: 0, x: 0 },
-				{ label: "Pro", price: 10, x: 10 },
-				{ label: "Pro+", price: 39, x: 39 },
-				{ label: "Biz", price: 19, x: 19 },
-			],
-		},
-		{
-			name: "Windsurf",
-			color: "#e0af68",
-			tiers: [
-				{ label: "Free", price: 0, x: 0 },
-				{ label: "Pro", price: 15, x: 15 },
-				{ label: "Max", price: 200, x: 200 },
-			],
-		},
-		{
-			name: "Codex",
-			color: "#f7768e",
-			tiers: [
-				{ label: "Free", price: 0, x: 0 },
-				{ label: "Go", price: 8, x: 8 },
-				{ label: "Plus", price: 20, x: 20 },
-				{ label: "Pro", price: 100, x: 100 },
-				{ label: "Pro", price: 200, x: 200 },
-			],
-		},
-		{
-			name: "Cmd Code",
-			color: "#9ece6a",
-			tiers: [
-				{ label: "Go", price: 1, x: 1 },
-				{ label: "Pro", price: 15, x: 15 },
-				{ label: "Max", price: 100, x: 100 },
-			],
-		},
-		{
-			name: "OpenCode",
-			color: "#ff9e64",
-			tiers: [
-				{ label: "Go", price: 5, x: 5 },
-				{ label: "Go", price: 10, x: 10 },
-				{ label: "Zen", price: 20, x: 20 },
-			],
-		},
-		{
-			name: "Gemini CLI",
-			color: "#73daca",
-			tiers: [{ label: "Free", price: 0, x: 0 }],
-		},
-	];
 
 	const maxPrice = 200;
 
@@ -94,17 +104,7 @@ export default function PricingLandscape() {
 		return () => clearInterval(id);
 	}, []);
 
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-	};
-
 	// Price markers
-	const markers = [0, 20, 50, 100, 200];
-
 	return (
 		<div
 			style={{
@@ -187,7 +187,7 @@ export default function PricingLandscape() {
 								position: "relative",
 								padding: "6px 0",
 								opacity: isFocused ? 1 : 0.5,
-								transition: "all .5s ease",
+								transition: "opacity .5s ease",
 							}}
 						>
 							{/* Tool name */}
@@ -200,7 +200,7 @@ export default function PricingLandscape() {
 									fontWeight: 600,
 									color: tool.color,
 									fontFamily: "ui-monospace, Menlo, monospace",
-									transition: "all .4s ease",
+									transition: "opacity .4s ease, text-shadow .4s ease",
 									opacity: isFocused ? 1 : 0.5,
 									textShadow: isFocused ? `0 0 12px ${tool.color}44` : "none",
 									whiteSpace: "nowrap",
@@ -229,13 +229,12 @@ export default function PricingLandscape() {
 									const px = (tier.x / maxPrice) * 100;
 									return (
 										<div
-											key={`${tier.label}-${i}`}
+											key={`${tier.label}-${tier.price}`}
 											style={{
 												position: "absolute",
 												left: `${px}%`,
 												top: "50%",
 												transform: "translate(-50%, -50%)",
-												transition: "all .3s ease",
 											}}
 										>
 											{/* Dot */}
@@ -249,7 +248,7 @@ export default function PricingLandscape() {
 														isFocused && i === 0
 															? `0 0 12px 2px ${tool.color}`
 															: "none",
-													transition: "all .3s ease",
+													transition: "transform .3s ease",
 													transform: isFocused ? "scale(1.3)" : "scale(1)",
 												}}
 											/>

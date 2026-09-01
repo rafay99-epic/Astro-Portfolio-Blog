@@ -4,13 +4,13 @@ import { createHash } from "node:crypto";
 import { featureFlags } from "@config/featureFlag/featureFlag.json";
 import { PostSchema } from "../../../types/articles";
 
-export async function GET() {
-	const headers = {
-		"Content-Type": "application/json",
-		"Access-Control-Allow-Origin": "https://www.rafay99.com",
-		"Cache-Control": "public, max-age=3600",
-	};
+const headers = {
+	"Content-Type": "application/json",
+	"Access-Control-Allow-Origin": "https://www.rafay99.com",
+	"Cache-Control": "public, max-age=3600",
+};
 
+export async function GET() {
 	try {
 		if (!featureFlags.showBlog) {
 			return new Response(

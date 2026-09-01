@@ -9,14 +9,25 @@ import { useEffect, useState } from "react";
  * new Function → default export → live render. Each stage lights as the
  * token arrives. No server involved — this whole loop is client-side.
  */
+const stages = [
+	{ key: "paste", label: "Paste TSX", note: "your source" },
+	{ key: "sucrase", label: "Sucrase", note: "strip types, JSX → jsx()" },
+	{ key: "fn", label: "new Function", note: "no closure access" },
+	{ key: "export", label: "default export", note: "the component" },
+	{ key: "render", label: "Live render", note: "in the preview" },
+];
+
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	teal: "#73daca",
+};
+
 export default function CompileFlow() {
-	const stages = [
-		{ key: "paste", label: "Paste TSX", note: "your source" },
-		{ key: "sucrase", label: "Sucrase", note: "strip types, JSX → jsx()" },
-		{ key: "fn", label: "new Function", note: "no closure access" },
-		{ key: "export", label: "default export", note: "the component" },
-		{ key: "render", label: "Live render", note: "in the preview" },
-	];
 	const [active, setActive] = useState(0);
 
 	useEffect(() => {
@@ -26,16 +37,6 @@ export default function CompileFlow() {
 		);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		teal: "#73daca",
-	};
 
 	return (
 		<div
@@ -74,7 +75,8 @@ export default function CompileFlow() {
 									background: on ? "rgba(122,162,247,.1)" : c.panel,
 									padding: "12px 10px",
 									textAlign: "center",
-									transition: "all .4s ease",
+									transition:
+										"border-color .4s ease, background .4s ease, box-shadow .4s ease, opacity .4s ease",
 									boxShadow: on ? `0 0 20px -6px ${c.blue}` : "none",
 									opacity: done ? 0.55 : 1,
 								}}
@@ -93,7 +95,7 @@ export default function CompileFlow() {
 										fontFamily: "ui-monospace, Menlo, monospace",
 										fontSize: 11,
 										fontWeight: 700,
-										transition: "all .4s ease",
+										transition: "border-color .4s ease, color .4s ease",
 									}}
 								>
 									{done ? "✓" : i + 1}

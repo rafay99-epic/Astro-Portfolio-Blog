@@ -1,8 +1,8 @@
-import { memo, useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { LuSearch, LuX } from "react-icons/lu";
 import type { SearchInputProps } from "types/search";
 
-const SearchInput = memo(function SearchInput({
+function SearchInput({
 	query,
 	setQuery,
 	isSearchFocused,
@@ -17,16 +17,16 @@ const SearchInput = memo(function SearchInput({
 	);
 
 	// Delay blur so click events on result items fire before focus state clears
-	const handleBlur = useCallback(() => {
+	const handleBlur = () => {
 		clearTimeout(blurTimerRef.current);
 		blurTimerRef.current = setTimeout(() => setIsSearchFocused(false), 150);
-	}, [setIsSearchFocused]);
+	};
 
-	const handleFocus = useCallback(() => {
+	const handleFocus = () => {
 		clearTimeout(blurTimerRef.current);
 		setIsSearchFocused(true);
 		setShowSearchTips(true);
-	}, [setIsSearchFocused, setShowSearchTips]);
+	};
 
 	// Clean up blur timer on unmount
 	useEffect(() => {
@@ -36,7 +36,7 @@ const SearchInput = memo(function SearchInput({
 	return (
 		<div className="relative mb-4 flex items-center">
 			<div
-				className="absolute left-4 flex h-full items-center text-xl text-[#a9b1d6] transition-transform duration-200 will-change-transform"
+				className="absolute left-4 flex h-full items-center text-xl text-[#a9b1d6] transition-transform duration-200"
 				aria-hidden="true"
 			>
 				<LuSearch />
@@ -72,9 +72,9 @@ const SearchInput = memo(function SearchInput({
 			)}
 		</div>
 	);
-});
+}
 
-const KeyboardShortcuts = memo(function KeyboardShortcuts({
+const KeyboardShortcuts = function KeyboardShortcuts({
 	isMobile,
 	query,
 	isSearchFocused,
@@ -109,13 +109,9 @@ const KeyboardShortcuts = memo(function KeyboardShortcuts({
 			)}
 		</div>
 	);
-});
+};
 
-const ClearButton = memo(function ClearButton({
-	onClick,
-}: {
-	onClick: () => void;
-}) {
+const ClearButton = function ClearButton({ onClick }: { onClick: () => void }) {
 	return (
 		<button
 			type="button"
@@ -126,6 +122,6 @@ const ClearButton = memo(function ClearButton({
 			<LuX className="h-4 w-4" />
 		</button>
 	);
-});
+};
 
 export default SearchInput;

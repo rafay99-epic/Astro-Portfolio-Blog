@@ -4,7 +4,7 @@
 @import "@fontsource/poppins/600.css";
 @import "@fontsource/poppins/700.css";
 @import "@fontsource/poppins/900.css";
-@import "devicon/devicon.min.css";
+@import "./vendor/devicon/devicon.min.css";
 
 :root {
 	/* Legacy variables for backward compatibility - will be migrated gradually */

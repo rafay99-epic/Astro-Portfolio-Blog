@@ -1,4 +1,4 @@
-import { type ComponentType, type CSSProperties, memo } from "react";
+import type { ComponentType, CSSProperties } from "react";
 import { FaFacebook, FaLinkedin, FaTwitter, FaWhatsapp } from "react-icons/fa";
 import { LuSend } from "react-icons/lu";
 import { generateShareUrls, type ShareUrls } from "types/shareUtils";
@@ -41,7 +41,7 @@ const sharePlatforms = [
 	color: string;
 }>;
 
-const ShareButtons = memo(function ShareButtons({
+const ShareButtons = function ShareButtons({
 	url,
 	pagetitle,
 	compact = false,
@@ -60,7 +60,7 @@ const ShareButtons = memo(function ShareButtons({
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label={`Share on ${platform.label}`}
-							className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#565f89]/40 bg-[#24283b]/60 text-[#a9b1d6] transition-all duration-200 hover:scale-105 hover:border-[#7aa2f7]/50 hover:text-[#c0caf5]"
+							className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#565f89]/40 bg-[#24283b]/60 text-[#a9b1d6] transition-[border-color,color,transform] duration-200 hover:scale-105 hover:border-[#7aa2f7]/50 hover:text-[#c0caf5]"
 						>
 							<IconComponent
 								className="h-4 w-4"
@@ -104,17 +104,17 @@ const ShareButtons = memo(function ShareButtons({
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label={`Share on ${platform.label}`}
-									className="group relative flex h-20 w-20 flex-col items-center justify-center rounded-xl transition-all duration-300 hover:scale-105 hover:border-[#7aa2f7]/60 hover:shadow-lg hover:shadow-[#7aa2f7]/20"
+									className="group relative flex h-20 w-20 flex-col items-center justify-center rounded-xl transition-[border-color,box-shadow,transform] duration-300 hover:scale-105 hover:border-[#7aa2f7]/60 hover:shadow-lg hover:shadow-[#7aa2f7]/20"
 								>
 									<div
-										className="flex h-12 w-12 items-center justify-center rounded-lg transition-all duration-300 group-hover:scale-110"
+										className="flex h-12 w-12 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110"
 										style={{
 											background: `linear-gradient(135deg, ${platform.color}20, ${platform.color}10)`,
 											border: `1px solid ${platform.color}40`,
 										}}
 									>
 										<IconComponent
-											className="h-6 w-6 transition-all duration-300 group-hover:scale-110"
+											className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
 											style={{ color: platform.color }}
 										/>
 									</div>
@@ -150,6 +150,6 @@ const ShareButtons = memo(function ShareButtons({
 			</div>
 		</div>
 	);
-});
+};
 
 export default ShareButtons;

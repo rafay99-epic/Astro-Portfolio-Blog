@@ -2,11 +2,6 @@
 	"include": ["**/*"],
 	"exclude": ["dist", "astro/tsconfigs/base", "node_modules"],
 	"compilerOptions": {
-		"plugins": [
-			{
-				"name": "@astrojs/ts-plugin"
-			}
-		],
 		"paths": {
 			"types/*": ["./src/types/*"],
 			"@assets/*": ["./src/assets/*"],

@@ -3,6 +3,17 @@
  * animation inside Wryte instead. */
 import { useEffect, useState } from "react";
 
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	red: "#f7768e",
+	green: "#9ece6a",
+};
+
 export default function GuardrailAsymmetry() {
 	const [side, setSide] = useState(0);
 
@@ -10,17 +21,6 @@ export default function GuardrailAsymmetry() {
 		const id = setInterval(() => setSide((s) => (s + 1) % 3), 2000);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		red: "#f7768e",
-		green: "#9ece6a",
-	};
 
 	const attacker = {
 		label: "Attacker agent",
@@ -85,7 +85,7 @@ export default function GuardrailAsymmetry() {
 							color: current.label.includes("Defender") ? c.text : c.muted,
 							fontFamily: "ui-monospace, Menlo, monospace",
 							opacity: current.label.includes("Defender") ? 1 : 0.5,
-							transition: "all .4s ease",
+							transition: "color .4s ease, opacity .4s ease",
 						}}
 					>
 						Defender
@@ -100,7 +100,6 @@ export default function GuardrailAsymmetry() {
 								: c.panel,
 							padding: "12px 10px",
 							textAlign: "center",
-							transition: "all .4s ease",
 							boxShadow: current.label.includes("Defender")
 								? `0 0 20px -6px ${current.barrierColor}`
 								: "none",
@@ -126,7 +125,6 @@ export default function GuardrailAsymmetry() {
 								background: `${current.barrierColor}20`,
 								color: current.barrierColor,
 								border: `1px solid ${current.barrierColor}40`,
-								transition: "all .4s ease",
 							}}
 						>
 							{side === 1
@@ -158,7 +156,7 @@ export default function GuardrailAsymmetry() {
 							color: side === 0 ? c.text : c.muted,
 							fontFamily: "ui-monospace, Menlo, monospace",
 							opacity: side === 0 ? 1 : 0.5,
-							transition: "all .4s ease",
+							transition: "color .4s ease, opacity .4s ease",
 						}}
 					>
 						Attacker
@@ -171,7 +169,8 @@ export default function GuardrailAsymmetry() {
 							background: side === 0 ? `${c.green}10` : c.panel,
 							padding: "12px 10px",
 							textAlign: "center",
-							transition: "all .4s ease",
+							transition:
+								"border-color .4s ease, background .4s ease, box-shadow .4s ease",
 							boxShadow: side === 0 ? `0 0 20px -6px ${c.green}` : "none",
 						}}
 					>

@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 // Marker class on the clickable image container; a single delegated listener
 // (installed by the effect) opens the fullscreen viewer for any of them.
@@ -78,13 +78,13 @@ function handleImageClick(event: MouseEvent): void {
 	openFullscreen(img.src, img.getAttribute("alt") ?? "");
 }
 
-const EnhancedImageCaptionRenderer = memo(
-	function EnhancedImageCaptionRenderer() {
-		const shouldProcessElement = useCallback((element: Element): boolean => {
+const EnhancedImageCaptionRenderer = function EnhancedImageCaptionRenderer() {
+	useEffect(() => {
+		const shouldProcessElement = (element: Element): boolean => {
 			return element.tagName === "IMG" || element.querySelector("img") !== null;
-		}, []);
+		};
 
-		const processImage = useCallback((img: HTMLImageElement) => {
+		const processImage = (img: HTMLImageElement) => {
 			const alt = img.getAttribute("alt");
 
 			if (
@@ -144,9 +144,9 @@ const EnhancedImageCaptionRenderer = memo(
 				parent.insertBefore(wrapper, img);
 				parent.removeChild(img);
 			}
-		}, []);
+		};
 
-		const processImages = useCallback(() => {
+		const processImages = () => {
 			const mainContent = document.querySelector(
 				"main, .main-content, .content-prose",
 			);
@@ -161,49 +161,47 @@ const EnhancedImageCaptionRenderer = memo(
 					images.forEach(processImage);
 				});
 			}
-		}, [processImage]);
+		};
 
-		useEffect(() => {
-			processImages();
+		processImages();
 
-			let timeoutId: ReturnType<typeof setTimeout> | null = null;
+		let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-			const observer = new MutationObserver((mutations) => {
-				const hasNewImages = mutations.some(
-					(mutation) =>
-						mutation.type === "childList" &&
-						Array.from(mutation.addedNodes).some(
-							(node) =>
-								node.nodeType === Node.ELEMENT_NODE &&
-								shouldProcessElement(node as Element),
-						),
-				);
-
-				if (hasNewImages) {
-					if (timeoutId) clearTimeout(timeoutId);
-					timeoutId = setTimeout(processImages, 150);
-				}
-			});
-
-			const mainContent = document.querySelector(
-				"main, .main-content, .content-prose",
+		const observer = new MutationObserver((mutations) => {
+			const hasNewImages = mutations.some(
+				(mutation) =>
+					mutation.type === "childList" &&
+					Array.from(mutation.addedNodes).some(
+						(node) =>
+							node.nodeType === Node.ELEMENT_NODE &&
+							shouldProcessElement(node as Element),
+					),
 			);
-			if (mainContent) {
-				observer.observe(mainContent, { childList: true, subtree: true });
-			}
 
-			// One delegated listener for all enhanced images.
-			document.addEventListener("click", handleImageClick);
-
-			return () => {
+			if (hasNewImages) {
 				if (timeoutId) clearTimeout(timeoutId);
-				observer.disconnect();
-				document.removeEventListener("click", handleImageClick);
-			};
-		}, [processImages, shouldProcessElement]);
+				timeoutId = setTimeout(processImages, 150);
+			}
+		});
 
-		return null;
-	},
-);
+		const mainContent = document.querySelector(
+			"main, .main-content, .content-prose",
+		);
+		if (mainContent) {
+			observer.observe(mainContent, { childList: true, subtree: true });
+		}
+
+		// One delegated listener for all enhanced images.
+		document.addEventListener("click", handleImageClick);
+
+		return () => {
+			if (timeoutId) clearTimeout(timeoutId);
+			observer.disconnect();
+			document.removeEventListener("click", handleImageClick);
+		};
+	}, []);
+
+	return null;
+};
 
 export default EnhancedImageCaptionRenderer;

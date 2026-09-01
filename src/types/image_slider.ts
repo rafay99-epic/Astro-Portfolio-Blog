@@ -12,7 +12,7 @@ export const LayoutSchema = z.enum([
 export const ThemeSchema = z.enum(["light", "dark", "glass"]);
 export const ThumbnailPositionSchema = z.enum(["bottom", "left", "right"]);
 
-export const ImageSliderPropsSchema = z.object({
+const ImageSliderPropsSchema = z.object({
 	images: z.array(z.string()),
 	aspectRatio: AspectRatioSchema.optional(),
 	showThumbnails: z.boolean().optional(),
@@ -28,20 +28,20 @@ export const ThemeClassesSchema = z.object({
 	ring: z.string(),
 });
 
-export const LayoutClassesSchema = z.object({
+const LayoutClassesSchema = z.object({
 	container: z.string(),
 	image: z.string(),
 	controls: z.string(),
 	thumbnails: z.string(),
 });
 
-export const NavigationButtonPropsSchema = z.object({
+const NavigationButtonPropsSchema = z.object({
 	direction: z.enum(["prev", "next"]),
 	onClick: z.any(), // Function type - validated at TypeScript level
 	themeClasses: ThemeClassesSchema.pick({ buttons: true, ring: true }),
 });
 
-export const ThumbnailPropsSchema = z.object({
+const ThumbnailPropsSchema = z.object({
 	image: z.string(),
 	index: z.number(),
 	current: z.number(),
@@ -50,7 +50,7 @@ export const ThumbnailPropsSchema = z.object({
 	themeClasses: ThemeClassesSchema.pick({ ring: true }),
 });
 
-export const UseImageSliderResultSchema = z.object({
+const UseImageSliderResultSchema = z.object({
 	current: z.number(),
 	isFullScreen: z.boolean(),
 	loadedImages: z.custom<Set<number>>(),

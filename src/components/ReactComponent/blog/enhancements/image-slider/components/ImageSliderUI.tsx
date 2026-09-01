@@ -1,12 +1,11 @@
 import { useImageSlider } from "@hooks/useImageSlider";
 import { useSliderStyles } from "@hooks/useSliderStyles";
-import { AnimatePresence, motion } from "framer-motion";
-import { memo } from "react";
+import { AnimatePresence, m } from "framer-motion";
 import type { ImageSliderProps } from "types/image_slider";
 import { NavigationButton } from "./NavigationButton";
 import { Thumbnail } from "./Thumbnail";
 
-export const ImageSliderUI = memo(function ImageSliderUI({
+export function ImageSliderUI({
 	images,
 	aspectRatio = "auto",
 	showThumbnails = true,
@@ -60,7 +59,7 @@ export const ImageSliderUI = memo(function ImageSliderUI({
 					onTouchMove={handleTouchMove}
 				>
 					<AnimatePresence mode="wait">
-						<motion.div
+						<m.div
 							key={current}
 							initial={{ opacity: 0, scale: 1.1 }}
 							animate={{
@@ -84,13 +83,13 @@ export const ImageSliderUI = memo(function ImageSliderUI({
 							/>
 
 							{!isImageLoaded(current) && (
-								<motion.div
+								<m.div
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
 									exit={{ opacity: 0 }}
 									className="bg-[var(--accent-dark)]/10 absolute inset-0 flex items-center justify-center backdrop-blur-sm"
 								>
-									<motion.div
+									<m.div
 										animate={{
 											rotate: 360,
 											transition: {
@@ -101,9 +100,9 @@ export const ImageSliderUI = memo(function ImageSliderUI({
 										}}
 										className={`h-12 w-12 rounded-full border-4 border-[var(--accent)] border-t-transparent`}
 									/>
-								</motion.div>
+								</m.div>
 							)}
-						</motion.div>
+						</m.div>
 					</AnimatePresence>
 
 					<div className={layoutClasses.controls}>
@@ -119,15 +118,15 @@ export const ImageSliderUI = memo(function ImageSliderUI({
 						/>
 
 						<div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-4">
-							<motion.span
+							<m.span
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								className={`rounded-full px-3 py-1 text-sm ${themeClasses.controls}`}
 							>
 								{current + 1} / {images.length}
-							</motion.span>
+							</m.span>
 
-							<motion.button
+							<m.button
 								type="button"
 								whileHover={{ scale: 1.05 }}
 								whileTap={{ scale: 0.95 }}
@@ -138,13 +137,13 @@ export const ImageSliderUI = memo(function ImageSliderUI({
 								}
 							>
 								{isFullScreen ? "Exit Fullscreen" : "Fullscreen"}
-							</motion.button>
+							</m.button>
 						</div>
 					</div>
 				</div>
 
 				{showThumbnails && (
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						className={`${layoutClasses.thumbnails} ${
@@ -162,9 +161,9 @@ export const ImageSliderUI = memo(function ImageSliderUI({
 								themeClasses={themeClasses}
 							/>
 						))}
-					</motion.div>
+					</m.div>
 				)}
 			</div>
 		</div>
 	);
-});
+}

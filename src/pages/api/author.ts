@@ -2,12 +2,17 @@ import { createHash } from "node:crypto";
 import { FeatureFlagsApi } from "@config/featureFlag/featureFlag.json";
 import authorConfig from "@config/siteConfig/info.json";
 
+const responseData = {
+	author: authorConfig,
+};
+
+const header = {
+	"Content-Type": "application/json",
+	"Access-Control-Allow-Origin": "https://www.rafay99.com",
+	"Cache-Control": "public, max-age=3600",
+};
+
 export async function GET() {
-	const header = {
-		"Content-Type": "application/json",
-		"Access-Control-Allow-Origin": "https://www.rafay99.com",
-		"Cache-Control": "public, max-age=3600",
-	};
 	try {
 		if (!FeatureFlagsApi.enableauthorInfoAPI) {
 			return new Response(
@@ -18,10 +23,6 @@ export async function GET() {
 				},
 			);
 		}
-
-		const responseData = {
-			author: authorConfig,
-		};
 
 		const responseBody = JSON.stringify(responseData);
 		return new Response(responseBody, {

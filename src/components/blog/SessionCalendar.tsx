@@ -9,28 +9,43 @@ import { useEffect, useState } from "react";
  * shows the current 5-hour rolling window. As time passes, older
  * sessions fall out and capacity replenishes.
  */
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+	blue: "#7aa2f7",
+	green: "#9ece6a",
+	red: "#f7768e",
+	yellow: "#e0af68",
+	orange: "#ff9e64",
+	teal: "#73daca",
+	purple: "#bb9af7",
+};
+
+const sessions = [
+	{ label: "Mon", hours: 2.5, type: "past" },
+	{ label: "Tue", hours: 1.8, type: "past" },
+	{ label: "Wed", hours: 4.0, type: "past" },
+	{ label: "Thu", hours: 0.5, type: "past" },
+	{ label: "Fri", hours: 3.2, type: "past" },
+	{ label: "Sat", hours: 0, type: "past" },
+	{ label: "Sun", hours: 0, type: "past" },
+	{ label: "Mon", hours: 0, type: "future" },
+	{ label: "Tue", hours: 0, type: "future" },
+	{ label: "Wed", hours: 0, type: "future" },
+	{ label: "Thu", hours: 0, type: "future" },
+	{ label: "Fri", hours: 0, type: "future" },
+	{ label: "Sat", hours: 0, type: "future" },
+	{ label: "Sun", hours: 0, type: "future" },
+];
+
 export default function SessionCalendar() {
 	const [day, setDay] = useState(0);
 
 	// Simulated sessions across 14 days
 	// Each entry: { day label, hour consumed, is schedulled (future) }
-	const sessions = [
-		{ label: "Mon", hours: 2.5, type: "past" },
-		{ label: "Tue", hours: 1.8, type: "past" },
-		{ label: "Wed", hours: 4.0, type: "past" },
-		{ label: "Thu", hours: 0.5, type: "past" },
-		{ label: "Fri", hours: 3.2, type: "past" },
-		{ label: "Sat", hours: 0, type: "past" },
-		{ label: "Sun", hours: 0, type: "past" },
-		{ label: "Mon", hours: 0, type: "future" },
-		{ label: "Tue", hours: 0, type: "future" },
-		{ label: "Wed", hours: 0, type: "future" },
-		{ label: "Thu", hours: 0, type: "future" },
-		{ label: "Fri", hours: 0, type: "future" },
-		{ label: "Sat", hours: 0, type: "future" },
-		{ label: "Sun", hours: 0, type: "future" },
-	];
-
 	// Window start moves forward with time — as days pass, old sessions exit
 	// windowStart is the index of the first day in the rolling window
 	const windowLength = 5; // 5-hour window
@@ -46,21 +61,6 @@ export default function SessionCalendar() {
 		const id = setInterval(() => setDay((d) => (d + 1) % 10), 1600);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-		blue: "#7aa2f7",
-		green: "#9ece6a",
-		red: "#f7768e",
-		yellow: "#e0af68",
-		orange: "#ff9e64",
-		teal: "#73daca",
-		purple: "#bb9af7",
-	};
 
 	return (
 		<div
@@ -120,12 +120,12 @@ export default function SessionCalendar() {
 
 						return (
 							<div
-								key={`${s.label}-${i}`}
+								key={`${s.label}-${s.type}`}
 								style={{
 									flex: 1,
 									textAlign: "center",
 									opacity: inWindow ? 1 : 0.3,
-									transition: "all .4s ease",
+									transition: "opacity .4s ease",
 								}}
 							>
 								{/* Day label */}
@@ -151,7 +151,7 @@ export default function SessionCalendar() {
 										border: `1px solid ${isActive ? c.blue : c.line}`,
 										overflow: "hidden",
 										position: "relative",
-										transition: "all .3s ease",
+										transition: "border-color .3s ease, box-shadow .3s ease",
 										boxShadow: isActive ? `0 0 16px -4px ${c.blue}` : "none",
 									}}
 								>

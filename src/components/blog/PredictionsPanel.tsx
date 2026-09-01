@@ -3,52 +3,60 @@
  * animation inside Wryte instead. */
 import { useEffect, useState } from "react";
 
+const predictions = [
+	{
+		number: 1,
+		label: "Fable returns",
+		detail: "Partially, within weeks — region-locked or US-persons-gated",
+		color: "#7aa2f7",
+	},
+	{
+		number: 2,
+		label: "Global developer market fractures",
+		detail:
+			"Frontier tier becomes US-citizens-only. The rest of the world reads about it.",
+		color: "#f7768e",
+	},
+	{
+		number: 3,
+		label: "Competition wins quietly",
+		detail:
+			"Non-US teams pick models without export controls. The safe procurement choice shifts.",
+		color: "#e0af68",
+	},
+	{
+		number: 4,
+		label: "Safety honesty chills",
+		detail:
+			"Labs stop loudly warning about dangers. Transparency decreases across the industry.",
+		color: "#bb9af7",
+	},
+	{
+		number: 5,
+		label: "Capability doesn't disappear",
+		detail:
+			"Like 90s crypto wars — you can remove the product, not the capability.",
+		color: "#73daca",
+	},
+	{
+		number: 6,
+		label: "Defender asymmetry becomes the norm",
+		detail:
+			"Open-weight self-hosted models become mandatory IR toolkit components.",
+		color: "#9ece6a",
+	},
+];
+
+const c = {
+	bg: "#1a1b26",
+	panel: "#24283b",
+	line: "#3b4261",
+	text: "#c0caf5",
+	muted: "#737aa2",
+};
+
 export default function PredictionsPanel() {
 	const [prediction, setPrediction] = useState(0);
-
-	const predictions = [
-		{
-			number: 1,
-			label: "Fable returns",
-			detail: "Partially, within weeks — region-locked or US-persons-gated",
-			color: "#7aa2f7",
-		},
-		{
-			number: 2,
-			label: "Global developer market fractures",
-			detail:
-				"Frontier tier becomes US-citizens-only. The rest of the world reads about it.",
-			color: "#f7768e",
-		},
-		{
-			number: 3,
-			label: "Competition wins quietly",
-			detail:
-				"Non-US teams pick models without export controls. The safe procurement choice shifts.",
-			color: "#e0af68",
-		},
-		{
-			number: 4,
-			label: "Safety honesty chills",
-			detail:
-				"Labs stop loudly warning about dangers. Transparency decreases across the industry.",
-			color: "#bb9af7",
-		},
-		{
-			number: 5,
-			label: "Capability doesn't disappear",
-			detail:
-				"Like 90s crypto wars — you can remove the product, not the capability.",
-			color: "#73daca",
-		},
-		{
-			number: 6,
-			label: "Defender asymmetry becomes the norm",
-			detail:
-				"Open-weight self-hosted models become mandatory IR toolkit components.",
-			color: "#9ece6a",
-		},
-	];
 
 	useEffect(() => {
 		const id = setInterval(
@@ -57,14 +65,6 @@ export default function PredictionsPanel() {
 		);
 		return () => clearInterval(id);
 	}, []);
-
-	const c = {
-		bg: "#1a1b26",
-		panel: "#24283b",
-		line: "#3b4261",
-		text: "#c0caf5",
-		muted: "#737aa2",
-	};
 
 	const current = predictions[prediction];
 	if (!current) return null;
@@ -101,7 +101,6 @@ export default function PredictionsPanel() {
 					background: `${current.color}10`,
 					padding: 20,
 					marginBottom: 16,
-					transition: "all .5s ease",
 					boxShadow: `0 0 24px -8px ${current.color}`,
 				}}
 			>
@@ -126,7 +125,6 @@ export default function PredictionsPanel() {
 							fontWeight: 700,
 							color: current.color,
 							flexShrink: 0,
-							transition: "all .4s ease",
 							background: `${current.color}15`,
 						}}
 					>
@@ -163,7 +161,7 @@ export default function PredictionsPanel() {
 							height: 4,
 							borderRadius: 2,
 							background: i === prediction ? p.color : c.line,
-							transition: "all .3s ease",
+							transition: "background .3s ease, box-shadow .3s ease",
 							boxShadow: i === prediction ? `0 0 8px 1px ${p.color}` : "none",
 						}}
 					/>
