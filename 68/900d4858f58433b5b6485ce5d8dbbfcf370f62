@@ -1,0 +1,19 @@
+public/app-ads.txt
+  s_b988a8c7edd961::t_1365cd292acd02 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "68900d4858f58433b5b6485ce5d8dbbfcf370f62",
+  "prompts": {},
+  "sessions": {
+    "s_b988a8c7edd961": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6ea4de63-4564-482b-9cac-8d9ab83bd6e0",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abdul Rafay <99marafay@gmail.com>"
+    }
+  }
+}
